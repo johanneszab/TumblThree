@@ -1,0 +1,53 @@
+﻿using System;
+using System.Linq;
+using TumblThree.Applications.Services;
+using TumblThree.Applications.ViewModels;
+using TumblThree.Applications.Views;
+using TumblThree.Domain.Models;
+
+namespace TumblThree.Presentation.DesignData
+{
+    public class SampleManagerViewModel : ManagerViewModel
+    {
+        public SampleManagerViewModel() : base(new MockManagerView(), new Lazy<ISelectionService>(() => new MockSelectionService()), null)
+        {
+            var blogFiles = new[]
+            {
+                new TumblrBlog
+                {
+                    Name = "Nature Wallpapers",
+                    DownloadedImages = 123,
+                    TotalCount = 234,
+                    Progress = 66,
+                    Online = true,
+                    Tags = "",
+                    DateAdded = DateTime.Now,
+                    Rating = 33
+                },
+                new TumblrBlog
+                {
+                    Name = "Landscape Wallpapers",
+                    Url = "http://landscape-wallpaper.tumblr.com/",
+                    DownloadedImages = 17236,
+                    DateAdded = DateTime.Now,
+                    Progress = 95,
+                    TotalCount = 15739,
+                },
+                new TumblrBlog
+                {
+                    Name = "FX Wallpapers",
+                    Url = "http://nature-wallpaper.tumblr.com/",
+                    DownloadedImages = 12845,
+                    DateAdded = DateTime.Now,
+                    Progress = 12,
+                    TotalCount = 82453,
+                }
+            };
+            ((MockSelectionService)SelectionService).SetBlogFiles(blogFiles.ToArray());
+        }
+
+        private class MockManagerView : MockView, IManagerView
+        {
+        }
+    }
+}

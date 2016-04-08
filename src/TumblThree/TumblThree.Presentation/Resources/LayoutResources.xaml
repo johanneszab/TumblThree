@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:TumblThree.Presentation.Resources">
+
+    <GridLength x:Key="Layout.ColumnSpace">7</GridLength>
+
+    <GridLength x:Key="Layout.LargeColumnSpace">11</GridLength>
+
+    <GridLength x:Key="Layout.RowSpace">4</GridLength>
+
+    <GridLength x:Key="Layout.LargeRowSpace">9</GridLength>
+
+</ResourceDictionary>

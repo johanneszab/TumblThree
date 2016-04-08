@@ -1,0 +1,40 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:waf="http://waf.codeplex.com/schemas"
+                    xmlns:c="clr-namespace:TumblThree.Presentation.Converters">
+
+    <waf:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+
+    <waf:InvertBooleanConverter x:Key="InvertBooleanConverter"/>
+
+    <waf:StringFormatConverter x:Key="StringFormatConverter"/>
+
+    <waf:ValidationErrorsConverter x:Key="ValidationErrorsConverter"/>
+
+    <c:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+
+    <c:BlogQueueInfoConverter x:Key="BlogQueueInfoConverter"/>
+
+    <c:StatusToBoolConverter x:Key="StatusToBoolConverter"/>
+
+    <c:TotalImageConverter x:Key="TotalImageConverter"/>
+
+    <c:ErrorMessagesConverter x:Key="ErrorMessagesConverter"/>
+
+    <c:WindowTitleConverter x:Key="WindowTitleConverter"/>
+
+    <c:UIntToDisplayValueConverter x:Key="UIntToDisplayValueConverter"/>
+
+    <c:DateToDisplayValueConverter x:Key="DateToDisplayValueConverter"/>
+
+    <c:RatingToStarsConverter x:Key="RatingToStarsConverter"/>
+
+    <c:ItemsCountConverter x:Key="ItemsCountConverter"/>
+
+    <c:StringListToStringConverter x:Key="StringListToStringConverter"/>
+
+    <c:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+
+    <c:IsQueueItemCrawlingMultiConverter x:Key="IsQueueItemCrawlingMultiConverter"/>
+
+</ResourceDictionary>

@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Blend for Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TumblThree.Presentation", "TumblThree.Presentation\TumblThree.Presentation.csproj", "{6110B65A-7496-46A7-8B87-6A5782918E5B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BD6B0ABD-6114-476B-B0DF-734E891D6634} = {BD6B0ABD-6114-476B-B0DF-734E891D6634}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TumblThree.Domain", "TumblThree.Domain\TumblThree.Domain.csproj", "{24EDEBE0-E068-44E3-B730-0E75974A8206}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TumblThree.Applications", "TumblThree.Applications\TumblThree.Applications.csproj", "{BD6B0ABD-6114-476B-B0DF-734E891D6634}"
+	ProjectSection(ProjectDependencies) = postProject
+		{24EDEBE0-E068-44E3-B730-0E75974A8206} = {24EDEBE0-E068-44E3-B730-0E75974A8206}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6110B65A-7496-46A7-8B87-6A5782918E5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6110B65A-7496-46A7-8B87-6A5782918E5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6110B65A-7496-46A7-8B87-6A5782918E5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6110B65A-7496-46A7-8B87-6A5782918E5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24EDEBE0-E068-44E3-B730-0E75974A8206}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24EDEBE0-E068-44E3-B730-0E75974A8206}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24EDEBE0-E068-44E3-B730-0E75974A8206}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24EDEBE0-E068-44E3-B730-0E75974A8206}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD6B0ABD-6114-476B-B0DF-734E891D6634}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD6B0ABD-6114-476B-B0DF-734E891D6634}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD6B0ABD-6114-476B-B0DF-734E891D6634}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD6B0ABD-6114-476B-B0DF-734E891D6634}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
