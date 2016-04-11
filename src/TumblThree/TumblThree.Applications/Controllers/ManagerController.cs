@@ -44,6 +44,7 @@ namespace TumblThree.Applications.Controllers
         private readonly DelegateCommand stopCommand;
         private readonly DelegateCommand listenClipboardCommand;
         //private readonly DelegateCommand showBlogPropertiesCommand;
+        private readonly List<Task> runningTasks;
         private CancellationTokenSource crawlBlogsCancellation;
         private PauseTokenSource crawlBlogsPause;
 
@@ -67,6 +68,7 @@ namespace TumblThree.Applications.Controllers
             this.resumeCommand = new DelegateCommand(Resume, CanResume);
             this.stopCommand = new DelegateCommand(Stop, CanStop);
             this.listenClipboardCommand = new DelegateCommand(ListenClipboard);
+            this.runningTasks = new List<Task>();
         }
 
         private ManagerViewModel ManagerViewModel { get { return managerViewModel.Value; } }
@@ -101,7 +103,15 @@ namespace TumblThree.Applications.Controllers
 
         public void Shutdown()
         {
-            // save blogs
+            try
+            {
+                if (stopCommand.CanExecute(null))
+                    stopCommand.Execute(null);
+                Task.WaitAll(runningTasks.ToArray());
+            }
+            catch (System.AggregateException)
+            {
+            }
         }
 
         private async void LoadLibrary()
@@ -193,22 +203,24 @@ namespace TumblThree.Applications.Controllers
             stopCommand.RaiseCanExecuteChanged();
             removeBlogCommand.RaiseCanExecuteChanged();
 
-            try
-            {
-                for (int i = 0; i < shellService.Settings.ParallelBlogs; i++)
-                    Task.Factory.StartNew(() => runCrawlerTasks(cancellation.Token, pause.Token),
-                        cancellation.Token,
-                        TaskCreationOptions.LongRunning,
-                        TaskScheduler.Default);
-            }
-            catch (AggregateException ex)
-            {
-                foreach (var innerEx in ex.InnerExceptions)
-                {
-                    Logger.Error("ManagerController:Crawl: {0}", innerEx);
-                    shellService.ShowError(innerEx, Resources.CrawlerError);
-                }
-            }
+
+            for (int i = 0; i < shellService.Settings.ParallelBlogs; i++)
+                runningTasks.Add(
+                Task.Factory.StartNew(() => runCrawlerTasks(cancellation.Token, pause.Token),
+                    cancellation.Token,
+                    TaskCreationOptions.LongRunning,
+                    TaskScheduler.Default).ContinueWith(task =>
+                    {
+                        if (task.Exception != null)
+                        { 
+                            foreach (var innerEx in task.Exception.InnerExceptions)
+                            {
+                                Logger.Error("ManagerController:Crawl: {0}", innerEx);
+                                //shellService.ShowError(innerEx, Resources.CrawlerError);
+                            }
+                        }
+                        runningTasks.Clear();
+                    }));
         }
 
         private void runCrawlerTasks(CancellationToken ct, PauseToken pt)
@@ -475,6 +487,9 @@ namespace TumblThree.Applications.Controllers
 
         public void Stop()
         {
+            if (resumeCommand.CanExecute(null))
+                resumeCommand.Execute(null);
+
             crawlBlogsCancellation.Cancel();
             crawlerService.IsCrawl = false;
             crawlCommand.RaiseCanExecuteChanged();
@@ -769,9 +784,13 @@ namespace TumblThree.Applications.Controllers
         public string ExtractBlogname(string url)
         {
             string[] source = url.Split(new char[] { '.' });
-            if ((source.Count<string>() >= 3))
+            if ((source.Count<string>() >= 3) && source[0].StartsWith("http://", true, null))
             {
                 return source[0].Replace("http://", string.Empty);
+            }
+            else if ((source.Count<string>() >= 3) && source[0].StartsWith("https://", true, null))
+            {
+                return source[0].Replace("https://", string.Empty);
             }
             return null;
         }
