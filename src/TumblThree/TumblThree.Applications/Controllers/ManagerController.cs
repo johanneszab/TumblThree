@@ -21,6 +21,7 @@ using TumblThree.Domain.Queue;
 using System.Windows;
 using System.Windows.Threading;
 using TumblThree.Applications;
+using System.Globalization;
 
 namespace TumblThree.Applications.Controllers
 {
@@ -258,10 +259,7 @@ namespace TumblThree.Applications.Controllers
 
                         var progressHandler = new Progress<DownloadProgress>(value =>
                         {
-                            blog.Progress = value.ProgressPercentage;
-                            blog.Links.Add(value.Url);
-                            blog.DownloadedImages = value.DownloadedImages;
-                            //blog.TotalCount = value.TotalCount;
+                            blogToCrawlNext.Progress = value.Progress;
                         });
                         var progress = progressHandler as IProgress<DownloadProgress>;
 
@@ -307,7 +305,9 @@ namespace TumblThree.Applications.Controllers
         {
             Logger.Verbose("ManagerController.CrawlCoreTumblrBlog:Start");
 
-            var tuple = GetImageUrls(blog, ct, pt);
+            var newProgress = new DownloadProgress();
+
+            var tuple = GetImageUrls(blog, progress, ct, pt);
             var newImageCount = tuple.Item1;
             var newImageUrls = tuple.Item2;
 
@@ -335,12 +335,12 @@ namespace TumblThree.Applications.Controllers
 
                         if (Download(blog, fileLocation, currentImageUrl))
                         {
-                            var newProgress = new DownloadProgress();
-                            newProgress.ProgressPercentage = (uint)((double)blog.DownloadedImages / (double)blog.TotalCount * 100);
-                            newProgress.Url = currentImageUrl;
-                            newProgress.DownloadedImages += (uint) blog.Links.Count(); //blog.DownloadedImages + 1;
-                            //newProgress.TotalCount = newImageCount;
+                            blog.Progress = (uint)((double)blog.DownloadedImages / (double)blog.TotalCount * 100);
+                            blog.Links.Add(currentImageUrl);
+                            blog.DownloadedImages = (uint) blog.Links.Count();
 
+                            newProgress = new DownloadProgress();
+                            newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressDownloadImage, currentImageUrl); ;
                             progress.Report(newProgress);
                         }
                     });
@@ -350,6 +350,11 @@ namespace TumblThree.Applications.Controllers
                 blog.LastCompleteCrawl = DateTime.Now;
             }
             SaveBlog(blog);
+
+            newProgress = new DownloadProgress();
+            newProgress.Progress = "";
+            progress.Report(newProgress);
+
             return blog;
         }
 
@@ -652,9 +657,10 @@ namespace TumblThree.Applications.Controllers
             return count;
         }
 
-        public Tuple<uint, List<string>> GetImageUrls(TumblrBlog blog, CancellationToken ct, PauseToken pt)
+        public Tuple<uint, List<string>> GetImageUrls(TumblrBlog blog, IProgress<DownloadProgress> progress, CancellationToken ct, PauseToken pt)
         {
             int totalPosts = 0;
+            int numberOfPostsCrawled = 0;
             uint totalImages;
             List<string> images = new List<string>();
 
@@ -772,6 +778,11 @@ namespace TumblThree.Applications.Controllers
                             {
                                 Console.WriteLine(ex.Data);
                             }
+
+                            numberOfPostsCrawled += 50;
+                            var newProgress = new DownloadProgress();
+                            newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressGetUrl, numberOfPostsCrawled, totalPosts);
+                            progress.Report(newProgress);
                         }
                 );
 

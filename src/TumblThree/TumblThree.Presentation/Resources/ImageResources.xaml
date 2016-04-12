@@ -71,6 +71,25 @@
         </DrawingImage.Drawing>
     </DrawingImage>
 
+    <DrawingImage x:Key="ResumeButtonImage">
+        <DrawingImage.Drawing>
+            <GeometryDrawing>
+                <GeometryDrawing.Geometry>
+                    <RectangleGeometry Rect="0,0,20,20"/>
+                </GeometryDrawing.Geometry>
+                <GeometryDrawing.Brush>
+                    <VisualBrush>
+                        <VisualBrush.Visual>
+                            <Border BorderBrush="Transparent" BorderThickness="0.5">
+                                <TextBlock Text="&#xE117;" FontFamily="Segoe UI Symbol" FontSize="20"/>
+                            </Border>
+                        </VisualBrush.Visual>
+                    </VisualBrush>
+                </GeometryDrawing.Brush>
+            </GeometryDrawing>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
     <DrawingImage x:Key="StopButtonImage">
         <DrawingImage.Drawing>
             <GeometryDrawing>

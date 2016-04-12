@@ -21,6 +21,7 @@
         <TaskbarItemInfo>
             <TaskbarItemInfo.ThumbButtonInfos>
                 <ThumbButtonInfo x:Name="playButton" Command="{Binding CrawlerService.CrawlCommand}" ImageSource="{StaticResource PlayButtonImage}"/>
+                <ThumbButtonInfo x:Name="resumeButton" Command="{Binding CrawlerService.ResumeCommand}" ImageSource="{StaticResource ResumeButtonImage}"/>
                 <ThumbButtonInfo x:Name="pauseButton" Command="{Binding CrawlerService.PauseCommand}" ImageSource="{StaticResource PauseButtonImage}"/>
                 <ThumbButtonInfo x:Name="stopButton" Command="{Binding CrawlerService.StopCommand}" ImageSource="{StaticResource StopButtonImage}"/>
             </TaskbarItemInfo.ThumbButtonInfos>

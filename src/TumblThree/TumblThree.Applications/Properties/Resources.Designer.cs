@@ -160,6 +160,24 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Downloading {0}..
+        /// </summary>
+        public static string ProgressDownloadImage {
+            get {
+                return ResourceManager.GetString("ProgressDownloadImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Evaluated {0} tumblr post urls out of {1} total posts..
+        /// </summary>
+        public static string ProgressGetUrl {
+            get {
+                return ResourceManager.GetString("ProgressGetUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Queuelist.
         /// </summary>
         public static string Queuelist {

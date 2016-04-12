@@ -113,9 +113,8 @@
                         <ctrl:SearchableTextBlock
                             TextTrimming="CharacterEllipsis" Grid.Row="2" Grid.Column="1" ctrl:ToolTipBehavior.AutoToolTip="True">
                             <ctrl:SearchableTextBlock.Text>
-                                <MultiBinding Converter="{StaticResource BlogQueueInfoConverter}">
-                                    <Binding Path="Blog.DownloadedImages"/>
-                                    <Binding Path="Blog.TotalCount"/>
+                                <MultiBinding Converter="{StaticResource BlogQueueProgressConverter}">
+                                    <Binding Path="Progress"/>
                                 </MultiBinding>
                             </ctrl:SearchableTextBlock.Text>
                         </ctrl:SearchableTextBlock>

@@ -131,6 +131,7 @@
     <Compile Include="Controls\InsertMarkerAdorner.cs" />
     <Compile Include="Controls\ListBoxDragDropHelper.cs" />
     <Compile Include="Converters\BlogQueueInfoConverter.cs" />
+    <Compile Include="Converters\BlogQueueProgressConverter.cs" />
     <Compile Include="Converters\BlogTitleConverter.cs" />
     <Compile Include="Controls\Rating.cs" />
     <Compile Include="Controls\RatingItem.cs" />

@@ -150,6 +150,12 @@
   <data name="CrawlerError" xml:space="preserve">
     <value>The Crawler Thread encountered an error.</value>
   </data>
+  <data name="ProgressDownloadImage" xml:space="preserve">
+    <value>Downloading {0}.</value>
+  </data>
+  <data name="ProgressGetUrl" xml:space="preserve">
+    <value>Evaluated {0} tumblr post urls out of {1} total posts.</value>
+  </data>
   <data name="Queuelist" xml:space="preserve">
     <value>Queuelist</value>
   </data>
