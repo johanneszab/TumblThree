@@ -18,5 +18,8 @@ TumblThree is the code rewrite of [TumblTwo](https://github.com/johanneszab/Tumb
 * The blogview is now sortable and shows more information, e.g. date added, last time finished and the progress.
 * A settings panel (change download location, turn picture preview off/on, define number of simultaneous downloads, set the imagesize of downloaded pictures).
 * Source code at github (Written in C# using WPF and MVVM).
+ 
+## Screenshot:
+![TumblTwo Main UI](http://www.jzab.de/sites/default/files/images/tumblthree.png?raw=true "TumblTwo Main UI")
 
 Current binaries and more frequently updated information can also be found at [the project homepage](http://www.jzab.de/content/tumblthree).
