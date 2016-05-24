@@ -225,9 +225,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\Images\TumblThree.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\Images\About.png" />
     <Resource Include="Resources\Images\AddBlog.png" />
     <Resource Include="Resources\Images\Clipboard.png" />

@@ -7,7 +7,7 @@
         xmlns:ctrl="clr-namespace:TumblThree.Presentation.Controls"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
         xmlns:vm="clr-namespace:TumblThree.Applications.ViewModels;assembly=TumblThree.Applications"
-        mc:Ignorable="d" Icon="{StaticResource TumblThreeIcon}" Width="800" Height="500"
+        mc:Ignorable="d" Width="800" Height="500"
         d:DataContext="{d:DesignInstance dd:SampleShellViewModel, IsDesignTimeCreatable=True}">
 
     <Window.Title>
