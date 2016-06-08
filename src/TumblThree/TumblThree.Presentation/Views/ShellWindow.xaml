@@ -7,7 +7,7 @@
         xmlns:ctrl="clr-namespace:TumblThree.Presentation.Controls"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
         xmlns:vm="clr-namespace:TumblThree.Applications.ViewModels;assembly=TumblThree.Applications"
-        mc:Ignorable="d" Width="800" Height="500"
+        mc:Ignorable="d" Icon="{StaticResource TumblThreeIcon}" Width="800" Height="500"
         d:DataContext="{d:DesignInstance dd:SampleShellViewModel, IsDesignTimeCreatable=True}">
 
     <Window.Title>
@@ -29,6 +29,7 @@
     </Window.TaskbarItemInfo>
 
     <Window.InputBindings>
+        <KeyBinding Command="{Binding CrawlerService.RemoveBlogCommand}" Key="Delete" Modifiers="Shift"/>
         <KeyBinding Command="{Binding GarbageCollectorCommand}" Key="G" Modifiers="Ctrl+Shift"/>
         <KeyBinding Command="{Binding CrawlerService.CrawlCommand}" Key="Space"/>
         <KeyBinding Command="{Binding CrawlerService.PauseCommand}" Key="Space" Modifiers="Ctrl"/>
@@ -136,13 +137,13 @@
                 <TextBox x:Name="url" Text="{Binding CrawlerService.NewBlogUrl, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="0,6,0,0" Grid.RowSpan="2" Grid.Column="2" TextWrapping="Wrap" VerticalAlignment="Top" Width="300"/>
                 <Button HorizontalAlignment="Stretch" Height="50" Width="120" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2" Grid.Column="4"  Command="{Binding CrawlerService.AddBlogCommand}">
                     <StackPanel>
-                        <Image Source="{DynamicResource AddIcon}" Height="30" />
+                        <Image Source="{DynamicResource AddBlogIcon}" Height="30" />
                         <TextBlock Text="{x:Static p:Resources.AddBlog}" />
                     </StackPanel>
                 </Button>
                 <Button HorizontalAlignment="Stretch" Height="50" Width="120" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2" Grid.Column="5" Command="{Binding CrawlerService.RemoveBlogCommand}">
                     <StackPanel>
-                        <Image Source="{DynamicResource RemoveIcon}" Height="30" />
+                        <Image Source="{DynamicResource RemoveBlogIcon}" Height="30" />
                         <TextBlock Text="{x:Static p:Resources.RemoveBlog}" />
                     </StackPanel>
                 </Button>
@@ -154,13 +155,13 @@
                 </Button>
                 <Button HorizontalAlignment="Stretch" Height="50" Width="120" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2" Grid.Column="7" Command="{Binding CrawlerService.EnqueueSelectedCommand}">
                     <StackPanel>
-                        <Image Source="{DynamicResource AddIcon}" Height="30" />
+                        <Image Source="{DynamicResource AddQueueIcon}" Height="30" />
                         <TextBlock Text="{x:Static p:Resources.AddToQueue}" />
                     </StackPanel>
                 </Button>
                 <Button HorizontalAlignment="Stretch" Height="50" Width="120" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2" Grid.Column="8" Command="{Binding CrawlerService.RemoveBlogFromQueueCommand}">
                     <StackPanel>
-                        <Image Source="{DynamicResource RemoveIcon}" Height="30" />
+                        <Image Source="{DynamicResource RemoveQueueIcon}" Height="30" />
                         <TextBlock Text="{x:Static p:Resources.RemoveFromQueue}" />
                     </StackPanel>
                 </Button>

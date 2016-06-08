@@ -15,7 +15,7 @@
         </Border>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <ContentControl Content="{StaticResource TumblThreeIcon}" Width="256" Margin="22,11,22,0"/>
+            <ContentControl Content="{StaticResource TumblThreeXamlIcon}" Width="256" Margin="22,11,22,0"/>
 
             <Grid Margin="0,0,22,11" VerticalAlignment="Center">
                 <Grid.Resources>

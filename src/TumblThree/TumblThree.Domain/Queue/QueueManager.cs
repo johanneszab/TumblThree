@@ -130,7 +130,7 @@ namespace TumblThree.Domain.Queue
             {
                 var loadedItems = items.Where(x => x.Blog.TotalCount > 0);
 
-                QueueTotalImageCount = loadedItems.Select(x => x.Blog.TotalCount).Aggregate((current, next) => current + next);
+                QueueTotalImageCount = loadedItems.Select(x => x.Blog.TotalCount).DefaultIfEmpty().Aggregate((current, next) => current + next);
             } else
             {
                 QueueTotalImageCount = 0;

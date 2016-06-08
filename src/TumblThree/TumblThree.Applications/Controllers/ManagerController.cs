@@ -740,7 +740,7 @@ namespace TumblThree.Applications.Controllers
 
                                     foreach (var post in (from data in document.Descendants("post")
                                                           where data.Attribute("type").Value == "photo" &&
-                                                          document.Descendants("tag").Where(x => tags.Contains(x.Value)).Any()
+                                                          data.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()
                                                           select data))
                                     {
                                         // photoset

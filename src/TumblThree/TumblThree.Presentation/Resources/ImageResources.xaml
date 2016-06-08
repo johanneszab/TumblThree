@@ -1,18 +1,29 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <BitmapSource x:Key="TumblThreeIcon">Images/TumblThree.ico</BitmapSource>
+    <BitmapSource x:Key="TumblThreeIcon">Images/Tumblr.png</BitmapSource>
     <BitmapSource x:Key="AboutIcon">Images/About.png</BitmapSource>
-    <BitmapSource x:Key="AddIcon">Images/AddBlog.png</BitmapSource>
+    <BitmapSource x:Key="AddBlogIcon">Images/AddBlog.png</BitmapSource>
+    <BitmapSource x:Key="AddQueueIcon">Images/AddQueue.png</BitmapSource>
+    <BitmapSource x:Key="RemoveQueueIcon">Images/RemoveQueue.png</BitmapSource>
     <BitmapSource x:Key="ClipboardIcon">Images/Clipboard.png</BitmapSource>
     <BitmapSource x:Key="DownloadIcon">Images/Download.png</BitmapSource>
     <BitmapSource x:Key="ExplorerIcon">Images/Explorer.png</BitmapSource>
     <BitmapSource x:Key="PauseIcon">Images/Pause.png</BitmapSource>
-    <BitmapSource x:Key="RemoveIcon">Images/Remove.png</BitmapSource>
+    <BitmapSource x:Key="RemoveBlogIcon">Images/RemoveBlog.png</BitmapSource>
     <BitmapSource x:Key="ResumeIcon">Images/Resume.png</BitmapSource>
     <BitmapSource x:Key="ScanIcon">Images/Scan.png</BitmapSource>
     <BitmapSource x:Key="SettingsIcon">Images/Settings.png</BitmapSource>
     <BitmapSource x:Key="StopIcon">Images/Stop.png</BitmapSource>
+
+    <Viewbox x:Key="TumblThreeXamlIcon">
+        <Grid>
+            <Canvas>
+                <Image
+                Source="{StaticResource ResourceKey=TumblThreeIcon}" />
+            </Canvas>
+        </Grid>
+    </Viewbox>
 
     <DrawingImage x:Key="PreviousButtonImage">
         <DrawingImage.Drawing>

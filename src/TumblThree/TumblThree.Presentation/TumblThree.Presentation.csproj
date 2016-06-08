@@ -210,7 +210,11 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\Images\AddQueue.png" />
+    <Resource Include="Resources\Images\RemoveBlog.png" />
+    <Resource Include="Resources\Images\RemoveQueue.png" />
+  </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="Properties\CodeAnalysisDictionary.xml" />
   </ItemGroup>
@@ -231,11 +235,13 @@
     <Resource Include="Resources\Images\Download.png" />
     <Resource Include="Resources\Images\Explorer.png" />
     <Resource Include="Resources\Images\Pause.png" />
-    <Resource Include="Resources\Images\Remove.png" />
     <Resource Include="Resources\Images\Resume.png" />
     <Resource Include="Resources\Images\Scan.png" />
     <Resource Include="Resources\Images\Settings.png" />
     <Resource Include="Resources\Images\Stop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Tumblr.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
