@@ -27,12 +27,15 @@ namespace TumblThree.Applications.ViewModels
         private int parallelImages;
         private int parallelBlogs;
         private int imageSize;
+        private int videoSize;
         private bool checkClipboard;
         private bool showPicturePreview;
         private bool deleteOnlyIndex;
         private bool checkOnlineStatusAtStartup;
         private bool skipGif;
         private bool removeIndexAfterCrawl;
+        private bool downloadImages;
+        private bool downloadVideos;
 
         //private bool isloaded = false;
 
@@ -84,6 +87,12 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref imageSize, value); }
         }
 
+        public int VideoSize
+        {
+            get { return videoSize; }
+            set { SetProperty(ref videoSize, value); }
+        }
+
         public bool CheckClipboard
         {
             get { return checkClipboard; }
@@ -120,7 +129,17 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref removeIndexAfterCrawl, value); }
         }
 
+        public bool DownloadImages
+        {
+            get { return downloadImages; }
+            set { SetProperty(ref downloadImages, value); }
+        }
 
+        public bool DownloadVideos
+        {
+            get { return downloadVideos; }
+            set { SetProperty(ref downloadVideos, value); }
+        }
 
         private void LoadSettings()
         {
@@ -130,12 +149,15 @@ namespace TumblThree.Applications.ViewModels
                 ParallelImages = settings.ParallelImages;
                 ParallelBlogs = settings.ParallelBlogs;
                 ImageSize = settings.ImageSize;
+                VideoSize = settings.VideoSize;
                 CheckClipboard = settings.CheckClipboard;
                 ShowPicturePreview = settings.ShowPicturePreview;
                 DeleteOnlyIndex = settings.DeleteOnlyIndex;
                 CheckOnlineStatusAtStartup = settings.CheckOnlineStatusAtStartup;
                 SkipGif = settings.SkipGif;
                 RemoveIndexAfterCrawl = settings.RemoveIndexAfterCrawl;
+                DownloadImages = settings.DownloadImages;
+                DownloadVideos = settings.DownloadVideos;
             }
             else
             {
@@ -143,12 +165,15 @@ namespace TumblThree.Applications.ViewModels
                 ParallelImages = 25;
                 ParallelBlogs = 2;
                 ImageSize = 1280;
+                VideoSize = 1080;
                 CheckClipboard = true;
                 ShowPicturePreview = true;
                 DeleteOnlyIndex = true;
                 CheckOnlineStatusAtStartup = true;
                 SkipGif = false;
                 RemoveIndexAfterCrawl = false;
+                DownloadImages = true;
+                DownloadVideos = false;
             }
         }
 
@@ -162,13 +187,15 @@ namespace TumblThree.Applications.ViewModels
             settings.ParallelImages = ParallelImages;
             settings.ParallelBlogs = ParallelBlogs;
             settings.ImageSize = ImageSize;
+            settings.VideoSize = VideoSize;
             settings.CheckClipboard = CheckClipboard;
             settings.ShowPicturePreview = ShowPicturePreview;
             settings.DeleteOnlyIndex = DeleteOnlyIndex;
             settings.CheckOnlineStatusAtStartup = CheckOnlineStatusAtStartup;
             settings.SkipGif = SkipGif;
             settings.RemoveIndexAfterCrawl = RemoveIndexAfterCrawl;
-
+            settings.DownloadImages = DownloadImages;
+            settings.DownloadVideos = DownloadVideos;
         }
 
         public void Load()

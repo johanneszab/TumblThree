@@ -205,11 +205,29 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download Images.
+        /// </summary>
+        public static string DownloadImages {
+            get {
+                return ResourceManager.GetString("DownloadImages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Download Location.
         /// </summary>
         public static string DownloadLocation {
             get {
                 return ResourceManager.GetString("DownloadLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download Videos (Tumblr.com self hosted).
+        /// </summary>
+        public static string DownloadVideos {
+            get {
+                return ResourceManager.GetString("DownloadVideos", resourceCulture);
             }
         }
         
@@ -597,6 +615,15 @@ namespace TumblThree.Presentation.Properties {
         public static string Version {
             get {
                 return ResourceManager.GetString("Version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Video Size.
+        /// </summary>
+        public static string VideoSize {
+            get {
+                return ResourceManager.GetString("VideoSize", resourceCulture);
             }
         }
         

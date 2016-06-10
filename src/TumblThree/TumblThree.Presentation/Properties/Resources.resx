@@ -303,4 +303,13 @@
   <data name="DownloadedImagesOf" xml:space="preserve">
     <value>Downloaded Image {0} of {1}</value>
   </data>
+  <data name="DownloadImages" xml:space="preserve">
+    <value>Download Images</value>
+  </data>
+  <data name="DownloadVideos" xml:space="preserve">
+    <value>Download Videos (Tumblr.com self hosted)</value>
+  </data>
+  <data name="VideoSize" xml:space="preserve">
+    <value>Video Size</value>
+  </data>
 </root>

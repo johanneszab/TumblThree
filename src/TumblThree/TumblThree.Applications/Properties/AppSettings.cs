@@ -16,6 +16,11 @@ namespace TumblThree.Applications.Properties
                 "1280", "500", "400", "250", "100", "75"
         };
 
+        public static string[] videoSizes =
+            new string[] {
+                "1080", "480"
+        };
+
         [DataMember]
         public double Left { get; set; }
 
@@ -43,6 +48,8 @@ namespace TumblThree.Applications.Properties
         [DataMember]
         public int ImageSize { get; set; }
 
+        public int VideoSize { get; set; }
+
         [DataMember]
         public bool CheckClipboard { get; set; }
 
@@ -61,6 +68,12 @@ namespace TumblThree.Applications.Properties
         [DataMember]
         public bool RemoveIndexAfterCrawl { get; set; }
 
+        [DataMember]
+        public bool DownloadImages { get; set; }
+
+        [DataMember]
+        public bool DownloadVideos { get; set; }
+
         ExtensionDataObject IExtensibleDataObject.ExtensionData { get; set; }
 
         public ObservableCollection<string> ImageSizes
@@ -68,6 +81,14 @@ namespace TumblThree.Applications.Properties
             get
             {
                 return new ObservableCollection<string>(imageSizes);
+            }
+        }
+
+        public ObservableCollection<string> VideoSizes
+        {
+            get
+            {
+                return new ObservableCollection<string>(videoSizes);
             }
         }
 
@@ -82,12 +103,15 @@ namespace TumblThree.Applications.Properties
             ParallelImages = 25;
             ParallelBlogs = 2;
             ImageSize = 1280;
+            VideoSize = 1080;
             CheckClipboard = true;
             ShowPicturePreview = true;
             DeleteOnlyIndex = true;
             CheckOnlineStatusAtStartup = true;
             SkipGif = false;
             RemoveIndexAfterCrawl = false;
+            DownloadImages = true;
+            DownloadVideos = false;
         }
 
         [OnDeserializing]

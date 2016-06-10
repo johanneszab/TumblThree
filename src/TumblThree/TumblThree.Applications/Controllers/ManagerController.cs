@@ -695,42 +695,69 @@ namespace TumblThree.Applications.Controllers
                                     // get 50 posts per crawl/page
                                     document = XDocument.Load(GetApiUrl(blog.Url) + (i * 50).ToString() + "&num=50");
 
-                                    foreach (var post in (from data in document.Descendants("post") where data.Attribute("type").Value == "photo" select data))
+                                    if (shellService.Settings.DownloadImages == true)
                                     {
-                                        // photoset
-                                        if (post.Descendants("photoset").Count() > 0)
+                                        foreach (var post in (from data in document.Descendants("post") where data.Attribute("type").Value == "photo" select data))
                                         {
-                                            foreach (var photo in (from photoData in post.Descendants("photoset").Descendants("photo") select photoData))
+                                            // photoset
+                                            if (post.Descendants("photoset").Count() > 0)
                                             {
-                                                var imageUrl = String.Concat(photo.Descendants("photo-url").Where(photo_url =>
+                                                foreach (var photo in (from photoData in post.Descendants("photoset").Descendants("photo") select photoData))
+                                                {
+                                                    var imageUrl = String.Concat(photo.Descendants("photo-url").Where(photo_url =>
+                                                        photo_url.Attribute("max-width").Value == shellService.Settings.ImageSize.ToString()).Nodes());
+
+                                                    if (shellService.Settings.SkipGif == true && imageUrl.EndsWith(".gif"))
+                                                        continue;
+                                                    Monitor.Enter(images);
+                                                    images.Add(imageUrl);
+                                                    Monitor.Exit(images);
+                                                }
+                                            }
+                                            // single image
+                                            else
+                                            {
+                                                var imageUrl = String.Concat(post.Descendants("photo-url").Where(photo_url =>
                                                     photo_url.Attribute("max-width").Value == shellService.Settings.ImageSize.ToString()).Nodes());
 
                                                 if (shellService.Settings.SkipGif == true && imageUrl.EndsWith(".gif"))
                                                     continue;
+
                                                 Monitor.Enter(images);
                                                 images.Add(imageUrl);
                                                 Monitor.Exit(images);
                                             }
                                         }
-                                        // single image
-                                        else
+                                    }
+                                    if (shellService.Settings.DownloadVideos == true)
+                                    {
+                                        foreach (var post in (from data in document.Descendants("post") where data.Attribute("type").Value == "video" select data))
                                         {
-                                            var imageUrl = String.Concat(post.Descendants("photo-url").Where(photo_url =>
-                                                photo_url.Attribute("max-width").Value == shellService.Settings.ImageSize.ToString()).Nodes());
+                                            var videoUrl = post.Descendants("video-player").Where(x => x.Value.Contains("<source src=")).Select(result =>
+                                            System.Text.RegularExpressions.Regex.Match(
+                                                      result.Value, "<source src=\"(.*)\" type=\"video/mp4\">").Groups[1].Value).ToList();
 
-                                            if (shellService.Settings.SkipGif == true && imageUrl.EndsWith(".gif"))
-                                                continue;
-
-                                            Monitor.Enter(images);
-                                            images.Add(imageUrl);
-                                            Monitor.Exit(images);
+                                            foreach (string video in videoUrl)
+                                            {
+                                                if (shellService.Settings.VideoSize == 1080)
+                                                {
+                                                    Monitor.Enter(images);
+                                                    images.Add(video.Replace("/480", "") + ".mp4");
+                                                    Monitor.Exit(images);
+                                                }
+                                                else if (shellService.Settings.VideoSize == 480)
+                                                {
+                                                    Monitor.Enter(images);
+                                                    images.Add("http://vt.tumblr.com/" + video.Replace("/480", "").Split('/').Last() + "_480.mp4");
+                                                    Monitor.Exit(images);
+                                                }
+                                            }
                                         }
                                     }
                                 }
                                 // crawling only for tagged images
                                 else
                                 {
-
                                     List<string> tags = blog.Tags.Split(',').Select(x => x.Trim()).ToList();
 
                                     XDocument document = null;
@@ -738,38 +765,68 @@ namespace TumblThree.Applications.Controllers
                                     // get 50 posts per crawl/page
                                     document = XDocument.Load(GetApiUrl(blog.Url) + (i * 50).ToString() + "&num=50");
 
-                                    foreach (var post in (from data in document.Descendants("post")
-                                                          where data.Attribute("type").Value == "photo" &&
-                                                          data.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()
-                                                          select data))
+                                    if (shellService.Settings.DownloadImages == true)
                                     {
-                                        // photoset
-                                        if (post.Descendants("photoset").Count() > 0)
+
+                                        foreach (var post in (from data in document.Descendants("post")
+                                                              where data.Attribute("type").Value == "photo" &&
+                                                              data.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()
+                                                              select data))
                                         {
-                                            foreach (var photo in (from data in document.Descendants("post") where data.Attribute("type").Value == "photo" select data))
+                                            // photoset
+                                            if (post.Descendants("photoset").Count() > 0)
                                             {
-                                                var imageUrl = String.Concat(photo.Descendants("photo-url").Where(photo_url =>
+                                                foreach (var photo in (from data in document.Descendants("post") where data.Attribute("type").Value == "photo" select data))
+                                                {
+                                                    var imageUrl = String.Concat(photo.Descendants("photo-url").Where(photo_url =>
+                                                        photo_url.Attribute("max-width").Value == shellService.Settings.ImageSize.ToString()).Nodes());
+
+                                                    if (shellService.Settings.SkipGif == true && imageUrl.EndsWith(".gif"))
+                                                        continue;
+                                                    Monitor.Enter(images);
+                                                    images.Add(imageUrl);
+                                                    Monitor.Exit(images);
+                                                }
+                                            }
+                                            // single image
+                                            else
+                                            {
+                                                var imageUrl = String.Concat(post.Descendants("photo-url").Where(photo_url =>
                                                     photo_url.Attribute("max-width").Value == shellService.Settings.ImageSize.ToString()).Nodes());
 
                                                 if (shellService.Settings.SkipGif == true && imageUrl.EndsWith(".gif"))
                                                     continue;
+
                                                 Monitor.Enter(images);
                                                 images.Add(imageUrl);
                                                 Monitor.Exit(images);
                                             }
                                         }
-                                        // single image
-                                        else
+                                    }
+                                    if (shellService.Settings.DownloadVideos == true)
+                                    {
+                                        foreach (var post in (from data in document.Descendants("post") where data.Attribute("type").Value == "video" &&
+                                                              data.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()
+                                                              select data))
                                         {
-                                            var imageUrl = String.Concat(post.Descendants("photo-url").Where(photo_url =>
-                                                photo_url.Attribute("max-width").Value == shellService.Settings.ImageSize.ToString()).Nodes());
+                                            var videoUrl = post.Descendants("video-player").Where(x => x.Value.Contains("<source src=")).Select(result =>
+                                            System.Text.RegularExpressions.Regex.Match(
+                                                      result.Value, "<source src=\"(.*)\" type=\"video/mp4\">").Groups[1].Value).ToList();
 
-                                            if (shellService.Settings.SkipGif == true && imageUrl.EndsWith(".gif"))
-                                                continue;
-
-                                            Monitor.Enter(images);
-                                            images.Add(imageUrl);
-                                            Monitor.Exit(images);
+                                            foreach (string video in videoUrl)
+                                            {
+                                                if (shellService.Settings.VideoSize == 1080)
+                                                {
+                                                    Monitor.Enter(images);
+                                                    images.Add(video.Replace("/480", "") + ".mp4");
+                                                    Monitor.Exit(images);
+                                                } else if (shellService.Settings.VideoSize == 480)
+                                                {
+                                                    Monitor.Enter(images);
+                                                    images.Add("http://vt.tumblr.com/" + video.Split('/').Last() + "_480.mp4");
+                                                    Monitor.Exit(images);
+                                                }
+                                            }
                                         }
                                     }
                                 }
