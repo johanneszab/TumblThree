@@ -543,7 +543,7 @@ namespace TumblThree.Applications.Controllers
         {
             if (String.IsNullOrEmpty(blogUrl))
             {
-                string newBlogUrl = crawlerService.NewBlogUrl;
+                blogUrl = crawlerService.NewBlogUrl;
             }
 
             string blogName = ExtractBlogname(blogUrl);
