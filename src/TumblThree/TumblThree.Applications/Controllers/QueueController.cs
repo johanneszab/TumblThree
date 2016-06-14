@@ -195,7 +195,7 @@ namespace TumblThree.Applications.Controllers
                 var targetFolder = Path.GetDirectoryName(result.FileName);
                 var name = Path.GetFileNameWithoutExtension(result.FileName);
 
-                using (FileStream stream = new FileStream(targetFolder + name + ".que", FileMode.Create, FileAccess.Write, FileShare.None))
+                using (FileStream stream = new FileStream(Path.Combine(targetFolder, name) + ".que", FileMode.Create, FileAccess.Write, FileShare.None))
                 {
                     IFormatter formatter = new BinaryFormatter();
                     formatter.Serialize(stream, queueList);
