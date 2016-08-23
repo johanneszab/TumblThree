@@ -335,9 +335,9 @@ namespace TumblThree.Applications.Controllers
 
                         if (Download(blog, fileLocation, currentImageUrl))
                         {
-                            blog.Progress = (uint)((double)blog.DownloadedImages / (double)blog.TotalCount * 100);
                             blog.Links.Add(currentImageUrl);
                             blog.DownloadedImages = (uint) blog.Links.Count();
+                            blog.Progress = (uint)((double)blog.DownloadedImages / (double)blog.TotalCount * 100);
 
                             newProgress = new DownloadProgress();
                             newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressDownloadImage, currentImageUrl); ;
