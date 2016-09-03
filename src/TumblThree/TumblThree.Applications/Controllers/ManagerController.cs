@@ -146,7 +146,7 @@ namespace TumblThree.Applications.Controllers
             catch (Exception ex)
             {
                 Logger.Error("ManagerController:LoadLibrary: {0}", ex);
-                shellService.ShowError(ex, Resources.CouldNotLoadLibrary);
+                shellService.ShowError(ex, Resources.CouldNotLoadLibrary, ex.Data["Filename"]);
                 return;
             }
             Logger.Verbose("ManagerController.LoadLibrary:End");
@@ -175,9 +175,16 @@ namespace TumblThree.Applications.Controllers
                     FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
                     IFormatter formatter = new BinaryFormatter();
-                    TumblrBlog blog = (TumblrBlog)formatter.Deserialize(stream);
-
-                    blogs.Add(blog);
+                    try
+                    {
+                        TumblrBlog blog = (TumblrBlog)formatter.Deserialize(stream);
+                        blogs.Add(blog);
+                    }
+                    catch (SerializationException ex)
+                    {
+                        ex.Data["Filename"] = filename;
+                        throw;
+                    }
                 }
             }
             Logger.Verbose("ManagerController.UpdateBlogFiles:GetFilesAsync End");

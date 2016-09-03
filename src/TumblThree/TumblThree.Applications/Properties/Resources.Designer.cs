@@ -88,7 +88,7 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not load library..
+        ///   Looks up a localized string similar to Could not load file in library: {0}.
         /// </summary>
         public static string CouldNotLoadLibrary {
             get {

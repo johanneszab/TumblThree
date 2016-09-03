@@ -127,7 +127,7 @@
     <value>Der Blog konnte nicht hinzugefügt werden:  {0}</value>
   </data>
   <data name="CouldNotLoadLibrary" xml:space="preserve">
-    <value>Die Bibliothek konnte nicht geladen werden.</value>
+    <value>Eine Datei in der Bibliothek konnte nicht geladen werden: {0}</value>
   </data>
   <data name="CouldNotLoadQueuelist" xml:space="preserve">
     <value>Die Downloadliste konnte nicht geladen werden. Vielleicht exsistiert ein verweisender Blog nicht mehr in der Library.</value>

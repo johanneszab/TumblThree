@@ -127,7 +127,7 @@
     <value>Could not add the blog:  {0}</value>
   </data>
   <data name="CouldNotLoadLibrary" xml:space="preserve">
-    <value>Could not load library.</value>
+    <value>Could not load file in library: {0}</value>
   </data>
   <data name="CouldNotLoadQueuelist" xml:space="preserve">
     <value>The queuelist could not be loaded. Maybe some referenced blogs do not exist anymore.</value>
