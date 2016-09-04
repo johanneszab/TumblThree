@@ -56,3 +56,7 @@ TumblThree is the code rewrite of [TumblTwo](https://github.com/johanneszab/Tumb
 * No Imagepreview yet.
 * The old datasets from TumblTwo and TumblOne are NOT compatible yet.
 * No more support for Windows XP.
+ 
+### New Feature Request: ###
+
+* [See the Wiki page for ideas of new or missing features](https://github.com/johanneszab/TumblThree/wiki/New-Feature-Requests-and-Possible-Enhancements) and add your thoughts.
