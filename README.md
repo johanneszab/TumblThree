@@ -57,6 +57,14 @@ TumblThree is the code rewrite of [TumblTwo](https://github.com/johanneszab/Tumb
 * The old datasets from TumblTwo and TumblOne are NOT compatible yet.
 * No more support for Windows XP.
  
+### How To Build The Source Code To Help Further Developing: ###
+
+* Download [Visual Studio](https://www.visualstudio.com/vs/community/).
+* Download the [source code as .zip file](https://github.com/johanneszab/TumblThree/archive/master.zip) or use the [GitHub Desktop](https://desktop.github.com/) and [checkout the code](https://github.com/johanneszab/TumblThree.git).
+* Open the TumblThree.sln solution file in the src/ directory of the code.
+* Make sure to allow NuGet to download missing packages (for the WAP dependency). In Visual Studio under Tools->Options->NuGet Package Manager->General check the top two checkboxes.
+* Build the Source once before editing anything. Build->Build Solution.
+ 
 ### New Feature Request: ###
 
 * [See the Wiki page for ideas of new or missing features](https://github.com/johanneszab/TumblThree/wiki/New-Feature-Requests-and-Possible-Enhancements) and add your thoughts.
