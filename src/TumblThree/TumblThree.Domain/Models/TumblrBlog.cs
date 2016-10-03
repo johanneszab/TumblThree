@@ -10,14 +10,14 @@ namespace TumblThree.Domain.Models
     public class TumblrBlog : Blog
     {
         private string description;
-        private string text;
+        private string title;
         private uint progress;
         private string tags;
 
         public TumblrBlog()
         {
             this.description = null;
-            this.text = null;
+            this.title = null;
             this.progress = 0;
             this.tags = null;
         }
@@ -26,7 +26,7 @@ namespace TumblThree.Domain.Models
         {
             this.description = null;
             this.Url = url;
-            this.text = null;
+            this.title = null;
             this.progress = 0;
             this.tags = null;
         }
@@ -37,10 +37,10 @@ namespace TumblThree.Domain.Models
             set { SetProperty(ref description, value); }
         }
 
-        public string Text
+        public string Title
         {
-            get { return text; }
-            set { SetProperty(ref text, value); }
+            get { return title; }
+            set { SetProperty(ref title, value); }
         }
 
         public uint Progress

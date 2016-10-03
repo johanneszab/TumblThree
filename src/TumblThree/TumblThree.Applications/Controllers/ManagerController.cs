@@ -12,7 +12,7 @@ using System.Xml.Linq;
 using System.Waf.Applications;
 using TumblThree.Applications.Services;
 using TumblThree.Applications.ViewModels;
-using TumblThree.Applications.DataModels;
+using Datamodels = TumblThree.Applications.DataModels;
 using TumblThree.Domain;
 using TumblThree.Domain.Models;
 using System.ComponentModel;
@@ -22,6 +22,10 @@ using System.Windows;
 using System.Windows.Threading;
 using TumblThree.Applications;
 using System.Globalization;
+using System.Web.Script.Serialization;
+using System.Web;
+using System.Net;
+using System.Text;
 
 namespace TumblThree.Applications.Controllers
 {
@@ -136,7 +140,7 @@ namespace TumblThree.Applications.Controllers
                         {
                             foreach (var file in files)
                             {
-                                file.Online = await IsBlogOnline(file.Url);
+                                file.Online = await IsBlogOnline(file.Name);
                             }
                         }
                     }
@@ -264,11 +268,11 @@ namespace TumblThree.Applications.Controllers
 
                         var blog = (TumblrBlog) blogToCrawlNext.Blog;
 
-                        var progressHandler = new Progress<DownloadProgress>(value =>
+                        var progressHandler = new Progress<DataModels.DownloadProgress>(value =>
                         {
                             blogToCrawlNext.Progress = value.Progress;
                         });
-                        var progress = progressHandler as IProgress<DownloadProgress>;
+                        var progress = progressHandler as IProgress<DataModels.DownloadProgress>;
 
                         CrawlCoreTumblrBlog(blog, progress, ct, pt);
 
@@ -308,11 +312,11 @@ namespace TumblThree.Applications.Controllers
 
         }
 
-        private TumblrBlog CrawlCoreTumblrBlog(TumblrBlog blog, IProgress<DownloadProgress> progress, CancellationToken ct, PauseToken pt)
+        private TumblrBlog CrawlCoreTumblrBlog(TumblrBlog blog, IProgress<DataModels.DownloadProgress> progress, CancellationToken ct, PauseToken pt)
         {
             Logger.Verbose("ManagerController.CrawlCoreTumblrBlog:Start");
 
-            var newProgress = new DownloadProgress();
+            var newProgress = new DataModels.DownloadProgress();
 
             var tuple = GetImageUrls(blog, progress, ct, pt);
             var newImageCount = tuple.Item1;
@@ -346,7 +350,7 @@ namespace TumblThree.Applications.Controllers
                             blog.DownloadedImages = (uint) blog.Links.Count();
                             blog.Progress = (uint)((double)blog.DownloadedImages / (double)blog.TotalCount * 100);
 
-                            newProgress = new DownloadProgress();
+                            newProgress = new DataModels.DownloadProgress();
                             newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressDownloadImage, currentImageUrl); ;
                             progress.Report(newProgress);
                         }
@@ -358,7 +362,7 @@ namespace TumblThree.Applications.Controllers
             }
             SaveBlog(blog);
 
-            newProgress = new DownloadProgress();
+            newProgress = new DataModels.DownloadProgress();
             newProgress.Progress = "";
             progress.Report(newProgress);
 
@@ -511,34 +515,73 @@ namespace TumblThree.Applications.Controllers
         }
 
 
-        private Task<bool> IsBlogOnline(string url)
+        private Task<bool> IsBlogOnline(string name)
         {
             return Task<bool>.Factory.StartNew(() =>
             {
-                string ApiUrl = GetApiUrl(url);
+                string ApiUrl = GetApiUrl(name);
 
-                XDocument blogDoc = new XDocument();
-                try
-                {
-                    blogDoc = XDocument.Load(ApiUrl.ToString() + "0" + "&num=0");
+                Datamodels.TumblrJson blogDoc = ApiParse(ApiUrl, 1);
+                if (!blogDoc.Equals(null))
                     return true;
-                }
-                catch
-                {
+                else
                     return false;
-                }
             },
             TaskCreationOptions.LongRunning);
         }
 
-        private string GetApiUrl(string url)
+        private string GetApiUrl(string account)
         {
-            if (url.Last<char>() != '/')
-                url += "/api/read?start=";
-            else
-                url += "api/read?start=";
+            /// <summary>
+            /// construct the tumblr api post url of a blog.
+            /// <para>the blog for the url</para>
+            /// </summary>
+            /// <returns>A string containing the api url of the blog.</returns>
+            string name = account;
+            if (!account.Contains("."))
+                name = name += ".tumblr.com";
+            return "https://api.tumblr.com/v2/blog/" + name + "/posts";
+        }
 
-            return url;
+        private Datamodels.TumblrJson ApiParse(string baseUrl, int count, int start=0)
+        {
+            var parameters = new Dictionary<string, string>
+            {
+              { "api_key", "fuiKNFp9vQFvjLNvx4sUwti4Yb5yGutBN4Xh10LXZhhRKjWlV4" },
+              { "reblog_info", "true" },
+              { "limit", count.ToString() }
+            };
+            if (start > 0)
+                parameters["offset"] = start.ToString();
+            var url = baseUrl + "?" + UrlEncode(parameters);
+            try
+            {
+                using (var webClient = new System.Net.WebClient())
+                {
+                    var jsserializer = new JavaScriptSerializer();
+                    var response = webClient.DownloadString(url);
+                    DataModels.TumblrJson data = jsserializer.Deserialize<DataModels.TumblrJson>(response);
+                    if (data.meta.status == 200)
+                        return data;
+                    return null;
+                }
+            }
+            catch (WebException ex)
+            {
+                return null;
+            }
+        }
+
+        private static string UrlEncode(IDictionary<string, string> parameters)
+        {
+            var sb = new StringBuilder();
+            foreach (var val in parameters)
+            {
+                // add each parameter to the query string, url-encoding the value.
+                sb.AppendFormat("{0}={1}&", val.Key, HttpUtility.UrlEncode(val.Value));
+            }
+            sb.Remove(sb.Length - 1, 1); // remove last '&'
+            return sb.ToString();
         }
 
         private string ExtractUrl(string url)
@@ -584,9 +627,9 @@ namespace TumblThree.Applications.Controllers
             //var tuple = GetImageUrls(blog);
             //blog.TotalCount = tuple.Item1;
 
-            blog.TotalCount = GetPostCount(blog);
+            blog = await GetMetaInformation(blog);
 
-            blog.Online = await IsBlogOnline(blog.Url);
+            blog.Online = await IsBlogOnline(blog.Name);
 
             SaveBlog(blog);
         }
@@ -633,54 +676,38 @@ namespace TumblThree.Applications.Controllers
             return true;
         }
 
-        public XDocument GetBlogDoc(Blog blog, int numPosts, int page)
+        private Task<TumblrBlog> GetMetaInformation(TumblrBlog blog)
         {
-            XDocument blogDoc = new XDocument();
-
-            try
+            return Task<TumblrBlog>.Factory.StartNew(() =>
             {
-                blogDoc = XDocument.Load(GetApiUrl(blog.Url) + (numPosts * page) + "&num=" + numPosts);
-            }
-            catch (Exception ex)
-            {
-                blog.Online = false;
-                Logger.Error("ManagerController:GetBlogDoc: {0}", ex);
-                shellService.ShowError(ex, Resources.BlogIsOffline, blog.Name);
-            }
-            return blogDoc;
+                string ApiUrl = GetApiUrl(blog.Name);
+                Datamodels.TumblrJson blogDoc = ApiParse(ApiUrl, 1);
+                if (!blogDoc.Equals(null))
+                {
+                    blog.Title = blogDoc.response.blog.title;
+                    blog.Description = blogDoc.response.blog.description;
+                    blog.TotalCount = (uint) blogDoc.response.blog.total_posts;
+                    return blog;
+                }
+                else
+                    return blog;
+            },
+            TaskCreationOptions.LongRunning);
         }
 
-        public uint GetPostCount(Blog blog)
-        {
-            uint count = 0;
-
-            XDocument blogDoc = GetBlogDoc(blog, 0, 0);
-
-            foreach (var type in from data in blogDoc.Descendants("posts") select new { Total = data.Attribute("total").Value })
-            {
-                count = Convert.ToUInt32(type.Total.ToString());
-            }
-
-            return count;
-        }
-
-        public Tuple<uint, List<string>> GetImageUrls(TumblrBlog blog, IProgress<DownloadProgress> progress, CancellationToken ct, PauseToken pt)
+        public Tuple<uint, List<string>> GetImageUrls(TumblrBlog blog, IProgress<DataModels.DownloadProgress> progress, CancellationToken ct, PauseToken pt)
         {
             int totalPosts = 0;
             int numberOfPostsCrawled = 0;
             uint totalImages;
             List<string> images = new List<string>();
 
-            var blogDoc = GetBlogDoc(blog, 0, 0);
-
-            foreach (var type in from data in blogDoc.Descendants("posts") select new { Total = data.Attribute("total").Value })
-            {
-                totalPosts = Convert.ToInt32(type.Total.ToString());
-            }
+            var blogDoc = ApiParse(GetApiUrl(blog.Name), 1);
+            totalPosts = blogDoc.response.blog.total_posts;
 
             // Generate URL list of Images
             // the api shows 50 posts at max, determine the number of pages to crawl
-            int totalPages = (totalPosts / 50) + 1;
+            int totalPages = (totalPosts / 20) + 1;
 
             Parallel.For(0, totalPages,
                         new ParallelOptions { MaxDegreeOfParallelism = (shellService.Settings.ParallelImages / shellService.Settings.ParallelBlogs) },
@@ -697,39 +724,20 @@ namespace TumblThree.Applications.Controllers
                                 // check for tags -- crawling for all images here
                                 if (blog.Tags == null || blog.Tags.Count() == 0)
                                 {
-                                    XDocument document = null;
+                                    DataModels.TumblrJson document = null;
 
                                     // get 50 posts per crawl/page
-                                    document = XDocument.Load(GetApiUrl(blog.Url) + (i * 50).ToString() + "&num=50");
+                                    document = ApiParse(GetApiUrl(blog.Name), 20, i * 20);
 
                                     if (shellService.Settings.DownloadImages == true)
                                     {
-                                        foreach (var post in (from data in document.Descendants("post") where data.Attribute("type").Value == "photo" select data))
+                                        foreach (Datamodels.Post post in document.response.posts)
                                         {
-                                            // photoset
-                                            if (post.Descendants("photoset").Count() > 0)
+                                            foreach (DataModels.Photo photo in post.photos)
                                             {
-                                                foreach (var photo in (from photoData in post.Descendants("photoset").Descendants("photo") select photoData))
-                                                {
-                                                    var imageUrl = String.Concat(photo.Descendants("photo-url").Where(photo_url =>
-                                                        photo_url.Attribute("max-width").Value == shellService.Settings.ImageSize.ToString()).Nodes());
-
-                                                    if (shellService.Settings.SkipGif == true && imageUrl.EndsWith(".gif"))
-                                                        continue;
-                                                    Monitor.Enter(images);
-                                                    images.Add(imageUrl);
-                                                    Monitor.Exit(images);
-                                                }
-                                            }
-                                            // single image
-                                            else
-                                            {
-                                                var imageUrl = String.Concat(post.Descendants("photo-url").Where(photo_url =>
-                                                    photo_url.Attribute("max-width").Value == shellService.Settings.ImageSize.ToString()).Nodes());
-
+                                                var imageUrl = photo.alt_sizes.Where(size => size.width == shellService.Settings.ImageSize).Select(url => url.url).ToString();
                                                 if (shellService.Settings.SkipGif == true && imageUrl.EndsWith(".gif"))
                                                     continue;
-
                                                 Monitor.Enter(images);
                                                 images.Add(imageUrl);
                                                 Monitor.Exit(images);
@@ -738,26 +746,20 @@ namespace TumblThree.Applications.Controllers
                                     }
                                     if (shellService.Settings.DownloadVideos == true)
                                     {
-                                        foreach (var post in (from data in document.Descendants("post") where data.Attribute("type").Value == "video" select data))
+                                        foreach (DataModels.Post post in document.response.posts)
                                         {
-                                            var videoUrl = post.Descendants("video-player").Where(x => x.Value.Contains("<source src=")).Select(result =>
-                                            System.Text.RegularExpressions.Regex.Match(
-                                                      result.Value, "<source src=\"(.*)\" type=\"video/mp4\">").Groups[1].Value).ToList();
-
-                                            foreach (string video in videoUrl)
+                                            if (shellService.Settings.VideoSize == 1080)
                                             {
-                                                if (shellService.Settings.VideoSize == 1080)
-                                                {
-                                                    Monitor.Enter(images);
-                                                    images.Add(video.Replace("/480", "") + ".mp4");
-                                                    Monitor.Exit(images);
-                                                }
-                                                else if (shellService.Settings.VideoSize == 480)
-                                                {
-                                                    Monitor.Enter(images);
-                                                    images.Add("http://vt.tumblr.com/" + video.Replace("/480", "").Split('/').Last() + "_480.mp4");
-                                                    Monitor.Exit(images);
-                                                }
+                                                Monitor.Enter(images);
+                                                images.Add(post.video_url);
+                                                Monitor.Exit(images);
+                                            }
+                                            if (shellService.Settings.VideoSize == 480)
+                                            {
+                                                Monitor.Enter(images);
+                                                images.Add(post.video_url.Replace(".mp4", "_480.mp4"));
+                                                images.Add(post.video_url);
+                                                Monitor.Exit(images);
                                             }
                                         }
                                     }
@@ -844,7 +846,7 @@ namespace TumblThree.Applications.Controllers
                             }
 
                             numberOfPostsCrawled += 50;
-                            var newProgress = new DownloadProgress();
+                            var newProgress = new DataModels.DownloadProgress();
                             newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressGetUrl, numberOfPostsCrawled, totalPosts);
                             progress.Report(newProgress);
                         }
