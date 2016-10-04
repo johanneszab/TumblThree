@@ -706,7 +706,7 @@ namespace TumblThree.Applications.Controllers
             totalPosts = blogDoc.response.blog.total_posts;
 
             // Generate URL list of Images
-            // the api shows 50 posts at max, determine the number of pages to crawl
+            // the api v2 shows 20 posts at max, determine the number of pages to crawl
             int totalPages = (totalPosts / 20) + 1;
 
             Parallel.For(0, totalPages,
@@ -726,16 +726,16 @@ namespace TumblThree.Applications.Controllers
                                 {
                                     DataModels.TumblrJson document = null;
 
-                                    // get 50 posts per crawl/page
+                                    // get 20 posts per crawl/page
                                     document = ApiParse(GetApiUrl(blog.Name), 20, i * 20);
 
                                     if (shellService.Settings.DownloadImages == true)
                                     {
-                                        foreach (Datamodels.Post post in document.response.posts)
+                                        foreach (Datamodels.Post post in document.response.posts ?? new List<Datamodels.Post>())
                                         {
-                                            foreach (DataModels.Photo photo in post.photos)
+                                            foreach (DataModels.Photo photo in post.photos ?? new List<Datamodels.Photo>())
                                             {
-                                                var imageUrl = photo.alt_sizes.Where(size => size.width == shellService.Settings.ImageSize).Select(url => url.url).ToString();
+                                                var imageUrl = photo.alt_sizes.ElementAt(shellService.Settings.ImageSizes.IndexOf(shellService.Settings.ImageSize.ToString())).url;
                                                 if (shellService.Settings.SkipGif == true && imageUrl.EndsWith(".gif"))
                                                     continue;
                                                 Monitor.Enter(images);
@@ -746,7 +746,7 @@ namespace TumblThree.Applications.Controllers
                                     }
                                     if (shellService.Settings.DownloadVideos == true)
                                     {
-                                        foreach (DataModels.Post post in document.response.posts)
+                                        foreach (DataModels.Post post in document.response.posts ?? new List<Datamodels.Post>())
                                         {
                                             if (shellService.Settings.VideoSize == 1080)
                                             {
@@ -757,8 +757,7 @@ namespace TumblThree.Applications.Controllers
                                             if (shellService.Settings.VideoSize == 480)
                                             {
                                                 Monitor.Enter(images);
-                                                images.Add(post.video_url.Replace(".mp4", "_480.mp4"));
-                                                images.Add(post.video_url);
+                                                images.Add(post.video_url.Insert(post.video_url.LastIndexOf("."), "_480"));
                                                 Monitor.Exit(images);
                                             }
                                         }
@@ -769,43 +768,20 @@ namespace TumblThree.Applications.Controllers
                                 {
                                     List<string> tags = blog.Tags.Split(',').Select(x => x.Trim()).ToList();
 
-                                    XDocument document = null;
+                                    DataModels.TumblrJson document = null;
 
-                                    // get 50 posts per crawl/page
-                                    document = XDocument.Load(GetApiUrl(blog.Url) + (i * 50).ToString() + "&num=50");
+                                    // get 20 posts per crawl/page
+                                    document = ApiParse(GetApiUrl(blog.Name), 20, i * 20);
 
                                     if (shellService.Settings.DownloadImages == true)
                                     {
-
-                                        foreach (var post in (from data in document.Descendants("post")
-                                                              where data.Attribute("type").Value == "photo" &&
-                                                              data.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()
-                                                              select data))
+                                        foreach (Datamodels.Post post in document.response.posts.Where(posts => posts.tags.Any(tags.Contains)) ?? new List<Datamodels.Post>())
                                         {
-                                            // photoset
-                                            if (post.Descendants("photoset").Count() > 0)
+                                            foreach (DataModels.Photo photo in post.photos ?? new List<Datamodels.Photo>())
                                             {
-                                                foreach (var photo in (from data in document.Descendants("post") where data.Attribute("type").Value == "photo" select data))
-                                                {
-                                                    var imageUrl = String.Concat(photo.Descendants("photo-url").Where(photo_url =>
-                                                        photo_url.Attribute("max-width").Value == shellService.Settings.ImageSize.ToString()).Nodes());
-
-                                                    if (shellService.Settings.SkipGif == true && imageUrl.EndsWith(".gif"))
-                                                        continue;
-                                                    Monitor.Enter(images);
-                                                    images.Add(imageUrl);
-                                                    Monitor.Exit(images);
-                                                }
-                                            }
-                                            // single image
-                                            else
-                                            {
-                                                var imageUrl = String.Concat(post.Descendants("photo-url").Where(photo_url =>
-                                                    photo_url.Attribute("max-width").Value == shellService.Settings.ImageSize.ToString()).Nodes());
-
+                                                var imageUrl = photo.alt_sizes.ElementAt(shellService.Settings.ImageSizes.IndexOf(shellService.Settings.ImageSize.ToString())).url;
                                                 if (shellService.Settings.SkipGif == true && imageUrl.EndsWith(".gif"))
                                                     continue;
-
                                                 Monitor.Enter(images);
                                                 images.Add(imageUrl);
                                                 Monitor.Exit(images);
@@ -814,27 +790,19 @@ namespace TumblThree.Applications.Controllers
                                     }
                                     if (shellService.Settings.DownloadVideos == true)
                                     {
-                                        foreach (var post in (from data in document.Descendants("post") where data.Attribute("type").Value == "video" &&
-                                                              data.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()
-                                                              select data))
+                                        foreach (DataModels.Post post in document.response.posts.Where(posts => posts.tags.Any(tags.Contains)) ?? new List<Datamodels.Post>())
                                         {
-                                            var videoUrl = post.Descendants("video-player").Where(x => x.Value.Contains("<source src=")).Select(result =>
-                                            System.Text.RegularExpressions.Regex.Match(
-                                                      result.Value, "<source src=\"(.*)\" type=\"video/mp4\">").Groups[1].Value).ToList();
-
-                                            foreach (string video in videoUrl)
+                                            if (shellService.Settings.VideoSize == 1080)
                                             {
-                                                if (shellService.Settings.VideoSize == 1080)
-                                                {
-                                                    Monitor.Enter(images);
-                                                    images.Add(video.Replace("/480", "") + ".mp4");
-                                                    Monitor.Exit(images);
-                                                } else if (shellService.Settings.VideoSize == 480)
-                                                {
-                                                    Monitor.Enter(images);
-                                                    images.Add("http://vt.tumblr.com/" + video.Split('/').Last() + "_480.mp4");
-                                                    Monitor.Exit(images);
-                                                }
+                                                Monitor.Enter(images);
+                                                images.Add(post.video_url);
+                                                Monitor.Exit(images);
+                                            }
+                                            if (shellService.Settings.VideoSize == 480)
+                                            {
+                                                Monitor.Enter(images);
+                                                images.Add(post.video_url.Insert(post.video_url.LastIndexOf("."), "_480"));
+                                                Monitor.Exit(images);
                                             }
                                         }
                                     }
@@ -845,7 +813,7 @@ namespace TumblThree.Applications.Controllers
                                 Console.WriteLine(ex.Data);
                             }
 
-                            numberOfPostsCrawled += 50;
+                            numberOfPostsCrawled += 20;
                             var newProgress = new DataModels.DownloadProgress();
                             newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressGetUrl, numberOfPostsCrawled, totalPosts);
                             progress.Report(newProgress);

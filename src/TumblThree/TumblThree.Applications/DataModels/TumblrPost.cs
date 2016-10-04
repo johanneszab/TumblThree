@@ -10,7 +10,7 @@ namespace TumblThree.Applications.DataModels
     {
         private Post post;
         private TumblrJson json;
-        private long identification;
+        private object identification;
         private string url;
         private string shortUrl;
         private string type;

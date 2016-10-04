@@ -117,7 +117,7 @@ namespace TumblThree.Applications.DataModels
     public class Post
     {
         public string blog_name { get; set; }
-        public long id { get; set; }
+        public object id { get; set; }
         public string post_url { get; set; }
         public string slug { get; set; }
         public string type { get; set; }
@@ -141,7 +141,7 @@ namespace TumblThree.Applications.DataModels
         public string thumbnail_url { get; set; }
         public int thumbnail_width { get; set; }
         public int thumbnail_height { get; set; }
-        public int duration { get; set; }
+        public double duration { get; set; }
         public List<Player> player { get; set; }
         public string video_type { get; set; }
         public string caption { get; set; }
@@ -164,5 +164,7 @@ namespace TumblThree.Applications.DataModels
         public bool can_reblog { get; set; }
         public bool can_send_in_message { get; set; }
         public bool display_avatar { get; set; }
+        public string source_url { get; set; }
+        public string source_title { get; set; }
     }
 }
