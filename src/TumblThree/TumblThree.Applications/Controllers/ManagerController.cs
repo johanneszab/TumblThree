@@ -20,7 +20,6 @@ using TumblThree.Applications.Properties;
 using TumblThree.Domain.Queue;
 using System.Windows;
 using System.Windows.Threading;
-using TumblThree.Applications;
 using System.Globalization;
 using System.Web.Script.Serialization;
 using System.Web;
@@ -514,7 +513,6 @@ namespace TumblThree.Applications.Controllers
             stopCommand.RaiseCanExecuteChanged();
         }
 
-
         private Task<bool> IsBlogOnline(string name)
         {
             return Task<bool>.Factory.StartNew(() =>
@@ -547,7 +545,7 @@ namespace TumblThree.Applications.Controllers
         {
             var parameters = new Dictionary<string, string>
             {
-              { "api_key", "fuiKNFp9vQFvjLNvx4sUwti4Yb5yGutBN4Xh10LXZhhRKjWlV4" },
+              { "api_key", shellService.Settings.ApiKey },
               { "reblog_info", "true" },
               { "limit", count.ToString() }
             };

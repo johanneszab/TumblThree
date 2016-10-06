@@ -78,6 +78,7 @@
     <Compile Include="DataModels\TumblrPost.cs" />
     <Compile Include="Data\StringListConverter.cs" />
     <Compile Include="Data\SupportedFileTypes.cs" />
+    <Compile Include="OAuth.cs" />
     <Compile Include="PauseTokenSource.cs" />
     <Compile Include="Properties\QueueSettings.cs" />
     <Compile Include="DataModels\FolderBrowserDataModel.cs" />

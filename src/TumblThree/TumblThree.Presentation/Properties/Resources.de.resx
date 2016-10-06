@@ -312,4 +312,7 @@
   <data name="Website" xml:space="preserve">
     <value>Webseite</value>
   </data>
+  <data name="Authenticate" xml:space="preserve">
+    <value>Authentifizieren</value>
+  </data>
 </root>

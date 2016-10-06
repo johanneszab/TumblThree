@@ -23,6 +23,7 @@ namespace TumblThree.Applications.ViewModels
         private readonly AppSettings settings;
         private readonly FolderBrowserDataModel folderBrowser;
         private DelegateCommand displayFolderBrowserCommand;
+        private DelegateCommand authenticateCommand;
         private string downloadLocation;
         private int parallelImages;
         private int parallelBlogs;
@@ -47,6 +48,7 @@ namespace TumblThree.Applications.ViewModels
             settings = ShellService.Settings;
             this.folderBrowser = new FolderBrowserDataModel();
             this.displayFolderBrowserCommand = new DelegateCommand(DisplayFolderBrowser);
+            this.authenticateCommand = new DelegateCommand(Authenticate);
 
             Load();
             view.Closed += ViewClosed;
@@ -205,6 +207,8 @@ namespace TumblThree.Applications.ViewModels
 
         public ICommand DisplayFolderBrowserCommand { get { return displayFolderBrowserCommand; } }
 
+        public ICommand AuthenticateCommand { get { return authenticateCommand; } }
+
         private void DisplayFolderBrowser()
         {
             System.Windows.Forms.FolderBrowserDialog dialog = new System.Windows.Forms.FolderBrowserDialog();
@@ -213,6 +217,23 @@ namespace TumblThree.Applications.ViewModels
             {
                 DownloadLocation = dialog.SelectedPath;
             }
+        }
+
+        private void Authenticate()
+        {
+            OAuthManager oauthManager = new OAuthManager();
+            oauthManager["consumer_key"] = settings.ApiKey;
+            oauthManager["consumer_secret"] = settings.SecretKey;
+            //oauthManager["callback"] = Uri.EscapeUriString(shellService.Settings.OAuthCallback);
+            OAuthResponse requestToken =
+                oauthManager.AcquireRequestToken("https://www.tumblr.com/oauth/request_token", "GET");
+            // Start the browser to get the access token from the user
+            var url = @"https://www.tumblr.com/oauth/authorize?oauth_token=" + oauthManager["token"];
+
+            System.Diagnostics.Process.Start(url);
+
+            //System.Windows.Controls.WebBrowser browser = new System.Windows.Controls.WebBrowser();
+            //browser.Source = new Uri(url);
         }
 
         private void FolderBrowserPropertyChanged(object sender, PropertyChangedEventArgs e)

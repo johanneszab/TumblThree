@@ -312,4 +312,7 @@
   <data name="VideoSize" xml:space="preserve">
     <value>Video Size</value>
   </data>
+  <data name="Authenticate" xml:space="preserve">
+    <value>Authenticate</value>
+  </data>
 </root>
