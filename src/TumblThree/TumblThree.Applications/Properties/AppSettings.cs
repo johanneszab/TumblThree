@@ -31,6 +31,9 @@ namespace TumblThree.Applications.Properties
         public string OAuthCallback { get; set; }
 
         [DataMember]
+        public string AccessToken { get; set; }
+
+        [DataMember]
         public double Left { get; set; }
 
         [DataMember]
@@ -106,7 +109,8 @@ namespace TumblThree.Applications.Properties
 
             OAuthCallback = @"http://www.tumblr.com/tumblthree";
             ApiKey = "lICmmi2UfTdai1aVEfrMMoKidUfIMDV1pXlfiVdqhLmQgTNI9D";
-            SecretKey = "BB2JvuS0";
+            SecretKey = "BB2p9fa0";
+            AccessToken = string.Empty;
             Left = 50;
             Top = 50;
             Height = 800;

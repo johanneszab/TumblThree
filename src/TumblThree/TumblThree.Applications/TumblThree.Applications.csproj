@@ -103,12 +103,14 @@
     <Compile Include="ViewModels\DetailsViewModel.cs" />
     <Compile Include="ViewModels\ManagerViewModel.cs" />
     <Compile Include="ViewModels\QueueViewModel.cs" />
+    <Compile Include="ViewModels\AuthenticateViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="Views\IAboutView.cs" />
     <Compile Include="Views\IDetailsView.cs" />
     <Compile Include="Views\IManagerView.cs" />
     <Compile Include="Views\IQueueView.cs" />
+    <Compile Include="Views\IAuthenticateView.cs" />
     <Compile Include="Views\ISettingsView.cs" />
     <Compile Include="Views\IShellView.cs" />
   </ItemGroup>

@@ -441,8 +441,8 @@ namespace TumblThree.Applications
             var authzHeader = GetAuthorizationHeader(uri, method);
 
             // prepare the token request
-            var request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(uri);
-            request.Headers.Add("Authorization", authzHeader);
+            var request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(uri + "?" + authzHeader);
+            //request.Headers.Add("Authorization", authzHeader);
             request.Method = method;
 
             using (var response = (System.Net.HttpWebResponse)request.GetResponse())
