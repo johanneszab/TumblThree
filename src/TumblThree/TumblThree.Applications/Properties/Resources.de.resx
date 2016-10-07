@@ -147,6 +147,9 @@
   <data name="CouldNotSaveQueueList" xml:space="preserve">
     <value>Die Downloadliste konnte nicht gespeichert werden.</value>
   </data>
+  <data name="CouldNotStartOAuthManager" xml:space="preserve">
+    <value>Der OAuthManager konnte nicht gestartet werden.</value>
+  </data>
   <data name="CrawlerError" xml:space="preserve">
     <value>Im Crawlerprozess ist ein Problem aufgetreten.</value>
   </data>

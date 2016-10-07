@@ -36,5 +36,7 @@ namespace TumblThree.Applications.Services
         void AddTaskToCompleteBeforeShutdown(Task task);
 
         IDisposable SetApplicationBusy();
+
+        OAuthManager OAuthManager { get; set; }
     }
 }

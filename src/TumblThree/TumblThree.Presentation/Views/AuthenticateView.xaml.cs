@@ -31,6 +31,28 @@ namespace TumblThree.Presentation.Views
         {
             InitializeComponent();
             this.viewModel = new Lazy<AuthenticateViewModel>(() => ViewHelper.GetViewModel<AuthenticateViewModel>(this));
+
+            browser.Navigated += Browser_Navigated;
+        }
+
+        private void Browser_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
+        {
+            try
+            {
+                WebBrowser wb = (WebBrowser)sender;
+                if (wb.Source.ToString().Contains("tumblthree"))
+                {
+                    this.Close();
+                }
+            }
+            catch
+            {
+            }
+        }
+
+        private void Browser_Navigating(object sender, System.Windows.Navigation.NavigatingCancelEventArgs e)
+        {
+
         }
 
         private AuthenticateViewModel ViewModel { get { return viewModel.Value; } }

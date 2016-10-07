@@ -315,7 +315,7 @@ namespace TumblThree.Applications
             {
                 if (!String.IsNullOrEmpty(item.Value) &&
                     !item.Key.EndsWith("secret"))
-                    sb.AppendFormat("oauth_{0}={1}&",
+                    sb.AppendFormat("oauth_{0}=\"{1}\", ",
                                     item.Key,
                                     UrlEncode(item.Value));
             }
@@ -369,10 +369,10 @@ namespace TumblThree.Applications
         public OAuthResponse AcquireRequestToken(string uri, string method)
         {
             NewRequest();
-            var authzHeader = GetAuthorizationHeader(uri, method);
+            var authHeader = GetAuthorizationHeader(uri, method);
             // prepare the token request
-            var request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(uri + "?" + authzHeader);
-            //request.Headers.Add("Authorization", authzHeader);
+            var request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(uri);
+            request.Headers.Add("Authorization", authHeader);
             request.Method = method;
 
             using (var response = (System.Net.HttpWebResponse)request.GetResponse())
@@ -438,11 +438,11 @@ namespace TumblThree.Applications
             NewRequest();
             _params["verifier"] = pin;
 
-            var authzHeader = GetAuthorizationHeader(uri, method);
+            var authHeader = GetAuthorizationHeader(uri, method);
 
             // prepare the token request
-            var request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(uri + "?" + authzHeader);
-            //request.Headers.Add("Authorization", authzHeader);
+            var request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(uri);
+            request.Headers.Add("Authorization", authHeader);
             request.Method = method;
 
             using (var response = (System.Net.HttpWebResponse)request.GetResponse())
@@ -476,12 +476,12 @@ namespace TumblThree.Applications
         ///   </para>
         /// </remarks>
         ///
-        /// <seealso cref='GenerateAuthzHeader'>
+        /// <seealso cref='GenerateauthHeader'>
         public string GenerateCredsHeader(string uri, string method, string realm)
         {
             NewRequest();
-            var authzHeader = GetAuthorizationHeader(uri, method, realm);
-            return authzHeader;
+            var authHeader = GetAuthorizationHeader(uri, method, realm);
+            return authHeader;
         }
 
         /// <summary>
@@ -499,12 +499,12 @@ namespace TumblThree.Applications
         ///   </para>
         /// </remarks>
         ///
-        /// <seealso cref='GenerateAuthzHeader'>
-        public string GenerateAuthzHeader(string uri, string method)
+        /// <seealso cref='GenerateauthHeader'>
+        public string GenerateauthHeader(string uri, string method)
         {
             NewRequest();
-            var authzHeader = GetAuthorizationHeader(uri, method, null);
-            return authzHeader;
+            var authHeader = GetAuthorizationHeader(uri, method, null);
+            return authHeader;
         }
 
         private string GetAuthorizationHeader(string uri, string method)
@@ -524,7 +524,7 @@ namespace TumblThree.Applications
 
             var erp = EncodeRequestParameters(this._params);
             return (String.IsNullOrEmpty(realm))
-                ? erp
+                ? "OAuth " + erp
                 : String.Format("OAuth realm=\"{0}\", ", realm) + erp;
         }
 

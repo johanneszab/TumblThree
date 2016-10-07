@@ -517,9 +517,10 @@ namespace TumblThree.Applications.Controllers
         {
             return Task<bool>.Factory.StartNew(() =>
             {
-                string ApiUrl = GetApiUrl(name);
+                string url = GetApiUrl(name, 1);
+                string authHeader = shellService.OAuthManager.GenerateauthHeader(url, "GET");
 
-                Datamodels.TumblrJson blogDoc = ApiParse(ApiUrl, 1);
+                var blogDoc = RequestData(url, authHeader);
                 if (!blogDoc.Equals(null))
                     return true;
                 else
@@ -528,7 +529,7 @@ namespace TumblThree.Applications.Controllers
             TaskCreationOptions.LongRunning);
         }
 
-        private string GetApiUrl(string account)
+        private string GetApiUrl(string account, int count, int start = 0)
         {
             /// <summary>
             /// construct the tumblr api post url of a blog.
@@ -538,11 +539,8 @@ namespace TumblThree.Applications.Controllers
             string name = account;
             if (!account.Contains("."))
                 name = name += ".tumblr.com";
-            return "https://api.tumblr.com/v2/blog/" + name + "/posts";
-        }
+            string baseUrl = "https://api.tumblr.com/v2/blog/" + name + "/posts";
 
-        private Datamodels.TumblrJson ApiParse(string baseUrl, int count, int start=0)
-        {
             var parameters = new Dictionary<string, string>
             {
               { "api_key", shellService.Settings.ApiKey },
@@ -551,14 +549,30 @@ namespace TumblThree.Applications.Controllers
             };
             if (start > 0)
                 parameters["offset"] = start.ToString();
-            var url = baseUrl + "?" + UrlEncode(parameters);
+            return baseUrl + "?" + UrlEncode(parameters);
+        }
+
+        private Datamodels.TumblrJson RequestData(string url, string authHeaders)
+        {
             try
             {
-                using (var webClient = new System.Net.WebClient())
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.Method = "GET";
+                request.ServicePoint.Expect100Continue = false;
+                request.ContentType = "x-www-from-urlencoded";
+
+                if (authHeaders != null)
                 {
-                    var jsserializer = new JavaScriptSerializer();
-                    var response = webClient.DownloadString(url);
-                    DataModels.TumblrJson data = jsserializer.Deserialize<DataModels.TumblrJson>(response);
+                    // add OAuth header
+                    request.Headers["Authorization"] = authHeaders;
+                }
+
+                var jsserializer = new JavaScriptSerializer();
+                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+                {
+                    StreamReader reader = new StreamReader(response.GetResponseStream());
+
+                    DataModels.TumblrJson data = jsserializer.Deserialize<DataModels.TumblrJson>(reader.ReadToEnd());
                     if (data.meta.status == 200)
                         return data;
                     return null;
@@ -678,8 +692,11 @@ namespace TumblThree.Applications.Controllers
         {
             return Task<TumblrBlog>.Factory.StartNew(() =>
             {
-                string ApiUrl = GetApiUrl(blog.Name);
-                Datamodels.TumblrJson blogDoc = ApiParse(ApiUrl, 1);
+                string url = GetApiUrl(blog.Name, 1);
+                string authHeader = shellService.OAuthManager.GenerateauthHeader(url, "GET");
+
+                var blogDoc = RequestData(url, authHeader);
+
                 if (!blogDoc.Equals(null))
                 {
                     blog.Title = blogDoc.response.blog.title;
@@ -700,7 +717,10 @@ namespace TumblThree.Applications.Controllers
             uint totalImages;
             List<string> images = new List<string>();
 
-            var blogDoc = ApiParse(GetApiUrl(blog.Name), 1);
+            string url = GetApiUrl(blog.Name, 1);
+            string authHeader = shellService.OAuthManager.GenerateauthHeader(url, "GET");
+
+            var blogDoc = RequestData(url, authHeader);
             totalPosts = blogDoc.response.blog.total_posts;
 
             // Generate URL list of Images
@@ -725,7 +745,10 @@ namespace TumblThree.Applications.Controllers
                                     DataModels.TumblrJson document = null;
 
                                     // get 20 posts per crawl/page
-                                    document = ApiParse(GetApiUrl(blog.Name), 20, i * 20);
+                                    url = GetApiUrl(blog.Name, 20, i * 20);
+                                    authHeader = shellService.OAuthManager.GenerateauthHeader(url, "GET");
+
+                                    document = RequestData(url, authHeader);
 
                                     if (shellService.Settings.DownloadImages == true)
                                     {
@@ -769,7 +792,10 @@ namespace TumblThree.Applications.Controllers
                                     DataModels.TumblrJson document = null;
 
                                     // get 20 posts per crawl/page
-                                    document = ApiParse(GetApiUrl(blog.Name), 20, i * 20);
+                                    url = GetApiUrl(blog.Name, 20, i * 20);
+                                    authHeader = shellService.OAuthManager.GenerateauthHeader(url, "GET");
+
+                                    document = RequestData(url, authHeader);
 
                                     if (shellService.Settings.DownloadImages == true)
                                     {

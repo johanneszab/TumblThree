@@ -22,16 +22,28 @@ namespace TumblThree.Applications.Properties
         };
 
         [DataMember]
+        public string RequestTokenUrl { get; set; }
+
+        [DataMember]
+        public string AuthorizeUrl { get; set; }
+
+        [DataMember]
+        public string AccessTokenUrl { get; set; }
+
+        [DataMember]
+        public string OAuthCallbackUrl { get; set; }
+
+        [DataMember]
         public string ApiKey { get; set; }
 
         [DataMember]
         public string SecretKey { get; set; }
 
         [DataMember]
-        public string OAuthCallback { get; set; }
+        public string OAuthToken { get; set; }
 
         [DataMember]
-        public string AccessToken { get; set; }
+        public string OAuthTokenSecret { get; set; }
 
         [DataMember]
         public double Left { get; set; }
@@ -106,11 +118,14 @@ namespace TumblThree.Applications.Properties
 
         private void Initialize()
         {
-
-            OAuthCallback = @"http://www.tumblr.com/tumblthree";
+            RequestTokenUrl = @"https://www.tumblr.com/oauth/request_token";
+            AuthorizeUrl = @"https://www.tumblr.com/oauth/authorize";
+            AccessTokenUrl = @"https://www.tumblr.com/oauth/access_token";
+            OAuthCallbackUrl = @"http://www.tumblr.com/tumblthree";
             ApiKey = "lICmmi2UfTdai1aVEfrMMoKidUfIMDV1pXlfiVdqhLmQgTNI9D";
-            SecretKey = "BB2p9fa0";
-            AccessToken = string.Empty;
+            SecretKey = "BB2Jvk69MMfa0";
+            OAuthToken = string.Empty;
+            OAuthTokenSecret = string.Empty;
             Left = 50;
             Top = 50;
             Height = 800;

@@ -27,6 +27,10 @@ namespace TumblThree.Applications.ViewModels
         private DelegateCommand authenticateCommand;
         private readonly ExportFactory<AuthenticateViewModel> authenticateViewModelFactory;
         private string downloadLocation;
+        private string apiKey;
+        private string secretKey;
+        private string oauthToken;
+        private string oauthTokenSecret;
         private int parallelImages;
         private int parallelBlogs;
         private int imageSize;
@@ -61,11 +65,37 @@ namespace TumblThree.Applications.ViewModels
 
         public IShellService ShellService { get; }
 
+        public CrawlerService CrawlerService { get; }
+
         public FolderBrowserDataModel FolderBrowser { get { return folderBrowser; } }
 
         public void ShowDialog(object owner)
         {
             ViewCore.ShowDialog(owner);
+        }
+
+        public string OAuthToken
+        {
+            get { return oauthToken; }
+            set { SetProperty(ref oauthToken, value); }
+        }
+
+        public string OAuthTokenSecret
+        {
+            get { return oauthTokenSecret; }
+            set { SetProperty(ref oauthTokenSecret, value); }
+        }
+
+        public string ApiKey
+        {
+            get { return apiKey; }
+            set { SetProperty(ref apiKey, value); }
+        }
+
+        public string SecretKey
+        {
+            get { return secretKey; }
+            set { SetProperty(ref secretKey, value); }
         }
 
         public string DownloadLocation
@@ -150,6 +180,10 @@ namespace TumblThree.Applications.ViewModels
         {
             if (settings != null)
             {
+                ApiKey = settings.ApiKey;
+                SecretKey = settings.SecretKey;
+                OAuthToken = settings.OAuthToken;
+                OAuthTokenSecret = settings.OAuthTokenSecret;
                 DownloadLocation = settings.DownloadLocation;
                 ParallelImages = settings.ParallelImages;
                 ParallelBlogs = settings.ParallelBlogs;
@@ -166,6 +200,10 @@ namespace TumblThree.Applications.ViewModels
             }
             else
             {
+                ApiKey = "lICmmi2UfTdai1aVEfrMMoKidUfIMDV1pXlfiVdqhLmQgTNI9D";
+                SecretKey = "BB2JvuSMfa0";
+                OAuthToken = string.Empty;
+                OAuthTokenSecret = string.Empty;
                 DownloadLocation = ".\\Blogs";
                 ParallelImages = 25;
                 ParallelBlogs = 2;
@@ -201,6 +239,10 @@ namespace TumblThree.Applications.ViewModels
             settings.RemoveIndexAfterCrawl = RemoveIndexAfterCrawl;
             settings.DownloadImages = DownloadImages;
             settings.DownloadVideos = DownloadVideos;
+            settings.ApiKey = ApiKey;
+            settings.SecretKey = SecretKey;
+            settings.OAuthToken = OAuthToken;
+            settings.OAuthTokenSecret = OAuthTokenSecret;
         }
 
         public void Load()
@@ -224,29 +266,31 @@ namespace TumblThree.Applications.ViewModels
 
         private void Authenticate()
         {
-            OAuthManager oauthManager = new OAuthManager();
-            oauthManager["consumer_key"] = settings.ApiKey;
-            oauthManager["consumer_secret"] = settings.SecretKey;
-            oauthManager["callback"] = Uri.EscapeUriString(shellService.Settings.OAuthCallback);
+            ShellService.OAuthManager["consumer_key"] = ApiKey;
+            ShellService.OAuthManager["consumer_secret"] = SecretKey;
             OAuthResponse requestToken =
-                oauthManager.AcquireRequestToken("https://www.tumblr.com/oauth/request_token", "GET");
-            var url = @"https://www.tumblr.com/oauth/authorize?oauth_token=" + oauthManager["token"];
+                ShellService.OAuthManager.AcquireRequestToken(settings.RequestTokenUrl, "GET");
+            var url = settings.AuthorizeUrl + @"?oauth_token=" + ShellService.OAuthManager["token"];
 
             var authenticateViewModel = authenticateViewModelFactory.CreateExport().Value;
             authenticateViewModel.AddUrl(url);           
             authenticateViewModel.ShowDialog(ShellService.ShellView);
             string oauthTokenUrl = authenticateViewModel.GetUrl();
 
-            //Regex regex = new Regex("oauth_token=(.*)&oauth_verifier");
-            //string oauthToken = regex.Match(oauthTokenUrl).Groups[1].ToString();
-
             Regex regex = new Regex("oauth_verifier=(.*)");
             string oauthVerifer = regex.Match(oauthTokenUrl).Groups[1].ToString();
 
             OAuthResponse accessToken =
-                oauthManager.AcquireAccessToken("https://www.tumblr.com/oauth/access_token", "GET", oauthVerifer);
+                ShellService.OAuthManager.AcquireAccessToken(settings.AccessTokenUrl, "GET", oauthVerifer);
 
-            settings.AccessToken = accessToken;
+            regex = new Regex("oauth_token=(.*)&oauth_token_secret");
+            OAuthToken = regex.Match(accessToken.AllText).Groups[1].ToString();
+
+            regex = new Regex("oauth_token_secret=(.*)");
+            OAuthTokenSecret = regex.Match(accessToken.AllText).Groups[1].ToString();
+
+            ShellService.OAuthManager["token"] = OAuthToken;
+            ShellService.OAuthManager["token_secret"] = OAuthTokenSecret;
         }
 
         private void FolderBrowserPropertyChanged(object sender, PropertyChangedEventArgs e)
