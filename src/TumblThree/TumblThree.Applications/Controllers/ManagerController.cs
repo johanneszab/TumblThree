@@ -752,9 +752,9 @@ namespace TumblThree.Applications.Controllers
 
                                     if (shellService.Settings.DownloadImages == true)
                                     {
-                                        foreach (Datamodels.Post post in document.response.posts ?? new List<Datamodels.Post>())
+                                        foreach (Datamodels.Post post in document.response.posts.Where(posts => posts.type.Equals("photo")))
                                         {
-                                            foreach (DataModels.Photo photo in post.photos ?? new List<Datamodels.Photo>())
+                                            foreach (DataModels.Photo photo in post.photos)
                                             {
                                                 var imageUrl = photo.alt_sizes.ElementAt(shellService.Settings.ImageSizes.IndexOf(shellService.Settings.ImageSize.ToString())).url;
                                                 if (shellService.Settings.SkipGif == true && imageUrl.EndsWith(".gif"))
@@ -767,7 +767,7 @@ namespace TumblThree.Applications.Controllers
                                     }
                                     if (shellService.Settings.DownloadVideos == true)
                                     {
-                                        foreach (DataModels.Post post in document.response.posts ?? new List<Datamodels.Post>())
+                                        foreach (DataModels.Post post in document.response.posts.Where(posts => posts.type.Equals("video")))
                                         {
                                             if (shellService.Settings.VideoSize == 1080)
                                             {
@@ -799,7 +799,7 @@ namespace TumblThree.Applications.Controllers
 
                                     if (shellService.Settings.DownloadImages == true)
                                     {
-                                        foreach (Datamodels.Post post in document.response.posts.Where(posts => posts.tags.Any(tags.Contains)) ?? new List<Datamodels.Post>())
+                                        foreach (Datamodels.Post post in document.response.posts.Where(posts => posts.tags.Any(tag => tags.Equals(tag)) && posts.type.Equals("photo")))
                                         {
                                             foreach (DataModels.Photo photo in post.photos ?? new List<Datamodels.Photo>())
                                             {
@@ -814,7 +814,7 @@ namespace TumblThree.Applications.Controllers
                                     }
                                     if (shellService.Settings.DownloadVideos == true)
                                     {
-                                        foreach (DataModels.Post post in document.response.posts.Where(posts => posts.tags.Any(tags.Contains)) ?? new List<Datamodels.Post>())
+                                        foreach (DataModels.Post post in document.response.posts.Where(posts => posts.tags.Any(tag => tags.Equals(tag)) && posts.type.Equals("video")))
                                         {
                                             if (shellService.Settings.VideoSize == 1080)
                                             {

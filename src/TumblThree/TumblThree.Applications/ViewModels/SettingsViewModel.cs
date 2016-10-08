@@ -209,8 +209,8 @@ namespace TumblThree.Applications.ViewModels
             else
             {
                 ApiKey = "lICmmi2UfTdai1aVEfrMMoKidUfIMDV1pXlfiVdqhLmQgTNI9D";
-                SecretKey = "BB2Mfa0";
-                OAuthCallbackUrl = @"https://github.com/johanneszab/TumblThree";
+                SecretKey = "BB2JMMfa0";
+                OAuthCallbackUrl = @"http://www.tumblr.com/tumblthree";
                 OAuthToken = string.Empty;
                 OAuthTokenSecret = string.Empty;
                 DownloadLocation = ".\\Blogs";
@@ -301,9 +301,6 @@ namespace TumblThree.Applications.ViewModels
 
             ShellService.OAuthManager["token"] = OAuthToken;
             ShellService.OAuthManager["token_secret"] = OAuthTokenSecret;
-
-            //OAuthToken = ShellService.OAuthManager["token"];
-            //OAuthTokenSecret = ShellService.OAuthManager["token_secret"];
         }
 
         private void FolderBrowserPropertyChanged(object sender, PropertyChangedEventArgs e)
