@@ -60,6 +60,7 @@ namespace TumblThree.Applications.Controllers
             ShellService.ShowErrorAction = ShellViewModel.ShowError;
             ShellService.ShowDetailsViewAction = ShowDetailsView;
             ShellService.ShowQueueViewAction = ShowQueueView;
+            ShellService.InitializeOAuthManager();
 
             ManagerController.QueueManager = queueManager;
             ManagerController.Initialize();

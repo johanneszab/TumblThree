@@ -6,7 +6,7 @@ using System.Waf.Applications;
 using System.Windows.Input;
 using TumblThree.Applications.Services;
 using TumblThree.Applications.Views;
-using TumblThree.Applications.DataModels;
+using DataModels = TumblThree.Applications.DataModels;
 using TumblThree.Domain;
 using System.Linq;
 using System.Text;

@@ -151,6 +151,15 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not initialize the OAuth Manager.
+        /// </summary>
+        public static string CouldNotStartOAuthManager {
+            get {
+                return ResourceManager.GetString("CouldNotStartOAuthManager", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The Crawler Thread encountered an error..
         /// </summary>
         public static string CrawlerError {

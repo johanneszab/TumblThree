@@ -51,6 +51,8 @@
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.XML" />
@@ -72,8 +74,11 @@
     <Compile Include="Controllers\ModuleController.cs" />
     <Compile Include="Controllers\QueueController.cs" />
     <Compile Include="DataModels\DownloadProgress.cs" />
+    <Compile Include="DataModels\TumblrJson.cs" />
+    <Compile Include="DataModels\TumblrPost.cs" />
     <Compile Include="Data\StringListConverter.cs" />
     <Compile Include="Data\SupportedFileTypes.cs" />
+    <Compile Include="OAuth.cs" />
     <Compile Include="PauseTokenSource.cs" />
     <Compile Include="Properties\QueueSettings.cs" />
     <Compile Include="DataModels\FolderBrowserDataModel.cs" />
@@ -98,12 +103,14 @@
     <Compile Include="ViewModels\DetailsViewModel.cs" />
     <Compile Include="ViewModels\ManagerViewModel.cs" />
     <Compile Include="ViewModels\QueueViewModel.cs" />
+    <Compile Include="ViewModels\AuthenticateViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="Views\IAboutView.cs" />
     <Compile Include="Views\IDetailsView.cs" />
     <Compile Include="Views\IManagerView.cs" />
     <Compile Include="Views\IQueueView.cs" />
+    <Compile Include="Views\IAuthenticateView.cs" />
     <Compile Include="Views\ISettingsView.cs" />
     <Compile Include="Views\IShellView.cs" />
   </ItemGroup>

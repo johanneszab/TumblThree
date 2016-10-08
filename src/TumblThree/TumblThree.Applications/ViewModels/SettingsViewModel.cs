@@ -13,6 +13,7 @@ using TumblThree.Applications.DataModels;
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Input;
+using System.Text.RegularExpressions;
 
 namespace TumblThree.Applications.ViewModels
 {
@@ -23,7 +24,14 @@ namespace TumblThree.Applications.ViewModels
         private readonly AppSettings settings;
         private readonly FolderBrowserDataModel folderBrowser;
         private DelegateCommand displayFolderBrowserCommand;
+        private DelegateCommand authenticateCommand;
+        private readonly ExportFactory<AuthenticateViewModel> authenticateViewModelFactory;
         private string downloadLocation;
+        private string apiKey;
+        private string secretKey;
+        private string oauthToken;
+        private string oauthTokenSecret;
+        private string oauthCallbackUrl;
         private int parallelImages;
         private int parallelBlogs;
         private int imageSize;
@@ -40,13 +48,15 @@ namespace TumblThree.Applications.ViewModels
         //private bool isloaded = false;
 
         [ImportingConstructor]
-        public SettingsViewModel(ISettingsView view, IShellService shellService)
+        public SettingsViewModel(ISettingsView view, IShellService shellService, ExportFactory<AuthenticateViewModel> authenticateViewModelFactory)
             : base(view)
         {
             ShellService = shellService;
             settings = ShellService.Settings;
+            this.authenticateViewModelFactory = authenticateViewModelFactory;
             this.folderBrowser = new FolderBrowserDataModel();
             this.displayFolderBrowserCommand = new DelegateCommand(DisplayFolderBrowser);
+            this.authenticateCommand = new DelegateCommand(Authenticate);
 
             Load();
             view.Closed += ViewClosed;
@@ -56,11 +66,43 @@ namespace TumblThree.Applications.ViewModels
 
         public IShellService ShellService { get; }
 
+        public CrawlerService CrawlerService { get; }
+
         public FolderBrowserDataModel FolderBrowser { get { return folderBrowser; } }
 
         public void ShowDialog(object owner)
         {
             ViewCore.ShowDialog(owner);
+        }
+
+        public string OAuthToken
+        {
+            get { return oauthToken; }
+            set { SetProperty(ref oauthToken, value); }
+        }
+
+        public string OAuthTokenSecret
+        {
+            get { return oauthTokenSecret; }
+            set { SetProperty(ref oauthTokenSecret, value); }
+        }
+
+        public string ApiKey
+        {
+            get { return apiKey; }
+            set { SetProperty(ref apiKey, value); }
+        }
+
+        public string SecretKey
+        {
+            get { return secretKey; }
+            set { SetProperty(ref secretKey, value); }
+        }
+
+        public string OAuthCallbackUrl
+        {
+            get { return oauthCallbackUrl; }
+            set { SetProperty(ref oauthCallbackUrl, value); }
         }
 
         public string DownloadLocation
@@ -145,6 +187,11 @@ namespace TumblThree.Applications.ViewModels
         {
             if (settings != null)
             {
+                ApiKey = settings.ApiKey;
+                SecretKey = settings.SecretKey;
+                OAuthToken = settings.OAuthToken;
+                OAuthTokenSecret = settings.OAuthTokenSecret;
+                OAuthCallbackUrl = settings.OAuthCallbackUrl;
                 DownloadLocation = settings.DownloadLocation;
                 ParallelImages = settings.ParallelImages;
                 ParallelBlogs = settings.ParallelBlogs;
@@ -161,6 +208,11 @@ namespace TumblThree.Applications.ViewModels
             }
             else
             {
+                ApiKey = "lICmmi2UfTdai1aVEfrMMoKidUfIMDV1pXlfiVdqhLmQgTNI9D";
+                SecretKey = "BB2JMMfa0";
+                OAuthCallbackUrl = @"http://www.tumblr.com/tumblthree";
+                OAuthToken = string.Empty;
+                OAuthTokenSecret = string.Empty;
                 DownloadLocation = ".\\Blogs";
                 ParallelImages = 25;
                 ParallelBlogs = 2;
@@ -196,6 +248,11 @@ namespace TumblThree.Applications.ViewModels
             settings.RemoveIndexAfterCrawl = RemoveIndexAfterCrawl;
             settings.DownloadImages = DownloadImages;
             settings.DownloadVideos = DownloadVideos;
+            settings.ApiKey = ApiKey;
+            settings.SecretKey = SecretKey;
+            settings.OAuthToken = OAuthToken;
+            settings.OAuthTokenSecret = OAuthTokenSecret;
+            settings.OAuthCallbackUrl = OAuthCallbackUrl;
         }
 
         public void Load()
@@ -205,6 +262,8 @@ namespace TumblThree.Applications.ViewModels
 
         public ICommand DisplayFolderBrowserCommand { get { return displayFolderBrowserCommand; } }
 
+        public ICommand AuthenticateCommand { get { return authenticateCommand; } }
+
         private void DisplayFolderBrowser()
         {
             System.Windows.Forms.FolderBrowserDialog dialog = new System.Windows.Forms.FolderBrowserDialog();
@@ -213,6 +272,35 @@ namespace TumblThree.Applications.ViewModels
             {
                 DownloadLocation = dialog.SelectedPath;
             }
+        }
+
+        private void Authenticate()
+        {
+            ShellService.OAuthManager["consumer_key"] = ApiKey;
+            ShellService.OAuthManager["consumer_secret"] = SecretKey;
+            OAuthResponse requestToken =
+                ShellService.OAuthManager.AcquireRequestToken(settings.RequestTokenUrl, "POST");
+            var url = settings.AuthorizeUrl + @"?oauth_token=" + ShellService.OAuthManager["token"];
+
+            var authenticateViewModel = authenticateViewModelFactory.CreateExport().Value;
+            authenticateViewModel.AddUrl(url);           
+            authenticateViewModel.ShowDialog(ShellService.ShellView);
+            string oauthTokenUrl = authenticateViewModel.GetUrl();
+
+            Regex regex = new Regex("oauth_verifier=(.*)");
+            string oauthVerifer = regex.Match(oauthTokenUrl).Groups[1].ToString();
+
+            OAuthResponse accessToken =
+                ShellService.OAuthManager.AcquireAccessToken(settings.AccessTokenUrl, "POST", oauthVerifer);
+
+            regex = new Regex("oauth_token=(.*)&oauth_token_secret");
+            OAuthToken = regex.Match(accessToken.AllText).Groups[1].ToString();
+
+            regex = new Regex("oauth_token_secret=(.*)");
+            OAuthTokenSecret = regex.Match(accessToken.AllText).Groups[1].ToString();
+
+            ShellService.OAuthManager["token"] = OAuthToken;
+            ShellService.OAuthManager["token_secret"] = OAuthTokenSecret;
         }
 
         private void FolderBrowserPropertyChanged(object sender, PropertyChangedEventArgs e)

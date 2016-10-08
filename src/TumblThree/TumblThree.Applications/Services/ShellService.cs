@@ -25,6 +25,7 @@ namespace TumblThree.Applications.Services
         private bool isClosingEventInitialized;
         private event CancelEventHandler closing;
         private ClipboardMonitor clipboardMonitor;
+        private OAuthManager oauthManager;
 
         [ImportingConstructor]
         public ShellService(Lazy<IShellView> shellView)
@@ -33,6 +34,7 @@ namespace TumblThree.Applications.Services
             this.tasksToCompleteBeforeShutdown = new List<Task>();
             this.applicationBusyContext = new List<ApplicationBusyContext>();
             this.clipboardMonitor = new ClipboardMonitor();
+            this.oauthManager = new OAuthManager();
         }
 
         public AppSettings Settings { get; set; }
@@ -150,10 +152,24 @@ namespace TumblThree.Applications.Services
             OnClosing(e);
         }
 
+        public void InitializeOAuthManager()
+        {
+            OAuthManager["consumer_key"] = Settings.ApiKey;
+            OAuthManager["consumer_secret"] = Settings.SecretKey;
+            OAuthManager["token"] = Settings.OAuthToken;
+            OAuthManager["token_secret"] = Settings.OAuthTokenSecret;
+        }
+
         public ClipboardMonitor ClipboardMonitor
         {
             get { return clipboardMonitor; }
             set { SetProperty(ref clipboardMonitor, value); }
+        }
+
+        public OAuthManager OAuthManager
+        {
+            get { return oauthManager; }
+            set { SetProperty(ref oauthManager, value); }
         }
     }
 }

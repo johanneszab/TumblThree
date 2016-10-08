@@ -62,6 +62,7 @@ namespace TumblThree.Presentation.DesignData
 
         public ClipboardMonitor ClipboardMonitor { get; set; }
 
+        public OAuthManager OAuthManager { get; set; }
 
         public IDisposable SetApplicationBusy()
         {

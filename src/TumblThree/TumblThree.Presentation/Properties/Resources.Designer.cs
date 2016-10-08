@@ -88,6 +88,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Authenticate.
+        /// </summary>
+        public static string Authenticate {
+            get {
+                return ResourceManager.GetString("Authenticate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter URL:.
         /// </summary>
         public static string BlogUrl {

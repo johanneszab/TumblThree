@@ -87,6 +87,7 @@
             <CheckBox x:Name="checkBoxRemoveIndex" Content="{x:Static p:Resources.RemoveIndex}" IsChecked="{Binding RemoveIndexAfterCrawl, Mode=TwoWay}" Grid.Column="0" Grid.Row="5" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
         </Grid>
         <Grid Height="Auto" Margin="0" VerticalAlignment="Bottom" Grid.Row="5">
+            <Button x:Name="buttonAuthenticate" Height="Auto" Content="{x:Static p:Resources.Authenticate}" Command="{Binding AuthenticateCommand}" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="75"/>
             <Button Height="Auto" Content="Save" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75" Click="closeWindow"/>
         </Grid>
     </Grid>

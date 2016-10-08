@@ -147,6 +147,9 @@
   <data name="CouldNotSaveQueueList" xml:space="preserve">
     <value>The queuelist could not be saved.</value>
   </data>
+  <data name="CouldNotStartOAuthManager" xml:space="preserve">
+    <value>Could not initialize the OAuth Manager</value>
+  </data>
   <data name="CrawlerError" xml:space="preserve">
     <value>The Crawler Thread encountered an error.</value>
   </data>
