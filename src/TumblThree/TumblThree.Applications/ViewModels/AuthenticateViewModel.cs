@@ -20,12 +20,18 @@ namespace TumblThree.Applications.ViewModels
     public class AuthenticateViewModel : ViewModel<IAuthenticateView>
     {
 
+        private string oauthCallbackUrl;
+
         [ImportingConstructor]
-        public AuthenticateViewModel(IAuthenticateView view)
+        public AuthenticateViewModel(IAuthenticateView view, IShellService shellService)
             : base(view)
         {
             view.Closed += ViewClosed;
+            ShellService = shellService;
+            this.oauthCallbackUrl = shellService.Settings.OAuthCallbackUrl;
         }
+
+        public IShellService ShellService { get; }
 
         //public IView View { get; set; }
 
@@ -46,6 +52,12 @@ namespace TumblThree.Applications.ViewModels
         public string GetUrl()
         {
             return ViewCore.GetUrl();
+        }
+
+        public string OAuthCallbackUrl
+        {
+            get { return oauthCallbackUrl; }
+            set { SetProperty(ref oauthCallbackUrl, value); }
         }
     }
 }

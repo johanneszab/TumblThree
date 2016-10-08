@@ -31,6 +31,7 @@ namespace TumblThree.Applications.ViewModels
         private string secretKey;
         private string oauthToken;
         private string oauthTokenSecret;
+        private string oauthCallbackUrl;
         private int parallelImages;
         private int parallelBlogs;
         private int imageSize;
@@ -96,6 +97,12 @@ namespace TumblThree.Applications.ViewModels
         {
             get { return secretKey; }
             set { SetProperty(ref secretKey, value); }
+        }
+
+        public string OAuthCallbackUrl
+        {
+            get { return oauthCallbackUrl; }
+            set { SetProperty(ref oauthCallbackUrl, value); }
         }
 
         public string DownloadLocation
@@ -184,6 +191,7 @@ namespace TumblThree.Applications.ViewModels
                 SecretKey = settings.SecretKey;
                 OAuthToken = settings.OAuthToken;
                 OAuthTokenSecret = settings.OAuthTokenSecret;
+                OAuthCallbackUrl = settings.OAuthCallbackUrl;
                 DownloadLocation = settings.DownloadLocation;
                 ParallelImages = settings.ParallelImages;
                 ParallelBlogs = settings.ParallelBlogs;
@@ -201,7 +209,8 @@ namespace TumblThree.Applications.ViewModels
             else
             {
                 ApiKey = "lICmmi2UfTdai1aVEfrMMoKidUfIMDV1pXlfiVdqhLmQgTNI9D";
-                SecretKey = "BB2JvuSMfa0";
+                SecretKey = "BB2Mfa0";
+                OAuthCallbackUrl = @"https://github.com/johanneszab/TumblThree";
                 OAuthToken = string.Empty;
                 OAuthTokenSecret = string.Empty;
                 DownloadLocation = ".\\Blogs";
@@ -243,6 +252,7 @@ namespace TumblThree.Applications.ViewModels
             settings.SecretKey = SecretKey;
             settings.OAuthToken = OAuthToken;
             settings.OAuthTokenSecret = OAuthTokenSecret;
+            settings.OAuthCallbackUrl = OAuthCallbackUrl;
         }
 
         public void Load()
@@ -269,7 +279,7 @@ namespace TumblThree.Applications.ViewModels
             ShellService.OAuthManager["consumer_key"] = ApiKey;
             ShellService.OAuthManager["consumer_secret"] = SecretKey;
             OAuthResponse requestToken =
-                ShellService.OAuthManager.AcquireRequestToken(settings.RequestTokenUrl, "GET");
+                ShellService.OAuthManager.AcquireRequestToken(settings.RequestTokenUrl, "POST");
             var url = settings.AuthorizeUrl + @"?oauth_token=" + ShellService.OAuthManager["token"];
 
             var authenticateViewModel = authenticateViewModelFactory.CreateExport().Value;
@@ -281,7 +291,7 @@ namespace TumblThree.Applications.ViewModels
             string oauthVerifer = regex.Match(oauthTokenUrl).Groups[1].ToString();
 
             OAuthResponse accessToken =
-                ShellService.OAuthManager.AcquireAccessToken(settings.AccessTokenUrl, "GET", oauthVerifer);
+                ShellService.OAuthManager.AcquireAccessToken(settings.AccessTokenUrl, "POST", oauthVerifer);
 
             regex = new Regex("oauth_token=(.*)&oauth_token_secret");
             OAuthToken = regex.Match(accessToken.AllText).Groups[1].ToString();
@@ -291,6 +301,9 @@ namespace TumblThree.Applications.ViewModels
 
             ShellService.OAuthManager["token"] = OAuthToken;
             ShellService.OAuthManager["token_secret"] = OAuthTokenSecret;
+
+            //OAuthToken = ShellService.OAuthManager["token"];
+            //OAuthTokenSecret = ShellService.OAuthManager["token_secret"];
         }
 
         private void FolderBrowserPropertyChanged(object sender, PropertyChangedEventArgs e)

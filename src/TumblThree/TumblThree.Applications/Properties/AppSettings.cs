@@ -121,9 +121,9 @@ namespace TumblThree.Applications.Properties
             RequestTokenUrl = @"https://www.tumblr.com/oauth/request_token";
             AuthorizeUrl = @"https://www.tumblr.com/oauth/authorize";
             AccessTokenUrl = @"https://www.tumblr.com/oauth/access_token";
-            OAuthCallbackUrl = @"http://www.tumblr.com/tumblthree";
+            OAuthCallbackUrl = @"https://github.com/johanneszab/TumblThree";
             ApiKey = "lICmmi2UfTdai1aVEfrMMoKidUfIMDV1pXlfiVdqhLmQgTNI9D";
-            SecretKey = "BB2Jvk69MMfa0";
+            SecretKey = "BB2Jfa0";
             OAuthToken = string.Empty;
             OAuthTokenSecret = string.Empty;
             Left = 50;

@@ -40,7 +40,7 @@ namespace TumblThree.Presentation.Views
             try
             {
                 WebBrowser wb = (WebBrowser)sender;
-                if (wb.Source.ToString().Contains("tumblthree"))
+                if (wb.Source.ToString().Contains(ViewModel.OAuthCallbackUrl))
                 {
                     this.Close();
                 }
