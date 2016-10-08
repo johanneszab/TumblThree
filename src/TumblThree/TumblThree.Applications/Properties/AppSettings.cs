@@ -61,6 +61,9 @@ namespace TumblThree.Applications.Properties
         public bool IsMaximized { get; set; }
 
         [DataMember]
+        public double GridSplitterPosition { get; set; }
+
+        [DataMember]
         public string DownloadLocation { get; set; }
 
         [DataMember]
@@ -131,6 +134,7 @@ namespace TumblThree.Applications.Properties
             Height = 800;
             Width = 1200;
             IsMaximized = false;
+            GridSplitterPosition = 250;
             DownloadLocation = @".\Blogs\";
             ParallelImages = 25;
             ParallelBlogs = 2;

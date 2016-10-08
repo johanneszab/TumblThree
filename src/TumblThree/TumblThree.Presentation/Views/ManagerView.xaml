@@ -17,7 +17,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <DataGrid x:Name="blogFilesGrid" ItemsSource="{Binding SelectionService.BlogFiles}" SelectedItem="{Binding SelectedBlogFile}" BorderBrush="White" BorderThickness="0,1,0,0"
+        <DataGrid x:Name="blogFilesGrid" ItemsSource="{Binding SelectionService.BlogFiles}" SelectedItem="{Binding SelectedBlogFile}" CanUserReorderColumns="True" BorderBrush="White" BorderThickness="0,1,0,0"
                   ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" Grid.Row="0" Grid.Column="0"
                   ctrl:SelectionBehavior.SyncSelectedItems="{Binding SelectionService.SelectedBlogFiles}">
             <DataGrid.Resources>

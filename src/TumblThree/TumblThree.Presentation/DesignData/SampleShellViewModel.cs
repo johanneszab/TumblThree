@@ -73,6 +73,9 @@ namespace TumblThree.Presentation.DesignData
 
             public bool IsMaximized { get; set; }
 
+            public double GridSplitterPosition { get; set; }
+
+
 
             public event CancelEventHandler Closing;
 

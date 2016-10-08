@@ -20,6 +20,8 @@ namespace TumblThree.Applications.Views
 
         bool IsMaximized { get; set; }
 
+        double GridSplitterPosition { get; set; }
+
 
         event CancelEventHandler Closing;
 

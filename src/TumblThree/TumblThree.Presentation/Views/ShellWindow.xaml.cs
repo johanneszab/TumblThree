@@ -46,6 +46,15 @@ namespace TumblThree.Presentation.Views
             }
         }
 
+        public double GridSplitterPosition
+        {
+            get { return grid.ColumnDefinitions[2].Width.Value; }
+            set
+            {
+                grid.ColumnDefinitions[2].Width = new GridLength(value, GridUnitType.Pixel);
+            }
+        }
+
         private ShellViewModel ViewModel { get { return viewModel.Value; } }
 
         //private void LoadedHandler(object sender, RoutedEventArgs e)
