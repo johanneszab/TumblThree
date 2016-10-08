@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.Serialization;
 
@@ -101,6 +102,9 @@ namespace TumblThree.Applications.Properties
         [DataMember]
         public bool DownloadVideos { get; set; }
 
+        [DataMember]
+        public Dictionary<object, double> ColumnWidths { get; set; }
+
         ExtensionDataObject IExtensibleDataObject.ExtensionData { get; set; }
 
         public ObservableCollection<string> ImageSizes
@@ -148,6 +152,7 @@ namespace TumblThree.Applications.Properties
             RemoveIndexAfterCrawl = false;
             DownloadImages = true;
             DownloadVideos = false;
+            ColumnWidths = new Dictionary<object, double>();
         }
 
         [OnDeserializing]

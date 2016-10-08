@@ -90,11 +90,6 @@ namespace TumblThree.Presentation.Views
             ShowDialog();
         }
 
-        private void closeWindow(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
-
         public void AddUrl(string url)
         {
             browser.Source = new Uri(url);

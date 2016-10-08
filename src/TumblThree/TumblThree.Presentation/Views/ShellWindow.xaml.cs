@@ -1,12 +1,8 @@
 ﻿using System;
-using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Waf.Applications;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Threading;
-using TumblThree.Applications.Services;
 using TumblThree.Applications.ViewModels;
 using TumblThree.Applications.Views;
 

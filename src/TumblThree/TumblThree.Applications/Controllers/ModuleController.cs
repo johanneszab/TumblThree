@@ -16,6 +16,7 @@ namespace TumblThree.Applications.Controllers
     {
         private const string appSettingsFileName = "Settings.xml";
         private const string queueSettingsFileName = "Queuelist.xml";
+        private const string managerSettingsFileName = "Manager.xml";
 
         private readonly Lazy<ShellService> shellService;
         private readonly IEnvironmentService environmentService;
@@ -26,6 +27,7 @@ namespace TumblThree.Applications.Controllers
         private readonly QueueManager queueManager;
         private AppSettings appSettings;
         private QueueSettings queueSettings;
+        private ManagerSettings managerSettings;
 
 
         [ImportingConstructor]
@@ -55,6 +57,7 @@ namespace TumblThree.Applications.Controllers
         {
             appSettings = LoadSettings<AppSettings>(appSettingsFileName);
             queueSettings = LoadSettings<QueueSettings>(queueSettingsFileName);
+            managerSettings = LoadSettings<ManagerSettings>(managerSettingsFileName);
 
             ShellService.Settings = appSettings;
             ShellService.ShowErrorAction = ShellViewModel.ShowError;
@@ -63,6 +66,7 @@ namespace TumblThree.Applications.Controllers
             ShellService.InitializeOAuthManager();
 
             ManagerController.QueueManager = queueManager;
+            ManagerController.ManagerSettings = managerSettings;
             ManagerController.Initialize();
             QueueController.QueueSettings = queueSettings;
             QueueController.QueueManager = queueManager;
@@ -85,6 +89,7 @@ namespace TumblThree.Applications.Controllers
 
             SaveSettings(appSettingsFileName, appSettings);
             SaveSettings(queueSettingsFileName, queueSettings);
+            SaveSettings(managerSettingsFileName, managerSettings);
         }
 
         private T LoadSettings<T>(string fileName) where T : class, new()

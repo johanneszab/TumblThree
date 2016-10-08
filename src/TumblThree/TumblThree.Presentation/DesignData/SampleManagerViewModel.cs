@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TumblThree.Applications.Services;
 using TumblThree.Applications.ViewModels;
@@ -9,7 +10,7 @@ namespace TumblThree.Presentation.DesignData
 {
     public class SampleManagerViewModel : ManagerViewModel
     {
-        public SampleManagerViewModel() : base(new MockManagerView(), new Lazy<ISelectionService>(() => new MockSelectionService()), null)
+        public SampleManagerViewModel() : base(new MockManagerView(), new MockShellService(), new Lazy<ISelectionService>(() => new MockSelectionService()), null)
         {
             var blogFiles = new[]
             {
@@ -48,6 +49,10 @@ namespace TumblThree.Presentation.DesignData
 
         private class MockManagerView : MockView, IManagerView
         {
+            public Dictionary<object, double> DataGridColumnRestore { get; set; }
+
+            public event EventHandler Closed;
+
         }
     }
 }

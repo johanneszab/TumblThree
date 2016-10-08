@@ -27,7 +27,6 @@ namespace TumblThree.Presentation.Views
     [Export(typeof(IManagerView))]
     public partial class ManagerView : IManagerView
     {
-
         private readonly Lazy<ManagerViewModel> viewModel;
 
         public ManagerView()
@@ -80,6 +79,28 @@ namespace TumblThree.Presentation.Views
                 var items = blogFilesGrid.ItemsSource.Cast<Blog>().ToList();
                 var selectedItems = blogFilesGrid.SelectedItems.Cast<Blog>().OrderBy(x => items.IndexOf(x)).ToArray();
                 DragDrop.DoDragDrop(draggedItem, selectedItems.ToArray(), DragDropEffects.Copy);
+            }
+        }
+
+        public Dictionary<object, double> DataGridColumnRestore
+        {
+            get
+            {
+                Dictionary<object, double> columnWidths = new Dictionary<object, double>();
+                foreach (DataGridColumn column in blogFilesGrid.Columns)
+                {
+                    columnWidths.Add(column.Header, column.Width.Value);
+                }
+                return columnWidths;
+            }
+            set
+            {
+                foreach (DataGridColumn column in blogFilesGrid.Columns)
+                {
+                    double entry;
+                    value.TryGetValue(column.Header, out entry);
+                    column.Width = new DataGridLength(entry, DataGridLengthUnitType.Pixel);
+                }
             }
         }
     }

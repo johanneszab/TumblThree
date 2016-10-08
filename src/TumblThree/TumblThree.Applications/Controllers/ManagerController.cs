@@ -77,6 +77,8 @@ namespace TumblThree.Applications.Controllers
 
         private ManagerViewModel ManagerViewModel { get { return managerViewModel.Value; } }
 
+        public ManagerSettings ManagerSettings { get; set; }
+
         public QueueManager QueueManager { get; set; }
 
         public void Initialize()
