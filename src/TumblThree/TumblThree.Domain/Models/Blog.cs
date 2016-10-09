@@ -17,6 +17,8 @@ namespace TumblThree.Domain.Models
         private DateTime dateAdded;
         private DateTime lastCompleteCrawl;
         private bool online;
+        private bool dirty;
+        private string notes;
         private IList<string> links;
         private Exception loadError;
 
@@ -30,6 +32,8 @@ namespace TumblThree.Domain.Models
             this.dateAdded = System.DateTime.Now;
             this.lastCompleteCrawl = System.DateTime.MinValue;
             this.online = false;
+            this.dirty = false;
+            this.notes = String.Empty;
             this.links = new ObservableCollection<string>();
         }
 
@@ -60,7 +64,7 @@ namespace TumblThree.Domain.Models
         public uint Rating
         {
             get { return rating; }
-            set { SetProperty(ref rating, value); }
+            set { SetProperty(ref rating, value); Dirty = true; }
         }
 
         public DateTime DateAdded
@@ -79,6 +83,18 @@ namespace TumblThree.Domain.Models
         {
             get { return online; }
             set { SetProperty(ref online, value); }
+        }
+
+        public bool Dirty
+        {
+            get { return dirty; }
+            set { SetProperty(ref dirty, value); }
+        }
+
+        public string Notes
+        {
+            get { return notes; }
+            set { SetProperty(ref notes, value); Dirty = true; }
         }
 
         public Exception LoadError

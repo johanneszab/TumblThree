@@ -1,16 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.IO;
 using System.Waf.Applications;
 using System.Windows.Input;
 using TumblThree.Applications.Services;
 using TumblThree.Applications.Views;
-using DataModels = TumblThree.Applications.DataModels;
-using TumblThree.Domain;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using TumblThree.Domain.Models;
 

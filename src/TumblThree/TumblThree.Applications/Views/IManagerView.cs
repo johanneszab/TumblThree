@@ -6,6 +6,6 @@ namespace TumblThree.Applications.Views
 {
     public interface IManagerView : IView
     {
-        Dictionary<object, double> DataGridColumnRestore { get; set; }
+        Dictionary<object, Tuple<int, double>> DataGridColumnRestore { get; set; }
     }
 }

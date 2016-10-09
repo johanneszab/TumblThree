@@ -1,5 +1,4 @@
-﻿
-namespace TumblThree.Applications.Services
+﻿namespace TumblThree.Applications.Services
 {
     /// <summary>
     /// Service for initializing the presentation layer. These services are called before any ModuleController is initialized.

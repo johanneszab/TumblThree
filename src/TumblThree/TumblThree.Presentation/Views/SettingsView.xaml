@@ -7,7 +7,7 @@
         xmlns:ctrl="clr-namespace:TumblThree.Presentation.Controls"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
         xmlns:vm="clr-namespace:TumblThree.Applications.ViewModels;assembly=TumblThree.Applications"
-        mc:Ignorable="d" Title="SettingsView" Height="540" Width="600"
+        mc:Ignorable="d" Title="Settings" Height="540" Width="600"
         d:DataContext="{d:DesignInstance vm:SettingsViewModel}">
 
     <Grid>
@@ -33,21 +33,39 @@
         </Grid>
         <Grid Height="46" Margin="0" VerticalAlignment="Top" Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="140"/>
                 <ColumnDefinition Width="40"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Label x:Name="parallelImagesLabel" Grid.Column="0" Content="{x:Static p:Resources.ParallelImages}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Width="Auto"/>
+            <Label x:Name="parallelConnectionsLabel" Grid.Column="0" Content="{x:Static p:Resources.ParallelConnections}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Width="Auto">
+                <Label.ToolTip>
+                    <ToolTip>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipConnections}"/>
+                            <TextBlock Text="{x:Static p:Resources.ToolTipConnectionsDescription}"/>
+                        </StackPanel>
+                    </ToolTip>
+                </Label.ToolTip>
+            </Label>
             <TextBlock Margin="10" Grid.Column="1"  HorizontalAlignment="Stretch" Height="26" TextWrapping="Wrap" VerticalAlignment="Center" Text="{Binding Value, ElementName=parallelImagesSlider}"/>
             <Slider x:Name="parallelImagesSlider" Grid.Column="2" SmallChange="1" Value="{Binding ParallelImages, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" Margin="10,10,10,10" VerticalAlignment="Top" Maximum="200" MinWidth="300"/>
         </Grid>
         <Grid Height="46" Margin="0" VerticalAlignment="Top" Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="140"/>
                 <ColumnDefinition Width="40"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Label x:Name="parallelBlogsLabel" Grid.Column="0" Content="{x:Static p:Resources.ParallelBlogs}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,10,0,0" Width="78" Height="24"/>
+            <Label x:Name="parallelBlogsLabel" Grid.Column="0" Content="{x:Static p:Resources.ParallelBlogs}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,10,0,0" Width="78" Height="24">
+                <Label.ToolTip>
+                    <ToolTip>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipBlogs}"/>
+                            <TextBlock Text="{x:Static p:Resources.ToolTipBlogsDescription}"/>
+                        </StackPanel>
+                    </ToolTip>
+                </Label.ToolTip>
+            </Label>
             <TextBlock Margin="10,10,10,10" Grid.Column="1"  HorizontalAlignment="Stretch" Height="26" TextWrapping="Wrap" VerticalAlignment="Center" Text="{Binding Value, ElementName=parallelBlogsSlider}"/>
             <Slider x:Name="parallelBlogsSlider" Grid.Column="2" SmallChange="1" Value="{Binding ParallelBlogs, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" Margin="10,10,10,10" VerticalAlignment="Top" Maximum="200" MinWidth="300" Height="18"/>
         </Grid>
@@ -87,7 +105,16 @@
             <CheckBox x:Name="checkBoxRemoveIndex" Content="{x:Static p:Resources.RemoveIndex}" IsChecked="{Binding RemoveIndexAfterCrawl, Mode=TwoWay}" Grid.Column="0" Grid.Row="5" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
         </Grid>
         <Grid Height="Auto" Margin="0" VerticalAlignment="Bottom" Grid.Row="5">
-            <Button x:Name="buttonAuthenticate" Height="Auto" Content="{x:Static p:Resources.Authenticate}" Command="{Binding AuthenticateCommand}" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="75"/>
+            <Button x:Name="buttonAuthenticate" Height="Auto" Content="{x:Static p:Resources.Authenticate}" Command="{Binding AuthenticateCommand}" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="75">
+                <Button.ToolTip>
+                    <ToolTip>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipAuthenticate}"/>
+                            <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipAuthenticateDescription}"/>
+                        </StackPanel>
+                    </ToolTip>
+                </Button.ToolTip>
+            </Button>
             <Button Height="Auto" Content="Save" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75" Click="closeWindow"/>
         </Grid>
     </Grid>

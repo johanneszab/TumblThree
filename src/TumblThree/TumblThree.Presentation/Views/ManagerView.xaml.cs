@@ -82,14 +82,14 @@ namespace TumblThree.Presentation.Views
             }
         }
 
-        public Dictionary<object, double> DataGridColumnRestore
+        public Dictionary<object, Tuple<int, double>> DataGridColumnRestore
         {
             get
             {
-                Dictionary<object, double> columnWidths = new Dictionary<object, double>();
+                Dictionary<object, Tuple<int, double>> columnWidths = new Dictionary<object, Tuple<int,double>>();
                 foreach (DataGridColumn column in blogFilesGrid.Columns)
                 {
-                    columnWidths.Add(column.Header, column.Width.Value);
+                    columnWidths.Add(column.Header, Tuple.Create(column.DisplayIndex, column.Width.Value));
                 }
                 return columnWidths;
             }
@@ -97,9 +97,10 @@ namespace TumblThree.Presentation.Views
             {
                 foreach (DataGridColumn column in blogFilesGrid.Columns)
                 {
-                    double entry;
+                    Tuple<int, double> entry;
                     value.TryGetValue(column.Header, out entry);
-                    column.Width = new DataGridLength(entry, DataGridLengthUnitType.Pixel);
+                    column.DisplayIndex = entry.Item1;
+                    column.Width = new DataGridLength(entry.Item2, DataGridLengthUnitType.Pixel);
                 }
             }
         }

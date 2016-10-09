@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Waf.Applications;
 using TumblThree.Applications.Views;
-using TumblThree.Domain;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel.Composition;
 using TumblThree.Applications.Services;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.DataModels;
 using System.ComponentModel;
-using System.IO;
 using System.Windows.Input;
 using System.Text.RegularExpressions;
 

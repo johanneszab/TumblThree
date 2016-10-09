@@ -113,6 +113,8 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                <DataGridTextColumn x:Name="notesColumn" Header="{x:Static p:Resources.Notes}" Binding="{Binding Notes, Mode=TwoWay}" 
+                                    IsReadOnly="False" Width="120" ElementStyle="{StaticResource TextCellElementStyle}"/>
             </DataGrid.Columns>
         </DataGrid>
 

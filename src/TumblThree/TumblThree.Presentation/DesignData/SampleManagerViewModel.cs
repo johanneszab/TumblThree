@@ -49,7 +49,7 @@ namespace TumblThree.Presentation.DesignData
 
         private class MockManagerView : MockView, IManagerView
         {
-            public Dictionary<object, double> DataGridColumnRestore { get; set; }
+            public Dictionary<object, Tuple<int, double>> DataGridColumnRestore { get; set; }
 
             public event EventHandler Closed;
 

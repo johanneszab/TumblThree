@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Waf.Foundation;
-using TumblThree.Applications.DataModels;
 using TumblThree.Applications.Services;
 using TumblThree.Domain.Models;
 using TumblThree.Domain.Queue;

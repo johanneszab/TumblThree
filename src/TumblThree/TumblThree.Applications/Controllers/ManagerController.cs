@@ -8,7 +8,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Xml.Linq;
 using System.Waf.Applications;
 using TumblThree.Applications.Services;
 using TumblThree.Applications.ViewModels;
@@ -117,6 +116,11 @@ namespace TumblThree.Applications.Controllers
             }
             catch (System.AggregateException)
             {
+            }
+            foreach (Blog blog in selectionService.BlogFiles)
+            {
+                if (blog.Dirty)
+                    SaveBlog(blog);
             }
         }
 

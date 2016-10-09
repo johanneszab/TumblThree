@@ -2,9 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using System.Waf.Foundation;
-using System.Windows;
 using System.Windows.Data;
-using TumblThree.Applications.Data;
 using TumblThree.Domain.Queue;
 
 namespace TumblThree.Presentation.Converters

@@ -234,7 +234,7 @@
   <data name="ParallelBlogs" xml:space="preserve">
     <value>Nummer an gleichzeitig zu verarbeitenden Blogs</value>
   </data>
-  <data name="ParallelImages" xml:space="preserve">
+  <data name="ParallelConnections" xml:space="preserve">
     <value>Nummer an gleichzeitig zu ladenen Dateien</value>
   </data>
   <data name="Pause" xml:space="preserve">
@@ -314,5 +314,26 @@
   </data>
   <data name="Authenticate" xml:space="preserve">
     <value>Authentifizieren</value>
+  </data>
+  <data name="ToolTipAuthenticate" xml:space="preserve">
+    <value>Authenticate to the tumblr.com network</value>
+  </data>
+  <data name="ToolTipAuthenticateDescription" xml:space="preserve">
+    <value>Opens a browser window to authenticate yourself to the tumblr.com site. Allows the download of private blogs with your account. The access token to your account is saved and the authentication process needs to be done only once.</value>
+  </data>
+  <data name="ToolTipBlogs" xml:space="preserve">
+    <value>Number of simultaneous processed blogs</value>
+  </data>
+  <data name="ToolTipBlogsDescription" xml:space="preserve">
+    <value>Sets the Number of simultaneous processed blogs. Setting this to 2 would download data from two blogs at a time.</value>
+  </data>
+  <data name="ToolTipConnections" xml:space="preserve">
+    <value>Number of total simultaneous connections</value>
+  </data>
+  <data name="ToolTipConnectionsDescription" xml:space="preserve">
+    <value>Sets the Number of total simultaneous connections. The number is divided by the number of Parallel Blogs settings. 25/2 would open 12 connections per blog download.</value>
+  </data>
+  <data name="Notes" xml:space="preserve">
+    <value>Notizen</value>
   </data>
 </root>

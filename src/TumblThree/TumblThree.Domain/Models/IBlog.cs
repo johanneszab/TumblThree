@@ -16,6 +16,10 @@ namespace TumblThree.Domain.Models
 
         uint TotalCount { get; set; }
 
+        bool Dirty { get; set; }
+
+        string Notes { get; set; }
+
         DateTime DateAdded { get; set; }
 
         DateTime LastCompleteCrawl { get; set; }

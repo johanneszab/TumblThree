@@ -340,6 +340,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Personal Notes.
+        /// </summary>
+        public static string Notes {
+            get {
+                return ResourceManager.GetString("Notes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} Images.
         /// </summary>
         public static string NumberOfImages {
@@ -421,11 +430,11 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Parallel Images.
+        ///   Looks up a localized string similar to Parallel Connections.
         /// </summary>
-        public static string ParallelImages {
+        public static string ParallelConnections {
             get {
-                return ResourceManager.GetString("ParallelImages", resourceCulture);
+                return ResourceManager.GetString("ParallelConnections", resourceCulture);
             }
         }
         
@@ -597,6 +606,60 @@ namespace TumblThree.Presentation.Properties {
         public static string Tags {
             get {
                 return ResourceManager.GetString("Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Authenticate to the tumblr.com network.
+        /// </summary>
+        public static string ToolTipAuthenticate {
+            get {
+                return ResourceManager.GetString("ToolTipAuthenticate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opens a browser window to authenticate yourself to the tumblr.com site. Allows the download of private blogs with your account. The access token to your account is saved and the authentication process needs to be done only once..
+        /// </summary>
+        public static string ToolTipAuthenticateDescription {
+            get {
+                return ResourceManager.GetString("ToolTipAuthenticateDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of simultaneous processed blogs.
+        /// </summary>
+        public static string ToolTipBlogs {
+            get {
+                return ResourceManager.GetString("ToolTipBlogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sets the Number of simultaneous processed blogs. Setting this to 2 would download data from two blogs at a time..
+        /// </summary>
+        public static string ToolTipBlogsDescription {
+            get {
+                return ResourceManager.GetString("ToolTipBlogsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of total simultaneous connections.
+        /// </summary>
+        public static string ToolTipConnections {
+            get {
+                return ResourceManager.GetString("ToolTipConnections", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sets the Number of total simultaneous connections. The number is divided by the number of Parallel Blogs settings. 25/2 would open 12 connections per blog download..
+        /// </summary>
+        public static string ToolTipConnectionsDescription {
+            get {
+                return ResourceManager.GetString("ToolTipConnectionsDescription", resourceCulture);
             }
         }
         

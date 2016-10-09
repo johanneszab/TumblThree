@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using TumblThree.Applications.Properties;
 
 namespace TumblThree.Applications.Services

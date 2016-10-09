@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using TumblThree.Applications.Services;
 using TumblThree.Applications.ViewModels;
 using TumblThree.Applications.Views;
 using TumblThree.Domain.Models;
