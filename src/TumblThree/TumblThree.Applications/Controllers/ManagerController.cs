@@ -120,7 +120,10 @@ namespace TumblThree.Applications.Controllers
             foreach (Blog blog in selectionService.BlogFiles)
             {
                 if (blog.Dirty)
+                {
+                    blog.Dirty = false;
                     SaveBlog(blog);
+                }
             }
         }
 
@@ -873,7 +876,12 @@ namespace TumblThree.Applications.Controllers
         private bool Download(TumblrBlog blog, string fileLocation, string url)
         {
             Monitor.Enter(blog);
-            if (!blog.Links.Contains(url))
+            if (blog.Links.Contains(url))
+            {
+                Monitor.Exit(blog);
+                return false;
+            }
+            else
             {
                 Monitor.Exit(blog);
                 try
@@ -886,11 +894,9 @@ namespace TumblThree.Applications.Controllers
                 }
                 catch (Exception)
                 {
+                    return false;
                 }
-                return false;
             }
-            Monitor.Exit(blog);
-            return false;
         }
 
         private void OnClipboardContentChanged(object sender, EventArgs e)
