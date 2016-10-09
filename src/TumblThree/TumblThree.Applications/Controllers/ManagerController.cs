@@ -527,7 +527,7 @@ namespace TumblThree.Applications.Controllers
                 string authHeader = shellService.OAuthManager.GenerateauthHeader(url, "GET");
 
                 var blogDoc = RequestData(url, authHeader);
-                if (!blogDoc.Equals(null))
+                if (blogDoc != null)
                     return true;
                 else
                     return false;
@@ -703,7 +703,7 @@ namespace TumblThree.Applications.Controllers
 
                 var blogDoc = RequestData(url, authHeader);
 
-                if (!blogDoc.Equals(null))
+                if (blogDoc != null)
                 {
                     blog.Title = blogDoc.response.blog.title;
                     blog.Description = blogDoc.response.blog.description;
