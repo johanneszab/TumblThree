@@ -28,6 +28,8 @@ namespace TumblThree.Applications.ViewModels
         private string oauthCallbackUrl;
         private int parallelImages;
         private int parallelBlogs;
+        private int timeOut;
+        private int bandwidth;
         private int imageSize;
         private int videoSize;
         private bool checkClipboard;
@@ -117,6 +119,18 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref parallelBlogs, value); }
         }
 
+        public int TimeOut
+        {
+            get { return timeOut; }
+            set { SetProperty(ref timeOut, value); }
+        }
+
+        public int Bandwidth
+        {
+            get { return bandwidth; }
+            set { SetProperty(ref bandwidth, value); }
+        }
+
         public int ImageSize
         {
             get { return imageSize; }
@@ -191,6 +205,8 @@ namespace TumblThree.Applications.ViewModels
                 ParallelBlogs = settings.ParallelBlogs;
                 ImageSize = settings.ImageSize;
                 VideoSize = settings.VideoSize;
+                TimeOut = settings.TimeOut;
+                Bandwidth = settings.Bandwidth;
                 CheckClipboard = settings.CheckClipboard;
                 ShowPicturePreview = settings.ShowPicturePreview;
                 DeleteOnlyIndex = settings.DeleteOnlyIndex;
@@ -210,6 +226,8 @@ namespace TumblThree.Applications.ViewModels
                 DownloadLocation = ".\\Blogs";
                 ParallelImages = 25;
                 ParallelBlogs = 2;
+                TimeOut = 20;
+                Bandwidth = int.MaxValue;
                 ImageSize = 1280;
                 VideoSize = 1080;
                 CheckClipboard = true;
@@ -232,6 +250,8 @@ namespace TumblThree.Applications.ViewModels
             settings.DownloadLocation = DownloadLocation;
             settings.ParallelImages = ParallelImages;
             settings.ParallelBlogs = ParallelBlogs;
+            settings.TimeOut = TimeOut;
+            settings.Bandwidth = Bandwidth;
             settings.ImageSize = ImageSize;
             settings.VideoSize = VideoSize;
             settings.CheckClipboard = CheckClipboard;

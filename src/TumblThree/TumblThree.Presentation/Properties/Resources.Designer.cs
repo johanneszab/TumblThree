@@ -97,6 +97,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bandwidth (kb/s).
+        /// </summary>
+        public static string Bandwidth {
+            get {
+                return ResourceManager.GetString("Bandwidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter URL:.
         /// </summary>
         public static string BlogUrl {
@@ -606,6 +615,15 @@ namespace TumblThree.Presentation.Properties {
         public static string Tags {
             get {
                 return ResourceManager.GetString("Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Timeout (s).
+        /// </summary>
+        public static string TimeOut {
+            get {
+                return ResourceManager.GetString("TimeOut", resourceCulture);
             }
         }
         

@@ -336,4 +336,10 @@
   <data name="Notes" xml:space="preserve">
     <value>Personal Notes</value>
   </data>
+  <data name="Bandwidth" xml:space="preserve">
+    <value>Bandwidth (kb/s)</value>
+  </data>
+  <data name="TimeOut" xml:space="preserve">
+    <value>Timeout (s)</value>
+  </data>
 </root>

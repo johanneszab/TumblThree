@@ -339,7 +339,7 @@ namespace TumblThree.Applications.Controllers
 
             var parallel = Parallel.ForEach(
                 imageUrls,
-                    new ParallelOptions { MaxDegreeOfParallelism = (shellService.Settings.ParallelImages / shellService.Settings.ParallelBlogs) },
+                    new ParallelOptions { MaxDegreeOfParallelism = (shellService.Settings.ParallelImages / selectionService.ActiveItems.Count) },
                     (currentImageUrl, state) =>
                     {
                         if (ct.IsCancellationRequested)
@@ -579,7 +579,8 @@ namespace TumblThree.Applications.Controllers
                 var jsserializer = new JavaScriptSerializer();
                 using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
                 {
-                    StreamReader reader = new StreamReader(response.GetResponseStream());
+                    ThrottledStream stream = new ThrottledStream(response.GetResponseStream(), (shellService.Settings.Bandwidth / shellService.Settings.ParallelImages) * 1024);
+                    StreamReader reader = new StreamReader(stream);
 
                     DataModels.TumblrJson data = jsserializer.Deserialize<DataModels.TumblrJson>(reader.ReadToEnd());
                     if (data.meta.status == 200)
@@ -737,7 +738,7 @@ namespace TumblThree.Applications.Controllers
             int totalPages = (totalPosts / 20) + 1;
 
             Parallel.For(0, totalPages,
-                        new ParallelOptions { MaxDegreeOfParallelism = (shellService.Settings.ParallelImages / shellService.Settings.ParallelBlogs) },
+                        new ParallelOptions { MaxDegreeOfParallelism = (shellService.Settings.ParallelImages / selectionService.ActiveItems.Count) },
                         (i, state) =>
                         {
                             if (ct.IsCancellationRequested)
@@ -886,10 +887,8 @@ namespace TumblThree.Applications.Controllers
                 Monitor.Exit(blog);
                 try
                 {
-                    using (System.Net.WebClient client = new System.Net.WebClient())
-                    {
-                        client.DownloadFile(url, fileLocation);
-                    }
+                    using (var stream = ThrottledStream.ReadFromURLIntoStream(url, (shellService.Settings.Bandwidth / shellService.Settings.ParallelImages), shellService.Settings.TimeOut))
+                        ThrottledStream.SaveStreamToDisk(stream, fileLocation);
                     return true;
                 }
                 catch (Exception)

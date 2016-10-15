@@ -74,6 +74,12 @@ namespace TumblThree.Applications.Properties
         public int ParallelBlogs { get; set; }
 
         [DataMember]
+        public int TimeOut { get; set; }
+
+        [DataMember]
+        public int Bandwidth { get; set; }
+
+        [DataMember]
         public int ImageSize { get; set; }
 
         public int VideoSize { get; set; }
@@ -142,6 +148,8 @@ namespace TumblThree.Applications.Properties
             DownloadLocation = @".\Blogs\";
             ParallelImages = 25;
             ParallelBlogs = 2;
+            TimeOut = 20;
+            Bandwidth = int.MaxValue;
             ImageSize = 1280;
             VideoSize = 1080;
             CheckClipboard = true;

@@ -98,6 +98,7 @@
     <Compile Include="Services\ShellService.cs" />
     <Compile Include="Services\ShellServiceExtensions.cs" />
     <Compile Include="Services\Validator.cs" />
+    <Compile Include="ThrottledStream.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\DetailsViewModel.cs" />
     <Compile Include="ViewModels\ManagerViewModel.cs" />
