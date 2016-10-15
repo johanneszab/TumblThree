@@ -26,6 +26,8 @@ namespace TumblThree.Applications.Services
 
         ICommand StopCommand { get; }
 
+        ICommand AutoDownloadCommand { get; }
+
         bool IsCrawl { get; }
 
         bool IsPaused { get; }

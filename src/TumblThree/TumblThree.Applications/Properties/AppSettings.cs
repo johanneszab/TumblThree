@@ -22,6 +22,11 @@ namespace TumblThree.Applications.Properties
                 "1080", "480"
         };
 
+        public static string[] blogTypes =
+            new string[] {
+                "all", "once finsihed", "never finished"
+        };
+
         [DataMember]
         public string RequestTokenUrl { get; set; }
 
@@ -84,6 +89,8 @@ namespace TumblThree.Applications.Properties
 
         public int VideoSize { get; set; }
 
+        public string BlogType { get; set; }
+
         [DataMember]
         public bool CheckClipboard { get; set; }
 
@@ -109,6 +116,9 @@ namespace TumblThree.Applications.Properties
         public bool DownloadVideos { get; set; }
 
         [DataMember]
+        public int TimerInterval { get; set; }
+
+        [DataMember]
         public Dictionary<object, Tuple<int, double>> ColumnWidths { get; set; }
 
         ExtensionDataObject IExtensibleDataObject.ExtensionData { get; set; }
@@ -126,6 +136,14 @@ namespace TumblThree.Applications.Properties
             get
             {
                 return new ObservableCollection<string>(videoSizes);
+            }
+        }
+
+        public ObservableCollection<string> BlogTypes
+        {
+            get
+            {
+                return new ObservableCollection<string>(blogTypes);
             }
         }
 
@@ -152,6 +170,7 @@ namespace TumblThree.Applications.Properties
             Bandwidth = int.MaxValue;
             ImageSize = 1280;
             VideoSize = 1080;
+            BlogType = "all";
             CheckClipboard = true;
             ShowPicturePreview = true;
             DeleteOnlyIndex = true;
@@ -160,6 +179,7 @@ namespace TumblThree.Applications.Properties
             RemoveIndexAfterCrawl = false;
             DownloadImages = true;
             DownloadVideos = false;
+            TimerInterval = 1440;
             ColumnWidths = new Dictionary<object, Tuple<int, double>>();
         }
 

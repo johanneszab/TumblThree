@@ -336,4 +336,10 @@
   <data name="Notes" xml:space="preserve">
     <value>Notizen</value>
   </data>
+  <data name="EnableAutoDownload" xml:space="preserve">
+    <value>Starte und downloade Blogs</value>
+  </data>
+  <data name="Timer" xml:space="preserve">
+    <value>Zeitinterval (min)</value>
+  </data>
 </root>

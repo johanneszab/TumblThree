@@ -250,6 +250,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Enable autoenqueue blogs.
+        /// </summary>
+        public static string EnableAutoDownload {
+            get {
+                return ResourceManager.GetString("EnableAutoDownload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enqueue selection.
         /// </summary>
         public static string EnqueueSelection {
@@ -624,6 +633,15 @@ namespace TumblThree.Presentation.Properties {
         public static string TimeOut {
             get {
                 return ResourceManager.GetString("TimeOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set time interval (min).
+        /// </summary>
+        public static string Timer {
+            get {
+                return ResourceManager.GetString("Timer", resourceCulture);
             }
         }
         

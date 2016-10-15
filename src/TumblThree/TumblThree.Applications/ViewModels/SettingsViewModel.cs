@@ -8,6 +8,7 @@ using TumblThree.Applications.DataModels;
 using System.ComponentModel;
 using System.Windows.Input;
 using System.Text.RegularExpressions;
+using System.Timers;
 
 namespace TumblThree.Applications.ViewModels
 {
@@ -19,6 +20,7 @@ namespace TumblThree.Applications.ViewModels
         private readonly FolderBrowserDataModel folderBrowser;
         private DelegateCommand displayFolderBrowserCommand;
         private DelegateCommand authenticateCommand;
+        private DelegateCommand enableAutoDownloadCommand;
         private readonly ExportFactory<AuthenticateViewModel> authenticateViewModelFactory;
         private string downloadLocation;
         private string apiKey;
@@ -32,30 +34,40 @@ namespace TumblThree.Applications.ViewModels
         private int bandwidth;
         private int imageSize;
         private int videoSize;
+        private string blogType;
         private bool checkClipboard;
         private bool showPicturePreview;
         private bool deleteOnlyIndex;
         private bool checkOnlineStatusAtStartup;
         private bool skipGif;
+        private bool autoDownload;
         private bool removeIndexAfterCrawl;
         private bool downloadImages;
         private bool downloadVideos;
+        private int timerInterval;
+        private Timer timer;
 
         //private bool isloaded = false;
 
         [ImportingConstructor]
-        public SettingsViewModel(ISettingsView view, IShellService shellService, ExportFactory<AuthenticateViewModel> authenticateViewModelFactory)
+        public SettingsViewModel(ISettingsView view, IShellService shellService, CrawlerService crawlerService, ExportFactory<AuthenticateViewModel> authenticateViewModelFactory)
             : base(view)
         {
             ShellService = shellService;
             settings = ShellService.Settings;
+            CrawlerService = crawlerService;
             this.authenticateViewModelFactory = authenticateViewModelFactory;
             this.folderBrowser = new FolderBrowserDataModel();
             this.displayFolderBrowserCommand = new DelegateCommand(DisplayFolderBrowser);
             this.authenticateCommand = new DelegateCommand(Authenticate);
+            this.enableAutoDownloadCommand = new DelegateCommand(EnableAutoDownload);
+            
+            this.timer = new System.Timers.Timer();
+            this.autoDownload = false;
 
             Load();
             view.Closed += ViewClosed;
+            timer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
 
             folderBrowser.PropertyChanged += FolderBrowserPropertyChanged;
         }
@@ -143,6 +155,12 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref videoSize, value); }
         }
 
+        public string BlogType
+        {
+            get { return blogType; }
+            set { SetProperty(ref blogType, value); }
+        }
+
         public bool CheckClipboard
         {
             get { return checkClipboard; }
@@ -173,6 +191,12 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref skipGif, value); }
         }
 
+        public bool AutoDownload
+        {
+            get { return autoDownload; }
+            set { SetProperty(ref autoDownload, value); if (enableAutoDownloadCommand.CanExecute(null)) { enableAutoDownloadCommand.Execute(null); } }
+        }
+
         public bool RemoveIndexAfterCrawl
         {
             get { return removeIndexAfterCrawl; }
@@ -191,6 +215,12 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref downloadVideos, value); }
         }
 
+        public int TimerInterval
+        {
+            get { return timerInterval; }
+            set { SetProperty(ref timerInterval, value); }
+        }
+
         private void LoadSettings()
         {
             if (settings != null)
@@ -205,6 +235,7 @@ namespace TumblThree.Applications.ViewModels
                 ParallelBlogs = settings.ParallelBlogs;
                 ImageSize = settings.ImageSize;
                 VideoSize = settings.VideoSize;
+                BlogType = settings.BlogType;
                 TimeOut = settings.TimeOut;
                 Bandwidth = settings.Bandwidth;
                 CheckClipboard = settings.CheckClipboard;
@@ -215,6 +246,7 @@ namespace TumblThree.Applications.ViewModels
                 RemoveIndexAfterCrawl = settings.RemoveIndexAfterCrawl;
                 DownloadImages = settings.DownloadImages;
                 DownloadVideos = settings.DownloadVideos;
+                TimerInterval = settings.TimerInterval;
             }
             else
             {
@@ -230,6 +262,7 @@ namespace TumblThree.Applications.ViewModels
                 Bandwidth = int.MaxValue;
                 ImageSize = 1280;
                 VideoSize = 1080;
+                BlogType = "all";
                 CheckClipboard = true;
                 ShowPicturePreview = true;
                 DeleteOnlyIndex = true;
@@ -238,6 +271,7 @@ namespace TumblThree.Applications.ViewModels
                 RemoveIndexAfterCrawl = false;
                 DownloadImages = true;
                 DownloadVideos = false;
+                TimerInterval = 1440;
             }
         }
 
@@ -254,6 +288,7 @@ namespace TumblThree.Applications.ViewModels
             settings.Bandwidth = Bandwidth;
             settings.ImageSize = ImageSize;
             settings.VideoSize = VideoSize;
+            settings.BlogType = BlogType;
             settings.CheckClipboard = CheckClipboard;
             settings.ShowPicturePreview = ShowPicturePreview;
             settings.DeleteOnlyIndex = DeleteOnlyIndex;
@@ -267,6 +302,7 @@ namespace TumblThree.Applications.ViewModels
             settings.OAuthToken = OAuthToken;
             settings.OAuthTokenSecret = OAuthTokenSecret;
             settings.OAuthCallbackUrl = OAuthCallbackUrl;
+            settings.TimerInterval = TimerInterval;
         }
 
         public void Load()
@@ -277,6 +313,34 @@ namespace TumblThree.Applications.ViewModels
         public ICommand DisplayFolderBrowserCommand { get { return displayFolderBrowserCommand; } }
 
         public ICommand AuthenticateCommand { get { return authenticateCommand; } }
+
+        public ICommand EnableAutoDownloadCommand { get { return enableAutoDownloadCommand; } }
+
+        private void EnableAutoDownload()
+        {
+            if (AutoDownload)
+            {
+                timer.Interval = 1000 * 60 * settings.TimerInterval;
+                timer.Start();
+                timer.Enabled = true;
+                timer.AutoReset = true;
+            }
+            else
+            {
+                timer.Stop();
+            }
+        }
+
+        private void OnTimedEvent(object sender, ElapsedEventArgs e)
+        {
+            if (CrawlerService.AutoDownloadCommand.CanExecute(null))
+                System.Windows.Application.Current.Dispatcher.BeginInvoke(
+                    System.Windows.Threading.DispatcherPriority.Background,
+                    new Action(() => {
+                        CrawlerService.AutoDownloadCommand.Execute(null);
+                    }));
+        }
+
 
         private void DisplayFolderBrowser()
         {

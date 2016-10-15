@@ -18,6 +18,7 @@ namespace TumblThree.Applications.Services
         private ICommand resumeCommand;
         private ICommand stopCommand;
         private ICommand listenClipboardCommand;
+        private ICommand autoDownloadCommand;
         private bool isCrawl;
         private bool isPaused;
         private string newBlogUrl;
@@ -81,6 +82,13 @@ namespace TumblThree.Applications.Services
             get { return stopCommand; }
             set { SetProperty(ref stopCommand, value); }
         }
+
+        public ICommand AutoDownloadCommand
+        {
+            get { return autoDownloadCommand; }
+            set { SetProperty(ref autoDownloadCommand, value); }
+        }
+
 
         public bool IsCrawl
         {

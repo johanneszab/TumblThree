@@ -7,11 +7,13 @@
         xmlns:ctrl="clr-namespace:TumblThree.Presentation.Controls"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
         xmlns:vm="clr-namespace:TumblThree.Applications.ViewModels;assembly=TumblThree.Applications"
-        mc:Ignorable="d" Title="Settings" Height="540" Width="600"
+        mc:Ignorable="d" Title="Settings" Height="580" Width="600"
         d:DataContext="{d:DesignInstance vm:SettingsViewModel}">
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="46"/>
+            <RowDefinition Height="46"/>
             <RowDefinition Height="46"/>
             <RowDefinition Height="46"/>
             <RowDefinition Height="46"/>
@@ -27,7 +29,7 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Label x:Name="downloadLocationLabel" Grid.Column="0" Content="{x:Static p:Resources.DownloadLocation}" HorizontalAlignment="Left" Margin="10,10,10,10" Width="Auto"/>
-            <TextBox x:Name="downloadLocationtextBox" Text="{Binding DownloadLocation, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Grid.Column="1" HorizontalAlignment="Stretch" Height="26" Margin="10,10,10,10" TextWrapping="Wrap" VerticalAlignment="Top"/>
+            <TextBox x:Name="downloadLocationtextBox" Text="{Binding DownloadLocation, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Grid.Column="1" HorizontalAlignment="Stretch" Height="26" Margin="10,10,10,10" TextWrapping="Wrap" VerticalAlignment="Center"/>
             <Button x:Name="browseDownloadLocationButton" Content="{x:Static p:Resources.Browse}" Command="{Binding DisplayFolderBrowserCommand}" Grid.Column="2" HorizontalAlignment="Left" Margin="10,10,10,10" VerticalAlignment="Top" Height="26" Width="75"/>
 
         </Grid>
@@ -95,7 +97,20 @@
             <Label x:Name="bandwidthLabel" Grid.Column="3" Content="{x:Static p:Resources.Bandwidth}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Width="Auto"/>
             <TextBox x:Name="bandwidthComboBox" Grid.Column="4" Text="{Binding Bandwidth, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Stretch" Margin="10" VerticalAlignment="Center" MinWidth="120"/>
         </Grid>
-        <Grid Height="Auto" Margin="0" VerticalAlignment="Top" Grid.Row="5">
+        <Grid Height="46" Margin="0" VerticalAlignment="Top" Grid.Row="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="190"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="160"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <CheckBox x:Name="autoDownloadEnableCheckBox" Grid.Column="0" Content="{x:Static p:Resources.EnableAutoDownload}" IsChecked="{Binding AutoDownload}" IsEnabled="True" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10" Width="Auto"/>
+            <ComboBox x:Name="autoDownloadChoseBlogsComboBox" Grid.Column="1" ItemsSource="{Binding ShellService.Settings.BlogTypes}" SelectedValuePath="." SelectedValue="{Binding BlogType}" SelectedItem="{Binding BlogType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Stretch" Margin="10" VerticalAlignment="Center" MinWidth="120"/>
+            <Label x:Name="autoDownloadTimerLabel" Grid.Column="3" Content="{x:Static p:Resources.Timer}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Width="Auto"/>
+            <TextBox x:Name="autoDownloadSetTimerComboBox" Grid.Column="4" Text="{Binding TimerInterval, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Stretch" Margin="10" VerticalAlignment="Center" MinWidth="60"/>
+        </Grid>
+        <Grid Height="Auto" Margin="0" VerticalAlignment="Top" Grid.Row="7">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
@@ -114,7 +129,7 @@
             <CheckBox x:Name="checkBoxDeleteIndex" Content="{x:Static p:Resources.DeleteIndex}" IsChecked="{Binding DeleteOnlyIndex, Mode=TwoWay}" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
             <CheckBox x:Name="checkBoxRemoveIndex" Content="{x:Static p:Resources.RemoveIndex}" IsChecked="{Binding RemoveIndexAfterCrawl, Mode=TwoWay}" Grid.Column="0" Grid.Row="5" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
         </Grid>
-        <Grid Height="Auto" Margin="0" VerticalAlignment="Bottom" Grid.Row="5">
+        <Grid Height="Auto" Margin="0" VerticalAlignment="Bottom" Grid.Row="8">
             <Button x:Name="buttonAuthenticate" Height="Auto" Content="{x:Static p:Resources.Authenticate}" Command="{Binding AuthenticateCommand}" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="75">
                 <Button.ToolTip>
                     <ToolTip>

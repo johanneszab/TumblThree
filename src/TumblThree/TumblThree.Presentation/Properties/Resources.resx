@@ -342,4 +342,10 @@
   <data name="TimeOut" xml:space="preserve">
     <value>Timeout (s)</value>
   </data>
+  <data name="EnableAutoDownload" xml:space="preserve">
+    <value>Enable autoenqueue blogs</value>
+  </data>
+  <data name="Timer" xml:space="preserve">
+    <value>Set time interval (min)</value>
+  </data>
 </root>

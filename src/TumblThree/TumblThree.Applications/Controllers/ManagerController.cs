@@ -46,6 +46,7 @@ namespace TumblThree.Applications.Controllers
         private readonly DelegateCommand resumeCommand;
         private readonly DelegateCommand stopCommand;
         private readonly DelegateCommand listenClipboardCommand;
+        private readonly DelegateCommand autoDownloadCommand;
         //private readonly DelegateCommand showBlogPropertiesCommand;
         private readonly List<Task> runningTasks;
         private CancellationTokenSource crawlBlogsCancellation;
@@ -71,6 +72,7 @@ namespace TumblThree.Applications.Controllers
             this.resumeCommand = new DelegateCommand(Resume, CanResume);
             this.stopCommand = new DelegateCommand(Stop, CanStop);
             this.listenClipboardCommand = new DelegateCommand(ListenClipboard);
+            this.autoDownloadCommand = new DelegateCommand(EnqueueAutoDownload, CanEnqueueAutoDownload);
             this.runningTasks = new List<Task>();
         }
 
@@ -90,6 +92,7 @@ namespace TumblThree.Applications.Controllers
             crawlerService.PauseCommand = pauseCommand;
             crawlerService.ResumeCommand = resumeCommand;
             crawlerService.StopCommand = stopCommand;
+            crawlerService.AutoDownloadCommand = autoDownloadCommand;
             crawlerService.ListenClipboardCommand = listenClipboardCommand;
             crawlerService.PropertyChanged += CrawlerServicePropertyChanged;
 
@@ -391,6 +394,32 @@ namespace TumblThree.Applications.Controllers
         {
             QueueManager.AddItems(blogFiles.Select(x => new QueueListItem(x)));
             shellService.ShowQueueView();
+        }
+
+        private bool CanEnqueueAutoDownload()
+        {
+            return selectionService.BlogFiles.Any();
+        }
+
+        private void EnqueueAutoDownload()
+        {
+            if (shellService.Settings.BlogType == shellService.Settings.BlogTypes.ElementAtOrDefault(0))
+                  Enqueue(selectionService.BlogFiles.ToArray());
+            if (shellService.Settings.BlogType == shellService.Settings.BlogTypes.ElementAtOrDefault(1))
+                Enqueue(selectionService.BlogFiles.Where(blog => blog.LastCompleteCrawl != System.DateTime.MinValue).ToArray());
+            if (shellService.Settings.BlogType == shellService.Settings.BlogTypes.ElementAtOrDefault(2))
+                Enqueue(selectionService.BlogFiles.Where(blog => blog.LastCompleteCrawl == System.DateTime.MinValue).ToArray());
+
+            if (crawlerService.IsCrawl && crawlerService.IsPaused)
+            {
+                resumeCommand.CanExecute(null);
+                resumeCommand.Execute(null);
+            }
+            else if (!crawlerService.IsCrawl)
+            {              
+                crawlCommand.CanExecute(null);
+                crawlCommand.Execute(null);
+            }
         }
 
         private bool CanAddBlog() { return Validator.IsValidTumblrUrl(crawlerService.NewBlogUrl); }
