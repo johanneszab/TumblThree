@@ -52,10 +52,6 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="WpfApplicationFramework, Version=3.2.0.450, Culture=neutral, PublicKeyToken=1d6a5af5fe952afb, processorArchitecture=MSIL">
-      <HintPath>..\packages\waf.3.2.0\lib\net45\WpfApplicationFramework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -216,7 +212,6 @@
     <EmbeddedResource Include="Properties\Resources.de.resx" />
     <None Include="App.config" />
     <None Include="Properties\app.manifest" />
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -232,6 +227,10 @@
     <CodeAnalysisDictionary Include="Properties\CodeAnalysisDictionary.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\lib\WpfApplicationFramework\WpfApplicationFramework\WpfApplicationFramework.csproj">
+      <Project>{27b67dfe-0bf1-4435-b036-e4c083eaea03}</Project>
+      <Name>WpfApplicationFramework</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TumblThree.Applications\TumblThree.Applications.csproj">
       <Project>{bd6b0abd-6114-476b-b0df-734e891d6634}</Project>
       <Name>TumblThree.Applications</Name>

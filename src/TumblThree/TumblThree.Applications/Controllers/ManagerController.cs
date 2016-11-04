@@ -278,6 +278,7 @@ namespace TumblThree.Applications.Controllers
                     if (blogToCrawlNext.Blog is TumblrBlog) {
 
                         var blog = (TumblrBlog) blogToCrawlNext.Blog;
+                        blog.Dirty = true;
 
                         var progressHandler = new Progress<DataModels.DownloadProgress>(value =>
                         {
@@ -362,7 +363,7 @@ namespace TumblThree.Applications.Controllers
                             blog.Progress = (uint)((double)blog.DownloadedImages / (double)blog.TotalCount * 100);
 
                             newProgress = new DataModels.DownloadProgress();
-                            newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressDownloadImage, currentImageUrl); ;
+                            newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressDownloadImage, currentImageUrl.Split('/').Last()); ;
                             progress.Report(newProgress);
                         }
                     });
@@ -371,6 +372,7 @@ namespace TumblThree.Applications.Controllers
             {
                 blog.LastCompleteCrawl = DateTime.Now;
             }
+            blog.Dirty = false;
             SaveBlog(blog);
 
             newProgress = new DataModels.DownloadProgress();

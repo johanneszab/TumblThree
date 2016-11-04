@@ -79,7 +79,7 @@
                 <DataGridTemplateColumn x:Name="progressColumn" Header="{x:Static p:Resources.Progress}" Width="200">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ProgressBar Value="{Binding Progress, Mode=OneWay}" Minimum="0" Maximum="100" />
+                            <ProgressBar Value="{Binding Progress, Mode=OneWay}" Height="15" Minimum="0" Maximum="100" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

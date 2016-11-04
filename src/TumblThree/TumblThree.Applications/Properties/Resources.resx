@@ -117,14 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AuthenticationFailure" xml:space="preserve">
+    <value>Authentication failure: {0}</value>
+  </data>
   <data name="BlogAlreadyExist" xml:space="preserve">
     <value>The blog already exist:  {0}</value>
   </data>
   <data name="BlogIsOffline" xml:space="preserve">
     <value>The Blog is Offline: {0}</value>
   </data>
+  <data name="BlogTypesAll" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="BlogTypesNeverFinished" xml:space="preserve">
+    <value>Never finished</value>
+  </data>
+  <data name="BlogTypesOnceFinished" xml:space="preserve">
+    <value>Once finished</value>
+  </data>
   <data name="CouldNotAddBlog" xml:space="preserve">
-    <value>Could not add the blog:  {0}</value>
+    <value>Could not add the blog: {0}</value>
   </data>
   <data name="CouldNotLoadLibrary" xml:space="preserve">
     <value>Could not load file in library: {0}</value>

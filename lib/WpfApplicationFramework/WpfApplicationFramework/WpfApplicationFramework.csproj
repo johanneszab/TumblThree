@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{27B67DFE-0BF1-4435-B036-E4C083EAEA03}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>System.Waf</RootNamespace>
+    <AssemblyName>WpfApplicationFramework</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Output\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\Output\Debug\WpfApplicationFramework.xml</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <CodeAnalysisRuleSet>..\..\WpfApplicationFramework.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Output\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\Output\Release\WpfApplicationFramework.xml</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="PresentationFramework">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.XML" />
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Applications\ApplicationInfo.cs" />
+    <Compile Include="Applications\CollectionChangedEventListener.cs" />
+    <Compile Include="Applications\Controller.cs" />
+    <Compile Include="Applications\DataModel.cs" />
+    <Compile Include="Applications\DelegateCommand.cs" />
+    <Compile Include="Applications\DispatcherHelper.cs" />
+    <Compile Include="Applications\IModuleController.cs" />
+    <Compile Include="Applications\IView.cs" />
+    <Compile Include="Applications\PropertyChangedEventListener.cs" />
+    <Compile Include="Applications\RecentFile.cs" />
+    <Compile Include="Applications\RecentFileList.cs" />
+    <Compile Include="Applications\Services\FileDialogResult.cs" />
+    <Compile Include="Applications\Services\FileDialogServiceExtensions.cs" />
+    <Compile Include="Applications\Services\FileType.cs" />
+    <Compile Include="Applications\Services\IFileDialogService.cs" />
+    <Compile Include="Applications\Services\IMessageService.cs" />
+    <Compile Include="Applications\Services\MessageServiceExtensions.cs" />
+    <Compile Include="Applications\SynchronizingCollection.cs" />
+    <Compile Include="Foundation\IReadOnlyObservableList.cs" />
+    <Compile Include="Foundation\ReadOnlyObservableList.cs" />
+    <Compile Include="Foundation\ThrottledAction.cs" />
+    <Compile Include="Applications\ViewHelper.cs" />
+    <Compile Include="Applications\ViewModel.cs" />
+    <Compile Include="Applications\ViewModel.Generic.cs" />
+    <Compile Include="Foundation\CollectionHelper.cs" />
+    <Compile Include="Foundation\DataErrorInfoExtensions.cs" />
+    <Compile Include="Foundation\DataErrorInfoSupport.cs" />
+    <Compile Include="Foundation\Model.cs" />
+    <Compile Include="Foundation\ValidatableModel.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Presentation\Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Presentation\Converters\InvertBooleanConverter.cs" />
+    <Compile Include="Presentation\Converters\StringFormatConverter.cs" />
+    <Compile Include="Presentation\Converters\ValidationErrorsConverter.cs" />
+    <Compile Include="Presentation\Services\FileDialogService.cs" />
+    <Compile Include="Presentation\Services\MessageService.cs" />
+    <Compile Include="Presentation\ValidationHelper.cs" />
+    <Compile Include="Presentation\ValidationReloadedTracker.cs" />
+    <Compile Include="Presentation\ValidationTracker.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WafConfiguration.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

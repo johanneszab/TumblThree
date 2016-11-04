@@ -61,6 +61,15 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Authentication failure: {0}.
+        /// </summary>
+        public static string AuthenticationFailure {
+            get {
+                return ResourceManager.GetString("AuthenticationFailure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The blog already exist:  {0}.
         /// </summary>
         public static string BlogAlreadyExist {
@@ -79,7 +88,34 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not add the blog:  {0}.
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string BlogTypesAll {
+            get {
+                return ResourceManager.GetString("BlogTypesAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Never finished.
+        /// </summary>
+        public static string BlogTypesNeverFinished {
+            get {
+                return ResourceManager.GetString("BlogTypesNeverFinished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Once finished.
+        /// </summary>
+        public static string BlogTypesOnceFinished {
+            get {
+                return ResourceManager.GetString("BlogTypesOnceFinished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not add the blog: {0}.
         /// </summary>
         public static string CouldNotAddBlog {
             get {

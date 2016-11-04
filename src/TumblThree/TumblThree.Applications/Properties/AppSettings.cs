@@ -24,7 +24,7 @@ namespace TumblThree.Applications.Properties
 
         public static string[] blogTypes =
             new string[] {
-                "all", "once finsihed", "never finished"
+                Resources.BlogTypesAll, Resources.BlogTypesOnceFinished, Resources.BlogTypesNeverFinished
         };
 
         [DataMember]
@@ -152,9 +152,9 @@ namespace TumblThree.Applications.Properties
             RequestTokenUrl = @"https://www.tumblr.com/oauth/request_token";
             AuthorizeUrl = @"https://www.tumblr.com/oauth/authorize";
             AccessTokenUrl = @"https://www.tumblr.com/oauth/access_token";
-            OAuthCallbackUrl = @"http://www.tumblr.com/tumblthree";
-            ApiKey = "lICmmi2UfTdai1aVEfrMMoKidUfIMDV1pXlfiVdqhLmQgTNI9D";
-            SecretKey = "BB2JMMfa0";
+            OAuthCallbackUrl = @"https://github.com/johanneszab/TumblThree";
+            ApiKey = "x8pd1InspmnuLSFKT4jNxe8kQUkbRXPNkAffntAFSk01UjRsLV";
+            SecretKey = "Mul4BviRQgPLuhN1xzEqmXzwvoWicEoc4w6ftWBGWtioEvexmM";
             OAuthToken = string.Empty;
             OAuthTokenSecret = string.Empty;
             Left = 50;
@@ -166,7 +166,7 @@ namespace TumblThree.Applications.Properties
             DownloadLocation = @".\Blogs\";
             ParallelImages = 25;
             ParallelBlogs = 2;
-            TimeOut = 20;
+            TimeOut = 120;
             Bandwidth = int.MaxValue;
             ImageSize = 1280;
             VideoSize = 1080;

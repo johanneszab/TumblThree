@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Windows.Input;
 using System.Text.RegularExpressions;
 using System.Timers;
+using TumblThree.Domain;
 
 namespace TumblThree.Applications.ViewModels
 {
@@ -250,15 +251,15 @@ namespace TumblThree.Applications.ViewModels
             }
             else
             {
-                ApiKey = "lICmmi2UfTdai1aVEfrMMoKidUfIMDV1pXlfiVdqhLmQgTNI9D";
-                SecretKey = "BB2JMMfa0";
-                OAuthCallbackUrl = @"http://www.tumblr.com/tumblthree";
+                ApiKey = "x8pd1InspmnuLSFKT4jNxe8kQUkbRXPNkAffntAFSk01UjRsLV";
+                SecretKey = "Mul4BviRQgPLuhN1xzEqmXzwvoWicEoc4w6ftWBGWtioEvexmM";
+                OAuthCallbackUrl = @"https://github.com/johanneszab/TumblThree";
                 OAuthToken = string.Empty;
                 OAuthTokenSecret = string.Empty;
                 DownloadLocation = ".\\Blogs";
                 ParallelImages = 25;
                 ParallelBlogs = 2;
-                TimeOut = 20;
+                TimeOut = 120;
                 Bandwidth = int.MaxValue;
                 ImageSize = 1280;
                 VideoSize = 1080;
@@ -354,31 +355,40 @@ namespace TumblThree.Applications.ViewModels
 
         private void Authenticate()
         {
-            ShellService.OAuthManager["consumer_key"] = ApiKey;
-            ShellService.OAuthManager["consumer_secret"] = SecretKey;
-            OAuthResponse requestToken =
-                ShellService.OAuthManager.AcquireRequestToken(settings.RequestTokenUrl, "POST");
-            var url = settings.AuthorizeUrl + @"?oauth_token=" + ShellService.OAuthManager["token"];
+            try
+            {
+                ShellService.OAuthManager["consumer_key"] = ApiKey;
+                ShellService.OAuthManager["consumer_secret"] = SecretKey;
+                OAuthResponse requestToken =
+                    ShellService.OAuthManager.AcquireRequestToken(settings.RequestTokenUrl, "POST");
+                var url = settings.AuthorizeUrl + @"?oauth_token=" + ShellService.OAuthManager["token"];
 
-            var authenticateViewModel = authenticateViewModelFactory.CreateExport().Value;
-            authenticateViewModel.AddUrl(url);           
-            authenticateViewModel.ShowDialog(ShellService.ShellView);
-            string oauthTokenUrl = authenticateViewModel.GetUrl();
+                var authenticateViewModel = authenticateViewModelFactory.CreateExport().Value;
+                authenticateViewModel.AddUrl(url);
+                authenticateViewModel.ShowDialog(ShellService.ShellView);
+                string oauthTokenUrl = authenticateViewModel.GetUrl();
 
-            Regex regex = new Regex("oauth_verifier=(.*)");
-            string oauthVerifer = regex.Match(oauthTokenUrl).Groups[1].ToString();
+                Regex regex = new Regex("oauth_verifier=(.*)");
+                string oauthVerifer = regex.Match(oauthTokenUrl).Groups[1].ToString();
 
-            OAuthResponse accessToken =
-                ShellService.OAuthManager.AcquireAccessToken(settings.AccessTokenUrl, "POST", oauthVerifer);
+                OAuthResponse accessToken =
+                    ShellService.OAuthManager.AcquireAccessToken(settings.AccessTokenUrl, "POST", oauthVerifer);
 
-            regex = new Regex("oauth_token=(.*)&oauth_token_secret");
-            OAuthToken = regex.Match(accessToken.AllText).Groups[1].ToString();
+                regex = new Regex("oauth_token=(.*)&oauth_token_secret");
+                OAuthToken = regex.Match(accessToken.AllText).Groups[1].ToString();
 
-            regex = new Regex("oauth_token_secret=(.*)");
-            OAuthTokenSecret = regex.Match(accessToken.AllText).Groups[1].ToString();
+                regex = new Regex("oauth_token_secret=(.*)");
+                OAuthTokenSecret = regex.Match(accessToken.AllText).Groups[1].ToString();
 
-            ShellService.OAuthManager["token"] = OAuthToken;
-            ShellService.OAuthManager["token_secret"] = OAuthTokenSecret;
+                ShellService.OAuthManager["token"] = OAuthToken;
+                ShellService.OAuthManager["token_secret"] = OAuthTokenSecret;
+            }
+            catch (System.Net.WebException ex)
+            {
+                Logger.Error("SettingsViewModel:Authenticate: {0}", ex);
+                ShellService.ShowError(ex, Resources.AuthenticationFailure, ex.Message);
+                return;
+            }
         }
 
         private void FolderBrowserPropertyChanged(object sender, PropertyChangedEventArgs e)
