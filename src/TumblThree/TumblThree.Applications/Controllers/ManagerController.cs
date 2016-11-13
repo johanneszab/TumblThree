@@ -756,6 +756,13 @@ namespace TumblThree.Applications.Controllers
             int totalPosts = 0;
             int numberOfPostsCrawled = 0;
             uint totalImages;
+            int photos = 0;
+            int videos = 0;
+            int audio = 0;
+            int text = 0;
+            int conversation = 0;
+            int quotes = 0;
+            int link = 0;
             List<string> images = new List<string>();
 
             string url = GetApiUrl(blog.Name, 1);
@@ -790,6 +797,14 @@ namespace TumblThree.Applications.Controllers
                                     authHeader = shellService.OAuthManager.GenerateauthHeader(url, "GET");
 
                                     document = RequestData(url, authHeader);
+
+                                    Interlocked.Add(ref photos, document.response.posts.Where(posts => posts.type.Equals("photo")).Count());
+                                    Interlocked.Add(ref videos, document.response.posts.Where(posts => posts.type.Equals("video")).Count());
+                                    Interlocked.Add(ref audio, document.response.posts.Where(posts => posts.type.Equals("audio")).Count());
+                                    Interlocked.Add(ref text, document.response.posts.Where(posts => posts.type.Equals("text")).Count());
+                                    Interlocked.Add(ref conversation, document.response.posts.Where(posts => posts.type.Equals("chat")).Count());
+                                    Interlocked.Add(ref quotes, document.response.posts.Where(posts => posts.type.Equals("quotes")).Count());
+                                    Interlocked.Add(ref link, document.response.posts.Where(posts => posts.type.Equals("link")).Count());
 
                                     if (shellService.Settings.DownloadImages == true)
                                     {
@@ -886,6 +901,15 @@ namespace TumblThree.Applications.Controllers
                 );
 
             images = images.Distinct().ToList();
+
+            blog.Posts = (uint)totalPosts;
+            blog.Photos = (uint)photos;
+            blog.Videos = (uint)videos;
+            blog.Audios = (uint)audio;
+            blog.Texts = (uint)text;
+            blog.Conversations = (uint)conversation;
+            blog.Quotes = (uint)quotes;
+            blog.NumberOfLinks = (uint)link;
 
             totalImages = (uint)images.Count;
             return Tuple.Create(totalImages, images);

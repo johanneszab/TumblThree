@@ -9,6 +9,7 @@ namespace TumblThree.Domain.Models
         private string title;
         private uint progress;
         private string tags;
+        private uint posts;
         private uint texts;
         private uint quotes;
         private uint photos;
@@ -32,6 +33,7 @@ namespace TumblThree.Domain.Models
             this.title = null;
             this.progress = 0;
             this.tags = null;
+            this.posts = 0;
             this.texts = 0;
             this.quotes = 0;
             this.photos = 0;
@@ -63,6 +65,12 @@ namespace TumblThree.Domain.Models
         {
             get { return tags; }
             set { SetProperty(ref tags, value); Dirty = true; }
+        }
+
+        public uint Posts
+        {
+            get { return posts; }
+            set { SetProperty(ref posts, value); }
         }
 
         public uint Texts
