@@ -162,6 +162,7 @@
     <Compile Include="DesignData\MockShellService.cs" />
     <Compile Include="DesignData\MockView.cs" />
     <Compile Include="DesignData\SampleAboutViewModel.cs" />
+    <Compile Include="DesignData\SampleDetailsViewModel.cs" />
     <Compile Include="DesignData\SampleManagerViewModel.cs" />
     <Compile Include="DesignData\SampleQueueViewModel.cs" />
     <Compile Include="DesignData\SampleShellViewModel.cs" />

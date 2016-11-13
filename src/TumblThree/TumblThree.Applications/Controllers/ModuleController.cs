@@ -23,6 +23,7 @@ namespace TumblThree.Applications.Controllers
         private readonly ISettingsProvider settingsProvider;
         private readonly Lazy<ManagerController> managerController;
         private readonly Lazy<QueueController> queueController;
+        private readonly Lazy<DetailsController> detailsController;
         private readonly Lazy<ShellViewModel> shellViewModel;
         private readonly QueueManager queueManager;
         private AppSettings appSettings;
@@ -32,11 +33,12 @@ namespace TumblThree.Applications.Controllers
 
         [ImportingConstructor]
         public ModuleController(Lazy<ShellService> shellService, IEnvironmentService environmentService, ISettingsProvider settingsProvider, Lazy<ManagerController> managerController,
-            Lazy<QueueController> queueController, Lazy<ShellViewModel> shellViewModel)
+            Lazy<QueueController> queueController, Lazy<DetailsController> detailsController, Lazy<ShellViewModel> shellViewModel)
         {
             this.shellService = shellService;
             this.environmentService = environmentService;
             this.settingsProvider = settingsProvider;
+            this.detailsController = detailsController;
             this.managerController = managerController;
             this.queueController = queueController;
             this.shellViewModel = shellViewModel;
@@ -49,6 +51,8 @@ namespace TumblThree.Applications.Controllers
         private ManagerController ManagerController { get { return managerController.Value; } }
 
         private QueueController QueueController { get { return queueController.Value; } }
+
+        private DetailsController DetailsController { get { return detailsController.Value; } }
 
         private ShellViewModel ShellViewModel { get { return shellViewModel.Value; } }
 
@@ -71,6 +75,8 @@ namespace TumblThree.Applications.Controllers
             QueueController.QueueSettings = queueSettings;
             QueueController.QueueManager = queueManager;
             QueueController.Initialize();
+            DetailsController.QueueManager = queueManager;
+            DetailsController.Initialize();
         }
 
         public async void Run()

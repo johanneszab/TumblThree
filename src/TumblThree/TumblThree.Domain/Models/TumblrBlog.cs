@@ -9,6 +9,13 @@ namespace TumblThree.Domain.Models
         private string title;
         private uint progress;
         private string tags;
+        private uint texts;
+        private uint quotes;
+        private uint photos;
+        private uint numberOfLinks;
+        private uint conversations;
+        private uint videos;
+        private uint audios;
 
         public TumblrBlog()
         {
@@ -25,6 +32,13 @@ namespace TumblThree.Domain.Models
             this.title = null;
             this.progress = 0;
             this.tags = null;
+            this.texts = 0;
+            this.quotes = 0;
+            this.photos = 0;
+            this.numberOfLinks = 0;
+            this.conversations = 0;
+            this.videos = 0;
+            this.audios = 0;
         }
 
         public string Description
@@ -51,5 +65,46 @@ namespace TumblThree.Domain.Models
             set { SetProperty(ref tags, value); Dirty = true; }
         }
 
+        public uint Texts
+        {
+            get { return texts; }
+            set { SetProperty(ref texts, value); }
+        }
+
+        public uint Quotes
+        {
+            get { return quotes; }
+            set { SetProperty(ref quotes, value); }
+        }
+
+        public uint Photos
+        {
+            get { return photos; }
+            set { SetProperty(ref photos, value); }
+        }
+
+        public uint NumberOfLinks
+        {
+            get { return numberOfLinks; }
+            set { SetProperty(ref numberOfLinks, value); }
+        }
+
+        public uint Conversations
+        {
+            get { return conversations; }
+            set { SetProperty(ref conversations, value); }
+        }
+
+        public uint Videos
+        {
+            get { return videos; }
+            set { SetProperty(ref videos, value); }
+        }
+
+        public uint Audios
+        {
+            get { return audios; }
+            set { SetProperty(ref audios, value); }
+        }
     }
 }

@@ -342,4 +342,40 @@
   <data name="Timer" xml:space="preserve">
     <value>Zeitinterval (min)</value>
   </data>
+  <data name="Audios" xml:space="preserve">
+    <value>Audio</value>
+  </data>
+  <data name="Links" xml:space="preserve">
+    <value>Link</value>
+  </data>
+  <data name="Photos" xml:space="preserve">
+    <value>Foto</value>
+  </data>
+  <data name="Posts" xml:space="preserve">
+    <value>Post</value>
+  </data>
+  <data name="Quotes" xml:space="preserve">
+    <value>Zitate</value>
+  </data>
+  <data name="ShowItems" xml:space="preserve">
+    <value>Zusammenfassung von {0} Blogs</value>
+  </data>
+  <data name="Texts" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="SelectABlog" xml:space="preserve">
+    <value>Wähle einen Blog aus</value>
+  </data>
+  <data name="CopyUrl" xml:space="preserve">
+    <value>Kopiere URL</value>
+  </data>
+  <data name="Videos" xml:space="preserve">
+    <value>Video</value>
+  </data>
+  <data name="Conversations" xml:space="preserve">
+    <value>Konversationen</value>
+  </data>
+  <data name="Preview" xml:space="preserve">
+    <value>Vorschau:</value>
+  </data>
 </root>

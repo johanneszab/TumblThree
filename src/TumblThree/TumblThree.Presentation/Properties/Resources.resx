@@ -175,7 +175,7 @@
     <value>Name</value>
   </data>
   <data name="NumberOfPosts" xml:space="preserve">
-    <value>Number of Images</value>
+    <value>Number of Posts</value>
   </data>
   <data name="OpenQueue" xml:space="preserve">
     <value>Open queue</value>
@@ -347,5 +347,41 @@
   </data>
   <data name="Timer" xml:space="preserve">
     <value>Set time interval (min)</value>
+  </data>
+  <data name="Audios" xml:space="preserve">
+    <value>Audio</value>
+  </data>
+  <data name="Links" xml:space="preserve">
+    <value>Link</value>
+  </data>
+  <data name="Photos" xml:space="preserve">
+    <value>Photo</value>
+  </data>
+  <data name="Posts" xml:space="preserve">
+    <value>Post</value>
+  </data>
+  <data name="Quotes" xml:space="preserve">
+    <value>Quote</value>
+  </data>
+  <data name="ShowItems" xml:space="preserve">
+    <value>Summary of {0} blogs</value>
+  </data>
+  <data name="Texts" xml:space="preserve">
+    <value>Text</value>
+  </data>
+  <data name="SelectABlog" xml:space="preserve">
+    <value>Please select a blog</value>
+  </data>
+  <data name="CopyUrl" xml:space="preserve">
+    <value>Copy url</value>
+  </data>
+  <data name="Videos" xml:space="preserve">
+    <value>Video</value>
+  </data>
+  <data name="Conversations" xml:space="preserve">
+    <value>Conversation</value>
+  </data>
+  <data name="Preview" xml:space="preserve">
+    <value>Preview:</value>
   </data>
 </root>

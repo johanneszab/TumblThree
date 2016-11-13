@@ -88,6 +88,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Audio.
+        /// </summary>
+        public static string Audios {
+            get {
+                return ResourceManager.GetString("Audios", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Authenticate.
         /// </summary>
         public static string Authenticate {
@@ -147,6 +156,24 @@ namespace TumblThree.Presentation.Properties {
         public static string ClipboardMonitor {
             get {
                 return ResourceManager.GetString("ClipboardMonitor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Conversation.
+        /// </summary>
+        public static string Conversations {
+            get {
+                return ResourceManager.GetString("Conversations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy url.
+        /// </summary>
+        public static string CopyUrl {
+            get {
+                return ResourceManager.GetString("CopyUrl", resourceCulture);
             }
         }
         
@@ -340,6 +367,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Link.
+        /// </summary>
+        public static string Links {
+            get {
+                return ResourceManager.GetString("Links", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string Name {
@@ -385,7 +421,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Number of Images.
+        ///   Looks up a localized string similar to Number of Posts.
         /// </summary>
         public static string NumberOfPosts {
             get {
@@ -466,6 +502,33 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Photo.
+        /// </summary>
+        public static string Photos {
+            get {
+                return ResourceManager.GetString("Photos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Post.
+        /// </summary>
+        public static string Posts {
+            get {
+                return ResourceManager.GetString("Posts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preview:.
+        /// </summary>
+        public static string Preview {
+            get {
+                return ResourceManager.GetString("Preview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Product.
         /// </summary>
         public static string Product {
@@ -489,6 +552,15 @@ namespace TumblThree.Presentation.Properties {
         public static string Queue {
             get {
                 return ResourceManager.GetString("Queue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quote.
+        /// </summary>
+        public static string Quotes {
+            get {
+                return ResourceManager.GetString("Quotes", resourceCulture);
             }
         }
         
@@ -565,6 +637,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please select a blog.
+        /// </summary>
+        public static string SelectABlog {
+            get {
+                return ResourceManager.GetString("SelectABlog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         public static string Settings {
@@ -601,6 +682,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Summary of {0} blogs.
+        /// </summary>
+        public static string ShowItems {
+            get {
+                return ResourceManager.GetString("ShowItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Skip .gif files.
         /// </summary>
         public static string SkipGif {
@@ -624,6 +714,15 @@ namespace TumblThree.Presentation.Properties {
         public static string Tags {
             get {
                 return ResourceManager.GetString("Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Text.
+        /// </summary>
+        public static string Texts {
+            get {
+                return ResourceManager.GetString("Texts", resourceCulture);
             }
         }
         
@@ -723,6 +822,15 @@ namespace TumblThree.Presentation.Properties {
         public static string Version {
             get {
                 return ResourceManager.GetString("Version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Video.
+        /// </summary>
+        public static string Videos {
+            get {
+                return ResourceManager.GetString("Videos", resourceCulture);
             }
         }
         
