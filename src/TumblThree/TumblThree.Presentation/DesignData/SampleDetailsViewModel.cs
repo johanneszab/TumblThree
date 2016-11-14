@@ -9,7 +9,6 @@ namespace TumblThree.Presentation.DesignData
     {
         public SampleDetailsViewModel() : base(new MockDetailsView(), null)
         {
-
             var BlogFile = new[]
             {
                 new TumblrBlog
@@ -38,8 +37,15 @@ namespace TumblThree.Presentation.DesignData
                     DateAdded = DateTime.Now,
                     Progress = 12,
                     TotalCount = 82453,
+                    Posts = 912713,
+                    Texts = 10299,
+                    Photos = 69418,
+                    Videos = 7435,
+                    Conversations = 891,
+                    NumberOfLinks = 0,
                 }
             };
+            Count = 1;
         }
 
         private class MockDetailsView : MockView, IDetailsView

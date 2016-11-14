@@ -39,4 +39,6 @@
 
     <c:IsQueueItemCrawlingMultiConverter x:Key="IsQueueItemCrawlingMultiConverter"/>
 
+    <c:NullImageConverter x:Key="NullImageConverter"/>
+
 </ResourceDictionary>

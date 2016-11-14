@@ -361,6 +361,7 @@ namespace TumblThree.Applications.Controllers
                             blog.Links.Add(currentImageUrl);
                             blog.DownloadedImages = (uint) blog.Links.Count();
                             blog.Progress = (uint)((double)blog.DownloadedImages / (double)blog.TotalCount * 100);
+                            blog.LastDownloadedFile = Path.GetFullPath(fileLocation);
 
                             newProgress = new DataModels.DownloadProgress();
                             newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressDownloadImage, currentImageUrl.Split('/').Last()); ;
@@ -372,6 +373,7 @@ namespace TumblThree.Applications.Controllers
             {
                 blog.LastCompleteCrawl = DateTime.Now;
             }
+            blog.LastDownloadedFile = null;
             blog.Dirty = false;
             SaveBlog(blog);
 
