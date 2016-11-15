@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TumblThree.Applications.DataModels
+namespace TumblThree.Applications.DataModels.Json
 {
     public class TumblrJson
     {

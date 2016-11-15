@@ -609,7 +609,7 @@ namespace TumblThree.Applications.Controllers
             return baseUrl + "?" + UrlEncode(parameters);
         }
 
-        private Datamodels.TumblrJson RequestData(string url, string authHeaders)
+        private Datamodels.Json.TumblrJson RequestData(string url, string authHeaders)
         {
             try
             {
@@ -627,13 +627,16 @@ namespace TumblThree.Applications.Controllers
                 var jsserializer = new JavaScriptSerializer();
                 using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
                 {
-                    ThrottledStream stream = new ThrottledStream(response.GetResponseStream(), (shellService.Settings.Bandwidth / shellService.Settings.ParallelImages) * 1024);
-                    StreamReader reader = new StreamReader(stream);
-
-                    DataModels.TumblrJson data = jsserializer.Deserialize<DataModels.TumblrJson>(reader.ReadToEnd());
-                    if (data.meta.status == 200)
-                        return data;
-                    return null;
+                    using (ThrottledStream stream = new ThrottledStream(response.GetResponseStream(), (shellService.Settings.Bandwidth / shellService.Settings.ParallelImages) * 1024))
+                    {
+                        using (StreamReader reader = new StreamReader(stream))
+                        {
+                            DataModels.Json.TumblrJson data = jsserializer.Deserialize<DataModels.Json.TumblrJson>(reader.ReadToEnd());
+                            if (data.meta.status == 200)
+                                return data;
+                            return null;
+                        }
+                    }
                 }
             }
             catch (WebException ex)
@@ -815,7 +818,7 @@ namespace TumblThree.Applications.Controllers
                                 // check for tags -- crawling for all images here
                                 if (blog.Tags == null || blog.Tags.Count() == 0)
                                 {
-                                    DataModels.TumblrJson document = null;
+                                    DataModels.Json.TumblrJson document = null;
 
                                     // get 20 posts per crawl/page
                                     url = GetApiUrl(blog.Name, 20, i * 20);
@@ -833,9 +836,9 @@ namespace TumblThree.Applications.Controllers
 
                                     if (blog.DownloadPhoto == true)
                                     {
-                                        foreach (Datamodels.Post post in document.response.posts.Where(posts => posts.type.Equals("photo")))
+                                        foreach (Datamodels.Json.Post post in document.response.posts.Where(posts => posts.type.Equals("photo")))
                                         {
-                                            foreach (DataModels.Photo photo in post.photos)
+                                            foreach (DataModels.Json.Photo photo in post.photos)
                                             {
                                                 var imageUrl = photo.alt_sizes.ElementAt(shellService.Settings.ImageSizes.IndexOf(shellService.Settings.ImageSize.ToString())).url;
                                                 if (shellService.Settings.SkipGif == true && imageUrl.EndsWith(".gif"))
@@ -848,7 +851,7 @@ namespace TumblThree.Applications.Controllers
                                     }
                                     if (blog.DownloadVideo == true)
                                     {
-                                        foreach (DataModels.Post post in document.response.posts.Where(posts => posts.type.Equals("video")))
+                                        foreach (DataModels.Json.Post post in document.response.posts.Where(posts => posts.type.Equals("video")))
                                         {
                                             if (shellService.Settings.VideoSize == 1080)
                                             {
@@ -870,7 +873,7 @@ namespace TumblThree.Applications.Controllers
                                 {
                                     List<string> tags = blog.Tags.Split(',').Select(x => x.Trim()).ToList();
 
-                                    DataModels.TumblrJson document = null;
+                                    DataModels.Json.TumblrJson document = null;
 
                                     // get 20 posts per crawl/page
                                     url = GetApiUrl(blog.Name, 20, i * 20);
@@ -880,9 +883,9 @@ namespace TumblThree.Applications.Controllers
 
                                     if (blog.DownloadPhoto == true)
                                     {
-                                        foreach (Datamodels.Post post in document.response.posts.Where(posts => posts.tags.Any(tag => tags.Equals(tag)) && posts.type.Equals("photo")))
+                                        foreach (Datamodels.Json.Post post in document.response.posts.Where(posts => posts.tags.Any(tag => tags.Equals(tag)) && posts.type.Equals("photo")))
                                         {
-                                            foreach (DataModels.Photo photo in post.photos ?? new List<Datamodels.Photo>())
+                                            foreach (DataModels.Json.Photo photo in post.photos ?? new List<Datamodels.Json.Photo>())
                                             {
                                                 var imageUrl = photo.alt_sizes.ElementAt(shellService.Settings.ImageSizes.IndexOf(shellService.Settings.ImageSize.ToString())).url;
                                                 if (shellService.Settings.SkipGif == true && imageUrl.EndsWith(".gif"))
@@ -895,7 +898,7 @@ namespace TumblThree.Applications.Controllers
                                     }
                                     if (blog.DownloadVideo == true)
                                     {
-                                        foreach (DataModels.Post post in document.response.posts.Where(posts => posts.tags.Any(tag => tags.Equals(tag)) && posts.type.Equals("video")))
+                                        foreach (DataModels.Json.Post post in document.response.posts.Where(posts => posts.tags.Any(tag => tags.Equals(tag)) && posts.type.Equals("video")))
                                         {
                                             if (shellService.Settings.VideoSize == 1080)
                                             {
