@@ -213,8 +213,8 @@
   <data name="NumberOfItems" xml:space="preserve">
     <value>{0} Elemente</value>
   </data>
-  <data name="NumberOfPosts" xml:space="preserve">
-    <value>Anzahl an Bildern</value>
+  <data name="NumberOfDownloads" xml:space="preserve">
+    <value>Anzahl an Downloads</value>
   </data>
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
@@ -377,5 +377,29 @@
   </data>
   <data name="Preview" xml:space="preserve">
     <value>Vorschau:</value>
+  </data>
+  <data name="Bandwidth" xml:space="preserve">
+    <value>Bandbreite</value>
+  </data>
+  <data name="DetailsProgress" xml:space="preserve">
+    <value>{0} von {1}</value>
+  </data>
+  <data name="DownloadAudios" xml:space="preserve">
+    <value>Lade Audiodateien</value>
+  </data>
+  <data name="DownloadConversations" xml:space="preserve">
+    <value>Lade Konversationen</value>
+  </data>
+  <data name="DownloadLinks" xml:space="preserve">
+    <value>Lade Links</value>
+  </data>
+  <data name="DownloadQuotes" xml:space="preserve">
+    <value>Lade Zitate</value>
+  </data>
+  <data name="DownloadTexts" xml:space="preserve">
+    <value>Lade Texte</value>
+  </data>
+  <data name="EnablePreview" xml:space="preserve">
+    <value>Vorschau</value>
   </data>
 </root>

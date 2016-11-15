@@ -29,7 +29,6 @@ namespace TumblThree.Applications.Controllers
 
         private DetailsViewModel DetailsViewModel { get { return detailsViewModel.Value; } }
 
-
         public void Initialize()
         {
             //QueueManager.PropertyChanged += QueueManagerPropertyChanged;
@@ -42,16 +41,16 @@ namespace TumblThree.Applications.Controllers
             if (blogFiles.Count() <= 1)
             {
                 DetailsViewModel.Count = 1;
-                DetailsViewModel.BlogFile = blogFiles.FirstOrDefault();
+                DetailsViewModel.BlogFile = blogFiles.Cast<TumblrBlog>().FirstOrDefault();
             }
             else
             {
                 DetailsViewModel.Count = 2;
-                DetailsViewModel.BlogFile = CreateFromMultiple(blogFiles);
+                DetailsViewModel.BlogFile = CreateFromMultiple(blogFiles.Cast<TumblrBlog>().ToArray());
             }
         }
 
-        public Blog CreateFromMultiple(IEnumerable<Blog> blogFiles)
+        public TumblrBlog CreateFromMultiple(IEnumerable<TumblrBlog> blogFiles)
         {
             if (blogFiles.Count() < 1) { throw new ArgumentException("The collection must have at least one item.", "blogFiles"); }
 

@@ -15,6 +15,8 @@
 
     <c:BlogQueueInfoConverter x:Key="BlogQueueInfoConverter"/>
 
+    <c:DetailsProgressConverter x:Key="DetailsProgressConverter"/>
+
     <c:BlogQueueProgressConverter x:Key="BlogQueueProgressConverter"/>
 
     <c:StatusToBoolConverter x:Key="StatusToBoolConverter"/>

@@ -46,8 +46,10 @@
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
@@ -147,6 +149,7 @@
     <Compile Include="Controls\ToolTipBehavior.cs" />
     <Compile Include="Converters\ConverterHelper.cs" />
     <Compile Include="Converters\DateToDisplayValueConverter.cs" />
+    <Compile Include="Converters\DetailsProgressConverter.cs" />
     <Compile Include="Converters\ErrorMessagesConverter.cs" />
     <Compile Include="Converters\InverseBooleanConverter.cs" />
     <Compile Include="Converters\IsQueueItemCrawlingMultiConverter.cs" />

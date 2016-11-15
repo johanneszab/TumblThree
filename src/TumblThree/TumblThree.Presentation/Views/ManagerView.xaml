@@ -66,7 +66,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn x:Name="totalCountColumn" Header="{x:Static p:Resources.NumberOfPosts}" Binding="{Binding TotalCount, Converter={StaticResource UIntToDisplayValueConverter}}" 
+                <DataGridTextColumn x:Name="totalCountColumn" Header="{x:Static p:Resources.NumberOfDownloads}" Binding="{Binding TotalCount, Converter={StaticResource UIntToDisplayValueConverter}}" 
                                     IsReadOnly="True" Width="SizeToHeader">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextCellElementStyle}">

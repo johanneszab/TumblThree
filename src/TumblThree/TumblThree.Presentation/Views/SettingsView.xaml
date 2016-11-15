@@ -7,7 +7,7 @@
         xmlns:ctrl="clr-namespace:TumblThree.Presentation.Controls"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
         xmlns:vm="clr-namespace:TumblThree.Applications.ViewModels;assembly=TumblThree.Applications"
-        mc:Ignorable="d" Title="Settings" Height="580" Width="600"
+        mc:Ignorable="d" Title="Settings" Height="780" Width="600"
         d:DataContext="{d:DesignInstance vm:SettingsViewModel}">
 
     <Grid>
@@ -121,13 +121,25 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <CheckBox x:Name="checkBoxDownloadImages" Content="{x:Static p:Resources.DownloadImages}" IsChecked="{Binding DownloadImages, Mode=TwoWay}" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
             <CheckBox x:Name="checkBoxDownloadVideos" Content="{x:Static p:Resources.DownloadVideos}" IsChecked="{Binding DownloadVideos, Mode=TwoWay}" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
-            <CheckBox x:Name="checkBoxSkipGif" Content="{x:Static p:Resources.SkipGif}" IsChecked="{Binding SkipGif, Mode=TwoWay}" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
-            <CheckBox x:Name="checkBoxCheckStatus" Content="{x:Static p:Resources.CheckStatus}" IsChecked="{Binding CheckOnlineStatusAtStartup, Mode=TwoWay}" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
-            <CheckBox x:Name="checkBoxDeleteIndex" Content="{x:Static p:Resources.DeleteIndex}" IsChecked="{Binding DeleteOnlyIndex, Mode=TwoWay}" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
-            <CheckBox x:Name="checkBoxRemoveIndex" Content="{x:Static p:Resources.RemoveIndex}" IsChecked="{Binding RemoveIndexAfterCrawl, Mode=TwoWay}" Grid.Column="0" Grid.Row="5" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
+            <CheckBox x:Name="checkBoxDownloadAudios" Content="{x:Static p:Resources.DownloadAudios}" IsChecked="{Binding DownloadAudios, Mode=TwoWay}" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
+            <CheckBox x:Name="checkBoxDownloadTexts" Content="{x:Static p:Resources.DownloadTexts}" IsChecked="{Binding DownloadTexts, Mode=TwoWay}" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
+            <CheckBox x:Name="checkBoxDownloadQuotes" Content="{x:Static p:Resources.DownloadQuotes}" IsChecked="{Binding DownloadQuotes, Mode=TwoWay}" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
+            <CheckBox x:Name="checkBoxDownloadConversations" Content="{x:Static p:Resources.DownloadConversations}" IsChecked="{Binding DownloadConversations, Mode=TwoWay}" Grid.Column="0" Grid.Row="5" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
+            <CheckBox x:Name="checkBoxDownloadLinks" Content="{x:Static p:Resources.DownloadLinks}" IsChecked="{Binding DownloadLinks, Mode=TwoWay}" Grid.Column="0" Grid.Row="6" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
+            <CheckBox x:Name="checkBoxEnablePreview" Content="{x:Static p:Resources.EnablePreview}" IsChecked="{Binding EnablePreview, Mode=TwoWay}" Grid.Column="0" Grid.Row="7" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
+            <CheckBox x:Name="checkBoxSkipGif" Content="{x:Static p:Resources.SkipGif}" IsChecked="{Binding SkipGif, Mode=TwoWay}" Grid.Column="0" Grid.Row="8" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
+            <CheckBox x:Name="checkBoxCheckStatus" Content="{x:Static p:Resources.CheckStatus}" IsChecked="{Binding CheckOnlineStatusAtStartup, Mode=TwoWay}" Grid.Column="0" Grid.Row="9" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
+            <CheckBox x:Name="checkBoxDeleteIndex" Content="{x:Static p:Resources.DeleteIndex}" IsChecked="{Binding DeleteOnlyIndex, Mode=TwoWay}" Grid.Column="0" Grid.Row="10" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
+            <CheckBox x:Name="checkBoxRemoveIndex" Content="{x:Static p:Resources.RemoveIndex}" IsChecked="{Binding RemoveIndexAfterCrawl, Mode=TwoWay}" Grid.Column="0" Grid.Row="11" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
         </Grid>
         <Grid Height="Auto" Margin="0" VerticalAlignment="Bottom" Grid.Row="8">
             <Button x:Name="buttonAuthenticate" Height="Auto" Content="{x:Static p:Resources.Authenticate}" Command="{Binding AuthenticateCommand}" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="75">

@@ -6,6 +6,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:ctrl="clr-namespace:TumblThree.Presentation.Controls"
              xmlns:dd="clr-namespace:TumblThree.Presentation.DesignData"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance dd:SampleDetailsViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="500" d:DesignWidth="300" Background="{StaticResource DefaultBackground}">
 
@@ -122,31 +124,114 @@
                 <Label Content="{x:Static p:Resources.Posts}" Grid.Column="0" Grid.Row="8"/>
                 <Label Content="{Binding BlogFile.Posts, Converter={StaticResource UIntToDisplayValueConverter}}" Grid.Column="2" Grid.Row="8"/>
 
-                <Label Content="{x:Static p:Resources.Texts}" Grid.Column="0" Grid.Row="10"/>
-                <Label Content="{Binding BlogFile.Texts, Converter={StaticResource UIntToDisplayValueConverter}}" Grid.Column="2" Grid.Row="10"/>
+                <CheckBox Content="{x:Static p:Resources.Texts}" IsChecked="{Binding BlogFile.DownloadText, Mode=TwoWay}" Grid.Column="0" Grid.Row="10"/>
+                <Label Grid.Column="2" Grid.Row="10" Padding="0">
+                    <Label.Content>
+                        <MultiBinding Converter="{StaticResource DetailsProgressConverter}">
+                            <Binding Path="BlogFile.DownloadedTexts"/>
+                            <Binding Path="BlogFile.Texts"/>
+                        </MultiBinding>
+                    </Label.Content>
+                </Label>
 
-                <Label Content="{x:Static p:Resources.Photos}" Grid.Column="0" Grid.Row="12"/>
-                <Label Content="{Binding BlogFile.Photos, Converter={StaticResource UIntToDisplayValueConverter}}" Grid.Column="2" Grid.Row="12"/>
+                <CheckBox Content="{x:Static p:Resources.Photos}" IsChecked="{Binding BlogFile.DownloadPhoto, Mode=TwoWay}" Grid.Column="0" Grid.Row="12" Padding="3,0,0,0"/>
+                <Label Grid.Column="2" Grid.Row="12" Padding="0">
+                    <Label.Content>
+                        <MultiBinding Converter="{StaticResource DetailsProgressConverter}">
+                            <Binding Path="BlogFile.DownloadedPhotos"/>
+                            <Binding Path="BlogFile.Photos"/>
+                        </MultiBinding>
+                    </Label.Content>
+                </Label>
 
-                <Label Content="{x:Static p:Resources.Audios}" Grid.Column="0" Grid.Row="14"/>
-                <Label Content="{Binding BlogFile.Audios, Converter={StaticResource UIntToDisplayValueConverter}}" Grid.Column="2" Grid.Row="14"/>
+                <CheckBox Content="{x:Static p:Resources.Audios}" IsChecked="{Binding BlogFile.DownloadAudio, Mode=TwoWay}" Grid.Column="0" Grid.Row="14" Padding="3,0,0,0"/>
+                <Label Grid.Column="2" Grid.Row="14" Padding="0">
+                    <Label.Content>
+                        <MultiBinding Converter="{StaticResource DetailsProgressConverter}">
+                            <Binding Path="BlogFile.DownloadedAudios"/>
+                            <Binding Path="BlogFile.Audios"/>
+                        </MultiBinding>
+                    </Label.Content>
+                </Label>
 
-                <Label Content="{x:Static p:Resources.Videos}" Grid.Column="0" Grid.Row="16"/>
-                <Label Content="{Binding BlogFile.Videos, Converter={StaticResource UIntToDisplayValueConverter}}" Grid.Column="2" Grid.Row="16"/>
+                <CheckBox Content="{x:Static p:Resources.Videos}" IsChecked="{Binding BlogFile.DownloadVideo, Mode=TwoWay}" Grid.Column="0" Grid.Row="16" Padding="3,0,0,0"/>
+                <Label Grid.Column="2" Grid.Row="16" Padding="0">
+                    <Label.Content>
+                        <MultiBinding Converter="{StaticResource DetailsProgressConverter}">
+                            <Binding Path="BlogFile.DownloadedVideos"/>
+                            <Binding Path="BlogFile.Videos"/>
+                        </MultiBinding>
+                    </Label.Content>
+                </Label>
 
-                <Label Content="{x:Static p:Resources.Conversations}" Grid.Column="0" Grid.Row="18"/>
-                <Label Content="{Binding BlogFile.Conversations, Converter={StaticResource UIntToDisplayValueConverter}}" Grid.Column="2" Grid.Row="18"/>
+                <CheckBox Content="{x:Static p:Resources.Conversations}" IsChecked="{Binding BlogFile.DownloadConversation, Mode=TwoWay}" Grid.Column="0" Grid.Row="18" Padding="3,0,0,0"/>
+                <Label Grid.Column="2" Grid.Row="18" Padding="0">
+                    <Label.Content>
+                        <MultiBinding Converter="{StaticResource DetailsProgressConverter}">
+                            <Binding Path="BlogFile.DownloadedConversations"/>
+                            <Binding Path="BlogFile.Conversations"/>
+                        </MultiBinding>
+                    </Label.Content>
+                </Label>
 
-                <Label Content="{x:Static p:Resources.Quotes}" Grid.Column="0" Grid.Row="20"/>
-                <Label Content="{Binding BlogFile.Quotes, Converter={StaticResource UIntToDisplayValueConverter}}" Grid.Column="2" Grid.Row="20"/>
+                <CheckBox Content="{x:Static p:Resources.Quotes}" IsChecked="{Binding BlogFile.DownloadQuote, Mode=TwoWay}" Grid.Column="0" Grid.Row="20" Padding="3,0,0,0"/>
+                <Label Grid.Column="2" Grid.Row="20" Padding="0">
+                    <Label.Content>
+                        <MultiBinding Converter="{StaticResource DetailsProgressConverter}">
+                            <Binding Path="BlogFile.DownloadedQuotes"/>
+                            <Binding Path="BlogFile.Quotes"/>
+                        </MultiBinding>
+                    </Label.Content>
+                </Label>
 
-                <Label Content="{x:Static p:Resources.Links}" Grid.Column="0" Grid.Row="22"/>
-                <Label Content="{Binding BlogFile.NumberOfLinks, Converter={StaticResource UIntToDisplayValueConverter}}" Grid.Column="2" Grid.Row="22"/>
+                <CheckBox Content="{x:Static p:Resources.Links}" IsChecked="{Binding BlogFile.DownloadLink, Mode=TwoWay}" Grid.Column="0" Grid.Row="22" Padding="3,0,0,0"/>
+                <Label Grid.Column="2" Grid.Row="22" Padding="0">
+                    <Label.Content>
+                        <MultiBinding Converter="{StaticResource DetailsProgressConverter}">
+                            <Binding Path="BlogFile.DownloadedLinks"/>
+                            <Binding Path="BlogFile.NumberOfLinks"/>
+                        </MultiBinding>
+                    </Label.Content>
+                </Label>
 
                 <Label Content="{x:Static p:Resources.Preview}" Grid.Column="0" Grid.Row="24"/>
                 <Label Content="" Grid.Column="2" Grid.Row="24"/>
 
-                <Image Source="{Binding BlogFile.LastDownloadedFile, Converter={StaticResource NullImageConverter}}" Width="Auto" Height="Auto" Name="ImagePreview" Stretch="Fill" HorizontalAlignment="Center" Grid.ColumnSpan="3" Grid.Row="26"/>
+                <UserControl x:Name="Preview" Width="Auto" Height="Auto" Grid.ColumnSpan="3" Grid.Row="26">
+                    <Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="SwitchableStates">
+                                <VisualState x:Name="Photo">
+                                </VisualState>
+                                <VisualState x:Name="Video">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="SwitchableImage" Storyboard.TargetProperty="Visibility" Duration="0">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Collapsed</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="SwitchableMediaElement" Storyboard.TargetProperty="Visibility" Duration="0">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Visible</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <MediaElement Visibility="Collapsed" x:Name="SwitchableMediaElement" Source="{Binding BlogFile.LastDownloadedVideo, Converter={StaticResource NullImageConverter}}" Stretch="Fill" IsMuted="True" LoadedBehavior="Play" UnloadedBehavior="Close"/>
+                        <Image Visibility="Visible" x:Name="SwitchableImage" Source="{Binding BlogFile.LastDownloadedPhoto, Converter={StaticResource NullImageConverter}}" Stretch="Fill"/>
+                        <i:Interaction.Triggers>
+                            <ei:DataTrigger Binding="{Binding BlogFile.States}" Value="{Binding BlogFile.States}">
+                                <ei:GoToStateAction StateName="{Binding BlogFile.States}" />
+                            </ei:DataTrigger>
+                        </i:Interaction.Triggers>
+                    </Grid>
+                </UserControl>
             </Grid>
         </ScrollViewer>
 

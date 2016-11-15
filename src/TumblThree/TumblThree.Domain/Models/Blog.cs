@@ -18,7 +18,6 @@ namespace TumblThree.Domain.Models
         private DateTime lastCompleteCrawl;
         private bool online;
         private bool dirty;
-        private string lastDownloadedFile;
         private string notes;
         private IList<string> links;
         private Exception loadError;
@@ -34,7 +33,6 @@ namespace TumblThree.Domain.Models
             this.lastCompleteCrawl = System.DateTime.MinValue;
             this.online = false;
             this.dirty = false;
-            this.lastDownloadedFile = null;
             this.notes = String.Empty;
             this.links = new ObservableCollection<string>();
         }
@@ -91,12 +89,6 @@ namespace TumblThree.Domain.Models
         {
             get { return dirty; }
             set { SetProperty(ref dirty, value); }
-        }
-
-        public string LastDownloadedFile
-        {
-            get { return lastDownloadedFile; }
-            set { SetProperty(ref lastDownloadedFile, value); }
         }
 
         public string Notes

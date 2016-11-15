@@ -153,6 +153,9 @@
   <data name="CouldNotRemoveBlogIndex" xml:space="preserve">
     <value>Could not remove the blog: {0}</value>
   </data>
+  <data name="CouldNotRestoreUISettings" xml:space="preserve">
+    <value>Could not restore UI settings.</value>
+  </data>
   <data name="CouldNotSaveBlog" xml:space="preserve">
     <value>Could not save the blog: {0}</value>
   </data>

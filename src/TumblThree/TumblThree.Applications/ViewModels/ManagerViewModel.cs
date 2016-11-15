@@ -6,6 +6,8 @@ using TumblThree.Applications.Services;
 using TumblThree.Applications.Views;
 using System.Collections.ObjectModel;
 using TumblThree.Domain.Models;
+using TumblThree.Domain;
+using TumblThree.Applications.Properties;
 
 namespace TumblThree.Applications.ViewModels
 {
@@ -17,9 +19,7 @@ namespace TumblThree.Applications.ViewModels
         private Blog selectedBlogFile;
         private readonly ICrawlerService crawlerService;
         private ICommand showFilesCommand;
-        private ICommand visitBlogCommand;
-
-        
+        private ICommand visitBlogCommand;  
 
         [ImportingConstructor]
         public ManagerViewModel(IManagerView view, IShellService shellService, Lazy<ISelectionService> selectionService, ICrawlerService crawlerService) : base(view)
@@ -29,8 +29,17 @@ namespace TumblThree.Applications.ViewModels
             this.selectedManagerItems = new ObservableCollection<Blog>();
             this.crawlerService = crawlerService;
 
-            if (shellService.Settings.ColumnWidths.Count != 0)
-                view.DataGridColumnRestore = ShellService.Settings.ColumnWidths;
+            try
+            {
+                if (shellService.Settings.ColumnWidths.Count != 0)
+                    view.DataGridColumnRestore = ShellService.Settings.ColumnWidths;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("ManagerViewModel: {0}", ex);
+                shellService.ShowError(ex, Resources.CouldNotRestoreUISettings);
+                return;
+            }
 
             ShellService.Closing += ViewClosed;
         }

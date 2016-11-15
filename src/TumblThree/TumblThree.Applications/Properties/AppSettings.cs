@@ -107,6 +107,9 @@ namespace TumblThree.Applications.Properties
         public bool SkipGif { get; set; }
 
         [DataMember]
+        public bool EnablePreview { get; set; }
+
+        [DataMember]
         public bool RemoveIndexAfterCrawl { get; set; }
 
         [DataMember]
@@ -114,6 +117,21 @@ namespace TumblThree.Applications.Properties
 
         [DataMember]
         public bool DownloadVideos { get; set; }
+
+        [DataMember]
+        public bool DownloadAudios { get; set; }
+
+        [DataMember]
+        public bool DownloadTexts { get; set; }
+
+        [DataMember]
+        public bool DownloadQuotes { get; set; }
+
+        [DataMember]
+        public bool DownloadConversations { get; set; }
+
+        [DataMember]
+        public bool DownloadLinks { get; set; }
 
         [DataMember]
         public int TimerInterval { get; set; }
@@ -176,9 +194,15 @@ namespace TumblThree.Applications.Properties
             DeleteOnlyIndex = true;
             CheckOnlineStatusAtStartup = true;
             SkipGif = false;
+            EnablePreview = true;
             RemoveIndexAfterCrawl = false;
             DownloadImages = true;
             DownloadVideos = false;
+            DownloadTexts = false;
+            DownloadAudios = false;
+            DownloadQuotes = false;
+            DownloadConversations = false;
+            DownloadLinks = false;
             TimerInterval = 1440;
             ColumnWidths = new Dictionary<object, Tuple<int, double>>();
         }

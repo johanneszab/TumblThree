@@ -17,22 +17,41 @@ namespace TumblThree.Domain.Models
         private uint conversations;
         private uint videos;
         private uint audios;
+        private uint downloadedTexts;
+        private uint downloadedQuotes;
+        private uint downloadedPhotos;
+        private uint downloadedLinks;
+        private uint downloadedConversations;
+        private uint downloadedVideos;
+        private uint downloadedAudios;
+        private string lastDownloadedPhoto;
+        private string lastDownloadedVideo;
+        private bool downloadPhoto;
+        private bool downloadVideo;
+        private bool downloadAudio;
+        private bool downloadText;
+        private bool downloadQuote;
+        private bool downloadConversation;
+        private bool downloadLink;
+        private postTypes state;
+
+        public enum postTypes
+        {
+            Photo,
+            Video,
+            Audio,
+            Text,
+            Quote,
+            Conversation,
+            Link
+        }
 
         public TumblrBlog()
         {
-            this.description = null;
-            this.title = null;
+            this.description = String.Empty;
+            this.title = String.Empty;
             this.progress = 0;
-            this.tags = null;
-        }
-
-        public TumblrBlog(string url)
-        {
-            this.description = null;
-            this.Url = url;
-            this.title = null;
-            this.progress = 0;
-            this.tags = null;
+            this.tags = String.Empty;
             this.posts = 0;
             this.texts = 0;
             this.quotes = 0;
@@ -41,6 +60,55 @@ namespace TumblThree.Domain.Models
             this.conversations = 0;
             this.videos = 0;
             this.audios = 0;
+            this.downloadedTexts = 0;
+            this.downloadedQuotes = 0;
+            this.downloadedPhotos = 0;
+            this.downloadedLinks = 0;
+            this.downloadedConversations = 0;
+            this.downloadedVideos = 0;
+            this.downloadedAudios = 0;
+            this.downloadText = false;
+            this.downloadQuote = false;
+            this.downloadPhoto = true;
+            this.downloadLink = false;
+            this.downloadConversation = false;
+            this.downloadVideo = false;
+            this.downloadAudio = false;
+            this.lastDownloadedPhoto = null;
+            this.lastDownloadedVideo = null;
+        }
+
+        public TumblrBlog(string url)
+        {
+            this.description = String.Empty;
+            this.Url = url;
+            this.title = String.Empty;
+            this.progress = 0;
+            this.tags = String.Empty;
+            this.posts = 0;
+            this.texts = 0;
+            this.quotes = 0;
+            this.photos = 0;
+            this.numberOfLinks = 0;
+            this.conversations = 0;
+            this.videos = 0;
+            this.audios = 0;
+            this.downloadedTexts = 0;
+            this.downloadedQuotes = 0;
+            this.downloadedPhotos = 0;
+            this.downloadedLinks = 0;
+            this.downloadedConversations = 0;
+            this.downloadedVideos = 0;
+            this.downloadedAudios = 0;
+            this.downloadText = false;
+            this.downloadQuote = false;
+            this.downloadPhoto = true;
+            this.downloadLink = false;
+            this.downloadConversation = false;
+            this.downloadVideo = false;
+            this.downloadAudio = false;
+            this.lastDownloadedPhoto = null;
+            this.lastDownloadedVideo = null;
         }
 
         public string Description
@@ -113,6 +181,108 @@ namespace TumblThree.Domain.Models
         {
             get { return audios; }
             set { SetProperty(ref audios, value); }
+        }
+
+        public uint DownloadedTexts
+        {
+            get { return downloadedTexts; }
+            set { SetProperty(ref downloadedTexts, value); }
+        }
+
+        public uint DownloadedQuotes
+        {
+            get { return downloadedQuotes; }
+            set { SetProperty(ref downloadedQuotes, value); }
+        }
+
+        public uint DownloadedPhotos
+        {
+            get { return downloadedPhotos; }
+            set { SetProperty(ref downloadedPhotos, value); }
+        }
+
+        public uint DownloadedLinks
+        {
+            get { return downloadedLinks; }
+            set { SetProperty(ref downloadedLinks, value); }
+        }
+
+        public uint DownloadedConversations
+        {
+            get { return downloadedConversations; }
+            set { SetProperty(ref downloadedConversations, value); }
+        }
+
+        public uint DownloadedVideos
+        {
+            get { return downloadedVideos; }
+            set { SetProperty(ref downloadedVideos, value); }
+        }
+
+        public uint DownloadedAudios
+        {
+            get { return downloadedAudios; }
+            set { SetProperty(ref downloadedAudios, value); }
+        }
+
+        public bool DownloadText
+        {
+            get { return downloadText; }
+            set { SetProperty(ref downloadText, value); }
+        }
+
+        public bool DownloadQuote
+        {
+            get { return downloadQuote; }
+            set { SetProperty(ref downloadQuote, value); }
+        }
+
+        public bool DownloadPhoto
+        {
+            get { return downloadPhoto; }
+            set { SetProperty(ref downloadPhoto, value); }
+        }
+
+        public bool DownloadLink
+        {
+            get { return downloadLink; }
+            set { SetProperty(ref downloadLink, value); }
+        }
+
+        public bool DownloadConversation
+        {
+            get { return downloadConversation; }
+            set { SetProperty(ref downloadConversation, value); }
+        }
+
+        public bool DownloadVideo
+        {
+            get { return downloadVideo; }
+            set { SetProperty(ref downloadVideo, value); }
+        }
+
+        public bool DownloadAudio
+        {
+            get { return downloadAudio; }
+            set { SetProperty(ref downloadAudio, value); }
+        }
+
+        public string LastDownloadedPhoto
+        {
+            get { return lastDownloadedPhoto; }
+            set { SetProperty(ref lastDownloadedPhoto, value); States = postTypes.Photo; }
+        }
+
+        public string LastDownloadedVideo
+        {
+            get { return lastDownloadedVideo; }
+            set { SetProperty(ref lastDownloadedVideo, value); States = postTypes.Video; }
+        }
+
+        public postTypes States
+        {
+            get { return state; }
+            set { SetProperty(ref state, value); }
         }
     }
 }

@@ -41,10 +41,16 @@ namespace TumblThree.Applications.ViewModels
         private bool deleteOnlyIndex;
         private bool checkOnlineStatusAtStartup;
         private bool skipGif;
+        private bool enablePreview;
         private bool autoDownload;
         private bool removeIndexAfterCrawl;
         private bool downloadImages;
         private bool downloadVideos;
+        private bool downloadAudios;
+        private bool downloadTexts;
+        private bool downloadConversations;
+        private bool downloadQuotes;
+        private bool downloadLinks;
         private int timerInterval;
         private Timer timer;
 
@@ -192,6 +198,12 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref skipGif, value); }
         }
 
+        public bool EnablePreview
+        {
+            get { return enablePreview; }
+            set { SetProperty(ref enablePreview, value); }
+        }
+
         public bool AutoDownload
         {
             get { return autoDownload; }
@@ -214,6 +226,36 @@ namespace TumblThree.Applications.ViewModels
         {
             get { return downloadVideos; }
             set { SetProperty(ref downloadVideos, value); }
+        }
+
+        public bool DownloadAudios
+        {
+            get { return downloadAudios; }
+            set { SetProperty(ref downloadAudios, value); }
+        }
+
+        public bool DownloadTexts
+        {
+            get { return downloadTexts; }
+            set { SetProperty(ref downloadTexts, value); }
+        }
+
+        public bool DownloadQuotes
+        {
+            get { return downloadQuotes; }
+            set { SetProperty(ref downloadQuotes, value); }
+        }
+
+        public bool DownloadConversations
+        {
+            get { return downloadConversations; }
+            set { SetProperty(ref downloadConversations, value); }
+        }
+
+        public bool DownloadLinks
+        {
+            get { return downloadLinks; }
+            set { SetProperty(ref downloadLinks, value); }
         }
 
         public int TimerInterval
@@ -244,9 +286,15 @@ namespace TumblThree.Applications.ViewModels
                 DeleteOnlyIndex = settings.DeleteOnlyIndex;
                 CheckOnlineStatusAtStartup = settings.CheckOnlineStatusAtStartup;
                 SkipGif = settings.SkipGif;
+                EnablePreview = settings.EnablePreview;
                 RemoveIndexAfterCrawl = settings.RemoveIndexAfterCrawl;
                 DownloadImages = settings.DownloadImages;
                 DownloadVideos = settings.DownloadVideos;
+                DownloadTexts = settings.DownloadTexts;
+                DownloadAudios = settings.DownloadAudios;
+                DownloadConversations = settings.DownloadConversations;
+                DownloadLinks = settings.DownloadLinks;
+                DownloadQuotes = settings.DownloadQuotes;
                 TimerInterval = settings.TimerInterval;
             }
             else
@@ -269,9 +317,15 @@ namespace TumblThree.Applications.ViewModels
                 DeleteOnlyIndex = true;
                 CheckOnlineStatusAtStartup = true;
                 SkipGif = false;
+                EnablePreview = true;
                 RemoveIndexAfterCrawl = false;
                 DownloadImages = true;
                 DownloadVideos = false;
+                DownloadAudios = false;
+                DownloadTexts = false;
+                DownloadConversations = false;
+                DownloadQuotes = false;
+                DownloadLinks = false;
                 TimerInterval = 1440;
             }
         }
@@ -295,9 +349,15 @@ namespace TumblThree.Applications.ViewModels
             settings.DeleteOnlyIndex = DeleteOnlyIndex;
             settings.CheckOnlineStatusAtStartup = CheckOnlineStatusAtStartup;
             settings.SkipGif = SkipGif;
+            settings.EnablePreview = EnablePreview;
             settings.RemoveIndexAfterCrawl = RemoveIndexAfterCrawl;
             settings.DownloadImages = DownloadImages;
             settings.DownloadVideos = DownloadVideos;
+            settings.DownloadTexts = DownloadTexts;
+            settings.DownloadAudios = DownloadAudios;
+            settings.DownloadConversations = DownloadConversations;
+            settings.DownloadQuotes = DownloadQuotes;
+            settings.DownloadLinks = DownloadLinks;
             settings.ApiKey = ApiKey;
             settings.SecretKey = SecretKey;
             settings.OAuthToken = OAuthToken;

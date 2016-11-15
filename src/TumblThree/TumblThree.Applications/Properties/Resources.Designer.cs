@@ -169,6 +169,15 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not restore UI settings..
+        /// </summary>
+        public static string CouldNotRestoreUISettings {
+            get {
+                return ResourceManager.GetString("CouldNotRestoreUISettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not save the blog: {0}.
         /// </summary>
         public static string CouldNotSaveBlog {

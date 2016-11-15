@@ -232,6 +232,33 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} of {1}.
+        /// </summary>
+        public static string DetailsProgress {
+            get {
+                return ResourceManager.GetString("DetailsProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download audio files.
+        /// </summary>
+        public static string DownloadAudios {
+            get {
+                return ResourceManager.GetString("DownloadAudios", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download conversations.
+        /// </summary>
+        public static string DownloadConversations {
+            get {
+                return ResourceManager.GetString("DownloadConversations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Downloaded Images.
         /// </summary>
         public static string DownloadedImages {
@@ -259,11 +286,38 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download links.
+        /// </summary>
+        public static string DownloadLinks {
+            get {
+                return ResourceManager.GetString("DownloadLinks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Download Location.
         /// </summary>
         public static string DownloadLocation {
             get {
                 return ResourceManager.GetString("DownloadLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download quotes.
+        /// </summary>
+        public static string DownloadQuotes {
+            get {
+                return ResourceManager.GetString("DownloadQuotes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download texts.
+        /// </summary>
+        public static string DownloadTexts {
+            get {
+                return ResourceManager.GetString("DownloadTexts", resourceCulture);
             }
         }
         
@@ -282,6 +336,15 @@ namespace TumblThree.Presentation.Properties {
         public static string EnableAutoDownload {
             get {
                 return ResourceManager.GetString("EnableAutoDownload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preview.
+        /// </summary>
+        public static string EnablePreview {
+            get {
+                return ResourceManager.GetString("EnablePreview", resourceCulture);
             }
         }
         
@@ -403,6 +466,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Number of Downloads.
+        /// </summary>
+        public static string NumberOfDownloads {
+            get {
+                return ResourceManager.GetString("NumberOfDownloads", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} Images.
         /// </summary>
         public static string NumberOfImages {
@@ -417,15 +489,6 @@ namespace TumblThree.Presentation.Properties {
         public static string NumberOfItems {
             get {
                 return ResourceManager.GetString("NumberOfItems", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Number of Posts.
-        /// </summary>
-        public static string NumberOfPosts {
-            get {
-                return ResourceManager.GetString("NumberOfPosts", resourceCulture);
             }
         }
         

@@ -174,8 +174,8 @@
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
-  <data name="NumberOfPosts" xml:space="preserve">
-    <value>Number of Posts</value>
+  <data name="NumberOfDownloads" xml:space="preserve">
+    <value>Number of Downloads</value>
   </data>
   <data name="OpenQueue" xml:space="preserve">
     <value>Open queue</value>
@@ -383,5 +383,26 @@
   </data>
   <data name="Preview" xml:space="preserve">
     <value>Preview:</value>
+  </data>
+  <data name="DetailsProgress" xml:space="preserve">
+    <value>{0} of {1}</value>
+  </data>
+  <data name="DownloadAudios" xml:space="preserve">
+    <value>Download audio files</value>
+  </data>
+  <data name="DownloadConversations" xml:space="preserve">
+    <value>Download conversations</value>
+  </data>
+  <data name="DownloadLinks" xml:space="preserve">
+    <value>Download links</value>
+  </data>
+  <data name="DownloadQuotes" xml:space="preserve">
+    <value>Download quotes</value>
+  </data>
+  <data name="DownloadTexts" xml:space="preserve">
+    <value>Download texts</value>
+  </data>
+  <data name="EnablePreview" xml:space="preserve">
+    <value>Preview</value>
   </data>
 </root>
