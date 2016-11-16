@@ -58,7 +58,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="{x:Static p:Resources.Name}" Binding="{Binding Name}" IsReadOnly="True" Width="200"
                                     ElementStyle="{StaticResource TextCellElementStyle}"/>
-                <DataGridTextColumn x:Name="downloadedImagesColumn" Header="{x:Static p:Resources.DownloadedImages}" Binding="{Binding DownloadedImages, Converter={StaticResource UIntToDisplayValueConverter}}" 
+                <DataGridTextColumn x:Name="downloadedImagesColumn" Header="{x:Static p:Resources.DownloadedFiles}" Binding="{Binding DownloadedImages, Converter={StaticResource UIntToDisplayValueConverter}}" 
                                     IsReadOnly="True" Width="SizeToHeader">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextCellElementStyle}">

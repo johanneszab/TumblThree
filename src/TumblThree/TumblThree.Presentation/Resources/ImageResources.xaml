@@ -140,4 +140,42 @@
         </DrawingImage.Drawing>
     </DrawingImage>
 
+    <DrawingImage x:Key="UpButtonImage">
+        <DrawingImage.Drawing>
+            <GeometryDrawing>
+                <GeometryDrawing.Geometry>
+                    <RectangleGeometry Rect="0,0,20,20"/>
+                </GeometryDrawing.Geometry>
+                <GeometryDrawing.Brush>
+                    <VisualBrush>
+                        <VisualBrush.Visual>
+                            <Border BorderBrush="Transparent" BorderThickness="0.5">
+                                <TextBlock Text="&#xE110;" FontFamily="Segoe UI Symbol" FontSize="20"/>
+                            </Border>
+                        </VisualBrush.Visual>
+                    </VisualBrush>
+                </GeometryDrawing.Brush>
+            </GeometryDrawing>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <DrawingImage x:Key="DownButtonImage">
+        <DrawingImage.Drawing>
+            <GeometryDrawing>
+                <GeometryDrawing.Geometry>
+                    <RectangleGeometry Rect="0,0,20,20"/>
+                </GeometryDrawing.Geometry>
+                <GeometryDrawing.Brush>
+                    <VisualBrush>
+                        <VisualBrush.Visual>
+                            <Border BorderBrush="Transparent" BorderThickness="0.5">
+                                <TextBlock Text="&#xE1FD;" FontFamily="Segoe UI Symbol" FontSize="20"/>
+                            </Border>
+                        </VisualBrush.Visual>
+                    </VisualBrush>
+                </GeometryDrawing.Brush>
+            </GeometryDrawing>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
 </ResourceDictionary>

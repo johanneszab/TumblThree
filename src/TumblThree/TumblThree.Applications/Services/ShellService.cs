@@ -85,7 +85,6 @@ namespace TumblThree.Applications.Services
             private set { SetProperty(ref isApplicationBusy, value); }
         }
 
-
         public event CancelEventHandler Closing
         {
             add
@@ -95,7 +94,6 @@ namespace TumblThree.Applications.Services
             }
             remove { closing -= value; }
         }
-
 
         public void ShowError(Exception exception, string displayMessage)
         {

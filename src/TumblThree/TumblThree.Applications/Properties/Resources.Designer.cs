@@ -214,6 +214,42 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to chats.txt.
+        /// </summary>
+        public static string FileNameConversations {
+            get {
+                return ResourceManager.GetString("FileNameConversations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to links.txt.
+        /// </summary>
+        public static string FileNameLinks {
+            get {
+                return ResourceManager.GetString("FileNameLinks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to quotes.txt.
+        /// </summary>
+        public static string FileNameQuotes {
+            get {
+                return ResourceManager.GetString("FileNameQuotes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to texts.txt.
+        /// </summary>
+        public static string FileNameTexts {
+            get {
+                return ResourceManager.GetString("FileNameTexts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Downloading {0}..
         /// </summary>
         public static string ProgressDownloadImage {

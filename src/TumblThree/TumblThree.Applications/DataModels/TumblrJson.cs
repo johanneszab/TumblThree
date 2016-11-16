@@ -93,6 +93,13 @@ namespace TumblThree.Applications.DataModels.Json
         public string embed_code { get; set; }
     }
 
+    public class Dialogue
+    {
+        public string name { get; set; }
+        public string label { get; set; }
+        public string phrase { get; set; }
+    }
+
     public class AltSize
     {
         public string url { get; set; }
@@ -112,6 +119,16 @@ namespace TumblThree.Applications.DataModels.Json
         public string caption { get; set; }
         public List<AltSize> alt_sizes { get; set; }
         public OriginalSize original_size { get; set; }
+        public Exif exif { get; set; }
+    }
+
+    public class Exif
+    {
+        public string Camera { get; set; }
+        public int ISO { get; set; }
+        public string Aperture { get; set; }
+        public string Exposure { get; set; }
+        public string FocalLength { get; set; }
     }
 
     public class Post
@@ -166,5 +183,24 @@ namespace TumblThree.Applications.DataModels.Json
         public bool display_avatar { get; set; }
         public string source_url { get; set; }
         public string source_title { get; set; }
+        public string artist { get; set; }
+        public string album { get; set; }
+        public int? year { get; set; }
+        public string track { get; set; }
+        public string track_name { get; set; }
+        public string album_art { get; set; }
+        public string embed { get; set; }
+        public int? plays { get; set; }
+        public string audio_url { get; set; }
+        public string audio_source_url { get; set; }
+        public string audio_type { get; set; }
+        public string text { get; set; }
+        public string source { get; set; }
+        public string url { get; set; }
+        public object link_author { get; set; }
+        public object excerpt { get; set; }
+        public string publisher { get; set; }
+        public string description { get; set; }
+        public List<Dialogue> dialogue { get; set; }
     }
 }

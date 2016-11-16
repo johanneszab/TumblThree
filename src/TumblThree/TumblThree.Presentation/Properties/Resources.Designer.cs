@@ -115,6 +115,24 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Settings applied to each blog upon addition:.
+        /// </summary>
+        public static string BlogSettings {
+            get {
+                return ResourceManager.GetString("BlogSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Blog stats:.
+        /// </summary>
+        public static string BlogStatistics {
+            get {
+                return ResourceManager.GetString("BlogStatistics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter URL:.
         /// </summary>
         public static string BlogUrl {
@@ -250,7 +268,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download conversations.
+        ///   Looks up a localized string similar to Download conversation posts.
         /// </summary>
         public static string DownloadConversations {
             get {
@@ -259,25 +277,25 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Downloaded Images.
+        ///   Looks up a localized string similar to Downloaded files.
         /// </summary>
-        public static string DownloadedImages {
+        public static string DownloadedFiles {
             get {
-                return ResourceManager.GetString("DownloadedImages", resourceCulture);
+                return ResourceManager.GetString("DownloadedFiles", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Downloaded Image {0} of {1}.
+        ///   Looks up a localized string similar to Downloaded files {0} of {1}.
         /// </summary>
-        public static string DownloadedImagesOf {
+        public static string DownloadedFilesOf {
             get {
-                return ResourceManager.GetString("DownloadedImagesOf", resourceCulture);
+                return ResourceManager.GetString("DownloadedFilesOf", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download Images.
+        ///   Looks up a localized string similar to Download images.
         /// </summary>
         public static string DownloadImages {
             get {
@@ -286,7 +304,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download links.
+        ///   Looks up a localized string similar to Download link posts.
         /// </summary>
         public static string DownloadLinks {
             get {
@@ -295,7 +313,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download Location.
+        ///   Looks up a localized string similar to Download location.
         /// </summary>
         public static string DownloadLocation {
             get {
@@ -304,7 +322,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download quotes.
+        ///   Looks up a localized string similar to Download quote posts.
         /// </summary>
         public static string DownloadQuotes {
             get {
@@ -313,7 +331,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download texts.
+        ///   Looks up a localized string similar to Download regular posts.
         /// </summary>
         public static string DownloadTexts {
             get {
@@ -322,7 +340,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download Videos (Tumblr.com self hosted).
+        ///   Looks up a localized string similar to Download videos (Tumblr.com self hosted).
         /// </summary>
         public static string DownloadVideos {
             get {
@@ -340,7 +358,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Preview.
+        ///   Looks up a localized string similar to Preview on/off.
         /// </summary>
         public static string EnablePreview {
             get {
@@ -376,7 +394,16 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Image Size.
+        ///   Looks up a localized string similar to Global settings:.
+        /// </summary>
+        public static string GlobalSettings {
+            get {
+                return ResourceManager.GetString("GlobalSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Image size.
         /// </summary>
         public static string ImageSize {
             get {
@@ -538,7 +565,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Parallel Blogs.
+        ///   Looks up a localized string similar to Parallel blogs.
         /// </summary>
         public static string ParallelBlogs {
             get {
@@ -547,7 +574,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Parallel Connections.
+        ///   Looks up a localized string similar to Parallel connections.
         /// </summary>
         public static string ParallelConnections {
             get {
@@ -799,7 +826,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Set time interval (min).
+        ///   Looks up a localized string similar to Set time (hh:mm:ss).
         /// </summary>
         public static string Timer {
             get {
@@ -898,7 +925,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Video Size.
+        ///   Looks up a localized string similar to Video size.
         /// </summary>
         public static string VideoSize {
             get {

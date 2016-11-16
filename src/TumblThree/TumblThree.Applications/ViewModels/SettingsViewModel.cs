@@ -8,8 +8,8 @@ using TumblThree.Applications.DataModels;
 using System.ComponentModel;
 using System.Windows.Input;
 using System.Text.RegularExpressions;
-using System.Timers;
 using TumblThree.Domain;
+using System.Threading;
 
 namespace TumblThree.Applications.ViewModels
 {
@@ -51,8 +51,7 @@ namespace TumblThree.Applications.ViewModels
         private bool downloadConversations;
         private bool downloadQuotes;
         private bool downloadLinks;
-        private int timerInterval;
-        private Timer timer;
+        private string timerInterval;
 
         //private bool isloaded = false;
 
@@ -69,12 +68,8 @@ namespace TumblThree.Applications.ViewModels
             this.authenticateCommand = new DelegateCommand(Authenticate);
             this.enableAutoDownloadCommand = new DelegateCommand(EnableAutoDownload);
             
-            this.timer = new System.Timers.Timer();
-            this.autoDownload = false;
-
             Load();
             view.Closed += ViewClosed;
-            timer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
 
             folderBrowser.PropertyChanged += FolderBrowserPropertyChanged;
         }
@@ -207,7 +202,7 @@ namespace TumblThree.Applications.ViewModels
         public bool AutoDownload
         {
             get { return autoDownload; }
-            set { SetProperty(ref autoDownload, value); if (enableAutoDownloadCommand.CanExecute(null)) { enableAutoDownloadCommand.Execute(null); } }
+            set { SetProperty(ref autoDownload, value); }
         }
 
         public bool RemoveIndexAfterCrawl
@@ -258,7 +253,7 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref downloadLinks, value); }
         }
 
-        public int TimerInterval
+        public string TimerInterval
         {
             get { return timerInterval; }
             set { SetProperty(ref timerInterval, value); }
@@ -295,6 +290,7 @@ namespace TumblThree.Applications.ViewModels
                 DownloadConversations = settings.DownloadConversations;
                 DownloadLinks = settings.DownloadLinks;
                 DownloadQuotes = settings.DownloadQuotes;
+                AutoDownload = settings.AutoDownload;
                 TimerInterval = settings.TimerInterval;
             }
             else
@@ -326,13 +322,18 @@ namespace TumblThree.Applications.ViewModels
                 DownloadConversations = false;
                 DownloadQuotes = false;
                 DownloadLinks = false;
-                TimerInterval = 1440;
+                AutoDownload = false;
+                TimerInterval = "22:40:00";
             }
         }
 
         private void ViewClosed(object sender, EventArgs e)
         {
             SaveSettings();
+            if (enableAutoDownloadCommand.CanExecute(null))
+            {
+                enableAutoDownloadCommand.Execute(null);
+            }
         }
         private void SaveSettings()
         {
@@ -363,6 +364,7 @@ namespace TumblThree.Applications.ViewModels
             settings.OAuthToken = OAuthToken;
             settings.OAuthTokenSecret = OAuthTokenSecret;
             settings.OAuthCallbackUrl = OAuthCallbackUrl;
+            settings.AutoDownload = AutoDownload;
             settings.TimerInterval = TimerInterval;
         }
 
@@ -381,18 +383,36 @@ namespace TumblThree.Applications.ViewModels
         {
             if (AutoDownload)
             {
-                timer.Interval = 1000 * 60 * settings.TimerInterval;
-                timer.Start();
-                timer.Enabled = true;
-                timer.AutoReset = true;
+                if (CrawlerService.IsTimerSet == false)
+                {
+                    TimeSpan alertTime;
+                    TimeSpan.TryParse(settings.TimerInterval, out alertTime);
+                    DateTime current = DateTime.Now;
+                    TimeSpan timeToGo = alertTime - current.TimeOfDay;
+                    if (timeToGo < TimeSpan.Zero)
+                    {
+                        return; //time already passed
+                    }
+                    CrawlerService.Timer = new System.Threading.Timer(x =>
+                    {
+                        this.OnTimedEvent();
+                    }, null, timeToGo, Timeout.InfiniteTimeSpan);
+
+                    CrawlerService.IsTimerSet = true;
+                }
             }
             else
             {
-                timer.Stop();
+                if (CrawlerService.Timer != null)
+                {
+                    //FIXME: Seems wrong and is certainly not threadsafe
+                    CrawlerService.Timer.Dispose();
+                    CrawlerService.IsTimerSet = false;
+                }
             }
         }
 
-        private void OnTimedEvent(object sender, ElapsedEventArgs e)
+        private void OnTimedEvent()
         {
             if (CrawlerService.AutoDownloadCommand.CanExecute(null))
                 System.Windows.Application.Current.Dispatcher.BeginInvoke(

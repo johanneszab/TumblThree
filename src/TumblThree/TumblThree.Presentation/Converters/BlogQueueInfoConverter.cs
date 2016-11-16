@@ -16,7 +16,7 @@ namespace TumblThree.Presentation.Converters
             var downloadedImages = values[0];
             var totalImages = values[1];
 
-            return string.Format(CultureInfo.CurrentCulture, Resources.DownloadedImagesOf, downloadedImages, totalImages);
+            return string.Format(CultureInfo.CurrentCulture, Resources.DownloadedFilesOf, downloadedImages, totalImages);
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

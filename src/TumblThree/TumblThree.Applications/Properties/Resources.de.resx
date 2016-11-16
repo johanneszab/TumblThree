@@ -153,6 +153,9 @@
   <data name="CouldNotRemoveBlogIndex" xml:space="preserve">
     <value>Der Blog konnte nicht gelöscht werden: {0}</value>
   </data>
+  <data name="CouldNotRestoreUISettings" xml:space="preserve">
+    <value>Die UI Einstellungen konnten nicht geladen werden.</value>
+  </data>
   <data name="CouldNotSaveBlog" xml:space="preserve">
     <value>Der Blog konnte nicht gespeichert werden: {0}</value>
   </data>
@@ -164,6 +167,18 @@
   </data>
   <data name="CrawlerError" xml:space="preserve">
     <value>Im Crawlerprozess ist ein Problem aufgetreten.</value>
+  </data>
+  <data name="FileNameConversations" xml:space="preserve">
+    <value>konversationen.txt</value>
+  </data>
+  <data name="FileNameLinks" xml:space="preserve">
+    <value>links.txt</value>
+  </data>
+  <data name="FileNameQuotes" xml:space="preserve">
+    <value>zitate.txt</value>
+  </data>
+  <data name="FileNameTexts" xml:space="preserve">
+    <value>texte.txt</value>
   </data>
   <data name="ProgressDownloadImage" xml:space="preserve">
     <value>Herunterladen von {0}.</value>

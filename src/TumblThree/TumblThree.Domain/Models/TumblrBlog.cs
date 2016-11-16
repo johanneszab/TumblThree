@@ -33,6 +33,7 @@ namespace TumblThree.Domain.Models
         private bool downloadQuote;
         private bool downloadConversation;
         private bool downloadLink;
+        private bool skipGif;
         private postTypes state;
 
         public enum postTypes
@@ -74,6 +75,7 @@ namespace TumblThree.Domain.Models
             this.downloadConversation = false;
             this.downloadVideo = false;
             this.downloadAudio = false;
+            this.skipGif = false;
             this.lastDownloadedPhoto = null;
             this.lastDownloadedVideo = null;
         }
@@ -107,6 +109,7 @@ namespace TumblThree.Domain.Models
             this.downloadConversation = false;
             this.downloadVideo = false;
             this.downloadAudio = false;
+            this.skipGif = false;
             this.lastDownloadedPhoto = null;
             this.lastDownloadedVideo = null;
         }
@@ -265,6 +268,12 @@ namespace TumblThree.Domain.Models
         {
             get { return downloadAudio; }
             set { SetProperty(ref downloadAudio, value); }
+        }
+
+        public bool SkipGif
+        {
+            get { return skipGif; }
+            set { SetProperty(ref skipGif, value); }
         }
 
         public string LastDownloadedPhoto

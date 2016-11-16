@@ -67,6 +67,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Controls\DateTimeUpDown.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Resources\BrushResources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -133,6 +137,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\DateTimeUpDown.xaml.cs">
+      <DependentUpon>DateTimeUpDown.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Flyout.cs" />
     <Compile Include="Controls\HorizontalFlyoutAlignment.cs" />
     <Compile Include="Controls\InsertMarkerAdorner.cs" />
@@ -175,6 +182,8 @@
     <Compile Include="Services\ClipboardService.cs" />
     <Compile Include="Services\EnvironmentService.cs" />
     <Compile Include="Services\PresentationService.cs" />
+    <Compile Include="ValidationRules\TimeSpanRule.cs" />
+    <Compile Include="ValidationRules\UIntRangeRule.cs" />
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>

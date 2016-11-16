@@ -134,7 +134,10 @@ namespace TumblThree.Applications.Properties
         public bool DownloadLinks { get; set; }
 
         [DataMember]
-        public int TimerInterval { get; set; }
+        public bool AutoDownload { get; set; }
+
+        [DataMember]
+        public string TimerInterval { get; set; }
 
         [DataMember]
         public Dictionary<object, Tuple<int, double>> ColumnWidths { get; set; }
@@ -197,13 +200,14 @@ namespace TumblThree.Applications.Properties
             EnablePreview = true;
             RemoveIndexAfterCrawl = false;
             DownloadImages = true;
-            DownloadVideos = false;
-            DownloadTexts = false;
-            DownloadAudios = false;
-            DownloadQuotes = false;
-            DownloadConversations = false;
-            DownloadLinks = false;
-            TimerInterval = 1440;
+            DownloadVideos = true;
+            DownloadTexts = true;
+            DownloadAudios = true;
+            DownloadQuotes = true;
+            DownloadConversations = true;
+            DownloadLinks = true;
+            AutoDownload = false;
+            TimerInterval = "22:40:00";
             ColumnWidths = new Dictionary<object, Tuple<int, double>>();
         }
 

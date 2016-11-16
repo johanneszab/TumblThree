@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.Composition;
 using System.Windows.Input;
 using System.Waf.Foundation;
-using TumblThree.Domain.Models;
 
 namespace TumblThree.Applications.Services
 {
@@ -21,7 +20,9 @@ namespace TumblThree.Applications.Services
         private ICommand autoDownloadCommand;
         private bool isCrawl;
         private bool isPaused;
+        private bool isTimerSet;
         private string newBlogUrl;
+        private System.Threading.Timer timer;
 
         public ICommand AddBlogCommand
         {
@@ -100,6 +101,18 @@ namespace TumblThree.Applications.Services
         {
             get { return isPaused; }
             set { SetProperty(ref isPaused, value); }
+        }
+
+        public bool IsTimerSet
+        {
+            get { return isTimerSet; }
+            set { SetProperty(ref isTimerSet, value); }
+        }
+
+        public System.Threading.Timer Timer
+        {
+            get { return timer; }
+            set { SetProperty(ref timer, value); }
         }
 
         public string NewBlogUrl

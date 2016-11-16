@@ -154,7 +154,7 @@
     <value>Löschen</value>
   </data>
   <data name="DeleteIndex" xml:space="preserve">
-    <value>Nur löschen der Indexdateien (keine heruntergeladenen Photos)</value>
+    <value>Nur löschen der Indexdateien (keine heruntergeladenen Dateien)</value>
   </data>
   <data name="Details" xml:space="preserve">
     <value>Details</value>
@@ -162,17 +162,17 @@
   <data name="DownloadedImages" xml:space="preserve">
     <value>Bilder heruntergeladen</value>
   </data>
-  <data name="DownloadedImagesOf" xml:space="preserve">
-    <value>{0} Bilder von {1} heruntergeladen</value>
+  <data name="DownloadedFilesOf" xml:space="preserve">
+    <value>{0} Dateien von {1} heruntergeladen</value>
   </data>
   <data name="DownloadImages" xml:space="preserve">
-    <value>Lade Bilde</value>
+    <value>Lade Bilder</value>
   </data>
   <data name="DownloadLocation" xml:space="preserve">
     <value>Speicherort</value>
   </data>
   <data name="DownloadVideos" xml:space="preserve">
-    <value>Lade Videos</value>
+    <value>Lade Videos (tumblr.com gehostet)</value>
   </data>
   <data name="EnqueueSelection" xml:space="preserve">
     <value>Selektion hinzufügen</value>
@@ -235,7 +235,7 @@
     <value>Nummer an gleichzeitig zu verarbeitenden Blogs</value>
   </data>
   <data name="ParallelConnections" xml:space="preserve">
-    <value>Nummer an gleichzeitig zu ladenen Dateien</value>
+    <value>Nummer an gleichzeitig zu geöffneten Verbindungen</value>
   </data>
   <data name="Pause" xml:space="preserve">
     <value>Pause</value>
@@ -259,7 +259,7 @@
     <value>Entfernen aus der Warteschlange</value>
   </data>
   <data name="RemoveIndex" xml:space="preserve">
-    <value>Lösche den Blogindex nach erfolgreichem Crawl</value>
+    <value>Lösche den Blogindex nach erfolgreichem Download</value>
   </data>
   <data name="RemoveSelected" xml:space="preserve">
     <value>Ausgewählte Blogs löschen</value>
@@ -340,7 +340,7 @@
     <value>Starte und downloade Blogs</value>
   </data>
   <data name="Timer" xml:space="preserve">
-    <value>Zeitinterval (min)</value>
+    <value>Startzeit (hh:mm:ss)</value>
   </data>
   <data name="Audios" xml:space="preserve">
     <value>Audio</value>
@@ -388,18 +388,30 @@
     <value>Lade Audiodateien</value>
   </data>
   <data name="DownloadConversations" xml:space="preserve">
-    <value>Lade Konversationen</value>
+    <value>Lade Konversationsbeiträge</value>
   </data>
   <data name="DownloadLinks" xml:space="preserve">
-    <value>Lade Links</value>
+    <value>Lade Linkbeiträge</value>
   </data>
   <data name="DownloadQuotes" xml:space="preserve">
-    <value>Lade Zitate</value>
+    <value>Lade Zitatbeiträge</value>
   </data>
   <data name="DownloadTexts" xml:space="preserve">
-    <value>Lade Texte</value>
+    <value>Lade normale Beiträge</value>
   </data>
   <data name="EnablePreview" xml:space="preserve">
     <value>Vorschau</value>
+  </data>
+  <data name="BlogSettings" xml:space="preserve">
+    <value>Blog Einstellungen (angewendet beim Hinzufügen des Blogs):</value>
+  </data>
+  <data name="BlogStatistics" xml:space="preserve">
+    <value>Blogstatistiken:</value>
+  </data>
+  <data name="GlobalSettings" xml:space="preserve">
+    <value>Globaleeinstellungen:</value>
+  </data>
+  <data name="TimeOut" xml:space="preserve">
+    <value>Timeout (s)</value>
   </data>
 </root>

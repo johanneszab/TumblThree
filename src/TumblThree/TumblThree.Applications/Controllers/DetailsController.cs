@@ -54,6 +54,7 @@ namespace TumblThree.Applications.Controllers
         {
             if (blogFiles.Count() < 1) { throw new ArgumentException("The collection must have at least one item.", "blogFiles"); }
 
+            //FIXME: Create proper binding to Selectionservice List<Blogs>.
             var localBlogFiles = blogFiles.Cast<TumblrBlog>().ToArray();
             return new TumblrBlog()
             {
@@ -64,7 +65,15 @@ namespace TumblThree.Applications.Controllers
                 NumberOfLinks = (uint)localBlogFiles.Sum(blogs => blogs.NumberOfLinks),
                 Conversations = (uint)localBlogFiles.Sum(blogs => blogs.Conversations),
                 Videos = (uint)localBlogFiles.Sum(blogs => blogs.Videos),
-                Audios = (uint)localBlogFiles.Sum(blogs => blogs.Audios)
+                Audios = (uint)localBlogFiles.Sum(blogs => blogs.Audios),
+
+                DownloadedTexts = (uint)localBlogFiles.Sum(blogs => blogs.DownloadedTexts),
+                DownloadedQuotes = (uint)localBlogFiles.Sum(blogs => blogs.DownloadedQuotes),
+                DownloadedPhotos = (uint)localBlogFiles.Sum(blogs => blogs.DownloadedPhotos),
+                DownloadedLinks = (uint)localBlogFiles.Sum(blogs => blogs.DownloadedLinks),
+                DownloadedConversations = (uint)localBlogFiles.Sum(blogs => blogs.DownloadedConversations),
+                DownloadedVideos = (uint)localBlogFiles.Sum(blogs => blogs.DownloadedVideos),
+                DownloadedAudios = (uint)localBlogFiles.Sum(blogs => blogs.DownloadedAudios)
             };
         }
 

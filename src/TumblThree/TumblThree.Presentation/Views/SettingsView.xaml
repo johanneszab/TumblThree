@@ -5,9 +5,10 @@
         xmlns:p="clr-namespace:TumblThree.Presentation.Properties"
         xmlns:dd="clr-namespace:TumblThree.Presentation.DesignData"
         xmlns:ctrl="clr-namespace:TumblThree.Presentation.Controls"
+        xmlns:vr="clr-namespace:TumblThree.Presentation.ValidationRules"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
         xmlns:vm="clr-namespace:TumblThree.Applications.ViewModels;assembly=TumblThree.Applications"
-        mc:Ignorable="d" Title="Settings" Height="780" Width="600"
+        mc:Ignorable="d" Title="Settings" Height="850" Width="650"
         d:DataContext="{d:DesignInstance vm:SettingsViewModel}">
 
     <Grid>
@@ -82,8 +83,15 @@
             <Label x:Name="imageSizeLabel" Grid.Column="0" Content="{x:Static p:Resources.ImageSize}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Width="Auto"/>
             <ComboBox x:Name="imageSizeComboBox" Grid.Column="1" ItemsSource="{Binding ShellService.Settings.ImageSizes}" SelectedValuePath="." SelectedValue="{Binding ImageSize}" SelectedItem="{Binding ImageSize, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Stretch" Margin="10" VerticalAlignment="Top" MinWidth="120"/>
             <Label x:Name="timeOutLabel" Grid.Column="3" Content="{x:Static p:Resources.TimeOut}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Width="Auto"/>
-            <TextBox x:Name="timeOutComboBox" Grid.Column="4" Text="{Binding TimeOut, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Stretch" Margin="10" VerticalAlignment="Center" MinWidth="120"/>
-        </Grid>
+            <TextBox x:Name="timeOutComboBox" Grid.Column="4" HorizontalAlignment="Stretch" Margin="10" VerticalAlignment="Center" MinWidth="120">
+                <TextBox.Text>
+                    <Binding Path="TimeOut" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <vr:UIntRangeRule/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>        </Grid>
         <Grid Height="46" Margin="0" VerticalAlignment="Top" Grid.Row="4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100"/>
@@ -95,7 +103,15 @@
             <Label x:Name="videoSizeLabel" Grid.Column="0" Content="{x:Static p:Resources.VideoSize}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Width="Auto"/>
             <ComboBox x:Name="videoSizeComboBox" Grid.Column="1" ItemsSource="{Binding ShellService.Settings.VideoSizes}" SelectedValuePath="." SelectedValue="{Binding VideoSize}" SelectedItem="{Binding VideoSize, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Stretch" Margin="10" VerticalAlignment="Top" MinWidth="120"/>
             <Label x:Name="bandwidthLabel" Grid.Column="3" Content="{x:Static p:Resources.Bandwidth}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Width="Auto"/>
-            <TextBox x:Name="bandwidthComboBox" Grid.Column="4" Text="{Binding Bandwidth, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Stretch" Margin="10" VerticalAlignment="Center" MinWidth="120"/>
+            <TextBox x:Name="bandwidthComboBox" Grid.Column="4" HorizontalAlignment="Stretch" Margin="10" VerticalAlignment="Center" MinWidth="120">
+                <TextBox.Text>
+                    <Binding Path="Bandwidth" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <vr:UIntRangeRule/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
         </Grid>
         <Grid Height="46" Margin="0" VerticalAlignment="Top" Grid.Row="5">
             <Grid.ColumnDefinitions>
@@ -108,7 +124,15 @@
             <CheckBox x:Name="autoDownloadEnableCheckBox" Grid.Column="0" Content="{x:Static p:Resources.EnableAutoDownload}" IsChecked="{Binding AutoDownload}" IsEnabled="True" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10" Width="Auto"/>
             <ComboBox x:Name="autoDownloadChoseBlogsComboBox" Grid.Column="1" ItemsSource="{Binding ShellService.Settings.BlogTypes}" SelectedValuePath="." SelectedValue="{Binding BlogType}" SelectedItem="{Binding BlogType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Stretch" Margin="10" VerticalAlignment="Center" MinWidth="120"/>
             <Label x:Name="autoDownloadTimerLabel" Grid.Column="3" Content="{x:Static p:Resources.Timer}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Width="Auto"/>
-            <TextBox x:Name="autoDownloadSetTimerComboBox" Grid.Column="4" Text="{Binding TimerInterval, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Stretch" Margin="10" VerticalAlignment="Center" MinWidth="60"/>
+            <TextBox x:Name="autoDownloadSetTimerComboBox" Grid.Column="4" HorizontalAlignment="Stretch" Margin="10" VerticalAlignment="Center" MinWidth="60">
+                <TextBox.Text>
+                    <Binding Path="TimerInterval" UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <vr:TimeSpanRule/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
         </Grid>
         <Grid Height="Auto" Margin="0" VerticalAlignment="Top" Grid.Row="7">
             <Grid.ColumnDefinitions>
@@ -127,21 +151,30 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+
             </Grid.RowDefinitions>
-            <CheckBox x:Name="checkBoxDownloadImages" Content="{x:Static p:Resources.DownloadImages}" IsChecked="{Binding DownloadImages, Mode=TwoWay}" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
-            <CheckBox x:Name="checkBoxDownloadVideos" Content="{x:Static p:Resources.DownloadVideos}" IsChecked="{Binding DownloadVideos, Mode=TwoWay}" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
-            <CheckBox x:Name="checkBoxDownloadAudios" Content="{x:Static p:Resources.DownloadAudios}" IsChecked="{Binding DownloadAudios, Mode=TwoWay}" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
-            <CheckBox x:Name="checkBoxDownloadTexts" Content="{x:Static p:Resources.DownloadTexts}" IsChecked="{Binding DownloadTexts, Mode=TwoWay}" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
-            <CheckBox x:Name="checkBoxDownloadQuotes" Content="{x:Static p:Resources.DownloadQuotes}" IsChecked="{Binding DownloadQuotes, Mode=TwoWay}" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
-            <CheckBox x:Name="checkBoxDownloadConversations" Content="{x:Static p:Resources.DownloadConversations}" IsChecked="{Binding DownloadConversations, Mode=TwoWay}" Grid.Column="0" Grid.Row="5" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
-            <CheckBox x:Name="checkBoxDownloadLinks" Content="{x:Static p:Resources.DownloadLinks}" IsChecked="{Binding DownloadLinks, Mode=TwoWay}" Grid.Column="0" Grid.Row="6" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
-            <CheckBox x:Name="checkBoxEnablePreview" Content="{x:Static p:Resources.EnablePreview}" IsChecked="{Binding EnablePreview, Mode=TwoWay}" Grid.Column="0" Grid.Row="7" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
-            <CheckBox x:Name="checkBoxSkipGif" Content="{x:Static p:Resources.SkipGif}" IsChecked="{Binding SkipGif, Mode=TwoWay}" Grid.Column="0" Grid.Row="8" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
-            <CheckBox x:Name="checkBoxCheckStatus" Content="{x:Static p:Resources.CheckStatus}" IsChecked="{Binding CheckOnlineStatusAtStartup, Mode=TwoWay}" Grid.Column="0" Grid.Row="9" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
-            <CheckBox x:Name="checkBoxDeleteIndex" Content="{x:Static p:Resources.DeleteIndex}" IsChecked="{Binding DeleteOnlyIndex, Mode=TwoWay}" Grid.Column="0" Grid.Row="10" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
-            <CheckBox x:Name="checkBoxRemoveIndex" Content="{x:Static p:Resources.RemoveIndex}" IsChecked="{Binding RemoveIndexAfterCrawl, Mode=TwoWay}" Grid.Column="0" Grid.Row="11" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
+            <Separator Grid.Column="0" Grid.Row="0" Margin="0"/>
+            <Label x:Name="perBlogLabel" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" Content="{x:Static p:Resources.BlogSettings}" Width="Auto"/>
+            <CheckBox x:Name="checkBoxDownloadImages" Content="{x:Static p:Resources.DownloadImages}" IsChecked="{Binding DownloadImages, Mode=TwoWay}" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
+            <CheckBox x:Name="checkBoxDownloadVideos" Content="{x:Static p:Resources.DownloadVideos}" IsChecked="{Binding DownloadVideos, Mode=TwoWay}" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
+            <CheckBox x:Name="checkBoxDownloadAudios" Content="{x:Static p:Resources.DownloadAudios}" IsChecked="{Binding DownloadAudios, Mode=TwoWay}" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
+            <CheckBox x:Name="checkBoxDownloadTexts" Content="{x:Static p:Resources.DownloadTexts}" IsChecked="{Binding DownloadTexts, Mode=TwoWay}" Grid.Column="0" Grid.Row="5" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
+            <CheckBox x:Name="checkBoxDownloadQuotes" Content="{x:Static p:Resources.DownloadQuotes}" IsChecked="{Binding DownloadQuotes, Mode=TwoWay}" Grid.Column="0" Grid.Row="6" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
+            <CheckBox x:Name="checkBoxDownloadConversations" Content="{x:Static p:Resources.DownloadConversations}" IsChecked="{Binding DownloadConversations, Mode=TwoWay}" Grid.Column="0" Grid.Row="7" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
+            <CheckBox x:Name="checkBoxDownloadLinks" Content="{x:Static p:Resources.DownloadLinks}" IsChecked="{Binding DownloadLinks, Mode=TwoWay}" Grid.Column="0" Grid.Row="8" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
+            <CheckBox x:Name="checkBoxSkipGif" Content="{x:Static p:Resources.SkipGif}" IsChecked="{Binding SkipGif, Mode=TwoWay}" Grid.Column="0" Grid.Row="9" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
+            <Separator Grid.Column="0" Grid.Row="10" Margin="0"/>
+            <Label x:Name="globalLabel" Grid.Column="0" Grid.Row="11" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" Content="{x:Static p:Resources.GlobalSettings}" Width="Auto"/>
+            <CheckBox x:Name="checkBoxEnablePreview" Content="{x:Static p:Resources.EnablePreview}" IsChecked="{Binding EnablePreview, Mode=TwoWay}" Grid.Column="0" Grid.Row="12" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
+            <CheckBox x:Name="checkBoxCheckStatus" Content="{x:Static p:Resources.CheckStatus}" IsChecked="{Binding CheckOnlineStatusAtStartup, Mode=TwoWay}" Grid.Column="0" Grid.Row="13" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
+            <CheckBox x:Name="checkBoxDeleteIndex" Content="{x:Static p:Resources.DeleteIndex}" IsChecked="{Binding DeleteOnlyIndex, Mode=TwoWay}" Grid.Column="0" Grid.Row="14" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
+            <CheckBox x:Name="checkBoxRemoveIndex" Content="{x:Static p:Resources.RemoveIndex}" IsChecked="{Binding RemoveIndexAfterCrawl, Mode=TwoWay}" Grid.Column="0" Grid.Row="15" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
         </Grid>
-        <Grid Height="Auto" Margin="0" VerticalAlignment="Bottom" Grid.Row="8">
+        <Grid Height="Auto" Margin="0" VerticalAlignment="Bottom" Grid.Row="16">
             <Button x:Name="buttonAuthenticate" Height="Auto" Content="{x:Static p:Resources.Authenticate}" Command="{Binding AuthenticateCommand}" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="75">
                 <Button.ToolTip>
                     <ToolTip>

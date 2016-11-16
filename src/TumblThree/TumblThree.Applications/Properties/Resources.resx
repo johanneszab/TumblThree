@@ -168,6 +168,18 @@
   <data name="CrawlerError" xml:space="preserve">
     <value>The Crawler Thread encountered an error.</value>
   </data>
+  <data name="FileNameConversations" xml:space="preserve">
+    <value>chats.txt</value>
+  </data>
+  <data name="FileNameLinks" xml:space="preserve">
+    <value>links.txt</value>
+  </data>
+  <data name="FileNameQuotes" xml:space="preserve">
+    <value>quotes.txt</value>
+  </data>
+  <data name="FileNameTexts" xml:space="preserve">
+    <value>texts.txt</value>
+  </data>
   <data name="ProgressDownloadImage" xml:space="preserve">
     <value>Downloading {0}.</value>
   </data>

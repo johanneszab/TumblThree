@@ -153,11 +153,11 @@
   <data name="Details" xml:space="preserve">
     <value>Details</value>
   </data>
-  <data name="DownloadedImages" xml:space="preserve">
-    <value>Downloaded Images</value>
+  <data name="DownloadedFiles" xml:space="preserve">
+    <value>Downloaded files</value>
   </data>
   <data name="DownloadLocation" xml:space="preserve">
-    <value>Download Location</value>
+    <value>Download location</value>
   </data>
   <data name="EnqueueSelection" xml:space="preserve">
     <value>Enqueue selection</value>
@@ -232,13 +232,13 @@
     <value>Url</value>
   </data>
   <data name="ImageSize" xml:space="preserve">
-    <value>Image Size</value>
+    <value>Image size</value>
   </data>
   <data name="ParallelBlogs" xml:space="preserve">
-    <value>Parallel Blogs</value>
+    <value>Parallel blogs</value>
   </data>
   <data name="ParallelConnections" xml:space="preserve">
-    <value>Parallel Connections</value>
+    <value>Parallel connections</value>
   </data>
   <data name="Online" xml:space="preserve">
     <value>Online</value>
@@ -300,17 +300,17 @@
   <data name="NumberOfImages" xml:space="preserve">
     <value>{0} Images</value>
   </data>
-  <data name="DownloadedImagesOf" xml:space="preserve">
-    <value>Downloaded Image {0} of {1}</value>
+  <data name="DownloadedFilesOf" xml:space="preserve">
+    <value>Downloaded files {0} of {1}</value>
   </data>
   <data name="DownloadImages" xml:space="preserve">
-    <value>Download Images</value>
+    <value>Download images</value>
   </data>
   <data name="DownloadVideos" xml:space="preserve">
-    <value>Download Videos (Tumblr.com self hosted)</value>
+    <value>Download videos (Tumblr.com self hosted)</value>
   </data>
   <data name="VideoSize" xml:space="preserve">
-    <value>Video Size</value>
+    <value>Video size</value>
   </data>
   <data name="Authenticate" xml:space="preserve">
     <value>Authenticate</value>
@@ -346,7 +346,7 @@
     <value>Enable autoenqueue blogs</value>
   </data>
   <data name="Timer" xml:space="preserve">
-    <value>Set time interval (min)</value>
+    <value>Set time (hh:mm:ss)</value>
   </data>
   <data name="Audios" xml:space="preserve">
     <value>Audio</value>
@@ -391,18 +391,27 @@
     <value>Download audio files</value>
   </data>
   <data name="DownloadConversations" xml:space="preserve">
-    <value>Download conversations</value>
+    <value>Download conversation posts</value>
   </data>
   <data name="DownloadLinks" xml:space="preserve">
-    <value>Download links</value>
+    <value>Download link posts</value>
   </data>
   <data name="DownloadQuotes" xml:space="preserve">
-    <value>Download quotes</value>
+    <value>Download quote posts</value>
   </data>
   <data name="DownloadTexts" xml:space="preserve">
-    <value>Download texts</value>
+    <value>Download regular posts</value>
   </data>
   <data name="EnablePreview" xml:space="preserve">
-    <value>Preview</value>
+    <value>Preview on/off</value>
+  </data>
+  <data name="BlogSettings" xml:space="preserve">
+    <value>Settings applied to each blog upon addition:</value>
+  </data>
+  <data name="BlogStatistics" xml:space="preserve">
+    <value>Blog stats:</value>
+  </data>
+  <data name="GlobalSettings" xml:space="preserve">
+    <value>Global settings:</value>
   </data>
 </root>
