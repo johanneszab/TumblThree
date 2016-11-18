@@ -52,6 +52,9 @@ namespace TumblThree.Applications.Controllers
         private CancellationTokenSource crawlBlogsCancellation;
         private PauseTokenSource crawlBlogsPause;
 
+        public delegate void BlogManagerFinishedLoadingHandler(object sender, EventArgs e);
+        public event BlogManagerFinishedLoadingHandler BlogManagerFinishedLoading;
+
         [ImportingConstructor]
         public ManagerController(IShellService shellService, IEnvironmentService environmentService, SelectionService selectionService, CrawlerService crawlerService,
             Lazy<ManagerViewModel> managerViewModel)
@@ -145,6 +148,11 @@ namespace TumblThree.Applications.Controllers
                         foreach (var file in files)
                         {
                             selectionService.BlogFiles.Add(file);
+                        }
+
+                        if (BlogManagerFinishedLoading != null)
+                        {
+                            BlogManagerFinishedLoading(this, EventArgs.Empty);
                         }
 
                         if (shellService.Settings.CheckOnlineStatusAtStartup == true)
@@ -362,6 +370,7 @@ namespace TumblThree.Applications.Controllers
                         string fileName = String.Empty;
                         string fileLocation = String.Empty;
 
+                        //FIXME: Create more generic method to remove WET code.
                         switch (currentImageUrl.Item2)
                         {
                             case "Photo":
@@ -392,7 +401,7 @@ namespace TumblThree.Applications.Controllers
                                 }
 
                                 if (shellService.Settings.EnablePreview)
-                                    blog.LastDownloadedPhoto = Path.GetFullPath(fileLocation);
+                                    blog.LastDownloadedVideo = Path.GetFullPath(fileLocation);
                                 Interlocked.Increment(ref downloadedVideos);
                                 blog.DownloadedVideos = (uint)downloadedVideos;
                                 break;
@@ -908,6 +917,7 @@ namespace TumblThree.Applications.Controllers
 
                                     document = RequestData(url, authHeader);
 
+                                    //FIXME: Create Generic Method to reduce WET code
                                     Interlocked.Add(ref photos, document.response.posts.Where(posts => posts.type.Equals("photo")).Count());
                                     Interlocked.Add(ref videos, document.response.posts.Where(posts => posts.type.Equals("video")).Count());
                                     Interlocked.Add(ref audio, document.response.posts.Where(posts => posts.type.Equals("audio")).Count());

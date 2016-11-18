@@ -33,6 +33,5 @@ namespace TumblThree.Applications.Services
         bool IsPaused { get; }
 
         string NewBlogUrl { get; set; }
-
     }
 }

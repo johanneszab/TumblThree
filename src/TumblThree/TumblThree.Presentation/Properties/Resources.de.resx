@@ -343,25 +343,25 @@
     <value>Startzeit (hh:mm:ss)</value>
   </data>
   <data name="Audios" xml:space="preserve">
-    <value>Audio</value>
+    <value>Audioaufnahmen:</value>
   </data>
   <data name="Links" xml:space="preserve">
-    <value>Link</value>
+    <value>Links:</value>
   </data>
   <data name="Photos" xml:space="preserve">
-    <value>Foto</value>
+    <value>Fotos:</value>
   </data>
   <data name="Posts" xml:space="preserve">
-    <value>Post</value>
+    <value>Anzahl an Posts:</value>
   </data>
   <data name="Quotes" xml:space="preserve">
-    <value>Zitate</value>
+    <value>Zitate:</value>
   </data>
   <data name="ShowItems" xml:space="preserve">
     <value>Zusammenfassung von {0} Blogs</value>
   </data>
   <data name="Texts" xml:space="preserve">
-    <value>Text</value>
+    <value>Texte:</value>
   </data>
   <data name="SelectABlog" xml:space="preserve">
     <value>Wähle einen Blog aus</value>
@@ -370,10 +370,10 @@
     <value>Kopiere URL</value>
   </data>
   <data name="Videos" xml:space="preserve">
-    <value>Video</value>
+    <value>Videos:</value>
   </data>
   <data name="Conversations" xml:space="preserve">
-    <value>Konversationen</value>
+    <value>Konversationen:</value>
   </data>
   <data name="Preview" xml:space="preserve">
     <value>Vorschau:</value>

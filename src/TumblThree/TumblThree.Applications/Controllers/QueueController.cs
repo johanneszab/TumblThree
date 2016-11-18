@@ -86,6 +86,10 @@ namespace TumblThree.Applications.Controllers
 
         public void Run()
         {
+        }
+
+        public void LoadQueue()
+        {
             IReadOnlyList<string> blogFilesToLoad;
             if (environmentService.QueueList.Any())
             {

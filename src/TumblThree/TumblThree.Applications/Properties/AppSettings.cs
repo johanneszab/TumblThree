@@ -191,7 +191,7 @@ namespace TumblThree.Applications.Properties
             Bandwidth = int.MaxValue;
             ImageSize = 1280;
             VideoSize = 1080;
-            BlogType = "all";
+            BlogType = "None";
             CheckClipboard = true;
             ShowPicturePreview = true;
             DeleteOnlyIndex = true;

@@ -88,7 +88,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Audio.
+        ///   Looks up a localized string similar to No. of Audios:.
         /// </summary>
         public static string Audios {
             get {
@@ -178,7 +178,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Conversation.
+        ///   Looks up a localized string similar to No. of Conversations:.
         /// </summary>
         public static string Conversations {
             get {
@@ -457,7 +457,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Link.
+        ///   Looks up a localized string similar to No. of Links:.
         /// </summary>
         public static string Links {
             get {
@@ -592,7 +592,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Photo.
+        ///   Looks up a localized string similar to No. of Photos:.
         /// </summary>
         public static string Photos {
             get {
@@ -601,7 +601,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Posts.
+        ///   Looks up a localized string similar to No. of Posts:.
         /// </summary>
         public static string Posts {
             get {
@@ -646,7 +646,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Quote.
+        ///   Looks up a localized string similar to No. of Quotes:.
         /// </summary>
         public static string Quotes {
             get {
@@ -808,7 +808,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Text.
+        ///   Looks up a localized string similar to No. of Texts:.
         /// </summary>
         public static string Texts {
             get {
@@ -934,7 +934,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Video.
+        ///   Looks up a localized string similar to No. of Videos:.
         /// </summary>
         public static string Videos {
             get {

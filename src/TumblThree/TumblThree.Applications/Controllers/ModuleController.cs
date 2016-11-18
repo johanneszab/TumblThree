@@ -77,6 +77,8 @@ namespace TumblThree.Applications.Controllers
             QueueController.Initialize();
             DetailsController.QueueManager = queueManager;
             DetailsController.Initialize();
+
+            ManagerController.BlogManagerFinishedLoading += OnBlogManagerFinishedLoading;
         }
 
         public async void Run()
@@ -86,6 +88,11 @@ namespace TumblThree.Applications.Controllers
 
             // Let the UI to initialize first before loading the queuelist.
             await Dispatcher.CurrentDispatcher.InvokeAsync(QueueController.Run, DispatcherPriority.ApplicationIdle);
+        }
+
+        private void OnBlogManagerFinishedLoading(object sender, EventArgs e)
+        {
+            QueueController.LoadQueue();
         }
 
         public void Shutdown()

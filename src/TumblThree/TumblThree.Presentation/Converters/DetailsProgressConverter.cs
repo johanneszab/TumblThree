@@ -17,8 +17,8 @@ namespace TumblThree.Presentation.Converters
             var downloaded = (uint)values[0];
             var total = (uint)values[1];
 
-            if (downloaded == 0)
-                return "";
+            //if (downloaded == 0)
+            //    return "";
 
             return string.Format(CultureInfo.CurrentCulture, Resources.DetailsProgress, downloaded, total);
         }

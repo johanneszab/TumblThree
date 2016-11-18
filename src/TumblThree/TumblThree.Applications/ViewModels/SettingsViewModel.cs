@@ -307,7 +307,7 @@ namespace TumblThree.Applications.ViewModels
                 Bandwidth = int.MaxValue;
                 ImageSize = 1280;
                 VideoSize = 1080;
-                BlogType = "all";
+                BlogType = "All";
                 CheckClipboard = true;
                 ShowPicturePreview = true;
                 DeleteOnlyIndex = true;
@@ -406,7 +406,6 @@ namespace TumblThree.Applications.ViewModels
             {
                 if (CrawlerService.Timer != null)
                 {
-                    //FIXME: Seems wrong and is certainly not threadsafe
                     CrawlerService.Timer.Dispose();
                     CrawlerService.IsTimerSet = false;
                 }
@@ -421,6 +420,7 @@ namespace TumblThree.Applications.ViewModels
                     new Action(() => {
                         CrawlerService.AutoDownloadCommand.Execute(null);
                     }));
+            CrawlerService.Timer.Change(new TimeSpan(24, 00, 00), Timeout.InfiniteTimeSpan);
         }
 
 

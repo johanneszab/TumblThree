@@ -126,10 +126,10 @@
                 <Separator Grid.ColumnSpan="2" Grid.Row="8" Margin="0"/>
                 <Label Grid.Column="0" Grid.Row="10" Content="{x:Static p:Resources.BlogStatistics}"/>
 
-                <Label Content="{x:Static p:Resources.Posts}" Grid.Column="0" Grid.Row="12"/>
-                <Label Content="{Binding BlogFile.Posts, Converter={StaticResource UIntToDisplayValueConverter}}" Grid.Column="2" Grid.Row="12"/>
+                <Label Content="{x:Static p:Resources.Posts}" Margin="0,0,0,0" Padding="0,0,0,0" Grid.Column="0" Grid.Row="12"/>
+                <Label Content="{Binding BlogFile.Posts, Converter={StaticResource UIntToDisplayValueConverter}}" Padding="0" Grid.Column="2" Grid.Row="12"/>
 
-                <CheckBox Content="{x:Static p:Resources.Texts}" IsChecked="{Binding BlogFile.DownloadText, Mode=TwoWay}" Grid.Column="0" Grid.Row="14">
+                <CheckBox Content="{x:Static p:Resources.Texts}" IsChecked="{Binding BlogFile.DownloadText, Mode=TwoWay}" Grid.Column="0" Margin="3,0,0,0" Padding="3,0,0,0" Grid.Row="14">
                     <CheckBox.ToolTip>
                         <ToolTip>
                             <StackPanel>
@@ -157,7 +157,7 @@
                     </Label.ToolTip>
                 </Label>
 
-                <CheckBox Content="{x:Static p:Resources.Photos}" IsChecked="{Binding BlogFile.DownloadPhoto, Mode=TwoWay}" Grid.Column="0" Grid.Row="16" Padding="3,0,0,0">
+                <CheckBox Content="{x:Static p:Resources.Photos}" IsChecked="{Binding BlogFile.DownloadPhoto, Mode=TwoWay}" Grid.Column="0" Grid.Row="16" Margin="3,0,0,0" Padding="3,0,0,0">
                     <CheckBox.ToolTip>
                         <ToolTip>
                             <StackPanel>
@@ -185,7 +185,7 @@
                     </Label.ToolTip>
                 </Label>
 
-                <CheckBox Content="{x:Static p:Resources.Audios}" IsChecked="{Binding BlogFile.DownloadAudio, Mode=TwoWay}" Grid.Column="0" Grid.Row="18" Padding="3,0,0,0">
+                <CheckBox Content="{x:Static p:Resources.Audios}" IsChecked="{Binding BlogFile.DownloadAudio, Mode=TwoWay}" Grid.Column="0" Grid.Row="18" Margin="3,0,0,0" Padding="3,0,0,0">
                     <CheckBox.ToolTip>
                         <ToolTip>
                             <StackPanel>
@@ -213,7 +213,7 @@
                     </Label.ToolTip>
                 </Label>
 
-                <CheckBox Content="{x:Static p:Resources.Videos}" IsChecked="{Binding BlogFile.DownloadVideo, Mode=TwoWay}" Grid.Column="0" Grid.Row="20" Padding="3,0,0,0">
+                <CheckBox Content="{x:Static p:Resources.Videos}" IsChecked="{Binding BlogFile.DownloadVideo, Mode=TwoWay}" Grid.Column="0" Grid.Row="20" Margin="3,0,0,0" Padding="3,0,0,0">
                     <CheckBox.ToolTip>
                         <ToolTip>
                             <StackPanel>
@@ -241,7 +241,7 @@
                     </Label.ToolTip>
                 </Label>
 
-                <CheckBox Content="{x:Static p:Resources.Conversations}" IsChecked="{Binding BlogFile.DownloadConversation, Mode=TwoWay}" Grid.Column="0" Grid.Row="22" Padding="3,0,0,0">
+                <CheckBox Content="{x:Static p:Resources.Conversations}" IsChecked="{Binding BlogFile.DownloadConversation, Mode=TwoWay}" Grid.Column="0" Grid.Row="22" Margin="3,0,0,0" Padding="3,0,0,0">
                     <CheckBox.ToolTip>
                         <ToolTip>
                             <StackPanel>
@@ -269,7 +269,7 @@
                     </Label.ToolTip>
                 </Label>
 
-                <CheckBox Content="{x:Static p:Resources.Quotes}" IsChecked="{Binding BlogFile.DownloadQuote, Mode=TwoWay}" Grid.Column="0" Grid.Row="24" Padding="3,0,0,0">
+                <CheckBox Content="{x:Static p:Resources.Quotes}" IsChecked="{Binding BlogFile.DownloadQuote, Mode=TwoWay}" Grid.Column="0" Grid.Row="24" Margin="3,0,0,0" Padding="3,0,0,0">
                     <CheckBox.ToolTip>
                         <ToolTip>
                             <StackPanel>
@@ -297,7 +297,7 @@
                     </Label.ToolTip>
                 </Label>
 
-                <CheckBox Content="{x:Static p:Resources.Links}" IsChecked="{Binding BlogFile.DownloadLink, Mode=TwoWay}" Grid.Column="0" Grid.Row="26" Padding="3,0,0,0">
+                <CheckBox Content="{x:Static p:Resources.Links}" IsChecked="{Binding BlogFile.DownloadLink, Mode=TwoWay}" Grid.Column="0" Grid.Row="26" Margin="3,0,0,0" Padding="3,0,0,0">
                     <CheckBox.ToolTip>
                         <ToolTip>
                             <StackPanel>
@@ -325,7 +325,7 @@
                     </Label.ToolTip>
                 </Label>
 
-                <CheckBox Content="{x:Static p:Resources.SkipGif}" IsChecked="{Binding BlogFile.SkipGif, Mode=TwoWay}" Grid.Column="0" Grid.Row="28" Padding="3,0,0,0"/>
+                <CheckBox Content="{x:Static p:Resources.SkipGif}" IsChecked="{Binding BlogFile.SkipGif, Mode=TwoWay}" Grid.Column="0" Grid.Row="28" Margin="3,0,0,0" Padding="3,0,0,0"/>
                 <Label Content="" Grid.Column="2" Grid.Row="28"/>
 
                 <Label Content="{x:Static p:Resources.Preview}" Grid.Column="0" Grid.Row="30"/>
