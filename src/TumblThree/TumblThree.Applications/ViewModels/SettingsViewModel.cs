@@ -391,7 +391,8 @@ namespace TumblThree.Applications.ViewModels
                     TimeSpan timeToGo = alertTime - current.TimeOfDay;
                     if (timeToGo < TimeSpan.Zero)
                     {
-                        return; //time already passed
+                        // time already passed
+                        timeToGo = timeToGo.Add(new TimeSpan(24, 00, 00));
                     }
                     CrawlerService.Timer = new System.Threading.Timer(x =>
                     {
@@ -451,6 +452,7 @@ namespace TumblThree.Applications.ViewModels
                 Regex regex = new Regex("oauth_verifier=(.*)");
                 string oauthVerifer = regex.Match(oauthTokenUrl).Groups[1].ToString();
 
+                //FIXME: Sometimes works, sometimes not: 401 (Unauthorized): "oauth_signature does not match expected value"
                 OAuthResponse accessToken =
                     ShellService.OAuthManager.AcquireAccessToken(settings.AccessTokenUrl, "POST", oauthVerifer);
 

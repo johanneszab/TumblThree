@@ -277,7 +277,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Downloaded files.
+        ///   Looks up a localized string similar to Downloaded Files.
         /// </summary>
         public static string DownloadedFiles {
             get {
@@ -349,7 +349,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enable autoenqueue blogs.
+        ///   Looks up a localized string similar to Enable autodownload blogs and add.
         /// </summary>
         public static string EnableAutoDownload {
             get {
@@ -601,7 +601,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Post.
+        ///   Looks up a localized string similar to Posts.
         /// </summary>
         public static string Posts {
             get {
@@ -826,7 +826,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Set time (hh:mm:ss).
+        ///   Looks up a localized string similar to at time (hh:mm:ss).
         /// </summary>
         public static string Timer {
             get {
@@ -885,6 +885,24 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipConnectionsDescription {
             get {
                 return ResourceManager.GetString("ToolTipConnectionsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of downloaded post types / total post types.
+        /// </summary>
+        public static string ToolTipDetailsStats {
+            get {
+                return ResourceManager.GetString("ToolTipDetailsStats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check to download post type or skip during the backup.
+        /// </summary>
+        public static string ToolTipDetailsStatsDescription {
+            get {
+                return ResourceManager.GetString("ToolTipDetailsStatsDescription", resourceCulture);
             }
         }
         

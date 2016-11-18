@@ -24,7 +24,7 @@ namespace TumblThree.Applications.Properties
 
         public static string[] blogTypes =
             new string[] {
-                Resources.BlogTypesAll, Resources.BlogTypesOnceFinished, Resources.BlogTypesNeverFinished
+                Resources.BlogTypesNone, Resources.BlogTypesAll, Resources.BlogTypesOnceFinished, Resources.BlogTypesNeverFinished
         };
 
         [DataMember]

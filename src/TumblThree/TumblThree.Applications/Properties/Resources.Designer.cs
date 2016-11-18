@@ -106,6 +106,15 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to None.
+        /// </summary>
+        public static string BlogTypesNone {
+            get {
+                return ResourceManager.GetString("BlogTypesNone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Once finished.
         /// </summary>
         public static string BlogTypesOnceFinished {

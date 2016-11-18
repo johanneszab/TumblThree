@@ -132,6 +132,9 @@
   <data name="BlogTypesNeverFinished" xml:space="preserve">
     <value>Nie geladen</value>
   </data>
+  <data name="BlogTypesNone" xml:space="preserve">
+    <value>Keine</value>
+  </data>
   <data name="BlogTypesOnceFinished" xml:space="preserve">
     <value>Komplett geladen</value>
   </data>

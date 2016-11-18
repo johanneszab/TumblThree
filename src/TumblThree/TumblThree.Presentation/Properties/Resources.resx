@@ -154,7 +154,7 @@
     <value>Details</value>
   </data>
   <data name="DownloadedFiles" xml:space="preserve">
-    <value>Downloaded files</value>
+    <value>Downloaded Files</value>
   </data>
   <data name="DownloadLocation" xml:space="preserve">
     <value>Download location</value>
@@ -343,10 +343,10 @@
     <value>Timeout (s)</value>
   </data>
   <data name="EnableAutoDownload" xml:space="preserve">
-    <value>Enable autoenqueue blogs</value>
+    <value>Enable autodownload blogs and add</value>
   </data>
   <data name="Timer" xml:space="preserve">
-    <value>Set time (hh:mm:ss)</value>
+    <value>at time (hh:mm:ss)</value>
   </data>
   <data name="Audios" xml:space="preserve">
     <value>Audio</value>
@@ -358,7 +358,7 @@
     <value>Photo</value>
   </data>
   <data name="Posts" xml:space="preserve">
-    <value>Post</value>
+    <value>Posts</value>
   </data>
   <data name="Quotes" xml:space="preserve">
     <value>Quote</value>
@@ -413,5 +413,11 @@
   </data>
   <data name="GlobalSettings" xml:space="preserve">
     <value>Global settings:</value>
+  </data>
+  <data name="ToolTipDetailsStats" xml:space="preserve">
+    <value>Number of downloaded post types / total post types</value>
+  </data>
+  <data name="ToolTipDetailsStatsDescription" xml:space="preserve">
+    <value>Check to download post type or skip during the backup</value>
   </data>
 </root>

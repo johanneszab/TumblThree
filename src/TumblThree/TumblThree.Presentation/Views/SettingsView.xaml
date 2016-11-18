@@ -115,10 +115,10 @@
         </Grid>
         <Grid Height="46" Margin="0" VerticalAlignment="Top" Grid.Row="5">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="190"/>
+                <ColumnDefinition Width="240"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="5"/>
-                <ColumnDefinition Width="160"/>
+                <ColumnDefinition Width="130"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <CheckBox x:Name="autoDownloadEnableCheckBox" Grid.Column="0" Content="{x:Static p:Resources.EnableAutoDownload}" IsChecked="{Binding AutoDownload}" IsEnabled="True" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10" Width="Auto"/>

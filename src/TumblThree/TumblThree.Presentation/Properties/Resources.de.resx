@@ -337,7 +337,7 @@
     <value>Notizen</value>
   </data>
   <data name="EnableAutoDownload" xml:space="preserve">
-    <value>Starte und downloade Blogs</value>
+    <value>Starte und füge hinzu</value>
   </data>
   <data name="Timer" xml:space="preserve">
     <value>Startzeit (hh:mm:ss)</value>
@@ -413,5 +413,11 @@
   </data>
   <data name="TimeOut" xml:space="preserve">
     <value>Timeout (s)</value>
+  </data>
+  <data name="ToolTipDetailsStats" xml:space="preserve">
+    <value>Anzahl an geladenen Beitragstypen von allen Beitragstypen</value>
+  </data>
+  <data name="ToolTipDetailsStatsDescription" xml:space="preserve">
+    <value>Markieren um Beitragstypen zu laden</value>
   </data>
 </root>

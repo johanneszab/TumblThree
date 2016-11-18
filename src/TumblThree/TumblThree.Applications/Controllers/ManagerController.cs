@@ -328,11 +328,17 @@ namespace TumblThree.Applications.Controllers
         {
             Logger.Verbose("ManagerController.CrawlCoreTumblrBlog:Start");
 
-            var newProgress = new DataModels.DownloadProgress();
-
             var tuple = GetImageUrls(blog, progress, ct, pt);
             var newImageCount = tuple.Item1;
             var newImageUrls = tuple.Item2;
+
+            int downloadedPhotos = (int)blog.DownloadedPhotos;
+            int downloadedVideos = (int)blog.DownloadedVideos;
+            int downloadedAudios = (int)blog.DownloadedAudios;
+            int downloadedTexts = (int)blog.DownloadedTexts;
+            int downloadedQuotes = (int)blog.DownloadedQuotes;
+            int downloadedLinks = (int)blog.DownloadedLinks;
+            int downloadedConversations = (int)blog.DownloadedConversations;
 
             blog.TotalCount = newImageCount;
 
@@ -362,114 +368,93 @@ namespace TumblThree.Applications.Controllers
                                 fileName = currentImageUrl.Item1.Split('/').Last();
                                 fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), fileName);
 
-                                if (Download(blog, fileLocation, currentImageUrl.Item1))
+                                if (Download(blog, fileLocation, currentImageUrl.Item1, progress))
                                 {
                                     blog.Links.Add(currentImageUrl.Item1);
                                     blog.DownloadedImages = (uint)blog.Links.Count();
                                     blog.Progress = (uint)((double)blog.DownloadedImages / (double)blog.TotalCount * 100);
-
-                                    newProgress = new DataModels.DownloadProgress();
-                                    newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressDownloadImage, currentImageUrl.Item1.Split('/').Last()); ;
-                                    progress.Report(newProgress);
                                 }
 
                                 if (shellService.Settings.EnablePreview)
                                     blog.LastDownloadedPhoto = Path.GetFullPath(fileLocation);
-                                blog.DownloadedPhotos++;
+                                Interlocked.Increment(ref downloadedPhotos);
+                                blog.DownloadedPhotos = (uint)downloadedPhotos;
                                 break;
                             case "Video":
                                 fileName = currentImageUrl.Item1.Split('/').Last();
                                 fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), fileName);
 
-                                if (Download(blog, fileLocation, currentImageUrl.Item1))
+                                if (Download(blog, fileLocation, currentImageUrl.Item1, progress))
                                 {
                                     blog.Links.Add(currentImageUrl.Item1);
                                     blog.DownloadedImages = (uint)blog.Links.Count();
                                     blog.Progress = (uint)((double)blog.DownloadedImages / (double)blog.TotalCount * 100);
-
-                                    newProgress = new DataModels.DownloadProgress();
-                                    newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressDownloadImage, currentImageUrl.Item1.Split('/').Last()); ;
-                                    progress.Report(newProgress);
                                 }
 
                                 if (shellService.Settings.EnablePreview)
                                     blog.LastDownloadedPhoto = Path.GetFullPath(fileLocation);
-                                blog.DownloadedVideos++;
+                                Interlocked.Increment(ref downloadedVideos);
+                                blog.DownloadedVideos = (uint)downloadedVideos;
                                 break;
                             case "Audio":
                                 fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), currentImageUrl.Item3 + ".mp3");
 
-                                if (Download(blog, fileLocation, currentImageUrl.Item1))
+                                if (Download(blog, fileLocation, currentImageUrl.Item1, progress))
                                 {
                                     blog.Links.Add(currentImageUrl.Item1);
                                     blog.DownloadedImages = (uint)blog.Links.Count();
                                     blog.Progress = (uint)((double)blog.DownloadedImages / (double)blog.TotalCount * 100);
-
-                                    newProgress = new DataModels.DownloadProgress();
-                                    newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressDownloadImage, currentImageUrl.Item1.Split('/').Last()); ;
-                                    progress.Report(newProgress);
                                 }
-                                blog.DownloadedAudios++;
+                                Interlocked.Increment(ref downloadedAudios);
+                                blog.DownloadedAudios = (uint)downloadedAudios;
                                 break;
                             case "Text":
                                 fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameTexts));
 
-                                if (Download(blog, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1))
+                                if (Download(blog, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress))
                                 {
                                     blog.Links.Add(currentImageUrl.Item3);
                                     blog.DownloadedImages = (uint)blog.Links.Count();
                                     blog.Progress = (uint)((double)blog.DownloadedImages / (double)blog.TotalCount * 100);
-
-                                    newProgress = new DataModels.DownloadProgress();
-                                    newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressDownloadImage, currentImageUrl.Item1.Split('/').Last()); ;
-                                    progress.Report(newProgress);
                                 }
-                                blog.DownloadedTexts++;
+                                Interlocked.Increment(ref downloadedTexts);
+                                blog.DownloadedTexts = (uint)downloadedTexts;
                                 break;
                             case "Quote":
                                 fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameQuotes));
 
-                                if (Download(blog, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1))
+                                if (Download(blog, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress))
                                 {
                                     blog.Links.Add(currentImageUrl.Item3);
                                     blog.DownloadedImages = (uint)blog.Links.Count();
                                     blog.Progress = (uint)((double)blog.DownloadedImages / (double)blog.TotalCount * 100);
-
-                                    newProgress = new DataModels.DownloadProgress();
-                                    newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressDownloadImage, currentImageUrl.Item1.Split('/').Last()); ;
-                                    progress.Report(newProgress);
                                 }
-                                blog.DownloadedQuotes++;
+                                Interlocked.Increment(ref downloadedQuotes);
+                                blog.DownloadedQuotes = (uint)downloadedQuotes;
                                 break;
                             case "Link":
                                 fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameLinks));
 
-                                if (Download(blog, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1))
+                                if (Download(blog, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress))
                                 {
                                     blog.Links.Add(currentImageUrl.Item3);
                                     blog.DownloadedImages = (uint)blog.Links.Count();
                                     blog.Progress = (uint)((double)blog.DownloadedImages / (double)blog.TotalCount * 100);
-
-                                    newProgress = new DataModels.DownloadProgress();
-                                    newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressDownloadImage, currentImageUrl.Item1.Split('/').Last()); ;
-                                    progress.Report(newProgress);
                                 }
-                                blog.DownloadedLinks++;
+                                Interlocked.Increment(ref downloadedLinks);
+                                blog.DownloadedLinks = (uint)downloadedLinks;
                                 break;
                             case "Conversation":
                                 fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameConversations));
 
-                                if (Download(blog, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1))
+                                if (Download(blog, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress))
                                 {
                                     blog.Links.Add(currentImageUrl.Item3);
                                     blog.DownloadedImages = (uint)blog.Links.Count();
                                     blog.Progress = (uint)((double)blog.DownloadedImages / (double)blog.TotalCount * 100);
-
-                                    newProgress = new DataModels.DownloadProgress();
-                                    newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressDownloadImage, currentImageUrl.Item1.Split('/').Last()); ;
-                                    progress.Report(newProgress);
                                 }
-                                blog.DownloadedConversations++;
+                                Interlocked.Increment(ref downloadedConversations);
+                                blog.DownloadedConversations = (uint)downloadedConversations;
                                 break;
                             default:
                                 break;
@@ -485,7 +470,7 @@ namespace TumblThree.Applications.Controllers
             blog.Dirty = false;
             SaveBlog(blog);
 
-            newProgress = new DataModels.DownloadProgress();
+            var newProgress = new DataModels.DownloadProgress();
             newProgress.Progress = "";
             progress.Report(newProgress);
 
@@ -505,7 +490,7 @@ namespace TumblThree.Applications.Controllers
         private void Enqueue(IEnumerable<IBlog> blogFiles)
         {
             QueueManager.AddItems(blogFiles.Select(x => new QueueListItem(x)));
-            shellService.ShowQueueView();
+            //shellService.ShowQueueView();
         }
 
         private bool CanEnqueueAutoDownload()
@@ -516,10 +501,13 @@ namespace TumblThree.Applications.Controllers
         private void EnqueueAutoDownload()
         {
             if (shellService.Settings.BlogType == shellService.Settings.BlogTypes.ElementAtOrDefault(0))
-                  Enqueue(selectionService.BlogFiles.ToArray());
+            {
+            }
             if (shellService.Settings.BlogType == shellService.Settings.BlogTypes.ElementAtOrDefault(1))
-                Enqueue(selectionService.BlogFiles.Where(blog => blog.LastCompleteCrawl != System.DateTime.MinValue).ToArray());
+                Enqueue(selectionService.BlogFiles.ToArray());
             if (shellService.Settings.BlogType == shellService.Settings.BlogTypes.ElementAtOrDefault(2))
+                Enqueue(selectionService.BlogFiles.Where(blog => blog.LastCompleteCrawl != System.DateTime.MinValue).ToArray());
+            if (shellService.Settings.BlogType == shellService.Settings.BlogTypes.ElementAtOrDefault(3))
                 Enqueue(selectionService.BlogFiles.Where(blog => blog.LastCompleteCrawl == System.DateTime.MinValue).ToArray());
 
             if (crawlerService.IsCrawl && crawlerService.IsPaused)
@@ -1157,7 +1145,7 @@ namespace TumblThree.Applications.Controllers
             return null;
         }
 
-        private bool Download(TumblrBlog blog, string fileLocation, string url)
+        private bool Download(TumblrBlog blog, string fileLocation, string url, IProgress<DataModels.DownloadProgress> progress)
         {
             Monitor.Enter(blog);
             if (blog.Links.Contains(url))
@@ -1170,6 +1158,10 @@ namespace TumblThree.Applications.Controllers
                 Monitor.Exit(blog);
                 try
                 {
+                    var newProgress = new DataModels.DownloadProgress();
+                    newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressDownloadImage, url.Split('/').Last()); ;
+                    progress.Report(newProgress);
+
                     using (var stream = ThrottledStream.ReadFromURLIntoStream(url, (shellService.Settings.Bandwidth / shellService.Settings.ParallelImages), shellService.Settings.TimeOut))
                         ThrottledStream.SaveStreamToDisk(stream, fileLocation);
                     return true;
@@ -1181,7 +1173,7 @@ namespace TumblThree.Applications.Controllers
             }
         }
 
-        private bool Download(TumblrBlog blog, string fileLocation, string postId, string text)
+        private bool Download(TumblrBlog blog, string fileLocation, string postId, string text, IProgress<DataModels.DownloadProgress> progress)
         {
             Monitor.Enter(blog);
             if (blog.Links.Contains(postId))
@@ -1193,6 +1185,10 @@ namespace TumblThree.Applications.Controllers
             {
                 try
                 {
+                    var newProgress = new DataModels.DownloadProgress();
+                    newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressDownloadImage, "Post: " + postId);
+                    progress.Report(newProgress);
+
                     using (StreamWriter sw = new StreamWriter(fileLocation, true))
                     {
                         sw.WriteLine(text);
