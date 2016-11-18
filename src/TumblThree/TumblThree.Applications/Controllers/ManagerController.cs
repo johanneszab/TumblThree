@@ -51,6 +51,8 @@ namespace TumblThree.Applications.Controllers
         private readonly List<Task> runningTasks;
         private CancellationTokenSource crawlBlogsCancellation;
         private PauseTokenSource crawlBlogsPause;
+        private readonly object lockObject = new object();
+        private bool locked = false;
 
         public delegate void BlogManagerFinishedLoadingHandler(object sender, EventArgs e);
         public event BlogManagerFinishedLoadingHandler BlogManagerFinishedLoading;
@@ -77,6 +79,7 @@ namespace TumblThree.Applications.Controllers
             this.listenClipboardCommand = new DelegateCommand(ListenClipboard);
             this.autoDownloadCommand = new DelegateCommand(EnqueueAutoDownload, CanEnqueueAutoDownload);
             this.runningTasks = new List<Task>();
+            this.locked = false;
         }
 
         private ManagerViewModel ManagerViewModel { get { return managerViewModel.Value; } }
@@ -760,36 +763,33 @@ namespace TumblThree.Applications.Controllers
             }
 
             string blogName = ExtractBlogname(blogUrl);
-
-            if (selectionService.BlogFiles.Select(blogs => blogs.Name).ToList().Contains(blogName))
-            {
-                shellService.ShowError(null, Resources.BlogAlreadyExist, blogName);
-                return;
-            }
-
-            var blogPath = shellService.Settings.DownloadLocation;
-
             TumblrBlog blog = new TumblrBlog(ExtractUrl(blogUrl));
 
+            lock (lockObject)
+            {
+                if (selectionService.BlogFiles.Select(blogs => blogs.Name).ToList().Contains(blogName))
+                {
+                    shellService.ShowError(null, Resources.BlogAlreadyExist, blogName);
+                    return;
+                }
+
+                if (Application.Current.Dispatcher.CheckAccess())
+                {
+                    selectionService.BlogFiles.Add(blog);
+                }
+                else
+                {
+
+                    Application.Current.Dispatcher.BeginInvoke(
+                        DispatcherPriority.Background,
+                        new Action(() =>
+                        {
+                            selectionService.BlogFiles.Add(blog);
+                        }));
+                }
+            }
+
             blog.Name = blogName;
-
-            if (Application.Current.Dispatcher.CheckAccess())
-            {
-                selectionService.BlogFiles.Add(blog);
-            }
-            else
-            {
-                await Application.Current.Dispatcher.BeginInvoke(
-                  DispatcherPriority.Background,
-                  new Action(() =>
-                  {
-                      selectionService.BlogFiles.Add(blog);
-                  }));
-            }
-
-            //var tuple = GetImageUrls(blog);
-            //blog.TotalCount = tuple.Item1;
-
             blog.DownloadAudio = shellService.Settings.DownloadAudios;
             blog.DownloadPhoto = shellService.Settings.DownloadImages;
             blog.DownloadVideo = shellService.Settings.DownloadVideos;
@@ -1218,23 +1218,29 @@ namespace TumblThree.Applications.Controllers
 
         private void OnClipboardContentChanged(object sender, EventArgs e)
         {
-            if (Clipboard.ContainsText())
+            // Catches if Clipboard cannot be accessed.
+            try
             {
-
-                // Count each whitespace as new url
-                string[] urls = Clipboard.GetText().ToString().Split(new char[0]);
-
-                foreach (string url in urls)
+                if (Clipboard.ContainsText())
                 {
-                    if (Validator.IsValidTumblrUrl(url))
+                    // Count each whitespace as new url
+                    string[] urls = Clipboard.GetText().ToString().Split(new char[0]);
+
+                    foreach (string url in urls)
                     {
-                        Task.Factory.StartNew(() =>
+                        if (Validator.IsValidTumblrUrl(url))
                         {
-                            return AddBlogAsync(url);
-                        },
-                        TaskCreationOptions.LongRunning);
+                            Task.Factory.StartNew(() =>
+                            {
+                                return AddBlogAsync(url);
+                            },
+                            TaskCreationOptions.LongRunning);
+                        }
                     }
                 }
+            }
+            catch
+            {
             }
         }
 
