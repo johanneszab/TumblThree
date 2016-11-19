@@ -45,7 +45,6 @@ namespace TumblThree.Applications.Controllers
             this.queueManager = new QueueManager();
         }
 
-
         private ShellService ShellService { get { return shellService.Value; } }
 
         private ManagerController ManagerController { get { return managerController.Value; } }

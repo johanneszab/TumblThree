@@ -159,8 +159,8 @@
   <data name="Details" xml:space="preserve">
     <value>Details</value>
   </data>
-  <data name="DownloadedImages" xml:space="preserve">
-    <value>Bilder heruntergeladen</value>
+  <data name="DownloadedFiles" xml:space="preserve">
+    <value>Dateien heruntergeladen</value>
   </data>
   <data name="DownloadedFilesOf" xml:space="preserve">
     <value>{0} Dateien von {1} heruntergeladen</value>
@@ -235,7 +235,7 @@
     <value>Nummer an gleichzeitig zu verarbeitenden Blogs</value>
   </data>
   <data name="ParallelConnections" xml:space="preserve">
-    <value>Nummer an gleichzeitig zu geöffneten Verbindungen</value>
+    <value>Nummer an gleichzeitig geöffneten Verbindungen</value>
   </data>
   <data name="Pause" xml:space="preserve">
     <value>Pause</value>
@@ -342,14 +342,23 @@
   <data name="Timer" xml:space="preserve">
     <value>Startzeit (hh:mm:ss)</value>
   </data>
+  <data name="SelectABlog" xml:space="preserve">
+    <value>Wähle einen Blog aus</value>
+  </data>
+  <data name="ShowItems" xml:space="preserve">
+    <value>Zusammenfassung von {0} Blogs</value>
+  </data>
+  <data name="CopyUrl" xml:space="preserve">
+    <value>Kopiere URL</value>
+  </data>
   <data name="Audios" xml:space="preserve">
     <value>Audioaufnahmen:</value>
   </data>
+  <data name="Conversations" xml:space="preserve">
+    <value>Konversationen:</value>
+  </data>
   <data name="Links" xml:space="preserve">
     <value>Links:</value>
-  </data>
-  <data name="Photos" xml:space="preserve">
-    <value>Fotos:</value>
   </data>
   <data name="Posts" xml:space="preserve">
     <value>Anzahl an Posts:</value>
@@ -357,32 +366,17 @@
   <data name="Quotes" xml:space="preserve">
     <value>Zitate:</value>
   </data>
-  <data name="ShowItems" xml:space="preserve">
-    <value>Zusammenfassung von {0} Blogs</value>
-  </data>
   <data name="Texts" xml:space="preserve">
     <value>Texte:</value>
-  </data>
-  <data name="SelectABlog" xml:space="preserve">
-    <value>Wähle einen Blog aus</value>
-  </data>
-  <data name="CopyUrl" xml:space="preserve">
-    <value>Kopiere URL</value>
   </data>
   <data name="Videos" xml:space="preserve">
     <value>Videos:</value>
   </data>
-  <data name="Conversations" xml:space="preserve">
-    <value>Konversationen:</value>
+  <data name="Photos" xml:space="preserve">
+    <value>Fotos:</value>
   </data>
   <data name="Preview" xml:space="preserve">
     <value>Vorschau:</value>
-  </data>
-  <data name="Bandwidth" xml:space="preserve">
-    <value>Bandbreite</value>
-  </data>
-  <data name="DetailsProgress" xml:space="preserve">
-    <value>{0} von {1}</value>
   </data>
   <data name="DownloadAudios" xml:space="preserve">
     <value>Lade Audiodateien</value>
@@ -399,20 +393,26 @@
   <data name="DownloadTexts" xml:space="preserve">
     <value>Lade normale Beiträge</value>
   </data>
+  <data name="Bandwidth" xml:space="preserve">
+    <value>Bandbreite</value>
+  </data>
+  <data name="DetailsProgress" xml:space="preserve">
+    <value>{0} von {1}</value>
+  </data>
   <data name="EnablePreview" xml:space="preserve">
-    <value>Vorschau</value>
+    <value>Vorschau an/aus</value>
   </data>
   <data name="BlogSettings" xml:space="preserve">
     <value>Blog Einstellungen (angewendet beim Hinzufügen des Blogs):</value>
-  </data>
-  <data name="BlogStatistics" xml:space="preserve">
-    <value>Blogstatistiken:</value>
   </data>
   <data name="GlobalSettings" xml:space="preserve">
     <value>Globaleeinstellungen:</value>
   </data>
   <data name="TimeOut" xml:space="preserve">
     <value>Timeout (s)</value>
+  </data>
+  <data name="BlogStatistics" xml:space="preserve">
+    <value>Blogstatistiken:</value>
   </data>
   <data name="ToolTipDetailsStats" xml:space="preserve">
     <value>Anzahl an geladenen Beitragstypen von allen Beitragstypen</value>

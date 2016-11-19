@@ -90,7 +90,6 @@ namespace TumblThree.Applications.Services
             set { SetProperty(ref autoDownloadCommand, value); }
         }
 
-
         public bool IsCrawl
         {
             get { return isCrawl; }

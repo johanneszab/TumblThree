@@ -139,7 +139,7 @@
     <value>Once finished</value>
   </data>
   <data name="CouldNotAddBlog" xml:space="preserve">
-    <value>Could not add the blog: {0}</value>
+    <value>Could not add the blog:  {0}</value>
   </data>
   <data name="CouldNotLoadLibrary" xml:space="preserve">
     <value>Could not load file in library: {0}</value>
@@ -172,7 +172,7 @@
     <value>The Crawler Thread encountered an error.</value>
   </data>
   <data name="FileNameConversations" xml:space="preserve">
-    <value>chats.txt</value>
+    <value>conversations.txt</value>
   </data>
   <data name="FileNameLinks" xml:space="preserve">
     <value>links.txt</value>

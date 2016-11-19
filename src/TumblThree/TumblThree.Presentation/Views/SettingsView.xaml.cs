@@ -1,11 +1,11 @@
 ﻿using System;
 using System.ComponentModel.Composition;
-using System.Text.RegularExpressions;
 using System.Waf.Applications;
 using System.Windows;
 using System.Windows.Input;
 using TumblThree.Applications.ViewModels;
 using TumblThree.Applications.Views;
+using System.Text.RegularExpressions;
 
 namespace TumblThree.Presentation.Views
 {

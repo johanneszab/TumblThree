@@ -54,8 +54,9 @@ namespace TumblThree.Applications.Controllers
         {
             if (blogFiles.Count() < 1) { throw new ArgumentException("The collection must have at least one item.", "blogFiles"); }
 
-            //FIXME: Create proper binding to Selectionservice List<Blogs>.
             var localBlogFiles = blogFiles.Cast<TumblrBlog>().ToArray();
+
+            //FIXME: Create proper binding to Selectionservice List<Blogs>.
             return new TumblrBlog()
             {
                 TotalCount = (uint)localBlogFiles.Sum(blogs => blogs.TotalCount),

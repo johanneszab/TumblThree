@@ -124,7 +124,7 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not add the blog: {0}.
+        ///   Looks up a localized string similar to Could not add the blog:  {0}.
         /// </summary>
         public static string CouldNotAddBlog {
             get {
@@ -223,7 +223,7 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to chats.txt.
+        ///   Looks up a localized string similar to conversations.txt.
         /// </summary>
         public static string FileNameConversations {
             get {

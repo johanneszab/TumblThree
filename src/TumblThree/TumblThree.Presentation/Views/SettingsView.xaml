@@ -91,7 +91,8 @@
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox.Text>
-            </TextBox>        </Grid>
+            </TextBox>
+        </Grid>
         <Grid Height="46" Margin="0" VerticalAlignment="Top" Grid.Row="4">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100"/>
@@ -174,8 +175,8 @@
             <CheckBox x:Name="checkBoxDeleteIndex" Content="{x:Static p:Resources.DeleteIndex}" IsChecked="{Binding DeleteOnlyIndex, Mode=TwoWay}" Grid.Column="0" Grid.Row="14" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
             <CheckBox x:Name="checkBoxRemoveIndex" Content="{x:Static p:Resources.RemoveIndex}" IsChecked="{Binding RemoveIndexAfterCrawl, Mode=TwoWay}" Grid.Column="0" Grid.Row="15" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
         </Grid>
-        <Grid Height="Auto" Margin="0" VerticalAlignment="Bottom" Grid.Row="16">
-            <Button x:Name="buttonAuthenticate" Height="Auto" Content="{x:Static p:Resources.Authenticate}" Command="{Binding AuthenticateCommand}" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="75">
+        <Grid Height="Auto" Margin="0" VerticalAlignment="Bottom" Grid.Row="8">
+            <Button x:Name="buttonAuthenticate" Height="Auto" Content="{x:Static p:Resources.Authenticate}" Command="{Binding AuthenticateCommand}" IsEnabled="False" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="75">
                 <Button.ToolTip>
                     <ToolTip>
                         <StackPanel>

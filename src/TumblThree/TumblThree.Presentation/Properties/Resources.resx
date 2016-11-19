@@ -256,7 +256,7 @@
     <value>Check blog online status on startup</value>
   </data>
   <data name="DeleteIndex" xml:space="preserve">
-    <value>Delete only the index files (no downloaded images)</value>
+    <value>Delete only the index files (no downloaded files)</value>
   </data>
   <data name="RemoveIndex" xml:space="preserve">
     <value>Remove blog index after crawl</value>
@@ -301,13 +301,13 @@
     <value>{0} Images</value>
   </data>
   <data name="DownloadedFilesOf" xml:space="preserve">
-    <value>Downloaded files {0} of {1}</value>
+    <value>Downloaded file {0} of {1}</value>
   </data>
   <data name="DownloadImages" xml:space="preserve">
     <value>Download images</value>
   </data>
   <data name="DownloadVideos" xml:space="preserve">
-    <value>Download videos (Tumblr.com self hosted)</value>
+    <value>Download videos (tumblr.com self hosted)</value>
   </data>
   <data name="VideoSize" xml:space="preserve">
     <value>Video size</value>
@@ -336,11 +336,11 @@
   <data name="Notes" xml:space="preserve">
     <value>Personal Notes</value>
   </data>
-  <data name="Bandwidth" xml:space="preserve">
-    <value>Bandwidth (kb/s)</value>
-  </data>
   <data name="TimeOut" xml:space="preserve">
     <value>Timeout (s)</value>
+  </data>
+  <data name="Bandwidth" xml:space="preserve">
+    <value>Bandwidth (kb/s)</value>
   </data>
   <data name="EnableAutoDownload" xml:space="preserve">
     <value>Enable autodownload blogs and add</value>
@@ -348,44 +348,41 @@
   <data name="Timer" xml:space="preserve">
     <value>at time (hh:mm:ss)</value>
   </data>
-  <data name="Audios" xml:space="preserve">
-    <value>No. of Audios:</value>
-  </data>
-  <data name="Links" xml:space="preserve">
-    <value>No. of Links:</value>
-  </data>
-  <data name="Photos" xml:space="preserve">
-    <value>No. of Photos:</value>
-  </data>
-  <data name="Posts" xml:space="preserve">
-    <value>No. of Posts:</value>
-  </data>
-  <data name="Quotes" xml:space="preserve">
-    <value>No. of Quotes:</value>
+  <data name="SelectABlog" xml:space="preserve">
+    <value>Please select a blog</value>
   </data>
   <data name="ShowItems" xml:space="preserve">
     <value>Summary of {0} blogs</value>
   </data>
-  <data name="Texts" xml:space="preserve">
-    <value>No. of Texts:</value>
-  </data>
-  <data name="SelectABlog" xml:space="preserve">
-    <value>Please select a blog</value>
-  </data>
   <data name="CopyUrl" xml:space="preserve">
     <value>Copy url</value>
   </data>
-  <data name="Videos" xml:space="preserve">
-    <value>No. of Videos:</value>
+  <data name="Audios" xml:space="preserve">
+    <value>No. of Audios</value>
   </data>
   <data name="Conversations" xml:space="preserve">
     <value>No. of Conversations:</value>
   </data>
+  <data name="Links" xml:space="preserve">
+    <value>No. of Links:</value>
+  </data>
+  <data name="Posts" xml:space="preserve">
+    <value>Number of Posts:</value>
+  </data>
+  <data name="Quotes" xml:space="preserve">
+    <value>No. of Quotes:</value>
+  </data>
+  <data name="Texts" xml:space="preserve">
+    <value>No of Texts:</value>
+  </data>
+  <data name="Videos" xml:space="preserve">
+    <value>No. of Videos:</value>
+  </data>
+  <data name="Photos" xml:space="preserve">
+    <value>No. of Photos:</value>
+  </data>
   <data name="Preview" xml:space="preserve">
     <value>Preview:</value>
-  </data>
-  <data name="DetailsProgress" xml:space="preserve">
-    <value>{0} of {1}</value>
   </data>
   <data name="DownloadAudios" xml:space="preserve">
     <value>Download audio files</value>
@@ -400,7 +397,10 @@
     <value>Download quote posts</value>
   </data>
   <data name="DownloadTexts" xml:space="preserve">
-    <value>Download regular posts</value>
+    <value>Download text posts</value>
+  </data>
+  <data name="DetailsProgress" xml:space="preserve">
+    <value>{0} of {1}</value>
   </data>
   <data name="EnablePreview" xml:space="preserve">
     <value>Preview on/off</value>
@@ -408,11 +408,11 @@
   <data name="BlogSettings" xml:space="preserve">
     <value>Settings applied to each blog upon addition:</value>
   </data>
-  <data name="BlogStatistics" xml:space="preserve">
-    <value>Blog stats:</value>
-  </data>
   <data name="GlobalSettings" xml:space="preserve">
     <value>Global settings:</value>
+  </data>
+  <data name="BlogStatistics" xml:space="preserve">
+    <value>Blog stats:</value>
   </data>
   <data name="ToolTipDetailsStats" xml:space="preserve">
     <value>Number of downloaded post types / total post types</value>

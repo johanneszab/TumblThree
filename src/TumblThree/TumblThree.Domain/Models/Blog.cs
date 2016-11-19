@@ -24,8 +24,8 @@ namespace TumblThree.Domain.Models
 
         protected Blog()
         {
-            this.name = null;
-            this.url = null;
+            this.name = String.Empty;
+            this.url = String.Empty;
             this.downloadedImages = 0;
             this.totalCount = 0;
             this.rating = 0;

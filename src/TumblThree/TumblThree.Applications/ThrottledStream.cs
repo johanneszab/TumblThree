@@ -6,7 +6,6 @@ using System.Timers;
 
 namespace TumblThree.Applications
 {
-
     public class ThrottledStream : Stream
     {
         #region Properties
@@ -148,6 +147,7 @@ namespace TumblThree.Applications
         }
 
         #endregion
+
 
         public static ThrottledStream ReadFromURLIntoStream(string url, int bandwidthInKb, int timeoutInSeconds)
         {

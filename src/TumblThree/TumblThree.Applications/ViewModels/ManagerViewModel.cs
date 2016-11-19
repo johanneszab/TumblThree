@@ -19,7 +19,7 @@ namespace TumblThree.Applications.ViewModels
         private Blog selectedBlogFile;
         private readonly ICrawlerService crawlerService;
         private ICommand showFilesCommand;
-        private ICommand visitBlogCommand;  
+        private ICommand visitBlogCommand;
 
         [ImportingConstructor]
         public ManagerViewModel(IManagerView view, IShellService shellService, Lazy<ISelectionService> selectionService, ICrawlerService crawlerService) : base(view)
@@ -36,7 +36,7 @@ namespace TumblThree.Applications.ViewModels
             }
             catch (Exception ex)
             {
-                Logger.Error("ManagerViewModel: {0}", ex);
+                Logger.Error("ManagerController: {0}", ex);
                 shellService.ShowError(ex, Resources.CouldNotRestoreUISettings);
                 return;
             }

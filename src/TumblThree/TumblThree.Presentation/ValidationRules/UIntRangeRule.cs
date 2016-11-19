@@ -11,7 +11,7 @@ namespace TumblThree.Presentation.ValidationRules
             UInt32 temp = 0;
             try
             {
-                if (UInt32.TryParse((string)value, out temp))
+                if (UInt32.TryParse((string) value, out temp))
                     return new ValidationResult(true, null);
             }
             catch (Exception e)

@@ -67,7 +67,7 @@ namespace TumblThree.Applications.ViewModels
             this.displayFolderBrowserCommand = new DelegateCommand(DisplayFolderBrowser);
             this.authenticateCommand = new DelegateCommand(Authenticate);
             this.enableAutoDownloadCommand = new DelegateCommand(EnableAutoDownload);
-            
+
             Load();
             view.Closed += ViewClosed;
 
@@ -307,7 +307,7 @@ namespace TumblThree.Applications.ViewModels
                 Bandwidth = int.MaxValue;
                 ImageSize = 1280;
                 VideoSize = 1080;
-                BlogType = "All";
+                BlogType = "None";
                 CheckClipboard = true;
                 ShowPicturePreview = true;
                 DeleteOnlyIndex = true;
@@ -316,12 +316,12 @@ namespace TumblThree.Applications.ViewModels
                 EnablePreview = true;
                 RemoveIndexAfterCrawl = false;
                 DownloadImages = true;
-                DownloadVideos = false;
-                DownloadAudios = false;
-                DownloadTexts = false;
-                DownloadConversations = false;
-                DownloadQuotes = false;
-                DownloadLinks = false;
+                DownloadVideos = true;
+                DownloadAudios = true;
+                DownloadTexts = true;
+                DownloadConversations = true;
+                DownloadQuotes = true;
+                DownloadLinks = true;
                 AutoDownload = false;
                 TimerInterval = "22:40:00";
             }
@@ -422,7 +422,6 @@ namespace TumblThree.Applications.ViewModels
                     }));
             CrawlerService.Timer.Change(new TimeSpan(24, 00, 00), Timeout.InfiniteTimeSpan);
         }
-
 
         private void DisplayFolderBrowser()
         {

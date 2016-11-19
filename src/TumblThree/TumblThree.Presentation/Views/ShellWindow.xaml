@@ -97,7 +97,7 @@
                               Height="23" BorderThickness="0" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Margin="0,0,1,0"/>
                 <ToggleButton Content="{x:Static p:Resources.Queue}" IsChecked="{Binding IsQueueViewVisible}" Grid.Column="1"
                               Height="23" BorderThickness="0" Background="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}" Margin="0,0,1,0"/>
-                
+
             </Grid>
 
             <ContentControl Content="{Binding DetailsView}" Focusable="False"/>
@@ -212,4 +212,3 @@
     </Grid>
 
 </Window>
-    

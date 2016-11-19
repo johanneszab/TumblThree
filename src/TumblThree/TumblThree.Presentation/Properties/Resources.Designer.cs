@@ -88,7 +88,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No. of Audios:.
+        ///   Looks up a localized string similar to No. of Audios.
         /// </summary>
         public static string Audios {
             get {
@@ -232,7 +232,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete only the index files (no downloaded images).
+        ///   Looks up a localized string similar to Delete only the index files (no downloaded files).
         /// </summary>
         public static string DeleteIndex {
             get {
@@ -286,7 +286,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Downloaded files {0} of {1}.
+        ///   Looks up a localized string similar to Downloaded file {0} of {1}.
         /// </summary>
         public static string DownloadedFilesOf {
             get {
@@ -331,7 +331,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download regular posts.
+        ///   Looks up a localized string similar to Download text posts.
         /// </summary>
         public static string DownloadTexts {
             get {
@@ -340,7 +340,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download videos (Tumblr.com self hosted).
+        ///   Looks up a localized string similar to Download videos (tumblr.com self hosted).
         /// </summary>
         public static string DownloadVideos {
             get {
@@ -601,7 +601,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No. of Posts:.
+        ///   Looks up a localized string similar to Number of Posts:.
         /// </summary>
         public static string Posts {
             get {
@@ -808,7 +808,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No. of Texts:.
+        ///   Looks up a localized string similar to No of Texts:.
         /// </summary>
         public static string Texts {
             get {

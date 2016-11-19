@@ -18,7 +18,6 @@ namespace TumblThree.Presentation.Views
         {
             InitializeComponent();
             this.viewModel = new Lazy<DetailsViewModel>(() => ViewHelper.GetViewModel<DetailsViewModel>(this));
-
         }
 
         private DetailsViewModel ViewModel { get { return viewModel.Value; } }

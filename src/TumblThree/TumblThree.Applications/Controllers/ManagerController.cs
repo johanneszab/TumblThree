@@ -20,10 +20,11 @@ using TumblThree.Domain.Queue;
 using System.Windows;
 using System.Windows.Threading;
 using System.Globalization;
-using System.Web.Script.Serialization;
-using System.Web;
+using System.Xml.Linq;
 using System.Net;
+using System.Xml.Serialization;
 using System.Text;
+using System.Web;
 
 namespace TumblThree.Applications.Controllers
 {
@@ -106,7 +107,7 @@ namespace TumblThree.Applications.Controllers
             ManagerViewModel.VisitBlogCommand = visitBlogCommand;
 
             ManagerViewModel.PropertyChanged += ManagerViewModelPropertyChanged;
-        
+
             shellService.ContentView = ManagerViewModel.View;
 
             LoadLibrary();
@@ -162,7 +163,7 @@ namespace TumblThree.Applications.Controllers
                         {
                             foreach (var file in files)
                             {
-                                file.Online = await IsBlogOnline(file.Name);
+                                file.Online = await IsBlogOnline(file.Url);
                             }
                         }
                     }
@@ -246,7 +247,7 @@ namespace TumblThree.Applications.Controllers
                     TaskScheduler.Default).ContinueWith(task =>
                     {
                         if (task.Exception != null)
-                        { 
+                        {
                             foreach (var innerEx in task.Exception.InnerExceptions)
                             {
                                 Logger.Error("ManagerController:Crawl: {0}", innerEx);
@@ -286,9 +287,10 @@ namespace TumblThree.Applications.Controllers
 
                     Monitor.Exit(QueueManager.Items);
 
-                    if (blogToCrawlNext.Blog is TumblrBlog) {
+                    if (blogToCrawlNext.Blog is TumblrBlog)
+                    {
 
-                        var blog = (TumblrBlog) blogToCrawlNext.Blog;
+                        var blog = (TumblrBlog)blogToCrawlNext.Blog;
                         blog.Dirty = true;
 
                         var progressHandler = new Progress<DataModels.DownloadProgress>(value =>
@@ -373,7 +375,6 @@ namespace TumblThree.Applications.Controllers
                         string fileName = String.Empty;
                         string fileLocation = String.Empty;
 
-                        //FIXME: Create more generic method to remove WET code.
                         switch (currentImageUrl.Item2)
                         {
                             case "Photo":
@@ -528,7 +529,7 @@ namespace TumblThree.Applications.Controllers
                 resumeCommand.Execute(null);
             }
             else if (!crawlerService.IsCrawl)
-            {              
+            {
                 crawlCommand.CanExecute(null);
                 crawlCommand.Execute(null);
             }
@@ -663,14 +664,13 @@ namespace TumblThree.Applications.Controllers
             stopCommand.RaiseCanExecuteChanged();
         }
 
-        private Task<bool> IsBlogOnline(string name)
+        private Task<bool> IsBlogOnline(string url)
         {
             return Task<bool>.Factory.StartNew(() =>
             {
-                string url = GetApiUrl(name, 1);
-                string authHeader = shellService.OAuthManager.GenerateauthHeader(url, "GET");
+                url = GetApiUrl(url, 1);
 
-                var blogDoc = RequestData(url, authHeader);
+                var blogDoc = RequestData(url);
                 if (blogDoc != null)
                     return true;
                 else
@@ -679,30 +679,28 @@ namespace TumblThree.Applications.Controllers
             TaskCreationOptions.LongRunning);
         }
 
-        private string GetApiUrl(string account, int count, int start = 0)
+        private string GetApiUrl(string url, int count, int start = 0)
         {
             /// <summary>
             /// construct the tumblr api post url of a blog.
             /// <para>the blog for the url</para>
             /// </summary>
             /// <returns>A string containing the api url of the blog.</returns>
-            string name = account;
-            if (!account.Contains("."))
-                name = name += ".tumblr.com";
-            string baseUrl = "https://api.tumblr.com/v2/blog/" + name + "/posts";
+            if (url.Last<char>() != '/')
+                url += "/api/read";
+            else
+                url += "api/read";
 
             var parameters = new Dictionary<string, string>
             {
-              { "api_key", shellService.Settings.ApiKey },
-              { "reblog_info", "true" },
-              { "limit", count.ToString() }
+              { "num", count.ToString() }
             };
             if (start > 0)
-                parameters["offset"] = start.ToString();
-            return baseUrl + "?" + UrlEncode(parameters);
+                parameters["start"] = start.ToString();
+            return url + "?" + UrlEncode(parameters);
         }
 
-        private Datamodels.Json.TumblrJson RequestData(string url, string authHeaders)
+        private XDocument RequestData(string url)
         {
             try
             {
@@ -711,23 +709,17 @@ namespace TumblThree.Applications.Controllers
                 request.ServicePoint.Expect100Continue = false;
                 request.ContentType = "x-www-from-urlencoded";
 
-                if (authHeaders != null)
-                {
-                    // add OAuth header
-                    request.Headers["Authorization"] = authHeaders;
-                }
-
-                var jsserializer = new JavaScriptSerializer();
                 using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
                 {
                     using (ThrottledStream stream = new ThrottledStream(response.GetResponseStream(), (shellService.Settings.Bandwidth / shellService.Settings.ParallelImages) * 1024))
                     {
                         using (StreamReader reader = new StreamReader(stream))
                         {
-                            DataModels.Json.TumblrJson data = jsserializer.Deserialize<DataModels.Json.TumblrJson>(reader.ReadToEnd());
-                            if (data.meta.status == 200)
-                                return data;
-                            return null;
+                            //Doesn't work because the tumblr XML api delivers malformated XML. Nice!
+                            //XmlSerializer xmlSerializer = new XmlSerializer(typeof(Datamodels.Xml.Tumblr));
+                            //Datamodels.Xml.Tumblr data = (Datamodels.Xml.Tumblr)xmlSerializer.Deserialize(reader);
+                            //return data;
+                            return XDocument.Load(reader);
                         }
                     }
                 }
@@ -773,19 +765,19 @@ namespace TumblThree.Applications.Controllers
                     return;
                 }
 
+
                 if (Application.Current.Dispatcher.CheckAccess())
                 {
                     selectionService.BlogFiles.Add(blog);
                 }
                 else
                 {
-
                     Application.Current.Dispatcher.BeginInvoke(
-                        DispatcherPriority.Background,
-                        new Action(() =>
-                        {
-                            selectionService.BlogFiles.Add(blog);
-                        }));
+                      DispatcherPriority.Background,
+                      new Action(() =>
+                      {
+                          selectionService.BlogFiles.Add(blog);
+                      }));
                 }
             }
 
@@ -801,7 +793,7 @@ namespace TumblThree.Applications.Controllers
 
             blog = await GetMetaInformation(blog);
 
-            blog.Online = await IsBlogOnline(blog.Name);
+            blog.Online = await IsBlogOnline(blog.Url);
 
             SaveBlog(blog);
         }
@@ -852,16 +844,15 @@ namespace TumblThree.Applications.Controllers
         {
             return Task<TumblrBlog>.Factory.StartNew(() =>
             {
-                string url = GetApiUrl(blog.Name, 1);
-                string authHeader = shellService.OAuthManager.GenerateauthHeader(url, "GET");
+                string url = GetApiUrl(blog.Url, 1);
 
-                var blogDoc = RequestData(url, authHeader);
+                var blogDoc = RequestData(url);
 
                 if (blogDoc != null)
                 {
-                    blog.Title = blogDoc.response.blog.title;
-                    blog.Description = blogDoc.response.blog.description;
-                    blog.TotalCount = (uint) blogDoc.response.blog.total_posts;
+                    blog.Title = blogDoc.Element("tumblr").Element("tumblelog").Attribute("title").Value;
+                    blog.Description = blogDoc.Element("tumblr").Element("tumblelog").Value;
+                    blog.TotalCount = UInt32.Parse(blogDoc.Element("tumblr").Element("posts").Attribute("total").Value);
                     return blog;
                 }
                 else
@@ -884,15 +875,14 @@ namespace TumblThree.Applications.Controllers
             int link = 0;
             List<Tuple<string, string, string>> images = new List<Tuple<string, string, string>>();
 
-            string url = GetApiUrl(blog.Name, 1);
-            string authHeader = shellService.OAuthManager.GenerateauthHeader(url, "GET");
+            string url = GetApiUrl(blog.Url, 1);
 
-            var blogDoc = RequestData(url, authHeader);
-            totalPosts = blogDoc.response.blog.total_posts;
+            var blogDoc = RequestData(url);
+            totalPosts = Int32.Parse(blogDoc.Element("tumblr").Element("posts").Attribute("total").Value);
 
             // Generate URL list of Images
-            // the api v2 shows 20 posts at max, determine the number of pages to crawl
-            int totalPages = (totalPosts / 20) + 1;
+            // the api shows 50 posts at max, determine the number of pages to crawl
+            int totalPages = (totalPosts / 50) + 1;
 
             Parallel.For(0, totalPages,
                         new ParallelOptions { MaxDegreeOfParallelism = (shellService.Settings.ParallelImages / selectionService.ActiveItems.Count) },
@@ -909,106 +899,142 @@ namespace TumblThree.Applications.Controllers
                                 // check for tags -- crawling for all images here
                                 if (blog.Tags == null || blog.Tags.Count() == 0)
                                 {
-                                    DataModels.Json.TumblrJson document = null;
+                                    XDocument document = null;
 
-                                    // get 20 posts per crawl/page
-                                    url = GetApiUrl(blog.Name, 20, i * 20);
-                                    authHeader = shellService.OAuthManager.GenerateauthHeader(url, "GET");
-
-                                    document = RequestData(url, authHeader);
+                                    // get 50 posts per crawl/page
+                                    url = GetApiUrl(blog.Url, 50, i * 50);
+                                    document = RequestData(url);
 
                                     //FIXME: Create Generic Method to reduce WET code
-                                    Interlocked.Add(ref photos, document.response.posts.Where(posts => posts.type.Equals("photo")).Count());
-                                    Interlocked.Add(ref videos, document.response.posts.Where(posts => posts.type.Equals("video")).Count());
-                                    Interlocked.Add(ref audio, document.response.posts.Where(posts => posts.type.Equals("audio")).Count());
-                                    Interlocked.Add(ref text, document.response.posts.Where(posts => posts.type.Equals("text")).Count());
-                                    Interlocked.Add(ref conversation, document.response.posts.Where(posts => posts.type.Equals("chat")).Count());
-                                    Interlocked.Add(ref quotes, document.response.posts.Where(posts => posts.type.Equals("quotes")).Count());
-                                    Interlocked.Add(ref link, document.response.posts.Where(posts => posts.type.Equals("link")).Count());
+                                    // Doesn't count photosets
+                                    //Interlocked.Add(ref photos, document.Descendants("post").Where(post => post.Attribute("type").Value == "photo").Count());
+                                    Interlocked.Add(ref videos, document.Descendants("post").Where(post => post.Attribute("type").Value == "video").Count());
+                                    Interlocked.Add(ref audio, document.Descendants("post").Where(post => post.Attribute("type").Value == "audio").Count());
+                                    Interlocked.Add(ref text, document.Descendants("post").Where(post => post.Attribute("type").Value == "regular").Count());
+                                    Interlocked.Add(ref conversation, document.Descendants("post").Where(post => post.Attribute("type").Value == "conversation").Count());
+                                    Interlocked.Add(ref quotes, document.Descendants("post").Where(post => post.Attribute("type").Value == "quote").Count());
+                                    Interlocked.Add(ref link, document.Descendants("post").Where(post => post.Attribute("type").Value == "link").Count());
 
                                     if (blog.DownloadPhoto == true)
                                     {
-                                        foreach (Datamodels.Json.Post post in document.response.posts.Where(posts => posts.type.Equals("photo")))
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "photo"))
                                         {
-                                            foreach (DataModels.Json.Photo photo in post.photos)
+                                            // photoset
+                                            if (post.Descendants("photoset").Count() > 0)
                                             {
-                                                var imageUrl = photo.alt_sizes.ElementAt(shellService.Settings.ImageSizes.IndexOf(shellService.Settings.ImageSize.ToString())).url;
+                                                foreach (var photo in post.Descendants("photoset").Descendants("photo"))
+                                                {
+                                                    var imageUrl = photo.Elements("photo-url").Where(photo_url =>
+                                                        photo_url.Attribute("max-width").Value == shellService.Settings.ImageSize.ToString()).FirstOrDefault().Value;
+
+                                                    if (blog.SkipGif == true && imageUrl.EndsWith(".gif"))
+                                                        continue;
+
+                                                    Interlocked.Increment(ref photos);
+                                                    Monitor.Enter(images);
+                                                    images.Add(Tuple.Create(imageUrl, "Photo", post.Attribute("id").Value));
+                                                    Monitor.Exit(images);
+                                                }
+                                            }
+                                            // single image
+                                            else
+                                            {
+                                                var imageUrl = post.Elements("photo-url").Where(photo_url =>
+                                                        photo_url.Attribute("max-width").Value == shellService.Settings.ImageSize.ToString()).FirstOrDefault().Value;
+
                                                 if (blog.SkipGif == true && imageUrl.EndsWith(".gif"))
                                                     continue;
+
+                                                Interlocked.Increment(ref photos);
                                                 Monitor.Enter(images);
-                                                images.Add(Tuple.Create(imageUrl, "Photo", post.id.ToString()));
+                                                images.Add(Tuple.Create(imageUrl, "Photo", post.Attribute("id").Value));
                                                 Monitor.Exit(images);
                                             }
                                         }
                                     }
                                     if (blog.DownloadVideo == true)
                                     {
-                                        foreach (DataModels.Json.Post post in document.response.posts.Where(posts => posts.type.Equals("video")))
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "video"))
                                         {
-                                            if (shellService.Settings.VideoSize == 1080)
+                                            var videoUrl = post.Descendants("video-player").Where(x => x.Value.Contains("<source src=")).Select(result =>
+                                                System.Text.RegularExpressions.Regex.Match(
+                                                result.Value, "<source src=\"(.*)\" type=\"video/mp4\">").Groups[1].Value).ToList();
+
+                                            foreach (string video in videoUrl)
                                             {
-                                                Monitor.Enter(images);
-                                                images.Add(Tuple.Create(post.video_url, "Video", post.id.ToString()));
-                                                Monitor.Exit(images);
-                                            }
-                                            if (shellService.Settings.VideoSize == 480)
-                                            {
-                                                Monitor.Enter(images);
-                                                images.Add(Tuple.Create(post.video_url.Insert(post.video_url.LastIndexOf("."), "_480"), "Video", post.id.ToString()));
-                                                Monitor.Exit(images);
+                                                if (shellService.Settings.VideoSize == 1080)
+                                                {
+                                                    Monitor.Enter(images);
+                                                    images.Add(Tuple.Create(video.Replace("/480", "") + ".mp4", "Video", post.Attribute("id").Value));
+                                                    Monitor.Exit(images);
+                                                }
+                                                else if (shellService.Settings.VideoSize == 480)
+                                                {
+                                                    Monitor.Enter(images);
+                                                    images.Add(Tuple.Create("http://vt.tumblr.com/" + video.Replace("/480", "").Split('/').Last() + "_480.mp4", "Video", post.Attribute("id").Value));
+                                                    Monitor.Exit(images);
+                                                }
                                             }
                                         }
                                     }
                                     if (blog.DownloadAudio == true)
                                     {
-                                        foreach (DataModels.Json.Post post in document.response.posts.Where(posts => posts.type.Equals("audio")))
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "audio"))
                                         {
-                                            Monitor.Enter(images);
-                                            images.Add(Tuple.Create(post.audio_source_url, "Audio", post.id.ToString()));
-                                            Monitor.Exit(images);
+                                            var audioUrl = post.Descendants("audio-player").Where(x => x.Value.Contains("src=")).Select(result =>
+                                                System.Text.RegularExpressions.Regex.Match(
+                                                result.Value, "src=\"(.*)\" height").Groups[1].Value).ToList();
+
+                                            foreach (string audiofile in audioUrl)
+                                            {
+                                                Monitor.Enter(images);
+                                                images.Add(Tuple.Create(audiofile, "Audio", post.Attribute("id").Value));
+                                                Monitor.Exit(images);
+                                            }
+
                                         }
                                     }
                                     if (blog.DownloadText == true)
                                     {
-                                        foreach (DataModels.Json.Post post in document.response.posts.Where(posts => posts.type.Equals("text")))
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "regular"))
                                         {
-                                            string textBody = "Post ID: " + post.id.ToString() + ", Date: " + post.date + Environment.NewLine + "Title: " + post.title + Environment.NewLine + post.body + Environment.NewLine;
+                                            string textBody = "Post ID: " + post.Attribute("id").Value + ", Date: " + post.Attribute("date-gmt").Value + Environment.NewLine + "Title: " + post.Element("regular-title")?.Value + Environment.NewLine + (string)post.Element("regular-body")?.Value + Environment.NewLine;
 
                                             Monitor.Enter(images);
-                                            images.Add(Tuple.Create(textBody, "Text", post.id.ToString()));
+                                            images.Add(Tuple.Create(textBody, "Text", post.Attribute("id").Value));
                                             Monitor.Exit(images);
                                         }
                                     }
                                     if (blog.DownloadQuote == true)
                                     {
-                                        foreach (DataModels.Json.Post post in document.response.posts.Where(posts => posts.type.Equals("quote")))
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "quote"))
                                         {
-                                            string textBody = "Post ID: " + post.id.ToString() + ", Date: " + post.date + Environment.NewLine + "Quote: " + post.text + Environment.NewLine + post.source + Environment.NewLine;
+                                            string textBody = "Post ID: " + post.Attribute("id").Value + ", Date: " + post.Attribute("date-gmt").Value + Environment.NewLine + "Quote: " + post.Element("quote-text")?.Value + Environment.NewLine + post.Element("quote-source")?.Value + Environment.NewLine;
 
                                             Monitor.Enter(images);
-                                            images.Add(Tuple.Create(textBody, "Quote", post.id.ToString()));
+                                            images.Add(Tuple.Create(textBody, "Quote", post.Attribute("id").Value));
                                             Monitor.Exit(images);
                                         }
                                     }
                                     if (blog.DownloadLink == true)
                                     {
-                                        foreach (DataModels.Json.Post post in document.response.posts.Where(posts => posts.type.Equals("link")))
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "link"))
                                         {
-                                            string textBody = "Post ID: " + post.id.ToString() + ", Date: " + post.date + Environment.NewLine + "Link: " + post.title + Environment.NewLine + post.url + Environment.NewLine + post.description + Environment.NewLine;
+                                            string textBody = "Post ID: " + post.Attribute("id").Value + ", Date: " + post.Attribute("date-gmt").Value + Environment.NewLine + "Link: " + post.Element("link-text")?.Value + Environment.NewLine + post.Element("link-url")?.Value + Environment.NewLine + post.Element("link-description")?.Value + Environment.NewLine;
 
                                             Monitor.Enter(images);
-                                            images.Add(Tuple.Create(textBody, "Link", post.id.ToString()));
+                                            images.Add(Tuple.Create(textBody, "Link", post.Attribute("id").Value));
                                             Monitor.Exit(images);
                                         }
                                     }
                                     if (blog.DownloadConversation == true)
                                     {
-                                        foreach (DataModels.Json.Post post in document.response.posts.Where(posts => posts.type.Equals("chat")))
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "conversation"))
                                         {
-                                            string textBody = "Post ID: " + post.id.ToString() + ", Date: " + post.date + Environment.NewLine + "Conversation: " + post.body + Environment.NewLine;
+                                            string textBody = "Post ID: " + post.Attribute("id").Value + ", Date: " + post.Attribute("date-gmt").Value + Environment.NewLine + "Conversation: " + post.Element("conversation-text")?.Value + Environment.NewLine;
 
                                             Monitor.Enter(images);
-                                            images.Add(Tuple.Create(textBody, "Conversation", post.id.ToString()));
+                                            images.Add(Tuple.Create(textBody, "Conversation", post.Attribute("id").Value));
                                             Monitor.Exit(images);
                                         }
                                     }
@@ -1018,97 +1044,133 @@ namespace TumblThree.Applications.Controllers
                                 {
                                     List<string> tags = blog.Tags.Split(',').Select(x => x.Trim()).ToList();
 
-                                    DataModels.Json.TumblrJson document = null;
+                                    XDocument document = null;
 
-                                    // get 20 posts per crawl/page
-                                    url = GetApiUrl(blog.Name, 20, i * 20);
-                                    authHeader = shellService.OAuthManager.GenerateauthHeader(url, "GET");
+                                    // get 50 posts per crawl/page
 
-                                    document = RequestData(url, authHeader);
+                                    url = GetApiUrl(blog.Url, 50, i * 50);
+                                    document = RequestData(url);
 
                                     if (blog.DownloadPhoto == true)
                                     {
-                                        foreach (Datamodels.Json.Post post in document.response.posts.Where(posts => posts.tags.Any(tag => tags.Equals(tag)) && posts.type.Equals("photo")))
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "photo" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
                                         {
-                                            foreach (DataModels.Json.Photo photo in post.photos ?? new List<Datamodels.Json.Photo>())
+                                            // photoset
+                                            if (post.Descendants("photoset").Count() > 0)
                                             {
-                                                var imageUrl = photo.alt_sizes.ElementAt(shellService.Settings.ImageSizes.IndexOf(shellService.Settings.ImageSize.ToString())).url;
+                                                foreach (var photo in post.Descendants("photoset").Descendants("photo"))
+                                                {
+                                                    var imageUrl = photo.Elements("photo-url").Where(photo_url =>
+                                                        photo_url.Attribute("max-width").Value == shellService.Settings.ImageSize.ToString()).FirstOrDefault().Value;
+
+                                                    if (blog.SkipGif == true && imageUrl.EndsWith(".gif"))
+                                                        continue;
+
+                                                    Interlocked.Increment(ref photos);
+                                                    Monitor.Enter(images);
+                                                    images.Add(Tuple.Create(imageUrl, "Photo", post.Attribute("id").Value));
+                                                    Monitor.Exit(images);
+                                                }
+                                            }
+                                            // single image
+                                            else
+                                            {
+                                                var imageUrl = post.Elements("photo-url").Where(photo_url =>
+                                                        photo_url.Attribute("max-width").Value == shellService.Settings.ImageSize.ToString()).FirstOrDefault().Value;
+
                                                 if (blog.SkipGif == true && imageUrl.EndsWith(".gif"))
                                                     continue;
+
+                                                Interlocked.Increment(ref photos);
                                                 Monitor.Enter(images);
-                                                images.Add(Tuple.Create(imageUrl, "Photo", post.id.ToString()));
+                                                images.Add(Tuple.Create(imageUrl, "Photo", post.Attribute("id").Value));
                                                 Monitor.Exit(images);
                                             }
                                         }
                                     }
                                     if (blog.DownloadVideo == true)
                                     {
-                                        foreach (DataModels.Json.Post post in document.response.posts.Where(posts => posts.tags.Any(tag => tags.Equals(tag)) && posts.type.Equals("video")))
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "video" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
                                         {
-                                            if (shellService.Settings.VideoSize == 1080)
+                                            var videoUrl = post.Descendants("video-player").Where(x => x.Value.Contains("<source src=")).Select(result =>
+                                                System.Text.RegularExpressions.Regex.Match(
+                                                result.Value, "<source src=\"(.*)\" type=\"video/mp4\">").Groups[1].Value).ToList();
+
+                                            foreach (string video in videoUrl)
                                             {
-                                                Monitor.Enter(images);
-                                                images.Add(Tuple.Create(post.video_url, "Video", post.id.ToString()));
-                                                Monitor.Exit(images);
-                                            }
-                                            if (shellService.Settings.VideoSize == 480)
-                                            {
-                                                Monitor.Enter(images);
-                                                images.Add(Tuple.Create(post.video_url.Insert(post.video_url.LastIndexOf("."), "_480"), "Video", post.id.ToString()));
-                                                Monitor.Exit(images);
+                                                if (shellService.Settings.VideoSize == 1080)
+                                                {
+                                                    Monitor.Enter(images);
+                                                    images.Add(Tuple.Create(video.Replace("/480", "") + ".mp4", "Video", post.Attribute("id").Value));
+                                                    Monitor.Exit(images);
+                                                }
+                                                else if (shellService.Settings.VideoSize == 480)
+                                                {
+                                                    Monitor.Enter(images);
+                                                    images.Add(Tuple.Create("http://vt.tumblr.com/" + video.Replace("/480", "").Split('/').Last() + "_480.mp4", "Video", post.Attribute("id").Value));
+                                                    Monitor.Exit(images);
+                                                }
                                             }
                                         }
                                     }
                                     if (blog.DownloadAudio == true)
                                     {
-                                        foreach (DataModels.Json.Post post in document.response.posts.Where(posts => posts.tags.Any(tag => tags.Equals(tag)) && posts.type.Equals("audio")))
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "audio"))
                                         {
-                                            Monitor.Enter(images);
-                                            images.Add(Tuple.Create(post.audio_source_url, "Audio", post.id.ToString()));
-                                            Monitor.Exit(images);
+                                            var audioUrl = post.Descendants("audio-player").Where(x => x.Value.Contains("src=")).Select(result =>
+                                                System.Text.RegularExpressions.Regex.Match(
+                                                result.Value, "src=\"(.*)\" height").Groups[1].Value).ToList();
+
+                                            foreach (string audiofile in audioUrl)
+                                            {
+                                                Monitor.Enter(images);
+                                                images.Add(Tuple.Create(audiofile, "Audio", post.Attribute("id").Value));
+                                                Monitor.Exit(images);
+                                            }
+
                                         }
                                     }
                                     if (blog.DownloadText == true)
                                     {
-                                        foreach (DataModels.Json.Post post in document.response.posts.Where(posts => posts.tags.Any(tag => tags.Equals(tag)) && posts.type.Equals("text")))
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "regular" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
                                         {
-                                            string textBody = "Post ID: " + post.id.ToString() + ", Date: " + post.date + Environment.NewLine + "Title: " + post.title + Environment.NewLine + post.body + Environment.NewLine;
+                                            string textBody = "Post ID: " + post.Attribute("id").Value + ", Date: " + post.Attribute("date-gmt").Value + Environment.NewLine + "Title: " + post.Element("regular-title")?.Value + Environment.NewLine + post.Element("regular-body")?.Value + Environment.NewLine;
 
                                             Monitor.Enter(images);
-                                            images.Add(Tuple.Create(textBody, "Text", post.id.ToString()));
+                                            images.Add(Tuple.Create(textBody, "Text", post.Attribute("id").Value));
                                             Monitor.Exit(images);
                                         }
                                     }
                                     if (blog.DownloadQuote == true)
                                     {
-                                        foreach (DataModels.Json.Post post in document.response.posts.Where(posts => posts.tags.Any(tag => tags.Equals(tag)) && posts.type.Equals("quote")))
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "quote" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
                                         {
-                                            string textBody = "Post ID: " + post.id.ToString() + ", Date: " + post.date + Environment.NewLine + "Quote: " + post.text + Environment.NewLine + post.source + Environment.NewLine;
+                                            string textBody = "Post ID: " + post.Attribute("id").Value + ", Date: " + post.Attribute("date-gmt").Value + Environment.NewLine + "Quote: " + post.Element("quote-text")?.Value + Environment.NewLine + post.Element("quote-source")?.Value + Environment.NewLine;
 
                                             Monitor.Enter(images);
-                                            images.Add(Tuple.Create(textBody, "Quote", post.id.ToString()));
+                                            images.Add(Tuple.Create(textBody, "Quote", post.Attribute("id").Value));
                                             Monitor.Exit(images);
                                         }
                                     }
                                     if (blog.DownloadLink == true)
                                     {
-                                        foreach (DataModels.Json.Post post in document.response.posts.Where(posts => posts.tags.Any(tag => tags.Equals(tag)) && posts.type.Equals("link")))
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "link" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
                                         {
-                                            string textBody = "Post ID: " + post.id.ToString() + ", Date: " + post.date + Environment.NewLine + "Link: " + post.title + Environment.NewLine + post.url + Environment.NewLine + post.description + Environment.NewLine;
+                                            string textBody = "Post ID: " + post.Attribute("id").Value + ", Date: " + post.Attribute("date-gmt").Value + Environment.NewLine + "Link: " + post.Element("link-text")?.Value + Environment.NewLine + post.Element("link-url")?.Value + Environment.NewLine + post.Element("link-description")?.Value + Environment.NewLine;
 
                                             Monitor.Enter(images);
-                                            images.Add(Tuple.Create(textBody, "Link", post.id.ToString()));
+                                            images.Add(Tuple.Create(textBody, "Links", post.Attribute("id").Value));
                                             Monitor.Exit(images);
                                         }
                                     }
                                     if (blog.DownloadConversation == true)
                                     {
-                                        foreach (DataModels.Json.Post post in document.response.posts.Where(posts => posts.tags.Any(tag => tags.Equals(tag)) && posts.type.Equals("chat")))
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "conversation" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
                                         {
-                                            string textBody = "Post ID: " + post.id.ToString() + ", Date: " + post.date + Environment.NewLine + "Conversation: " + post.body + Environment.NewLine;
+                                            string textBody = "Post ID: " + post.Attribute("id").Value + ", Date: " + post.Attribute("date-gmt").Value + Environment.NewLine + "Conversation: " + post.Element("conversation-text")?.Value + Environment.NewLine;
 
                                             Monitor.Enter(images);
-                                            images.Add(Tuple.Create(textBody, "Conversation", post.id.ToString()));
+                                            images.Add(Tuple.Create(textBody, "Conversations", post.Attribute("id").Value));
                                             Monitor.Exit(images);
                                         }
                                     }
@@ -1119,8 +1181,8 @@ namespace TumblThree.Applications.Controllers
                                 Console.WriteLine(ex.Data);
                             }
 
-                            numberOfPostsCrawled += 20;
-                            var newProgress = new DataModels.DownloadProgress();
+                            numberOfPostsCrawled += 50;
+                            var newProgress = new Datamodels.DownloadProgress();
                             newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressGetUrl, numberOfPostsCrawled, totalPosts);
                             progress.Report(newProgress);
                         }
@@ -1218,29 +1280,23 @@ namespace TumblThree.Applications.Controllers
 
         private void OnClipboardContentChanged(object sender, EventArgs e)
         {
-            // Catches if Clipboard cannot be accessed.
-            try
+            if (Clipboard.ContainsText())
             {
-                if (Clipboard.ContainsText())
-                {
-                    // Count each whitespace as new url
-                    string[] urls = Clipboard.GetText().ToString().Split(new char[0]);
 
-                    foreach (string url in urls)
+                // Count each whitespace as new url
+                string[] urls = Clipboard.GetText().ToString().Split(new char[0]);
+
+                foreach (string url in urls)
+                {
+                    if (Validator.IsValidTumblrUrl(url))
                     {
-                        if (Validator.IsValidTumblrUrl(url))
+                        Task.Factory.StartNew(() =>
                         {
-                            Task.Factory.StartNew(() =>
-                            {
-                                return AddBlogAsync(url);
-                            },
-                            TaskCreationOptions.LongRunning);
-                        }
+                            return AddBlogAsync(url);
+                        },
+                        TaskCreationOptions.LongRunning);
                     }
                 }
-            }
-            catch
-            {
             }
         }
 
