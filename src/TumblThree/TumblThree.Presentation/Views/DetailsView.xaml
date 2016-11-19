@@ -8,6 +8,7 @@
              xmlns:dd="clr-namespace:TumblThree.Presentation.DesignData"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance dd:SampleDetailsViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="500" d:DesignWidth="300" Background="{StaticResource DefaultBackground}">
 
@@ -32,6 +33,13 @@
         </Label>
 
         <Label Content="{Binding Count}" ContentStringFormat="{x:Static p:Resources.ShowItems}" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" Padding="15,7" Grid.Row="0">
+            <Label.Resources>
+                <sys:Int32 x:Key="multiSelection">1</sys:Int32>
+            </Label.Resources>
+            <Label.ToolTip>
+                <ctrl:SuperToolTip Title="{Binding BlogFile.Name}"
+                                   Description="{Binding BlogFile.Url}"/>
+            </Label.ToolTip>
             <Label.Style>
                 <Style TargetType="Label" BasedOn="{StaticResource {x:Type Label}}">
                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -39,7 +47,13 @@
                         <Trigger Property="Content" Value="{x:Null}">
                             <Setter Property="Visibility" Value="Collapsed"/>
                         </Trigger>
-                        <DataTrigger Binding="{Binding Count}" Value="2">
+                        <DataTrigger Value="True">
+                            <DataTrigger.Binding>
+                                <MultiBinding Converter="{StaticResource IsLessThanConverter}">
+                                    <Binding Path="Count" />
+                                    <Binding Source="{StaticResource multiSelection}" />
+                                </MultiBinding>
+                            </DataTrigger.Binding>
                             <Setter Property="Visibility" Value="Visible"/>
                         </DataTrigger>
                     </Style.Triggers>
@@ -48,6 +62,9 @@
         </Label>
 
         <Label Content="{Binding BlogFile.Name}" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" Padding="15,7" Grid.Row="0">
+            <Label.Resources>
+                <sys:Int32 x:Key="multiSelection">1</sys:Int32>
+            </Label.Resources>
             <Label.ToolTip>
                 <ctrl:SuperToolTip Title="{Binding BlogFile.Name}"
                                    Description="{Binding BlogFile.Url}"/>
@@ -111,11 +128,14 @@
                 </Grid.RowDefinitions>
 
                 <Label Content="{x:Static p:Resources.Name}" Grid.Column="0" Grid.Row="0"/>
-                <Label Content="{Binding BlogFile.Name}" Grid.Column="2" Grid.Row="0"/>
-
+                <Label Grid.Column="2" Grid.Row="0">
+                    <TextBlock Text="{Binding BlogFile.Name}" TextTrimming="CharacterEllipsis"/>
+                </Label>
+                
                 <Label Content="{x:Static p:Resources.Url}" Grid.Column="0" Grid.Row="2"/>
-                <Label Content="{Binding BlogFile.Url}" Grid.Column="2" Grid.Row="2"/>
-
+                <Label Grid.Column="2" Grid.Row="2">
+                    <TextBlock Text="{Binding BlogFile.Url}" TextTrimming="CharacterEllipsis"/>
+                </Label>
                 <Label Content="{x:Static p:Resources.Progress}" Grid.Column="0" Grid.Row="4"/>
                 <ProgressBar Value="{Binding BlogFile.Progress, Mode=OneWay}" Height="15" Minimum="0" Maximum="100" Grid.Column="2" Grid.Row="4"/>
 

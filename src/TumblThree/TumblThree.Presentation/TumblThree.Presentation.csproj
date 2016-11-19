@@ -163,6 +163,7 @@
     <Compile Include="Converters\DetailsProgressConverter.cs" />
     <Compile Include="Converters\ErrorMessagesConverter.cs" />
     <Compile Include="Converters\InverseBooleanConverter.cs" />
+    <Compile Include="Converters\IsLessThanConverter.cs" />
     <Compile Include="Converters\IsQueueItemCrawlingMultiConverter.cs" />
     <Compile Include="Converters\ItemsCountConverter.cs" />
     <Compile Include="Converters\NullImageConverter.cs" />

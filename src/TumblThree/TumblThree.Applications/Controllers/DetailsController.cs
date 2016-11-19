@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Threading.Tasks;
 using TumblThree.Applications.Services;
 using TumblThree.Applications.ViewModels;
+using TumblThree.Domain;
 using TumblThree.Domain.Models;
 using TumblThree.Domain.Queue;
 
@@ -16,6 +18,7 @@ namespace TumblThree.Applications.Controllers
         private readonly IShellService shellService;
         private readonly ISelectionService selectionService;
         private readonly Lazy<DetailsViewModel> detailsViewModel;
+        private readonly HashSet<IBlog> blogsToSave;
 
         [ImportingConstructor]
         public DetailsController(IShellService shellService, ISelectionService selectionService, Lazy<DetailsViewModel> detailsViewModel)
@@ -23,6 +26,7 @@ namespace TumblThree.Applications.Controllers
             this.shellService = shellService;
             this.selectionService = selectionService;
             this.detailsViewModel = detailsViewModel;
+            this.blogsToSave = new HashSet<IBlog>();
         }
 
         public QueueManager QueueManager { get; set; }
@@ -36,8 +40,17 @@ namespace TumblThree.Applications.Controllers
             shellService.DetailsView = DetailsViewModel.View;
         }
 
+        public void Shutdown()
+        {
+            var task = SaveCurrentSelectedFileAsync();
+            shellService.AddTaskToCompleteBeforeShutdown(task);
+        }
+
         public void SelectBlogFiles(IReadOnlyList<Blog> blogFiles)
         {
+            // Save changes to previous selected files
+            SaveCurrentSelectedFileAsync();
+
             if (blogFiles.Count() <= 1)
             {
                 DetailsViewModel.Count = 1;
@@ -45,7 +58,7 @@ namespace TumblThree.Applications.Controllers
             }
             else
             {
-                DetailsViewModel.Count = 2;
+                DetailsViewModel.Count = blogFiles.Count();
                 DetailsViewModel.BlogFile = CreateFromMultiple(blogFiles.Cast<TumblrBlog>().ToArray());
             }
         }
@@ -54,28 +67,111 @@ namespace TumblThree.Applications.Controllers
         {
             if (blogFiles.Count() < 1) { throw new ArgumentException("The collection must have at least one item.", "blogFiles"); }
 
-            var localBlogFiles = blogFiles.Cast<TumblrBlog>().ToArray();
+            var sharedBlogFiles = blogFiles.Cast<TumblrBlog>().ToArray();
+            foreach (Blog blog in sharedBlogFiles)
+            {
+                blogsToSave.Add(blog);
+            }
 
             //FIXME: Create proper binding to Selectionservice List<Blogs>.
             return new TumblrBlog()
             {
-                TotalCount = (uint)localBlogFiles.Sum(blogs => blogs.TotalCount),
-                Texts = (uint)localBlogFiles.Sum(blogs => blogs.Texts),
-                Quotes = (uint)localBlogFiles.Sum(blogs => blogs.Quotes),
-                Photos = (uint)localBlogFiles.Sum(blogs => blogs.Photos),
-                NumberOfLinks = (uint)localBlogFiles.Sum(blogs => blogs.NumberOfLinks),
-                Conversations = (uint)localBlogFiles.Sum(blogs => blogs.Conversations),
-                Videos = (uint)localBlogFiles.Sum(blogs => blogs.Videos),
-                Audios = (uint)localBlogFiles.Sum(blogs => blogs.Audios),
+                Name = string.Join(", ", sharedBlogFiles.Select(blog => blog.Name).ToArray()),
+                Url = string.Join(", ", sharedBlogFiles.Select(blog => blog.Url).ToArray()),
 
-                DownloadedTexts = (uint)localBlogFiles.Sum(blogs => blogs.DownloadedTexts),
-                DownloadedQuotes = (uint)localBlogFiles.Sum(blogs => blogs.DownloadedQuotes),
-                DownloadedPhotos = (uint)localBlogFiles.Sum(blogs => blogs.DownloadedPhotos),
-                DownloadedLinks = (uint)localBlogFiles.Sum(blogs => blogs.DownloadedLinks),
-                DownloadedConversations = (uint)localBlogFiles.Sum(blogs => blogs.DownloadedConversations),
-                DownloadedVideos = (uint)localBlogFiles.Sum(blogs => blogs.DownloadedVideos),
-                DownloadedAudios = (uint)localBlogFiles.Sum(blogs => blogs.DownloadedAudios)
+                TotalCount = (uint)sharedBlogFiles.Sum(blogs => blogs.TotalCount),
+                Texts = (uint)sharedBlogFiles.Sum(blogs => blogs.Texts),
+                Quotes = (uint)sharedBlogFiles.Sum(blogs => blogs.Quotes),
+                Photos = (uint)sharedBlogFiles.Sum(blogs => blogs.Photos),
+                NumberOfLinks = (uint)sharedBlogFiles.Sum(blogs => blogs.NumberOfLinks),
+                Conversations = (uint)sharedBlogFiles.Sum(blogs => blogs.Conversations),
+                Videos = (uint)sharedBlogFiles.Sum(blogs => blogs.Videos),
+                Audios = (uint)sharedBlogFiles.Sum(blogs => blogs.Audios),
+
+                DownloadedTexts = (uint)sharedBlogFiles.Sum(blogs => blogs.DownloadedTexts),
+                DownloadedQuotes = (uint)sharedBlogFiles.Sum(blogs => blogs.DownloadedQuotes),
+                DownloadedPhotos = (uint)sharedBlogFiles.Sum(blogs => blogs.DownloadedPhotos),
+                DownloadedLinks = (uint)sharedBlogFiles.Sum(blogs => blogs.DownloadedLinks),
+                DownloadedConversations = (uint)sharedBlogFiles.Sum(blogs => blogs.DownloadedConversations),
+                DownloadedVideos = (uint)sharedBlogFiles.Sum(blogs => blogs.DownloadedVideos),
+                DownloadedAudios = (uint)sharedBlogFiles.Sum(blogs => blogs.DownloadedAudios),
+
+                DownloadAudio = false,
+                DownloadConversation = false,
+                DownloadLink = false,
+                DownloadPhoto = false,
+                DownloadQuote = false,
+                DownloadText = false,
+                DownloadVideo = false,
+                SkipGif = false,
+                Dirty = false
             };
+        }
+
+        private Task SaveCurrentSelectedFileAsync()
+        {
+            //musicFileContext.ApplyChanges(DetailsViewModel.BlogFile);
+            return SaveChangesAsync(DetailsViewModel.BlogFile);
+        }
+
+        private async Task SaveChangesAsync(TumblrBlog blogFile)
+        {
+            if (blogFile == null)
+            {
+                return;
+            }
+            IReadOnlyCollection<IBlog> filesToSave;
+            if (blogsToSave.Any())
+            {
+                filesToSave = selectionService.BlogFiles.Where(blogs => blogsToSave.Contains(blogs)).ToArray();
+            }
+            else
+            {
+                filesToSave = new[] { blogFile };
+            }
+
+            //var tasks = filesToSave.Select(x => SaveChangesAsync(x)).ToArray();
+            if (blogFile.Dirty)
+            {
+                foreach (TumblrBlog blog in filesToSave)
+                {
+                    blog.DownloadAudio = blogFile.DownloadAudio;
+                    blog.DownloadConversation = blogFile.DownloadConversation;
+                    blog.DownloadLink = blogFile.DownloadLink;
+                    blog.DownloadPhoto = blogFile.DownloadPhoto;
+                    blog.DownloadQuote = blogFile.DownloadQuote;
+                    blog.DownloadText = blogFile.DownloadText;
+                    blog.DownloadVideo = blogFile.DownloadVideo;
+                    blog.SkipGif = blogFile.SkipGif;
+                    blog.Dirty = true;
+                }
+            }
+
+            //try
+            //{
+            //    await Task.WhenAll(tasks);
+            //}
+            //catch (Exception ex)
+            //{
+            //    Logger.Error("SaveChangesAsync: {0}", ex);
+            //    if (filesToSave.Count() == 1)
+            //    {
+            //        shellService.ShowError(ex, Resources.CouldNotSaveFile, filesToSave.First().FileName);
+            //    }
+            //    else
+            //    {
+            //        shellService.ShowError(ex, Resources.CouldNotSaveFiles);
+            //    }
+            //}
+            //finally
+            //{
+                RemoveBlogFilesToSave(filesToSave);
+            //}
+        }
+
+        private void RemoveBlogFilesToSave(IEnumerable<IBlog> blogFiles)
+        {
+            foreach (var x in blogFiles) { blogsToSave.Remove(x); }
         }
 
         private void SelectedBlogFilesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

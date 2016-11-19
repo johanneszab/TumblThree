@@ -29,6 +29,8 @@
 
     <c:UIntToDisplayValueConverter x:Key="UIntToDisplayValueConverter"/>
 
+    <c:IsLessThanConverter x:Key="IsLessThanConverter"/>
+
     <c:DateToDisplayValueConverter x:Key="DateToDisplayValueConverter"/>
 
     <c:RatingToStarsConverter x:Key="RatingToStarsConverter"/>

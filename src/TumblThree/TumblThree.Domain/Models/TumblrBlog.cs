@@ -231,49 +231,49 @@ namespace TumblThree.Domain.Models
         public bool DownloadText
         {
             get { return downloadText; }
-            set { SetProperty(ref downloadText, value); }
+            set { SetProperty(ref downloadText, value); Dirty = true; }
         }
 
         public bool DownloadQuote
         {
             get { return downloadQuote; }
-            set { SetProperty(ref downloadQuote, value); }
+            set { SetProperty(ref downloadQuote, value); Dirty = true; }
         }
 
         public bool DownloadPhoto
         {
             get { return downloadPhoto; }
-            set { SetProperty(ref downloadPhoto, value); }
+            set { SetProperty(ref downloadPhoto, value); Dirty = true; }
         }
 
         public bool DownloadLink
         {
             get { return downloadLink; }
-            set { SetProperty(ref downloadLink, value); }
+            set { SetProperty(ref downloadLink, value); Dirty = true; }
         }
 
         public bool DownloadConversation
         {
             get { return downloadConversation; }
-            set { SetProperty(ref downloadConversation, value); }
+            set { SetProperty(ref downloadConversation, value); Dirty = true; }
         }
 
         public bool DownloadVideo
         {
             get { return downloadVideo; }
-            set { SetProperty(ref downloadVideo, value); }
+            set { SetProperty(ref downloadVideo, value); Dirty = true; }
         }
 
         public bool DownloadAudio
         {
             get { return downloadAudio; }
-            set { SetProperty(ref downloadAudio, value); }
+            set { SetProperty(ref downloadAudio, value); Dirty = true; }
         }
 
         public bool SkipGif
         {
             get { return skipGif; }
-            set { SetProperty(ref skipGif, value); }
+            set { SetProperty(ref skipGif, value); Dirty = true; }
         }
 
         public string LastDownloadedPhoto

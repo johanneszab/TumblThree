@@ -18,7 +18,7 @@ namespace TumblThree.Presentation.Converters
             if (crawlingQueuelistItem.Count() == 0) { return values[1]; }
 
             var blogStringArray = String.Join(" - ", crawlingQueuelistItem.Select(x => x.Blog.Name));
-            return blogStringArray + " - " + values[1];
+            return values[1] + " - " + blogStringArray;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
