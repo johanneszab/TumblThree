@@ -340,7 +340,7 @@
     <value>Timeout (s)</value>
   </data>
   <data name="Bandwidth" xml:space="preserve">
-    <value>Bandwidth (kb/s)</value>
+    <value>Limit Bandwidth (kb/s)</value>
   </data>
   <data name="EnableAutoDownload" xml:space="preserve">
     <value>Enable autodownload blogs and add</value>

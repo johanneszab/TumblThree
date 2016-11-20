@@ -9,8 +9,6 @@
              mc:Ignorable="d" d:DataContext="{d:DesignInstance dd:SampleQueueViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="500" d:DesignWidth="300" Background="{StaticResource DefaultBackground}">
     <UserControl.InputBindings>
-        <!--<KeyBinding Command="{Binding SearchNextCommand}" Key="F3" />
-        <KeyBinding Command="{Binding SearchPreviousCommand}" Key="F3" Modifiers="Shift" />-->
     </UserControl.InputBindings>
 
     <Grid>
@@ -24,7 +22,6 @@
                  ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                  ctrl:SelectionBehavior.SyncSelectedItems="{Binding SelectedQueueItems}">
             <ListBox.InputBindings>
-                <!--<KeyBinding Command="{Binding CrawlSelectedCommand}" Key="Return"/>-->
                 <KeyBinding Command="{Binding RemoveSelectedCommand}" Key="Delete"/>
             </ListBox.InputBindings>
             <ListBox.ItemContainerStyle>
@@ -34,10 +31,9 @@
                     <Setter Property="ContextMenu">
                         <Setter.Value>
                             <ContextMenu>
-                                <!-- <MenuItem Command="{Binding CrawlSelectedCommand}" Header="{x:Static p:Resources.Crawl}" InputGestureText="{x:Static p:Resources.Return}"/> -->
                                 <MenuItem Command="{Binding RemoveSelectedCommand}" Header="{x:Static p:Resources.RemoveSelected}" InputGestureText="{x:Static p:Resources.Delete}"/>
                                 <Separator/>
-                                <MenuItem Command="{Binding ShowDetailsCommand}" Header="{x:Static p:Resources.ShowDetails}"/>
+                                <MenuItem Command="{Binding ShowBlogDetailsCommand}" Header="{x:Static p:Resources.ShowDetails}"/>
                             </ContextMenu>
                         </Setter.Value>
                     </Setter>

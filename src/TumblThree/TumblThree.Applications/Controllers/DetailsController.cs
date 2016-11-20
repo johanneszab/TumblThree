@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
+using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Applications.ViewModels;
 using TumblThree.Domain;
@@ -46,7 +47,7 @@ namespace TumblThree.Applications.Controllers
             shellService.AddTaskToCompleteBeforeShutdown(task);
         }
 
-        public void SelectBlogFiles(IReadOnlyList<Blog> blogFiles)
+        public void SelectBlogFiles(IReadOnlyList<IBlog> blogFiles)
         {
             // Save changes to previous selected files
             SaveCurrentSelectedFileAsync();
@@ -130,9 +131,21 @@ namespace TumblThree.Applications.Controllers
                 filesToSave = new[] { blogFile };
             }
 
-            //var tasks = filesToSave.Select(x => SaveChangesAsync(x)).ToArray();
             if (blogFile.Dirty)
             {
+                //var tasks = Task.Run(() => Parallel.ForEach(filesToSave, blog =>
+                //{
+                //    blog.DownloadAudio = blogFile.DownloadAudio;
+                //    blog.DownloadConversation = blogFile.DownloadConversation;
+                //    blog.DownloadLink = blogFile.DownloadLink;
+                //    blog.DownloadPhoto = blogFile.DownloadPhoto;
+                //    blog.DownloadQuote = blogFile.DownloadQuote;
+                //    blog.DownloadText = blogFile.DownloadText;
+                //    blog.DownloadVideo = blogFile.DownloadVideo;
+                //    blog.SkipGif = blogFile.SkipGif;
+                //    blog.Dirty = true;
+                //}));
+
                 foreach (TumblrBlog blog in filesToSave)
                 {
                     blog.DownloadAudio = blogFile.DownloadAudio;
@@ -143,7 +156,7 @@ namespace TumblThree.Applications.Controllers
                     blog.DownloadText = blogFile.DownloadText;
                     blog.DownloadVideo = blogFile.DownloadVideo;
                     blog.SkipGif = blogFile.SkipGif;
-                    blog.Dirty = true;
+                    blog.Dirty = true;                
                 }
             }
 
@@ -156,11 +169,11 @@ namespace TumblThree.Applications.Controllers
             //    Logger.Error("SaveChangesAsync: {0}", ex);
             //    if (filesToSave.Count() == 1)
             //    {
-            //        shellService.ShowError(ex, Resources.CouldNotSaveFile, filesToSave.First().FileName);
+            //        shellService.ShowError(ex, Resources.CouldNotSaveBlog, filesToSave.First().Name);
             //    }
             //    else
             //    {
-            //        shellService.ShowError(ex, Resources.CouldNotSaveFiles);
+            //        shellService.ShowError(ex, Resources.CouldNotSaveBlog);
             //    }
             //}
             //finally

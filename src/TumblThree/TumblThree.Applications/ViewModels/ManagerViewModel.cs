@@ -20,6 +20,7 @@ namespace TumblThree.Applications.ViewModels
         private readonly ICrawlerService crawlerService;
         private ICommand showFilesCommand;
         private ICommand visitBlogCommand;
+        private ICommand showDetailsCommand;
 
         [ImportingConstructor]
         public ManagerViewModel(IManagerView view, IShellService shellService, Lazy<ISelectionService> selectionService, ICrawlerService crawlerService) : base(view)
@@ -65,6 +66,12 @@ namespace TumblThree.Applications.ViewModels
         {
             get { return visitBlogCommand; }
             set { SetProperty(ref visitBlogCommand, value); }
+        }
+
+        public ICommand ShowDetailsCommand
+        {
+            get { return showDetailsCommand; }
+            set { SetProperty(ref showDetailsCommand, value); }
         }
 
         public Blog SelectedBlogFile

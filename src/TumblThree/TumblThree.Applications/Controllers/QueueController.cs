@@ -31,10 +31,11 @@ namespace TumblThree.Applications.Controllers
         private readonly IShellService shellService;
         private readonly ISelectionService selectionService;
         private readonly IEnvironmentService environmentService;
+        private readonly IDetailsService detailsService;
         private readonly CrawlerService crawlerService;
         private readonly Lazy<QueueViewModel> queueViewModel;
         private readonly DelegateCommand removeSelectedCommand;
-        private readonly DelegateCommand showBlogPropertiesCommand;
+        private readonly DelegateCommand showBlogDetailsCommand;
         private readonly DelegateCommand openQueueCommand;
         private readonly DelegateCommand saveQueueCommand;
         private readonly DelegateCommand clearQueueCommand;
@@ -43,8 +44,8 @@ namespace TumblThree.Applications.Controllers
 
 
         [ImportingConstructor]
-        public QueueController(IFileDialogService fileDialogService, IShellService shellService, IEnvironmentService environmentService, CrawlerService crawlerService,
-             ISelectionService selectionService, Lazy<QueueViewModel> queueViewModel)
+        public QueueController(IFileDialogService fileDialogService, IShellService shellService, IEnvironmentService environmentService, IDetailsService detailsService,
+            CrawlerService crawlerService, ISelectionService selectionService, Lazy<QueueViewModel> queueViewModel)
         {
             this.fileDialogService = fileDialogService;
             this.shellService = shellService;
@@ -52,8 +53,9 @@ namespace TumblThree.Applications.Controllers
             this.environmentService = environmentService;
             this.crawlerService = crawlerService;
             this.selectionService = selectionService;
+            this.detailsService = detailsService;
             this.removeSelectedCommand = new DelegateCommand(RemoveSelected, CanRemoveSelected);
-            this.showBlogPropertiesCommand = new DelegateCommand(ShowBlogProperties);
+            this.showBlogDetailsCommand = new DelegateCommand(ShowBlogDetails);
             this.openQueueCommand = new DelegateCommand(OpenList);
             this.saveQueueCommand = new DelegateCommand(SaveList);
             this.clearQueueCommand = new DelegateCommand(ClearList);
@@ -72,6 +74,7 @@ namespace TumblThree.Applications.Controllers
         {
             QueueViewModel.QueueManager = QueueManager;
             QueueViewModel.RemoveSelectedCommand = removeSelectedCommand;
+            QueueViewModel.ShowBlogDetailsCommand = showBlogDetailsCommand;
             QueueViewModel.OpenQueueCommand = openQueueCommand;
             QueueViewModel.SaveQueueCommand = saveQueueCommand;
             QueueViewModel.ClearQueueCommand = clearQueueCommand;
@@ -122,8 +125,9 @@ namespace TumblThree.Applications.Controllers
             QueueViewModel.SelectedQueueItem = nextQueueItem ?? QueueManager.Items.LastOrDefault();
         }
 
-        private void ShowBlogProperties()
+        private void ShowBlogDetails()
         {
+            detailsService.SelectBlogFiles(QueueViewModel.SelectedQueueItems.Select(x => x.Blog).ToArray());
             shellService.ShowDetailsView();
         }
 

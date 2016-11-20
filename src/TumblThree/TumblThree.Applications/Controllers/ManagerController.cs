@@ -48,7 +48,7 @@ namespace TumblThree.Applications.Controllers
         private readonly DelegateCommand stopCommand;
         private readonly DelegateCommand listenClipboardCommand;
         private readonly DelegateCommand autoDownloadCommand;
-        //private readonly DelegateCommand showBlogPropertiesCommand;
+        private readonly DelegateCommand showDetailsCommand;
         private readonly List<Task> runningTasks;
         private CancellationTokenSource crawlBlogsCancellation;
         private PauseTokenSource crawlBlogsPause;
@@ -79,6 +79,7 @@ namespace TumblThree.Applications.Controllers
             this.stopCommand = new DelegateCommand(Stop, CanStop);
             this.listenClipboardCommand = new DelegateCommand(ListenClipboard);
             this.autoDownloadCommand = new DelegateCommand(EnqueueAutoDownload, CanEnqueueAutoDownload);
+            this.showDetailsCommand = new DelegateCommand(ShowDetailsCommand);
             this.runningTasks = new List<Task>();
             this.locked = false;
         }
@@ -105,6 +106,7 @@ namespace TumblThree.Applications.Controllers
 
             ManagerViewModel.ShowFilesCommand = showFilesCommand;
             ManagerViewModel.VisitBlogCommand = visitBlogCommand;
+            ManagerViewModel.ShowDetailsCommand = showDetailsCommand;
 
             ManagerViewModel.PropertyChanged += ManagerViewModelPropertyChanged;
 
@@ -345,6 +347,7 @@ namespace TumblThree.Applications.Controllers
             var newImageCount = tuple.Item1;
             var newImageUrls = tuple.Item2;
 
+            int downloadedImages = (int)blog.DownloadedImages;
             int downloadedPhotos = (int)blog.DownloadedPhotos;
             int downloadedVideos = (int)blog.DownloadedVideos;
             int downloadedAudios = (int)blog.DownloadedAudios;
@@ -352,6 +355,10 @@ namespace TumblThree.Applications.Controllers
             int downloadedQuotes = (int)blog.DownloadedQuotes;
             int downloadedLinks = (int)blog.DownloadedLinks;
             int downloadedConversations = (int)blog.DownloadedConversations;
+
+            object lockObjectProgress = new object();
+            object lockObjectDownload = new object();
+            bool locked = false;
 
             blog.TotalCount = newImageCount;
 
@@ -381,93 +388,112 @@ namespace TumblThree.Applications.Controllers
                                 fileName = currentImageUrl.Item1.Split('/').Last();
                                 fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), fileName);
 
-                                if (Download(blog, fileLocation, currentImageUrl.Item1, progress))
+                                if (Download(blog, fileLocation, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedPhotos))
                                 {
-                                    blog.Links.Add(currentImageUrl.Item1);
-                                    blog.DownloadedImages = (uint)blog.Links.Count();
-                                    blog.Progress = (uint)((double)blog.DownloadedImages / (double)blog.TotalCount * 100);
+                                    lock (lockObjectProgress)
+                                    {
+                                        blog.Links.Add(currentImageUrl.Item1);
+                                        // could be moved out of the lock?
+                                        blog.DownloadedImages = (uint)blog.Links.Count();
+                                        blog.Progress = (uint)((double)blog.DownloadedImages / (double)blog.TotalCount * 100);
+                                        blog.DownloadedPhotos = (uint)downloadedPhotos;
+                                    }
+                                    if (shellService.Settings.EnablePreview)
+                                        blog.LastDownloadedPhoto = Path.GetFullPath(fileLocation);
                                 }
-
-                                if (shellService.Settings.EnablePreview)
-                                    blog.LastDownloadedPhoto = Path.GetFullPath(fileLocation);
-                                Interlocked.Increment(ref downloadedPhotos);
-                                blog.DownloadedPhotos = (uint)downloadedPhotos;
                                 break;
                             case "Video":
                                 fileName = currentImageUrl.Item1.Split('/').Last();
                                 fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), fileName);
 
-                                if (Download(blog, fileLocation, currentImageUrl.Item1, progress))
+                                if (Download(blog, fileLocation, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedVideos))
                                 {
-                                    blog.Links.Add(currentImageUrl.Item1);
-                                    blog.DownloadedImages = (uint)blog.Links.Count();
-                                    blog.Progress = (uint)((double)blog.DownloadedImages / (double)blog.TotalCount * 100);
+                                    lock (lockObjectProgress)
+                                    {
+                                        blog.Links.Add(currentImageUrl.Item1);
+                                        // could be moved out of the lock?
+                                        blog.DownloadedImages = (uint)blog.Links.Count();
+                                        blog.Progress = (uint)((double)blog.DownloadedImages / (double)blog.TotalCount * 100);
+                                        blog.DownloadedVideos = (uint)downloadedVideos;
+                                    }
+                                    if (shellService.Settings.EnablePreview)
+                                        blog.LastDownloadedVideo = Path.GetFullPath(fileLocation);
                                 }
-
-                                if (shellService.Settings.EnablePreview)
-                                    blog.LastDownloadedVideo = Path.GetFullPath(fileLocation);
-                                Interlocked.Increment(ref downloadedVideos);
-                                blog.DownloadedVideos = (uint)downloadedVideos;
                                 break;
                             case "Audio":
                                 fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), currentImageUrl.Item3 + ".mp3");
 
-                                if (Download(blog, fileLocation, currentImageUrl.Item1, progress))
+                                if (Download(blog, fileLocation, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedAudios))
                                 {
-                                    blog.Links.Add(currentImageUrl.Item1);
-                                    blog.DownloadedImages = (uint)blog.Links.Count();
-                                    blog.Progress = (uint)((double)blog.DownloadedImages / (double)blog.TotalCount * 100);
+                                    lock (lockObjectProgress)
+                                    {
+                                        blog.Links.Add(currentImageUrl.Item1);
+                                        // could be moved out of the lock?
+                                        blog.DownloadedImages = (uint)blog.Links.Count();
+                                        blog.Progress = (uint)((double)blog.DownloadedImages / (double)blog.TotalCount * 100);
+                                        blog.DownloadedAudios = (uint)downloadedAudios;
+                                    }
                                 }
-                                Interlocked.Increment(ref downloadedAudios);
-                                blog.DownloadedAudios = (uint)downloadedAudios;
                                 break;
                             case "Text":
                                 fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameTexts));
 
-                                if (Download(blog, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress))
+                                if (Download(blog, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedTexts))
                                 {
-                                    blog.Links.Add(currentImageUrl.Item3);
-                                    blog.DownloadedImages = (uint)blog.Links.Count();
-                                    blog.Progress = (uint)((double)blog.DownloadedImages / (double)blog.TotalCount * 100);
+                                    lock (lockObjectProgress)
+                                    {
+                                        blog.Links.Add(currentImageUrl.Item3);
+                                        // could be moved out of the lock?
+                                        blog.DownloadedImages = (uint)blog.Links.Count();
+                                        blog.Progress = (uint)((double)blog.DownloadedImages / (double)blog.TotalCount * 100);
+                                        blog.DownloadedTexts = (uint)downloadedTexts;
+                                    }
                                 }
-                                Interlocked.Increment(ref downloadedTexts);
-                                blog.DownloadedTexts = (uint)downloadedTexts;
                                 break;
                             case "Quote":
                                 fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameQuotes));
 
-                                if (Download(blog, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress))
+                                if (Download(blog, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedQuotes))
                                 {
-                                    blog.Links.Add(currentImageUrl.Item3);
-                                    blog.DownloadedImages = (uint)blog.Links.Count();
-                                    blog.Progress = (uint)((double)blog.DownloadedImages / (double)blog.TotalCount * 100);
+                                    lock (lockObjectProgress)
+                                    {
+                                        blog.Links.Add(currentImageUrl.Item3);
+                                        // could be moved out of the lock?
+                                        blog.DownloadedImages = (uint)blog.Links.Count();
+                                        blog.Progress = (uint)((double)blog.DownloadedImages / (double)blog.TotalCount * 100);
+                                        blog.DownloadedQuotes = (uint)downloadedQuotes;
+                                    }
                                 }
-                                Interlocked.Increment(ref downloadedQuotes);
-                                blog.DownloadedQuotes = (uint)downloadedQuotes;
                                 break;
                             case "Link":
                                 fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameLinks));
 
-                                if (Download(blog, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress))
+                                if (Download(blog, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedLinks))
                                 {
-                                    blog.Links.Add(currentImageUrl.Item3);
-                                    blog.DownloadedImages = (uint)blog.Links.Count();
-                                    blog.Progress = (uint)((double)blog.DownloadedImages / (double)blog.TotalCount * 100);
+                                    lock (lockObjectProgress)
+                                    {
+                                        blog.Links.Add(currentImageUrl.Item3);
+                                        // could be moved out of the lock?
+                                        blog.DownloadedImages = (uint)blog.Links.Count();
+                                        blog.Progress = (uint)((double)blog.DownloadedImages / (double)blog.TotalCount * 100);
+                                        blog.DownloadedLinks = (uint)downloadedLinks;
+                                    }
                                 }
-                                Interlocked.Increment(ref downloadedLinks);
-                                blog.DownloadedLinks = (uint)downloadedLinks;
                                 break;
                             case "Conversation":
                                 fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameConversations));
 
-                                if (Download(blog, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress))
+                                if (Download(blog, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedConversations))
                                 {
-                                    blog.Links.Add(currentImageUrl.Item3);
-                                    blog.DownloadedImages = (uint)blog.Links.Count();
-                                    blog.Progress = (uint)((double)blog.DownloadedImages / (double)blog.TotalCount * 100);
+                                    lock (lockObjectProgress)
+                                    {
+                                        blog.Links.Add(currentImageUrl.Item3);
+                                        // could be moved out of the lock?
+                                        blog.DownloadedImages = (uint)blog.Links.Count();
+                                        blog.Progress = (uint)((double)blog.DownloadedImages / (double)blog.TotalCount * 100);
+                                        blog.DownloadedConversations = (uint)downloadedConversations;
+                                    }
                                 }
-                                Interlocked.Increment(ref downloadedConversations);
-                                blog.DownloadedConversations = (uint)downloadedConversations;
                                 break;
                             default:
                                 break;
@@ -618,6 +644,11 @@ namespace TumblThree.Applications.Controllers
             {
                 System.Diagnostics.Process.Start(blog.Url);
             }
+        }
+
+        private void ShowDetailsCommand()
+        {
+            shellService.ShowDetailsView();
         }
 
         private bool CanPause()
@@ -1188,7 +1219,8 @@ namespace TumblThree.Applications.Controllers
                         }
                 );
 
-            images = images.Distinct().ToList();
+            //FIXME: Breaks the counter(statistics)
+            //images = images.Distinct().ToList();
 
             blog.Posts = (uint)totalPosts;
             blog.Photos = (uint)photos;
@@ -1217,17 +1249,18 @@ namespace TumblThree.Applications.Controllers
             return null;
         }
 
-        private bool Download(TumblrBlog blog, string fileLocation, string url, IProgress<DataModels.DownloadProgress> progress)
+        private bool Download(TumblrBlog blog, string fileLocation, string url, IProgress<DataModels.DownloadProgress> progress, object lockObject, bool locked, ref int counter)
         {
-            Monitor.Enter(blog);
+            Monitor.Enter(lockObject, ref locked);
             if (blog.Links.Contains(url))
             {
-                Monitor.Exit(blog);
+                Monitor.Exit(lockObject);
+                Interlocked.Increment(ref counter);
                 return false;
             }
             else
             {
-                Monitor.Exit(blog);
+                Monitor.Exit(lockObject);
                 try
                 {
                     var newProgress = new DataModels.DownloadProgress();
@@ -1236,25 +1269,28 @@ namespace TumblThree.Applications.Controllers
 
                     using (var stream = ThrottledStream.ReadFromURLIntoStream(url, (shellService.Settings.Bandwidth / shellService.Settings.ParallelImages), shellService.Settings.TimeOut))
                         ThrottledStream.SaveStreamToDisk(stream, fileLocation);
+                    Interlocked.Increment(ref counter);
                     return true;
                 }
-                catch (Exception)
+                catch
                 {
                     return false;
                 }
             }
         }
 
-        private bool Download(TumblrBlog blog, string fileLocation, string postId, string text, IProgress<DataModels.DownloadProgress> progress)
+        private bool Download(TumblrBlog blog, string fileLocation, string postId, string text, IProgress<DataModels.DownloadProgress> progress, object lockObject, bool locked, ref int counter)
         {
-            Monitor.Enter(blog);
+            Monitor.Enter(lockObject, ref locked);
             if (blog.Links.Contains(postId))
             {
-                Monitor.Exit(blog);
+                Monitor.Exit(lockObject);
+                Interlocked.Increment(ref counter);
                 return false;
             }
             else
             {
+                Monitor.Exit(lockObject);
                 try
                 {
                     var newProgress = new DataModels.DownloadProgress();
@@ -1265,15 +1301,12 @@ namespace TumblThree.Applications.Controllers
                     {
                         sw.WriteLine(text);
                     }
+                    Interlocked.Increment(ref counter);
                     return true;
                 }
-                catch (Exception)
+                catch
                 {
                     return false;
-                }
-                finally
-                {
-                    Monitor.Exit(blog);
                 }
             }
         }

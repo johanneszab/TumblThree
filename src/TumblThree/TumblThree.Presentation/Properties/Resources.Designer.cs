@@ -106,7 +106,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bandwidth (kb/s).
+        ///   Looks up a localized string similar to Limit Bandwidth (kb/s).
         /// </summary>
         public static string Bandwidth {
             get {

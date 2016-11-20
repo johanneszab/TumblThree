@@ -20,7 +20,7 @@ namespace TumblThree.Applications.ViewModels
 
         //private ICommand crawlSelectedCommand;
         private ICommand removeSelectedCommand;
-        private ICommand showBlogPropertiesCommand;
+        private ICommand showBlogDetailsCommand;
         private ICommand openQueueCommand;
         private ICommand saveQueueCommand;
         private ICommand clearQueueCommand;
@@ -55,10 +55,10 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref removeSelectedCommand, value); }
         }
 
-        public ICommand ShowBlogPropertiesCommand
+        public ICommand ShowBlogDetailsCommand
         {
-            get { return showBlogPropertiesCommand; }
-            set { SetProperty(ref showBlogPropertiesCommand, value); }
+            get { return showBlogDetailsCommand; }
+            set { SetProperty(ref showBlogDetailsCommand, value); }
         }
 
         public ICommand OpenQueueCommand

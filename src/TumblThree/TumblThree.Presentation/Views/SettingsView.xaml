@@ -77,7 +77,7 @@
                 <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="50"/>
-                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="150"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Label x:Name="imageSizeLabel" Grid.Column="0" Content="{x:Static p:Resources.ImageSize}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Width="Auto"/>
@@ -98,7 +98,7 @@
                 <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="50"/>
-                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="150"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Label x:Name="videoSizeLabel" Grid.Column="0" Content="{x:Static p:Resources.VideoSize}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10" Width="Auto"/>
