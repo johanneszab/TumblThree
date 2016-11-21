@@ -177,6 +177,15 @@
   <data name="FileNameLinks" xml:space="preserve">
     <value>links.txt</value>
   </data>
+  <data name="FileNameMetaAudio" xml:space="preserve">
+    <value>audios.txt</value>
+  </data>
+  <data name="FileNameMetaPhoto" xml:space="preserve">
+    <value>images.txt</value>
+  </data>
+  <data name="FileNameMetaVideo" xml:space="preserve">
+    <value>videos.txt</value>
+  </data>
   <data name="FileNameQuotes" xml:space="preserve">
     <value>quotes.txt</value>
   </data>

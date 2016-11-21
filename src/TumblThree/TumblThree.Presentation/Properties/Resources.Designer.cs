@@ -214,6 +214,33 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Save audio meta information.
+        /// </summary>
+        public static string CreateAudioMeta {
+            get {
+                return ResourceManager.GetString("CreateAudioMeta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save image meta information.
+        /// </summary>
+        public static string CreateImageMeta {
+            get {
+                return ResourceManager.GetString("CreateImageMeta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save video meta information.
+        /// </summary>
+        public static string CreateVideoMeta {
+            get {
+                return ResourceManager.GetString("CreateVideoMeta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Date Added.
         /// </summary>
         public static string DateAdded {
@@ -462,6 +489,33 @@ namespace TumblThree.Presentation.Properties {
         public static string Links {
             get {
                 return ResourceManager.GetString("Links", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save audio meta.
+        /// </summary>
+        public static string MetaAudio {
+            get {
+                return ResourceManager.GetString("MetaAudio", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save photo meta.
+        /// </summary>
+        public static string MetaPhoto {
+            get {
+                return ResourceManager.GetString("MetaPhoto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save video meta.
+        /// </summary>
+        public static string MetaVideo {
+            get {
+                return ResourceManager.GetString("MetaVideo", resourceCulture);
             }
         }
         

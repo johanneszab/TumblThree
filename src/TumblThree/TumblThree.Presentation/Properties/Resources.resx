@@ -420,4 +420,22 @@
   <data name="ToolTipDetailsStatsDescription" xml:space="preserve">
     <value>Check to download post type or skip during the backup</value>
   </data>
+  <data name="CreateAudioMeta" xml:space="preserve">
+    <value>Save audio meta information</value>
+  </data>
+  <data name="CreateImageMeta" xml:space="preserve">
+    <value>Save image meta information</value>
+  </data>
+  <data name="CreateVideoMeta" xml:space="preserve">
+    <value>Save video meta information</value>
+  </data>
+  <data name="MetaAudio" xml:space="preserve">
+    <value>Save audio meta</value>
+  </data>
+  <data name="MetaPhoto" xml:space="preserve">
+    <value>Save photo meta</value>
+  </data>
+  <data name="MetaVideo" xml:space="preserve">
+    <value>Save video meta</value>
+  </data>
 </root>

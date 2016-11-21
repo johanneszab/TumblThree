@@ -51,6 +51,9 @@ namespace TumblThree.Applications.ViewModels
         private bool downloadConversations;
         private bool downloadQuotes;
         private bool downloadLinks;
+        private bool createImageMeta;
+        private bool createVideoMeta;
+        private bool createAudioMeta;
         private string timerInterval;
 
         //private bool isloaded = false;
@@ -253,6 +256,24 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref downloadLinks, value); }
         }
 
+        public bool CreateImageMeta
+        {
+            get { return createImageMeta; }
+            set { SetProperty(ref createImageMeta, value); }
+        }
+
+        public bool CreateVideoMeta
+        {
+            get { return createVideoMeta; }
+            set { SetProperty(ref createVideoMeta, value); }
+        }
+
+        public bool CreateAudioMeta
+        {
+            get { return createAudioMeta; }
+            set { SetProperty(ref createAudioMeta, value); }
+        }
+
         public string TimerInterval
         {
             get { return timerInterval; }
@@ -290,6 +311,9 @@ namespace TumblThree.Applications.ViewModels
                 DownloadConversations = settings.DownloadConversations;
                 DownloadLinks = settings.DownloadLinks;
                 DownloadQuotes = settings.DownloadQuotes;
+                CreateImageMeta = settings.CreateImageMeta;
+                CreateVideoMeta = settings.CreateVideoMeta;
+                CreateAudioMeta = settings.CreateAudioMeta;
                 AutoDownload = settings.AutoDownload;
                 TimerInterval = settings.TimerInterval;
             }
@@ -322,6 +346,9 @@ namespace TumblThree.Applications.ViewModels
                 DownloadConversations = true;
                 DownloadQuotes = true;
                 DownloadLinks = true;
+                CreateImageMeta = false;
+                CreateVideoMeta = false;
+                CreateAudioMeta = false;
                 AutoDownload = false;
                 TimerInterval = "22:40:00";
             }
@@ -359,6 +386,9 @@ namespace TumblThree.Applications.ViewModels
             settings.DownloadConversations = DownloadConversations;
             settings.DownloadQuotes = DownloadQuotes;
             settings.DownloadLinks = DownloadLinks;
+            settings.CreateImageMeta = CreateImageMeta;
+            settings.CreateVideoMeta = CreateVideoMeta;
+            settings.CreateAudioMeta = CreateAudioMeta;
             settings.ApiKey = ApiKey;
             settings.SecretKey = SecretKey;
             settings.OAuthToken = OAuthToken;

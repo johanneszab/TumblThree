@@ -134,6 +134,15 @@ namespace TumblThree.Applications.Properties
         public bool DownloadLinks { get; set; }
 
         [DataMember]
+        public bool CreateImageMeta { get; set; }
+
+        [DataMember]
+        public bool CreateVideoMeta { get; set; }
+
+        [DataMember]
+        public bool CreateAudioMeta { get; set; }
+
+        [DataMember]
         public bool AutoDownload { get; set; }
 
         [DataMember]
@@ -206,6 +215,9 @@ namespace TumblThree.Applications.Properties
             DownloadQuotes = true;
             DownloadConversations = true;
             DownloadLinks = true;
+            CreateImageMeta = false;
+            CreateVideoMeta = false;
+            CreateAudioMeta = false;
             AutoDownload = false;
             TimerInterval = "22:40:00";
             ColumnWidths = new Dictionary<object, Tuple<int, double>>();

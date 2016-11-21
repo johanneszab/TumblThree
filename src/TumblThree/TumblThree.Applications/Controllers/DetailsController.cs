@@ -104,6 +104,9 @@ namespace TumblThree.Applications.Controllers
                 DownloadQuote = false,
                 DownloadText = false,
                 DownloadVideo = false,
+                CreatePhotoMeta = false,
+                CreateVideoMeta = false,
+                CreateAudioMeta = false,
                 SkipGif = false,
                 Dirty = false
             };
@@ -155,6 +158,9 @@ namespace TumblThree.Applications.Controllers
                     blog.DownloadQuote = blogFile.DownloadQuote;
                     blog.DownloadText = blogFile.DownloadText;
                     blog.DownloadVideo = blogFile.DownloadVideo;
+                    blog.CreatePhotoMeta = blogFile.CreatePhotoMeta;
+                    blog.CreateVideoMeta = blogFile.CreateVideoMeta;
+                    blog.CreateAudioMeta = blogFile.CreateAudioMeta;
                     blog.SkipGif = blogFile.SkipGif;
                     blog.Dirty = true;                
                 }

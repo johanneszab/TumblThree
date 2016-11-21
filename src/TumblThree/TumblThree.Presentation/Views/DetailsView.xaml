@@ -123,6 +123,12 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="{StaticResource Layout.RowSpace}"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="{StaticResource Layout.RowSpace}"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="{StaticResource Layout.RowSpace}"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="{StaticResource Layout.RowSpace}"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="{StaticResource Layout.LargeRowSpace}"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
@@ -345,13 +351,31 @@
                     </Label.ToolTip>
                 </Label>
 
-                <CheckBox Content="{x:Static p:Resources.SkipGif}" IsChecked="{Binding BlogFile.SkipGif, Mode=TwoWay}" Grid.Column="0" Grid.Row="28" Margin="3,0,0,0" Padding="3,0,0,0"/>
-                <Label Content="" Grid.Column="2" Grid.Row="28"/>
+                <CheckBox Content="{x:Static p:Resources.MetaPhoto}" IsChecked="{Binding BlogFile.CreatePhotoMeta, Mode=TwoWay}" Grid.Column="0" Grid.Row="28" Margin="3,0,0,0" Padding="3,0,0,0">
+                </CheckBox>
 
-                <Label Content="{x:Static p:Resources.Preview}" Grid.Column="0" Grid.Row="30"/>
-                <Label Content="" Grid.Column="2" Grid.Row="30"/>
+                <Label Grid.Column="2" Grid.Row="28" Padding="0">
+                </Label>
 
-                <UserControl x:Name="Preview" Width="Auto" Height="Auto" Grid.ColumnSpan="3" Grid.Row="32">
+                <CheckBox Content="{x:Static p:Resources.MetaVideo}" IsChecked="{Binding BlogFile.CreateVideoMeta, Mode=TwoWay}" Grid.Column="0" Grid.Row="30" Margin="3,0,0,0" Padding="3,0,0,0">
+                </CheckBox>
+
+                <Label Grid.Column="2" Grid.Row="30" Padding="0">
+                </Label>
+
+                <CheckBox Content="{x:Static p:Resources.MetaAudio}" IsChecked="{Binding BlogFile.CreateAudioMeta, Mode=TwoWay}" Grid.Column="0" Grid.Row="32" Margin="3,0,0,0" Padding="3,0,0,0">
+                </CheckBox>
+
+                <Label Grid.Column="2" Grid.Row="32" Padding="0">
+                </Label>
+
+                <CheckBox Content="{x:Static p:Resources.SkipGif}" IsChecked="{Binding BlogFile.SkipGif, Mode=TwoWay}" Grid.Column="0" Grid.Row="34" Margin="3,0,0,0" Padding="3,0,0,0"/>
+                <Label Content="" Grid.Column="2" Grid.Row="34"/>
+
+                <Label Content="{x:Static p:Resources.Preview}" Grid.Column="0" Grid.Row="36"/>
+                <Label Content="" Grid.Column="2" Grid.Row="36"/>
+
+                <UserControl x:Name="Preview" Width="Auto" Height="Auto" Grid.ColumnSpan="3" Grid.Row="38">
                     <Grid>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="SwitchableStates">

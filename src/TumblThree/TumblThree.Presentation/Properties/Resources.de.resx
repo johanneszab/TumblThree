@@ -420,4 +420,22 @@
   <data name="ToolTipDetailsStatsDescription" xml:space="preserve">
     <value>Markieren um Beitragstypen zu laden</value>
   </data>
+  <data name="CreateAudioMeta" xml:space="preserve">
+    <value>Speichere Audioinformationen</value>
+  </data>
+  <data name="CreateImageMeta" xml:space="preserve">
+    <value>Speichere Bilderinformationen</value>
+  </data>
+  <data name="CreateVideoMeta" xml:space="preserve">
+    <value>Speichere Videoinformationen</value>
+  </data>
+  <data name="MetaAudio" xml:space="preserve">
+    <value>Speichere Audiometa</value>
+  </data>
+  <data name="MetaPhoto" xml:space="preserve">
+    <value>Speichere Fotometa</value>
+  </data>
+  <data name="MetaVideo" xml:space="preserve">
+    <value>Speichere Videometa</value>
+  </data>
 </root>
