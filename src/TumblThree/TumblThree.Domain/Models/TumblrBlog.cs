@@ -17,6 +17,9 @@ namespace TumblThree.Domain.Models
         private uint conversations;
         private uint videos;
         private uint audios;
+        private uint photoMetas;
+        private uint videoMetas;
+        private uint audioMetas;
         private uint downloadedTexts;
         private uint downloadedQuotes;
         private uint downloadedPhotos;
@@ -24,6 +27,12 @@ namespace TumblThree.Domain.Models
         private uint downloadedConversations;
         private uint downloadedVideos;
         private uint downloadedAudios;
+        private uint downloadedPhotoMetas;
+        private uint downloadedVideoMetas;
+        private uint downloadedAudioMetas;
+        private uint duplicatePhotos;
+        private uint duplicateVideos;
+        private uint duplicateAudios;
         private string lastDownloadedPhoto;
         private string lastDownloadedVideo;
         private bool downloadPhoto;
@@ -64,6 +73,9 @@ namespace TumblThree.Domain.Models
             this.conversations = 0;
             this.videos = 0;
             this.audios = 0;
+            this.photoMetas = 0;
+            this.videoMetas = 0;
+            this.audioMetas = 0;
             this.downloadedTexts = 0;
             this.downloadedQuotes = 0;
             this.downloadedPhotos = 0;
@@ -71,6 +83,12 @@ namespace TumblThree.Domain.Models
             this.downloadedConversations = 0;
             this.downloadedVideos = 0;
             this.downloadedAudios = 0;
+            this.downloadedPhotoMetas = 0;
+            this.downloadedVideoMetas = 0;
+            this.downloadedAudioMetas = 0;
+            this.duplicatePhotos = 0;
+            this.duplicateAudios = 0;
+            this.duplicateVideos = 0;
             this.downloadText = false;
             this.downloadQuote = false;
             this.downloadPhoto = true;
@@ -101,6 +119,9 @@ namespace TumblThree.Domain.Models
             this.conversations = 0;
             this.videos = 0;
             this.audios = 0;
+            this.photoMetas = 0;
+            this.videoMetas = 0;
+            this.audioMetas = 0;
             this.downloadedTexts = 0;
             this.downloadedQuotes = 0;
             this.downloadedPhotos = 0;
@@ -108,6 +129,12 @@ namespace TumblThree.Domain.Models
             this.downloadedConversations = 0;
             this.downloadedVideos = 0;
             this.downloadedAudios = 0;
+            this.downloadedPhotoMetas = 0;
+            this.downloadedVideoMetas = 0;
+            this.downloadedAudioMetas = 0;
+            this.duplicatePhotos = 0;
+            this.duplicateAudios = 0;
+            this.duplicateVideos = 0;
             this.downloadText = false;
             this.downloadQuote = false;
             this.downloadPhoto = true;
@@ -195,6 +222,24 @@ namespace TumblThree.Domain.Models
             set { SetProperty(ref audios, value); }
         }
 
+        public uint PhotoMetas
+        {
+            get { return photoMetas; }
+            set { SetProperty(ref photoMetas, value); }
+        }
+
+        public uint VideoMetas
+        {
+            get { return videoMetas; }
+            set { SetProperty(ref videoMetas, value); }
+        }
+
+        public uint AudioMetas
+        {
+            get { return audioMetas; }
+            set { SetProperty(ref audioMetas, value); }
+        }
+
         public uint DownloadedTexts
         {
             get { return downloadedTexts; }
@@ -235,6 +280,42 @@ namespace TumblThree.Domain.Models
         {
             get { return downloadedAudios; }
             set { SetProperty(ref downloadedAudios, value); }
+        }
+
+        public uint DownloadedPhotoMetas
+        {
+            get { return downloadedPhotoMetas; }
+            set { SetProperty(ref downloadedPhotoMetas, value); }
+        }
+
+        public uint DownloadedVideoMetas
+        {
+            get { return downloadedVideoMetas; }
+            set { SetProperty(ref downloadedVideoMetas, value); }
+        }
+
+        public uint DownloadedAudioMetas
+        {
+            get { return downloadedAudioMetas; }
+            set { SetProperty(ref downloadedAudioMetas, value); }
+        }
+
+        public uint DuplicatePhotos
+        {
+            get { return duplicatePhotos; }
+            set { SetProperty(ref duplicatePhotos, value); }
+        }
+
+        public uint DuplicateVideos
+        {
+            get { return duplicateVideos; }
+            set { SetProperty(ref duplicateVideos, value); }
+        }
+
+        public uint DuplicateAudios
+        {
+            get { return duplicateAudios; }
+            set { SetProperty(ref duplicateAudios, value); }
         }
 
         public bool DownloadText

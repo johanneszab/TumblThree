@@ -160,13 +160,22 @@
 
             </Grid.RowDefinitions>
             <Separator Grid.Column="0" Grid.Row="0" Margin="0"/>
-            <Label x:Name="perBlogLabel" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" Content="{x:Static p:Resources.BlogSettings}" Width="Auto"/>
+            <Label x:Name="perBlogLabel" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" Content="{x:Static p:Resources.DefaultSettingsForBlogs}" Width="Auto">
+                <Label.ToolTip>
+                    <ToolTip>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDefaultSettingsForBlogs}"/>
+                            <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipDefaultSettingsForBlogsDescription}"/>
+                        </StackPanel>
+                    </ToolTip>
+                </Label.ToolTip>
+            </Label>
             <CheckBox x:Name="checkBoxDownloadImages" Content="{x:Static p:Resources.DownloadImages}" IsChecked="{Binding DownloadImages, Mode=TwoWay}" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
-            <CheckBox x:Name="checkBoxDownloadImagesText" Content="{x:Static p:Resources.CreateImageMeta}" IsChecked="{Binding CreateImageMeta, Mode=TwoWay}" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
+            <CheckBox x:Name="checkBoxDownloadImagesText" Content="{x:Static p:Resources.DownloadImageMeta}" IsChecked="{Binding CreateImageMeta, Mode=TwoWay}" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
             <CheckBox x:Name="checkBoxDownloadVideos" Content="{x:Static p:Resources.DownloadVideos}" IsChecked="{Binding DownloadVideos, Mode=TwoWay}" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
-            <CheckBox x:Name="checkBoxDownloadVideosText" Content="{x:Static p:Resources.CreateVideoMeta}" IsChecked="{Binding CreateVideoMeta, Mode=TwoWay}" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
+            <CheckBox x:Name="checkBoxDownloadVideosText" Content="{x:Static p:Resources.DownloadVideoMeta}" IsChecked="{Binding CreateVideoMeta, Mode=TwoWay}" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
             <CheckBox x:Name="checkBoxDownloadAudios" Content="{x:Static p:Resources.DownloadAudios}" IsChecked="{Binding DownloadAudios, Mode=TwoWay}" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
-            <CheckBox x:Name="checkBoxDownloadAudiosText" Content="{x:Static p:Resources.CreateAudioMeta}" IsChecked="{Binding CreateAudioMeta, Mode=TwoWay}" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
+            <CheckBox x:Name="checkBoxDownloadAudiosText" Content="{x:Static p:Resources.DownloadAudioMeta}" IsChecked="{Binding CreateAudioMeta, Mode=TwoWay}" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
             <CheckBox x:Name="checkBoxDownloadTexts" Content="{x:Static p:Resources.DownloadTexts}" IsChecked="{Binding DownloadTexts, Mode=TwoWay}" Grid.Column="0" Grid.Row="5" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
             <CheckBox x:Name="checkBoxDownloadQuotes" Content="{x:Static p:Resources.DownloadQuotes}" IsChecked="{Binding DownloadQuotes, Mode=TwoWay}" Grid.Column="0" Grid.Row="6" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
             <CheckBox x:Name="checkBoxDownloadConversations" Content="{x:Static p:Resources.DownloadConversations}" IsChecked="{Binding DownloadConversations, Mode=TwoWay}" Grid.Column="0" Grid.Row="7" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>

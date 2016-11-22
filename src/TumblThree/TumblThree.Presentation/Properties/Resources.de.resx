@@ -351,29 +351,8 @@
   <data name="CopyUrl" xml:space="preserve">
     <value>Kopiere URL</value>
   </data>
-  <data name="Audios" xml:space="preserve">
-    <value>Audioaufnahmen:</value>
-  </data>
-  <data name="Conversations" xml:space="preserve">
-    <value>Konversationen:</value>
-  </data>
-  <data name="Links" xml:space="preserve">
-    <value>Links:</value>
-  </data>
   <data name="Posts" xml:space="preserve">
     <value>Anzahl an Posts:</value>
-  </data>
-  <data name="Quotes" xml:space="preserve">
-    <value>Zitate:</value>
-  </data>
-  <data name="Texts" xml:space="preserve">
-    <value>Texte:</value>
-  </data>
-  <data name="Videos" xml:space="preserve">
-    <value>Videos:</value>
-  </data>
-  <data name="Photos" xml:space="preserve">
-    <value>Fotos:</value>
   </data>
   <data name="Preview" xml:space="preserve">
     <value>Vorschau:</value>
@@ -397,13 +376,13 @@
     <value>Bandbreite begrenzen (kb/s)</value>
   </data>
   <data name="DetailsProgress" xml:space="preserve">
-    <value>{0} von {1}</value>
+    <value>{0} von {1}, {2} Duplikate gefunden.</value>
   </data>
   <data name="EnablePreview" xml:space="preserve">
     <value>Vorschau an/aus</value>
   </data>
   <data name="BlogSettings" xml:space="preserve">
-    <value>Blog Einstellungen (angewendet beim Hinzufügen des Blogs):</value>
+    <value>Blogeinstellungen:</value>
   </data>
   <data name="GlobalSettings" xml:space="preserve">
     <value>Globaleeinstellungen:</value>
@@ -420,14 +399,14 @@
   <data name="ToolTipDetailsStatsDescription" xml:space="preserve">
     <value>Markieren um Beitragstypen zu laden</value>
   </data>
-  <data name="CreateAudioMeta" xml:space="preserve">
-    <value>Speichere Audioinformationen</value>
+  <data name="DownloadAudioMeta" xml:space="preserve">
+    <value>Lade Audioinfo</value>
   </data>
-  <data name="CreateImageMeta" xml:space="preserve">
-    <value>Speichere Bilderinformationen</value>
+  <data name="DownloadImageMeta" xml:space="preserve">
+    <value>Lade Bilderinfo</value>
   </data>
-  <data name="CreateVideoMeta" xml:space="preserve">
-    <value>Speichere Videoinformationen</value>
+  <data name="DownloadVideoMeta" xml:space="preserve">
+    <value>Lade Videoinfo</value>
   </data>
   <data name="MetaAudio" xml:space="preserve">
     <value>Speichere Audiometa</value>
@@ -437,5 +416,17 @@
   </data>
   <data name="MetaVideo" xml:space="preserve">
     <value>Speichere Videometa</value>
+  </data>
+  <data name="DefaultSettingsForBlogs" xml:space="preserve">
+    <value>Blogeinstellungen (angewendet beim Hinzufügen des Blogs):</value>
+  </data>
+  <data name="DownloadVideosShort" xml:space="preserve">
+    <value>Lade Videos</value>
+  </data>
+  <data name="ToolTipDefaultSettingsForBlogs" xml:space="preserve">
+    <value>Sets the default settings for newly added blogs.</value>
+  </data>
+  <data name="ToolTipDefaultSettingsForBlogsDescription" xml:space="preserve">
+    <value>The backup uses indivual settings for each blog. To change them, select a blog in the main interface and select the Details window on the right hand side.</value>
   </data>
 </root>

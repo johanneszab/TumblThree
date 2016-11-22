@@ -88,6 +88,9 @@ namespace TumblThree.Applications.Controllers
                 Conversations = (uint)sharedBlogFiles.Sum(blogs => blogs.Conversations),
                 Videos = (uint)sharedBlogFiles.Sum(blogs => blogs.Videos),
                 Audios = (uint)sharedBlogFiles.Sum(blogs => blogs.Audios),
+                PhotoMetas = (uint)sharedBlogFiles.Sum(blogs => blogs.PhotoMetas),
+                VideoMetas = (uint)sharedBlogFiles.Sum(blogs => blogs.VideoMetas),
+                AudioMetas = (uint)sharedBlogFiles.Sum(blogs => blogs.AudioMetas),
 
                 DownloadedTexts = (uint)sharedBlogFiles.Sum(blogs => blogs.DownloadedTexts),
                 DownloadedQuotes = (uint)sharedBlogFiles.Sum(blogs => blogs.DownloadedQuotes),
@@ -96,6 +99,9 @@ namespace TumblThree.Applications.Controllers
                 DownloadedConversations = (uint)sharedBlogFiles.Sum(blogs => blogs.DownloadedConversations),
                 DownloadedVideos = (uint)sharedBlogFiles.Sum(blogs => blogs.DownloadedVideos),
                 DownloadedAudios = (uint)sharedBlogFiles.Sum(blogs => blogs.DownloadedAudios),
+                DownloadedPhotoMetas = (uint)sharedBlogFiles.Sum(blogs => blogs.DownloadedPhotoMetas),
+                DownloadedVideoMetas = (uint)sharedBlogFiles.Sum(blogs => blogs.DownloadedVideoMetas),
+                DownloadedAudioMetas = (uint)sharedBlogFiles.Sum(blogs => blogs.DownloadedAudioMetas),
 
                 DownloadAudio = false,
                 DownloadConversation = false,

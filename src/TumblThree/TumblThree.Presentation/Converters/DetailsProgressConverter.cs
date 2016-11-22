@@ -13,14 +13,16 @@ namespace TumblThree.Presentation.Converters
         {
             if (values[0] == DependencyProperty.UnsetValue) { return DependencyProperty.UnsetValue; }
             if (values[1] == DependencyProperty.UnsetValue) { return DependencyProperty.UnsetValue; }
+            if (values[2] == DependencyProperty.UnsetValue) { return DependencyProperty.UnsetValue; }
 
             var downloaded = (uint)values[0];
             var total = (uint)values[1];
+            var duplicates = System.Convert.ToUInt32(values[2]);
 
             //if (downloaded == 0)
             //    return "";
 
-            return string.Format(CultureInfo.CurrentCulture, Resources.DetailsProgress, downloaded, total);
+            return string.Format(CultureInfo.CurrentCulture, Resources.DetailsProgress, downloaded, total, duplicates);
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

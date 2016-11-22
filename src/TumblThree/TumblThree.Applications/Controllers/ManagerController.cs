@@ -355,9 +355,9 @@ namespace TumblThree.Applications.Controllers
             int downloadedQuotes = (int)blog.DownloadedQuotes;
             int downloadedLinks = (int)blog.DownloadedLinks;
             int downloadedConversations = (int)blog.DownloadedConversations;
-            int downloadedMetaPhotos = 0;
-            int downloadedMetaVideos = 0;
-            int downloadedMetaAudios = 0;
+            int downloadedPhotoMetas = (int)blog.DownloadedPhotoMetas;
+            int downloadedVideoMetas = (int)blog.DownloadedVideoMetas;
+            int downloadedAudioMetas = (int)blog.DownloadedAudioMetas;
 
             object lockObjectProgress = new object();
             object lockObjectDownload = new object();
@@ -365,6 +365,30 @@ namespace TumblThree.Applications.Controllers
 
             blog.TotalCount = newImageCount;
 
+            int duplicatePhotos = newImageUrls.Where(url => url.Item2.Equals("Photo"))
+              .GroupBy(item => item.Item1)
+              .Where(g => g.Count() > 1)
+              .Select(type => type.Key)
+              .Count();
+            int duplicateVideos = newImageUrls.Where(url => url.Item2.Equals("Video"))
+              .GroupBy(item => item.Item1)
+              .Where(g => g.Count() > 1)
+              .Select(type => type.Key)
+              .Count();
+            int duplicateAudios = newImageUrls.Where(url => url.Item2.Equals("Audio"))
+              .GroupBy(item => item.Item1)
+              .Where(g => g.Count() > 1)
+              .Select(type => type.Key)
+              .Count();
+            int duplicates = duplicatePhotos + duplicateVideos + duplicateAudios;
+
+            blog.DuplicatePhotos = (uint)duplicatePhotos;
+            blog.DuplicateVideos = (uint)duplicateVideos;
+            blog.DuplicateAudios = (uint)duplicateAudios;
+
+            // remove the duplicate from the download list
+            newImageUrls = newImageUrls.Distinct().ToList();
+            // remove all files previously downloaded
             newImageUrls.RemoveAll(item => blog.Links.Contains(item.Item1));
 
             var indexPath = Path.Combine(shellService.Settings.DownloadLocation, "Index");
@@ -398,7 +422,7 @@ namespace TumblThree.Applications.Controllers
                                         blog.Links.Add(currentImageUrl.Item1);
                                         // could be moved out of the lock?
                                         blog.DownloadedImages = (uint)downloadedImages;
-                                        blog.Progress = (uint)((double)downloadedImages / (double)blog.TotalCount * 100);
+                                        blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
                                         blog.DownloadedPhotos = (uint)downloadedPhotos;
                                     }
                                     if (shellService.Settings.EnablePreview)
@@ -416,7 +440,7 @@ namespace TumblThree.Applications.Controllers
                                         blog.Links.Add(currentImageUrl.Item1);
                                         // could be moved out of the lock?
                                         blog.DownloadedImages = (uint)downloadedImages;
-                                        blog.Progress = (uint)((double)downloadedImages / (double)blog.TotalCount * 100);
+                                        blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
                                         blog.DownloadedVideos = (uint)downloadedVideos;
                                     }
                                     if (shellService.Settings.EnablePreview)
@@ -433,7 +457,7 @@ namespace TumblThree.Applications.Controllers
                                         blog.Links.Add(currentImageUrl.Item1);
                                         // could be moved out of the lock?
                                         blog.DownloadedImages = (uint)downloadedImages;
-                                        blog.Progress = (uint)((double)downloadedImages / (double)blog.TotalCount * 100);
+                                        blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
                                         blog.DownloadedAudios = (uint)downloadedAudios;
                                     }
                                 }
@@ -448,7 +472,7 @@ namespace TumblThree.Applications.Controllers
                                         blog.Links.Add(currentImageUrl.Item3);
                                         // could be moved out of the lock?
                                         blog.DownloadedImages = (uint)downloadedImages;
-                                        blog.Progress = (uint)((double)downloadedImages / (double)blog.TotalCount * 100);
+                                        blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
                                         blog.DownloadedTexts = (uint)downloadedTexts;
                                     }
                                 }
@@ -463,7 +487,7 @@ namespace TumblThree.Applications.Controllers
                                         blog.Links.Add(currentImageUrl.Item3);
                                         // could be moved out of the lock?
                                         blog.DownloadedImages = (uint)downloadedImages;
-                                        blog.Progress = (uint)((double)downloadedImages / (double)blog.TotalCount * 100);
+                                        blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
                                         blog.DownloadedQuotes = (uint)downloadedQuotes;
                                     }
                                 }
@@ -478,7 +502,7 @@ namespace TumblThree.Applications.Controllers
                                         blog.Links.Add(currentImageUrl.Item3);
                                         // could be moved out of the lock?
                                         blog.DownloadedImages = (uint)downloadedImages;
-                                        blog.Progress = (uint)((double)downloadedImages / (double)blog.TotalCount * 100);
+                                        blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
                                         blog.DownloadedLinks = (uint)downloadedLinks;
                                     }
                                 }
@@ -493,7 +517,7 @@ namespace TumblThree.Applications.Controllers
                                         blog.Links.Add(currentImageUrl.Item3);
                                         // could be moved out of the lock?
                                         blog.DownloadedImages = (uint)downloadedImages;
-                                        blog.Progress = (uint)((double)downloadedImages / (double)blog.TotalCount * 100);
+                                        blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
                                         blog.DownloadedConversations = (uint)downloadedConversations;
                                     }
                                 }
@@ -501,33 +525,45 @@ namespace TumblThree.Applications.Controllers
                             case "PhotoMeta":
                                 fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaPhoto));
 
-                                if (Download(blog, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedMetaPhotos, ref downloadedMetaPhotos))
+                                if (Download(blog, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedPhotoMetas, ref downloadedImages))
                                 {
                                     lock (lockObjectProgress)
                                     {
                                         blog.Links.Add(currentImageUrl.Item3);
+                                        // could be moved out of the lock?
+                                        blog.DownloadedImages = (uint)downloadedImages;
+                                        blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
+                                        blog.DownloadedPhotoMetas = (uint)downloadedPhotoMetas;
                                     }
                                 }
                                 break;
                             case "VideoMeta":
                                 fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaVideo));
 
-                                if (Download(blog, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedMetaVideos, ref downloadedMetaVideos))
+                                if (Download(blog, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedVideoMetas, ref downloadedImages))
                                 {
                                     lock (lockObjectProgress)
                                     {
                                         blog.Links.Add(currentImageUrl.Item3);
+                                        // could be moved out of the lock?
+                                        blog.DownloadedImages = (uint)downloadedImages;
+                                        blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
+                                        blog.DownloadedVideoMetas = (uint)downloadedVideoMetas;
                                     }
                                 }
                                 break;
                             case "AudioMeta":
                                 fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaAudio));
 
-                                if (Download(blog, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedMetaAudios, ref downloadedMetaAudios))
+                                if (Download(blog, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedAudioMetas, ref downloadedImages))
                                 {
                                     lock (lockObjectProgress)
                                     {
                                         blog.Links.Add(currentImageUrl.Item3);
+                                        // could be moved out of the lock?
+                                        blog.DownloadedImages = (uint)downloadedImages;
+                                        blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
+                                        blog.DownloadedAudioMetas = (uint)downloadedAudioMetas;
                                     }
                                 }
                                 break;
@@ -938,11 +974,14 @@ namespace TumblThree.Applications.Controllers
             int totalDownloads = 0;
             int photos = 0;
             int videos = 0;
-            int audio = 0;
-            int text = 0;
-            int conversation = 0;
+            int audios = 0;
+            int texts = 0;
+            int conversations = 0;
             int quotes = 0;
-            int link = 0;
+            int links = 0;
+            int photoMetas = 0;
+            int videoMetas = 0;
+            int audioMetas = 0;
             List<Tuple<string, string, string>> images = new List<Tuple<string, string, string>>();
 
             string url = GetApiUrl(blog.Url, 1);
@@ -979,11 +1018,11 @@ namespace TumblThree.Applications.Controllers
                                     // Doesn't count photosets
                                     //Interlocked.Add(ref photos, document.Descendants("post").Where(post => post.Attribute("type").Value == "photo").Count());
                                     Interlocked.Add(ref videos, document.Descendants("post").Where(post => post.Attribute("type").Value == "video").Count());
-                                    Interlocked.Add(ref audio, document.Descendants("post").Where(post => post.Attribute("type").Value == "audio").Count());
-                                    Interlocked.Add(ref text, document.Descendants("post").Where(post => post.Attribute("type").Value == "regular").Count());
-                                    Interlocked.Add(ref conversation, document.Descendants("post").Where(post => post.Attribute("type").Value == "conversation").Count());
+                                    Interlocked.Add(ref audios, document.Descendants("post").Where(post => post.Attribute("type").Value == "audio").Count());
+                                    Interlocked.Add(ref texts, document.Descendants("post").Where(post => post.Attribute("type").Value == "regular").Count());
+                                    Interlocked.Add(ref conversations, document.Descendants("post").Where(post => post.Attribute("type").Value == "conversation").Count());
                                     Interlocked.Add(ref quotes, document.Descendants("post").Where(post => post.Attribute("type").Value == "quote").Count());
-                                    Interlocked.Add(ref link, document.Descendants("post").Where(post => post.Attribute("type").Value == "link").Count());
+                                    Interlocked.Add(ref links, document.Descendants("post").Where(post => post.Attribute("type").Value == "link").Count());
 
                                     if (blog.DownloadPhoto == true)
                                     {
@@ -1159,7 +1198,6 @@ namespace TumblThree.Applications.Controllers
                                                 imageUrl = string.Join(", ", imageUrls.ToArray());
                                             }
                                             // single image
-                                            else
                                             {
                                                 imageUrl = post.Elements("photo-url").Where(photo_url =>
                                                         photo_url.Attribute("max-width").Value == shellService.Settings.ImageSize.ToString()).FirstOrDefault().Value;
@@ -1174,6 +1212,8 @@ namespace TumblThree.Applications.Controllers
                                                     Environment.NewLine + "Photo Caption: " + post.Element("photo-caption")?.Value +
                                                     Environment.NewLine + "Tags: " + string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray()) +
                                                     Environment.NewLine;
+                                                Interlocked.Increment(ref totalDownloads);
+                                                Interlocked.Increment(ref photoMetas);
                                                 Monitor.Enter(images);
                                                 images.Add(Tuple.Create(textBody, "PhotoMeta", post.Attribute("id").Value));
                                                 Monitor.Exit(images);
@@ -1190,6 +1230,8 @@ namespace TumblThree.Applications.Controllers
                                                 Environment.NewLine + "Video Player: " + post.Element("video-player")?.Value +
                                                 Environment.NewLine + "Tags: " + string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray()) +
                                                 Environment.NewLine;
+                                            Interlocked.Increment(ref totalDownloads);
+                                            Interlocked.Increment(ref videoMetas);
                                             Monitor.Enter(images);
                                             images.Add(Tuple.Create(textBody, "VideoMeta", post.Attribute("id").Value));
                                             Monitor.Exit(images);
@@ -1210,6 +1252,8 @@ namespace TumblThree.Applications.Controllers
                                                 Environment.NewLine + "Id3: year: " + post.Element("id3-year")?.Value +
                                                 Environment.NewLine + "Tags: " + string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray()) +
                                                 Environment.NewLine;
+                                            Interlocked.Increment(ref totalDownloads);
+                                            Interlocked.Increment(ref audioMetas);
                                             Monitor.Enter(images);
                                             images.Add(Tuple.Create(textBody, "AudioMeta", post.Attribute("id").Value));
                                             Monitor.Exit(images);
@@ -1402,7 +1446,6 @@ namespace TumblThree.Applications.Controllers
                                                 imageUrl = string.Join(", ", imageUrls.ToArray());
                                             }
                                             // single image
-                                            else
                                             {
                                                 imageUrl = post.Elements("photo-url").Where(photo_url =>
                                                         photo_url.Attribute("max-width").Value == shellService.Settings.ImageSize.ToString()).FirstOrDefault().Value;
@@ -1417,6 +1460,8 @@ namespace TumblThree.Applications.Controllers
                                                     Environment.NewLine + "Photo Caption: " + post.Element("photo-caption")?.Value +
                                                     Environment.NewLine + "Tags: " + string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray()) +
                                                     Environment.NewLine;
+                                                Interlocked.Increment(ref photoMetas);
+                                                Interlocked.Increment(ref totalDownloads);
                                                 Monitor.Enter(images);
                                                 images.Add(Tuple.Create(textBody, "PhotoMeta", post.Attribute("id").Value));
                                                 Monitor.Exit(images);
@@ -1433,6 +1478,8 @@ namespace TumblThree.Applications.Controllers
                                                 Environment.NewLine + "Video Player: " + post.Element("video-player")?.Value +
                                                 Environment.NewLine + "Tags: " + string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray()) +
                                                 Environment.NewLine;
+                                            Interlocked.Increment(ref videoMetas);
+                                            Interlocked.Increment(ref totalDownloads);
                                             Monitor.Enter(images);
                                             images.Add(Tuple.Create(textBody, "VideoMeta", post.Attribute("id").Value));
                                             Monitor.Exit(images);
@@ -1453,6 +1500,8 @@ namespace TumblThree.Applications.Controllers
                                                 Environment.NewLine + "Id3: year: " + post.Element("id3-year")?.Value +
                                                 Environment.NewLine + "Tags: " + string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray()) +
                                                 Environment.NewLine;
+                                            Interlocked.Increment(ref audioMetas);
+                                            Interlocked.Increment(ref totalDownloads);
                                             Monitor.Enter(images);
                                             images.Add(Tuple.Create(textBody, "AudioMeta", post.Attribute("id").Value));
                                             Monitor.Exit(images);
@@ -1472,17 +1521,17 @@ namespace TumblThree.Applications.Controllers
                         }
                 );
 
-            //FIXME: Breaks the counter(statistics)
-            //images = images.Distinct().ToList();
-
             blog.Posts = (uint)totalPosts;
             blog.Photos = (uint)photos;
             blog.Videos = (uint)videos;
-            blog.Audios = (uint)audio;
-            blog.Texts = (uint)text;
-            blog.Conversations = (uint)conversation;
+            blog.Audios = (uint)audios;
+            blog.Texts = (uint)texts;
+            blog.Conversations = (uint)conversations;
             blog.Quotes = (uint)quotes;
-            blog.NumberOfLinks = (uint)link;
+            blog.NumberOfLinks = (uint)links;
+            blog.PhotoMetas = (uint)photoMetas;
+            blog.VideoMetas = (uint)videoMetas;
+            blog.AudioMetas = (uint)audioMetas;
 
             return Tuple.Create((uint)totalDownloads, images);
         }
@@ -1506,8 +1555,6 @@ namespace TumblThree.Applications.Controllers
             Monitor.Enter(lockObject, ref locked);
             if (blog.Links.Contains(url))
             {
-                counter++;
-                totalCounter++;
                 Monitor.Exit(lockObject);
                 return false;
             }
@@ -1538,14 +1585,11 @@ namespace TumblThree.Applications.Controllers
             Monitor.Enter(lockObject, ref locked);
             if (blog.Links.Contains(postId))
             {
-                counter++;
-                totalCounter++;
                 Monitor.Exit(lockObject);
                 return false;
             }
             else
             {
-                Monitor.Exit(lockObject);
                 try
                 {
                     var newProgress = new DataModels.DownloadProgress();
@@ -1563,6 +1607,10 @@ namespace TumblThree.Applications.Controllers
                 catch
                 {
                     return false;
+                }
+                finally
+                {
+                    Monitor.Exit(lockObject);
                 }
             }
         }

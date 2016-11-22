@@ -88,15 +88,6 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No. of Audios.
-        /// </summary>
-        public static string Audios {
-            get {
-                return ResourceManager.GetString("Audios", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Authenticate.
         /// </summary>
         public static string Authenticate {
@@ -115,7 +106,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Settings applied to each blog upon addition:.
+        ///   Looks up a localized string similar to Blog settings:.
         /// </summary>
         public static string BlogSettings {
             get {
@@ -178,15 +169,6 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No. of Conversations:.
-        /// </summary>
-        public static string Conversations {
-            get {
-                return ResourceManager.GetString("Conversations", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Copy url.
         /// </summary>
         public static string CopyUrl {
@@ -214,38 +196,20 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Save audio meta information.
-        /// </summary>
-        public static string CreateAudioMeta {
-            get {
-                return ResourceManager.GetString("CreateAudioMeta", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Save image meta information.
-        /// </summary>
-        public static string CreateImageMeta {
-            get {
-                return ResourceManager.GetString("CreateImageMeta", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Save video meta information.
-        /// </summary>
-        public static string CreateVideoMeta {
-            get {
-                return ResourceManager.GetString("CreateVideoMeta", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Date Added.
         /// </summary>
         public static string DateAdded {
             get {
                 return ResourceManager.GetString("DateAdded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings applied to each blog upon addition:.
+        /// </summary>
+        public static string DefaultSettingsForBlogs {
+            get {
+                return ResourceManager.GetString("DefaultSettingsForBlogs", resourceCulture);
             }
         }
         
@@ -277,11 +241,20 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} of {1}.
+        ///   Looks up a localized string similar to {0} of {1}, duplicates found: {2}.
         /// </summary>
         public static string DetailsProgress {
             get {
                 return ResourceManager.GetString("DetailsProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download audio meta.
+        /// </summary>
+        public static string DownloadAudioMeta {
+            get {
+                return ResourceManager.GetString("DownloadAudioMeta", resourceCulture);
             }
         }
         
@@ -318,6 +291,15 @@ namespace TumblThree.Presentation.Properties {
         public static string DownloadedFilesOf {
             get {
                 return ResourceManager.GetString("DownloadedFilesOf", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download image meta.
+        /// </summary>
+        public static string DownloadImageMeta {
+            get {
+                return ResourceManager.GetString("DownloadImageMeta", resourceCulture);
             }
         }
         
@@ -367,11 +349,29 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download video meta.
+        /// </summary>
+        public static string DownloadVideoMeta {
+            get {
+                return ResourceManager.GetString("DownloadVideoMeta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Download videos (tumblr.com self hosted).
         /// </summary>
         public static string DownloadVideos {
             get {
                 return ResourceManager.GetString("DownloadVideos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download videos.
+        /// </summary>
+        public static string DownloadVideosShort {
+            get {
+                return ResourceManager.GetString("DownloadVideosShort", resourceCulture);
             }
         }
         
@@ -480,42 +480,6 @@ namespace TumblThree.Presentation.Properties {
         public static string License {
             get {
                 return ResourceManager.GetString("License", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No. of Links:.
-        /// </summary>
-        public static string Links {
-            get {
-                return ResourceManager.GetString("Links", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Save audio meta.
-        /// </summary>
-        public static string MetaAudio {
-            get {
-                return ResourceManager.GetString("MetaAudio", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Save photo meta.
-        /// </summary>
-        public static string MetaPhoto {
-            get {
-                return ResourceManager.GetString("MetaPhoto", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Save video meta.
-        /// </summary>
-        public static string MetaVideo {
-            get {
-                return ResourceManager.GetString("MetaVideo", resourceCulture);
             }
         }
         
@@ -646,16 +610,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No. of Photos:.
-        /// </summary>
-        public static string Photos {
-            get {
-                return ResourceManager.GetString("Photos", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Number of Posts:.
+        ///   Looks up a localized string similar to Number of posts:.
         /// </summary>
         public static string Posts {
             get {
@@ -696,15 +651,6 @@ namespace TumblThree.Presentation.Properties {
         public static string Queue {
             get {
                 return ResourceManager.GetString("Queue", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No. of Quotes:.
-        /// </summary>
-        public static string Quotes {
-            get {
-                return ResourceManager.GetString("Quotes", resourceCulture);
             }
         }
         
@@ -862,15 +808,6 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No of Texts:.
-        /// </summary>
-        public static string Texts {
-            get {
-                return ResourceManager.GetString("Texts", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Timeout (s).
         /// </summary>
         public static string TimeOut {
@@ -943,6 +880,24 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sets the default settings for newly added blogs..
+        /// </summary>
+        public static string ToolTipDefaultSettingsForBlogs {
+            get {
+                return ResourceManager.GetString("ToolTipDefaultSettingsForBlogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The backup uses indivual settings for each blog. To change them, select a blog in the main interface and select the Details window on the right hand side..
+        /// </summary>
+        public static string ToolTipDefaultSettingsForBlogsDescription {
+            get {
+                return ResourceManager.GetString("ToolTipDefaultSettingsForBlogsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Number of downloaded post types / total post types.
         /// </summary>
         public static string ToolTipDetailsStats {
@@ -984,15 +939,6 @@ namespace TumblThree.Presentation.Properties {
         public static string Version {
             get {
                 return ResourceManager.GetString("Version", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to No. of Videos:.
-        /// </summary>
-        public static string Videos {
-            get {
-                return ResourceManager.GetString("Videos", resourceCulture);
             }
         }
         
