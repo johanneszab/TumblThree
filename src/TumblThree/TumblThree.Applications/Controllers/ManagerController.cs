@@ -22,7 +22,6 @@ using System.Windows.Threading;
 using System.Globalization;
 using System.Xml.Linq;
 using System.Net;
-using System.Xml.Serialization;
 using System.Text;
 using System.Web;
 
@@ -365,21 +364,20 @@ namespace TumblThree.Applications.Controllers
 
             blog.TotalCount = newImageCount;
 
+            // determine duplicates
             int duplicatePhotos = newImageUrls.Where(url => url.Item2.Equals("Photo"))
-              .GroupBy(item => item.Item1)
-              .Where(g => g.Count() > 1)
-              .Select(type => type.Key)
-              .Count();
+                .GroupBy(url => url.Item1)
+                .Where(g => g.Count() > 1)
+                .Sum(g => g.Count() - 1);
             int duplicateVideos = newImageUrls.Where(url => url.Item2.Equals("Video"))
-              .GroupBy(item => item.Item1)
-              .Where(g => g.Count() > 1)
-              .Select(type => type.Key)
-              .Count();
+                .GroupBy(url => url.Item1)
+                .Where(g => g.Count() > 1)
+                .Sum(g => g.Count() - 1);
             int duplicateAudios = newImageUrls.Where(url => url.Item2.Equals("Audio"))
-              .GroupBy(item => item.Item1)
-              .Where(g => g.Count() > 1)
-              .Select(type => type.Key)
-              .Count();
+                .GroupBy(url => url.Item1)
+                .Where(g => g.Count() > 1)
+                .Sum(g => g.Count() - 1);
+
             int duplicates = duplicatePhotos + duplicateVideos + duplicateAudios;
 
             blog.DuplicatePhotos = (uint)duplicatePhotos;
@@ -387,7 +385,11 @@ namespace TumblThree.Applications.Controllers
             blog.DuplicateAudios = (uint)duplicateAudios;
 
             // remove the duplicate from the download list
-            newImageUrls = newImageUrls.Distinct().ToList();
+            newImageUrls = newImageUrls
+                .GroupBy(url => url.Item1)
+                .Select(g => g.First())
+                .ToList();
+
             // remove all files previously downloaded
             newImageUrls.RemoveAll(item => blog.Links.Contains(item.Item1));
 
