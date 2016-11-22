@@ -5,7 +5,7 @@ using System.Resources;
 
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("TumblThree")]
-[assembly: AssemblyCopyright("Copyright by johanneszab © 2016")]
+[assembly: AssemblyCopyright("Copyright (C) 2016 Johannes Meyer zum Alten Borgloh")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
