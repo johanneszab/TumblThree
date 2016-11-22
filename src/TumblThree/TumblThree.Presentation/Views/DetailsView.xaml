@@ -366,7 +366,7 @@
                     </Label.ToolTip>
                 </Label>
 
-                <CheckBox Content="{x:Static p:Resources.DownloadImageMeta}" IsChecked="{Binding BlogFile.DownloadLink, Mode=TwoWay}" Grid.Column="0" Grid.Row="28" Margin="3,0,0,0" Padding="3,0,0,0">
+                <CheckBox Content="{x:Static p:Resources.DownloadImageMeta}" IsChecked="{Binding BlogFile.CreatePhotoMeta, Mode=TwoWay}" Grid.Column="0" Grid.Row="28" Margin="3,0,0,0" Padding="3,0,0,0">
                     <CheckBox.ToolTip>
                         <ToolTip>
                             <StackPanel>
@@ -395,7 +395,7 @@
                     </Label.ToolTip>
                 </Label>
 
-                <CheckBox Content="{x:Static p:Resources.DownloadVideoMeta}" IsChecked="{Binding BlogFile.DownloadLink, Mode=TwoWay}" Grid.Column="0" Grid.Row="30" Margin="3,0,0,0" Padding="3,0,0,0">
+                <CheckBox Content="{x:Static p:Resources.DownloadVideoMeta}" IsChecked="{Binding BlogFile.CreateVideoMeta, Mode=TwoWay}" Grid.Column="0" Grid.Row="30" Margin="3,0,0,0" Padding="3,0,0,0">
                     <CheckBox.ToolTip>
                         <ToolTip>
                             <StackPanel>
@@ -424,7 +424,7 @@
                     </Label.ToolTip>
                 </Label>
 
-                <CheckBox Content="{x:Static p:Resources.DownloadAudioMeta}" IsChecked="{Binding BlogFile.DownloadLink, Mode=TwoWay}" Grid.Column="0" Grid.Row="32" Margin="3,0,0,0" Padding="3,0,0,0">
+                <CheckBox Content="{x:Static p:Resources.DownloadAudioMeta}" IsChecked="{Binding BlogFile.CreateAudioMeta, Mode=TwoWay}" Grid.Column="0" Grid.Row="32" Margin="3,0,0,0" Padding="3,0,0,0">
                     <CheckBox.ToolTip>
                         <ToolTip>
                             <StackPanel>
