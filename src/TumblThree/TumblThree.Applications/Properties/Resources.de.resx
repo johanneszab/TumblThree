@@ -198,6 +198,9 @@
   <data name="ProgressGetUrl" xml:space="preserve">
     <value>{0} Tumblrbeiträge von {1} Gesamtbeiträgen ausgewertet.</value>
   </data>
+  <data name="ProgressUniqueDownloads" xml:space="preserve">
+    <value>Berechne neue Downloads, bestimme Duplikate ...</value>
+  </data>
   <data name="Queuelist" xml:space="preserve">
     <value>Downloadliste</value>
   </data>

@@ -304,6 +304,15 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Calculating unique downloads, removing duplicates ....
+        /// </summary>
+        public static string ProgressUniqueDownloads {
+            get {
+                return ResourceManager.GetString("ProgressUniqueDownloads", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Queuelist.
         /// </summary>
         public static string Queuelist {

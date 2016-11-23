@@ -364,6 +364,10 @@ namespace TumblThree.Applications.Controllers
 
             blog.TotalCount = newImageCount;
 
+            var newProgress = new DataModels.DownloadProgress();
+            newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressUniqueDownloads);
+            progress.Report(newProgress);
+
             // determine duplicates
             int duplicatePhotos = newImageUrls.Where(url => url.Item2.Equals("Photo"))
                 .GroupBy(url => url.Item1)
@@ -384,20 +388,21 @@ namespace TumblThree.Applications.Controllers
             blog.DuplicateVideos = (uint)duplicateVideos;
             blog.DuplicateAudios = (uint)duplicateAudios;
 
-            // remove the duplicate from the download list
-            newImageUrls = newImageUrls
-                .GroupBy(url => url.Item1)
-                .Select(g => g.First())
-                .ToList();
+            // remove the duplicates from the download list
+            var imageUrls = new HashSet<Tuple<string, string, string>>(newImageUrls);
 
             // remove all files previously downloaded
-            newImageUrls.RemoveAll(item => blog.Links.Contains(item.Item1));
+            var blogLinks = new HashSet<string>(blog.Links);
+            imageUrls.RemoveWhere(item => blogLinks.Contains(item.Item1));
 
             var indexPath = Path.Combine(shellService.Settings.DownloadLocation, "Index");
             var blogPath = shellService.Settings.DownloadLocation;
 
+            // make sure the datafolder still exists
+            CreateDataFolder(blog.Name, blogPath);
+
             var parallel = Parallel.ForEach(
-                newImageUrls,
+                imageUrls,
                     new ParallelOptions { MaxDegreeOfParallelism = (shellService.Settings.ParallelImages / selectionService.ActiveItems.Count) },
                     (currentImageUrl, state) =>
                     {
@@ -583,7 +588,7 @@ namespace TumblThree.Applications.Controllers
             blog.Dirty = false;
             SaveBlog(blog);
 
-            var newProgress = new DataModels.DownloadProgress();
+            newProgress = new DataModels.DownloadProgress();
             newProgress.Progress = "";
             progress.Report(newProgress);
 
@@ -958,9 +963,9 @@ namespace TumblThree.Applications.Controllers
 
                 if (blogDoc != null)
                 {
-                    blog.Title = blogDoc.Element("tumblr").Element("tumblelog").Attribute("title").Value;
-                    blog.Description = blogDoc.Element("tumblr").Element("tumblelog").Value;
-                    blog.TotalCount = UInt32.Parse(blogDoc.Element("tumblr").Element("posts").Attribute("total").Value);
+                    blog.Title = blogDoc.Element("tumblr").Element("tumblelog").Attribute("title")?.Value;
+                    blog.Description = blogDoc.Element("tumblr").Element("tumblelog")?.Value;
+                    blog.TotalCount = UInt32.Parse(blogDoc.Element("tumblr").Element("posts").Attribute("total")?.Value);
                     return blog;
                 }
                 else
