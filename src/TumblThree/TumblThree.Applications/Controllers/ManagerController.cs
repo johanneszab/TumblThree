@@ -49,6 +49,7 @@ namespace TumblThree.Applications.Controllers
         private readonly DelegateCommand autoDownloadCommand;
         private readonly DelegateCommand showDetailsCommand;
         private readonly List<Task> runningTasks;
+        private readonly List<string> deferredDeletions;
         private CancellationTokenSource crawlBlogsCancellation;
         private PauseTokenSource crawlBlogsPause;
         private readonly object lockObject = new object();
@@ -80,6 +81,7 @@ namespace TumblThree.Applications.Controllers
             this.autoDownloadCommand = new DelegateCommand(EnqueueAutoDownload, CanEnqueueAutoDownload);
             this.showDetailsCommand = new DelegateCommand(ShowDetailsCommand);
             this.runningTasks = new List<Task>();
+            this.deferredDeletions = new List<string>();
             this.locked = false;
         }
 
@@ -135,6 +137,10 @@ namespace TumblThree.Applications.Controllers
                     blog.Dirty = false;
                     SaveBlog(blog);
                 }
+            }
+            foreach (string fileToDelete in deferredDeletions)
+            {
+                File.Delete(fileToDelete);
             }
         }
 
@@ -197,7 +203,7 @@ namespace TumblThree.Applications.Controllers
 
             List<Blog> blogs = new List<Blog>();
 
-            foreach (var filename in Directory.GetFiles(directory))
+            foreach (var filename in Directory.GetFiles(directory, "*.tumblr"))
             {
                 using (FileStream stream = new FileStream(filename,
                     FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -919,16 +925,42 @@ namespace TumblThree.Applications.Controllers
             var indexPath = Path.Combine(shellService.Settings.DownloadLocation, "Index");
             var blogPath = shellService.Settings.DownloadLocation;
 
+            string currentIndex = Path.Combine(indexPath, blog.Name + ".tumblr");
+            string newIndex = Path.Combine(indexPath, blog.Name + ".tumblr.new");
+            string backupIndex = Path.Combine(indexPath, blog.Name + ".tumblr.bak");
+
             try
             {
                 CreateDataFolder("Index", blogPath);
                 CreateDataFolder(blog.Name, blogPath);
-                using (FileStream stream = new FileStream(Path.Combine(indexPath, blog.Name + ".tumblr"),
-                    FileMode.Create, FileAccess.Write, FileShare.None))
+
+                if (File.Exists(currentIndex))
                 {
-                    IFormatter formatter = new BinaryFormatter();
-                    formatter.Serialize(stream, blog);
+                    using (FileStream stream = new FileStream(newIndex, FileMode.Create, FileAccess.Write, FileShare.None))
+                    {
+                        IFormatter formatter = new BinaryFormatter();
+                        formatter.Serialize(stream, blog);
+                    }
+
+                    File.Replace(newIndex, currentIndex, backupIndex, true);
+                    try
+                    {
+                        File.Delete(backupIndex);
+                    }
+                    catch
+                    {
+                        deferredDeletions.Add(backupIndex);
+                    }
                 }
+                else
+                {
+                    using (FileStream stream = new FileStream(currentIndex, FileMode.Create, FileAccess.Write, FileShare.None))
+                    {
+                        IFormatter formatter = new BinaryFormatter();
+                        formatter.Serialize(stream, blog);
+                    }
+                }
+            
                 return true;
             }
             catch (Exception ex)

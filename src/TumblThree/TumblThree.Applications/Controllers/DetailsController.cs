@@ -80,6 +80,7 @@ namespace TumblThree.Applications.Controllers
                 Name = string.Join(", ", sharedBlogFiles.Select(blog => blog.Name).ToArray()),
                 Url = string.Join(", ", sharedBlogFiles.Select(blog => blog.Url).ToArray()),
 
+                Posts = (uint)sharedBlogFiles.Sum(blogs => blogs.Posts),
                 TotalCount = (uint)sharedBlogFiles.Sum(blogs => blogs.TotalCount),
                 Texts = (uint)sharedBlogFiles.Sum(blogs => blogs.Texts),
                 Quotes = (uint)sharedBlogFiles.Sum(blogs => blogs.Quotes),
