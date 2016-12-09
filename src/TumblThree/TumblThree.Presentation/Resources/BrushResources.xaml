@@ -5,11 +5,19 @@
 
     <SolidColorBrush x:Key="LightForeground" Color="{StaticResource {x:Static SystemColors.GrayTextColorKey}}"/>
 
-    <SolidColorBrush x:Key="ActiveForeground" Color="Green"/>
+    <!-- <SolidColorBrush x:Key="ActiveForeground" Color="Green"/> -->
 
-    <SolidColorBrush x:Key="ErrorForeground" Color="Red"/>
+    <SolidColorBrush x:Key="ActiveForeground" Color="SkyBlue"/>
 
-    <SolidColorBrush x:Key="DarkErrorForeground" Color="DarkRed"/>
+    <SolidColorBrush x:Key="DarkForeground" Color="DarkBlue"/>
+
+    <!-- <SolidColorBrush x:Key="ErrorForeground" Color="Red"/> -->
+
+    <SolidColorBrush x:Key="ErrorForeground" Color="SkyBlue"/>
+
+    <!--<SolidColorBrush x:Key="DarkErrorForeground" Color="DarkRed"/> -->
+
+    <SolidColorBrush x:Key="DarkErrorForeground" Color="DarkBlue"/>
 
     <SolidColorBrush x:Key="DefaultBackground" Color="{StaticResource {x:Static SystemColors.ControlColorKey}}"/>
 
@@ -17,7 +25,9 @@
 
     <SolidColorBrush x:Key="DarkTransparentBackground" Color="#BFA0A0A0"/>
 
-    <SolidColorBrush x:Key="ErrorBackground" Color="Red"/>
+    <!-- <SolidColorBrush x:Key="ErrorBackground" Color="Red"/> -->
+
+    <SolidColorBrush x:Key="ErrorBackground" Color="SkyBlue"/>
 
     <SolidColorBrush x:Key="DefaultBorderBrush" Color="White"/>
 

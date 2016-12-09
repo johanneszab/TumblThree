@@ -150,7 +150,7 @@
                     <TextBlock Text="{Binding BlogFile.Url}" TextTrimming="CharacterEllipsis"/>
                 </Label>
                 <Label Content="{x:Static p:Resources.Progress}" Grid.Column="0" Grid.Row="4"/>
-                <ProgressBar Value="{Binding BlogFile.Progress, Mode=OneWay}" Height="15" Minimum="0" Maximum="100" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="4"/>
+                <ProgressBar Value="{Binding BlogFile.Progress, Mode=OneWay}" Height="15" Minimum="0" Maximum="100" Foreground="{StaticResource ActiveForeground}" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="4"/>
 
                 <Label Content="{x:Static p:Resources.Rating}" Grid.Column="0" Grid.Row="6"/>
                 <ctrl:Rating Value="{Binding BlogFile.Rating, Converter={StaticResource RatingToStarsConverter}}"

@@ -49,7 +49,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Border Grid.ColumnSpan="3" Grid.Row="0" BorderBrush="Transparent" BorderThickness="0,0,0,1" Background="Red">
+        <Border Grid.ColumnSpan="3" Grid.Row="0" BorderBrush="Transparent" BorderThickness="0,0,0,1" Background="{StaticResource ErrorBackground}">
             <Border.Style>
                 <Style TargetType="Border">
                     <Style.Triggers>
