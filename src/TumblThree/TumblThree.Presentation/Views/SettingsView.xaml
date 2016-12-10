@@ -20,8 +20,8 @@
                 <RowDefinition Height="46"/>
                 <RowDefinition Height="46"/>
                 <RowDefinition Height="46"/>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Grid Height="46" Margin="0" VerticalAlignment="Top" Grid.Row="0">
                 <Grid.ColumnDefinitions>
@@ -135,7 +135,7 @@
                     </TextBox.Text>
                 </TextBox>
             </Grid>
-            <Grid Height="Auto" Margin="0" VerticalAlignment="Top" Grid.Row="7">
+            <Grid Height="Auto" Margin="0" VerticalAlignment="Top" Grid.Row="6">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -188,7 +188,7 @@
                 <CheckBox x:Name="checkBoxDeleteIndex" Content="{x:Static p:Resources.DeleteIndex}" IsChecked="{Binding DeleteOnlyIndex, Mode=TwoWay}" Grid.Column="0" Grid.Row="14" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
                 <CheckBox x:Name="checkBoxRemoveIndex" Content="{x:Static p:Resources.RemoveIndex}" IsChecked="{Binding RemoveIndexAfterCrawl, Mode=TwoWay}" Grid.Column="0" Grid.Row="15" HorizontalAlignment="Left" Margin="10" VerticalAlignment="Top"/>
             </Grid>
-            <Grid Height="Auto" Margin="0" VerticalAlignment="Bottom" Grid.Row="8">
+            <Grid Height="Auto" Margin="0" VerticalAlignment="Bottom" Grid.Row="7">
                 <Button x:Name="buttonAuthenticate" Height="Auto" Content="{x:Static p:Resources.Authenticate}" Command="{Binding AuthenticateCommand}" IsEnabled="False" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="75">
                     <Button.ToolTip>
                         <ToolTip>

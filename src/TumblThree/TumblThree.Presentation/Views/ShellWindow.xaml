@@ -102,7 +102,7 @@
 
             <ContentControl Content="{Binding DetailsView}" Focusable="False"/>
         </DockPanel>
-        <ScrollViewer HorizontalScrollBarVisibility="Visible" Grid.ColumnSpan="3" Grid.Row="3">
+        <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" Grid.ColumnSpan="3" Grid.Row="3">
             <Grid  Focusable="False">
                 <Grid.Resources>
                     <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
