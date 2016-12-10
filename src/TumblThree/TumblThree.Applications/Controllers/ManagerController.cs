@@ -398,8 +398,9 @@ namespace TumblThree.Applications.Controllers
             var imageUrls = new HashSet<Tuple<string, string, string>>(newImageUrls);
 
             // remove all files previously downloaded
-            var blogLinks = new HashSet<string>(blog.Links);
-            imageUrls.RemoveWhere(item => blogLinks.Contains(item.Item1));
+            var blogLinks = new HashSet<string>(blog.Links.Select(item => item?.Split('/').Last()));
+            imageUrls.RemoveWhere(item => blogLinks.Contains(item.Item1.Split('/').Last()));
+            imageUrls.RemoveWhere(item => blogLinks.Contains(item.Item3));
 
             var indexPath = Path.Combine(shellService.Settings.DownloadLocation, "Index");
             var blogPath = shellService.Settings.DownloadLocation;
@@ -1592,7 +1593,7 @@ namespace TumblThree.Applications.Controllers
         private bool Download(TumblrBlog blog, string fileLocation, string url, IProgress<DataModels.DownloadProgress> progress, object lockObject, bool locked, ref int counter, ref int totalCounter)
         {
             Monitor.Enter(lockObject, ref locked);
-            if (blog.Links.Contains(url))
+            if (blog.Links.Contains(url.Split('/').Last()))
             {
                 Monitor.Exit(lockObject);
                 return false;
