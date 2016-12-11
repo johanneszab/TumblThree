@@ -43,6 +43,8 @@
 
     <c:IsQueueItemCrawlingMultiConverter x:Key="IsQueueItemCrawlingMultiConverter"/>
 
+    <c:IsBlogCrawlingMultiConverter x:Key="IsBlogCrawlingMultiConverter"/>
+
     <c:NullImageConverter x:Key="NullImageConverter"/>
 
 </ResourceDictionary>

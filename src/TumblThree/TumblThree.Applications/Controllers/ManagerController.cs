@@ -287,10 +287,38 @@ namespace TumblThree.Applications.Controllers
                     var blogListToCrawlNext = QueueManager.Items.Except(selectionService.ActiveItems);
                     var blogToCrawlNext = blogListToCrawlNext.First();
 
+                    blogToCrawlNext.Blog.Online = IsBlogOnline(blogToCrawlNext.Blog.Url).Result;
+
+                    if (selectionService.ActiveItems.Any(item => item.Blog.Name.Contains(blogToCrawlNext.Blog.Name)))
+                    {
+                        Application.Current.Dispatcher.BeginInvoke(
+                            DispatcherPriority.Background,
+                            new Action(() => {
+                                Monitor.Enter(QueueManager.Items);
+                                QueueManager.RemoveItem(blogToCrawlNext);
+                                Monitor.Exit(QueueManager.Items);
+                            }));
+                        Monitor.Exit(QueueManager.Items);
+                        continue;
+                    }
+
+                    if (!blogToCrawlNext.Blog.Online)
+                    {
+                        Application.Current.Dispatcher.BeginInvoke(
+                            DispatcherPriority.Background,
+                            new Action(() =>
+                            {
+                                Monitor.Enter(QueueManager.Items);
+                                QueueManager.RemoveItem(blogToCrawlNext);
+                                Monitor.Exit(QueueManager.Items);
+                            }));
+                        Monitor.Exit(QueueManager.Items);
+                        continue;
+                    }
+                        
                     Monitor.Enter(selectionService.ActiveItems);
                     selectionService.AddActiveItems(blogToCrawlNext);
                     Monitor.Exit(selectionService.ActiveItems);
-
 
                     Monitor.Exit(QueueManager.Items);
 
@@ -604,12 +632,12 @@ namespace TumblThree.Applications.Controllers
 
         private bool CanEnqueueSelected()
         {
-            return ManagerViewModel.SelectedBlogFile != null;
+            return ManagerViewModel.SelectedBlogFile != null && ManagerViewModel.SelectedBlogFile.Online;
         }
 
         private void EnqueueSelected()
         {
-            Enqueue(selectionService.SelectedBlogFiles.ToArray());
+            Enqueue(selectionService.SelectedBlogFiles.Where(blog => blog.Online).ToArray());
         }
 
         private void Enqueue(IEnumerable<IBlog> blogFiles)
@@ -629,11 +657,11 @@ namespace TumblThree.Applications.Controllers
             {
             }
             if (shellService.Settings.BlogType == shellService.Settings.BlogTypes.ElementAtOrDefault(1))
-                Enqueue(selectionService.BlogFiles.ToArray());
+                Enqueue(selectionService.BlogFiles.Where(blog => blog.Online).ToArray());
             if (shellService.Settings.BlogType == shellService.Settings.BlogTypes.ElementAtOrDefault(2))
-                Enqueue(selectionService.BlogFiles.Where(blog => blog.LastCompleteCrawl != System.DateTime.MinValue).ToArray());
+                Enqueue(selectionService.BlogFiles.Where(blog => blog.Online && blog.LastCompleteCrawl != System.DateTime.MinValue).ToArray());
             if (shellService.Settings.BlogType == shellService.Settings.BlogTypes.ElementAtOrDefault(3))
-                Enqueue(selectionService.BlogFiles.Where(blog => blog.LastCompleteCrawl == System.DateTime.MinValue).ToArray());
+                Enqueue(selectionService.BlogFiles.Where(blog => blog.Online && blog.LastCompleteCrawl == System.DateTime.MinValue).ToArray());
 
             if (crawlerService.IsCrawl && crawlerService.IsPaused)
             {
@@ -700,6 +728,7 @@ namespace TumblThree.Applications.Controllers
                 }
 
                 selectionService.BlogFiles.Remove(blog);
+                QueueManager.RemoveItems(QueueManager.Items.Where(item => item.Blog.Equals(blog)));
             }
         }
 
