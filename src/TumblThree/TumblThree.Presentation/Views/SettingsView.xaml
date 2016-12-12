@@ -199,7 +199,7 @@
                         </ToolTip>
                     </Button.ToolTip>
                 </Button>
-                <Button Height="Auto" Content="Save" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75" Click="closeWindow"/>
+                <Button Height="Auto" Content="{x:Static p:Resources.Save}" Margin="10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75" Click="closeWindow"/>
             </Grid>
         </Grid>
     </ScrollViewer>

@@ -43,7 +43,7 @@
 
     <c:IsQueueItemCrawlingMultiConverter x:Key="IsQueueItemCrawlingMultiConverter"/>
 
-    <c:IsBlogCrawlingMultiConverter x:Key="IsBlogCrawlingMultiConverter"/>
+    <c:IsBlogInQueueMultiConverter x:Key="IsBlogInQueueMultiConverter"/>
 
     <c:NullImageConverter x:Key="NullImageConverter"/>
 

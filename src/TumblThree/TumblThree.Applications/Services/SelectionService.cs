@@ -1,13 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Collections;
 using System.ComponentModel.Composition;
-using System.Waf.Applications;
 using System.Waf.Foundation;
 using TumblThree.Domain.Models;
 using TumblThree.Domain.Queue;
-using System.ComponentModel;
 
 namespace TumblThree.Applications.Services
 {

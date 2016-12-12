@@ -4,10 +4,12 @@ using System.Waf.Applications;
 using System.Windows.Input;
 using TumblThree.Applications.Services;
 using TumblThree.Applications.Views;
-using System.Collections.ObjectModel;
 using TumblThree.Domain.Models;
 using TumblThree.Domain;
 using TumblThree.Applications.Properties;
+using TumblThree.Domain.Queue;
+using System.Waf.Foundation;
+using System.Collections.Specialized;
 
 namespace TumblThree.Applications.ViewModels
 {
@@ -15,7 +17,6 @@ namespace TumblThree.Applications.ViewModels
     public class ManagerViewModel : ViewModel<IManagerView>
     {
         private readonly Lazy<ISelectionService> selectionService;
-        private readonly ObservableCollection<Blog> selectedManagerItems;
         private Blog selectedBlogFile;
         private readonly ICrawlerService crawlerService;
         private ICommand showFilesCommand;
@@ -27,7 +28,6 @@ namespace TumblThree.Applications.ViewModels
         {
             ShellService = shellService;
             this.selectionService = selectionService;
-            this.selectedManagerItems = new ObservableCollection<Blog>();
             this.crawlerService = crawlerService;
 
             try
@@ -78,6 +78,20 @@ namespace TumblThree.Applications.ViewModels
         {
             get { return selectedBlogFile; }
             set { SetProperty(ref selectedBlogFile, value); }
+        }
+
+        public IReadOnlyObservableList<QueueListItem> QueueItems { get; set; }
+
+        public void QueueItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                RaisePropertyChanged("QueueItems");
+            }
+            else if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                RaisePropertyChanged("QueueItems");
+            }
         }
     }
 }

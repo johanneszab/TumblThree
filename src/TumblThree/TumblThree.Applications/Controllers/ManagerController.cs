@@ -24,6 +24,7 @@ using System.Xml.Linq;
 using System.Net;
 using System.Text;
 using System.Web;
+using System.Collections.Specialized;
 
 namespace TumblThree.Applications.Controllers
 {
@@ -111,12 +112,29 @@ namespace TumblThree.Applications.Controllers
 
             ManagerViewModel.PropertyChanged += ManagerViewModelPropertyChanged;
 
+            ManagerViewModel.QueueItems = QueueManager.Items;
+            QueueManager.Items.CollectionChanged += QueueItemsCollectionChanged;
+            ManagerViewModel.QueueItems.CollectionChanged += ManagerViewModel.QueueItemsCollectionChanged;
+
             shellService.ContentView = ManagerViewModel.View;
 
             LoadLibrary();
 
             if (shellService.Settings.CheckClipboard)
                 shellService.ClipboardMonitor.OnClipboardContentChanged += OnClipboardContentChanged;
+        }
+
+        private void QueueItemsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                ManagerViewModel.QueueItems = QueueManager.Items;
+
+            }
+            else if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                ManagerViewModel.QueueItems = QueueManager.Items;
+            }
         }
 
         public void Shutdown()

@@ -56,7 +56,18 @@
                     <Style.Triggers>
                         <DataTrigger Value="True">
                             <DataTrigger.Binding>
-                                <MultiBinding Converter="{StaticResource IsBlogCrawlingMultiConverter}">
+                                <MultiBinding Converter="{StaticResource IsBlogInQueueMultiConverter}">
+                                    <Binding Path="DataContext.QueueItems" ElementName="blogFilesGrid"/>
+                                    <Binding Path="." />
+                                </MultiBinding>
+                            </DataTrigger.Binding>
+                            <DataTrigger.Setters>
+                                <Setter Property="Background" Value="#FFA596FF"></Setter>
+                            </DataTrigger.Setters>
+                        </DataTrigger>
+                        <DataTrigger Value="True">
+                            <DataTrigger.Binding>
+                                <MultiBinding Converter="{StaticResource IsBlogInQueueMultiConverter}">
                                     <Binding Path="DataContext.SelectionService.ActiveItems" ElementName="blogFilesGrid"/>
                                     <Binding Path="." />
                                 </MultiBinding>

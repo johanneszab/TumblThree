@@ -8,7 +8,7 @@ using TumblThree.Domain.Queue;
 
 namespace TumblThree.Presentation.Converters
 {
-    public class IsBlogCrawlingMultiConverter : IMultiValueConverter
+    public class IsBlogInQueueMultiConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {

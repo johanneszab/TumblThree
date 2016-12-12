@@ -420,4 +420,7 @@
   <data name="ToolTipDefaultSettingsForBlogsDescription" xml:space="preserve">
     <value>The backup uses indivual settings for each blog. To change them, select a blog in the main interface and select the Details window on the right hand side.</value>
   </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
 </root>
