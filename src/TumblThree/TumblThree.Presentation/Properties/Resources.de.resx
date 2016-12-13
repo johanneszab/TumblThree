@@ -124,7 +124,7 @@
     <value>Blog hinzufügen</value>
   </data>
   <data name="AddToQueue" xml:space="preserve">
-    <value>Blog zur Downloadliste hinzufügen</value>
+    <value>Zur Downloadliste hinzufügen</value>
   </data>
   <data name="BlogUrl" xml:space="preserve">
     <value>Blog URL:</value>
@@ -133,7 +133,7 @@
     <value>Browse</value>
   </data>
   <data name="CheckStatus" xml:space="preserve">
-    <value>Prüfen des Blogstatus beim Anwendungsstart</value>
+    <value>Überprüfen des Blogstatuses beim Anwendungsstart</value>
   </data>
   <data name="ClearQueue" xml:space="preserve">
     <value>Löschen der Downloadliste</value>
@@ -142,13 +142,13 @@
     <value>Zwischenablage kontrollieren</value>
   </data>
   <data name="Crawl" xml:space="preserve">
-    <value>Start des Downloads</value>
+    <value>Download starten</value>
   </data>
   <data name="CrawlSelection" xml:space="preserve">
-    <value>Selektion herunterladen</value>
+    <value>Auswahl herunterladen</value>
   </data>
   <data name="DateAdded" xml:space="preserve">
-    <value>Datum hinzugefügt</value>
+    <value>Hinzugefügt am</value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Löschen</value>
@@ -175,7 +175,7 @@
     <value>Lade Videos (tumblr.com gehostet)</value>
   </data>
   <data name="EnqueueSelection" xml:space="preserve">
-    <value>Selektion hinzufügen</value>
+    <value>Auswahl hinzufügen</value>
   </data>
   <data name="Error" xml:space="preserve">
     <value>Fehler</value>
@@ -232,10 +232,10 @@
     <value>Betriebssystem</value>
   </data>
   <data name="ParallelBlogs" xml:space="preserve">
-    <value>Nummer an gleichzeitig zu verarbeitenden Blogs</value>
+    <value>Gleichzeitig zu verarbeitende Blogs</value>
   </data>
   <data name="ParallelConnections" xml:space="preserve">
-    <value>Nummer an gleichzeitig geöffneten Verbindungen</value>
+    <value>Gleichzeitig geöffneten Verbindungen</value>
   </data>
   <data name="Pause" xml:space="preserve">
     <value>Pause</value>
@@ -253,10 +253,10 @@
     <value>Wertung</value>
   </data>
   <data name="RemoveBlog" xml:space="preserve">
-    <value>Löschen des Blogs</value>
+    <value>Blog entfernen</value>
   </data>
   <data name="RemoveFromQueue" xml:space="preserve">
-    <value>Entfernen aus der Warteschlange</value>
+    <value>Aus Downloadliste entfernen</value>
   </data>
   <data name="RemoveIndex" xml:space="preserve">
     <value>Lösche den Blogindex nach erfolgreichem Download</value>
@@ -283,7 +283,7 @@
     <value>Zeige Details</value>
   </data>
   <data name="ShowFiles" xml:space="preserve">
-    <value>Öffne Explorer und zeige Dateien</value>
+    <value>Zeige Dateien</value>
   </data>
   <data name="SkipGif" xml:space="preserve">
     <value>Keine .gif Bilder herunterladen</value>
@@ -307,7 +307,7 @@
     <value>Videogröße</value>
   </data>
   <data name="VisitBlog" xml:space="preserve">
-    <value>Öffnen des Blogs im Webbrowser</value>
+    <value>Blog im Webbrowser öffnen</value>
   </data>
   <data name="Website" xml:space="preserve">
     <value>Webseite</value>
@@ -316,22 +316,22 @@
     <value>Authentifizieren</value>
   </data>
   <data name="ToolTipAuthenticate" xml:space="preserve">
-    <value>Authenticate to the tumblr.com network</value>
+    <value>Authentifizieren bei tumblr.com</value>
   </data>
   <data name="ToolTipAuthenticateDescription" xml:space="preserve">
-    <value>Opens a browser window to authenticate yourself to the tumblr.com site. Allows the download of private blogs with your account. The access token to your account is saved and the authentication process needs to be done only once.</value>
+    <value>Öffnet ein Browserfenster zum Authentifizieren bei tumblr.com. Ermöglicht den Download von privaten blogs mit deinem Konto. Der access token des Kontos wird gespeichert um die wiederholte Anmeldung zu Ersparen.</value>
   </data>
   <data name="ToolTipBlogs" xml:space="preserve">
-    <value>Number of simultaneous processed blogs</value>
+    <value>Nummer an gleichzeitig zu verarbeitende Blogs</value>
   </data>
   <data name="ToolTipBlogsDescription" xml:space="preserve">
-    <value>Sets the Number of simultaneous processed blogs. Setting this to 2 would download data from two blogs at a time.</value>
+    <value>Legt fest wie viele Blogs gleichzeitig verarbeitet werden sollen. Bei einer Einstellung von 2 würden Dateien von zwei Blogs simultan geladen werden.</value>
   </data>
   <data name="ToolTipConnections" xml:space="preserve">
-    <value>Number of total simultaneous connections</value>
+    <value>Nummer an gleichzeitigen Verbindungen</value>
   </data>
   <data name="ToolTipConnectionsDescription" xml:space="preserve">
-    <value>Sets the Number of total simultaneous connections. The number is divided by the number of Parallel Blogs settings. 25/2 would open 12 connections per blog download.</value>
+    <value>Legt fest wie viele Verbindungen geöffnet werden sollen. Die Nummer von allen gleichzeitig aktiveren Blogsdownloads geteilt.</value>
   </data>
   <data name="Notes" xml:space="preserve">
     <value>Notizen</value>
@@ -418,16 +418,16 @@
     <value>Speichere Videometa</value>
   </data>
   <data name="DefaultSettingsForBlogs" xml:space="preserve">
-    <value>Blogeinstellungen (angewendet beim Hinzufügen des Blogs):</value>
+    <value>Blogeinstellungen (wird angewendet beim Hinzufügen des Blogs):</value>
   </data>
   <data name="DownloadVideosShort" xml:space="preserve">
     <value>Lade Videos</value>
   </data>
   <data name="ToolTipDefaultSettingsForBlogs" xml:space="preserve">
-    <value>Sets the default settings for newly added blogs.</value>
+    <value>Einstellungen für neue Blogs.</value>
   </data>
   <data name="ToolTipDefaultSettingsForBlogsDescription" xml:space="preserve">
-    <value>The backup uses indivual settings for each blog. To change them, select a blog in the main interface and select the Details window on the right hand side.</value>
+    <value>Der Download nutzt individuelle Einstellungen für jeden Blog. Zum Ändern, im Hauptfenster ein Blog auswählen und das Detailsfenster auf der rechten Seite auswählen.</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Speichern</value>
