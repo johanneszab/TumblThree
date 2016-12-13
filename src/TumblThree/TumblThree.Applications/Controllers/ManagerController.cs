@@ -508,7 +508,7 @@ namespace TumblThree.Applications.Controllers
                                 }
                                 break;
                             case "Audio":
-                                fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), currentImageUrl.Item3 + ".mp3");
+                                fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), currentImageUrl.Item3 + ".swf");
 
                                 if (Download(blog, fileLocation, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedAudios, ref downloadedImages))
                                 {
@@ -1189,7 +1189,7 @@ namespace TumblThree.Applications.Controllers
                                             {
                                                 Interlocked.Increment(ref totalDownloads);
                                                 Monitor.Enter(images);
-                                                images.Add(Tuple.Create(audiofile, "Audio", post.Attribute("id").Value));
+                                                images.Add(Tuple.Create(WebUtility.UrlDecode(audiofile), "Audio", post.Attribute("id").Value));
                                                 Monitor.Exit(images);
                                             }
 
@@ -1437,7 +1437,7 @@ namespace TumblThree.Applications.Controllers
                                             {
                                                 Interlocked.Increment(ref totalDownloads);
                                                 Monitor.Enter(images);
-                                                images.Add(Tuple.Create(audiofile, "Audio", post.Attribute("id").Value));
+                                                images.Add(Tuple.Create(WebUtility.UrlDecode(audiofile), "Audio", post.Attribute("id").Value));
                                                 Monitor.Exit(images);
                                             }
 

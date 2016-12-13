@@ -122,7 +122,7 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <Button x:Name="statusBarButton" Grid.Row="2" Click="StatusBarButtonClick" Height="21" Background="{StaticResource DarkBackground}" BorderThickness="0" HorizontalContentAlignment="Stretch">
+        <Button x:Name="statusBarButton" Grid.Row="2" Click="StatusBarButtonClick" Height="21" BorderThickness="0" HorizontalContentAlignment="Stretch">
             <Grid Margin="7,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -144,12 +144,12 @@
             </Grid>
         </Button>
         <ctrl:Flyout x:Name="menuPopup" PlacementTarget="{Binding ElementName=statusBarButton}" Placement="Top">
-            <Border BorderBrush="White" BorderThickness="0,1" Background="{StaticResource DarkBackground}">
+            <Border BorderBrush="White" BorderThickness="0,1" Background="{DynamicResource {x:Static SystemColors.ControlLightBrushKey}}">
                 <Grid Margin="5,10,5,5">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="80"/>
-                        <ColumnDefinition Width="80"/>
-                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -157,13 +157,13 @@
                     </Grid.RowDefinitions>
 
                     <Button Command="{Binding OpenQueueCommand}" Content="&#xE1A5;" Style="{StaticResource IconButtonStyle}" Grid.Row="0" Grid.Column="0"/>
-                    <TextBlock Text="{x:Static p:Resources.OpenQueue}" Style="{StaticResource AppBarTextBlockStyle}" Grid.Row="1" Grid.Column="0"/>
+                    <TextBlock Text="{x:Static p:Resources.OpenQueue}" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="0"/>
 
                     <Button Command="{Binding SaveQueueCommand}" Content="&#xE105;" Style="{StaticResource IconButtonStyle}" Grid.Row="0" Grid.Column="1"/>
-                    <TextBlock Text="{x:Static p:Resources.SaveQueue}" Style="{StaticResource AppBarTextBlockStyle}" Grid.Row="1" Grid.Column="1"/>
+                    <TextBlock Text="{x:Static p:Resources.SaveQueue}" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="1"/>
 
                     <Button Command="{Binding ClearQueueCommand}" Content="&#xE106;" Style="{StaticResource IconButtonStyle}" Grid.Row="0" Grid.Column="2"/>
-                    <TextBlock Text="{x:Static p:Resources.ClearQueue}" Style="{StaticResource AppBarTextBlockStyle}" Grid.Row="1" Grid.Column="2"/>
+                    <TextBlock Text="{x:Static p:Resources.ClearQueue}" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="2"/>
                 </Grid>
             </Border>
         </ctrl:Flyout>
