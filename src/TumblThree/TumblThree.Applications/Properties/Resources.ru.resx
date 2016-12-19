@@ -118,61 +118,61 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AuthenticationFailure" xml:space="preserve">
-    <value>Authentifizierungsfehler: {0}</value>
+    <value>Ошибка авторизации: {0}</value>
   </data>
   <data name="BlogAlreadyExist" xml:space="preserve">
-    <value>Der Blog existiert schon:  {0}</value>
+    <value>Блог уже существует:  {0}</value>
   </data>
   <data name="BlogIsOffline" xml:space="preserve">
-    <value>Der Blog ist offline: {0}</value>
+    <value>Блог недоступен: {0}</value>
   </data>
   <data name="BlogTypesAll" xml:space="preserve">
-    <value>Alle</value>
+    <value>Все</value>
   </data>
   <data name="BlogTypesNeverFinished" xml:space="preserve">
-    <value>Nie geladen</value>
+    <value>Незавершённые</value>
   </data>
   <data name="BlogTypesNone" xml:space="preserve">
-    <value>Keine</value>
+    <value>Ни один</value>
   </data>
   <data name="BlogTypesOnceFinished" xml:space="preserve">
-    <value>Komplett geladen</value>
+    <value>Хотя бы раз скачаные</value>
   </data>
   <data name="CouldNotAddBlog" xml:space="preserve">
-    <value>Der Blog konnte nicht hinzugefügt werden:  {0}</value>
+    <value>Не удалось добавить блог:  {0}</value>
   </data>
   <data name="CouldNotLoadLibrary" xml:space="preserve">
-    <value>Eine Datei in der Bibliothek konnte nicht geladen werden: {0}</value>
+    <value>Не удаётся загрузить файл в библиотеку: {0}</value>
   </data>
   <data name="CouldNotLoadQueuelist" xml:space="preserve">
-    <value>Die Downloadliste konnte nicht geladen werden. Vielleicht exsistiert ein verweisender Blog nicht mehr in der Library.</value>
+    <value>Не удаётся загрузить очередь закачек. Возможно, некоторые из блогов больше не существуют.</value>
   </data>
   <data name="CouldNotOpenFiles" xml:space="preserve">
-    <value>Eine Datei konnte nicht geöffnet werden.</value>
+    <value>Не удаётся открыть файл.</value>
   </data>
   <data name="CouldNotRemoveBlog" xml:space="preserve">
-    <value>Der Blog konnte nicht gelöscht werden: {0}</value>
+    <value>Не удаётся удалить блог: {0}</value>
   </data>
   <data name="CouldNotRemoveBlogIndex" xml:space="preserve">
-    <value>Der Blog konnte nicht gelöscht werden: {0}</value>
+    <value>Не удаётся удалить блог: {0}</value>
   </data>
   <data name="CouldNotRestoreUISettings" xml:space="preserve">
-    <value>Die UI Einstellungen konnten nicht geladen werden.</value>
+    <value>Не удаётся восстановить настройки интерфейса.</value>
   </data>
   <data name="CouldNotSaveBlog" xml:space="preserve">
-    <value>Der Blog konnte nicht gespeichert werden: {0}</value>
+    <value>Не удаётся сохранить блог: {0}</value>
   </data>
   <data name="CouldNotSaveQueueList" xml:space="preserve">
-    <value>Die Downloadliste konnte nicht gespeichert werden.</value>
+    <value>Невозможно сохранить очередь закачек.</value>
   </data>
   <data name="CouldNotStartOAuthManager" xml:space="preserve">
-    <value>Der OAuthManager konnte nicht gestartet werden.</value>
+    <value>Не удаётся запустить менеджер OAuth</value>
   </data>
   <data name="CrawlerError" xml:space="preserve">
-    <value>Im Crawlerprozess ist ein Problem aufgetreten.</value>
+    <value>Произошла ошибка в очереди скачивания.</value>
   </data>
   <data name="FileNameConversations" xml:space="preserve">
-    <value>konversationen.txt</value>
+    <value>conversations.txt</value>
   </data>
   <data name="FileNameLinks" xml:space="preserve">
     <value>links.txt</value>
@@ -181,84 +181,84 @@
     <value>audios.txt</value>
   </data>
   <data name="FileNameMetaPhoto" xml:space="preserve">
-    <value>bilder.txt</value>
+    <value>images.txt</value>
   </data>
   <data name="FileNameMetaVideo" xml:space="preserve">
     <value>videos.txt</value>
   </data>
   <data name="FileNameQuotes" xml:space="preserve">
-    <value>zitate.txt</value>
+    <value>quotes.txt</value>
   </data>
   <data name="FileNameTexts" xml:space="preserve">
-    <value>texte.txt</value>
+    <value>texts.txt</value>
   </data>
   <data name="ProgressDownloadImage" xml:space="preserve">
-    <value>Herunterladen von {0}.</value>
+    <value>Скачивается {0}.</value>
   </data>
   <data name="ProgressGetUrl" xml:space="preserve">
-    <value>{0} Tumblrbeiträge von {1} Gesamtbeiträgen ausgewertet.</value>
+    <value>Всего найдено {0} уникальных ссылок в {1} сообщениях</value>
   </data>
   <data name="ProgressUniqueDownloads" xml:space="preserve">
-    <value>Berechne neue Downloads, bestimme Duplikate ...</value>
+    <value>Определяются уникальные и удалаются дублирующиеся файлы...</value>
   </data>
   <data name="Queuelist" xml:space="preserve">
-    <value>Downloadliste</value>
+    <value>Очередь закачек</value>
   </data>
   <data name="PostId" xml:space="preserve">
-    <value>PostId: {0}</value>
+    <value>ID поста: {0}</value>
   </data>
   <data name="Date" xml:space="preserve">
-    <value>Datum: {0}</value>
+    <value>Дата: {0}</value>
   </data>
   <data name="VideoPlayer" xml:space="preserve">
-    <value>VideoPlayer: {0}</value>
+    <value>Код видеоплеера: {0}</value>
   </data>
   <data name="AudioCaption" xml:space="preserve">
-    <value>Audio Unterschrift: {0}</value>
+    <value>Подпись аудиотрека: {0}</value>
   </data>
   <data name="Id3Artist" xml:space="preserve">
-    <value>Id3: Künstler: {0}</value>
+    <value>Id3: исполнитель: {0}</value>
   </data>
   <data name="Id3Title" xml:space="preserve">
-    <value>Id3: Titel: {0}</value>
+    <value>Id3: название: {0}</value>
   </data>
   <data name="Id3Track" xml:space="preserve">
-    <value>Id3: Lied: {0}</value>
+    <value>Id3: номер трека: {0}</value>
   </data>
   <data name="Id3Album" xml:space="preserve">
-    <value>Id3: Album: {0}</value>
+    <value>Id3: альбом: {0}</value>
   </data>
   <data name="Id3Year" xml:space="preserve">
-    <value>Id3: Jahr: {0}</value>
+    <value>Id3: год: {0}</value>
   </data>
   <data name="Link" xml:space="preserve">
-    <value>Link: {0}</value>
+    <value>Ссылка: {0}</value>
   </data>
   <data name="PhotoUrl" xml:space="preserve">
     <value>FotoUrl: {0}</value>
   </data>
   <data name="UrlWithSlug" xml:space="preserve">
-    <value>Url mit Slug: {0}</value>
+    <value>Url: {0}</value>
   </data>
   <data name="ReblogKey" xml:space="preserve">
-    <value>Reblog Key: {0}</value>
+    <value>Код для репоста: {0}</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Titel: {0}</value>
+    <value>Заголовок: {0}</value>
   </data>
   <data name="Body" xml:space="preserve">
-    <value>Body: {0}</value>
+    <value>Тело поста: {0}</value>
   </data>
   <data name="Tags" xml:space="preserve">
-    <value>Tags: {0}</value>
+    <value>Теги: {0}</value>
   </data>
   <data name="Quote" xml:space="preserve">
-    <value>Zitat: {0}</value>
+    <value>Цитата: {0}</value>
   </data>
   <data name="Conversation" xml:space="preserve">
-    <value>Konversation: {0}</value>
+    <value>Текст диалога: {0}</value>
   </data>
   <data name="PhotoCaption" xml:space="preserve">
-    <value>Foto Unterschrift: {0}</value>
+    <value>Подпись фотографии: {0}</value>
   </data>
 </root>

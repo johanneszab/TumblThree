@@ -1,0 +1,426 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="About" xml:space="preserve">
+    <value>О программе</value>
+  </data>
+  <data name="AddBlog" xml:space="preserve">
+    <value>Добавить блог</value>
+  </data>
+  <data name="AddToQueue" xml:space="preserve">
+    <value>В очередь</value>
+  </data>
+  <data name="BlogUrl" xml:space="preserve">
+    <value>Укажите URL:</value>
+  </data>
+  <data name="Browse" xml:space="preserve">
+    <value>Открыть</value>
+  </data>
+  <data name="ClearQueue" xml:space="preserve">
+    <value>Очистить очередь</value>
+  </data>
+  <data name="ClipboardMonitor" xml:space="preserve">
+    <value>Следить за буфером обмена</value>
+  </data>
+  <data name="Crawl" xml:space="preserve">
+    <value>Выкачать</value>
+  </data>
+  <data name="CrawlSelection" xml:space="preserve">
+    <value>Вычкачать выбранное</value>
+  </data>
+  <data name="DateAdded" xml:space="preserve">
+    <value>Добавлен</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Подробности</value>
+  </data>
+  <data name="DownloadedFiles" xml:space="preserve">
+    <value>Скачаные файлы</value>
+  </data>
+  <data name="DownloadLocation" xml:space="preserve">
+    <value>Расположение файлов</value>
+  </data>
+  <data name="EnqueueSelection" xml:space="preserve">
+    <value>Добавить выбранное в очередь</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Ошибка</value>
+  </data>
+  <data name="ErrorMessage" xml:space="preserve">
+    <value>Ошибка {0}: {1}</value>
+  </data>
+  <data name="InternalErrorDescription" xml:space="preserve">
+    <value>Описание внутренней ошибки</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="NumberOfDownloads" xml:space="preserve">
+    <value>К закачке</value>
+  </data>
+  <data name="OpenQueue" xml:space="preserve">
+    <value>Открыть список закачек</value>
+  </data>
+  <data name="Pause" xml:space="preserve">
+    <value>Пауза</value>
+  </data>
+  <data name="Queue" xml:space="preserve">
+    <value>Очередь</value>
+  </data>
+  <data name="Rating" xml:space="preserve">
+    <value>Рейтинг</value>
+  </data>
+  <data name="RemoveBlog" xml:space="preserve">
+    <value>Удалить блог</value>
+  </data>
+  <data name="RemoveFromQueue" xml:space="preserve">
+    <value>Удалить из очереди</value>
+  </data>
+  <data name="RemoveSelected" xml:space="preserve">
+    <value>Удалить выбранное</value>
+  </data>
+  <data name="Resume" xml:space="preserve">
+    <value>Продолжить</value>
+  </data>
+  <data name="Return" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="SaveQueue" xml:space="preserve">
+    <value>Сохранить список закачек</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Настройки</value>
+  </data>
+  <data name="ShiftReturn" xml:space="preserve">
+    <value>Shift+Enter</value>
+  </data>
+  <data name="ShowDetails" xml:space="preserve">
+    <value>Показать подробности</value>
+  </data>
+  <data name="ShowFiles" xml:space="preserve">
+    <value>Показать файлы</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Стоп</value>
+  </data>
+  <data name="Tags" xml:space="preserve">
+    <value>Теги</value>
+  </data>
+  <data name="UnknownError" xml:space="preserve">
+    <value>Неизвестная ошбика</value>
+  </data>
+  <data name="Url" xml:space="preserve">
+    <value>URL-адрес</value>
+  </data>
+  <data name="ImageSize" xml:space="preserve">
+    <value>Размер изображения</value>
+  </data>
+  <data name="ParallelBlogs" xml:space="preserve">
+    <value>Одновременно скачивающихся блогов</value>
+  </data>
+  <data name="ParallelConnections" xml:space="preserve">
+    <value>Одновременных соединений с сервером</value>
+  </data>
+  <data name="Online" xml:space="preserve">
+    <value>Доступен</value>
+  </data>
+  <data name="Progress" xml:space="preserve">
+    <value>Состояние</value>
+  </data>
+  <data name="NumberOfItems" xml:space="preserve">
+    <value>{0} элементов</value>
+  </data>
+  <data name="OneItem" xml:space="preserve">
+    <value>1 элемент</value>
+  </data>
+  <data name="CheckStatus" xml:space="preserve">
+    <value>Проверять доступность блога при запуске программы</value>
+  </data>
+  <data name="DeleteIndex" xml:space="preserve">
+    <value>Удалять только индексные файлы (оставлять скачаные файлы)</value>
+  </data>
+  <data name="RemoveIndex" xml:space="preserve">
+    <value>Удалять индексные файлы по окончании закачки</value>
+  </data>
+  <data name="SkipGif" xml:space="preserve">
+    <value>Пропускать gif-файлы</value>
+  </data>
+  <data name="Info32Bit" xml:space="preserve">
+    <value>32 бита</value>
+  </data>
+  <data name="Info64Bit" xml:space="preserve">
+    <value>64 бита</value>
+  </data>
+  <data name="License" xml:space="preserve">
+    <value>Лицензия</value>
+  </data>
+  <data name="NetFramework" xml:space="preserve">
+    <value>.NET Framework</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="OperatingSystem" xml:space="preserve">
+    <value>Операционная система</value>
+  </data>
+  <data name="Product" xml:space="preserve">
+    <value>Продукт</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Версия</value>
+  </data>
+  <data name="Website" xml:space="preserve">
+    <value>Сайт</value>
+  </data>
+  <data name="LastCompleteCrawl" xml:space="preserve">
+    <value>Скачан полностью</value>
+  </data>
+  <data name="VisitBlog" xml:space="preserve">
+    <value>Открыть блог в браузере</value>
+  </data>
+  <data name="NumberOfImages" xml:space="preserve">
+    <value>{0} изображений</value>
+  </data>
+  <data name="DownloadedFilesOf" xml:space="preserve">
+    <value>Скачано файлов {0} из {1}</value>
+  </data>
+  <data name="DownloadImages" xml:space="preserve">
+    <value>Скачивать изображения</value>
+  </data>
+  <data name="DownloadVideos" xml:space="preserve">
+    <value>Скачивать видео (кроме внешних ресурсов)</value>
+  </data>
+  <data name="VideoSize" xml:space="preserve">
+    <value>Размер видео</value>
+  </data>
+  <data name="Authenticate" xml:space="preserve">
+    <value>Авторизироваться</value>
+  </data>
+  <data name="ToolTipAuthenticate" xml:space="preserve">
+    <value>Авторизация на сайте Tumblr</value>
+  </data>
+  <data name="ToolTipAuthenticateDescription" xml:space="preserve">
+    <value>Открывает браузер для авторизации на сайте Tumblr. Позволяет скачивать приватные блоги, доступные из под Вашего аккаунта. Авторизация однократная, токен авторизации сохраняется и будет использоваться в дальнейшем.</value>
+  </data>
+  <data name="ToolTipBlogs" xml:space="preserve">
+    <value>Количество одновременно скачиваемых блогов</value>
+  </data>
+  <data name="ToolTipBlogsDescription" xml:space="preserve">
+    <value>Устанавливает количество одновременно скачиваемых блогов. Например, при значении 2 одновременно будут скачиваться файлы из двух разных блогов в очереди.</value>
+  </data>
+  <data name="ToolTipConnections" xml:space="preserve">
+    <value>Количество одновременных соединений</value>
+  </data>
+  <data name="ToolTipConnectionsDescription" xml:space="preserve">
+    <value>Устанавливает количество одновременных соединений с сервером. Соединения равномерно распределяются между одновременно скачиваемыми блогами. Например, для сочетания 10/2 будут одновременно установлены по 5 соединений для 2 блогов.</value>
+  </data>
+  <data name="Notes" xml:space="preserve">
+    <value>Примечания</value>
+  </data>
+  <data name="TimeOut" xml:space="preserve">
+    <value>Таймаут (сек.)</value>
+  </data>
+  <data name="Bandwidth" xml:space="preserve">
+    <value>Ограничение скорости (Кб/сек)</value>
+  </data>
+  <data name="EnableAutoDownload" xml:space="preserve">
+    <value>Включить автоматическую закачку и добавить</value>
+  </data>
+  <data name="Timer" xml:space="preserve">
+    <value> по расписанию (час:мин:сек)</value>
+  </data>
+  <data name="SelectABlog" xml:space="preserve">
+    <value>Пожалуйста, укажите блог</value>
+  </data>
+  <data name="ShowItems" xml:space="preserve">
+    <value>Сводная информация по {0} блогам</value>
+  </data>
+  <data name="CopyUrl" xml:space="preserve">
+    <value>Копировать url-адрес</value>
+  </data>
+  <data name="Posts" xml:space="preserve">
+    <value>Количество сообщений:</value>
+  </data>
+  <data name="Preview" xml:space="preserve">
+    <value>Предварительный просмотр:</value>
+  </data>
+  <data name="DownloadAudios" xml:space="preserve">
+    <value>Скачивать аудиофайлы</value>
+  </data>
+  <data name="DownloadConversations" xml:space="preserve">
+    <value>Скачивать диалоги</value>
+  </data>
+  <data name="DownloadLinks" xml:space="preserve">
+    <value>Скачивать сообщения по ссылкам</value>
+  </data>
+  <data name="DownloadQuotes" xml:space="preserve">
+    <value>Скачивать ответы</value>
+  </data>
+  <data name="DownloadTexts" xml:space="preserve">
+    <value>Скачивать текстовые сообщения</value>
+  </data>
+  <data name="DetailsProgress" xml:space="preserve">
+    <value>{0} из {1}, дублирующихся файлов: {2}</value>
+  </data>
+  <data name="EnablePreview" xml:space="preserve">
+    <value>Предварительный просмотр вкл/выкл</value>
+  </data>
+  <data name="BlogSettings" xml:space="preserve">
+    <value>Настройки блога:</value>
+  </data>
+  <data name="GlobalSettings" xml:space="preserve">
+    <value>Общие настройки:</value>
+  </data>
+  <data name="BlogStatistics" xml:space="preserve">
+    <value>Статистика блога:</value>
+  </data>
+  <data name="ToolTipDetailsStats" xml:space="preserve">
+    <value>Количество скачаных сообщений / всего сообщений</value>
+  </data>
+  <data name="ToolTipDetailsStatsDescription" xml:space="preserve">
+    <value>Укажите, скачивать или пропускать сообщения этого типа при скачивании</value>
+  </data>
+  <data name="DownloadAudioMeta" xml:space="preserve">
+    <value>Скачивать метаданные аудиофайлов</value>
+  </data>
+  <data name="DownloadImageMeta" xml:space="preserve">
+    <value>Скачивать метаданные изображений</value>
+  </data>
+  <data name="DownloadVideoMeta" xml:space="preserve">
+    <value>Скачивать метаданные видофайлов</value>
+  </data>
+  <data name="DefaultSettingsForBlogs" xml:space="preserve">
+    <value>Настройки для добавляемых блогов:</value>
+  </data>
+  <data name="DownloadVideosShort" xml:space="preserve">
+    <value>Скачивать видеофайлы</value>
+  </data>
+  <data name="ToolTipDefaultSettingsForBlogs" xml:space="preserve">
+    <value>Устанавливает настройки по умолчанию для вновь добавляемых блогов.</value>
+  </data>
+  <data name="ToolTipDefaultSettingsForBlogsDescription" xml:space="preserve">
+    <value>При скачивании для каждого блога используются свои индивидуальные настройки. Чтобы поменять их, выберите блог(-и) в основном  окне и переключитесь на вкладку Подробности в правой части окна.</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+</root>

@@ -33,7 +33,8 @@ TumblThree is the code rewrite of [TumblTwo](https://github.com/johanneszab/Tumb
   * extract the .zip file and run the application by double clicking TumblThree.exe. The application now comes as a zip file as some parts of it are modular .dll files like internationalization support.
   * To use the application, simply copy the url of any tumblr.com blog you want to backup from into the textbox at the bottom. Afterwards, click on 'Add Blog' on the right of it.
   * To start the download process, click on 'Crawl'. The application will regularly check for (new) blogs in the queue and start processing them, until you stop the application by pressing 'Stop'. So, you can either add blogs to the queue via 'Add to Queue' first and then click 'Crawl', or you start the download process first and add blogs to the queue afterwards.
-  * A green bar left to the blog in the queue indicates a actively downloaded blog.
+  * A light blue bar left to the blog in the queue indicates a actively downloaded blog.
+  * The blog manager on the left side also indicates the state of each blog. A red background shows an offline blog, a green background an actively crawled blog and a purple background an enqueue blog.
   * You can set up more than one parallel download in the 'Settings'. Also, it is possible to change the download location and the sizes of the picture and video files to download. It is possible to setup a timer for automatic start of the download. 
   * In the Details window you can view statistics of your blog and set blog specific options. You can choose here what kind of post type (photo, video, audio, text, conversation, quote, link) to download.
   
@@ -71,6 +72,11 @@ TumblThree is the code rewrite of [TumblTwo](https://github.com/johanneszab/Tumb
 * Download the [source code as .zip file](https://github.com/johanneszab/TumblThree/archive/master.zip) or use the [GitHub Desktop](https://desktop.github.com/) and [checkout the code](https://github.com/johanneszab/TumblThree.git).
 * Open the TumblThree.sln solution file in the src/ directory of the code.
 * Build the Source once before editing anything. Build->Build Solution.
+
+### Translations wanted: ###
+
+* If you want to help translate TumblThree, there are two resource files (.resx) which contain all the strings used in the application. One for [the user interface](https://github.com/johanneszab/TumblThree/blob/master/src/TumblThree/TumblThree.Presentation/Properties/Resources.resx#L120) and one for the [underlying application](https://github.com/johanneszab/TumblThree/blob/master/src/TumblThree/TumblThree.Applications/Properties/Resources.resx#L120).  
+* Translate all the words or its meanings between the two value tags and create a pull request on github or simply send me the files via email.
  
 ### New Feature Request: ###
 

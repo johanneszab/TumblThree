@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AudioCaption" xml:space="preserve">
+    <value>Audio Caption: {0}</value>
+  </data>
   <data name="AuthenticationFailure" xml:space="preserve">
     <value>Authentication failure: {0}</value>
   </data>
@@ -137,6 +140,12 @@
   </data>
   <data name="BlogTypesOnceFinished" xml:space="preserve">
     <value>Once finished</value>
+  </data>
+  <data name="Body" xml:space="preserve">
+    <value>Body: {0]</value>
+  </data>
+  <data name="Conversation" xml:space="preserve">
+    <value>Conversation: {0}</value>
   </data>
   <data name="CouldNotAddBlog" xml:space="preserve">
     <value>Could not add the blog:  {0}</value>
@@ -171,6 +180,9 @@
   <data name="CrawlerError" xml:space="preserve">
     <value>The Crawler Thread encountered an error.</value>
   </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date: {0}</value>
+  </data>
   <data name="FileNameConversations" xml:space="preserve">
     <value>conversations.txt</value>
   </data>
@@ -192,6 +204,33 @@
   <data name="FileNameTexts" xml:space="preserve">
     <value>texts.txt</value>
   </data>
+  <data name="Id3Album" xml:space="preserve">
+    <value>Id3: Album: {0}</value>
+  </data>
+  <data name="Id3Artist" xml:space="preserve">
+    <value>Id3: Artist: {0}</value>
+  </data>
+  <data name="Id3Title" xml:space="preserve">
+    <value>Id3: Title: {0}</value>
+  </data>
+  <data name="Id3Track" xml:space="preserve">
+    <value>Id3: Track: {0}</value>
+  </data>
+  <data name="Id3Year" xml:space="preserve">
+    <value>Id3: Year: {0}</value>
+  </data>
+  <data name="Link" xml:space="preserve">
+    <value>Link: {0}</value>
+  </data>
+  <data name="PhotoCaption" xml:space="preserve">
+    <value>Photo Caption: {0}</value>
+  </data>
+  <data name="PhotoUrl" xml:space="preserve">
+    <value>Photo Url: {0}</value>
+  </data>
+  <data name="PostId" xml:space="preserve">
+    <value>Post ID: {0}</value>
+  </data>
   <data name="ProgressDownloadImage" xml:space="preserve">
     <value>Downloading {0}.</value>
   </data>
@@ -203,5 +242,23 @@
   </data>
   <data name="Queuelist" xml:space="preserve">
     <value>Queuelist</value>
+  </data>
+  <data name="Quote" xml:space="preserve">
+    <value>Quote: {0}</value>
+  </data>
+  <data name="ReblogKey" xml:space="preserve">
+    <value>Reblog key: {0}</value>
+  </data>
+  <data name="Tags" xml:space="preserve">
+    <value>Tags: {0}</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Title: {0}</value>
+  </data>
+  <data name="UrlWithSlug" xml:space="preserve">
+    <value>Url with slug: {0}</value>
+  </data>
+  <data name="VideoPlayer" xml:space="preserve">
+    <value>Video Player: {0}</value>
   </data>
 </root>

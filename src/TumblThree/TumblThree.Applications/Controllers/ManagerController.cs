@@ -1199,12 +1199,12 @@ namespace TumblThree.Applications.Controllers
                                     {
                                         foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "regular"))
                                         {
-                                            string textBody = "Post ID: " + post.Attribute("id").Value + ", Date: " + post.Attribute("date-gmt").Value +
-                                                Environment.NewLine + "Url with slug: " + post.Attribute("url-with-slug")?.Value +
-                                                Environment.NewLine + "Reblog key: " + post.Attribute("reblog-key")?.Value +
-                                                Environment.NewLine + "Title: " + post.Element("regular-title")?.Value + 
-                                                Environment.NewLine + "Body: " + post.Element("regular-body")?.Value +
-                                                Environment.NewLine + "Tags: " + string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray()) +
+                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Title, post.Element("regular-title")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Body, post.Element("regular-body")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
                                                 Environment.NewLine;
                                             Interlocked.Increment(ref totalDownloads);
                                             Monitor.Enter(images);
@@ -1216,12 +1216,12 @@ namespace TumblThree.Applications.Controllers
                                     {
                                         foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "quote"))
                                         {
-                                            string textBody = "Post ID: " + post.Attribute("id").Value + ", Date: " + post.Attribute("date-gmt").Value +
-                                                Environment.NewLine + "Url with slug: " + post.Attribute("url-with-slug")?.Value +
-                                                Environment.NewLine + "Reblog key: " + post.Attribute("reblog-key")?.Value +
-                                                Environment.NewLine + "Quote: " + post.Element("quote-text")?.Value + 
+                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Quote, post.Element("quote-text")?.Value) + 
                                                 Environment.NewLine + post.Element("quote-source")?.Value +
-                                                Environment.NewLine + "Tags: " + string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray()) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
                                                 Environment.NewLine;
                                             Interlocked.Increment(ref totalDownloads);
                                             Monitor.Enter(images);
@@ -1233,13 +1233,13 @@ namespace TumblThree.Applications.Controllers
                                     {
                                         foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "link"))
                                         {
-                                            string textBody = "Post ID: " + post.Attribute("id").Value + ", Date: " + post.Attribute("date-gmt").Value +
-                                                Environment.NewLine + "Url with slug: " + post.Attribute("url-with-slug")?.Value +
-                                                Environment.NewLine + "Reblog key: " + post.Attribute("reblog-key")?.Value +
-                                                Environment.NewLine + "Link: " + post.Element("link-text")?.Value + 
+                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Link, post.Element("link-text")?.Value) + 
                                                 Environment.NewLine + post.Element("link-url")?.Value +
                                                 Environment.NewLine + post.Element("link-description")?.Value +
-                                                Environment.NewLine + "Tags: " + string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray()) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
                                                 Environment.NewLine;
                                             Interlocked.Increment(ref totalDownloads);
                                             Monitor.Enter(images);
@@ -1251,11 +1251,11 @@ namespace TumblThree.Applications.Controllers
                                     {
                                         foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "conversation"))
                                         {
-                                            string textBody = "Post ID: " + post.Attribute("id").Value + ", Date: " + post.Attribute("date-gmt").Value +
-                                                Environment.NewLine + "Url with slug: " + post.Attribute("url-with-slug")?.Value +
-                                                Environment.NewLine + "Reblog key: " + post.Attribute("reblog-key")?.Value +
-                                                Environment.NewLine + "Conversation: " + post.Element("conversation-text")?.Value +
-                                                Environment.NewLine + "Tags: " + string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray()) +
+                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Conversation, post.Element("conversation-text")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
                                                 Environment.NewLine;
                                             Interlocked.Increment(ref totalDownloads);
                                             Monitor.Enter(images);
@@ -1292,12 +1292,12 @@ namespace TumblThree.Applications.Controllers
                                                 if (blog.SkipGif == true && imageUrl.EndsWith(".gif"))
                                                     continue;
 
-                                                string textBody = "Post ID: " + post.Attribute("id").Value + ", Date: " + post.Attribute("date-gmt").Value +
-                                                    Environment.NewLine + "Url with slug: " + post.Attribute("url-with-slug")?.Value +
-                                                    Environment.NewLine + "Photourl: " + imageUrl +
-                                                    Environment.NewLine + "Reblog key: " + post.Attribute("reblog-key")?.Value +
-                                                    Environment.NewLine + "Photo Caption: " + post.Element("photo-caption")?.Value +
-                                                    Environment.NewLine + "Tags: " + string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray()) +
+                                                string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                                                    Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                                                    Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                                                    Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.PhotoUrl, imageUrl) +
+                                                    Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.PhotoCaption, post.Element("photo-caption")?.Value) +
+                                                    Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
                                                     Environment.NewLine;
                                                 Interlocked.Increment(ref totalDownloads);
                                                 Interlocked.Increment(ref photoMetas);
@@ -1311,11 +1311,11 @@ namespace TumblThree.Applications.Controllers
                                     {
                                         foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "video"))
                                         {
-                                            string textBody = "Post ID: " + post.Attribute("id").Value + ", Date: " + post.Attribute("date-gmt").Value +
-                                                Environment.NewLine + "Url with slug: " + post.Attribute("url-with-slug")?.Value +
-                                                Environment.NewLine + "Reblog key: " + post.Attribute("reblog-key")?.Value +
-                                                Environment.NewLine + "Video Player: " + post.Element("video-player")?.Value +
-                                                Environment.NewLine + "Tags: " + string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray()) +
+                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.VideoPlayer, post.Element("video-player")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
                                                 Environment.NewLine;
                                             Interlocked.Increment(ref totalDownloads);
                                             Interlocked.Increment(ref videoMetas);
@@ -1328,16 +1328,16 @@ namespace TumblThree.Applications.Controllers
                                     {
                                         foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "audio"))
                                         {
-                                            string textBody = "Post ID: " + post.Attribute("id").Value + ", Date: " + post.Attribute("date-gmt").Value +
-                                                Environment.NewLine + "Url with slug: " + post.Attribute("url-with-slug")?.Value +
-                                                Environment.NewLine + "Reblog key: " + post.Attribute("reblog-key")?.Value +
-                                                Environment.NewLine + "Audio caption: " + post.Element("audio-caption")?.Value +
-                                                Environment.NewLine + "Id3: artist: " + post.Element("id3-artist")?.Value +
-                                                Environment.NewLine + "Id3: title: " + post.Element("id3-title")?.Value +
-                                                Environment.NewLine + "Id3: track: " + post.Element("id3-track")?.Value +
-                                                Environment.NewLine + "Id3: album: " + post.Element("id3-album")?.Value +
-                                                Environment.NewLine + "Id3: year: " + post.Element("id3-year")?.Value +
-                                                Environment.NewLine + "Tags: " + string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray()) +
+                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.AudioCaption, post.Element("audio-caption")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Artist, post.Element("id3-artist")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Title, post.Element("id3-title")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Track, post.Element("id3-track")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Album, post.Element("id3-album")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Year, post.Element("id3-year")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
                                                 Environment.NewLine;
                                             Interlocked.Increment(ref totalDownloads);
                                             Interlocked.Increment(ref audioMetas);
@@ -1447,12 +1447,12 @@ namespace TumblThree.Applications.Controllers
                                     {
                                         foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "regular" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
                                         {
-                                            string textBody = "Post ID: " + post.Attribute("id").Value + ", Date: " + post.Attribute("date-gmt").Value +
-                                                Environment.NewLine + "Url with slug: " + post.Attribute("url-with-slug")?.Value +
-                                                Environment.NewLine + "Reblog key: " + post.Attribute("reblog-key")?.Value +
-                                                Environment.NewLine + "Title: " + post.Element("regular-title")?.Value +
-                                                Environment.NewLine + "Body: " + post.Element("regular-body")?.Value +
-                                                Environment.NewLine + "Tags: " + string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray()) +
+                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Title, post.Element("regular-title")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Body, post.Element("regular-body")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
                                                 Environment.NewLine;
                                             Interlocked.Increment(ref totalDownloads);
                                             Monitor.Enter(images);
@@ -1464,12 +1464,12 @@ namespace TumblThree.Applications.Controllers
                                     {
                                         foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "quote" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
                                         {
-                                            string textBody = "Post ID: " + post.Attribute("id").Value + ", Date: " + post.Attribute("date-gmt").Value +
-                                                Environment.NewLine + "Url with slug: " + post.Attribute("url-with-slug")?.Value +
-                                                Environment.NewLine + "Reblog key: " + post.Attribute("reblog-key")?.Value +
-                                                Environment.NewLine + "Quote: " + post.Element("quote-text")?.Value +
+                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Quote, post.Element("quote-text")?.Value) +
                                                 Environment.NewLine + post.Element("quote-source")?.Value +
-                                                Environment.NewLine + "Tags: " + string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray()) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
                                                 Environment.NewLine;
                                             Interlocked.Increment(ref totalDownloads);
                                             Monitor.Enter(images);
@@ -1481,13 +1481,13 @@ namespace TumblThree.Applications.Controllers
                                     {
                                         foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "link" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
                                         {
-                                            string textBody = "Post ID: " + post.Attribute("id").Value + ", Date: " + post.Attribute("date-gmt").Value +
-                                                Environment.NewLine + "Url with slug: " + post.Attribute("url-with-slug")?.Value +
-                                                Environment.NewLine + "Reblog key: " + post.Attribute("reblog-key")?.Value +
-                                                Environment.NewLine + "Link: " + post.Element("link-text")?.Value +
+                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Link, post.Element("link-text")?.Value) +
                                                 Environment.NewLine + post.Element("link-url")?.Value +
                                                 Environment.NewLine + post.Element("link-description")?.Value +
-                                                Environment.NewLine + "Tags: " + string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray()) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
                                                 Environment.NewLine;
                                             Interlocked.Increment(ref totalDownloads);
                                             Monitor.Enter(images);
@@ -1499,11 +1499,11 @@ namespace TumblThree.Applications.Controllers
                                     {
                                         foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "conversation" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
                                         {
-                                            string textBody = "Post ID: " + post.Attribute("id").Value + ", Date: " + post.Attribute("date-gmt").Value +
-                                                Environment.NewLine + "Url with slug: " + post.Attribute("url-with-slug")?.Value +
-                                                Environment.NewLine + "Reblog key: " + post.Attribute("reblog-key")?.Value +
-                                                Environment.NewLine + "Conversation: " + post.Element("conversation-text")?.Value +
-                                                Environment.NewLine + "Tags: " + string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray()) +
+                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Conversation, post.Element("conversation-text")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
                                                 Environment.NewLine;
                                             Interlocked.Increment(ref totalDownloads);
                                             Monitor.Enter(images);
@@ -1540,12 +1540,12 @@ namespace TumblThree.Applications.Controllers
                                                 if (blog.SkipGif == true && imageUrl.EndsWith(".gif"))
                                                     continue;
 
-                                                string textBody = "Post ID: " + post.Attribute("id").Value + ", Date: " + post.Attribute("date-gmt").Value +
-                                                    Environment.NewLine + "Url with slug: " + post.Attribute("url-with-slug")?.Value +
-                                                    Environment.NewLine + "Photourl: " + imageUrl +
-                                                    Environment.NewLine + "Reblog key: " + post.Attribute("reblog-key")?.Value +
-                                                    Environment.NewLine + "Photo Caption: " + post.Element("photo-caption")?.Value +
-                                                    Environment.NewLine + "Tags: " + string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray()) +
+                                                string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                                                    Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                                                    Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                                                    Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.PhotoUrl, imageUrl) +
+                                                    Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.PhotoCaption, post.Element("photo-caption")?.Value) +
+                                                    Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
                                                     Environment.NewLine;
                                                 Interlocked.Increment(ref photoMetas);
                                                 Interlocked.Increment(ref totalDownloads);
@@ -1559,11 +1559,11 @@ namespace TumblThree.Applications.Controllers
                                     {
                                         foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "video" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
                                         {
-                                            string textBody = "Post ID: " + post.Attribute("id").Value + ", Date: " + post.Attribute("date-gmt").Value +
-                                                Environment.NewLine + "Url with slug: " + post.Attribute("url-with-slug")?.Value +
-                                                Environment.NewLine + "Reblog key: " + post.Attribute("reblog-key")?.Value +
-                                                Environment.NewLine + "Video Player: " + post.Element("video-player")?.Value +
-                                                Environment.NewLine + "Tags: " + string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray()) +
+                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.VideoPlayer, post.Element("video-player")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
                                                 Environment.NewLine;
                                             Interlocked.Increment(ref videoMetas);
                                             Interlocked.Increment(ref totalDownloads);
@@ -1576,16 +1576,16 @@ namespace TumblThree.Applications.Controllers
                                     {
                                         foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "audio"))
                                         {
-                                            string textBody = "Post ID: " + post.Attribute("id").Value + ", Date: " + post.Attribute("date-gmt").Value +
-                                                Environment.NewLine + "Url with slug: " + post.Attribute("url-with-slug")?.Value +
-                                                Environment.NewLine + "Reblog key: " + post.Attribute("reblog-key")?.Value +
-                                                Environment.NewLine + "Audio caption: " + post.Element("audio-caption")?.Value +
-                                                Environment.NewLine + "Id3: artist: " + post.Element("id3-artist")?.Value +
-                                                Environment.NewLine + "Id3: title: " + post.Element("id3-title")?.Value +
-                                                Environment.NewLine + "Id3: track: " + post.Element("id3-track")?.Value +
-                                                Environment.NewLine + "Id3: album: " + post.Element("id3-album")?.Value +
-                                                Environment.NewLine + "Id3: year: " + post.Element("id3-year")?.Value +
-                                                Environment.NewLine + "Tags: " + string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray()) +
+                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.AudioCaption, post.Element("audio-caption")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Artist, post.Element("id3-artist")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Title, post.Element("id3-title")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Track, post.Element("id3-track")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Album, post.Element("id3-album")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Year, post.Element("id3-year")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
                                                 Environment.NewLine;
                                             Interlocked.Increment(ref audioMetas);
                                             Interlocked.Increment(ref totalDownloads);

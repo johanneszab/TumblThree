@@ -61,6 +61,15 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Audio Caption: {0}.
+        /// </summary>
+        public static string AudioCaption {
+            get {
+                return ResourceManager.GetString("AudioCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Authentication failure: {0}.
         /// </summary>
         public static string AuthenticationFailure {
@@ -120,6 +129,24 @@ namespace TumblThree.Applications.Properties {
         public static string BlogTypesOnceFinished {
             get {
                 return ResourceManager.GetString("BlogTypesOnceFinished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Body: {0].
+        /// </summary>
+        public static string Body {
+            get {
+                return ResourceManager.GetString("Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Conversation: {0}.
+        /// </summary>
+        public static string Conversation {
+            get {
+                return ResourceManager.GetString("Conversation", resourceCulture);
             }
         }
         
@@ -223,6 +250,15 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Date: {0}.
+        /// </summary>
+        public static string Date {
+            get {
+                return ResourceManager.GetString("Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to conversations.txt.
         /// </summary>
         public static string FileNameConversations {
@@ -286,6 +322,87 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Id3: Album: {0}.
+        /// </summary>
+        public static string Id3Album {
+            get {
+                return ResourceManager.GetString("Id3Album", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Id3: Artist: {0}.
+        /// </summary>
+        public static string Id3Artist {
+            get {
+                return ResourceManager.GetString("Id3Artist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Id3: Title: {0}.
+        /// </summary>
+        public static string Id3Title {
+            get {
+                return ResourceManager.GetString("Id3Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Id3: Track: {0}.
+        /// </summary>
+        public static string Id3Track {
+            get {
+                return ResourceManager.GetString("Id3Track", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Id3: Year: {0}.
+        /// </summary>
+        public static string Id3Year {
+            get {
+                return ResourceManager.GetString("Id3Year", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Link: {0}.
+        /// </summary>
+        public static string Link {
+            get {
+                return ResourceManager.GetString("Link", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Photo Caption: {0}.
+        /// </summary>
+        public static string PhotoCaption {
+            get {
+                return ResourceManager.GetString("PhotoCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Photo Url: {0}.
+        /// </summary>
+        public static string PhotoUrl {
+            get {
+                return ResourceManager.GetString("PhotoUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Post ID: {0}.
+        /// </summary>
+        public static string PostId {
+            get {
+                return ResourceManager.GetString("PostId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Downloading {0}..
         /// </summary>
         public static string ProgressDownloadImage {
@@ -318,6 +435,60 @@ namespace TumblThree.Applications.Properties {
         public static string Queuelist {
             get {
                 return ResourceManager.GetString("Queuelist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quote: {0}.
+        /// </summary>
+        public static string Quote {
+            get {
+                return ResourceManager.GetString("Quote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reblog key: {0}.
+        /// </summary>
+        public static string ReblogKey {
+            get {
+                return ResourceManager.GetString("ReblogKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tags: {0}.
+        /// </summary>
+        public static string Tags {
+            get {
+                return ResourceManager.GetString("Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title: {0}.
+        /// </summary>
+        public static string Title {
+            get {
+                return ResourceManager.GetString("Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Url with slug: {0}.
+        /// </summary>
+        public static string UrlWithSlug {
+            get {
+                return ResourceManager.GetString("UrlWithSlug", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Video Player: {0}.
+        /// </summary>
+        public static string VideoPlayer {
+            get {
+                return ResourceManager.GetString("VideoPlayer", resourceCulture);
             }
         }
     }
