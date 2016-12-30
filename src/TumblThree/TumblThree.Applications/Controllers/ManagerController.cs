@@ -921,30 +921,6 @@ namespace TumblThree.Applications.Controllers
             string blogName = ExtractBlogname(blogUrl);
             TumblrBlog blog = new TumblrBlog(ExtractUrl(blogUrl));
 
-            lock (lockObject)
-            {
-                if (selectionService.BlogFiles.Select(blogs => blogs.Name).ToList().Contains(blogName))
-                {
-                    shellService.ShowError(null, Resources.BlogAlreadyExist, blogName);
-                    return;
-                }
-
-
-                if (Application.Current.Dispatcher.CheckAccess())
-                {
-                    selectionService.BlogFiles.Add(blog);
-                }
-                else
-                {
-                    Application.Current.Dispatcher.BeginInvoke(
-                      DispatcherPriority.Background,
-                      new Action(() =>
-                      {
-                          selectionService.BlogFiles.Add(blog);
-                      }));
-                }
-            }
-
             blog.Name = blogName;
             blog.DownloadAudio = shellService.Settings.DownloadAudios;
             blog.DownloadPhoto = shellService.Settings.DownloadImages;
@@ -962,7 +938,32 @@ namespace TumblThree.Applications.Controllers
 
             blog.Online = await IsBlogOnline(blog.Url);
 
-            SaveBlog(blog);
+            if (SaveBlog(blog))
+            {
+                lock (lockObject)
+                {
+                    if (selectionService.BlogFiles.Select(blogs => blogs.Name).ToList().Contains(blogName))
+                    {
+                        shellService.ShowError(null, Resources.BlogAlreadyExist, blogName);
+                        return;
+                    }
+
+
+                    if (Application.Current.Dispatcher.CheckAccess())
+                    {
+                        selectionService.BlogFiles.Add(blog);
+                    }
+                    else
+                    {
+                        Application.Current.Dispatcher.BeginInvoke(
+                          DispatcherPriority.Background,
+                          new Action(() =>
+                          {
+                              selectionService.BlogFiles.Add(blog);
+                          }));
+                    }
+                }
+            }
         }
 
         public bool SaveBlog(Blog blog)
