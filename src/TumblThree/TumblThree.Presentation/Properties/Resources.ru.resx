@@ -423,4 +423,7 @@
   <data name="Save" xml:space="preserve">
     <value>Сохранить</value>
   </data>
+  <data name="Offline" xml:space="preserve">
+    <value>Недоступен</value>
+  </data>
 </root>
