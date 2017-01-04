@@ -44,6 +44,7 @@ namespace TumblThree.Applications.ViewModels
         private bool enablePreview;
         private bool autoDownload;
         private bool removeIndexAfterCrawl;
+        private bool forceSize;
         private bool downloadImages;
         private bool downloadVideos;
         private bool downloadAudios;
@@ -214,6 +215,12 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref removeIndexAfterCrawl, value); }
         }
 
+        public bool ForceSize
+        {
+            get { return forceSize; }
+            set { SetProperty(ref forceSize, value); }
+        }
+
         public bool DownloadImages
         {
             get { return downloadImages; }
@@ -315,6 +322,7 @@ namespace TumblThree.Applications.ViewModels
                 CreateVideoMeta = settings.CreateVideoMeta;
                 CreateAudioMeta = settings.CreateAudioMeta;
                 AutoDownload = settings.AutoDownload;
+                ForceSize = settings.ForceSize;
                 TimerInterval = settings.TimerInterval;
             }
             else
@@ -350,6 +358,7 @@ namespace TumblThree.Applications.ViewModels
                 CreateVideoMeta = false;
                 CreateAudioMeta = false;
                 AutoDownload = false;
+                ForceSize = false;
                 TimerInterval = "22:40:00";
             }
         }
@@ -395,6 +404,7 @@ namespace TumblThree.Applications.ViewModels
             settings.OAuthTokenSecret = OAuthTokenSecret;
             settings.OAuthCallbackUrl = OAuthCallbackUrl;
             settings.AutoDownload = AutoDownload;
+            settings.ForceSize = ForceSize;
             settings.TimerInterval = TimerInterval;
         }
 

@@ -149,6 +149,9 @@ namespace TumblThree.Applications.Properties
         public string TimerInterval { get; set; }
 
         [DataMember]
+        public bool ForceSize { get; set; }
+
+        [DataMember]
         public Dictionary<object, Tuple<int, double>> ColumnWidths { get; set; }
 
         ExtensionDataObject IExtensibleDataObject.ExtensionData { get; set; }
@@ -220,6 +223,7 @@ namespace TumblThree.Applications.Properties
             CreateAudioMeta = false;
             AutoDownload = false;
             TimerInterval = "22:40:00";
+            ForceSize = false;
             ColumnWidths = new Dictionary<object, Tuple<int, double>>();
         }
 

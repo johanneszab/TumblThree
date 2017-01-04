@@ -421,6 +421,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download specified size even if it is not offered.
+        /// </summary>
+        public static string ForceSize {
+            get {
+                return ResourceManager.GetString("ForceSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Global settings:.
         /// </summary>
         public static string GlobalSettings {
@@ -930,6 +939,24 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipDetailsStatsDescription {
             get {
                 return ResourceManager.GetString("ToolTipDetailsStatsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download the specified resolution of images even if the size is not offered..
+        /// </summary>
+        public static string ToolTipForceSize {
+            get {
+                return ResourceManager.GetString("ToolTipForceSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If the crawler only finds lower sized images than specified, enabling this option will rename the url to the specified files size. Those files generally exist and sometimes offer a larger resolution or are just renamed smaller resolution files. It&apos;s safe to turn this on..
+        /// </summary>
+        public static string ToolTipForceSizeDescription {
+            get {
+                return ResourceManager.GetString("ToolTipForceSizeDescription", resourceCulture);
             }
         }
         

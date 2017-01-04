@@ -426,4 +426,13 @@
   <data name="Offline" xml:space="preserve">
     <value>Offline</value>
   </data>
+  <data name="ForceSize" xml:space="preserve">
+    <value>Download specified size even if it is not offered</value>
+  </data>
+  <data name="ToolTipForceSize" xml:space="preserve">
+    <value>Download the specified resolution of images even if the size is not offered.</value>
+  </data>
+  <data name="ToolTipForceSizeDescription" xml:space="preserve">
+    <value>If the crawler only finds lower sized images than specified, enabling this option will rename the url to the specified files size. Those files generally exist and sometimes offer a larger resolution or are just renamed smaller resolution files. It's safe to turn this on.</value>
+  </data>
 </root>

@@ -1127,6 +1127,20 @@ namespace TumblThree.Applications.Controllers
                                                     if (blog.SkipGif == true && imageUrl.EndsWith(".gif"))
                                                         continue;
 
+                                                    if (shellService.Settings.ForceSize)
+                                                    {
+                                                        StringBuilder sb = new StringBuilder(imageUrl);
+                                                        imageUrl = sb
+                                                          .Replace("_1280", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_540", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_500", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_400", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_250", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_100", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_75sq", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .ToString();
+                                                    }
+
                                                     Interlocked.Increment(ref photos);
                                                     Interlocked.Increment(ref totalDownloads);
                                                     Monitor.Enter(images);
@@ -1142,6 +1156,20 @@ namespace TumblThree.Applications.Controllers
 
                                                 if (blog.SkipGif == true && imageUrl.EndsWith(".gif"))
                                                     continue;
+
+                                                if (shellService.Settings.ForceSize)
+                                                {
+                                                    StringBuilder sb = new StringBuilder(imageUrl);
+                                                    imageUrl = sb
+                                                      .Replace("_1280", "_" + shellService.Settings.ImageSize.ToString())
+                                                      .Replace("_540", "_" + shellService.Settings.ImageSize.ToString())
+                                                      .Replace("_500", "_" + shellService.Settings.ImageSize.ToString())
+                                                      .Replace("_400", "_" + shellService.Settings.ImageSize.ToString())
+                                                      .Replace("_250", "_" + shellService.Settings.ImageSize.ToString())
+                                                      .Replace("_100", "_" + shellService.Settings.ImageSize.ToString())
+                                                      .Replace("_75sq", "_" + shellService.Settings.ImageSize.ToString())
+                                                      .ToString();
+                                                }
 
                                                 Interlocked.Increment(ref photos);
                                                 Interlocked.Increment(ref totalDownloads);
@@ -1375,6 +1403,20 @@ namespace TumblThree.Applications.Controllers
                                                     if (blog.SkipGif == true && imageUrl.EndsWith(".gif"))
                                                         continue;
 
+                                                    if (shellService.Settings.ForceSize)
+                                                    {
+                                                        StringBuilder sb = new StringBuilder(imageUrl);
+                                                        imageUrl = sb
+                                                          .Replace("_1280", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_540", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_500", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_400", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_250", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_100", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_75sq", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .ToString();
+                                                    }
+
                                                     Interlocked.Increment(ref totalDownloads);
                                                     Interlocked.Increment(ref photos);
                                                     Monitor.Enter(images);
@@ -1390,6 +1432,20 @@ namespace TumblThree.Applications.Controllers
 
                                                 if (blog.SkipGif == true && imageUrl.EndsWith(".gif"))
                                                     continue;
+
+                                                if (shellService.Settings.ForceSize)
+                                                {
+                                                    StringBuilder sb = new StringBuilder(imageUrl);
+                                                    imageUrl = sb
+                                                      .Replace("_1280", "_" + shellService.Settings.ImageSize.ToString())
+                                                      .Replace("_540", "_" + shellService.Settings.ImageSize.ToString())
+                                                      .Replace("_500", "_" + shellService.Settings.ImageSize.ToString())
+                                                      .Replace("_400", "_" + shellService.Settings.ImageSize.ToString())
+                                                      .Replace("_250", "_" + shellService.Settings.ImageSize.ToString())
+                                                      .Replace("_100", "_" + shellService.Settings.ImageSize.ToString())
+                                                      .Replace("_75sq", "_" + shellService.Settings.ImageSize.ToString())
+                                                      .ToString();
+                                                }
 
                                                 Interlocked.Increment(ref totalDownloads);
                                                 Interlocked.Increment(ref photos);
