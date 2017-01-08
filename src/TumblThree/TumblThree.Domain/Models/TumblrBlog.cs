@@ -46,6 +46,7 @@ namespace TumblThree.Domain.Models
         private bool createVideoMeta;
         private bool createAudioMeta;
         private bool skipGif;
+        private bool forceSize;
         private postTypes state;
 
         public enum postTypes
@@ -100,6 +101,7 @@ namespace TumblThree.Domain.Models
             this.createVideoMeta = false;
             this.createAudioMeta = false;
             this.skipGif = false;
+            this.forceSize = false;
             this.lastDownloadedPhoto = null;
             this.lastDownloadedVideo = null;
         }
@@ -146,6 +148,7 @@ namespace TumblThree.Domain.Models
             this.createVideoMeta = false;
             this.createAudioMeta = false;
             this.skipGif = false;
+            this.forceSize = false;
             this.lastDownloadedPhoto = null;
             this.lastDownloadedVideo = null;
         }
@@ -382,6 +385,12 @@ namespace TumblThree.Domain.Models
         {
             get { return skipGif; }
             set { SetProperty(ref skipGif, value); Dirty = true; }
+        }
+
+        public bool ForceSize
+        {
+            get { return forceSize; }
+            set { SetProperty(ref forceSize, value); Dirty = true; }
         }
 
         public string LastDownloadedPhoto

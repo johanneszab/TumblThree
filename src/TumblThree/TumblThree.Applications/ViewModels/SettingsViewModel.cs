@@ -45,6 +45,8 @@ namespace TumblThree.Applications.ViewModels
         private bool autoDownload;
         private bool removeIndexAfterCrawl;
         private bool forceSize;
+        private string proxyHost;
+        private string proxyPort;
         private bool downloadImages;
         private bool downloadVideos;
         private bool downloadAudios;
@@ -221,6 +223,18 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref forceSize, value); }
         }
 
+        public string ProxyHost
+        {
+            get { return proxyHost; }
+            set { SetProperty(ref proxyHost, value); }
+        }
+
+        public string ProxyPort
+        {
+            get { return proxyPort; }
+            set { SetProperty(ref proxyPort, value); }
+        }
+
         public bool DownloadImages
         {
             get { return downloadImages; }
@@ -323,6 +337,8 @@ namespace TumblThree.Applications.ViewModels
                 CreateAudioMeta = settings.CreateAudioMeta;
                 AutoDownload = settings.AutoDownload;
                 ForceSize = settings.ForceSize;
+                ProxyHost = settings.ProxyHost;
+                ProxyPort = settings.ProxyPort;
                 TimerInterval = settings.TimerInterval;
             }
             else
@@ -359,6 +375,8 @@ namespace TumblThree.Applications.ViewModels
                 CreateAudioMeta = false;
                 AutoDownload = false;
                 ForceSize = false;
+                ProxyHost = String.Empty;
+                ProxyPort = String.Empty;
                 TimerInterval = "22:40:00";
             }
         }
@@ -405,6 +423,8 @@ namespace TumblThree.Applications.ViewModels
             settings.OAuthCallbackUrl = OAuthCallbackUrl;
             settings.AutoDownload = AutoDownload;
             settings.ForceSize = ForceSize;
+            settings.ProxyHost = ProxyHost;
+            settings.ProxyPort = ProxyPort;
             settings.TimerInterval = TimerInterval;
         }
 
@@ -491,7 +511,7 @@ namespace TumblThree.Applications.ViewModels
                 Regex regex = new Regex("oauth_verifier=(.*)");
                 string oauthVerifer = regex.Match(oauthTokenUrl).Groups[1].ToString();
 
-                //FIXME: Sometimes works, sometimes not: 401 (Unauthorized): "oauth_signature does not match expected value"
+                //FIXME: 401 (Unauthorized): "oauth_signature does not match expected value"
                 OAuthResponse accessToken =
                     ShellService.OAuthManager.AcquireAccessToken(settings.AccessTokenUrl, "POST", oauthVerifer);
 

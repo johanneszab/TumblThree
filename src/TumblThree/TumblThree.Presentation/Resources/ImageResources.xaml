@@ -17,15 +17,6 @@
     <BitmapSource x:Key="SettingsIcon">Images/Settings.png</BitmapSource>
     <BitmapSource x:Key="StopIcon">Images/Stop.png</BitmapSource>
 
-    <Viewbox x:Key="TumblThreeXamlIcon">
-        <Grid>
-            <Canvas>
-                <Image
-                Source="{StaticResource ResourceKey=TumblThreeIcon}" />
-            </Canvas>
-        </Grid>
-    </Viewbox>
-
     <DrawingImage x:Key="PreviousButtonImage">
         <DrawingImage.Drawing>
             <GeometryDrawing>

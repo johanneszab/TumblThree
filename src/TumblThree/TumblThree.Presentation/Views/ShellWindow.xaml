@@ -134,7 +134,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Label x:Name="urlLabel" Content="{x:Static p:Resources.BlogUrl}" HorizontalAlignment="Stretch" Grid.RowSpan="2" Grid.Column="0" VerticalAlignment="Center"/>
-                <TextBox x:Name="url" Text="{Binding CrawlerService.NewBlogUrl, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" Height="23" Grid.RowSpan="2" Grid.Column="2" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                <TextBox x:Name="url" Text="{Binding CrawlerService.NewBlogUrl, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" Grid.RowSpan="2" Grid.Column="2" TextWrapping="Wrap" VerticalAlignment="Center"/>
                 <Button HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2" Grid.Column="4"  Command="{Binding CrawlerService.AddBlogCommand}">
                     <StackPanel>
                         <Image Source="{DynamicResource AddBlogIcon}" Height="30" />

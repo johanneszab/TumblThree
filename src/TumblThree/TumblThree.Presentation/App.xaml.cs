@@ -29,7 +29,7 @@ namespace TumblThree.Presentation
             base.OnStartup(e);
 
             InitializeCultures();
-            System.Net.ServicePointManager.DefaultConnectionLimit = 100;
+            System.Net.ServicePointManager.DefaultConnectionLimit = 400;
 
             catalog = new AggregateCatalog();
             // Add the WpfApplicationFramework assembly to the catalog

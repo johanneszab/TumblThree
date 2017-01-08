@@ -152,6 +152,12 @@ namespace TumblThree.Applications.Properties
         public bool ForceSize { get; set; }
 
         [DataMember]
+        public string ProxyHost { get; set; }
+
+        [DataMember]
+        public string ProxyPort { get; set; }
+
+        [DataMember]
         public Dictionary<object, Tuple<int, double>> ColumnWidths { get; set; }
 
         ExtensionDataObject IExtensibleDataObject.ExtensionData { get; set; }
@@ -224,6 +230,8 @@ namespace TumblThree.Applications.Properties
             AutoDownload = false;
             TimerInterval = "22:40:00";
             ForceSize = false;
+            ProxyHost = String.Empty;
+            ProxyPort = String.Empty;
             ColumnWidths = new Dictionary<object, Tuple<int, double>>();
         }
 

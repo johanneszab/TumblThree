@@ -439,7 +439,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Image size.
+        ///   Looks up a localized string similar to Image size (px).
         /// </summary>
         public static string ImageSize {
             get {
@@ -664,6 +664,24 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to HTTP Proxy:.
+        /// </summary>
+        public static string ProxyHost {
+            get {
+                return ResourceManager.GetString("ProxyHost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Port:.
+        /// </summary>
+        public static string ProxyPort {
+            get {
+                return ResourceManager.GetString("ProxyPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Queue.
         /// </summary>
         public static string Queue {
@@ -835,6 +853,24 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Third-party Software.
+        /// </summary>
+        public static string ThirdPartySoftware {
+            get {
+                return ResourceManager.GetString("ThirdPartySoftware", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Third-party Software and Licenses.
+        /// </summary>
+        public static string ThirdPartySoftwareDescription {
+            get {
+                return ResourceManager.GetString("ThirdPartySoftwareDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Timeout (s).
         /// </summary>
         public static string TimeOut {
@@ -961,6 +997,24 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Throttles the bandwidth of the downloader.
+        /// </summary>
+        public static string ToolTipLimitBandwidth {
+            get {
+                return ResourceManager.GetString("ToolTipLimitBandwidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sets the maximum bandwidth available for the downloader in kbyes/s. Setting this to low will negatively impact the performance of the scan process..
+        /// </summary>
+        public static string ToolTipLimitBandwidthDescription {
+            get {
+                return ResourceManager.GetString("ToolTipLimitBandwidthDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unknown Application Error.
         /// </summary>
         public static string UnknownError {
@@ -988,7 +1042,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Video size.
+        ///   Looks up a localized string similar to Video size (px).
         /// </summary>
         public static string VideoSize {
             get {

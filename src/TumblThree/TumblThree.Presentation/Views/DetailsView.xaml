@@ -13,6 +13,11 @@
              d:DesignHeight="500" d:DesignWidth="300" Background="{StaticResource DefaultBackground}">
 
     <Grid>
+        <Grid.Resources>
+            <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+                <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+            </Style>
+        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -136,6 +141,8 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="{StaticResource Layout.RowSpace}"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="{StaticResource Layout.RowSpace}"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="{StaticResource Layout.LargeRowSpace}"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
@@ -174,7 +181,7 @@
                     </CheckBox.ToolTip>
                 </CheckBox>
 
-                <Label Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="14" Padding="0">
+                <Label Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="14" Padding="0" >
                     <Label.Content>
                         <MultiBinding Converter="{StaticResource DetailsProgressConverter}">
                             <Binding Path="BlogFile.DownloadedTexts"/>
@@ -454,12 +461,23 @@
                 </Label>
 
                 <CheckBox Content="{x:Static p:Resources.SkipGif}" IsChecked="{Binding BlogFile.SkipGif, Mode=TwoWay}" Grid.Column="0" Grid.Row="34" Margin="3,0,0,0" Padding="3,0,0,0"/>
-                <Label Content="" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="34"/>
-
-                <Label Content="{x:Static p:Resources.Preview}" Grid.Column="0" Grid.Row="36"/>
+                <CheckBox Content="{x:Static p:Resources.ForceSize}" IsChecked="{Binding BlogFile.ForceSize, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="36" Margin="3,0,0,0" Padding="3,0,0,0">
+                    <CheckBox.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipForceSize}"/>
+                                <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipForceSizeDescription}"/>
+                            </StackPanel>
+                        </ToolTip>
+                    </CheckBox.ToolTip>
+                </CheckBox>
+                    
                 <Label Content="" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="36"/>
 
-                <UserControl x:Name="Preview" Width="Auto" Height="Auto" Grid.ColumnSpan="5" Grid.Row="38">
+                <Label Content="{x:Static p:Resources.Preview}" Grid.Column="0" Grid.Row="38"/>
+                <Label Content="" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="38"/>
+
+                <UserControl x:Name="Preview" Width="Auto" Height="Auto" Grid.ColumnSpan="5" Grid.Row="40">
                     <Grid>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="SwitchableStates">

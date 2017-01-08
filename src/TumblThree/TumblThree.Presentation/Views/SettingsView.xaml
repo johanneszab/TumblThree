@@ -8,7 +8,7 @@
         xmlns:vr="clr-namespace:TumblThree.Presentation.ValidationRules"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
         xmlns:vm="clr-namespace:TumblThree.Applications.ViewModels;assembly=TumblThree.Applications"
-        mc:Ignorable="d" Title="Settings" Height="890" Width="700"
+        mc:Ignorable="d" Title="Settings" Height="940" Width="700"
         d:DataContext="{d:DesignInstance vm:SettingsViewModel}">
 
     <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
@@ -20,7 +20,8 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Grid MinHeight="46" Height="Auto" Grid.Row="0">
@@ -30,7 +31,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Label x:Name="downloadLocationLabel" Grid.Column="0" Content="{x:Static p:Resources.DownloadLocation}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10" MinWidth="140"/>
-                <TextBox x:Name="downloadLocationtextBox" Text="{Binding DownloadLocation, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Grid.Column="1" HorizontalAlignment="Stretch" Height="26" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                <TextBox x:Name="downloadLocationtextBox" Text="{Binding DownloadLocation, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Grid.Column="1" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center"/>
                 <Button x:Name="browseDownloadLocationButton" Content="{x:Static p:Resources.Browse}" Command="{Binding DisplayFolderBrowserCommand}" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10" Height="26" MinWidth="75"/>
             </Grid>
             <Grid MinHeight="46" Height="Auto" Grid.Row="1">
@@ -100,7 +101,16 @@
                 </Grid.ColumnDefinitions>
                 <Label x:Name="videoSizeLabel" Grid.Column="0" Content="{x:Static p:Resources.VideoSize}" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10"/>
                 <ComboBox x:Name="videoSizeComboBox" Grid.Column="1" ItemsSource="{Binding ShellService.Settings.VideoSizes}" SelectedValuePath="." SelectedValue="{Binding VideoSize}" SelectedItem="{Binding VideoSize, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Left" VerticalAlignment="Center" MinWidth="40"/>
-                <Label x:Name="bandwidthLabel" Grid.Column="2" Content="{x:Static p:Resources.Bandwidth}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                <Label x:Name="bandwidthLabel" Grid.Column="2" Content="{x:Static p:Resources.Bandwidth}" VerticalAlignment="Center" HorizontalAlignment="Left">
+                    <Label.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipLimitBandwidth}"/>
+                                <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipLimitBandwidthDescription}"/>
+                            </StackPanel>
+                        </ToolTip>
+                    </Label.ToolTip>
+                </Label>
                 <TextBox x:Name="bandwidthComboBox" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" MinWidth="40">
                     <TextBox.Text>
                         <Binding Path="Bandwidth" UpdateSourceTrigger="PropertyChanged">
@@ -109,9 +119,29 @@
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
+                    <TextBox.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipLimitBandwidth}"/>
+                                <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipLimitBandwidthDescription}"/>
+                            </StackPanel>
+                        </ToolTip>
+                    </TextBox.ToolTip>
                 </TextBox>
             </Grid>
             <Grid MinHeight="46" Height="Auto" Grid.Row="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label x:Name="proxyHostLabel" Grid.Column="0" Content="{x:Static p:Resources.ProxyHost}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10" />
+                <TextBox x:Name="proxyHosttextBox" Text="{Binding ProxyHost, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Grid.Column="1" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                <Label x:Name="proxyPortLabel" Grid.Column="2" Content="{x:Static p:Resources.ProxyPort}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10" />
+                <TextBox x:Name="proxyPortBox" Text="{Binding ProxyPort, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Grid.Column="3" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center" Margin="00,0,10,0"/>
+            </Grid>
+            <Grid MinHeight="46" Height="Auto" Grid.Row="6">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -131,7 +161,7 @@
                     </TextBox.Text>
                 </TextBox>
             </Grid>
-            <Grid MinHeight="46" Height="Auto" Grid.Row="6">
+            <Grid MinHeight="46" Height="Auto" Grid.Row="7">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -177,13 +207,7 @@
                 <CheckBox x:Name="checkBoxDownloadConversations" Content="{x:Static p:Resources.DownloadConversations}" IsChecked="{Binding DownloadConversations, Mode=TwoWay}" Grid.Column="0" Grid.Row="7" Margin="10" />
                 <CheckBox x:Name="checkBoxDownloadLinks" Content="{x:Static p:Resources.DownloadLinks}" IsChecked="{Binding DownloadLinks, Mode=TwoWay}" Grid.Column="0" Grid.Row="8" Margin="10" />
                 <CheckBox x:Name="checkBoxSkipGif" Content="{x:Static p:Resources.SkipGif}" IsChecked="{Binding SkipGif, Mode=TwoWay}" Grid.Column="0" Grid.Row="9" Margin="10"/>
-                <Separator Grid.ColumnSpan="2" Grid.Row="10" Margin="0"/>
-                <Label x:Name="globalLabel" Grid.Column="0" Grid.Row="11" Margin="5" Content="{x:Static p:Resources.GlobalSettings}"/>
-                <CheckBox x:Name="checkBoxEnablePreview" Content="{x:Static p:Resources.EnablePreview}" IsChecked="{Binding EnablePreview, Mode=TwoWay}" Grid.Column="0" Grid.Row="12" Margin="10"/>
-                <CheckBox x:Name="checkBoxCheckStatus" Content="{x:Static p:Resources.CheckStatus}" IsChecked="{Binding CheckOnlineStatusAtStartup, Mode=TwoWay}" Grid.Column="0" Grid.Row="13" Margin="10"/>
-                <CheckBox x:Name="checkBoxDeleteIndex" Content="{x:Static p:Resources.DeleteIndex}" IsChecked="{Binding DeleteOnlyIndex, Mode=TwoWay}" Grid.Column="0" Grid.Row="14" Margin="10" />
-                <CheckBox x:Name="checkBoxRemoveIndex" Content="{x:Static p:Resources.RemoveIndex}" IsChecked="{Binding RemoveIndexAfterCrawl, Mode=TwoWay}" Grid.Column="0" Grid.Row="15" Margin="10"/>
-                <CheckBox x:Name="checkBoxForceSize" Content="{x:Static p:Resources.ForceSize}" IsChecked="{Binding ForceSize, Mode=TwoWay}" Grid.Column="0" Grid.Row="16" Margin="10">
+                <CheckBox x:Name="checkBoxForceSize" Content="{x:Static p:Resources.ForceSize}" IsChecked="{Binding ForceSize, Mode=TwoWay}" Grid.Column="0" Grid.Row="10" Margin="10">
                     <CheckBox.ToolTip>
                         <ToolTip>
                             <StackPanel>
@@ -193,8 +217,14 @@
                         </ToolTip>
                     </CheckBox.ToolTip>
                 </CheckBox>
+                <Separator Grid.ColumnSpan="2" Grid.Row="11" Margin="0"/>
+                <Label x:Name="globalLabel" Grid.Column="0" Grid.Row="12" Margin="5" Content="{x:Static p:Resources.GlobalSettings}"/>
+                <CheckBox x:Name="checkBoxEnablePreview" Content="{x:Static p:Resources.EnablePreview}" IsChecked="{Binding EnablePreview, Mode=TwoWay}" Grid.Column="0" Grid.Row="13" Margin="10"/>
+                <CheckBox x:Name="checkBoxCheckStatus" Content="{x:Static p:Resources.CheckStatus}" IsChecked="{Binding CheckOnlineStatusAtStartup, Mode=TwoWay}" Grid.Column="0" Grid.Row="14" Margin="10"/>
+                <CheckBox x:Name="checkBoxDeleteIndex" Content="{x:Static p:Resources.DeleteIndex}" IsChecked="{Binding DeleteOnlyIndex, Mode=TwoWay}" Grid.Column="0" Grid.Row="15" Margin="10" />
+                <CheckBox x:Name="checkBoxRemoveIndex" Content="{x:Static p:Resources.RemoveIndex}" IsChecked="{Binding RemoveIndexAfterCrawl, Mode=TwoWay}" Grid.Column="0" Grid.Row="16" Margin="10"/>
             </Grid>
-            <Grid MinHeight="36" Height="Auto" Grid.Row="7">
+            <Grid MinHeight="36" Height="Auto" Grid.Row="8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>

@@ -232,7 +232,7 @@
     <value>URL-адрес</value>
   </data>
   <data name="ImageSize" xml:space="preserve">
-    <value>Размер изображения</value>
+    <value>Размер изображения (pel)</value>
   </data>
   <data name="ParallelBlogs" xml:space="preserve">
     <value>Одновременно скачивающихся блогов</value>
@@ -310,7 +310,7 @@
     <value>Скачивать видео (кроме внешних ресурсов)</value>
   </data>
   <data name="VideoSize" xml:space="preserve">
-    <value>Размер видео</value>
+    <value>Размер видео (pel)</value>
   </data>
   <data name="Authenticate" xml:space="preserve">
     <value>Авторизироваться</value>
@@ -434,5 +434,23 @@
   </data>
   <data name="ToolTipForceSizeDescription" xml:space="preserve">
     <value>If the crawler only finds lower sized images than specified, enabling this option will rename the url to the specified files size. Those files generally exist and sometimes offer a larger resolution or are just renamed smaller resolution files. It's safe to turn this on.</value>
+  </data>
+  <data name="ProxyHost" xml:space="preserve">
+    <value>Прокси-сервер:</value>
+  </data>
+  <data name="ProxyPort" xml:space="preserve">
+    <value>Порт:</value>
+  </data>
+  <data name="ThirdPartySoftware" xml:space="preserve">
+    <value>Third-party Software</value>
+  </data>
+  <data name="ThirdPartySoftwareDescription" xml:space="preserve">
+    <value>Third-party Software and Licenses</value>
+  </data>
+  <data name="ToolTipLimitBandwidth" xml:space="preserve">
+    <value>Throttles the bandwidth of the downloader</value>
+  </data>
+  <data name="ToolTipLimitBandwidthDescription" xml:space="preserve">
+    <value>Sets the maximum bandwidth available for the downloader in kbyes/s. Setting this to low will negatively impact the performance of the scan process.</value>
   </data>
 </root>

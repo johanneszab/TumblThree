@@ -7,6 +7,10 @@
         <Setter Property="BorderBrush" Value="{StaticResource DefaultBorderBrush}"/>
     </Style>
 
+    <Style TargetType="TextBlock">
+        <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+    </Style>
+
     <Style TargetType="{x:Type DataGrid}">
         <Setter Property="AutoGenerateColumns" Value="False"/>
         <Setter Property="CanUserAddRows" Value="False"/>

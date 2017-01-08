@@ -11,13 +11,13 @@
 
     <DockPanel>
         <Border DockPanel.Dock="Bottom" Background="{StaticResource DefaultBackground}" Margin="0,11,0,0">
-            <Button Content="{x:Static p:Resources.Ok}" IsDefault="True" IsCancel="True" HorizontalAlignment="Center" Width="75" Height="23" Margin="11"/>
+            <Button Content="{x:Static p:Resources.Ok}" IsDefault="True" IsCancel="True" HorizontalAlignment="Center" MinWidth="75" Margin="11"/>
         </Border>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Image Source="../Resources/Images/Tumblr.png"  Width="256" Margin="22,11,22,0"/>
 
-            <Grid Margin="0,0,22,11" VerticalAlignment="Center">
+            <Grid Margin="0,11,22,11" VerticalAlignment="Center">
                 <Grid.Resources>
                     <Style TargetType="Label">
                         <Setter Property="Margin" Value="6"/>
@@ -28,6 +28,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
@@ -52,11 +53,16 @@
                     <Hyperlink Command="{Binding ShowWebsiteCommand}" CommandParameter="https://github.com/johanneszab/TumblThree">github.com/johanneszab/thumblthree</Hyperlink>
                 </Label>
 
-                <Label Content="{x:Static p:Resources.OperatingSystem}" Grid.Row="4"/>
-                <Label Content="{Binding OSVersion}" Grid.Column="1" Grid.Row="4"/>
+                <Label Content="{x:Static p:Resources.ThirdPartySoftware}" Grid.Row="4"/>
+                <Label Grid.Column="1" Grid.Row="4">
+                    <Hyperlink Command="{Binding ShowWebsiteCommand}" CommandParameter="https://github.com/johanneszab/TumblThree/blob/master/LICENSE-3RD-PARTY.txt">Third-party Software and Licenses</Hyperlink>
+                </Label>
 
-                <Label Content="{x:Static p:Resources.NetFramework}" Grid.Row="5"/>
-                <Label Grid.Column="1" Grid.Row="5">
+                <Label Content="{x:Static p:Resources.OperatingSystem}" Grid.Row="5"/>
+                <Label Content="{Binding OSVersion}" Grid.Column="1" Grid.Row="5"/>
+
+                <Label Content="{x:Static p:Resources.NetFramework}" Grid.Row="6"/>
+                <Label Grid.Column="1" Grid.Row="6">
                     <TextBlock>
                         <Run Text="{Binding NetVersion, Mode=OneWay}"/>
                         <Run>

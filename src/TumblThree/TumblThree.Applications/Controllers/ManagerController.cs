@@ -870,20 +870,36 @@ namespace TumblThree.Applications.Controllers
             {
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = "GET";
+                if (!String.IsNullOrEmpty(shellService.Settings.ProxyHost))
+                {
+                    request.Proxy = new WebProxy(shellService.Settings.ProxyHost, Int32.Parse(shellService.Settings.ProxyPort));
+                } else
+                {
+                    request.Proxy = null; // WebRequest.GetSystemWebProxy();
+                }
+                request.KeepAlive = true;
+                request.AllowAutoRedirect = true;
+                request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+                request.Pipelined = true;
                 request.ServicePoint.Expect100Continue = false;
-                request.ContentType = "x-www-from-urlencoded";
+                ServicePointManager.DefaultConnectionLimit = 400;
+                //request.ContentLength = 0;
+                //request.ContentType = "x-www-from-urlencoded";
 
                 using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
                 {
                     using (ThrottledStream stream = new ThrottledStream(response.GetResponseStream(), (shellService.Settings.Bandwidth / shellService.Settings.ParallelImages) * 1024))
                     {
-                        using (StreamReader reader = new StreamReader(stream))
+                        using (BufferedStream buffer = new BufferedStream(stream))
                         {
-                            //Doesn't work because the tumblr XML api delivers malformated XML. Nice!
-                            //XmlSerializer xmlSerializer = new XmlSerializer(typeof(Datamodels.Xml.Tumblr));
-                            //Datamodels.Xml.Tumblr data = (Datamodels.Xml.Tumblr)xmlSerializer.Deserialize(reader);
-                            //return data;
-                            return XDocument.Load(reader);
+                            using (StreamReader reader = new StreamReader(buffer))
+                            {
+                                //Doesn't work because the tumblr XML api delivers malformated XML. Nice!
+                                //XmlSerializer xmlSerializer = new XmlSerializer(typeof(Datamodels.Xml.Tumblr));
+                                //Datamodels.Xml.Tumblr data = (Datamodels.Xml.Tumblr)xmlSerializer.Deserialize(reader);
+                                //return data;
+                                return XDocument.Load(reader);
+                            }
                         }
                     }
                 }
@@ -908,7 +924,7 @@ namespace TumblThree.Applications.Controllers
 
         private string ExtractUrl(string url)
         {
-            return ("http://" + ExtractBlogname(url) + ".tumblr.com/");
+            return ("https://" + ExtractBlogname(url) + ".tumblr.com/");
         }
 
         public async Task AddBlogAsync(string blogUrl)
@@ -933,10 +949,18 @@ namespace TumblThree.Applications.Controllers
             blog.CreateVideoMeta = shellService.Settings.CreateVideoMeta;
             blog.CreateAudioMeta = shellService.Settings.CreateAudioMeta;
             blog.SkipGif = shellService.Settings.SkipGif;
+            blog.ForceSize = shellService.Settings.ForceSize;
 
-            blog = await GetMetaInformation(blog);
+            try
+            {
+                blog = await GetMetaInformation(blog);
 
-            blog.Online = await IsBlogOnline(blog.Url);
+                blog.Online = await IsBlogOnline(blog.Url);
+            }
+            catch
+            {
+                // catches Net.Socket.Exception from the remote host if too many blogs are added simultaneously
+            }
 
             if (SaveBlog(blog))
             {
@@ -1081,8 +1105,9 @@ namespace TumblThree.Applications.Controllers
             // the api shows 50 posts at max, determine the number of pages to crawl
             int totalPages = (totalPosts / 50) + 1;
 
+            // FIXME: We should use more parallel downloads as requested here since the data is usually really small
             Parallel.For(0, totalPages,
-                        new ParallelOptions { MaxDegreeOfParallelism = (shellService.Settings.ParallelImages / selectionService.ActiveItems.Count) },
+                        new ParallelOptions { MaxDegreeOfParallelism = (shellService.Settings.ParallelImages * 2 / selectionService.ActiveItems.Count) },
                         (i, state) =>
                         {
                             if (ct.IsCancellationRequested)
@@ -1200,7 +1225,7 @@ namespace TumblThree.Applications.Controllers
                                                 {
                                                     Interlocked.Increment(ref totalDownloads);
                                                     Monitor.Enter(images);
-                                                    images.Add(Tuple.Create("http://vt.tumblr.com/" + video.Replace("/480", "").Split('/').Last() + "_480.mp4", "Video", post.Attribute("id").Value));
+                                                    images.Add(Tuple.Create("https://vt.tumblr.com/" + video.Replace("/480", "").Split('/').Last() + "_480.mp4", "Video", post.Attribute("id").Value));
                                                     Monitor.Exit(images);
                                                 }
                                             }
@@ -1476,7 +1501,7 @@ namespace TumblThree.Applications.Controllers
                                                 {
                                                     Interlocked.Increment(ref totalDownloads);
                                                     Monitor.Enter(images);
-                                                    images.Add(Tuple.Create("http://vt.tumblr.com/" + video.Replace("/480", "").Split('/').Last() + "_480.mp4", "Video", post.Attribute("id").Value));
+                                                    images.Add(Tuple.Create("https://vt.tumblr.com/" + video.Replace("/480", "").Split('/').Last() + "_480.mp4", "Video", post.Attribute("id").Value));
                                                     Monitor.Exit(images);
                                                 }
                                             }
