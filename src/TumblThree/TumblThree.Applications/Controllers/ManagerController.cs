@@ -25,6 +25,7 @@ using System.Net;
 using System.Text;
 using System.Web;
 using System.Collections.Specialized;
+using System.Text.RegularExpressions;
 
 namespace TumblThree.Applications.Controllers
 {
@@ -1152,7 +1153,7 @@ namespace TumblThree.Applications.Controllers
                                                     if (blog.SkipGif == true && imageUrl.EndsWith(".gif"))
                                                         continue;
 
-                                                    if (shellService.Settings.ForceSize)
+                                                    if (blog.ForceSize)
                                                     {
                                                         StringBuilder sb = new StringBuilder(imageUrl);
                                                         imageUrl = sb
@@ -1182,7 +1183,7 @@ namespace TumblThree.Applications.Controllers
                                                 if (blog.SkipGif == true && imageUrl.EndsWith(".gif"))
                                                     continue;
 
-                                                if (shellService.Settings.ForceSize)
+                                                if (blog.ForceSize)
                                                 {
                                                     StringBuilder sb = new StringBuilder(imageUrl);
                                                     imageUrl = sb
@@ -1201,6 +1202,36 @@ namespace TumblThree.Applications.Controllers
                                                 Monitor.Enter(images);
                                                 images.Add(Tuple.Create(imageUrl, "Photo", post.Attribute("id").Value));
                                                 Monitor.Exit(images);
+                                            }
+                                        }
+                                        // check for inline images
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "regular"))
+                                        {
+                                            if (post.Element("regular-body").Value.Contains("tumblr_inline"))
+                                            {
+                                                Regex regex = new Regex("<img src=\"(.*?)\"");
+                                                foreach (Match match in regex.Matches(post.Element("regular-body")?.Value))
+                                                {
+                                                    var imageUrl = match.Groups[1].Value;
+                                                    if (blog.ForceSize)
+                                                    {
+                                                        StringBuilder sb = new StringBuilder(imageUrl);
+                                                        imageUrl = sb
+                                                          .Replace("_1280", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_540", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_500", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_400", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_250", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_100", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_75sq", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .ToString();
+                                                    }
+
+                                                    Interlocked.Increment(ref totalDownloads);
+                                                    Monitor.Enter(images);
+                                                    images.Add(Tuple.Create(imageUrl, "Photo", post.Attribute("id").Value));
+                                                    Monitor.Exit(images);
+                                                }
                                             }
                                         }
                                     }
@@ -1428,7 +1459,7 @@ namespace TumblThree.Applications.Controllers
                                                     if (blog.SkipGif == true && imageUrl.EndsWith(".gif"))
                                                         continue;
 
-                                                    if (shellService.Settings.ForceSize)
+                                                    if (blog.ForceSize)
                                                     {
                                                         StringBuilder sb = new StringBuilder(imageUrl);
                                                         imageUrl = sb
@@ -1458,7 +1489,7 @@ namespace TumblThree.Applications.Controllers
                                                 if (blog.SkipGif == true && imageUrl.EndsWith(".gif"))
                                                     continue;
 
-                                                if (shellService.Settings.ForceSize)
+                                                if (blog.ForceSize)
                                                 {
                                                     StringBuilder sb = new StringBuilder(imageUrl);
                                                     imageUrl = sb
@@ -1477,6 +1508,36 @@ namespace TumblThree.Applications.Controllers
                                                 Monitor.Enter(images);
                                                 images.Add(Tuple.Create(imageUrl, "Photo", post.Attribute("id").Value));
                                                 Monitor.Exit(images);
+                                            }
+                                        }
+                                        // check for inline images
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "regular" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
+                                        {
+                                            if (post.Element("regular-body").Value.Contains("tumblr_inline"))
+                                            {
+                                                Regex regex = new Regex("<img src=\"(.*?)\"");
+                                                foreach (Match match in regex.Matches(post.Element("regular-body")?.Value))
+                                                {
+                                                    var imageUrl = match.Groups[1].Value;
+                                                    if (blog.ForceSize)
+                                                    {
+                                                        StringBuilder sb = new StringBuilder(imageUrl);
+                                                        imageUrl = sb
+                                                          .Replace("_1280", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_540", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_500", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_400", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_250", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_100", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_75sq", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .ToString();
+                                                    }
+
+                                                    Interlocked.Increment(ref totalDownloads);
+                                                    Monitor.Enter(images);
+                                                    images.Add(Tuple.Create(imageUrl, "Photo", post.Attribute("id").Value));
+                                                    Monitor.Exit(images);
+                                                }
                                             }
                                         }
                                     }
