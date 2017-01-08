@@ -472,8 +472,6 @@
                     </CheckBox.ToolTip>
                 </CheckBox>
                     
-                <Label Content="" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="36"/>
-
                 <Label Content="{x:Static p:Resources.Preview}" Grid.Column="0" Grid.Row="38"/>
                 <Label Content="" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="38"/>
 
