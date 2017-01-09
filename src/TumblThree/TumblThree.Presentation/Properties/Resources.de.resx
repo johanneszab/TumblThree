@@ -460,6 +460,24 @@
     <value>Begrenzt die maximale Bandbreite</value>
   </data>
   <data name="ToolTipLimitBandwidthDescription" xml:space="preserve">
-    <value>Setzt die maximale Bandbreite in kbyes/s. Ein zu kleiner Wert beeinflusst die Scangeschwindigkeit negativ.</value>
+    <value>Setzt die maximale Bandbreite in kbyes/s.</value>
+  </data>
+  <data name="LimitScan" xml:space="preserve">
+    <value>Begrenzen der Scanbandbreite</value>
+  </data>
+  <data name="ScanConnections" xml:space="preserve">
+    <value>Scan Verbindungen</value>
+  </data>
+  <data name="ToolTipLimitScan" xml:space="preserve">
+    <value>Berücksichtigt die Scanbandbreite im Limit</value>
+  </data>
+  <data name="ToolTipLimitScanDescription" xml:space="preserve">
+    <value>Da die Scandaten klein sind sollte das Begrenzen ausbleiben da der Algorithmus hierfür zu langsam ist und sich negativ auf die Geschwindigkeit auswirkt.</value>
+  </data>
+  <data name="ToolTipScan" xml:space="preserve">
+    <value>Anzahl der Scanverbindungen für jeden Scan</value>
+  </data>
+  <data name="ToolTipScanDescription" xml:space="preserve">
+    <value>Setzt die Anzahl der Scanverbindungen. Aufgrund der kleinen Datenmenge sollte diese Einstellung hochbleiben.</value>
   </data>
 </root>

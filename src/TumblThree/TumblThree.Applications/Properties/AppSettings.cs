@@ -79,6 +79,12 @@ namespace TumblThree.Applications.Properties
         public int ParallelBlogs { get; set; }
 
         [DataMember]
+        public int ParallelScans { get; set; }
+
+        [DataMember]
+        public bool LimitScanBandwidth { get; set; }
+
+        [DataMember]
         public int TimeOut { get; set; }
 
         [DataMember]
@@ -205,6 +211,8 @@ namespace TumblThree.Applications.Properties
             DownloadLocation = @".\Blogs\";
             ParallelImages = 25;
             ParallelBlogs = 2;
+            ParallelScans = 20;
+            LimitScanBandwidth = false;
             TimeOut = 120;
             Bandwidth = int.MaxValue;
             ImageSize = 1280;

@@ -149,11 +149,28 @@ namespace TumblThree.Applications
         #endregion
 
 
-        public static ThrottledStream ReadFromURLIntoStream(string url, int bandwidthInKb, int timeoutInSeconds)
+        public static ThrottledStream ReadFromURLIntoStream(string url, int bandwidthInKb, int timeoutInSeconds, string proxyHost, string proxyPort)
         {
             // Create a web request to the URL
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "GET";
+            if (!String.IsNullOrEmpty(proxyHost))
+            {
+                request.Proxy = new WebProxy(proxyHost, Int32.Parse(proxyPort));
+            }
+            else
+            {
+                request.Proxy = null; // WebRequest.GetSystemWebProxy();
+            }
+            request.KeepAlive = true;
+            request.AllowAutoRedirect = true;
+            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+            request.Pipelined = true;
             request.Timeout = timeoutInSeconds * 1000;
+            request.ServicePoint.Expect100Continue = false;
+            ServicePointManager.DefaultConnectionLimit = 400;
+            //request.ContentLength = 0;
+            //request.ContentType = "x-www-from-urlencoded";
 
             // Get the web response
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();

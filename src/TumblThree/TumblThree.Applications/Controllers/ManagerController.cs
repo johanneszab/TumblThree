@@ -869,6 +869,7 @@ namespace TumblThree.Applications.Controllers
         {
             try
             {
+                int bandwidth = int.MaxValue;
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = "GET";
                 if (!String.IsNullOrEmpty(shellService.Settings.ProxyHost))
@@ -882,14 +883,19 @@ namespace TumblThree.Applications.Controllers
                 request.AllowAutoRedirect = true;
                 request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
                 request.Pipelined = true;
+                request.Timeout = shellService.Settings.TimeOut * 1000;
                 request.ServicePoint.Expect100Continue = false;
                 ServicePointManager.DefaultConnectionLimit = 400;
                 //request.ContentLength = 0;
                 //request.ContentType = "x-www-from-urlencoded";
 
+                // should we throttle?
+                if (shellService.Settings.LimitScanBandwidth)
+                    bandwidth = shellService.Settings.Bandwidth;
+
                 using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
                 {
-                    using (ThrottledStream stream = new ThrottledStream(response.GetResponseStream(), (shellService.Settings.Bandwidth / shellService.Settings.ParallelImages) * 1024))
+                    using (ThrottledStream stream = new ThrottledStream(response.GetResponseStream(), (bandwidth / shellService.Settings.ParallelImages) * 1024))
                     {
                         using (BufferedStream buffer = new BufferedStream(stream))
                         {
@@ -1108,7 +1114,7 @@ namespace TumblThree.Applications.Controllers
 
             // FIXME: We should use more parallel downloads as requested here since the data is usually really small
             Parallel.For(0, totalPages,
-                        new ParallelOptions { MaxDegreeOfParallelism = (shellService.Settings.ParallelImages * 2 / selectionService.ActiveItems.Count) },
+                        new ParallelOptions { MaxDegreeOfParallelism = (shellService.Settings.ParallelScans) },
                         (i, state) =>
                         {
                             if (ct.IsCancellationRequested)
@@ -1797,7 +1803,7 @@ namespace TumblThree.Applications.Controllers
                     newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressDownloadImage, url.Split('/').Last()); ;
                     progress.Report(newProgress);
 
-                    using (var stream = ThrottledStream.ReadFromURLIntoStream(url, (shellService.Settings.Bandwidth / shellService.Settings.ParallelImages), shellService.Settings.TimeOut))
+                    using (var stream = ThrottledStream.ReadFromURLIntoStream(url, (shellService.Settings.Bandwidth / shellService.Settings.ParallelImages), shellService.Settings.TimeOut, shellService.Settings.ProxyHost, shellService.Settings.ProxyPort))
                         ThrottledStream.SaveStreamToDisk(stream, fileLocation);
                     Interlocked.Increment(ref counter);
                     Interlocked.Increment(ref totalCounter);

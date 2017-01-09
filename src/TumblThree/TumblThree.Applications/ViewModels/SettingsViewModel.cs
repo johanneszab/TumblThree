@@ -31,6 +31,8 @@ namespace TumblThree.Applications.ViewModels
         private string oauthCallbackUrl;
         private int parallelImages;
         private int parallelBlogs;
+        private int parallelScans;
+        private bool limitScanBandwidth;
         private int timeOut;
         private int bandwidth;
         private int imageSize;
@@ -139,6 +141,12 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref parallelBlogs, value); }
         }
 
+        public int ParallelScans
+        {
+            get { return parallelScans; }
+            set { SetProperty(ref parallelScans, value); }
+        }
+
         public int TimeOut
         {
             get { return timeOut; }
@@ -149,6 +157,12 @@ namespace TumblThree.Applications.ViewModels
         {
             get { return bandwidth; }
             set { SetProperty(ref bandwidth, value); }
+        }
+
+        public bool LimitScanBandwidth
+        {
+            get { return limitScanBandwidth; }
+            set { SetProperty(ref limitScanBandwidth, value); }
         }
 
         public int ImageSize
@@ -313,6 +327,8 @@ namespace TumblThree.Applications.ViewModels
                 DownloadLocation = settings.DownloadLocation;
                 ParallelImages = settings.ParallelImages;
                 ParallelBlogs = settings.ParallelBlogs;
+                ParallelScans = settings.ParallelScans;
+                LimitScanBandwidth = settings.LimitScanBandwidth;
                 ImageSize = settings.ImageSize;
                 VideoSize = settings.VideoSize;
                 BlogType = settings.BlogType;
@@ -351,6 +367,8 @@ namespace TumblThree.Applications.ViewModels
                 DownloadLocation = ".\\Blogs";
                 ParallelImages = 25;
                 ParallelBlogs = 2;
+                ParallelScans = 20;
+                LimitScanBandwidth = false;
                 TimeOut = 120;
                 Bandwidth = int.MaxValue;
                 ImageSize = 1280;
@@ -394,6 +412,8 @@ namespace TumblThree.Applications.ViewModels
             settings.DownloadLocation = DownloadLocation;
             settings.ParallelImages = ParallelImages;
             settings.ParallelBlogs = ParallelBlogs;
+            settings.ParallelScans = ParallelScans;
+            settings.LimitScanBandwidth = LimitScanBandwidth;
             settings.TimeOut = TimeOut;
             settings.Bandwidth = Bandwidth;
             settings.ImageSize = ImageSize;

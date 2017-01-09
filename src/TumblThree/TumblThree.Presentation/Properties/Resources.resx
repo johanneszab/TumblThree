@@ -451,6 +451,24 @@
     <value>Throttles the bandwidth of the downloader</value>
   </data>
   <data name="ToolTipLimitBandwidthDescription" xml:space="preserve">
-    <value>Sets the maximum bandwidth available for the downloader in kbyes/s. Setting this to low will negatively impact the performance of the scan process.</value>
+    <value>Sets the maximum bandwidth available for the downloader in kbyes/s.</value>
+  </data>
+  <data name="LimitScan" xml:space="preserve">
+    <value>Limit the scan bandwidth</value>
+  </data>
+  <data name="ScanConnections" xml:space="preserve">
+    <value>Scan connections</value>
+  </data>
+  <data name="ToolTipLimitScan" xml:space="preserve">
+    <value>Includes the scan bandwidth in the throttling</value>
+  </data>
+  <data name="ToolTipLimitScanDescription" xml:space="preserve">
+    <value>Since the data used for scanning is usually small, you should leave this off since the throttling algorithm is too slow to adjust and will negatively impact the performance.</value>
+  </data>
+  <data name="ToolTipScan" xml:space="preserve">
+    <value>Number of connections used for each scan</value>
+  </data>
+  <data name="ToolTipScanDescription" xml:space="preserve">
+    <value>Sets the number connections used for scanning. Since the data is usually small, you should leave this high. It's divided by the number of active crawls.</value>
   </data>
 </root>

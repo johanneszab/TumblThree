@@ -493,6 +493,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Limit the scan bandwidth.
+        /// </summary>
+        public static string LimitScan {
+            get {
+                return ResourceManager.GetString("LimitScan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string Name {
@@ -772,6 +781,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scan connections.
+        /// </summary>
+        public static string ScanConnections {
+            get {
+                return ResourceManager.GetString("ScanConnections", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please select a blog.
         /// </summary>
         public static string SelectABlog {
@@ -1006,11 +1024,47 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sets the maximum bandwidth available for the downloader in kbyes/s. Setting this to low will negatively impact the performance of the scan process..
+        ///   Looks up a localized string similar to Sets the maximum bandwidth available for the downloader in kbyes/s..
         /// </summary>
         public static string ToolTipLimitBandwidthDescription {
             get {
                 return ResourceManager.GetString("ToolTipLimitBandwidthDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Includes the scan bandwidth in the throttling.
+        /// </summary>
+        public static string ToolTipLimitScan {
+            get {
+                return ResourceManager.GetString("ToolTipLimitScan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Since the data used for scanning is usually small, you should leave this off since the throttling algorithm is too slow to adjust and will negatively impact the performance..
+        /// </summary>
+        public static string ToolTipLimitScanDescription {
+            get {
+                return ResourceManager.GetString("ToolTipLimitScanDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of connections used for each scan.
+        /// </summary>
+        public static string ToolTipScan {
+            get {
+                return ResourceManager.GetString("ToolTipScan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sets the number connections used for scanning. Since the data is usually small, you should leave this high. It&apos;s divided by the number of active crawls..
+        /// </summary>
+        public static string ToolTipScanDescription {
+            get {
+                return ResourceManager.GetString("ToolTipScanDescription", resourceCulture);
             }
         }
         

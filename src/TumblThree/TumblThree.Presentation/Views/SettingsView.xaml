@@ -8,12 +8,13 @@
         xmlns:vr="clr-namespace:TumblThree.Presentation.ValidationRules"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
         xmlns:vm="clr-namespace:TumblThree.Applications.ViewModels;assembly=TumblThree.Applications"
-        mc:Ignorable="d" Title="Settings" Height="940" Width="700"
+        mc:Ignorable="d" Title="Settings" Height="980" Width="700"
         d:DataContext="{d:DesignInstance vm:SettingsViewModel}">
 
     <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
         <Grid Height="Auto">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -131,6 +132,51 @@
             </Grid>
             <Grid MinHeight="46" Height="Auto" Grid.Row="5">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <CheckBox x:Name="checkBoxLimitScan" Content="{x:Static p:Resources.LimitScan}" IsChecked="{Binding LimitScanBandwidth, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10">
+                    <CheckBox.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipLimitScan}"/>
+                                <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipLimitScanDescription}"/>
+                            </StackPanel>
+                        </ToolTip>
+                    </CheckBox.ToolTip>
+                </CheckBox>
+                <Label x:Name="scanConnectionsLabel" Grid.Column="2" Content="{x:Static p:Resources.ScanConnections}" VerticalAlignment="Center" HorizontalAlignment="Left">
+                    <Label.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipScan}"/>
+                                <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipScanDescription}"/>
+                            </StackPanel>
+                        </ToolTip>
+                    </Label.ToolTip>
+                </Label>
+                <TextBox x:Name="scanBandwidthComboBox" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" MinWidth="40">
+                    <TextBox.Text>
+                        <Binding Path="ParallelScans" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <vr:UIntRangeRule/>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                    <TextBox.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipScan}"/>
+                                <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipScanDescription}"/>
+                            </StackPanel>
+                        </ToolTip>
+                    </TextBox.ToolTip>
+                </TextBox>
+            </Grid>
+            <Grid MinHeight="46" Height="Auto" Grid.Row="6">
+                <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
@@ -141,7 +187,7 @@
                 <Label x:Name="proxyPortLabel" Grid.Column="2" Content="{x:Static p:Resources.ProxyPort}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10" />
                 <TextBox x:Name="proxyPortBox" Text="{Binding ProxyPort, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Grid.Column="3" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center" Margin="00,0,10,0"/>
             </Grid>
-            <Grid MinHeight="46" Height="Auto" Grid.Row="6">
+            <Grid MinHeight="46" Height="Auto" Grid.Row="7">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -161,7 +207,7 @@
                     </TextBox.Text>
                 </TextBox>
             </Grid>
-            <Grid MinHeight="46" Height="Auto" Grid.Row="7">
+            <Grid MinHeight="46" Height="Auto" Grid.Row="8">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -224,7 +270,7 @@
                 <CheckBox x:Name="checkBoxDeleteIndex" Content="{x:Static p:Resources.DeleteIndex}" IsChecked="{Binding DeleteOnlyIndex, Mode=TwoWay}" Grid.Column="0" Grid.Row="15" Margin="10" />
                 <CheckBox x:Name="checkBoxRemoveIndex" Content="{x:Static p:Resources.RemoveIndex}" IsChecked="{Binding RemoveIndexAfterCrawl, Mode=TwoWay}" Grid.Column="0" Grid.Row="16" Margin="10"/>
             </Grid>
-            <Grid MinHeight="36" Height="Auto" Grid.Row="8">
+            <Grid MinHeight="36" Height="Auto" Grid.Row="9">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
