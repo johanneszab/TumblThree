@@ -93,7 +93,7 @@ namespace TumblThree.Applications.Controllers
 
         public QueueManager QueueManager { get; set; }
 
-        public void Initialize()
+        public async Task Initialize()
         {
             crawlerService.AddBlogCommand = addBlogCommand;
             crawlerService.RemoveBlogCommand = removeBlogCommand;
@@ -119,7 +119,7 @@ namespace TumblThree.Applications.Controllers
 
             shellService.ContentView = ManagerViewModel.View;
 
-            LoadLibrary();
+            await LoadLibrary();
 
             if (shellService.Settings.CheckClipboard)
                 shellService.ClipboardMonitor.OnClipboardContentChanged += OnClipboardContentChanged;
@@ -163,7 +163,7 @@ namespace TumblThree.Applications.Controllers
             }
         }
 
-        private async void LoadLibrary()
+        private async Task LoadLibrary()
         {
             Logger.Verbose("ManagerController.UpdateBlogFiles:Start");
             selectionService.BlogFiles.Clear();
@@ -207,7 +207,6 @@ namespace TumblThree.Applications.Controllers
 
         private Task<IReadOnlyList<Blog>> GetFilesAsync(string directory)
         {
-
             // run this in an own task:
             return Task<IReadOnlyList<Blog>>.Factory.StartNew(() =>
             {
@@ -957,17 +956,9 @@ namespace TumblThree.Applications.Controllers
             blog.CreateAudioMeta = shellService.Settings.CreateAudioMeta;
             blog.SkipGif = shellService.Settings.SkipGif;
             blog.ForceSize = shellService.Settings.ForceSize;
-
-            try
-            {
-                blog = await GetMetaInformation(blog);
-
-                blog.Online = await IsBlogOnline(blog.Url);
-            }
-            catch
-            {
-                // catches Net.Socket.Exception from the remote host if too many blogs are added simultaneously
-            }
+            
+            blog = await GetMetaInformation(blog);
+            blog.Online = await IsBlogOnline(blog.Url);
 
             if (SaveBlog(blog))
             {

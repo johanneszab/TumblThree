@@ -469,6 +469,6 @@
     <value>Number of connections used for each scan</value>
   </data>
   <data name="ToolTipScanDescription" xml:space="preserve">
-    <value>Sets the number connections used for scanning. Since the data is usually small, you should leave this high. It's divided by the number of active crawls.</value>
+    <value>Sets the number connections used for scanning. Since the data is usually small, you should leave this high.</value>
   </data>
 </root>

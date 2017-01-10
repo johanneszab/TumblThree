@@ -1060,7 +1060,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sets the number connections used for scanning. Since the data is usually small, you should leave this high. It&apos;s divided by the number of active crawls..
+        ///   Looks up a localized string similar to Sets the number connections used for scanning. Since the data is usually small, you should leave this high..
         /// </summary>
         public static string ToolTipScanDescription {
             get {
