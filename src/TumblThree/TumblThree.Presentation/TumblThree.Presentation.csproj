@@ -189,6 +189,7 @@
     <Compile Include="Services\EnvironmentService.cs" />
     <Compile Include="Services\PresentationService.cs" />
     <Compile Include="ValidationRules\TimeSpanRule.cs" />
+    <Compile Include="ValidationRules\BandwidthRangeRule.cs" />
     <Compile Include="ValidationRules\UIntRangeRule.cs" />
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>

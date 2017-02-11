@@ -376,6 +376,15 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MaxBytesPerSecond has to be &gt;0.
+        /// </summary>
+        public static string MaxBytePerSecond {
+            get {
+                return ResourceManager.GetString("MaxBytePerSecond", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Photo Caption: {0}.
         /// </summary>
         public static string PhotoCaption {

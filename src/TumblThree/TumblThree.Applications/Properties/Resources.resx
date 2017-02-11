@@ -222,6 +222,9 @@
   <data name="Link" xml:space="preserve">
     <value>Link: {0}</value>
   </data>
+  <data name="MaxBytePerSecond" xml:space="preserve">
+    <value>MaxBytesPerSecond has to be &gt;0</value>
+  </data>
   <data name="PhotoCaption" xml:space="preserve">
     <value>Photo Caption: {0}</value>
   </data>

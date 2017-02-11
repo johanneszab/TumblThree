@@ -113,10 +113,18 @@
                     </Label.ToolTip>
                 </Label>
                 <TextBox x:Name="bandwidthComboBox" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" MinWidth="40">
+                    <Validation.ErrorTemplate>
+                        <ControlTemplate>
+                            <StackPanel>
+                                <AdornedElementPlaceholder />
+                                <TextBlock Text="{Binding [0].ErrorContent}" Foreground="Red" TextTrimming="CharacterEllipsis"/>
+                            </StackPanel>
+                        </ControlTemplate>
+                    </Validation.ErrorTemplate>
                     <TextBox.Text>
                         <Binding Path="Bandwidth" UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
-                                <vr:UIntRangeRule/>
+                                <vr:BandwidthRangeRule/>
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>

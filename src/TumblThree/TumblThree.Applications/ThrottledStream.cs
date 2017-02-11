@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Threading;
 using System.Timers;
+using TumblThree.Applications.Properties;
 
 namespace TumblThree.Applications
 {
@@ -20,7 +22,7 @@ namespace TumblThree.Applications
             set
             {
                 if (value < 1)
-                    throw new ArgumentException("MaxBytesPerSecond has to be >0");
+                    throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Resources.MaxBytePerSecond));
 
                 maxBytesPerSecond = value;
             }
