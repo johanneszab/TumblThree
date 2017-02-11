@@ -868,7 +868,6 @@ namespace TumblThree.Applications.Controllers
         {
             try
             {
-                int bandwidth = int.MaxValue;
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = "GET";
                 if (!String.IsNullOrEmpty(shellService.Settings.ProxyHost))
@@ -889,6 +888,7 @@ namespace TumblThree.Applications.Controllers
                 //request.ContentType = "x-www-from-urlencoded";
 
                 // should we throttle?
+                int bandwidth = 2000000;
                 if (shellService.Settings.LimitScanBandwidth)
                     bandwidth = shellService.Settings.Bandwidth;
 
