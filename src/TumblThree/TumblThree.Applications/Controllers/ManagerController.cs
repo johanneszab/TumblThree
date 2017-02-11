@@ -869,21 +869,6 @@ namespace TumblThree.Applications.Controllers
             try
             {
                 int bandwidth = int.MaxValue;
-                try
-                {
-                    checked
-                    {
-                        // should we throttle?
-                        if (shellService.Settings.LimitScanBandwidth)
-                            bandwidth = shellService.Settings.Bandwidth;
-                        bandwidth = bandwidth / shellService.Settings.ParallelImages * 1024;
-                    }
-                }
-                catch (OverflowException ex)
-                {
-                    bandwidth = int.MaxValue;
-                }
-
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = "GET";
                 if (!String.IsNullOrEmpty(shellService.Settings.ProxyHost))
@@ -903,11 +888,13 @@ namespace TumblThree.Applications.Controllers
                 //request.ContentLength = 0;
                 //request.ContentType = "x-www-from-urlencoded";
 
-
+                // should we throttle?
+                if (shellService.Settings.LimitScanBandwidth)
+                    bandwidth = shellService.Settings.Bandwidth;
 
                 using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
                 {
-                    using (ThrottledStream stream = new ThrottledStream(response.GetResponseStream(), bandwidth))
+                    using (ThrottledStream stream = new ThrottledStream(response.GetResponseStream(), (bandwidth / shellService.Settings.ParallelImages) * 1024))
                     {
                         using (BufferedStream buffer = new BufferedStream(stream))
                         {

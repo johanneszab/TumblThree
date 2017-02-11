@@ -151,19 +151,6 @@ namespace TumblThree.Applications
 
         public static ThrottledStream ReadFromURLIntoStream(string url, int bandwidthInKb, int timeoutInSeconds, string proxyHost, string proxyPort)
         {
-
-            try
-            {
-                checked
-                {
-                    bandwidthInKb = bandwidthInKb * 1024;
-                }
-            }
-            catch (OverflowException ex)
-            {
-                bandwidthInKb = int.MaxValue;
-            }
-
             // Create a web request to the URL
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "GET";

@@ -370,7 +370,7 @@ namespace TumblThree.Applications.ViewModels
                 ParallelScans = 20;
                 LimitScanBandwidth = false;
                 TimeOut = 120;
-                Bandwidth = 12800;
+                Bandwidth = int.MaxValue;
                 ImageSize = 1280;
                 VideoSize = 1080;
                 BlogType = "None";
