@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Controls;
+using TumblThree.Presentation.Properties;
 
 namespace TumblThree.Presentation.ValidationRules
 {
@@ -15,7 +16,7 @@ namespace TumblThree.Presentation.ValidationRules
                 if (TimeSpan.TryParse((string)value, out temp))
                     return new ValidationResult(true, null);
             }
-            return new ValidationResult(false, "Please enter a legal TimeSpan.");
+            return new ValidationResult(false, string.Format(CultureInfo.CurrentCulture, Resources.TimeSpanTypeError));
         }
     }
 }

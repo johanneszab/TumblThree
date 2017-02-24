@@ -477,4 +477,13 @@
   <data name="IntegerTypeError" xml:space="preserve">
     <value>The value must be of type integer.</value>
   </data>
+  <data name="TimeSpanTypeError" xml:space="preserve">
+    <value>The value must have to form hh:mm:ss.</value>
+  </data>
+  <data name="UIntRangeError" xml:space="preserve">
+    <value>The value must be between 0 and 4294967295.</value>
+  </data>
+  <data name="UIntTypeError" xml:space="preserve">
+    <value>The value must be of type integer.</value>
+  </data>
 </root>

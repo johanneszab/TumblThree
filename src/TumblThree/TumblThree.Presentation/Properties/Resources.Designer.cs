@@ -925,6 +925,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The value must have to form hh:mm:ss..
+        /// </summary>
+        public static string TimeSpanTypeError {
+            get {
+                return ResourceManager.GetString("TimeSpanTypeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Authenticate to the tumblr.com network.
         /// </summary>
         public static string ToolTipAuthenticate {
@@ -1083,6 +1092,24 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipScanDescription {
             get {
                 return ResourceManager.GetString("ToolTipScanDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value must be between 0 and 4294967295..
+        /// </summary>
+        public static string UIntRangeError {
+            get {
+                return ResourceManager.GetString("UIntRangeError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value must be of type integer..
+        /// </summary>
+        public static string UIntTypeError {
+            get {
+                return ResourceManager.GetString("UIntTypeError", resourceCulture);
             }
         }
         

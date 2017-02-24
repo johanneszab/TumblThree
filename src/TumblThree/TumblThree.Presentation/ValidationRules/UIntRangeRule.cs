@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Controls;
+using TumblThree.Presentation.Properties;
 
 namespace TumblThree.Presentation.ValidationRules
 {
@@ -16,9 +17,9 @@ namespace TumblThree.Presentation.ValidationRules
             }
             catch (Exception e)
             {
-                return new ValidationResult(false, "Illegal characters or " + e.Message);
+                return new ValidationResult(false, string.Format(CultureInfo.CurrentCulture, Resources.UIntRangeError));
             }
-            return new ValidationResult(false, "Please enter a legal UInt32.");
+            return new ValidationResult(false, string.Format(CultureInfo.CurrentCulture, Resources.UIntTypeError));
         }
     }
 }

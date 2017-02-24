@@ -408,15 +408,6 @@
   <data name="DownloadVideoMeta" xml:space="preserve">
     <value>Lade Videoinfo</value>
   </data>
-  <data name="MetaAudio" xml:space="preserve">
-    <value>Speichere Audiometa</value>
-  </data>
-  <data name="MetaPhoto" xml:space="preserve">
-    <value>Speichere Fotometa</value>
-  </data>
-  <data name="MetaVideo" xml:space="preserve">
-    <value>Speichere Videometa</value>
-  </data>
   <data name="DefaultSettingsForBlogs" xml:space="preserve">
     <value>Blogeinstellungen (wird angewendet beim Hinzufügen des Blogs):</value>
   </data>
@@ -479,5 +470,20 @@
   </data>
   <data name="ToolTipScanDescription" xml:space="preserve">
     <value>Setzt die Anzahl der Scanverbindungen. Aufgrund der kleinen Datenmenge sollte diese Einstellung hochbleiben.</value>
+  </data>
+  <data name="IntegerRangeError" xml:space="preserve">
+    <value>Der Wert muss zwischen 1 and 2000000 liegen.</value>
+  </data>
+  <data name="IntegerTypeError" xml:space="preserve">
+    <value>Der Wert muss vom Typ Integer sein.</value>
+  </data>
+  <data name="TimeSpanTypeError" xml:space="preserve">
+    <value>Der Wert muss die Form hh:mm:ss haben.</value>
+  </data>
+  <data name="UIntRangeError" xml:space="preserve">
+    <value>Der Wert muss zwischen 0 und 4294967295 liegen.</value>
+  </data>
+  <data name="UIntTypeError" xml:space="preserve">
+    <value>Der Wert muss vom Typ Integer sein.</value>
   </data>
 </root>

@@ -112,7 +112,7 @@
                         </ToolTip>
                     </Label.ToolTip>
                 </Label>
-                <TextBox x:Name="bandwidthComboBox" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" MinWidth="40" >
+                <TextBox x:Name="bandwidthComboBox" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" MinWidth="40">
                     <TextBox.Text>
                         <Binding Path="Bandwidth" UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
@@ -157,14 +157,6 @@
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
-                    <TextBox.ToolTip>
-                        <ToolTip>
-                            <StackPanel>
-                                <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipScan}"/>
-                                <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipScanDescription}"/>
-                            </StackPanel>
-                        </ToolTip>
-                    </TextBox.ToolTip>
                 </TextBox>
             </Grid>
             <Grid MinHeight="46" Height="Auto" Grid.Row="6">
