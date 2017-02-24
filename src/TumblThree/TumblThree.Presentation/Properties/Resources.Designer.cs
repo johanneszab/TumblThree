@@ -466,7 +466,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The value must be between 1 and 2,000,000..
+        ///   Looks up a localized string similar to The value must be between 1 and 2000000..
         /// </summary>
         public static string IntegerRangeError {
             get {

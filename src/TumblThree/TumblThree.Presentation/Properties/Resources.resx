@@ -472,7 +472,7 @@
     <value>Sets the number connections used for scanning. Since the data is usually small, you should leave this high.</value>
   </data>
   <data name="IntegerRangeError" xml:space="preserve">
-    <value>The value must be between 1 and 2,000,000.</value>
+    <value>The value must be between 1 and 2000000.</value>
   </data>
   <data name="IntegerTypeError" xml:space="preserve">
     <value>The value must be of type integer.</value>
