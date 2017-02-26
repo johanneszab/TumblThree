@@ -57,6 +57,7 @@
     <Compile Include="Models\Blog.cs" />
     <Compile Include="Models\IBlog.cs" />
     <Compile Include="Models\TumblrBlog.cs" />
+    <Compile Include="Models\TumblrFiles.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

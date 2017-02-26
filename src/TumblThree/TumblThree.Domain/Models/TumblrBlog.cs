@@ -8,6 +8,7 @@ namespace TumblThree.Domain.Models
     public class TumblrBlog : Blog
     {
         private string version;
+        private string childId;
         private string description;
         private string title;
         private uint progress;
@@ -65,7 +66,8 @@ namespace TumblThree.Domain.Models
 
         public TumblrBlog()
         {
-            this.version = "2";
+            this.version = "3";
+            this.childId = String.Empty;
             this.description = String.Empty;
             this.title = String.Empty;
             this.progress = 0;
@@ -112,7 +114,8 @@ namespace TumblThree.Domain.Models
 
         public TumblrBlog(string url)
         {
-            this.version = "2";
+            this.version = "3";
+            this.childId = String.Empty;
             this.description = String.Empty;
             this.Url = url;
             this.title = String.Empty;
@@ -174,6 +177,12 @@ namespace TumblThree.Domain.Models
         {
             get { return title; }
             set { SetProperty(ref title, value); }
+        }
+
+        public string ChildId
+        {
+            get { return childId; }
+            set { SetProperty(ref childId, value); }
         }
 
         public uint Progress
@@ -425,13 +434,6 @@ namespace TumblThree.Domain.Models
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
         {
-            if (Version != "2")
-            {
-                var temp = Links.Select(item => item?.Split('/').Last()).ToList();
-                Links = temp;
-                Version = "2";
-                Dirty = true;
-            }
         }
     }
 }

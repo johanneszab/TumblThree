@@ -221,27 +221,82 @@ namespace TumblThree.Applications.Controllers
 
             List<Blog> blogs = new List<Blog>();
 
-            foreach (var filename in Directory.GetFiles(directory, "*.tumblr"))
+            foreach (var filename in Directory.GetFiles(directory, "*.tumblr").Where(name => !name.EndsWith("_files.tumblr")))
             {
-                using (FileStream stream = new FileStream(filename,
-                    FileMode.Open, FileAccess.Read, FileShare.Read))
+                try
                 {
-                    IFormatter formatter = new BinaryFormatter();
-                    try
+                    using (FileStream stream = new FileStream(filename,
+                        FileMode.Open, FileAccess.Read, FileShare.Read))
                     {
-                        TumblrBlog blog = (TumblrBlog)formatter.Deserialize(stream);
-                        blogs.Add(blog);
+                        using (var reader = new BinaryReader(stream, new ASCIIEncoding()))
+                        {
+                            byte[] buffer = new byte[18];
+                            stream.Seek(0x17, 0);
+                            buffer = reader.ReadBytes(17);
+                            byte[] tumblThreeSignature = new byte[] { 0x54, 0x75, 0x6D, 0x62, 0x6C, 0x54, 0x68, 0x72, 0x65, 0x65, 0x2E, 0x44, 0x6F, 0x6D, 0x61, 0x69, 0x6E };
+                            if (buffer.SequenceEqual(tumblThreeSignature))
+                            {
+                                stream.Seek(0, 0);
+                                IFormatter formatter = new BinaryFormatter();
+                                TumblrBlog blog = (TumblrBlog)formatter.Deserialize(stream);
+                                blog.ChildId = Path.Combine(directory, blog.Name + "_files.tumblr");
+                                UpdateTumblrBlog(blog);
+                                blogs.Add(blog);
+                            }
+                            else
+                            {
+                                string json = File.ReadAllText(filename);
+                                TumblrBlog blog = new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize<TumblrBlog>(json);
+                                blogs.Add(blog);
+                            }
+                        }
                     }
-                    catch (SerializationException ex)
-                    {
-                        ex.Data["Filename"] = filename;
-                        throw;
-                    }
+                }
+                catch (SerializationException ex)
+                {
+                    ex.Data["Filename"] = filename;
+                    throw;
                 }
             }
             Logger.Verbose("ManagerController.UpdateBlogFiles:GetFilesAsync End");
 
             return blogs;
+        }
+
+        private bool UpdateTumblrBlog(TumblrBlog blog)
+        {
+            if (blog.Version != "2")
+            {
+                if (!File.Exists(blog.ChildId))
+                {
+                    TumblrFiles files = new TumblrFiles();
+                    files.Name = blog.ChildId;
+                    files.Links = blog.Links.Select(item => item?.Split('/').Last()).ToList();
+                    blog.Links.Clear();
+                    blog.Version = "2";
+                    blog.Dirty = true;
+                    SaveTumblrFiles(files);
+                    files = null;
+                }
+            }
+            return true;
+        }
+
+        private TumblrFiles GetTumblrFiles(TumblrBlog blog)
+        {
+            string filename = blog.ChildId;
+
+            try
+            {
+                string json = File.ReadAllText(filename);
+                TumblrFiles files = new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize<TumblrFiles>(json);
+                return files;
+            }
+            catch (SerializationException ex)
+            {
+                ex.Data["Filename"] = filename;
+                throw;
+            }
         }
 
         private bool CanCrawl()
@@ -416,6 +471,12 @@ namespace TumblThree.Applications.Controllers
 
             blog.TotalCount = newImageCount;
 
+            var indexPath = Path.Combine(shellService.Settings.DownloadLocation, "Index");
+            var blogPath = shellService.Settings.DownloadLocation;
+
+            blog.ChildId = Path.Combine(indexPath, blog.Name + "_files.tumblr");
+            TumblrFiles files = GetTumblrFiles(blog);
+
             var newProgress = new DataModels.DownloadProgress();
             newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressUniqueDownloads);
             progress.Report(newProgress);
@@ -444,12 +505,9 @@ namespace TumblThree.Applications.Controllers
             var imageUrls = new HashSet<Tuple<string, string, string>>(newImageUrls);
 
             // remove all files previously downloaded
-            var blogLinks = new HashSet<string>(blog.Links);
+            var blogLinks = new HashSet<string>(files.Links);
             imageUrls.RemoveWhere(item => blogLinks.Contains(item.Item1));
             imageUrls.RemoveWhere(item => blogLinks.Contains(item.Item3));
-
-            var indexPath = Path.Combine(shellService.Settings.DownloadLocation, "Index");
-            var blogPath = shellService.Settings.DownloadLocation;
 
             // make sure the datafolder still exists
             CreateDataFolder(blog.Name, blogPath);
@@ -475,11 +533,11 @@ namespace TumblThree.Applications.Controllers
                                 fileName = currentImageUrl.Item1.Split('/').Last();
                                 fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), fileName);
 
-                                if (Download(blog, fileLocation, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedPhotos, ref downloadedImages))
+                                if (Download(files, fileLocation, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedPhotos, ref downloadedImages))
                                 {
                                     lock (lockObjectProgress)
                                     {
-                                        blog.Links.Add(fileName);
+                                        files.Links.Add(fileName);
                                         // could be moved out of the lock?
                                         blog.DownloadedImages = (uint)downloadedImages;
                                         blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
@@ -493,11 +551,11 @@ namespace TumblThree.Applications.Controllers
                                 fileName = currentImageUrl.Item1.Split('/').Last();
                                 fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), fileName);
 
-                                if (Download(blog, fileLocation, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedVideos, ref downloadedImages))
+                                if (Download(files, fileLocation, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedVideos, ref downloadedImages))
                                 {
                                     lock (lockObjectProgress)
                                     {
-                                        blog.Links.Add(fileName);
+                                        files.Links.Add(fileName);
                                         // could be moved out of the lock?
                                         blog.DownloadedImages = (uint)downloadedImages;
                                         blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
@@ -510,11 +568,11 @@ namespace TumblThree.Applications.Controllers
                             case "Audio":
                                 fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), currentImageUrl.Item3 + ".swf");
 
-                                if (Download(blog, fileLocation, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedAudios, ref downloadedImages))
+                                if (Download(files, fileLocation, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedAudios, ref downloadedImages))
                                 {
                                     lock (lockObjectProgress)
                                     {
-                                        blog.Links.Add(fileName);
+                                        files.Links.Add(fileName);
                                         // could be moved out of the lock?
                                         blog.DownloadedImages = (uint)downloadedImages;
                                         blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
@@ -525,11 +583,11 @@ namespace TumblThree.Applications.Controllers
                             case "Text":
                                 fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameTexts));
 
-                                if (Download(blog, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedTexts, ref downloadedImages))
+                                if (Download(files, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedTexts, ref downloadedImages))
                                 {
                                     lock (lockObjectProgress)
                                     {
-                                        blog.Links.Add(currentImageUrl.Item3);
+                                        files.Links.Add(currentImageUrl.Item3);
                                         // could be moved out of the lock?
                                         blog.DownloadedImages = (uint)downloadedImages;
                                         blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
@@ -540,11 +598,11 @@ namespace TumblThree.Applications.Controllers
                             case "Quote":
                                 fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameQuotes));
 
-                                if (Download(blog, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedQuotes, ref downloadedImages))
+                                if (Download(files, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedQuotes, ref downloadedImages))
                                 {
                                     lock (lockObjectProgress)
                                     {
-                                        blog.Links.Add(currentImageUrl.Item3);
+                                        files.Links.Add(currentImageUrl.Item3);
                                         // could be moved out of the lock?
                                         blog.DownloadedImages = (uint)downloadedImages;
                                         blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
@@ -555,11 +613,11 @@ namespace TumblThree.Applications.Controllers
                             case "Link":
                                 fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameLinks));
 
-                                if (Download(blog, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedLinks, ref downloadedImages))
+                                if (Download(files, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedLinks, ref downloadedImages))
                                 {
                                     lock (lockObjectProgress)
                                     {
-                                        blog.Links.Add(currentImageUrl.Item3);
+                                        files.Links.Add(currentImageUrl.Item3);
                                         // could be moved out of the lock?
                                         blog.DownloadedImages = (uint)downloadedImages;
                                         blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
@@ -570,11 +628,11 @@ namespace TumblThree.Applications.Controllers
                             case "Conversation":
                                 fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameConversations));
 
-                                if (Download(blog, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedConversations, ref downloadedImages))
+                                if (Download(files, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedConversations, ref downloadedImages))
                                 {
                                     lock (lockObjectProgress)
                                     {
-                                        blog.Links.Add(currentImageUrl.Item3);
+                                        files.Links.Add(currentImageUrl.Item3);
                                         // could be moved out of the lock?
                                         blog.DownloadedImages = (uint)downloadedImages;
                                         blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
@@ -585,11 +643,11 @@ namespace TumblThree.Applications.Controllers
                             case "PhotoMeta":
                                 fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaPhoto));
 
-                                if (Download(blog, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedPhotoMetas, ref downloadedImages))
+                                if (Download(files, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedPhotoMetas, ref downloadedImages))
                                 {
                                     lock (lockObjectProgress)
                                     {
-                                        blog.Links.Add(currentImageUrl.Item3);
+                                        files.Links.Add(currentImageUrl.Item3);
                                         // could be moved out of the lock?
                                         blog.DownloadedImages = (uint)downloadedImages;
                                         blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
@@ -600,11 +658,11 @@ namespace TumblThree.Applications.Controllers
                             case "VideoMeta":
                                 fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaVideo));
 
-                                if (Download(blog, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedVideoMetas, ref downloadedImages))
+                                if (Download(files, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedVideoMetas, ref downloadedImages))
                                 {
                                     lock (lockObjectProgress)
                                     {
-                                        blog.Links.Add(currentImageUrl.Item3);
+                                        files.Links.Add(currentImageUrl.Item3);
                                         // could be moved out of the lock?
                                         blog.DownloadedImages = (uint)downloadedImages;
                                         blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
@@ -615,11 +673,11 @@ namespace TumblThree.Applications.Controllers
                             case "AudioMeta":
                                 fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaAudio));
 
-                                if (Download(blog, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedAudioMetas, ref downloadedImages))
+                                if (Download(files, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedAudioMetas, ref downloadedImages))
                                 {
                                     lock (lockObjectProgress)
                                     {
-                                        blog.Links.Add(currentImageUrl.Item3);
+                                        files.Links.Add(currentImageUrl.Item3);
                                         // could be moved out of the lock?
                                         blog.DownloadedImages = (uint)downloadedImages;
                                         blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
@@ -640,6 +698,8 @@ namespace TumblThree.Applications.Controllers
             blog.LastDownloadedVideo = null;
             blog.Dirty = false;
             SaveBlog(blog);
+            SaveTumblrFiles(files);
+            files = null;
 
             newProgress = new DataModels.DownloadProgress();
             newProgress.Progress = "";
@@ -870,6 +930,7 @@ namespace TumblThree.Applications.Controllers
             {
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = "GET";
+                request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
                 if (!String.IsNullOrEmpty(shellService.Settings.ProxyHost))
                 {
                     request.Proxy = new WebProxy(shellService.Settings.ProxyHost, Int32.Parse(shellService.Settings.ProxyPort));
@@ -960,7 +1021,10 @@ namespace TumblThree.Applications.Controllers
             blog = await GetMetaInformation(blog);
             blog.Online = await IsBlogOnline(blog.Url);
 
-            if (SaveBlog(blog))
+            TumblrFiles files = new TumblrFiles();
+            files.ParentId = blog.Name;
+
+            if (SaveBlog(blog) && SaveTumblrFiles(files))
             {
                 lock (lockObject)
                 {
@@ -1007,12 +1071,9 @@ namespace TumblThree.Applications.Controllers
 
                 if (File.Exists(currentIndex))
                 {
-                    using (FileStream stream = new FileStream(newIndex, FileMode.Create, FileAccess.Write, FileShare.None))
-                    {
-                        IFormatter formatter = new BinaryFormatter();
-                        formatter.Serialize(stream, blog);
-                    }
-
+                    System.Web.Script.Serialization.JavaScriptSerializer jsJson = new System.Web.Script.Serialization.JavaScriptSerializer();
+                    jsJson.MaxJsonLength = 2147483644;
+                    File.WriteAllText(newIndex, jsJson.Serialize(blog));
                     File.Replace(newIndex, currentIndex, backupIndex, true);
                     try
                     {
@@ -1025,13 +1086,11 @@ namespace TumblThree.Applications.Controllers
                 }
                 else
                 {
-                    using (FileStream stream = new FileStream(currentIndex, FileMode.Create, FileAccess.Write, FileShare.None))
-                    {
-                        IFormatter formatter = new BinaryFormatter();
-                        formatter.Serialize(stream, blog);
-                    }
+                    System.Web.Script.Serialization.JavaScriptSerializer jsJson = new System.Web.Script.Serialization.JavaScriptSerializer();
+                    jsJson.MaxJsonLength = 2147483644;
+                    File.WriteAllText(currentIndex, jsJson.Serialize(blog));
                 }
-            
+
                 return true;
             }
             catch (Exception ex)
@@ -1042,6 +1101,53 @@ namespace TumblThree.Applications.Controllers
             }
         }
 
+        public bool SaveTumblrFiles(TumblrFiles blog)
+        {
+            if (blog == null)
+                return false;
+
+            var indexPath = Path.Combine(shellService.Settings.DownloadLocation, "Index");
+            var blogPath = shellService.Settings.DownloadLocation;
+
+            string currentIndex = Path.Combine(indexPath, blog.ParentId + "_files.tumblr");
+            string newIndex = Path.Combine(indexPath, blog.ParentId + "_files.tumblr.new");
+            string backupIndex = Path.Combine(indexPath, blog.ParentId + "_files.tumblr.bak");
+
+            try
+            {
+                CreateDataFolder("Index", blogPath);
+                CreateDataFolder(blog.ParentId, blogPath);
+
+                if (File.Exists(currentIndex))
+                {
+                    System.Web.Script.Serialization.JavaScriptSerializer jsJson = new System.Web.Script.Serialization.JavaScriptSerializer();
+                    jsJson.MaxJsonLength = 2147483644;
+                    File.WriteAllText(newIndex, jsJson.Serialize(blog)); File.Replace(newIndex, currentIndex, backupIndex, true);
+                    try
+                    {
+                        File.Delete(backupIndex);
+                    }
+                    catch
+                    {
+                        deferredDeletions.Add(backupIndex);
+                    }
+                }
+                else
+                {
+                    System.Web.Script.Serialization.JavaScriptSerializer jsJson = new System.Web.Script.Serialization.JavaScriptSerializer();
+                    jsJson.MaxJsonLength = 2147483644;
+                    File.WriteAllText(currentIndex, jsJson.Serialize(blog));
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("ManagerController:SaveBlog: {0}", ex);
+                shellService.ShowError(ex, Resources.CouldNotSaveBlog, blog.ParentId);
+                return false;
+            }
+        }
 
         public bool CreateDataFolder(string name, string location)
         {
@@ -1777,7 +1883,7 @@ namespace TumblThree.Applications.Controllers
             return null;
         }
 
-        private bool Download(TumblrBlog blog, string fileLocation, string url, IProgress<DataModels.DownloadProgress> progress, object lockObject, bool locked, ref int counter, ref int totalCounter)
+        private bool Download(TumblrFiles blog, string fileLocation, string url, IProgress<DataModels.DownloadProgress> progress, object lockObject, bool locked, ref int counter, ref int totalCounter)
         {
             var fileName = url.Split('/').Last();
             Monitor.Enter(lockObject, ref locked);
@@ -1808,7 +1914,7 @@ namespace TumblThree.Applications.Controllers
             }
         }
 
-        private bool Download(TumblrBlog blog, string fileLocation, string postId, string text, IProgress<DataModels.DownloadProgress> progress, object lockObject, bool locked, ref int counter, ref int totalCounter)
+        private bool Download(TumblrFiles blog, string fileLocation, string postId, string text, IProgress<DataModels.DownloadProgress> progress, object lockObject, bool locked, ref int counter, ref int totalCounter)
         {
             Monitor.Enter(lockObject, ref locked);
             if (blog.Links.Contains(postId))

@@ -156,6 +156,7 @@ namespace TumblThree.Applications
             // Create a web request to the URL
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "GET";
+            request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
             if (!String.IsNullOrEmpty(proxyHost))
             {
                 request.Proxy = new WebProxy(proxyHost, Int32.Parse(proxyPort));
