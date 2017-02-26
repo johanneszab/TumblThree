@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Linq;
+using System.Runtime.Serialization;
 
 namespace TumblThree.Domain.Models
 {
     [Serializable]
     public class TumblrBlog : Blog
     {
+        private string version;
         private string description;
         private string title;
         private uint progress;
@@ -62,6 +65,7 @@ namespace TumblThree.Domain.Models
 
         public TumblrBlog()
         {
+            this.version = "2";
             this.description = String.Empty;
             this.title = String.Empty;
             this.progress = 0;
@@ -108,6 +112,7 @@ namespace TumblThree.Domain.Models
 
         public TumblrBlog(string url)
         {
+            this.version = "2";
             this.description = String.Empty;
             this.Url = url;
             this.title = String.Empty;
@@ -151,6 +156,12 @@ namespace TumblThree.Domain.Models
             this.forceSize = false;
             this.lastDownloadedPhoto = null;
             this.lastDownloadedVideo = null;
+        }
+
+        public string Version
+        {
+            get { return version; }
+            set { SetProperty(ref version, value); }
         }
 
         public string Description
@@ -409,6 +420,18 @@ namespace TumblThree.Domain.Models
         {
             get { return state; }
             set { SetProperty(ref state, value); }
+        }
+
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context)
+        {
+            if (Version != "2")
+            {
+                var temp = Links.Select(item => item?.Split('/').Last()).ToList();
+                Links = temp;
+                Version = "2";
+                Dirty = true;
+            }
         }
     }
 }

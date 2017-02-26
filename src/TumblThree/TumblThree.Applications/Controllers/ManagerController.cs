@@ -444,8 +444,8 @@ namespace TumblThree.Applications.Controllers
             var imageUrls = new HashSet<Tuple<string, string, string>>(newImageUrls);
 
             // remove all files previously downloaded
-            var blogLinks = new HashSet<string>(blog.Links.Select(item => item?.Split('/').Last()));
-            imageUrls.RemoveWhere(item => blogLinks.Contains(item.Item1.Split('/').Last()));
+            var blogLinks = new HashSet<string>(blog.Links);
+            imageUrls.RemoveWhere(item => blogLinks.Contains(item.Item1));
             imageUrls.RemoveWhere(item => blogLinks.Contains(item.Item3));
 
             var indexPath = Path.Combine(shellService.Settings.DownloadLocation, "Index");
@@ -479,7 +479,7 @@ namespace TumblThree.Applications.Controllers
                                 {
                                     lock (lockObjectProgress)
                                     {
-                                        blog.Links.Add(currentImageUrl.Item1);
+                                        blog.Links.Add(fileName);
                                         // could be moved out of the lock?
                                         blog.DownloadedImages = (uint)downloadedImages;
                                         blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
@@ -497,7 +497,7 @@ namespace TumblThree.Applications.Controllers
                                 {
                                     lock (lockObjectProgress)
                                     {
-                                        blog.Links.Add(currentImageUrl.Item1);
+                                        blog.Links.Add(fileName);
                                         // could be moved out of the lock?
                                         blog.DownloadedImages = (uint)downloadedImages;
                                         blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
@@ -514,7 +514,7 @@ namespace TumblThree.Applications.Controllers
                                 {
                                     lock (lockObjectProgress)
                                     {
-                                        blog.Links.Add(currentImageUrl.Item1);
+                                        blog.Links.Add(fileName);
                                         // could be moved out of the lock?
                                         blog.DownloadedImages = (uint)downloadedImages;
                                         blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
@@ -1779,8 +1779,9 @@ namespace TumblThree.Applications.Controllers
 
         private bool Download(TumblrBlog blog, string fileLocation, string url, IProgress<DataModels.DownloadProgress> progress, object lockObject, bool locked, ref int counter, ref int totalCounter)
         {
+            var fileName = url.Split('/').Last();
             Monitor.Enter(lockObject, ref locked);
-            if (blog.Links.Contains(url.Split('/').Last()))
+            if (blog.Links.Contains(fileName))
             {
                 Monitor.Exit(lockObject);
                 return false;
@@ -1791,7 +1792,7 @@ namespace TumblThree.Applications.Controllers
                 try
                 {
                     var newProgress = new DataModels.DownloadProgress();
-                    newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressDownloadImage, url.Split('/').Last()); ;
+                    newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressDownloadImage, fileName); ;
                     progress.Report(newProgress);
 
                     using (var stream = ThrottledStream.ReadFromURLIntoStream(url, (shellService.Settings.Bandwidth / shellService.Settings.ParallelImages), shellService.Settings.TimeOut, shellService.Settings.ProxyHost, shellService.Settings.ProxyPort))
