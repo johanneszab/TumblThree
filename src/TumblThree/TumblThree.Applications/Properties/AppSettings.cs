@@ -88,6 +88,15 @@ namespace TumblThree.Applications.Properties
         public int TimeOut { get; set; }
 
         [DataMember]
+        public bool LimitConnections { get; set; }
+
+        [DataMember]
+        public int MaxConnections { get; set; }
+
+        [DataMember]
+        public int ConnectionTimeInterval { get; set; }
+
+        [DataMember]
         public int Bandwidth { get; set; }
 
         [DataMember]
@@ -214,6 +223,9 @@ namespace TumblThree.Applications.Properties
             ParallelScans = 20;
             LimitScanBandwidth = false;
             TimeOut = 120;
+            LimitConnections = true;
+            MaxConnections = 125;
+            ConnectionTimeInterval = 60;
             Bandwidth = 102400;
             ImageSize = 1280;
             VideoSize = 1080;

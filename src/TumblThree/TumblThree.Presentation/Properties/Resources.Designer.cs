@@ -169,6 +169,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Time interval (s):.
+        /// </summary>
+        public static string ConnectionTimeInterval {
+            get {
+                return ResourceManager.GetString("ConnectionTimeInterval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Copy url.
         /// </summary>
         public static string CopyUrl {
@@ -511,11 +520,29 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Limit Tumblr Api Connections.
+        /// </summary>
+        public static string LimitConnections {
+            get {
+                return ResourceManager.GetString("LimitConnections", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Limit the scan bandwidth.
         /// </summary>
         public static string LimitScan {
             get {
                 return ResourceManager.GetString("LimitScan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of connections:.
+        /// </summary>
+        public static string MaxConnections {
+            get {
+                return ResourceManager.GetString("MaxConnections", resourceCulture);
             }
         }
         
@@ -1056,6 +1083,24 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipLimitBandwidthDescription {
             get {
                 return ResourceManager.GetString("ToolTipLimitBandwidthDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Limit connections to the tumblr api..
+        /// </summary>
+        public static string ToolTipLimitConnections {
+            get {
+                return ResourceManager.GetString("ToolTipLimitConnections", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A too high value will forcefully close connections (429 -- Limit Exceeded). A too small value will decrease download speed..
+        /// </summary>
+        public static string ToolTipLimitConnectionsDescription {
+            get {
+                return ResourceManager.GetString("ToolTipLimitConnectionsDescription", resourceCulture);
             }
         }
         

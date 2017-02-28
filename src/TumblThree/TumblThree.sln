@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TumblThree.Applications", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApplicationFramework", "..\..\lib\WpfApplicationFramework\WpfApplicationFramework\WpfApplicationFramework.csproj", "{27B67DFE-0BF1-4435-B036-E4C083EAEA03}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RateLimiter", "..\..\lib\RateLimiter\RateLimiter\RateLimiter.csproj", "{EA31519A-3CFE-4879-8F03-AB4B3B6DE03B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{27B67DFE-0BF1-4435-B036-E4C083EAEA03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27B67DFE-0BF1-4435-B036-E4C083EAEA03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27B67DFE-0BF1-4435-B036-E4C083EAEA03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA31519A-3CFE-4879-8F03-AB4B3B6DE03B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA31519A-3CFE-4879-8F03-AB4B3B6DE03B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA31519A-3CFE-4879-8F03-AB4B3B6DE03B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA31519A-3CFE-4879-8F03-AB4B3B6DE03B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

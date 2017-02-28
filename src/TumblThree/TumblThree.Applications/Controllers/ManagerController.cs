@@ -26,6 +26,7 @@ using System.Text;
 using System.Web;
 using System.Collections.Specialized;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 namespace TumblThree.Applications.Controllers
 {
@@ -56,6 +57,7 @@ namespace TumblThree.Applications.Controllers
         private PauseTokenSource crawlBlogsPause;
         private readonly object lockObject = new object();
         private bool locked = false;
+        private RateLimiter.TimeLimiter timeconstraint;
 
         public delegate void BlogManagerFinishedLoadingHandler(object sender, EventArgs e);
         public event BlogManagerFinishedLoadingHandler BlogManagerFinishedLoading;
@@ -118,6 +120,8 @@ namespace TumblThree.Applications.Controllers
             ManagerViewModel.QueueItems.CollectionChanged += ManagerViewModel.QueueItemsCollectionChanged;
 
             shellService.ContentView = ManagerViewModel.View;
+
+            timeconstraint = RateLimiter.TimeLimiter.GetFromMaxCountByInterval(shellService.Settings.MaxConnections, TimeSpan.FromSeconds(shellService.Settings.ConnectionTimeInterval));
 
             await LoadLibrary();
 
@@ -289,7 +293,9 @@ namespace TumblThree.Applications.Controllers
             try
             {
                 string json = File.ReadAllText(filename);
-                TumblrFiles files = new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize<TumblrFiles>(json);
+                System.Web.Script.Serialization.JavaScriptSerializer jsJson = new System.Web.Script.Serialization.JavaScriptSerializer();
+                jsJson.MaxJsonLength = 2147483644;
+                TumblrFiles files = jsJson.Deserialize<TumblrFiles>(json);
                 return files;
             }
             catch (SerializationException ex)
@@ -894,7 +900,13 @@ namespace TumblThree.Applications.Controllers
             {
                 url = GetApiUrl(url, 1);
 
-                var blogDoc = RequestData(url);
+                XDocument blogDoc = null;
+
+                if (shellService.Settings.LimitConnections)
+                    blogDoc = timeconstraint.Perform<XDocument>(() => RequestData(url)).Result;
+                else
+                    blogDoc = RequestData(url).Result;
+
                 if (blogDoc != null)
                     return true;
                 else
@@ -924,7 +936,7 @@ namespace TumblThree.Applications.Controllers
             return url + "?" + UrlEncode(parameters);
         }
 
-        private XDocument RequestData(string url)
+        private async Task<XDocument> RequestData(string url)
         {
             try
             {
@@ -1106,17 +1118,12 @@ namespace TumblThree.Applications.Controllers
             if (blog == null)
                 return false;
 
-            var indexPath = Path.Combine(shellService.Settings.DownloadLocation, "Index");
-            var blogPath = shellService.Settings.DownloadLocation;
-
-            string currentIndex = Path.Combine(indexPath, blog.ParentId + "_files.tumblr");
-            string newIndex = Path.Combine(indexPath, blog.ParentId + "_files.tumblr.new");
-            string backupIndex = Path.Combine(indexPath, blog.ParentId + "_files.tumblr.bak");
+            string currentIndex = blog.Name;
+            string newIndex = Path.Combine(blog.Name + ".new");
+            string backupIndex = Path.Combine(blog.Name + ".bak");
 
             try
             {
-                CreateDataFolder("Index", blogPath);
-                CreateDataFolder(blog.ParentId, blogPath);
 
                 if (File.Exists(currentIndex))
                 {
@@ -1144,7 +1151,7 @@ namespace TumblThree.Applications.Controllers
             catch (Exception ex)
             {
                 Logger.Error("ManagerController:SaveBlog: {0}", ex);
-                shellService.ShowError(ex, Resources.CouldNotSaveBlog, blog.ParentId);
+                shellService.ShowError(ex, Resources.CouldNotSaveBlog, blog.Name);
                 return false;
             }
         }
@@ -1168,7 +1175,12 @@ namespace TumblThree.Applications.Controllers
             {
                 string url = GetApiUrl(blog.Url, 1);
 
-                var blogDoc = RequestData(url);
+                XDocument blogDoc = null;
+
+                if (shellService.Settings.LimitConnections)
+                    blogDoc = timeconstraint.Perform<XDocument>(() => RequestData(url)).Result;
+                else
+                    blogDoc = RequestData(url).Result;
 
                 if (blogDoc != null)
                 {
@@ -1202,7 +1214,13 @@ namespace TumblThree.Applications.Controllers
 
             string url = GetApiUrl(blog.Url, 1);
 
-            var blogDoc = RequestData(url);
+            XDocument blogDoc = null;
+
+            if (shellService.Settings.LimitConnections)
+                blogDoc = timeconstraint.Perform<XDocument>(() => RequestData(url)).Result;
+            else
+                blogDoc = RequestData(url).Result;
+
             totalPosts = Int32.Parse(blogDoc.Element("tumblr").Element("posts").Attribute("total").Value);
 
             // Generate URL list of Images
@@ -1229,7 +1247,11 @@ namespace TumblThree.Applications.Controllers
 
                                     // get 50 posts per crawl/page
                                     url = GetApiUrl(blog.Url, 50, i * 50);
-                                    document = RequestData(url);
+
+                                    if (shellService.Settings.LimitConnections)
+                                        document = timeconstraint.Perform<XDocument>(() => RequestData(url)).Result;
+                                    else
+                                        document = RequestData(url).Result;
 
                                     //FIXME: Create Generic Method to reduce WET code
                                     // Doesn't count photosets
@@ -1545,7 +1567,11 @@ namespace TumblThree.Applications.Controllers
                                     // get 50 posts per crawl/page
 
                                     url = GetApiUrl(blog.Url, 50, i * 50);
-                                    document = RequestData(url);
+
+                                    if (shellService.Settings.LimitConnections)
+                                        document = timeconstraint.Perform<XDocument>(() => RequestData(url)).Result;
+                                    else
+                                        document = RequestData(url).Result;
 
                                     if (blog.DownloadPhoto == true)
                                     {

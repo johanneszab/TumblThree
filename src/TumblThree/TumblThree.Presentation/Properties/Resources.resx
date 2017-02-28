@@ -486,4 +486,19 @@
   <data name="UIntTypeError" xml:space="preserve">
     <value>The value must be of type integer.</value>
   </data>
+  <data name="ConnectionTimeInterval" xml:space="preserve">
+    <value>Time interval (s):</value>
+  </data>
+  <data name="LimitConnections" xml:space="preserve">
+    <value>Limit Tumblr Api Connections</value>
+  </data>
+  <data name="MaxConnections" xml:space="preserve">
+    <value>Number of connections:</value>
+  </data>
+  <data name="ToolTipLimitConnections" xml:space="preserve">
+    <value>Limit connections to the tumblr api.</value>
+  </data>
+  <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
+    <value>A too high value will forcefully close connections (429 -- Limit Exceeded). A too small value will decrease download speed.</value>
+  </data>
 </root>

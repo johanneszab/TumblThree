@@ -34,6 +34,9 @@ namespace TumblThree.Applications.ViewModels
         private int parallelScans;
         private bool limitScanBandwidth;
         private int timeOut;
+        private bool limitConnections;
+        private int maxConnections;
+        private int connectionTimeInterval;
         private int bandwidth;
         private int imageSize;
         private int videoSize;
@@ -151,6 +154,24 @@ namespace TumblThree.Applications.ViewModels
         {
             get { return timeOut; }
             set { SetProperty(ref timeOut, value); }
+        }
+
+        public bool LimitConnections
+        {
+            get { return limitConnections; }
+            set { SetProperty(ref limitConnections, value); }
+        }
+
+        public int MaxConnections
+        {
+            get { return maxConnections; }
+            set { SetProperty(ref maxConnections, value); }
+        }
+
+        public int ConnectionTimeInterval
+        {
+            get { return connectionTimeInterval; }
+            set { SetProperty(ref connectionTimeInterval, value); }
         }
 
         public int Bandwidth
@@ -333,6 +354,9 @@ namespace TumblThree.Applications.ViewModels
                 VideoSize = settings.VideoSize;
                 BlogType = settings.BlogType;
                 TimeOut = settings.TimeOut;
+                LimitConnections = settings.LimitConnections;
+                MaxConnections = settings.MaxConnections;
+                connectionTimeInterval = settings.ConnectionTimeInterval;
                 Bandwidth = settings.Bandwidth;
                 CheckClipboard = settings.CheckClipboard;
                 ShowPicturePreview = settings.ShowPicturePreview;
@@ -370,6 +394,9 @@ namespace TumblThree.Applications.ViewModels
                 ParallelScans = 20;
                 LimitScanBandwidth = false;
                 TimeOut = 120;
+                LimitConnections = true;
+                MaxConnections = 125;
+                ConnectionTimeInterval = 60;
                 Bandwidth = 102400;
                 ImageSize = 1280;
                 VideoSize = 1080;
@@ -415,6 +442,9 @@ namespace TumblThree.Applications.ViewModels
             settings.ParallelScans = ParallelScans;
             settings.LimitScanBandwidth = LimitScanBandwidth;
             settings.TimeOut = TimeOut;
+            settings.LimitConnections = LimitConnections;
+            settings.MaxConnections = MaxConnections;
+            settings.ConnectionTimeInterval = ConnectionTimeInterval;
             settings.Bandwidth = Bandwidth;
             settings.ImageSize = ImageSize;
             settings.VideoSize = VideoSize;
