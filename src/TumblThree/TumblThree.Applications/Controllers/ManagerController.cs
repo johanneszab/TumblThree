@@ -273,7 +273,7 @@ namespace TumblThree.Applications.Controllers
                 if (!File.Exists(blog.ChildId))
                 {
                     TumblrFiles files = new TumblrFiles();
-                    files.Name = blog.ChildId;
+                    files.Name = blog.Name + "_files";
                     files.Links = blog.Links.Select(item => item?.Split('/').Last()).ToList();
                     blog.Links.Clear();
                     blog.Version = "2";
@@ -904,7 +904,7 @@ namespace TumblThree.Applications.Controllers
                 if (shellService.Settings.LimitConnections)
                     blogDoc = timeconstraint.Perform<XDocument>(() => RequestData(url)).Result;
                 else
-                    blogDoc = RequestData(url).Result;
+                    blogDoc = RequestData(url);
 
                 if (blogDoc != null)
                     return true;
@@ -935,7 +935,7 @@ namespace TumblThree.Applications.Controllers
             return url + "?" + UrlEncode(parameters);
         }
 
-        private async Task<XDocument> RequestData(string url)
+        private XDocument RequestData(string url)
         {
             try
             {
@@ -1182,7 +1182,7 @@ namespace TumblThree.Applications.Controllers
                 if (shellService.Settings.LimitConnections)
                     blogDoc = timeconstraint.Perform<XDocument>(() => RequestData(url)).Result;
                 else
-                    blogDoc = RequestData(url).Result;
+                    blogDoc = RequestData(url);
 
                 if (blogDoc != null)
                 {
@@ -1214,14 +1214,14 @@ namespace TumblThree.Applications.Controllers
             int audioMetas = 0;
             List<Tuple<string, string, string>> images = new List<Tuple<string, string, string>>();
 
-            string url = GetApiUrl(blog.Url, 1);
+            string postCountUrl = GetApiUrl(blog.Url, 1);
 
             XDocument blogDoc = null;
 
             if (shellService.Settings.LimitConnections)
-                blogDoc = timeconstraint.Perform<XDocument>(() => RequestData(url)).Result;
+                blogDoc = timeconstraint.Perform<XDocument>(() => RequestData(postCountUrl)).Result;
             else
-                blogDoc = RequestData(url).Result;
+                blogDoc = RequestData(postCountUrl);
 
             totalPosts = Int32.Parse(blogDoc.Element("tumblr").Element("posts").Attribute("total").Value);
 
@@ -1248,12 +1248,12 @@ namespace TumblThree.Applications.Controllers
                                     XDocument document = null;
 
                                     // get 50 posts per crawl/page
-                                    url = GetApiUrl(blog.Url, 50, i * 50);
+                                    string url = GetApiUrl(blog.Url, 50, i * 50);
 
                                     if (shellService.Settings.LimitConnections)
-                                        document = timeconstraint.Perform<XDocument>(() => RequestData(url)).Result;
+                                        document = timeconstraint.Perform(() => RequestData(url)).Result;
                                     else
-                                        document = RequestData(url).Result;
+                                        document = RequestData(url);
 
                                     //FIXME: Create Generic Method to reduce WET code
                                     // Doesn't count photosets
@@ -1568,12 +1568,12 @@ namespace TumblThree.Applications.Controllers
 
                                     // get 50 posts per crawl/page
 
-                                    url = GetApiUrl(blog.Url, 50, i * 50);
+                                    string url = GetApiUrl(blog.Url, 50, i * 50);
 
                                     if (shellService.Settings.LimitConnections)
                                         document = timeconstraint.Perform<XDocument>(() => RequestData(url)).Result;
                                     else
-                                        document = RequestData(url).Result;
+                                        document = RequestData(url);
 
                                     if (blog.DownloadPhoto == true)
                                     {
