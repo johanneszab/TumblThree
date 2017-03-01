@@ -26,7 +26,6 @@ using System.Text;
 using System.Web;
 using System.Collections.Specialized;
 using System.Text.RegularExpressions;
-using System.Diagnostics;
 
 namespace TumblThree.Applications.Controllers
 {
@@ -1034,7 +1033,7 @@ namespace TumblThree.Applications.Controllers
             blog.Online = await IsBlogOnline(blog.Url);
 
             TumblrFiles files = new TumblrFiles();
-            files.ParentId = blog.Name;
+            files.Name = blogName + "_files";
 
             if (SaveBlog(blog) && SaveTumblrFiles(files))
             {
@@ -1113,14 +1112,17 @@ namespace TumblThree.Applications.Controllers
             }
         }
 
-        public bool SaveTumblrFiles(TumblrFiles blog)
+        public bool SaveTumblrFiles(TumblrFiles files)
         {
-            if (blog == null)
+            if (files == null)
                 return false;
 
-            string currentIndex = blog.Name;
-            string newIndex = Path.Combine(blog.Name + ".new");
-            string backupIndex = Path.Combine(blog.Name + ".bak");
+            var indexPath = Path.Combine(shellService.Settings.DownloadLocation, "Index");
+            var blogPath = shellService.Settings.DownloadLocation;
+
+            string currentIndex = Path.Combine(indexPath, files.Name + ".tumblr");
+            string newIndex = Path.Combine(indexPath, files.Name + ".tumblr.new");
+            string backupIndex = Path.Combine(indexPath, files.Name + ".tumblr.bak");
 
             try
             {
@@ -1129,7 +1131,7 @@ namespace TumblThree.Applications.Controllers
                 {
                     System.Web.Script.Serialization.JavaScriptSerializer jsJson = new System.Web.Script.Serialization.JavaScriptSerializer();
                     jsJson.MaxJsonLength = 2147483644;
-                    File.WriteAllText(newIndex, jsJson.Serialize(blog)); File.Replace(newIndex, currentIndex, backupIndex, true);
+                    File.WriteAllText(newIndex, jsJson.Serialize(files)); File.Replace(newIndex, currentIndex, backupIndex, true);
                     try
                     {
                         File.Delete(backupIndex);
@@ -1143,7 +1145,7 @@ namespace TumblThree.Applications.Controllers
                 {
                     System.Web.Script.Serialization.JavaScriptSerializer jsJson = new System.Web.Script.Serialization.JavaScriptSerializer();
                     jsJson.MaxJsonLength = 2147483644;
-                    File.WriteAllText(currentIndex, jsJson.Serialize(blog));
+                    File.WriteAllText(currentIndex, jsJson.Serialize(files));
                 }
 
                 return true;
@@ -1151,7 +1153,7 @@ namespace TumblThree.Applications.Controllers
             catch (Exception ex)
             {
                 Logger.Error("ManagerController:SaveBlog: {0}", ex);
-                shellService.ShowError(ex, Resources.CouldNotSaveBlog, blog.Name);
+                shellService.ShowError(ex, Resources.CouldNotSaveBlog, files.Name);
                 return false;
             }
         }
@@ -1699,7 +1701,7 @@ namespace TumblThree.Applications.Controllers
                                     }
                                     if (blog.DownloadAudio == true)
                                     {
-                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "audio"))
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "audio" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
                                         {
                                             var audioUrl = post.Descendants("audio-player").Where(x => x.Value.Contains("src=")).Select(result =>
                                                 System.Text.RegularExpressions.Regex.Match(
@@ -1846,7 +1848,7 @@ namespace TumblThree.Applications.Controllers
                                     }
                                     if (blog.CreateAudioMeta == true)
                                     {
-                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "audio"))
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "audio" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
                                         {
                                             string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
                                                 Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
