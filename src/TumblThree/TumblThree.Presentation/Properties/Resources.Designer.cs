@@ -1096,7 +1096,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A too high value will forcefully close connections (429 -- Limit Exceeded). A too small value will decrease download speed..
+        ///   Looks up a localized string similar to A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr api. A too small value will decrease the download speed..
         /// </summary>
         public static string ToolTipLimitConnectionsDescription {
             get {
