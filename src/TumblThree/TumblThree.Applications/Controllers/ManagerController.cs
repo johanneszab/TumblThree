@@ -233,11 +233,9 @@ namespace TumblThree.Applications.Controllers
                     {
                         using (var reader = new BinaryReader(stream, new ASCIIEncoding()))
                         {
-                            // Check if we read an older .tumblr binary serialized file of TumblThree
                             byte[] buffer = new byte[18];
                             stream.Seek(0x17, 0);
                             buffer = reader.ReadBytes(17);
-                            // hex for TumblThree.Domain
                             byte[] tumblThreeSignature = new byte[] { 0x54, 0x75, 0x6D, 0x62, 0x6C, 0x54, 0x68, 0x72, 0x65, 0x65, 0x2E, 0x44, 0x6F, 0x6D, 0x61, 0x69, 0x6E };
                             if (buffer.SequenceEqual(tumblThreeSignature))
                             {
@@ -804,11 +802,6 @@ namespace TumblThree.Applications.Controllers
                 try
                 {
                     File.Delete(indexFile);
-                    if (blog is TumblrBlog)
-                    {
-                        var tumblrFiles = Path.Combine(indexPath, blog.Name) + "_files.tumblr";
-                        File.Delete(tumblrFiles);
-                    }
                 }
                 catch (Exception ex)
                 {
@@ -816,6 +809,19 @@ namespace TumblThree.Applications.Controllers
                     shellService.ShowError(ex, Resources.CouldNotRemoveBlogIndex, blog.Name);
                     return;
                 }
+
+                indexFile = Path.Combine(indexPath, blog.Name) + "_files.tumblr";
+                try
+                {
+                    File.Delete(indexFile);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error("ManagerController:RemoveBlog: {0}", ex);
+                    shellService.ShowError(ex, Resources.CouldNotRemoveBlogIndex, blog.Name);
+                    return;
+                }
+
 
                 selectionService.BlogFiles.Remove(blog);
                 QueueManager.RemoveItems(QueueManager.Items.Where(item => item.Blog.Equals(blog)));
@@ -1022,30 +1028,6 @@ namespace TumblThree.Applications.Controllers
             string blogName = ExtractBlogname(blogUrl);
             TumblrBlog blog = new TumblrBlog(ExtractUrl(blogUrl));
 
-            lock (lockObject)
-            {
-                if (selectionService.BlogFiles.Select(blogs => blogs.Name).ToList().Contains(blogName))
-                {
-                    shellService.ShowError(null, Resources.BlogAlreadyExist, blogName);
-                    return;
-                }
-
-
-                if (Application.Current.Dispatcher.CheckAccess())
-                {
-                    selectionService.BlogFiles.Add(blog);
-                }
-                else
-                {
-                    Application.Current.Dispatcher.BeginInvoke(
-                      DispatcherPriority.Background,
-                      new Action(() =>
-                      {
-                          selectionService.BlogFiles.Add(blog);
-                      }));
-                }
-            }
-
             blog.Name = blogName;
             blog.DownloadAudio = shellService.Settings.DownloadAudios;
             blog.DownloadPhoto = shellService.Settings.DownloadImages;
@@ -1066,8 +1048,32 @@ namespace TumblThree.Applications.Controllers
             TumblrFiles files = new TumblrFiles();
             files.Name = blogName + "_files";
 
-            SaveBlog(blog);
-            SaveTumblrFiles(files);
+            lock (lockObject)
+            {
+                if (selectionService.BlogFiles.Select(blogs => blogs.Name).ToList().Contains(blogName))
+                {
+                    shellService.ShowError(null, Resources.BlogAlreadyExist, blogName);
+                    return;
+                }
+
+                if (SaveBlog(blog) && SaveTumblrFiles(files))
+                {
+
+                    if (Application.Current.Dispatcher.CheckAccess())
+                    {
+                        selectionService.BlogFiles.Add(blog);
+                    }
+                    else
+                    {
+                        Application.Current.Dispatcher.BeginInvoke(
+                          DispatcherPriority.Background,
+                          new Action(() =>
+                          {
+                              selectionService.BlogFiles.Add(blog);
+                          }));
+                    }
+                }
+            }
         }
 
         public bool SaveBlog(Blog blog)
@@ -1121,16 +1127,27 @@ namespace TumblThree.Applications.Controllers
 
         public bool SaveTumblrFiles(TumblrFiles files)
         {
+            string currentIndex, newIndex, backupIndex;
             if (files == null)
                 return false;
 
             var indexPath = Path.Combine(shellService.Settings.DownloadLocation, "Index");
             var blogPath = shellService.Settings.DownloadLocation;
 
-            string currentIndex = Path.Combine(indexPath, files.Name + ".tumblr");
-            string newIndex = Path.Combine(indexPath, files.Name + ".tumblr.new");
-            string backupIndex = Path.Combine(indexPath, files.Name + ".tumblr.bak");
+            if (files.Name.EndsWith(".tumblr", System.StringComparison.CurrentCultureIgnoreCase))
+            {
+                currentIndex =  files.Name ;
+                newIndex =  files.Name + ".new";
+                backupIndex = files.Name + ".bak";
 
+            }
+            else
+            {
+                currentIndex = Path.Combine(indexPath, files.Name + ".tumblr");
+                newIndex = Path.Combine(indexPath, files.Name + ".tumblr.new");
+                backupIndex = Path.Combine(indexPath, files.Name + ".tumblr.bak");
+            }
+            
             try
             {
 
