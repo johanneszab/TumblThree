@@ -367,6 +367,15 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Limit exceeded: {0}. You should lower the connections to the tumblr api..
+        /// </summary>
+        public static string LimitExceeded {
+            get {
+                return ResourceManager.GetString("LimitExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Link: {0}.
         /// </summary>
         public static string Link {

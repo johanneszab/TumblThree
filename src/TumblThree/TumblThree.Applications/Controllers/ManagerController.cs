@@ -802,6 +802,11 @@ namespace TumblThree.Applications.Controllers
                 try
                 {
                     File.Delete(indexFile);
+                    if (blog is TumblrBlog)
+                    {
+                        var tumblrFiles = Path.Combine(indexPath, blog.Name) + "_files.tumblr";
+                        File.Delete(tumblrFiles);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -809,19 +814,6 @@ namespace TumblThree.Applications.Controllers
                     shellService.ShowError(ex, Resources.CouldNotRemoveBlogIndex, blog.Name);
                     return;
                 }
-
-                indexFile = Path.Combine(indexPath, blog.Name) + "_files.tumblr";
-                try
-                {
-                    File.Delete(indexFile);
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error("ManagerController:RemoveBlog: {0}", ex);
-                    shellService.ShowError(ex, Resources.CouldNotRemoveBlogIndex, blog.Name);
-                    return;
-                }
-
 
                 selectionService.BlogFiles.Remove(blog);
                 QueueManager.RemoveItems(QueueManager.Items.Where(item => item.Blog.Equals(blog)));
@@ -997,6 +989,11 @@ namespace TumblThree.Applications.Controllers
             }
             catch (WebException ex)
             {
+                if (ex.HResult == -2146233079)
+                {
+                    Logger.Error("ManagerController:RequestData: {0}", ex);
+                    shellService.ShowError(ex, Resources.LimitExceeded, new Uri(url).Host);
+                }
                 return null;
             }
         }

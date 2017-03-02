@@ -129,7 +129,9 @@ namespace TumblThree.Applications.ViewModels
 
         public void ShowError(Exception exception, string message)
         {
-            errors.Add(new Tuple<Exception, string>(exception, message));
+            var errorMessage = new Tuple<Exception, string>(exception, message);
+            if (!errors.Any(error => error.Item1.ToString() == errorMessage.Item1.ToString() && error.Item2 == errorMessage.Item2))
+                errors.Add(errorMessage);
         }
 
         protected override void OnPropertyChanged(PropertyChangedEventArgs e)
