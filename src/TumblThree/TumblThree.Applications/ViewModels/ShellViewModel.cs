@@ -129,10 +129,8 @@ namespace TumblThree.Applications.ViewModels
 
         public void ShowError(Exception exception, string message)
         {
-            string ErrorMessageItem1;
             var errorMessage = new Tuple<Exception, string>(exception, message);
-            ErrorMessageItem1 = errorMessage.Item1?.ToString() ?? "";
-            if (!errors.Any(error => error.Item1.ToString() == ErrorMessageItem1 && error.Item2 == errorMessage.Item2))
+            if (!errors.Any(error => (error.Item1?.ToString() ?? "null") == (errorMessage.Item1?.ToString() ?? "null") && error.Item2 == errorMessage.Item2))
                 errors.Add(errorMessage);
         }
 
