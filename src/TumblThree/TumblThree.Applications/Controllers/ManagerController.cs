@@ -26,6 +26,7 @@ using System.Text;
 using System.Web;
 using System.Collections.Specialized;
 using System.Text.RegularExpressions;
+using System.Collections.Concurrent;
 
 namespace TumblThree.Applications.Controllers
 {
@@ -454,33 +455,15 @@ namespace TumblThree.Applications.Controllers
         {
             Logger.Verbose("ManagerController.CrawlCoreTumblrBlog:Start");
 
-            var tuple = GetImageUrls(blog, progress, ct, pt);
+            BlockingCollection<Tuple<string, string, string>> bCollection = new BlockingCollection<Tuple<string, string, string>>();
+
+            var producer = Task.Run(() => GetImageUrls(blog, bCollection, progress, ct, pt));
+            var consumer = Task.Run(() => ProcessTumblrBlog(blog, bCollection, progress, ct, pt));
+            var tuple = producer.Result;
             var newImageCount = tuple.Item1;
             var newImageUrls = tuple.Item2;
 
-            int downloadedImages = (int)blog.DownloadedImages;
-            int downloadedPhotos = (int)blog.DownloadedPhotos;
-            int downloadedVideos = (int)blog.DownloadedVideos;
-            int downloadedAudios = (int)blog.DownloadedAudios;
-            int downloadedTexts = (int)blog.DownloadedTexts;
-            int downloadedQuotes = (int)blog.DownloadedQuotes;
-            int downloadedLinks = (int)blog.DownloadedLinks;
-            int downloadedConversations = (int)blog.DownloadedConversations;
-            int downloadedPhotoMetas = (int)blog.DownloadedPhotoMetas;
-            int downloadedVideoMetas = (int)blog.DownloadedVideoMetas;
-            int downloadedAudioMetas = (int)blog.DownloadedAudioMetas;
-
-            object lockObjectProgress = new object();
-            object lockObjectDownload = new object();
-            bool locked = false;
-
             blog.TotalCount = newImageCount;
-
-            var indexPath = Path.Combine(shellService.Settings.DownloadLocation, "Index");
-            var blogPath = shellService.Settings.DownloadLocation;
-
-            blog.ChildId = Path.Combine(indexPath, blog.Name + "_files.tumblr");
-            TumblrFiles files = GetTumblrFiles(blog);
 
             var newProgress = new DataModels.DownloadProgress();
             newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressUniqueDownloads);
@@ -500,217 +483,937 @@ namespace TumblThree.Applications.Controllers
                 .Where(g => g.Count() > 1)
                 .Sum(g => g.Count() - 1);
 
-            int duplicates = duplicatePhotos + duplicateVideos + duplicateAudios;
-
             blog.DuplicatePhotos = (uint)duplicatePhotos;
             blog.DuplicateVideos = (uint)duplicateVideos;
             blog.DuplicateAudios = (uint)duplicateAudios;
 
-            // remove the duplicates from the download list
-            var imageUrls = new HashSet<Tuple<string, string, string>>(newImageUrls);
-
-            // remove all files previously downloaded
-            var blogLinks = new HashSet<string>(files.Links);
-            imageUrls.RemoveWhere(item => blogLinks.Contains(item.Item1));
-            imageUrls.RemoveWhere(item => blogLinks.Contains(item.Item3));
-
-            // make sure the datafolder still exists
-            CreateDataFolder(blog.Name, blogPath);
-
-            var parallel = Parallel.ForEach(
-                imageUrls,
-                    new ParallelOptions { MaxDegreeOfParallelism = (shellService.Settings.ParallelImages / selectionService.ActiveItems.Count) },
-                    (currentImageUrl, state) =>
-                    {
-                        if (ct.IsCancellationRequested)
-                        {
-                            state.Break();
-                        }
-                        if (pt.IsPaused)
-                            pt.WaitWhilePausedWithResponseAsyc().Wait();
-
-                        string fileName = String.Empty;
-                        string fileLocation = String.Empty;
-
-                        switch (currentImageUrl.Item2)
-                        {
-                            case "Photo":
-                                fileName = currentImageUrl.Item1.Split('/').Last();
-                                fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), fileName);
-
-                                if (Download(files, fileLocation, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedPhotos, ref downloadedImages))
-                                {
-                                    lock (lockObjectProgress)
-                                    {
-                                        files.Links.Add(fileName);
-                                        // could be moved out of the lock?
-                                        blog.DownloadedImages = (uint)downloadedImages;
-                                        blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
-                                        blog.DownloadedPhotos = (uint)downloadedPhotos;
-                                    }
-                                    if (shellService.Settings.EnablePreview)
-                                        blog.LastDownloadedPhoto = Path.GetFullPath(fileLocation);
-                                }
-                                break;
-                            case "Video":
-                                fileName = currentImageUrl.Item1.Split('/').Last();
-                                fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), fileName);
-
-                                if (Download(files, fileLocation, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedVideos, ref downloadedImages))
-                                {
-                                    lock (lockObjectProgress)
-                                    {
-                                        files.Links.Add(fileName);
-                                        // could be moved out of the lock?
-                                        blog.DownloadedImages = (uint)downloadedImages;
-                                        blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
-                                        blog.DownloadedVideos = (uint)downloadedVideos;
-                                    }
-                                    if (shellService.Settings.EnablePreview)
-                                        blog.LastDownloadedVideo = Path.GetFullPath(fileLocation);
-                                }
-                                break;
-                            case "Audio":
-                                fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), currentImageUrl.Item3 + ".swf");
-
-                                if (Download(files, fileLocation, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedAudios, ref downloadedImages))
-                                {
-                                    lock (lockObjectProgress)
-                                    {
-                                        files.Links.Add(fileName);
-                                        // could be moved out of the lock?
-                                        blog.DownloadedImages = (uint)downloadedImages;
-                                        blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
-                                        blog.DownloadedAudios = (uint)downloadedAudios;
-                                    }
-                                }
-                                break;
-                            case "Text":
-                                fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameTexts));
-
-                                if (Download(files, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedTexts, ref downloadedImages))
-                                {
-                                    lock (lockObjectProgress)
-                                    {
-                                        files.Links.Add(currentImageUrl.Item3);
-                                        // could be moved out of the lock?
-                                        blog.DownloadedImages = (uint)downloadedImages;
-                                        blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
-                                        blog.DownloadedTexts = (uint)downloadedTexts;
-                                    }
-                                }
-                                break;
-                            case "Quote":
-                                fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameQuotes));
-
-                                if (Download(files, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedQuotes, ref downloadedImages))
-                                {
-                                    lock (lockObjectProgress)
-                                    {
-                                        files.Links.Add(currentImageUrl.Item3);
-                                        // could be moved out of the lock?
-                                        blog.DownloadedImages = (uint)downloadedImages;
-                                        blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
-                                        blog.DownloadedQuotes = (uint)downloadedQuotes;
-                                    }
-                                }
-                                break;
-                            case "Link":
-                                fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameLinks));
-
-                                if (Download(files, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedLinks, ref downloadedImages))
-                                {
-                                    lock (lockObjectProgress)
-                                    {
-                                        files.Links.Add(currentImageUrl.Item3);
-                                        // could be moved out of the lock?
-                                        blog.DownloadedImages = (uint)downloadedImages;
-                                        blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
-                                        blog.DownloadedLinks = (uint)downloadedLinks;
-                                    }
-                                }
-                                break;
-                            case "Conversation":
-                                fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameConversations));
-
-                                if (Download(files, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedConversations, ref downloadedImages))
-                                {
-                                    lock (lockObjectProgress)
-                                    {
-                                        files.Links.Add(currentImageUrl.Item3);
-                                        // could be moved out of the lock?
-                                        blog.DownloadedImages = (uint)downloadedImages;
-                                        blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
-                                        blog.DownloadedConversations = (uint)downloadedConversations;
-                                    }
-                                }
-                                break;
-                            case "PhotoMeta":
-                                fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaPhoto));
-
-                                if (Download(files, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedPhotoMetas, ref downloadedImages))
-                                {
-                                    lock (lockObjectProgress)
-                                    {
-                                        files.Links.Add(currentImageUrl.Item3);
-                                        // could be moved out of the lock?
-                                        blog.DownloadedImages = (uint)downloadedImages;
-                                        blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
-                                        blog.DownloadedPhotoMetas = (uint)downloadedPhotoMetas;
-                                    }
-                                }
-                                break;
-                            case "VideoMeta":
-                                fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaVideo));
-
-                                if (Download(files, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedVideoMetas, ref downloadedImages))
-                                {
-                                    lock (lockObjectProgress)
-                                    {
-                                        files.Links.Add(currentImageUrl.Item3);
-                                        // could be moved out of the lock?
-                                        blog.DownloadedImages = (uint)downloadedImages;
-                                        blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
-                                        blog.DownloadedVideoMetas = (uint)downloadedVideoMetas;
-                                    }
-                                }
-                                break;
-                            case "AudioMeta":
-                                fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaAudio));
-
-                                if (Download(files, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedAudioMetas, ref downloadedImages))
-                                {
-                                    lock (lockObjectProgress)
-                                    {
-                                        files.Links.Add(currentImageUrl.Item3);
-                                        // could be moved out of the lock?
-                                        blog.DownloadedImages = (uint)downloadedImages;
-                                        blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
-                                        blog.DownloadedAudioMetas = (uint)downloadedAudioMetas;
-                                    }
-                                }
-                                break;
-                            default:
-                                break;
-                        }
-                    });
+            Task.WaitAll(producer, consumer);
 
             if (!ct.IsCancellationRequested)
             {
                 blog.LastCompleteCrawl = DateTime.Now;
             }
-            blog.LastDownloadedPhoto = null;
-            blog.LastDownloadedVideo = null;
+
             blog.Dirty = false;
             SaveBlog(blog);
-            SaveTumblrFiles(files);
-            files = null;
 
             newProgress = new DataModels.DownloadProgress();
             newProgress.Progress = "";
             progress.Report(newProgress);
 
             return blog;
+        }
+
+        public Tuple<uint, List<Tuple<string, string, string>>> GetImageUrls(TumblrBlog blog, BlockingCollection<Tuple<string, string, string>> bCollection, IProgress<Datamodels.DownloadProgress> progress, CancellationToken ct, PauseToken pt)
+        {
+            int totalPosts = 0;
+            int numberOfPostsCrawled = 0;
+            int totalDownloads = 0;
+            int photos = 0;
+            int videos = 0;
+            int audios = 0;
+            int texts = 0;
+            int conversations = 0;
+            int quotes = 0;
+            int links = 0;
+            int photoMetas = 0;
+            int videoMetas = 0;
+            int audioMetas = 0;
+            List<Tuple<string, string, string>> images = new List<Tuple<string, string, string>>();
+
+            string postCountUrl = GetApiUrl(blog.Url, 1);
+
+            XDocument blogDoc = null;
+
+            if (shellService.Settings.LimitConnections)
+                blogDoc = timeconstraint.Perform<XDocument>(() => RequestData(postCountUrl)).Result;
+            else
+                blogDoc = RequestData(postCountUrl);
+
+            totalPosts = Int32.Parse(blogDoc.Element("tumblr").Element("posts").Attribute("total").Value);
+
+            // Generate URL list of Images
+            // the api shows 50 posts at max, determine the number of pages to crawl
+            int totalPages = (totalPosts / 50) + 1;
+
+            // FIXME: We should use more parallel downloads as requested here since the data is usually really small
+            Parallel.For(0, totalPages,
+                        new ParallelOptions { MaxDegreeOfParallelism = (shellService.Settings.ParallelScans) },
+                        (i, state) =>
+                        {
+                            if (ct.IsCancellationRequested)
+                            {
+                                state.Break();
+                            }
+                            if (pt.IsPaused)
+                                pt.WaitWhilePausedWithResponseAsyc().Wait();
+                            try
+                            {
+                                // check for tags -- crawling for all images here
+                                if (blog.Tags == null || blog.Tags.Count() == 0)
+                                {
+                                    XDocument document = null;
+
+                                    // get 50 posts per crawl/page
+                                    string url = GetApiUrl(blog.Url, 50, i * 50);
+
+                                    if (shellService.Settings.LimitConnections)
+                                        document = timeconstraint.Perform(() => RequestData(url)).Result;
+                                    else
+                                        document = RequestData(url);
+
+                                    //FIXME: Create Generic Method to reduce WET code
+                                    // Doesn't count photosets
+                                    //Interlocked.Add(ref photos, document.Descendants("post").Where(post => post.Attribute("type").Value == "photo").Count());
+                                    Interlocked.Add(ref videos, document.Descendants("post").Where(post => post.Attribute("type").Value == "video").Count());
+                                    Interlocked.Add(ref audios, document.Descendants("post").Where(post => post.Attribute("type").Value == "audio").Count());
+                                    Interlocked.Add(ref texts, document.Descendants("post").Where(post => post.Attribute("type").Value == "regular").Count());
+                                    Interlocked.Add(ref conversations, document.Descendants("post").Where(post => post.Attribute("type").Value == "conversation").Count());
+                                    Interlocked.Add(ref quotes, document.Descendants("post").Where(post => post.Attribute("type").Value == "quote").Count());
+                                    Interlocked.Add(ref links, document.Descendants("post").Where(post => post.Attribute("type").Value == "link").Count());
+
+                                    if (blog.DownloadPhoto == true)
+                                    {
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "photo"))
+                                        {
+                                            // photoset
+                                            if (post.Descendants("photoset").Count() > 0)
+                                            {
+                                                foreach (var photo in post.Descendants("photoset").Descendants("photo"))
+                                                {
+                                                    var imageUrl = photo.Elements("photo-url").Where(photo_url =>
+                                                        photo_url.Attribute("max-width").Value == shellService.Settings.ImageSize.ToString()).FirstOrDefault().Value;
+
+                                                    if (blog.SkipGif == true && imageUrl.EndsWith(".gif"))
+                                                        continue;
+
+                                                    if (blog.ForceSize)
+                                                    {
+                                                        StringBuilder sb = new StringBuilder(imageUrl);
+                                                        imageUrl = sb
+                                                          .Replace("_1280", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_540", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_500", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_400", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_250", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_100", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_75sq", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .ToString();
+                                                    }
+
+                                                    Interlocked.Increment(ref photos);
+                                                    Interlocked.Increment(ref totalDownloads);
+                                                    Monitor.Enter(images);
+                                                    images.Add(Tuple.Create(imageUrl, "Photo", post.Attribute("id").Value));
+                                                    Monitor.Exit(images);
+                                                    bCollection.Add(Tuple.Create(imageUrl, "Photo", post.Attribute("id").Value));
+                                                }
+                                            }
+                                            // single image
+                                            else
+                                            {
+                                                var imageUrl = post.Elements("photo-url").Where(photo_url =>
+                                                        photo_url.Attribute("max-width").Value == shellService.Settings.ImageSize.ToString()).FirstOrDefault().Value;
+
+                                                if (blog.SkipGif == true && imageUrl.EndsWith(".gif"))
+                                                    continue;
+
+                                                if (blog.ForceSize)
+                                                {
+                                                    StringBuilder sb = new StringBuilder(imageUrl);
+                                                    imageUrl = sb
+                                                      .Replace("_1280", "_" + shellService.Settings.ImageSize.ToString())
+                                                      .Replace("_540", "_" + shellService.Settings.ImageSize.ToString())
+                                                      .Replace("_500", "_" + shellService.Settings.ImageSize.ToString())
+                                                      .Replace("_400", "_" + shellService.Settings.ImageSize.ToString())
+                                                      .Replace("_250", "_" + shellService.Settings.ImageSize.ToString())
+                                                      .Replace("_100", "_" + shellService.Settings.ImageSize.ToString())
+                                                      .Replace("_75sq", "_" + shellService.Settings.ImageSize.ToString())
+                                                      .ToString();
+                                                }
+
+                                                Interlocked.Increment(ref photos);
+                                                Interlocked.Increment(ref totalDownloads);
+                                                Monitor.Enter(images);
+                                                images.Add(Tuple.Create(imageUrl, "Photo", post.Attribute("id").Value));
+                                                Monitor.Exit(images);
+                                                bCollection.Add(Tuple.Create(imageUrl, "Photo", post.Attribute("id").Value));
+                                            }
+                                        }
+                                        // check for inline images
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "regular"))
+                                        {
+                                            if (post.Element("regular-body").Value.Contains("tumblr_inline"))
+                                            {
+                                                Regex regex = new Regex("<img src=\"(.*?)\"");
+                                                foreach (Match match in regex.Matches(post.Element("regular-body")?.Value))
+                                                {
+                                                    var imageUrl = match.Groups[1].Value;
+                                                    if (blog.ForceSize)
+                                                    {
+                                                        StringBuilder sb = new StringBuilder(imageUrl);
+                                                        imageUrl = sb
+                                                          .Replace("_1280", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_540", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_500", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_400", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_250", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_100", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_75sq", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .ToString();
+                                                    }
+
+                                                    Interlocked.Increment(ref totalDownloads);
+                                                    Monitor.Enter(images);
+                                                    images.Add(Tuple.Create(imageUrl, "Photo", post.Attribute("id").Value));
+                                                    Monitor.Exit(images);
+                                                    bCollection.Add(Tuple.Create(imageUrl, "Photo", post.Attribute("id").Value));
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (blog.DownloadVideo == true)
+                                    {
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "video"))
+                                        {
+                                            var videoUrl = post.Descendants("video-player").Where(x => x.Value.Contains("<source src=")).Select(result =>
+                                                System.Text.RegularExpressions.Regex.Match(
+                                                result.Value, "<source src=\"(.*)\" type=\"video/mp4\">").Groups[1].Value).ToList();
+
+                                            foreach (string video in videoUrl)
+                                            {
+                                                if (shellService.Settings.VideoSize == 1080)
+                                                {
+                                                    Interlocked.Increment(ref totalDownloads);
+                                                    Monitor.Enter(images);
+                                                    images.Add(Tuple.Create(video.Replace("/480", "") + ".mp4", "Video", post.Attribute("id").Value));
+                                                    Monitor.Exit(images);
+                                                    bCollection.Add(Tuple.Create(video.Replace("/480", "") + ".mp4", "Video", post.Attribute("id").Value));
+                                                }
+                                                else if (shellService.Settings.VideoSize == 480)
+                                                {
+                                                    Interlocked.Increment(ref totalDownloads);
+                                                    Monitor.Enter(images);
+                                                    images.Add(Tuple.Create("https://vt.tumblr.com/" + video.Replace("/480", "").Split('/').Last() + "_480.mp4", "Video", post.Attribute("id").Value));
+                                                    Monitor.Exit(images);
+                                                    bCollection.Add(Tuple.Create("https://vt.tumblr.com/" + video.Replace("/480", "").Split('/').Last() + "_480.mp4", "Video", post.Attribute("id").Value));
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (blog.DownloadAudio == true)
+                                    {
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "audio"))
+                                        {
+                                            var audioUrl = post.Descendants("audio-player").Where(x => x.Value.Contains("src=")).Select(result =>
+                                                System.Text.RegularExpressions.Regex.Match(
+                                                result.Value, "src=\"(.*)\" height").Groups[1].Value).ToList();
+
+                                            foreach (string audiofile in audioUrl)
+                                            {
+                                                Interlocked.Increment(ref totalDownloads);
+                                                Monitor.Enter(images);
+                                                images.Add(Tuple.Create(WebUtility.UrlDecode(audiofile), "Audio", post.Attribute("id").Value));
+                                                Monitor.Exit(images);
+                                                bCollection.Add(Tuple.Create(WebUtility.UrlDecode(audiofile), "Audio", post.Attribute("id").Value));
+                                            }
+
+                                        }
+                                    }
+                                    if (blog.DownloadText == true)
+                                    {
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "regular"))
+                                        {
+                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Title, post.Element("regular-title")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Body, post.Element("regular-body")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
+                                                Environment.NewLine;
+                                            Interlocked.Increment(ref totalDownloads);
+                                            bCollection.Add(Tuple.Create(textBody, "Text", post.Attribute("id").Value));
+                                        }
+                                    }
+                                    if (blog.DownloadQuote == true)
+                                    {
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "quote"))
+                                        {
+                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Quote, post.Element("quote-text")?.Value) +
+                                                Environment.NewLine + post.Element("quote-source")?.Value +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
+                                                Environment.NewLine;
+                                            Interlocked.Increment(ref totalDownloads);
+                                            bCollection.Add(Tuple.Create(textBody, "Quote", post.Attribute("id").Value));
+                                        }
+                                    }
+                                    if (blog.DownloadLink == true)
+                                    {
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "link"))
+                                        {
+                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Link, post.Element("link-text")?.Value) +
+                                                Environment.NewLine + post.Element("link-url")?.Value +
+                                                Environment.NewLine + post.Element("link-description")?.Value +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
+                                                Environment.NewLine;
+                                            Interlocked.Increment(ref totalDownloads);
+                                            bCollection.Add(Tuple.Create(textBody, "Link", post.Attribute("id").Value));
+                                        }
+                                    }
+                                    if (blog.DownloadConversation == true)
+                                    {
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "conversation"))
+                                        {
+                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Conversation, post.Element("conversation-text")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
+                                                Environment.NewLine;
+                                            Interlocked.Increment(ref totalDownloads);
+                                            bCollection.Add(Tuple.Create(textBody, "Conversation", post.Attribute("id").Value));
+                                        }
+                                    }
+                                    if (blog.CreatePhotoMeta == true)
+                                    {
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "photo"))
+                                        {
+                                            string imageUrl = "";
+                                            // photoset
+                                            if (post.Descendants("photoset").Count() > 0)
+                                            {
+                                                List<string> imageUrls = new List<string>();
+                                                foreach (var photo in post.Descendants("photoset").Descendants("photo"))
+                                                {
+                                                    var singleImageUrl = photo.Elements("photo-url").Where(photo_url =>
+                                                        photo_url.Attribute("max-width").Value == shellService.Settings.ImageSize.ToString()).FirstOrDefault().Value;
+
+                                                    if (blog.SkipGif == true && imageUrl.EndsWith(".gif"))
+                                                        continue;
+                                                    imageUrls.Add(singleImageUrl);
+                                                }
+                                                // imageUrl = imageUrls.Aggregate((current, next) => current + ", " + next);
+                                                imageUrl = string.Join(", ", imageUrls.ToArray());
+                                            }
+                                            // single image
+                                            {
+                                                imageUrl = post.Elements("photo-url").Where(photo_url =>
+                                                        photo_url.Attribute("max-width").Value == shellService.Settings.ImageSize.ToString()).FirstOrDefault().Value;
+
+                                                if (blog.SkipGif == true && imageUrl.EndsWith(".gif"))
+                                                    continue;
+
+                                                string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                                                    Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                                                    Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                                                    Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.PhotoUrl, imageUrl) +
+                                                    Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.PhotoCaption, post.Element("photo-caption")?.Value) +
+                                                    Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
+                                                    Environment.NewLine;
+                                                Interlocked.Increment(ref totalDownloads);
+                                                Interlocked.Increment(ref photoMetas);
+                                                bCollection.Add(Tuple.Create(textBody, "PhotoMeta", post.Attribute("id").Value));
+                                            }
+                                        }
+                                    }
+                                    if (blog.CreateVideoMeta == true)
+                                    {
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "video"))
+                                        {
+                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.VideoPlayer, post.Element("video-player")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
+                                                Environment.NewLine;
+                                            Interlocked.Increment(ref totalDownloads);
+                                            Interlocked.Increment(ref videoMetas);
+                                            bCollection.Add(Tuple.Create(textBody, "VideoMeta", post.Attribute("id").Value));
+                                        }
+                                    }
+                                    if (blog.CreateAudioMeta == true)
+                                    {
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "audio"))
+                                        {
+                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.AudioCaption, post.Element("audio-caption")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Artist, post.Element("id3-artist")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Title, post.Element("id3-title")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Track, post.Element("id3-track")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Album, post.Element("id3-album")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Year, post.Element("id3-year")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
+                                                Environment.NewLine;
+                                            Interlocked.Increment(ref totalDownloads);
+                                            Interlocked.Increment(ref audioMetas);
+                                            bCollection.Add(Tuple.Create(textBody, "AudioMeta", post.Attribute("id").Value));
+                                        }
+                                    }
+                                }
+                                // crawling only for tagged images
+                                else
+                                {
+                                    List<string> tags = blog.Tags.Split(',').Select(x => x.Trim()).ToList();
+
+                                    XDocument document = null;
+
+                                    // get 50 posts per crawl/page
+
+                                    string url = GetApiUrl(blog.Url, 50, i * 50);
+
+                                    if (shellService.Settings.LimitConnections)
+                                        document = timeconstraint.Perform<XDocument>(() => RequestData(url)).Result;
+                                    else
+                                        document = RequestData(url);
+
+                                    if (blog.DownloadPhoto == true)
+                                    {
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "photo" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
+                                        {
+                                            // photoset
+                                            if (post.Descendants("photoset").Count() > 0)
+                                            {
+                                                foreach (var photo in post.Descendants("photoset").Descendants("photo"))
+                                                {
+                                                    var imageUrl = photo.Elements("photo-url").Where(photo_url =>
+                                                        photo_url.Attribute("max-width").Value == shellService.Settings.ImageSize.ToString()).FirstOrDefault().Value;
+
+                                                    if (blog.SkipGif == true && imageUrl.EndsWith(".gif"))
+                                                        continue;
+
+                                                    if (blog.ForceSize)
+                                                    {
+                                                        StringBuilder sb = new StringBuilder(imageUrl);
+                                                        imageUrl = sb
+                                                          .Replace("_1280", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_540", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_500", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_400", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_250", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_100", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_75sq", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .ToString();
+                                                    }
+
+                                                    Interlocked.Increment(ref totalDownloads);
+                                                    Interlocked.Increment(ref photos);
+                                                    Monitor.Enter(images);
+                                                    images.Add(Tuple.Create(imageUrl, "Photo", post.Attribute("id").Value));
+                                                    Monitor.Exit(images);
+                                                    bCollection.Add(Tuple.Create(imageUrl, "Photo", post.Attribute("id").Value));
+                                                }
+                                            }
+                                            // single image
+                                            else
+                                            {
+                                                var imageUrl = post.Elements("photo-url").Where(photo_url =>
+                                                        photo_url.Attribute("max-width").Value == shellService.Settings.ImageSize.ToString()).FirstOrDefault().Value;
+
+                                                if (blog.SkipGif == true && imageUrl.EndsWith(".gif"))
+                                                    continue;
+
+                                                if (blog.ForceSize)
+                                                {
+                                                    StringBuilder sb = new StringBuilder(imageUrl);
+                                                    imageUrl = sb
+                                                      .Replace("_1280", "_" + shellService.Settings.ImageSize.ToString())
+                                                      .Replace("_540", "_" + shellService.Settings.ImageSize.ToString())
+                                                      .Replace("_500", "_" + shellService.Settings.ImageSize.ToString())
+                                                      .Replace("_400", "_" + shellService.Settings.ImageSize.ToString())
+                                                      .Replace("_250", "_" + shellService.Settings.ImageSize.ToString())
+                                                      .Replace("_100", "_" + shellService.Settings.ImageSize.ToString())
+                                                      .Replace("_75sq", "_" + shellService.Settings.ImageSize.ToString())
+                                                      .ToString();
+                                                }
+
+                                                Interlocked.Increment(ref totalDownloads);
+                                                Interlocked.Increment(ref photos);
+                                                Monitor.Enter(images);
+                                                images.Add(Tuple.Create(imageUrl, "Photo", post.Attribute("id").Value));
+                                                Monitor.Exit(images);
+                                                bCollection.Add(Tuple.Create(imageUrl, "Photo", post.Attribute("id").Value));
+                                            }
+                                        }
+                                        // check for inline images
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "regular" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
+                                        {
+                                            if (post.Element("regular-body").Value.Contains("tumblr_inline"))
+                                            {
+                                                Regex regex = new Regex("<img src=\"(.*?)\"");
+                                                foreach (Match match in regex.Matches(post.Element("regular-body")?.Value))
+                                                {
+                                                    var imageUrl = match.Groups[1].Value;
+                                                    if (blog.ForceSize)
+                                                    {
+                                                        StringBuilder sb = new StringBuilder(imageUrl);
+                                                        imageUrl = sb
+                                                          .Replace("_1280", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_540", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_500", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_400", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_250", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_100", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .Replace("_75sq", "_" + shellService.Settings.ImageSize.ToString())
+                                                          .ToString();
+                                                    }
+
+                                                    Interlocked.Increment(ref totalDownloads);
+                                                    Monitor.Enter(images);
+                                                    images.Add(Tuple.Create(imageUrl, "Photo", post.Attribute("id").Value));
+                                                    Monitor.Exit(images);
+                                                    bCollection.Add(Tuple.Create(imageUrl, "Photo", post.Attribute("id").Value));
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (blog.DownloadVideo == true)
+                                    {
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "video" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
+                                        {
+                                            var videoUrl = post.Descendants("video-player").Where(x => x.Value.Contains("<source src=")).Select(result =>
+                                                System.Text.RegularExpressions.Regex.Match(
+                                                result.Value, "<source src=\"(.*)\" type=\"video/mp4\">").Groups[1].Value).ToList();
+
+                                            foreach (string video in videoUrl)
+                                            {
+                                                if (shellService.Settings.VideoSize == 1080)
+                                                {
+                                                    Interlocked.Increment(ref totalDownloads);
+                                                    Monitor.Enter(images);
+                                                    images.Add(Tuple.Create(video.Replace("/480", "") + ".mp4", "Video", post.Attribute("id").Value));
+                                                    Monitor.Exit(images);
+                                                    bCollection.Add(Tuple.Create(video.Replace("/480", "") + ".mp4", "Video", post.Attribute("id").Value));
+                                                }
+                                                else if (shellService.Settings.VideoSize == 480)
+                                                {
+                                                    Interlocked.Increment(ref totalDownloads);
+                                                    Monitor.Enter(images);
+                                                    images.Add(Tuple.Create("https://vt.tumblr.com/" + video.Replace("/480", "").Split('/').Last() + "_480.mp4", "Video", post.Attribute("id").Value));
+                                                    Monitor.Exit(images);
+                                                    bCollection.Add(Tuple.Create("https://vt.tumblr.com/" + video.Replace("/480", "").Split('/').Last() + "_480.mp4", "Video", post.Attribute("id").Value));
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (blog.DownloadAudio == true)
+                                    {
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "audio" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
+                                        {
+                                            var audioUrl = post.Descendants("audio-player").Where(x => x.Value.Contains("src=")).Select(result =>
+                                                System.Text.RegularExpressions.Regex.Match(
+                                                result.Value, "src=\"(.*)\" height").Groups[1].Value).ToList();
+
+                                            foreach (string audiofile in audioUrl)
+                                            {
+                                                Interlocked.Increment(ref totalDownloads);
+                                                Monitor.Enter(images);
+                                                images.Add(Tuple.Create(WebUtility.UrlDecode(audiofile), "Audio", post.Attribute("id").Value));
+                                                Monitor.Exit(images);
+                                                bCollection.Add(Tuple.Create(WebUtility.UrlDecode(audiofile), "Audio", post.Attribute("id").Value));
+                                            }
+
+                                        }
+                                    }
+                                    if (blog.DownloadText == true)
+                                    {
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "regular" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
+                                        {
+                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Title, post.Element("regular-title")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Body, post.Element("regular-body")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
+                                                Environment.NewLine;
+                                            Interlocked.Increment(ref totalDownloads);
+                                            bCollection.Add(Tuple.Create(textBody, "Text", post.Attribute("id").Value));
+                                        }
+                                    }
+                                    if (blog.DownloadQuote == true)
+                                    {
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "quote" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
+                                        {
+                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Quote, post.Element("quote-text")?.Value) +
+                                                Environment.NewLine + post.Element("quote-source")?.Value +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
+                                                Environment.NewLine;
+                                            Interlocked.Increment(ref totalDownloads);
+                                            bCollection.Add(Tuple.Create(textBody, "Quote", post.Attribute("id").Value));
+                                        }
+                                    }
+                                    if (blog.DownloadLink == true)
+                                    {
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "link" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
+                                        {
+                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Link, post.Element("link-text")?.Value) +
+                                                Environment.NewLine + post.Element("link-url")?.Value +
+                                                Environment.NewLine + post.Element("link-description")?.Value +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
+                                                Environment.NewLine;
+                                            Interlocked.Increment(ref totalDownloads);
+                                            bCollection.Add(Tuple.Create(textBody, "Link", post.Attribute("id").Value));
+                                        }
+                                    }
+                                    if (blog.DownloadConversation == true)
+                                    {
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "conversation" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
+                                        {
+                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Conversation, post.Element("conversation-text")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
+                                                Environment.NewLine;
+                                            Interlocked.Increment(ref totalDownloads);
+                                            bCollection.Add(Tuple.Create(textBody, "Conversation", post.Attribute("id").Value));
+                                        }
+                                    }
+                                    if (blog.CreatePhotoMeta == true)
+                                    {
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "photo" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
+                                        {
+                                            string imageUrl = "";
+                                            // photoset
+                                            if (post.Descendants("photoset").Count() > 0)
+                                            {
+                                                List<string> imageUrls = new List<string>();
+                                                foreach (var photo in post.Descendants("photoset").Descendants("photo"))
+                                                {
+                                                    var singleImageUrl = photo.Elements("photo-url").Where(photo_url =>
+                                                        photo_url.Attribute("max-width").Value == shellService.Settings.ImageSize.ToString()).FirstOrDefault().Value;
+
+                                                    if (blog.SkipGif == true && imageUrl.EndsWith(".gif"))
+                                                        continue;
+                                                    imageUrls.Add(singleImageUrl);
+                                                }
+                                                // imageUrl = imageUrls.Aggregate((current, next) => current + ", " + next);
+                                                imageUrl = string.Join(", ", imageUrls.ToArray());
+                                            }
+                                            // single image
+                                            {
+                                                imageUrl = post.Elements("photo-url").Where(photo_url =>
+                                                        photo_url.Attribute("max-width").Value == shellService.Settings.ImageSize.ToString()).FirstOrDefault().Value;
+
+                                                if (blog.SkipGif == true && imageUrl.EndsWith(".gif"))
+                                                    continue;
+
+                                                string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                                                    Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                                                    Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                                                    Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.PhotoUrl, imageUrl) +
+                                                    Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.PhotoCaption, post.Element("photo-caption")?.Value) +
+                                                    Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
+                                                    Environment.NewLine;
+                                                Interlocked.Increment(ref photoMetas);
+                                                Interlocked.Increment(ref totalDownloads);
+                                                bCollection.Add(Tuple.Create(textBody, "PhotoMeta", post.Attribute("id").Value));
+                                            }
+                                        }
+                                    }
+                                    if (blog.CreateVideoMeta == true)
+                                    {
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "video" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
+                                        {
+                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.VideoPlayer, post.Element("video-player")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
+                                                Environment.NewLine;
+                                            Interlocked.Increment(ref videoMetas);
+                                            Interlocked.Increment(ref totalDownloads);
+                                            bCollection.Add(Tuple.Create(textBody, "VideoMeta", post.Attribute("id").Value));
+                                        }
+                                    }
+                                    if (blog.CreateAudioMeta == true)
+                                    {
+                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "audio" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
+                                        {
+                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.AudioCaption, post.Element("audio-caption")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Artist, post.Element("id3-artist")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Title, post.Element("id3-title")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Track, post.Element("id3-track")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Album, post.Element("id3-album")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Year, post.Element("id3-year")?.Value) +
+                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
+                                                Environment.NewLine;
+                                            Interlocked.Increment(ref audioMetas);
+                                            Interlocked.Increment(ref totalDownloads);
+                                            bCollection.Add(Tuple.Create(textBody, "AudioMeta", post.Attribute("id").Value));
+                                        }
+                                    }
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Data);
+                            }
+
+                            numberOfPostsCrawled += 50;
+                            var newProgress = new Datamodels.DownloadProgress();
+                            newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressGetUrl, numberOfPostsCrawled, totalPosts);
+                            progress.Report(newProgress);
+                        }
+                );
+
+
+            //// remove the duplicates from the download list
+            //var imageUrls = new HashSet<Tuple<string, string, string>>(newImageUrls);
+
+            //// remove all files previously downloaded
+            //var blogLinks = new HashSet<string>(files.Links);
+            //imageUrls.RemoveWhere(item => blogLinks.Contains(item.Item1));
+            //imageUrls.RemoveWhere(item => blogLinks.Contains(item.Item3));
+
+            bCollection.CompleteAdding();
+
+            blog.Posts = (uint)totalPosts;
+            blog.Photos = (uint)photos;
+            blog.Videos = (uint)videos;
+            blog.Audios = (uint)audios;
+            blog.Texts = (uint)texts;
+            blog.Conversations = (uint)conversations;
+            blog.Quotes = (uint)quotes;
+            blog.NumberOfLinks = (uint)links;
+            blog.PhotoMetas = (uint)photoMetas;
+            blog.VideoMetas = (uint)videoMetas;
+            blog.AudioMetas = (uint)audioMetas;
+
+            return Tuple.Create((uint)totalDownloads, images);
+        }
+
+        private bool ProcessTumblrBlog(TumblrBlog blog, BlockingCollection<Tuple<string, string, string>> bCollection, IProgress<DataModels.DownloadProgress> progress, CancellationToken ct, PauseToken pt)
+        {
+
+            object lockObjectProgress = new object();
+            object lockObjectDownload = new object();
+            bool locked = false;
+
+            int downloadedImages = (int)blog.DownloadedImages;
+            int downloadedPhotos = (int)blog.DownloadedPhotos;
+            int downloadedVideos = (int)blog.DownloadedVideos;
+            int downloadedAudios = (int)blog.DownloadedAudios;
+            int downloadedTexts = (int)blog.DownloadedTexts;
+            int downloadedQuotes = (int)blog.DownloadedQuotes;
+            int downloadedLinks = (int)blog.DownloadedLinks;
+            int downloadedConversations = (int)blog.DownloadedConversations;
+            int downloadedPhotoMetas = (int)blog.DownloadedPhotoMetas;
+            int downloadedVideoMetas = (int)blog.DownloadedVideoMetas;
+            int downloadedAudioMetas = (int)blog.DownloadedAudioMetas;
+
+            uint duplicates = blog.DuplicatePhotos + blog.DuplicateVideos + blog.DuplicateAudios;
+
+            var indexPath = Path.Combine(shellService.Settings.DownloadLocation, "Index");
+            var blogPath = shellService.Settings.DownloadLocation;
+
+            // make sure the datafolder still exists
+            CreateDataFolder(blog.Name, blogPath);
+
+            blog.ChildId = Path.Combine(indexPath, blog.Name + "_files.tumblr");
+            TumblrFiles files = GetTumblrFiles(blog);
+
+            var parallel = Parallel.ForEach(
+                            bCollection.GetConsumingEnumerable(),
+                            new ParallelOptions { MaxDegreeOfParallelism = (shellService.Settings.ParallelImages / selectionService.ActiveItems.Count) },
+                            (currentImageUrl, state) =>
+                            {
+                                if (ct.IsCancellationRequested)
+                                {
+                                    state.Break();
+                                }
+                                if (pt.IsPaused)
+                                    pt.WaitWhilePausedWithResponseAsyc().Wait();
+
+                                string fileName = String.Empty;
+                                string fileLocation = String.Empty;
+
+                                switch (currentImageUrl.Item2)
+                                {
+                                    case "Photo":
+                                        fileName = currentImageUrl.Item1.Split('/').Last();
+                                        fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), fileName);
+
+                                        if (Download(files, fileLocation, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedPhotos, ref downloadedImages))
+                                        {
+                                            lock (lockObjectProgress)
+                                            {
+                                                files.Links.Add(fileName);
+                                                // could be moved out of the lock?
+                                                blog.DownloadedImages = (uint)downloadedImages;
+                                                blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
+                                                blog.DownloadedPhotos = (uint)downloadedPhotos;
+                                            }
+                                            if (shellService.Settings.EnablePreview)
+                                                blog.LastDownloadedPhoto = Path.GetFullPath(fileLocation);
+                                        }
+                                        break;
+                                    case "Video":
+                                        fileName = currentImageUrl.Item1.Split('/').Last();
+                                        fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), fileName);
+
+                                        if (Download(files, fileLocation, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedVideos, ref downloadedImages))
+                                        {
+                                            lock (lockObjectProgress)
+                                            {
+                                                files.Links.Add(fileName);
+                                                // could be moved out of the lock?
+                                                blog.DownloadedImages = (uint)downloadedImages;
+                                                blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
+                                                blog.DownloadedVideos = (uint)downloadedVideos;
+                                            }
+                                            if (shellService.Settings.EnablePreview)
+                                                blog.LastDownloadedVideo = Path.GetFullPath(fileLocation);
+                                        }
+                                        break;
+                                    case "Audio":
+                                        fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), currentImageUrl.Item3 + ".swf");
+
+                                        if (Download(files, fileLocation, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedAudios, ref downloadedImages))
+                                        {
+                                            lock (lockObjectProgress)
+                                            {
+                                                files.Links.Add(fileName);
+                                                // could be moved out of the lock?
+                                                blog.DownloadedImages = (uint)downloadedImages;
+                                                blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
+                                                blog.DownloadedAudios = (uint)downloadedAudios;
+                                            }
+                                        }
+                                        break;
+                                    case "Text":
+                                        fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameTexts));
+
+                                        if (Download(files, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedTexts, ref downloadedImages))
+                                        {
+                                            lock (lockObjectProgress)
+                                            {
+                                                files.Links.Add(currentImageUrl.Item3);
+                                                // could be moved out of the lock?
+                                                blog.DownloadedImages = (uint)downloadedImages;
+                                                blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
+                                                blog.DownloadedTexts = (uint)downloadedTexts;
+                                            }
+                                        }
+                                        break;
+                                    case "Quote":
+                                        fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameQuotes));
+
+                                        if (Download(files, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedQuotes, ref downloadedImages))
+                                        {
+                                            lock (lockObjectProgress)
+                                            {
+                                                files.Links.Add(currentImageUrl.Item3);
+                                                // could be moved out of the lock?
+                                                blog.DownloadedImages = (uint)downloadedImages;
+                                                blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
+                                                blog.DownloadedQuotes = (uint)downloadedQuotes;
+                                            }
+                                        }
+                                        break;
+                                    case "Link":
+                                        fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameLinks));
+
+                                        if (Download(files, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedLinks, ref downloadedImages))
+                                        {
+                                            lock (lockObjectProgress)
+                                            {
+                                                files.Links.Add(currentImageUrl.Item3);
+                                                // could be moved out of the lock?
+                                                blog.DownloadedImages = (uint)downloadedImages;
+                                                blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
+                                                blog.DownloadedLinks = (uint)downloadedLinks;
+                                            }
+                                        }
+                                        break;
+                                    case "Conversation":
+                                        fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameConversations));
+
+                                        if (Download(files, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedConversations, ref downloadedImages))
+                                        {
+                                            lock (lockObjectProgress)
+                                            {
+                                                files.Links.Add(currentImageUrl.Item3);
+                                                // could be moved out of the lock?
+                                                blog.DownloadedImages = (uint)downloadedImages;
+                                                blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
+                                                blog.DownloadedConversations = (uint)downloadedConversations;
+                                            }
+                                        }
+                                        break;
+                                    case "PhotoMeta":
+                                        fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaPhoto));
+
+                                        if (Download(files, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedPhotoMetas, ref downloadedImages))
+                                        {
+                                            lock (lockObjectProgress)
+                                            {
+                                                files.Links.Add(currentImageUrl.Item3);
+                                                // could be moved out of the lock?
+                                                blog.DownloadedImages = (uint)downloadedImages;
+                                                blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
+                                                blog.DownloadedPhotoMetas = (uint)downloadedPhotoMetas;
+                                            }
+                                        }
+                                        break;
+                                    case "VideoMeta":
+                                        fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaVideo));
+
+                                        if (Download(files, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedVideoMetas, ref downloadedImages))
+                                        {
+                                            lock (lockObjectProgress)
+                                            {
+                                                files.Links.Add(currentImageUrl.Item3);
+                                                // could be moved out of the lock?
+                                                blog.DownloadedImages = (uint)downloadedImages;
+                                                blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
+                                                blog.DownloadedVideoMetas = (uint)downloadedVideoMetas;
+                                            }
+                                        }
+                                        break;
+                                    case "AudioMeta":
+                                        fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaAudio));
+
+                                        if (Download(files, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedAudioMetas, ref downloadedImages))
+                                        {
+                                            lock (lockObjectProgress)
+                                            {
+                                                files.Links.Add(currentImageUrl.Item3);
+                                                // could be moved out of the lock?
+                                                blog.DownloadedImages = (uint)downloadedImages;
+                                                blog.Progress = (uint)(((double)downloadedImages + (double)duplicates) / (double)blog.TotalCount * 100);
+                                                blog.DownloadedAudioMetas = (uint)downloadedAudioMetas;
+                                            }
+                                        }
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            });
+
+            blog.LastDownloadedPhoto = null;
+            blog.LastDownloadedVideo = null;
+
+            SaveTumblrFiles(files);
+            files = null;
+
+            return true;
         }
 
         private bool CanEnqueueSelected()
@@ -989,7 +1692,7 @@ namespace TumblThree.Applications.Controllers
             }
             catch (WebException ex)
             {
-                if (ex.HResult == -2146233079)
+                if (ex.Message.Contains("429"))
                 {
                     Logger.Error("ManagerController:RequestData: {0}", ex);
                     shellService.ShowError(ex, Resources.LimitExceeded, new Uri(url).Host);
@@ -1216,706 +1919,6 @@ namespace TumblThree.Applications.Controllers
                     return blog;
             },
             TaskCreationOptions.LongRunning);
-        }
-
-        public Tuple<uint, List<Tuple<string, string, string>>> GetImageUrls(TumblrBlog blog, IProgress<Datamodels.DownloadProgress> progress, CancellationToken ct, PauseToken pt)
-        {
-            int totalPosts = 0;
-            int numberOfPostsCrawled = 0;
-            int totalDownloads = 0;
-            int photos = 0;
-            int videos = 0;
-            int audios = 0;
-            int texts = 0;
-            int conversations = 0;
-            int quotes = 0;
-            int links = 0;
-            int photoMetas = 0;
-            int videoMetas = 0;
-            int audioMetas = 0;
-            List<Tuple<string, string, string>> images = new List<Tuple<string, string, string>>();
-
-            string postCountUrl = GetApiUrl(blog.Url, 1);
-
-            XDocument blogDoc = null;
-
-            if (shellService.Settings.LimitConnections)
-                blogDoc = timeconstraint.Perform<XDocument>(() => RequestData(postCountUrl)).Result;
-            else
-                blogDoc = RequestData(postCountUrl);
-
-            totalPosts = Int32.Parse(blogDoc.Element("tumblr").Element("posts").Attribute("total").Value);
-
-            // Generate URL list of Images
-            // the api shows 50 posts at max, determine the number of pages to crawl
-            int totalPages = (totalPosts / 50) + 1;
-
-            // FIXME: We should use more parallel downloads as requested here since the data is usually really small
-            Parallel.For(0, totalPages,
-                        new ParallelOptions { MaxDegreeOfParallelism = (shellService.Settings.ParallelScans) },
-                        (i, state) =>
-                        {
-                            if (ct.IsCancellationRequested)
-                            {
-                                state.Break();
-                            }
-                            if (pt.IsPaused)
-                                pt.WaitWhilePausedWithResponseAsyc().Wait();
-                            try
-                            {
-                                // check for tags -- crawling for all images here
-                                if (blog.Tags == null || blog.Tags.Count() == 0)
-                                {
-                                    XDocument document = null;
-
-                                    // get 50 posts per crawl/page
-                                    string url = GetApiUrl(blog.Url, 50, i * 50);
-
-                                    if (shellService.Settings.LimitConnections)
-                                        document = timeconstraint.Perform(() => RequestData(url)).Result;
-                                    else
-                                        document = RequestData(url);
-
-                                    //FIXME: Create Generic Method to reduce WET code
-                                    // Doesn't count photosets
-                                    //Interlocked.Add(ref photos, document.Descendants("post").Where(post => post.Attribute("type").Value == "photo").Count());
-                                    Interlocked.Add(ref videos, document.Descendants("post").Where(post => post.Attribute("type").Value == "video").Count());
-                                    Interlocked.Add(ref audios, document.Descendants("post").Where(post => post.Attribute("type").Value == "audio").Count());
-                                    Interlocked.Add(ref texts, document.Descendants("post").Where(post => post.Attribute("type").Value == "regular").Count());
-                                    Interlocked.Add(ref conversations, document.Descendants("post").Where(post => post.Attribute("type").Value == "conversation").Count());
-                                    Interlocked.Add(ref quotes, document.Descendants("post").Where(post => post.Attribute("type").Value == "quote").Count());
-                                    Interlocked.Add(ref links, document.Descendants("post").Where(post => post.Attribute("type").Value == "link").Count());
-
-                                    if (blog.DownloadPhoto == true)
-                                    {
-                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "photo"))
-                                        {
-                                            // photoset
-                                            if (post.Descendants("photoset").Count() > 0)
-                                            {
-                                                foreach (var photo in post.Descendants("photoset").Descendants("photo"))
-                                                {
-                                                    var imageUrl = photo.Elements("photo-url").Where(photo_url =>
-                                                        photo_url.Attribute("max-width").Value == shellService.Settings.ImageSize.ToString()).FirstOrDefault().Value;
-
-                                                    if (blog.SkipGif == true && imageUrl.EndsWith(".gif"))
-                                                        continue;
-
-                                                    if (blog.ForceSize)
-                                                    {
-                                                        StringBuilder sb = new StringBuilder(imageUrl);
-                                                        imageUrl = sb
-                                                          .Replace("_1280", "_" + shellService.Settings.ImageSize.ToString())
-                                                          .Replace("_540", "_" + shellService.Settings.ImageSize.ToString())
-                                                          .Replace("_500", "_" + shellService.Settings.ImageSize.ToString())
-                                                          .Replace("_400", "_" + shellService.Settings.ImageSize.ToString())
-                                                          .Replace("_250", "_" + shellService.Settings.ImageSize.ToString())
-                                                          .Replace("_100", "_" + shellService.Settings.ImageSize.ToString())
-                                                          .Replace("_75sq", "_" + shellService.Settings.ImageSize.ToString())
-                                                          .ToString();
-                                                    }
-
-                                                    Interlocked.Increment(ref photos);
-                                                    Interlocked.Increment(ref totalDownloads);
-                                                    Monitor.Enter(images);
-                                                    images.Add(Tuple.Create(imageUrl, "Photo", post.Attribute("id").Value));
-                                                    Monitor.Exit(images);
-                                                }
-                                            }
-                                            // single image
-                                            else
-                                            {
-                                                var imageUrl = post.Elements("photo-url").Where(photo_url =>
-                                                        photo_url.Attribute("max-width").Value == shellService.Settings.ImageSize.ToString()).FirstOrDefault().Value;
-
-                                                if (blog.SkipGif == true && imageUrl.EndsWith(".gif"))
-                                                    continue;
-
-                                                if (blog.ForceSize)
-                                                {
-                                                    StringBuilder sb = new StringBuilder(imageUrl);
-                                                    imageUrl = sb
-                                                      .Replace("_1280", "_" + shellService.Settings.ImageSize.ToString())
-                                                      .Replace("_540", "_" + shellService.Settings.ImageSize.ToString())
-                                                      .Replace("_500", "_" + shellService.Settings.ImageSize.ToString())
-                                                      .Replace("_400", "_" + shellService.Settings.ImageSize.ToString())
-                                                      .Replace("_250", "_" + shellService.Settings.ImageSize.ToString())
-                                                      .Replace("_100", "_" + shellService.Settings.ImageSize.ToString())
-                                                      .Replace("_75sq", "_" + shellService.Settings.ImageSize.ToString())
-                                                      .ToString();
-                                                }
-
-                                                Interlocked.Increment(ref photos);
-                                                Interlocked.Increment(ref totalDownloads);
-                                                Monitor.Enter(images);
-                                                images.Add(Tuple.Create(imageUrl, "Photo", post.Attribute("id").Value));
-                                                Monitor.Exit(images);
-                                            }
-                                        }
-                                        // check for inline images
-                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "regular"))
-                                        {
-                                            if (post.Element("regular-body").Value.Contains("tumblr_inline"))
-                                            {
-                                                Regex regex = new Regex("<img src=\"(.*?)\"");
-                                                foreach (Match match in regex.Matches(post.Element("regular-body")?.Value))
-                                                {
-                                                    var imageUrl = match.Groups[1].Value;
-                                                    if (blog.ForceSize)
-                                                    {
-                                                        StringBuilder sb = new StringBuilder(imageUrl);
-                                                        imageUrl = sb
-                                                          .Replace("_1280", "_" + shellService.Settings.ImageSize.ToString())
-                                                          .Replace("_540", "_" + shellService.Settings.ImageSize.ToString())
-                                                          .Replace("_500", "_" + shellService.Settings.ImageSize.ToString())
-                                                          .Replace("_400", "_" + shellService.Settings.ImageSize.ToString())
-                                                          .Replace("_250", "_" + shellService.Settings.ImageSize.ToString())
-                                                          .Replace("_100", "_" + shellService.Settings.ImageSize.ToString())
-                                                          .Replace("_75sq", "_" + shellService.Settings.ImageSize.ToString())
-                                                          .ToString();
-                                                    }
-
-                                                    Interlocked.Increment(ref totalDownloads);
-                                                    Monitor.Enter(images);
-                                                    images.Add(Tuple.Create(imageUrl, "Photo", post.Attribute("id").Value));
-                                                    Monitor.Exit(images);
-                                                }
-                                            }
-                                        }
-                                    }
-                                    if (blog.DownloadVideo == true)
-                                    {
-                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "video"))
-                                        {
-                                            var videoUrl = post.Descendants("video-player").Where(x => x.Value.Contains("<source src=")).Select(result =>
-                                                System.Text.RegularExpressions.Regex.Match(
-                                                result.Value, "<source src=\"(.*)\" type=\"video/mp4\">").Groups[1].Value).ToList();
-
-                                            foreach (string video in videoUrl)
-                                            {
-                                                if (shellService.Settings.VideoSize == 1080)
-                                                {
-                                                    Interlocked.Increment(ref totalDownloads);
-                                                    Monitor.Enter(images);
-                                                    images.Add(Tuple.Create(video.Replace("/480", "") + ".mp4", "Video", post.Attribute("id").Value));
-                                                    Monitor.Exit(images);
-                                                }
-                                                else if (shellService.Settings.VideoSize == 480)
-                                                {
-                                                    Interlocked.Increment(ref totalDownloads);
-                                                    Monitor.Enter(images);
-                                                    images.Add(Tuple.Create("https://vt.tumblr.com/" + video.Replace("/480", "").Split('/').Last() + "_480.mp4", "Video", post.Attribute("id").Value));
-                                                    Monitor.Exit(images);
-                                                }
-                                            }
-                                        }
-                                    }
-                                    if (blog.DownloadAudio == true)
-                                    {
-                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "audio"))
-                                        {
-                                            var audioUrl = post.Descendants("audio-player").Where(x => x.Value.Contains("src=")).Select(result =>
-                                                System.Text.RegularExpressions.Regex.Match(
-                                                result.Value, "src=\"(.*)\" height").Groups[1].Value).ToList();
-
-                                            foreach (string audiofile in audioUrl)
-                                            {
-                                                Interlocked.Increment(ref totalDownloads);
-                                                Monitor.Enter(images);
-                                                images.Add(Tuple.Create(WebUtility.UrlDecode(audiofile), "Audio", post.Attribute("id").Value));
-                                                Monitor.Exit(images);
-                                            }
-
-                                        }
-                                    }
-                                    if (blog.DownloadText == true)
-                                    {
-                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "regular"))
-                                        {
-                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Title, post.Element("regular-title")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Body, post.Element("regular-body")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
-                                                Environment.NewLine;
-                                            Interlocked.Increment(ref totalDownloads);
-                                            Monitor.Enter(images);
-                                            images.Add(Tuple.Create(textBody, "Text", post.Attribute("id").Value));
-                                            Monitor.Exit(images);
-                                        }
-                                    }
-                                    if (blog.DownloadQuote == true)
-                                    {
-                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "quote"))
-                                        {
-                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Quote, post.Element("quote-text")?.Value) + 
-                                                Environment.NewLine + post.Element("quote-source")?.Value +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
-                                                Environment.NewLine;
-                                            Interlocked.Increment(ref totalDownloads);
-                                            Monitor.Enter(images);
-                                            images.Add(Tuple.Create(textBody, "Quote", post.Attribute("id").Value));
-                                            Monitor.Exit(images);
-                                        }
-                                    }
-                                    if (blog.DownloadLink == true)
-                                    {
-                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "link"))
-                                        {
-                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Link, post.Element("link-text")?.Value) + 
-                                                Environment.NewLine + post.Element("link-url")?.Value +
-                                                Environment.NewLine + post.Element("link-description")?.Value +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
-                                                Environment.NewLine;
-                                            Interlocked.Increment(ref totalDownloads);
-                                            Monitor.Enter(images);
-                                            images.Add(Tuple.Create(textBody, "Link", post.Attribute("id").Value));
-                                            Monitor.Exit(images);
-                                        }
-                                    }
-                                    if (blog.DownloadConversation == true)
-                                    {
-                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "conversation"))
-                                        {
-                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Conversation, post.Element("conversation-text")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
-                                                Environment.NewLine;
-                                            Interlocked.Increment(ref totalDownloads);
-                                            Monitor.Enter(images);
-                                            images.Add(Tuple.Create(textBody, "Conversation", post.Attribute("id").Value));
-                                            Monitor.Exit(images);
-                                        }
-                                    }
-                                    if (blog.CreatePhotoMeta == true)
-                                    {
-                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "photo"))
-                                        {
-                                            string imageUrl = "";
-                                            // photoset
-                                            if (post.Descendants("photoset").Count() > 0)
-                                            {
-                                                List<string> imageUrls = new List<string>();
-                                                foreach (var photo in post.Descendants("photoset").Descendants("photo"))
-                                                {
-                                                    var singleImageUrl = photo.Elements("photo-url").Where(photo_url =>
-                                                        photo_url.Attribute("max-width").Value == shellService.Settings.ImageSize.ToString()).FirstOrDefault().Value;
-
-                                                    if (blog.SkipGif == true && imageUrl.EndsWith(".gif"))
-                                                        continue;
-                                                    imageUrls.Add(singleImageUrl);
-                                                }
-                                                // imageUrl = imageUrls.Aggregate((current, next) => current + ", " + next);
-                                                imageUrl = string.Join(", ", imageUrls.ToArray());
-                                            }
-                                            // single image
-                                            {
-                                                imageUrl = post.Elements("photo-url").Where(photo_url =>
-                                                        photo_url.Attribute("max-width").Value == shellService.Settings.ImageSize.ToString()).FirstOrDefault().Value;
-
-                                                if (blog.SkipGif == true && imageUrl.EndsWith(".gif"))
-                                                    continue;
-
-                                                string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
-                                                    Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
-                                                    Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
-                                                    Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.PhotoUrl, imageUrl) +
-                                                    Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.PhotoCaption, post.Element("photo-caption")?.Value) +
-                                                    Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
-                                                    Environment.NewLine;
-                                                Interlocked.Increment(ref totalDownloads);
-                                                Interlocked.Increment(ref photoMetas);
-                                                Monitor.Enter(images);
-                                                images.Add(Tuple.Create(textBody, "PhotoMeta", post.Attribute("id").Value));
-                                                Monitor.Exit(images);
-                                            }
-                                        }
-                                    }
-                                    if (blog.CreateVideoMeta == true)
-                                    {
-                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "video"))
-                                        {
-                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.VideoPlayer, post.Element("video-player")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
-                                                Environment.NewLine;
-                                            Interlocked.Increment(ref totalDownloads);
-                                            Interlocked.Increment(ref videoMetas);
-                                            Monitor.Enter(images);
-                                            images.Add(Tuple.Create(textBody, "VideoMeta", post.Attribute("id").Value));
-                                            Monitor.Exit(images);
-                                        }
-                                    }
-                                    if (blog.CreateAudioMeta == true)
-                                    {
-                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "audio"))
-                                        {
-                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.AudioCaption, post.Element("audio-caption")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Artist, post.Element("id3-artist")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Title, post.Element("id3-title")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Track, post.Element("id3-track")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Album, post.Element("id3-album")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Year, post.Element("id3-year")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
-                                                Environment.NewLine;
-                                            Interlocked.Increment(ref totalDownloads);
-                                            Interlocked.Increment(ref audioMetas);
-                                            Monitor.Enter(images);
-                                            images.Add(Tuple.Create(textBody, "AudioMeta", post.Attribute("id").Value));
-                                            Monitor.Exit(images);
-                                        }
-                                    }
-                                }
-                                // crawling only for tagged images
-                                else
-                                {
-                                    List<string> tags = blog.Tags.Split(',').Select(x => x.Trim()).ToList();
-
-                                    XDocument document = null;
-
-                                    // get 50 posts per crawl/page
-
-                                    string url = GetApiUrl(blog.Url, 50, i * 50);
-
-                                    if (shellService.Settings.LimitConnections)
-                                        document = timeconstraint.Perform<XDocument>(() => RequestData(url)).Result;
-                                    else
-                                        document = RequestData(url);
-
-                                    if (blog.DownloadPhoto == true)
-                                    {
-                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "photo" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
-                                        {
-                                            // photoset
-                                            if (post.Descendants("photoset").Count() > 0)
-                                            {
-                                                foreach (var photo in post.Descendants("photoset").Descendants("photo"))
-                                                {
-                                                    var imageUrl = photo.Elements("photo-url").Where(photo_url =>
-                                                        photo_url.Attribute("max-width").Value == shellService.Settings.ImageSize.ToString()).FirstOrDefault().Value;
-
-                                                    if (blog.SkipGif == true && imageUrl.EndsWith(".gif"))
-                                                        continue;
-
-                                                    if (blog.ForceSize)
-                                                    {
-                                                        StringBuilder sb = new StringBuilder(imageUrl);
-                                                        imageUrl = sb
-                                                          .Replace("_1280", "_" + shellService.Settings.ImageSize.ToString())
-                                                          .Replace("_540", "_" + shellService.Settings.ImageSize.ToString())
-                                                          .Replace("_500", "_" + shellService.Settings.ImageSize.ToString())
-                                                          .Replace("_400", "_" + shellService.Settings.ImageSize.ToString())
-                                                          .Replace("_250", "_" + shellService.Settings.ImageSize.ToString())
-                                                          .Replace("_100", "_" + shellService.Settings.ImageSize.ToString())
-                                                          .Replace("_75sq", "_" + shellService.Settings.ImageSize.ToString())
-                                                          .ToString();
-                                                    }
-
-                                                    Interlocked.Increment(ref totalDownloads);
-                                                    Interlocked.Increment(ref photos);
-                                                    Monitor.Enter(images);
-                                                    images.Add(Tuple.Create(imageUrl, "Photo", post.Attribute("id").Value));
-                                                    Monitor.Exit(images);
-                                                }
-                                            }
-                                            // single image
-                                            else
-                                            {
-                                                var imageUrl = post.Elements("photo-url").Where(photo_url =>
-                                                        photo_url.Attribute("max-width").Value == shellService.Settings.ImageSize.ToString()).FirstOrDefault().Value;
-
-                                                if (blog.SkipGif == true && imageUrl.EndsWith(".gif"))
-                                                    continue;
-
-                                                if (blog.ForceSize)
-                                                {
-                                                    StringBuilder sb = new StringBuilder(imageUrl);
-                                                    imageUrl = sb
-                                                      .Replace("_1280", "_" + shellService.Settings.ImageSize.ToString())
-                                                      .Replace("_540", "_" + shellService.Settings.ImageSize.ToString())
-                                                      .Replace("_500", "_" + shellService.Settings.ImageSize.ToString())
-                                                      .Replace("_400", "_" + shellService.Settings.ImageSize.ToString())
-                                                      .Replace("_250", "_" + shellService.Settings.ImageSize.ToString())
-                                                      .Replace("_100", "_" + shellService.Settings.ImageSize.ToString())
-                                                      .Replace("_75sq", "_" + shellService.Settings.ImageSize.ToString())
-                                                      .ToString();
-                                                }
-
-                                                Interlocked.Increment(ref totalDownloads);
-                                                Interlocked.Increment(ref photos);
-                                                Monitor.Enter(images);
-                                                images.Add(Tuple.Create(imageUrl, "Photo", post.Attribute("id").Value));
-                                                Monitor.Exit(images);
-                                            }
-                                        }
-                                        // check for inline images
-                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "regular" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
-                                        {
-                                            if (post.Element("regular-body").Value.Contains("tumblr_inline"))
-                                            {
-                                                Regex regex = new Regex("<img src=\"(.*?)\"");
-                                                foreach (Match match in regex.Matches(post.Element("regular-body")?.Value))
-                                                {
-                                                    var imageUrl = match.Groups[1].Value;
-                                                    if (blog.ForceSize)
-                                                    {
-                                                        StringBuilder sb = new StringBuilder(imageUrl);
-                                                        imageUrl = sb
-                                                          .Replace("_1280", "_" + shellService.Settings.ImageSize.ToString())
-                                                          .Replace("_540", "_" + shellService.Settings.ImageSize.ToString())
-                                                          .Replace("_500", "_" + shellService.Settings.ImageSize.ToString())
-                                                          .Replace("_400", "_" + shellService.Settings.ImageSize.ToString())
-                                                          .Replace("_250", "_" + shellService.Settings.ImageSize.ToString())
-                                                          .Replace("_100", "_" + shellService.Settings.ImageSize.ToString())
-                                                          .Replace("_75sq", "_" + shellService.Settings.ImageSize.ToString())
-                                                          .ToString();
-                                                    }
-
-                                                    Interlocked.Increment(ref totalDownloads);
-                                                    Monitor.Enter(images);
-                                                    images.Add(Tuple.Create(imageUrl, "Photo", post.Attribute("id").Value));
-                                                    Monitor.Exit(images);
-                                                }
-                                            }
-                                        }
-                                    }
-                                    if (blog.DownloadVideo == true)
-                                    {
-                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "video" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
-                                        {
-                                            var videoUrl = post.Descendants("video-player").Where(x => x.Value.Contains("<source src=")).Select(result =>
-                                                System.Text.RegularExpressions.Regex.Match(
-                                                result.Value, "<source src=\"(.*)\" type=\"video/mp4\">").Groups[1].Value).ToList();
-
-                                            foreach (string video in videoUrl)
-                                            {
-                                                if (shellService.Settings.VideoSize == 1080)
-                                                {
-                                                    Interlocked.Increment(ref totalDownloads);
-                                                    Monitor.Enter(images);
-                                                    images.Add(Tuple.Create(video.Replace("/480", "") + ".mp4", "Video", post.Attribute("id").Value));
-                                                    Monitor.Exit(images);
-                                                }
-                                                else if (shellService.Settings.VideoSize == 480)
-                                                {
-                                                    Interlocked.Increment(ref totalDownloads);
-                                                    Monitor.Enter(images);
-                                                    images.Add(Tuple.Create("https://vt.tumblr.com/" + video.Replace("/480", "").Split('/').Last() + "_480.mp4", "Video", post.Attribute("id").Value));
-                                                    Monitor.Exit(images);
-                                                }
-                                            }
-                                        }
-                                    }
-                                    if (blog.DownloadAudio == true)
-                                    {
-                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "audio" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
-                                        {
-                                            var audioUrl = post.Descendants("audio-player").Where(x => x.Value.Contains("src=")).Select(result =>
-                                                System.Text.RegularExpressions.Regex.Match(
-                                                result.Value, "src=\"(.*)\" height").Groups[1].Value).ToList();
-
-                                            foreach (string audiofile in audioUrl)
-                                            {
-                                                Interlocked.Increment(ref totalDownloads);
-                                                Monitor.Enter(images);
-                                                images.Add(Tuple.Create(WebUtility.UrlDecode(audiofile), "Audio", post.Attribute("id").Value));
-                                                Monitor.Exit(images);
-                                            }
-
-                                        }
-                                    }
-                                    if (blog.DownloadText == true)
-                                    {
-                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "regular" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
-                                        {
-                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Title, post.Element("regular-title")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Body, post.Element("regular-body")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
-                                                Environment.NewLine;
-                                            Interlocked.Increment(ref totalDownloads);
-                                            Monitor.Enter(images);
-                                            images.Add(Tuple.Create(textBody, "Text", post.Attribute("id").Value));
-                                            Monitor.Exit(images);
-                                        }
-                                    }
-                                    if (blog.DownloadQuote == true)
-                                    {
-                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "quote" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
-                                        {
-                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Quote, post.Element("quote-text")?.Value) +
-                                                Environment.NewLine + post.Element("quote-source")?.Value +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
-                                                Environment.NewLine;
-                                            Interlocked.Increment(ref totalDownloads);
-                                            Monitor.Enter(images);
-                                            images.Add(Tuple.Create(textBody, "Quote", post.Attribute("id").Value));
-                                            Monitor.Exit(images);
-                                        }
-                                    }
-                                    if (blog.DownloadLink == true)
-                                    {
-                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "link" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
-                                        {
-                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Link, post.Element("link-text")?.Value) +
-                                                Environment.NewLine + post.Element("link-url")?.Value +
-                                                Environment.NewLine + post.Element("link-description")?.Value +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
-                                                Environment.NewLine;
-                                            Interlocked.Increment(ref totalDownloads);
-                                            Monitor.Enter(images);
-                                            images.Add(Tuple.Create(textBody, "Link", post.Attribute("id").Value));
-                                            Monitor.Exit(images);
-                                        }
-                                    }
-                                    if (blog.DownloadConversation == true)
-                                    {
-                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "conversation" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
-                                        {
-                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Conversation, post.Element("conversation-text")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
-                                                Environment.NewLine;
-                                            Interlocked.Increment(ref totalDownloads);
-                                            Monitor.Enter(images);
-                                            images.Add(Tuple.Create(textBody, "Conversation", post.Attribute("id").Value));
-                                            Monitor.Exit(images);
-                                        }
-                                    }
-                                    if (blog.CreatePhotoMeta == true)
-                                    {
-                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "photo" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
-                                        {
-                                            string imageUrl = "";
-                                            // photoset
-                                            if (post.Descendants("photoset").Count() > 0)
-                                            {
-                                                List<string> imageUrls = new List<string>();
-                                                foreach (var photo in post.Descendants("photoset").Descendants("photo"))
-                                                {
-                                                    var singleImageUrl = photo.Elements("photo-url").Where(photo_url =>
-                                                        photo_url.Attribute("max-width").Value == shellService.Settings.ImageSize.ToString()).FirstOrDefault().Value;
-
-                                                    if (blog.SkipGif == true && imageUrl.EndsWith(".gif"))
-                                                        continue;
-                                                    imageUrls.Add(singleImageUrl);
-                                                }
-                                                // imageUrl = imageUrls.Aggregate((current, next) => current + ", " + next);
-                                                imageUrl = string.Join(", ", imageUrls.ToArray());
-                                            }
-                                            // single image
-                                            {
-                                                imageUrl = post.Elements("photo-url").Where(photo_url =>
-                                                        photo_url.Attribute("max-width").Value == shellService.Settings.ImageSize.ToString()).FirstOrDefault().Value;
-
-                                                if (blog.SkipGif == true && imageUrl.EndsWith(".gif"))
-                                                    continue;
-
-                                                string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
-                                                    Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
-                                                    Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
-                                                    Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.PhotoUrl, imageUrl) +
-                                                    Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.PhotoCaption, post.Element("photo-caption")?.Value) +
-                                                    Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
-                                                    Environment.NewLine;
-                                                Interlocked.Increment(ref photoMetas);
-                                                Interlocked.Increment(ref totalDownloads);
-                                                Monitor.Enter(images);
-                                                images.Add(Tuple.Create(textBody, "PhotoMeta", post.Attribute("id").Value));
-                                                Monitor.Exit(images);
-                                            }
-                                        }
-                                    }
-                                    if (blog.CreateVideoMeta == true)
-                                    {
-                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "video" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
-                                        {
-                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.VideoPlayer, post.Element("video-player")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
-                                                Environment.NewLine;
-                                            Interlocked.Increment(ref videoMetas);
-                                            Interlocked.Increment(ref totalDownloads);
-                                            Monitor.Enter(images);
-                                            images.Add(Tuple.Create(textBody, "VideoMeta", post.Attribute("id").Value));
-                                            Monitor.Exit(images);
-                                        }
-                                    }
-                                    if (blog.CreateAudioMeta == true)
-                                    {
-                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "audio" && posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
-                                        {
-                                            string textBody = string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.AudioCaption, post.Element("audio-caption")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Artist, post.Element("id3-artist")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Title, post.Element("id3-title")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Track, post.Element("id3-track")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Album, post.Element("id3-album")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Year, post.Element("id3-year")?.Value) +
-                                                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
-                                                Environment.NewLine;
-                                            Interlocked.Increment(ref audioMetas);
-                                            Interlocked.Increment(ref totalDownloads);
-                                            Monitor.Enter(images);
-                                            images.Add(Tuple.Create(textBody, "AudioMeta", post.Attribute("id").Value));
-                                            Monitor.Exit(images);
-                                        }
-                                    }
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                Console.WriteLine(ex.Data);
-                            }
-
-                            numberOfPostsCrawled += 50;
-                            var newProgress = new Datamodels.DownloadProgress();
-                            newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressGetUrl, numberOfPostsCrawled, totalPosts);
-                            progress.Report(newProgress);
-                        }
-                );
-
-            blog.Posts = (uint)totalPosts;
-            blog.Photos = (uint)photos;
-            blog.Videos = (uint)videos;
-            blog.Audios = (uint)audios;
-            blog.Texts = (uint)texts;
-            blog.Conversations = (uint)conversations;
-            blog.Quotes = (uint)quotes;
-            blog.NumberOfLinks = (uint)links;
-            blog.PhotoMetas = (uint)photoMetas;
-            blog.VideoMetas = (uint)videoMetas;
-            blog.AudioMetas = (uint)audioMetas;
-
-            return Tuple.Create((uint)totalDownloads, images);
         }
 
         public string ExtractBlogname(string url)
