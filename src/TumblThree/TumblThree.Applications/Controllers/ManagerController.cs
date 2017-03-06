@@ -459,9 +459,10 @@ namespace TumblThree.Applications.Controllers
 
             var producer = Task.Run(() => GetImageUrls(blog, bCollection, progress, ct, pt));
             var consumer = Task.Run(() => ProcessTumblrBlog(blog, bCollection, progress, ct, pt));
-            var tuple = producer.Result;
-            var newImageCount = tuple.Item1;
-            var newImageUrls = tuple.Item2;
+            var blogContent = producer.Result;
+            bool finishedDownloading = consumer.Result;
+            uint newImageCount = blogContent.Item1;
+            var newImageUrls = blogContent.Item3;
 
             blog.TotalCount = newImageCount;
 
@@ -492,6 +493,8 @@ namespace TumblThree.Applications.Controllers
             if (!ct.IsCancellationRequested)
             {
                 blog.LastCompleteCrawl = DateTime.Now;
+                if (finishedDownloading)
+                    blog.LastId = blogContent.Item2;
             }
 
             blog.Dirty = false;
@@ -504,7 +507,7 @@ namespace TumblThree.Applications.Controllers
             return blog;
         }
 
-        public Tuple<uint, List<Tuple<string, string, string>>> GetImageUrls(TumblrBlog blog, BlockingCollection<Tuple<string, string, string>> bCollection, IProgress<Datamodels.DownloadProgress> progress, CancellationToken ct, PauseToken pt)
+        public Tuple<uint, ulong, List<Tuple<string, string, string>>> GetImageUrls(TumblrBlog blog, BlockingCollection<Tuple<string, string, string>> bCollection, IProgress<Datamodels.DownloadProgress> progress, CancellationToken ct, PauseToken pt)
         {
             int totalPosts = 0;
             int numberOfPostsCrawled = 0;
@@ -532,12 +535,15 @@ namespace TumblThree.Applications.Controllers
 
             totalPosts = Int32.Parse(blogDoc.Element("tumblr").Element("posts").Attribute("total").Value);
 
+            // save highest post ID
+            ulong highestId = UInt64.Parse(blogDoc.Element("tumblr").Element("posts").Element("post").Attribute("id").Value);
+
             // Generate URL list of Images
             // the api shows 50 posts at max, determine the number of pages to crawl
             int totalPages = (totalPosts / 50) + 1;
 
             // FIXME: We should use more parallel downloads as requested here since the data is usually really small
-            Parallel.For(0, totalPages,
+            var loopState = Parallel.For(0, totalPages,
                         new ParallelOptions { MaxDegreeOfParallelism = (shellService.Settings.ParallelScans) },
                         (i, state) =>
                         {
@@ -571,6 +577,15 @@ namespace TumblThree.Applications.Controllers
                                     Interlocked.Add(ref conversations, document.Descendants("post").Where(post => post.Attribute("type").Value == "conversation").Count());
                                     Interlocked.Add(ref quotes, document.Descendants("post").Where(post => post.Attribute("type").Value == "quote").Count());
                                     Interlocked.Add(ref links, document.Descendants("post").Where(post => post.Attribute("type").Value == "link").Count());
+
+                                    //var highestPostId = document.Root.Elements("tumblr")
+                                    //    .Elements("posts")
+                                    //    .Elements("post")
+                                    //    .Max(c => (int)c.Attribute("id"));
+                                    ulong highestPostId = UInt64.Parse(document.Element("tumblr").Element("posts").Element("post").Attribute("id").Value);
+
+                                    if (highestPostId < blog.LastId)
+                                        state.Break();
 
                                     if (blog.DownloadPhoto == true)
                                     {
@@ -1184,19 +1199,22 @@ namespace TumblThree.Applications.Controllers
 
             bCollection.CompleteAdding();
 
-            blog.Posts = (uint)totalPosts;
-            blog.Photos = (uint)photos;
-            blog.Videos = (uint)videos;
-            blog.Audios = (uint)audios;
-            blog.Texts = (uint)texts;
-            blog.Conversations = (uint)conversations;
-            blog.Quotes = (uint)quotes;
-            blog.NumberOfLinks = (uint)links;
-            blog.PhotoMetas = (uint)photoMetas;
-            blog.VideoMetas = (uint)videoMetas;
-            blog.AudioMetas = (uint)audioMetas;
+            if (loopState.IsCompleted)
+            {
+                blog.Posts = (uint)totalPosts;
+                blog.Photos = (uint)photos;
+                blog.Videos = (uint)videos;
+                blog.Audios = (uint)audios;
+                blog.Texts = (uint)texts;
+                blog.Conversations = (uint)conversations;
+                blog.Quotes = (uint)quotes;
+                blog.NumberOfLinks = (uint)links;
+                blog.PhotoMetas = (uint)photoMetas;
+                blog.VideoMetas = (uint)videoMetas;
+                blog.AudioMetas = (uint)audioMetas;
+            }
 
-            return Tuple.Create((uint)totalDownloads, images);
+            return Tuple.Create((uint)totalDownloads, highestId, images);
         }
 
         private bool ProcessTumblrBlog(TumblrBlog blog, BlockingCollection<Tuple<string, string, string>> bCollection, IProgress<DataModels.DownloadProgress> progress, CancellationToken ct, PauseToken pt)
@@ -1229,7 +1247,7 @@ namespace TumblThree.Applications.Controllers
             blog.ChildId = Path.Combine(indexPath, blog.Name + "_files.tumblr");
             TumblrFiles files = GetTumblrFiles(blog);
 
-            var parallel = Parallel.ForEach(
+            var loopState = Parallel.ForEach(
                             bCollection.GetConsumingEnumerable(),
                             new ParallelOptions { MaxDegreeOfParallelism = (shellService.Settings.ParallelImages / selectionService.ActiveItems.Count) },
                             (currentImageUrl, state) =>
@@ -1413,7 +1431,10 @@ namespace TumblThree.Applications.Controllers
             SaveTumblrFiles(files);
             files = null;
 
-            return true;
+            if (loopState.IsCompleted)
+                return true;
+
+            return false;
         }
 
         private bool CanEnqueueSelected()

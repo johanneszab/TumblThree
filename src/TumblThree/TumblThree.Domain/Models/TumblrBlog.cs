@@ -11,6 +11,7 @@ namespace TumblThree.Domain.Models
         private string childId;
         private string description;
         private string title;
+        private ulong lastId;
         private uint progress;
         private string tags;
         private uint posts;
@@ -70,6 +71,7 @@ namespace TumblThree.Domain.Models
             this.childId = String.Empty;
             this.description = String.Empty;
             this.title = String.Empty;
+            this.lastId = 0;
             this.progress = 0;
             this.tags = String.Empty;
             this.posts = 0;
@@ -119,6 +121,7 @@ namespace TumblThree.Domain.Models
             this.description = String.Empty;
             this.Url = url;
             this.title = String.Empty;
+            this.lastId = 0;
             this.progress = 0;
             this.tags = String.Empty;
             this.posts = 0;
@@ -183,6 +186,12 @@ namespace TumblThree.Domain.Models
         {
             get { return childId; }
             set { SetProperty(ref childId, value); }
+        }
+
+        public ulong LastId
+        {
+            get { return lastId; }
+            set { SetProperty(ref lastId, value); }
         }
 
         public uint Progress
