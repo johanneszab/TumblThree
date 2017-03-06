@@ -224,7 +224,7 @@ namespace TumblThree.Applications.Properties
             LimitScanBandwidth = false;
             TimeOut = 120;
             LimitConnections = true;
-            MaxConnections = 120;
+            MaxConnections = 100;
             ConnectionTimeInterval = 60;
             Bandwidth = 102400;
             ImageSize = 1280;
