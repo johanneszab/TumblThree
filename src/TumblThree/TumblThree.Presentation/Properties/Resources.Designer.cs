@@ -430,6 +430,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Force rescan.
+        /// </summary>
+        public static string ForceRescan {
+            get {
+                return ResourceManager.GetString("ForceRescan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Download specified size even if it is not offered.
         /// </summary>
         public static string ForceSize {
@@ -1047,6 +1056,24 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipDetailsStatsDescription {
             get {
                 return ResourceManager.GetString("ToolTipDetailsStatsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rescans the whole blog, not just new posts..
+        /// </summary>
+        public static string ToolTipForceRescan {
+            get {
+                return ResourceManager.GetString("ToolTipForceRescan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Forces a complete scan using the Tumblr api..
+        /// </summary>
+        public static string ToolTipForceRescanDescription {
+            get {
+                return ResourceManager.GetString("ToolTipForceRescanDescription", resourceCulture);
             }
         }
         

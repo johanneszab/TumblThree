@@ -143,6 +143,8 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="{StaticResource Layout.RowSpace}"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="{StaticResource Layout.RowSpace}"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="{StaticResource Layout.LargeRowSpace}"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
@@ -471,11 +473,21 @@
                         </ToolTip>
                     </CheckBox.ToolTip>
                 </CheckBox>
-                    
-                <Label Content="{x:Static p:Resources.Preview}" Grid.Column="0" Grid.Row="38"/>
-                <Label Content="" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="38"/>
+                <CheckBox Content="{x:Static p:Resources.ForceRescan}" IsChecked="{Binding BlogFile.ForceRescan, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="38" Margin="3,0,0,0" Padding="3,0,0,0">
+                    <CheckBox.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipForceRescan}"/>
+                                <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipForceRescanDescription}"/>
+                            </StackPanel>
+                        </ToolTip>
+                    </CheckBox.ToolTip>
+                </CheckBox>
 
-                <UserControl x:Name="Preview" Width="Auto" Height="Auto" Grid.ColumnSpan="5" Grid.Row="40">
+                <Label Content="{x:Static p:Resources.Preview}" Grid.Column="0" Grid.Row="40"/>
+                <Label Content="" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="40"/>
+
+                <UserControl x:Name="Preview" Width="Auto" Height="Auto" Grid.ColumnSpan="5" Grid.Row="42">
                     <Grid>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="SwitchableStates">

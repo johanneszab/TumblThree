@@ -461,10 +461,8 @@ namespace TumblThree.Applications.Controllers
             var consumer = Task.Run(() => ProcessTumblrBlog(blog, bCollection, progress, ct, pt));
             var blogContent = producer.Result;
             bool finishedDownloading = consumer.Result;
-            uint newImageCount = blogContent.Item1;
+            bool limitHit = blogContent.Item2;
             var newImageUrls = blogContent.Item3;
-
-            blog.TotalCount = newImageCount;
 
             var newProgress = new DataModels.DownloadProgress();
             newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressUniqueDownloads);
@@ -493,8 +491,8 @@ namespace TumblThree.Applications.Controllers
             if (!ct.IsCancellationRequested)
             {
                 blog.LastCompleteCrawl = DateTime.Now;
-                if (finishedDownloading)
-                    blog.LastId = blogContent.Item2;
+                if (finishedDownloading && !limitHit)
+                    blog.LastId = blogContent.Item1;
             }
 
             blog.Dirty = false;
@@ -507,7 +505,7 @@ namespace TumblThree.Applications.Controllers
             return blog;
         }
 
-        public Tuple<uint, ulong, List<Tuple<string, string, string>>> GetImageUrls(TumblrBlog blog, BlockingCollection<Tuple<string, string, string>> bCollection, IProgress<Datamodels.DownloadProgress> progress, CancellationToken ct, PauseToken pt)
+        public Tuple<ulong, bool, List<Tuple<string, string, string>>> GetImageUrls(TumblrBlog blog, BlockingCollection<Tuple<string, string, string>> bCollection, IProgress<Datamodels.DownloadProgress> progress, CancellationToken ct, PauseToken pt)
         {
             int totalPosts = 0;
             int numberOfPostsCrawled = 0;
@@ -522,11 +520,19 @@ namespace TumblThree.Applications.Controllers
             int photoMetas = 0;
             int videoMetas = 0;
             int audioMetas = 0;
+            ulong lastId = blog.LastId;
+            bool limitHit = false;
             List<Tuple<string, string, string>> images = new List<Tuple<string, string, string>>();
 
             string postCountUrl = GetApiUrl(blog.Url, 1);
 
             XDocument blogDoc = null;
+
+            if (blog.ForceRescan)
+            {
+                blog.ForceRescan = false;
+                lastId = 0;
+            }
 
             if (shellService.Settings.LimitConnections)
                 blogDoc = timeconstraint.Perform<XDocument>(() => RequestData(postCountUrl)).Result;
@@ -555,7 +561,6 @@ namespace TumblThree.Applications.Controllers
                                 pt.WaitWhilePausedWithResponseAsyc().Wait();
                             try
                             {
-                                // check for tags -- crawling for all images here
                                 if (blog.Tags == null || blog.Tags.Count() == 0)
                                 {
                                     XDocument document = null;
@@ -567,6 +572,9 @@ namespace TumblThree.Applications.Controllers
                                         document = timeconstraint.Perform(() => RequestData(url)).Result;
                                     else
                                         document = RequestData(url);
+
+                                    if (document == null)
+                                        limitHit = true; 
 
                                     //FIXME: Create Generic Method to reduce WET code
                                     // Doesn't count photosets
@@ -584,7 +592,7 @@ namespace TumblThree.Applications.Controllers
                                     //    .Max(c => (int)c.Attribute("id"));
                                     ulong highestPostId = UInt64.Parse(document.Element("tumblr").Element("posts").Element("post").Attribute("id").Value);
 
-                                    if (highestPostId < blog.LastId)
+                                    if (highestPostId < lastId)
                                         state.Break();
 
                                     if (blog.DownloadPhoto == true)
@@ -873,6 +881,7 @@ namespace TumblThree.Applications.Controllers
                                         }
                                     }
                                 }
+
                                 // crawling only for tagged images
                                 else
                                 {
@@ -881,13 +890,30 @@ namespace TumblThree.Applications.Controllers
                                     XDocument document = null;
 
                                     // get 50 posts per crawl/page
-
                                     string url = GetApiUrl(blog.Url, 50, i * 50);
 
                                     if (shellService.Settings.LimitConnections)
-                                        document = timeconstraint.Perform<XDocument>(() => RequestData(url)).Result;
+                                        document = timeconstraint.Perform(() => RequestData(url)).Result;
                                     else
                                         document = RequestData(url);
+
+                                    if (document == null)
+                                        limitHit = true;
+
+                                    //FIXME: Create Generic Method to reduce WET code
+                                    // Doesn't count photosets
+                                    //Interlocked.Add(ref photos, document.Descendants("post").Where(post => post.Attribute("type").Value == "photo").Count());
+                                    Interlocked.Add(ref videos, document.Descendants("post").Where(post => post.Attribute("type").Value == "video").Count());
+                                    Interlocked.Add(ref audios, document.Descendants("post").Where(post => post.Attribute("type").Value == "audio").Count());
+                                    Interlocked.Add(ref texts, document.Descendants("post").Where(post => post.Attribute("type").Value == "regular").Count());
+                                    Interlocked.Add(ref conversations, document.Descendants("post").Where(post => post.Attribute("type").Value == "conversation").Count());
+                                    Interlocked.Add(ref quotes, document.Descendants("post").Where(post => post.Attribute("type").Value == "quote").Count());
+                                    Interlocked.Add(ref links, document.Descendants("post").Where(post => post.Attribute("type").Value == "link").Count());
+
+                                    ulong highestPostId = UInt64.Parse(document.Element("tumblr").Element("posts").Element("post").Attribute("id").Value);
+
+                                    if (highestPostId < lastId)
+                                        state.Break();
 
                                     if (blog.DownloadPhoto == true)
                                     {
@@ -1188,19 +1214,11 @@ namespace TumblThree.Applications.Controllers
                         }
                 );
 
-
-            //// remove the duplicates from the download list
-            //var imageUrls = new HashSet<Tuple<string, string, string>>(newImageUrls);
-
-            //// remove all files previously downloaded
-            //var blogLinks = new HashSet<string>(files.Links);
-            //imageUrls.RemoveWhere(item => blogLinks.Contains(item.Item1));
-            //imageUrls.RemoveWhere(item => blogLinks.Contains(item.Item3));
-
             bCollection.CompleteAdding();
 
             if (loopState.IsCompleted)
             {
+                blog.TotalCount = (uint)totalDownloads;
                 blog.Posts = (uint)totalPosts;
                 blog.Photos = (uint)photos;
                 blog.Videos = (uint)videos;
@@ -1214,7 +1232,7 @@ namespace TumblThree.Applications.Controllers
                 blog.AudioMetas = (uint)audioMetas;
             }
 
-            return Tuple.Create((uint)totalDownloads, highestId, images);
+            return Tuple.Create(highestId, limitHit, images);
         }
 
         private bool ProcessTumblrBlog(TumblrBlog blog, BlockingCollection<Tuple<string, string, string>> bCollection, IProgress<DataModels.DownloadProgress> progress, CancellationToken ct, PauseToken pt)

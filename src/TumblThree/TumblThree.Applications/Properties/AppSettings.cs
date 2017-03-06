@@ -220,11 +220,11 @@ namespace TumblThree.Applications.Properties
             DownloadLocation = @".\Blogs\";
             ParallelImages = 25;
             ParallelBlogs = 2;
-            ParallelScans = 20;
+            ParallelScans = 4;
             LimitScanBandwidth = false;
             TimeOut = 120;
             LimitConnections = true;
-            MaxConnections = 125;
+            MaxConnections = 120;
             ConnectionTimeInterval = 60;
             Bandwidth = 102400;
             ImageSize = 1280;

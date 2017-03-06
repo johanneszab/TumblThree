@@ -116,6 +116,7 @@ namespace TumblThree.Applications.Controllers
                 CreateAudioMeta = false,
                 SkipGif = false,
                 ForceSize = false,
+                ForceRescan = false,
                 Dirty = false
             };
         }
@@ -171,6 +172,7 @@ namespace TumblThree.Applications.Controllers
                     blog.CreateAudioMeta = blogFile.CreateAudioMeta;
                     blog.SkipGif = blogFile.SkipGif;
                     blog.ForceSize = blogFile.ForceSize;
+                    blog.ForceRescan = blogFile.ForceRescan;
                     blog.Dirty = true;                
                 }
             }

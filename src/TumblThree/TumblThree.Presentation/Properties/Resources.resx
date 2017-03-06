@@ -501,4 +501,13 @@
   <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
     <value>A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr api. A too small value will decrease the download speed.</value>
   </data>
+  <data name="ForceRescan" xml:space="preserve">
+    <value>Force rescan</value>
+  </data>
+  <data name="ToolTipForceRescan" xml:space="preserve">
+    <value>Rescans the whole blog, not just new posts.</value>
+  </data>
+  <data name="ToolTipForceRescanDescription" xml:space="preserve">
+    <value>Forces a complete scan using the Tumblr api.</value>
+  </data>
 </root>
