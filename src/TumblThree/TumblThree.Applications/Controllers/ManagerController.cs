@@ -656,9 +656,9 @@ namespace TumblThree.Applications.Controllers
                                             }
                                         }
                                         // check for inline images
-                                        foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "regular"))
+                                        foreach (var post in document.Descendants("post"))
                                         {
-                                            if (post.Element("regular-body").Value.Contains("tumblr_inline"))
+                                            if (String.Concat(post.Nodes()).Contains("tumblr_inline"))
                                             {
                                                 Regex regex = new Regex("<img src=\"(.*?)\"");
                                                 foreach (Match match in regex.Matches(post.Element("regular-body")?.Value))
