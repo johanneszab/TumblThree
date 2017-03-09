@@ -460,7 +460,6 @@ namespace TumblThree.Applications.Controllers
             var producer = Task.Run(() => GetImageUrls(blog, bCollection, progress, ct, pt));
             var consumer = Task.Run(() => ProcessTumblrBlog(blog, bCollection, progress, ct, pt));
             var blogContent = producer.Result;
-            bool finishedDownloading = consumer.Result;
             bool limitHit = blogContent.Item2;
             var newImageUrls = blogContent.Item3;
 
@@ -485,6 +484,8 @@ namespace TumblThree.Applications.Controllers
             blog.DuplicatePhotos = (uint)duplicatePhotos;
             blog.DuplicateVideos = (uint)duplicateVideos;
             blog.DuplicateAudios = (uint)duplicateAudios;
+
+            bool finishedDownloading = consumer.Result;
 
             Task.WaitAll(producer, consumer);
 
@@ -672,7 +673,7 @@ namespace TumblThree.Applications.Controllers
                         Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
                         Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
                         Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Title, post.Element("regular-title")?.Value) +
-                        Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Body, post.Element("regular-body")?.Value) +
+                        Environment.NewLine + post.Element("regular-body")?.Value +
                         Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
                         Environment.NewLine;
                     bCollection.Add(Tuple.Create(textBody, "Text", post.Attribute("id").Value));
@@ -921,7 +922,7 @@ namespace TumblThree.Applications.Controllers
             return Tuple.Create(highestId, limitHit, downloadList);
         }
 
-        private void UpdateProgress(TumblrBlog blog, TumblrFiles files, string fileName, string fileLocation, object lockObjectProgress, ref uint duplicates, ref int counter, ref int totalCounter)
+        private void UpdateProgress(TumblrBlog blog, TumblrFiles files, string fileName, object lockObjectProgress, ref uint duplicates, ref int totalCounter)
         {
             lock (lockObjectProgress)
             {
@@ -929,10 +930,7 @@ namespace TumblThree.Applications.Controllers
                 // could be moved out of the lock?
                 blog.DownloadedImages = (uint)totalCounter;
                 blog.Progress = (uint)(((double)totalCounter + (double)duplicates) / (double)blog.TotalCount * 100);
-                blog.DownloadedPhotos = (uint)counter;
             }
-            if (shellService.Settings.EnablePreview)
-                blog.LastDownloadedPhoto = Path.GetFullPath(fileLocation);
         }
 
         private bool ProcessTumblrBlog(TumblrBlog blog, BlockingCollection<Tuple<string, string, string>> bCollection, IProgress<DataModels.DownloadProgress> progress, CancellationToken ct, PauseToken pt)
@@ -953,8 +951,6 @@ namespace TumblThree.Applications.Controllers
             int downloadedPhotoMetas = (int)blog.DownloadedPhotoMetas;
             int downloadedVideoMetas = (int)blog.DownloadedVideoMetas;
             int downloadedAudioMetas = (int)blog.DownloadedAudioMetas;
-
-            uint duplicates = blog.DuplicatePhotos + blog.DuplicateVideos + blog.DuplicateAudios;
 
             var indexPath = Path.Combine(shellService.Settings.DownloadLocation, "Index");
             var blogPath = shellService.Settings.DownloadLocation;
@@ -979,6 +975,7 @@ namespace TumblThree.Applications.Controllers
 
                                 string fileName = String.Empty;
                                 string fileLocation = String.Empty;
+                                uint duplicates = blog.DuplicatePhotos + blog.DuplicateVideos + blog.DuplicateAudios;
 
                                 switch (currentImageUrl.Item2)
                                 {
@@ -988,71 +985,95 @@ namespace TumblThree.Applications.Controllers
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), fileName);
 
                                         if (Download(files, fileLocation, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedPhotos, ref downloadedImages))
-                                            UpdateProgress(blog, files, fileName, fileLocation, lockObjectProgress, ref duplicates, ref downloadedImages, ref downloadedImages);
-
+                                        {
+                                            UpdateProgress(blog, files, fileName, lockObjectProgress, ref duplicates, ref downloadedImages);
+                                            if (shellService.Settings.EnablePreview)
+                                                blog.LastDownloadedPhoto = Path.GetFullPath(fileLocation);
+                                            blog.DownloadedPhotos = (uint)downloadedPhotos;
+                                        }                                    
                                         break;
                                     case "Video":
                                         fileName = currentImageUrl.Item1.Split('/').Last();
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), fileName);
 
                                         if (Download(files, fileLocation, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedVideos, ref downloadedImages))
-                                            UpdateProgress(blog, files, fileName, fileLocation, lockObjectProgress, ref duplicates, ref downloadedVideos, ref downloadedImages);
-
+                                        {
+                                            UpdateProgress(blog, files, fileName, lockObjectProgress, ref duplicates, ref downloadedImages);
+                                            if (shellService.Settings.EnablePreview)
+                                                blog.LastDownloadedVideo = Path.GetFullPath(fileLocation);
+                                            blog.DownloadedVideos = (uint)downloadedVideos;
+                                        }
                                         break;
                                     case "Audio":
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), currentImageUrl.Item3 + ".swf");
                                         if (Download(files, fileLocation, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedAudios, ref downloadedImages))
-                                            UpdateProgress(blog, files, currentImageUrl.Item1, fileLocation, lockObjectProgress, ref duplicates, ref downloadedAudios, ref downloadedImages);
-
+                                        {
+                                            UpdateProgress(blog, files, currentImageUrl.Item1, lockObjectProgress, ref duplicates, ref downloadedImages);
+                                            blog.DownloadedAudios = (uint)downloadedAudios;
+                                        }
                                         break;
                                     case "Text":
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameTexts));
 
                                         if (Download(files, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedTexts, ref downloadedImages))
-                                            UpdateProgress(blog, files, currentImageUrl.Item1, fileLocation, lockObjectProgress, ref duplicates, ref downloadedTexts, ref downloadedImages);
-
+                                        {
+                                            UpdateProgress(blog, files, currentImageUrl.Item3, lockObjectProgress, ref duplicates, ref downloadedImages);
+                                            blog.DownloadedTexts = (uint)downloadedTexts;
+                                        }
                                         break;
                                     case "Quote":
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameQuotes));
 
                                         if (Download(files, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedQuotes, ref downloadedImages))
-                                            UpdateProgress(blog, files, currentImageUrl.Item1, fileLocation, lockObjectProgress, ref duplicates, ref downloadedQuotes, ref downloadedImages);
-
+                                        {
+                                            UpdateProgress(blog, files, currentImageUrl.Item3, lockObjectProgress, ref duplicates, ref downloadedImages);
+                                            blog.DownloadedQuotes = (uint)downloadedQuotes;
+                                        }
                                         break;
                                     case "Link":
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameLinks));
 
                                         if (Download(files, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedLinks, ref downloadedImages))
-                                            UpdateProgress(blog, files, currentImageUrl.Item1, fileLocation, lockObjectProgress, ref duplicates, ref downloadedLinks, ref downloadedImages);
-
+                                        {
+                                            UpdateProgress(blog, files, currentImageUrl.Item3, lockObjectProgress, ref duplicates, ref downloadedImages);
+                                            blog.DownloadedLinks = (uint)downloadedLinks;
+                                        }
                                         break;
                                     case "Conversation":
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameConversations));
 
                                         if (Download(files, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedConversations, ref downloadedImages))
-                                            UpdateProgress(blog, files, currentImageUrl.Item1, fileLocation, lockObjectProgress, ref duplicates, ref downloadedConversations, ref downloadedImages);
-
+                                        {
+                                            UpdateProgress(blog, files, currentImageUrl.Item3, lockObjectProgress, ref duplicates, ref downloadedImages);
+                                            blog.DownloadedConversations = (uint)downloadedConversations;
+                                        }
                                         break;
                                     case "PhotoMeta":
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaPhoto));
 
                                         if (Download(files, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedPhotoMetas, ref downloadedImages))
-                                            UpdateProgress(blog, files, currentImageUrl.Item1, fileLocation, lockObjectProgress, ref duplicates, ref downloadedPhotoMetas, ref downloadedImages);
-
+                                        {
+                                            UpdateProgress(blog, files, currentImageUrl.Item3, lockObjectProgress, ref duplicates, ref downloadedImages);
+                                            blog.DownloadedPhotoMetas = (uint)downloadedPhotoMetas;
+                                        }
                                         break;
                                     case "VideoMeta":
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaVideo));
 
                                         if (Download(files, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedVideoMetas, ref downloadedImages))
-                                            UpdateProgress(blog, files, currentImageUrl.Item1, fileLocation, lockObjectProgress, ref duplicates, ref downloadedVideoMetas, ref downloadedImages);
-
+                                        {
+                                            UpdateProgress(blog, files, currentImageUrl.Item3, lockObjectProgress, ref duplicates, ref downloadedImages);
+                                            blog.DownloadedVideoMetas = (uint)downloadedVideoMetas;
+                                        }
                                         break;
                                     case "AudioMeta":
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaAudio));
 
                                         if (Download(files, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedAudioMetas, ref downloadedImages))
-                                            UpdateProgress(blog, files, currentImageUrl.Item1, fileLocation, lockObjectProgress, ref duplicates, ref downloadedAudioMetas, ref downloadedImages);
-
+                                        {
+                                            UpdateProgress(blog, files, currentImageUrl.Item3, lockObjectProgress, ref duplicates, ref downloadedImages);
+                                            blog.DownloadedAudioMetas = (uint)downloadedAudioMetas;
+                                        }
                                         break;
                                     default:
                                         break;
