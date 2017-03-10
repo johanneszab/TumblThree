@@ -526,6 +526,7 @@ namespace TumblThree.Applications.Controllers
             XDocument document,
             List<string> tags,
             ref bool limitHit, 
+            ref int totalDownloads,
             ref int photos, 
             ref int videos, 
             ref int audios, 
@@ -561,6 +562,7 @@ namespace TumblThree.Applications.Controllers
                             }
 
                             Interlocked.Increment(ref photos);
+                            Interlocked.Increment(ref totalDownloads);
                             Monitor.Enter(downloadList);
                             downloadList.Add(Tuple.Create(imageUrl, "Photo", post.Attribute("id").Value));
                             Monitor.Exit(downloadList);
@@ -583,6 +585,7 @@ namespace TumblThree.Applications.Controllers
                         }
 
                         Interlocked.Increment(ref photos);
+                        Interlocked.Increment(ref totalDownloads);
                         Monitor.Enter(downloadList);
                         downloadList.Add(Tuple.Create(imageUrl, "Photo", post.Attribute("id").Value));
                         Monitor.Exit(downloadList);
@@ -605,6 +608,7 @@ namespace TumblThree.Applications.Controllers
                                 imageUrl = resizeTumblrImageUrl(imageUrl);
                             }
                             Interlocked.Increment(ref photos);
+                            Interlocked.Increment(ref totalDownloads);
                             Monitor.Enter(downloadList);
                             downloadList.Add(Tuple.Create(imageUrl, "Photo", post.Attribute("id").Value));
                             Monitor.Exit(downloadList);
@@ -627,6 +631,7 @@ namespace TumblThree.Applications.Controllers
                     {
                         if (shellService.Settings.VideoSize == 1080)
                         {
+                            Interlocked.Increment(ref totalDownloads);
                             Monitor.Enter(downloadList);
                             downloadList.Add(Tuple.Create(video.Replace("/480", "") + ".mp4", "Video", post.Attribute("id").Value));
                             Monitor.Exit(downloadList);
@@ -635,6 +640,7 @@ namespace TumblThree.Applications.Controllers
                         }
                         else if (shellService.Settings.VideoSize == 480)
                         {
+                            Interlocked.Increment(ref totalDownloads);
                             Monitor.Enter(downloadList);
                             downloadList.Add(Tuple.Create("https://vt.tumblr.com/" + video.Replace("/480", "").Split('/').Last() + "_480.mp4", "Video", post.Attribute("id").Value));
                             Monitor.Exit(downloadList);
@@ -655,6 +661,7 @@ namespace TumblThree.Applications.Controllers
 
                     foreach (string audiofile in audioUrl)
                     {
+                        Interlocked.Increment(ref totalDownloads);
                         Monitor.Enter(downloadList);
                         downloadList.Add(Tuple.Create(WebUtility.UrlDecode(audiofile), "Audio", post.Attribute("id").Value));
                         Monitor.Exit(downloadList);
@@ -676,6 +683,7 @@ namespace TumblThree.Applications.Controllers
                         Environment.NewLine + post.Element("regular-body")?.Value +
                         Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
                         Environment.NewLine;
+                    Interlocked.Increment(ref totalDownloads);
                     bCollection.Add(Tuple.Create(textBody, "Text", post.Attribute("id").Value));
                 }
             }
@@ -691,6 +699,7 @@ namespace TumblThree.Applications.Controllers
                         Environment.NewLine + post.Element("quote-source")?.Value +
                         Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
                         Environment.NewLine;
+                    Interlocked.Increment(ref totalDownloads);
                     bCollection.Add(Tuple.Create(textBody, "Quote", post.Attribute("id").Value));
                 }
             }
@@ -707,6 +716,7 @@ namespace TumblThree.Applications.Controllers
                         Environment.NewLine + post.Element("link-description")?.Value +
                         Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
                         Environment.NewLine;
+                    Interlocked.Increment(ref totalDownloads);
                     bCollection.Add(Tuple.Create(textBody, "Link", post.Attribute("id").Value));
                 }
             }
@@ -721,6 +731,7 @@ namespace TumblThree.Applications.Controllers
                         Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Conversation, post.Element("conversation-text")?.Value) +
                         Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
                         Environment.NewLine;
+                    Interlocked.Increment(ref totalDownloads);
                     bCollection.Add(Tuple.Create(textBody, "Conversation", post.Attribute("id").Value));
                 }
             }
@@ -761,6 +772,7 @@ namespace TumblThree.Applications.Controllers
                             Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.PhotoCaption, post.Element("photo-caption")?.Value) +
                             Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
                             Environment.NewLine;
+                        Interlocked.Increment(ref totalDownloads);
                         Interlocked.Increment(ref photoMetas);
                         bCollection.Add(Tuple.Create(textBody, "PhotoMeta", post.Attribute("id").Value));
                     }
@@ -777,6 +789,7 @@ namespace TumblThree.Applications.Controllers
                         Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.VideoPlayer, post.Element("video-player")?.Value) +
                         Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
                         Environment.NewLine;
+                    Interlocked.Increment(ref totalDownloads);
                     Interlocked.Increment(ref videoMetas);
                     bCollection.Add(Tuple.Create(textBody, "VideoMeta", post.Attribute("id").Value));
                 }
@@ -797,6 +810,7 @@ namespace TumblThree.Applications.Controllers
                         Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Year, post.Element("id3-year")?.Value) +
                         Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
                         Environment.NewLine;
+                    Interlocked.Increment(ref totalDownloads);
                     Interlocked.Increment(ref audioMetas);
                     bCollection.Add(Tuple.Create(textBody, "AudioMeta", post.Attribute("id").Value));
                 }
@@ -806,6 +820,7 @@ namespace TumblThree.Applications.Controllers
         public Tuple<ulong, bool, List<Tuple<string, string, string>>> GetImageUrls(TumblrBlog blog, BlockingCollection<Tuple<string, string, string>> bCollection, IProgress<Datamodels.DownloadProgress> progress, CancellationToken ct, PauseToken pt)
         {
             int totalPosts = 0;
+            int totalDownloads = 0;
             int numberOfPostsCrawled = 0;
             int photos = 0;
             int videos = 0;
@@ -887,7 +902,8 @@ namespace TumblThree.Applications.Controllers
                                 if (highestPostId < lastId)
                                     state.Break();
 
-                                GetTumblrUrlsCore(blog, downloadList, bCollection, document, tags, ref limitHit, ref photos, ref videos, ref audios, ref texts, ref conversations, ref quotes, ref links, ref photoMetas, ref videoMetas, ref audioMetas);
+                                GetTumblrUrlsCore(blog, downloadList, bCollection, document, tags, ref limitHit, ref totalDownloads, ref photos, ref videos,
+                                    ref audios, ref texts, ref conversations, ref quotes, ref links, ref photoMetas, ref videoMetas, ref audioMetas);
                             }
                             catch (Exception ex)
                             {
@@ -905,7 +921,7 @@ namespace TumblThree.Applications.Controllers
 
             if (loopState.IsCompleted)
             {
-                blog.TotalCount = (uint)(photos + videos + audios + texts + conversations + quotes + links + photoMetas + videoMetas + audioMetas);
+                blog.TotalCount = (uint)totalDownloads;
                 blog.Posts = (uint)totalPosts;
                 blog.Photos = (uint)photos;
                 blog.Videos = (uint)videos;
