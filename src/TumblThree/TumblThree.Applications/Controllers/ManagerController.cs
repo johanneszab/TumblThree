@@ -484,6 +484,7 @@ namespace TumblThree.Applications.Controllers
             blog.DuplicatePhotos = (uint)duplicatePhotos;
             blog.DuplicateVideos = (uint)duplicateVideos;
             blog.DuplicateAudios = (uint)duplicateAudios;
+            blog.TotalCount = (uint)(blog.TotalCount - duplicatePhotos - duplicateAudios - duplicateVideos);
 
             bool finishedDownloading = consumer.Result;
 
@@ -938,14 +939,14 @@ namespace TumblThree.Applications.Controllers
             return Tuple.Create(highestId, limitHit, downloadList);
         }
 
-        private void UpdateProgress(TumblrBlog blog, TumblrFiles files, string fileName, object lockObjectProgress, ref uint duplicates, ref int totalCounter)
+        private void UpdateProgress(TumblrBlog blog, TumblrFiles files, string fileName, object lockObjectProgress, ref int totalCounter)
         {
             lock (lockObjectProgress)
             {
                 files.Links.Add(fileName);
                 // the following could be moved out of the lock?
-                blog.DownloadedImages = (uint)totalCounter + (uint)duplicates;
-                blog.Progress = (uint)(((double)totalCounter + (double)duplicates) / (double)blog.TotalCount * 100);
+                blog.DownloadedImages = (uint)totalCounter;
+                blog.Progress = (uint)((double)totalCounter / (double)blog.TotalCount * 100);
             }
         }
 
@@ -991,7 +992,6 @@ namespace TumblThree.Applications.Controllers
 
                                 string fileName = String.Empty;
                                 string fileLocation = String.Empty;
-                                uint duplicates = blog.DuplicatePhotos + blog.DuplicateVideos + blog.DuplicateAudios;
 
                                 switch (currentImageUrl.Item2)
                                 {
@@ -1002,7 +1002,7 @@ namespace TumblThree.Applications.Controllers
 
                                         if (Download(files, fileLocation, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedPhotos, ref downloadedImages))
                                         {
-                                            UpdateProgress(blog, files, fileName, lockObjectProgress, ref duplicates, ref downloadedImages);
+                                            UpdateProgress(blog, files, fileName, lockObjectProgress, ref downloadedImages);
                                             if (shellService.Settings.EnablePreview)
                                                 blog.LastDownloadedPhoto = Path.GetFullPath(fileLocation);
                                             blog.DownloadedPhotos = (uint)downloadedPhotos;
@@ -1014,7 +1014,7 @@ namespace TumblThree.Applications.Controllers
 
                                         if (Download(files, fileLocation, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedVideos, ref downloadedImages))
                                         {
-                                            UpdateProgress(blog, files, fileName, lockObjectProgress, ref duplicates, ref downloadedImages);
+                                            UpdateProgress(blog, files, fileName, lockObjectProgress, ref downloadedImages);
                                             if (shellService.Settings.EnablePreview)
                                                 blog.LastDownloadedVideo = Path.GetFullPath(fileLocation);
                                             blog.DownloadedVideos = (uint)downloadedVideos;
@@ -1024,7 +1024,7 @@ namespace TumblThree.Applications.Controllers
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), currentImageUrl.Item3 + ".swf");
                                         if (Download(files, fileLocation, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedAudios, ref downloadedImages))
                                         {
-                                            UpdateProgress(blog, files, currentImageUrl.Item1, lockObjectProgress, ref duplicates, ref downloadedImages);
+                                            UpdateProgress(blog, files, currentImageUrl.Item1, lockObjectProgress, ref downloadedImages);
                                             blog.DownloadedAudios = (uint)downloadedAudios;
                                         }
                                         break;
@@ -1033,7 +1033,7 @@ namespace TumblThree.Applications.Controllers
 
                                         if (Download(files, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedTexts, ref downloadedImages))
                                         {
-                                            UpdateProgress(blog, files, currentImageUrl.Item3, lockObjectProgress, ref duplicates, ref downloadedImages);
+                                            UpdateProgress(blog, files, currentImageUrl.Item3, lockObjectProgress, ref downloadedImages);
                                             blog.DownloadedTexts = (uint)downloadedTexts;
                                         }
                                         break;
@@ -1042,7 +1042,7 @@ namespace TumblThree.Applications.Controllers
 
                                         if (Download(files, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedQuotes, ref downloadedImages))
                                         {
-                                            UpdateProgress(blog, files, currentImageUrl.Item3, lockObjectProgress, ref duplicates, ref downloadedImages);
+                                            UpdateProgress(blog, files, currentImageUrl.Item3, lockObjectProgress, ref downloadedImages);
                                             blog.DownloadedQuotes = (uint)downloadedQuotes;
                                         }
                                         break;
@@ -1051,7 +1051,7 @@ namespace TumblThree.Applications.Controllers
 
                                         if (Download(files, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedLinks, ref downloadedImages))
                                         {
-                                            UpdateProgress(blog, files, currentImageUrl.Item3, lockObjectProgress, ref duplicates, ref downloadedImages);
+                                            UpdateProgress(blog, files, currentImageUrl.Item3, lockObjectProgress, ref downloadedImages);
                                             blog.DownloadedLinks = (uint)downloadedLinks;
                                         }
                                         break;
@@ -1060,7 +1060,7 @@ namespace TumblThree.Applications.Controllers
 
                                         if (Download(files, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedConversations, ref downloadedImages))
                                         {
-                                            UpdateProgress(blog, files, currentImageUrl.Item3, lockObjectProgress, ref duplicates, ref downloadedImages);
+                                            UpdateProgress(blog, files, currentImageUrl.Item3, lockObjectProgress, ref downloadedImages);
                                             blog.DownloadedConversations = (uint)downloadedConversations;
                                         }
                                         break;
@@ -1069,7 +1069,7 @@ namespace TumblThree.Applications.Controllers
 
                                         if (Download(files, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedPhotoMetas, ref downloadedImages))
                                         {
-                                            UpdateProgress(blog, files, currentImageUrl.Item3, lockObjectProgress, ref duplicates, ref downloadedImages);
+                                            UpdateProgress(blog, files, currentImageUrl.Item3, lockObjectProgress, ref downloadedImages);
                                             blog.DownloadedPhotoMetas = (uint)downloadedPhotoMetas;
                                         }
                                         break;
@@ -1078,7 +1078,7 @@ namespace TumblThree.Applications.Controllers
 
                                         if (Download(files, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedVideoMetas, ref downloadedImages))
                                         {
-                                            UpdateProgress(blog, files, currentImageUrl.Item3, lockObjectProgress, ref duplicates, ref downloadedImages);
+                                            UpdateProgress(blog, files, currentImageUrl.Item3, lockObjectProgress, ref downloadedImages);
                                             blog.DownloadedVideoMetas = (uint)downloadedVideoMetas;
                                         }
                                         break;
@@ -1087,7 +1087,7 @@ namespace TumblThree.Applications.Controllers
 
                                         if (Download(files, fileLocation, currentImageUrl.Item3, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedAudioMetas, ref downloadedImages))
                                         {
-                                            UpdateProgress(blog, files, currentImageUrl.Item3, lockObjectProgress, ref duplicates, ref downloadedImages);
+                                            UpdateProgress(blog, files, currentImageUrl.Item3, lockObjectProgress, ref downloadedImages);
                                             blog.DownloadedAudioMetas = (uint)downloadedAudioMetas;
                                         }
                                         break;
