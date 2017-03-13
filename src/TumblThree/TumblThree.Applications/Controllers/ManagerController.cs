@@ -943,8 +943,8 @@ namespace TumblThree.Applications.Controllers
             lock (lockObjectProgress)
             {
                 files.Links.Add(fileName);
-                // could be moved out of the lock?
-                blog.DownloadedImages = (uint)totalCounter;
+                // the following could be moved out of the lock?
+                blog.DownloadedImages = (uint)totalCounter + (uint)duplicates;
                 blog.Progress = (uint)(((double)totalCounter + (double)duplicates) / (double)blog.TotalCount * 100);
             }
         }
