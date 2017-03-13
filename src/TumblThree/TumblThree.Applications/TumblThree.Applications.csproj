@@ -75,6 +75,7 @@
     <Compile Include="Data\SupportedFileTypes.cs" />
     <Compile Include="OAuth.cs" />
     <Compile Include="PauseTokenSource.cs" />
+    <Compile Include="ProgressThrottler.cs" />
     <Compile Include="Properties\ManagerSettings.cs" />
     <Compile Include="Properties\QueueSettings.cs" />
     <Compile Include="DataModels\FolderBrowserDataModel.cs" />

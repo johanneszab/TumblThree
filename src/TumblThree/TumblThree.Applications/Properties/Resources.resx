@@ -183,6 +183,9 @@
   <data name="Date" xml:space="preserve">
     <value>Date: {0}</value>
   </data>
+  <data name="DiskFull" xml:space="preserve">
+    <value>There is not enough space on the disk.</value>
+  </data>
   <data name="FileNameConversations" xml:space="preserve">
     <value>conversations.txt</value>
   </data>

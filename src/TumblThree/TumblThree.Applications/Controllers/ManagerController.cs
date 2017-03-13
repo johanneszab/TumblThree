@@ -411,7 +411,7 @@ namespace TumblThree.Applications.Controllers
                         {
                             blogToCrawlNext.Progress = value.Progress;
                         });
-                        var progress = progressHandler as IProgress<DataModels.DownloadProgress>;
+                        var progress = new ProgressThrottler<DataModels.DownloadProgress>(progressHandler);
 
                         CrawlCoreTumblrBlog(blog, progress, ct, pt);
 
@@ -1651,7 +1651,15 @@ namespace TumblThree.Applications.Controllers
                     Interlocked.Increment(ref totalCounter);
                     return true;
                 }
-                catch
+                catch (IOException ex) when ((ex.HResult & 0xFFFF) == 0x27 || (ex.HResult & 0xFFFF) == 0x70)
+                {
+                    Logger.Error("ManagerController:Download: {0}", ex);
+                    shellService.ShowError(ex, Resources.DiskFull);
+                    if (stopCommand.CanExecute(null))
+                        stopCommand.Execute(null);
+                    return false;
+                }
+                catch 
                 {
                     return false;
                 }
@@ -1681,6 +1689,14 @@ namespace TumblThree.Applications.Controllers
                     Interlocked.Increment(ref counter);
                     Interlocked.Increment(ref totalCounter);
                     return true;
+                }
+                catch (IOException ex) when ((ex.HResult & 0xFFFF) == 0x27 || (ex.HResult & 0xFFFF) == 0x70)
+                {
+                    Logger.Error("ManagerController:Download: {0}", ex);
+                    shellService.ShowError(ex, Resources.DiskFull);
+                    if (stopCommand.CanExecute(null))
+                        stopCommand.Execute(null);
+                    return false;
                 }
                 catch
                 {

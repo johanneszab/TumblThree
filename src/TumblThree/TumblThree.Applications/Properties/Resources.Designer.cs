@@ -259,6 +259,15 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There is not enough space on the disk..
+        /// </summary>
+        public static string DiskFull {
+            get {
+                return ResourceManager.GetString("DiskFull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to conversations.txt.
         /// </summary>
         public static string FileNameConversations {
