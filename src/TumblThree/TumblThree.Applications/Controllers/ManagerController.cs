@@ -57,7 +57,7 @@ namespace TumblThree.Applications.Controllers
         private PauseTokenSource crawlBlogsPause;
         private readonly object lockObject = new object();
         private bool locked = false;
-        private RateLimiter.TimeLimiter timeconstraint;
+        private Guava.RateLimiter.RateLimiter timeconstraint;
 
         public delegate void BlogManagerFinishedLoadingHandler(object sender, EventArgs e);
         public event BlogManagerFinishedLoadingHandler BlogManagerFinishedLoading;
@@ -121,7 +121,7 @@ namespace TumblThree.Applications.Controllers
 
             shellService.ContentView = ManagerViewModel.View;
 
-            timeconstraint = RateLimiter.TimeLimiter.GetFromMaxCountByInterval(shellService.Settings.MaxConnections, TimeSpan.FromSeconds(shellService.Settings.ConnectionTimeInterval));
+            timeconstraint = Guava.RateLimiter.RateLimiter.Create(shellService.Settings.MaxConnections/shellService.Settings.ConnectionTimeInterval);
 
             await LoadLibrary();
 
@@ -849,7 +849,10 @@ namespace TumblThree.Applications.Controllers
             }
 
             if (shellService.Settings.LimitConnections)
-                blogDoc = timeconstraint.Perform<XDocument>(() => RequestData(postCountUrl)).Result;
+            {
+                timeconstraint.Acquire();
+                blogDoc = RequestData(postCountUrl);
+            }
             else
                 blogDoc = RequestData(postCountUrl);
 
@@ -882,7 +885,10 @@ namespace TumblThree.Applications.Controllers
                                 string url = GetApiUrl(blog.Url, 50, i * 50);
 
                                 if (shellService.Settings.LimitConnections)
-                                    document = timeconstraint.Perform(() => RequestData(url)).Result;
+                                {
+                                    timeconstraint.Acquire();
+                                    document = RequestData(url);
+                                }
                                 else
                                     document = RequestData(url);
 
@@ -1306,7 +1312,10 @@ namespace TumblThree.Applications.Controllers
                 XDocument blogDoc = null;
 
                 if (shellService.Settings.LimitConnections)
-                    blogDoc = timeconstraint.Perform<XDocument>(() => RequestData(url)).Result;
+                {
+                    timeconstraint.Acquire();
+                    blogDoc = RequestData(url);
+                }
                 else
                     blogDoc = RequestData(url);
 
@@ -1600,7 +1609,10 @@ namespace TumblThree.Applications.Controllers
                 XDocument blogDoc = null;
 
                 if (shellService.Settings.LimitConnections)
-                    blogDoc = timeconstraint.Perform<XDocument>(() => RequestData(url)).Result;
+                {
+                    timeconstraint.Acquire();
+                    blogDoc = RequestData(url);
+                }
                 else
                     blogDoc = RequestData(url);
 

@@ -146,7 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\lib\RateLimiter\RateLimiter\RateLimiter.csproj">
-      <Project>{ea31519a-3cfe-4879-8f03-ab4b3b6de03b}</Project>
+      <Project>{5b56eeeb-9107-4fc5-bd73-10fe96c9bded}</Project>
       <Name>RateLimiter</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\lib\WpfApplicationFramework\WpfApplicationFramework\WpfApplicationFramework.csproj">
