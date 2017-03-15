@@ -513,8 +513,8 @@
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <MediaElement Visibility="Collapsed" x:Name="SwitchableMediaElement" Source="{Binding BlogFile.LastDownloadedVideo, Converter={StaticResource NullImageConverter}}" Stretch="Fill" IsMuted="True" LoadedBehavior="Play" UnloadedBehavior="Close"/>
-                        <Image Visibility="Visible" x:Name="SwitchableImage" Source="{Binding BlogFile.LastDownloadedPhoto, Converter={StaticResource NullImageConverter}}" Stretch="Fill"/>
+                        <MediaElement Visibility="Collapsed" x:Name="SwitchableMediaElement" Source="{Binding BlogFile.LastDownloadedVideo, Converter={StaticResource NullImageConverter}, IsAsync=True}" Stretch="Fill" IsMuted="True" LoadedBehavior="Play" UnloadedBehavior="Close"/>
+                        <Image Visibility="Visible" x:Name="SwitchableImage" Source="{Binding BlogFile.LastDownloadedPhoto, Converter={StaticResource NullImageConverter}, IsAsync=True}" Stretch="Fill" />
                         <i:Interaction.Triggers>
                             <ei:DataTrigger Binding="{Binding BlogFile.States}" Value="{Binding BlogFile.States}">
                                 <ei:GoToStateAction StateName="{Binding BlogFile.States}" />

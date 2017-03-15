@@ -1004,8 +1004,12 @@ namespace TumblThree.Applications.Controllers
                                         {
                                             UpdateProgress(blog, files, fileName, lockObjectProgress, ref downloadedImages);
                                             if (shellService.Settings.EnablePreview)
-                                                blog.LastDownloadedPhoto = Path.GetFullPath(fileLocation);
-                                            blog.DownloadedPhotos = (uint)downloadedPhotos;
+                                            {
+                                                if (!fileName.EndsWith(".gif"))
+                                                    blog.LastDownloadedPhoto = Path.GetFullPath(fileLocation);
+                                                else
+                                                    blog.LastDownloadedVideo = Path.GetFullPath(fileLocation);
+                                            }
                                         }                                    
                                         break;
                                     case "Video":
