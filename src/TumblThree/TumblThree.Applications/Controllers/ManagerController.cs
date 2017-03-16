@@ -121,7 +121,7 @@ namespace TumblThree.Applications.Controllers
 
             shellService.ContentView = ManagerViewModel.View;
 
-            timeconstraint = Guava.RateLimiter.RateLimiter.Create(shellService.Settings.MaxConnections/shellService.Settings.ConnectionTimeInterval);
+            timeconstraint = Guava.RateLimiter.RateLimiter.Create((double)shellService.Settings.MaxConnections/(double)shellService.Settings.ConnectionTimeInterval);
 
             await LoadLibrary();
 
@@ -1009,6 +1009,7 @@ namespace TumblThree.Applications.Controllers
                                         if (Download(files, fileLocation, currentImageUrl.Item1, progress, lockObjectDownload, locked, ref downloadedPhotos, ref downloadedImages))
                                         {
                                             UpdateProgress(blog, files, fileName, lockObjectProgress, ref downloadedImages);
+                                            blog.DownloadedPhotos = (uint)downloadedPhotos;
                                             if (shellService.Settings.EnablePreview)
                                             {
                                                 if (!fileName.EndsWith(".gif"))
