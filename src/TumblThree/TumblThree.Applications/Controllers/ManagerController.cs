@@ -823,6 +823,7 @@ namespace TumblThree.Applications.Controllers
             int totalPosts = 0;
             int totalDownloads = 0;
             int numberOfPostsCrawled = 0;
+            ulong highestId = 0;
             int photos = 0;
             int videos = 0;
             int audios = 0;
@@ -856,9 +857,9 @@ namespace TumblThree.Applications.Controllers
             else
                 blogDoc = RequestData(postCountUrl);
 
-            totalPosts = Int32.Parse(blogDoc.Element("tumblr").Element("posts").Attribute("total").Value);
+            Int32.TryParse(blogDoc.Element("tumblr").Element("posts").Attribute("total").Value, out totalPosts);
 
-            ulong highestId = UInt64.Parse(blogDoc.Element("tumblr").Element("posts").Element("post").Attribute("id").Value);
+            UInt64.TryParse(blogDoc.Element("tumblr").Element("posts").Element("post")?.Attribute("id").Value, out highestId);
 
             // Generate URL list of Images
             // the api shows 50 posts at max, determine the number of pages to crawl
@@ -904,7 +905,8 @@ namespace TumblThree.Applications.Controllers
                                 Interlocked.Add(ref quotes, document.Descendants("post").Where(post => post.Attribute("type").Value == "quote").Count());
                                 Interlocked.Add(ref links, document.Descendants("post").Where(post => post.Attribute("type").Value == "link").Count());
 
-                                ulong highestPostId = UInt64.Parse(document.Element("tumblr").Element("posts").Element("post").Attribute("id").Value);
+                                ulong highestPostId = 0;
+                                UInt64.TryParse(blogDoc.Element("tumblr").Element("posts").Element("post")?.Attribute("id").Value, out highestId);
 
                                 if (highestPostId < lastId)
                                     state.Break();
