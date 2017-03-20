@@ -51,5 +51,15 @@ namespace TumblThree.Presentation.DesignData
             blogFilesToAdd.ToList().ForEach(x => activeItems.Add(new QueueListItem(x)));
         }
 
+        public void AddActiveItems(QueueListItem itemToAdd)
+        {
+
+        }
+
+        public void RemoveActiveItem(QueueListItem itemToRemove)
+        {
+
+        }
+
     }
 }

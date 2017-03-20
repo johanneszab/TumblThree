@@ -18,6 +18,8 @@ namespace TumblThree.Applications.Services
 
         object QueueView { get; set; }
 
+        object CrawlerView { get; set; }
+
         IReadOnlyCollection<Task> TasksToCompleteBeforeShutdown { get; }
 
         bool IsApplicationBusy { get; }

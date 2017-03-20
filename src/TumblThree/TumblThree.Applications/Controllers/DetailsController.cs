@@ -80,29 +80,29 @@ namespace TumblThree.Applications.Controllers
                 Name = string.Join(", ", sharedBlogFiles.Select(blog => blog.Name).ToArray()),
                 Url = string.Join(", ", sharedBlogFiles.Select(blog => blog.Url).ToArray()),
 
-                Posts = (uint)sharedBlogFiles.Sum(blogs => blogs.Posts),
-                TotalCount = (uint)sharedBlogFiles.Sum(blogs => blogs.TotalCount),
-                Texts = (uint)sharedBlogFiles.Sum(blogs => blogs.Texts),
-                Quotes = (uint)sharedBlogFiles.Sum(blogs => blogs.Quotes),
-                Photos = (uint)sharedBlogFiles.Sum(blogs => blogs.Photos),
-                NumberOfLinks = (uint)sharedBlogFiles.Sum(blogs => blogs.NumberOfLinks),
-                Conversations = (uint)sharedBlogFiles.Sum(blogs => blogs.Conversations),
-                Videos = (uint)sharedBlogFiles.Sum(blogs => blogs.Videos),
-                Audios = (uint)sharedBlogFiles.Sum(blogs => blogs.Audios),
-                PhotoMetas = (uint)sharedBlogFiles.Sum(blogs => blogs.PhotoMetas),
-                VideoMetas = (uint)sharedBlogFiles.Sum(blogs => blogs.VideoMetas),
-                AudioMetas = (uint)sharedBlogFiles.Sum(blogs => blogs.AudioMetas),
+                Posts = sharedBlogFiles.Sum(blogs => blogs.Posts),
+                TotalCount = sharedBlogFiles.Sum(blogs => blogs.TotalCount),
+                Texts = sharedBlogFiles.Sum(blogs => blogs.Texts),
+                Quotes = sharedBlogFiles.Sum(blogs => blogs.Quotes),
+                Photos = sharedBlogFiles.Sum(blogs => blogs.Photos),
+                NumberOfLinks = sharedBlogFiles.Sum(blogs => blogs.NumberOfLinks),
+                Conversations = sharedBlogFiles.Sum(blogs => blogs.Conversations),
+                Videos = sharedBlogFiles.Sum(blogs => blogs.Videos),
+                Audios = sharedBlogFiles.Sum(blogs => blogs.Audios),
+                PhotoMetas = sharedBlogFiles.Sum(blogs => blogs.PhotoMetas),
+                VideoMetas = sharedBlogFiles.Sum(blogs => blogs.VideoMetas),
+                AudioMetas = sharedBlogFiles.Sum(blogs => blogs.AudioMetas),
 
-                DownloadedTexts = (uint)sharedBlogFiles.Sum(blogs => blogs.DownloadedTexts),
-                DownloadedQuotes = (uint)sharedBlogFiles.Sum(blogs => blogs.DownloadedQuotes),
-                DownloadedPhotos = (uint)sharedBlogFiles.Sum(blogs => blogs.DownloadedPhotos),
-                DownloadedLinks = (uint)sharedBlogFiles.Sum(blogs => blogs.DownloadedLinks),
-                DownloadedConversations = (uint)sharedBlogFiles.Sum(blogs => blogs.DownloadedConversations),
-                DownloadedVideos = (uint)sharedBlogFiles.Sum(blogs => blogs.DownloadedVideos),
-                DownloadedAudios = (uint)sharedBlogFiles.Sum(blogs => blogs.DownloadedAudios),
-                DownloadedPhotoMetas = (uint)sharedBlogFiles.Sum(blogs => blogs.DownloadedPhotoMetas),
-                DownloadedVideoMetas = (uint)sharedBlogFiles.Sum(blogs => blogs.DownloadedVideoMetas),
-                DownloadedAudioMetas = (uint)sharedBlogFiles.Sum(blogs => blogs.DownloadedAudioMetas),
+                DownloadedTexts = sharedBlogFiles.Sum(blogs => blogs.DownloadedTexts),
+                DownloadedQuotes = sharedBlogFiles.Sum(blogs => blogs.DownloadedQuotes),
+                DownloadedPhotos = sharedBlogFiles.Sum(blogs => blogs.DownloadedPhotos),
+                DownloadedLinks = sharedBlogFiles.Sum(blogs => blogs.DownloadedLinks),
+                DownloadedConversations = sharedBlogFiles.Sum(blogs => blogs.DownloadedConversations),
+                DownloadedVideos = sharedBlogFiles.Sum(blogs => blogs.DownloadedVideos),
+                DownloadedAudios = sharedBlogFiles.Sum(blogs => blogs.DownloadedAudios),
+                DownloadedPhotoMetas = sharedBlogFiles.Sum(blogs => blogs.DownloadedPhotoMetas),
+                DownloadedVideoMetas = sharedBlogFiles.Sum(blogs => blogs.DownloadedVideoMetas),
+                DownloadedAudioMetas = sharedBlogFiles.Sum(blogs => blogs.DownloadedAudioMetas),
 
                 DownloadAudio = false,
                 DownloadConversation = false,
@@ -123,11 +123,10 @@ namespace TumblThree.Applications.Controllers
 
         private Task SaveCurrentSelectedFileAsync()
         {
-            //musicFileContext.ApplyChanges(DetailsViewModel.BlogFile);
-            return SaveChangesAsync(DetailsViewModel.BlogFile);
+            return Task.Run(() => SaveChanges(DetailsViewModel.BlogFile));
         }
 
-        private async Task SaveChangesAsync(TumblrBlog blogFile)
+        private void SaveChanges(TumblrBlog blogFile)
         {
             if (blogFile == null)
             {
@@ -145,18 +144,6 @@ namespace TumblThree.Applications.Controllers
 
             if (blogFile.Dirty)
             {
-                //var tasks = Task.Run(() => Parallel.ForEach(filesToSave, blog =>
-                //{
-                //    blog.DownloadAudio = blogFile.DownloadAudio;
-                //    blog.DownloadConversation = blogFile.DownloadConversation;
-                //    blog.DownloadLink = blogFile.DownloadLink;
-                //    blog.DownloadPhoto = blogFile.DownloadPhoto;
-                //    blog.DownloadQuote = blogFile.DownloadQuote;
-                //    blog.DownloadText = blogFile.DownloadText;
-                //    blog.DownloadVideo = blogFile.DownloadVideo;
-                //    blog.SkipGif = blogFile.SkipGif;
-                //    blog.Dirty = true;
-                //}));
 
                 foreach (TumblrBlog blog in filesToSave)
                 {
@@ -177,26 +164,7 @@ namespace TumblThree.Applications.Controllers
                 }
             }
 
-            //try
-            //{
-            //    await Task.WhenAll(tasks);
-            //}
-            //catch (Exception ex)
-            //{
-            //    Logger.Error("SaveChangesAsync: {0}", ex);
-            //    if (filesToSave.Count() == 1)
-            //    {
-            //        shellService.ShowError(ex, Resources.CouldNotSaveBlog, filesToSave.First().Name);
-            //    }
-            //    else
-            //    {
-            //        shellService.ShowError(ex, Resources.CouldNotSaveBlog);
-            //    }
-            //}
-            //finally
-            //{
-                RemoveBlogFilesToSave(filesToSave);
-            //}
+            RemoveBlogFilesToSave(filesToSave);
         }
 
         private void RemoveBlogFilesToSave(IEnumerable<IBlog> blogFiles)

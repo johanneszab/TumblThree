@@ -1,12 +1,14 @@
 ﻿using System.ComponentModel.Composition;
 using System.Windows.Input;
 using System.Waf.Foundation;
+using Guava.RateLimiter;
 
 namespace TumblThree.Applications.Services
 {
     [Export(typeof(ICrawlerService)), Export]
     public class CrawlerService : Model, ICrawlerService
     {
+        private readonly IShellService shellService;
         private ICommand addBlogCommand;
         private ICommand removeBlogCommand;
         private ICommand showFilesCommand;
@@ -23,6 +25,14 @@ namespace TumblThree.Applications.Services
         private bool isTimerSet;
         private string newBlogUrl;
         private System.Threading.Timer timer;
+        private RateLimiter timeconstraint;
+
+        [ImportingConstructor]
+        public CrawlerService(IShellService shellService)
+        {
+            this.shellService = shellService;
+            timeconstraint = Guava.RateLimiter.RateLimiter.Create((double)shellService.Settings.MaxConnections / (double)shellService.Settings.ConnectionTimeInterval);
+        }
 
         public ICommand AddBlogCommand
         {
@@ -118,6 +128,12 @@ namespace TumblThree.Applications.Services
         {
             get { return newBlogUrl; }
             set { SetProperty(ref newBlogUrl, value); }
+        }
+
+        public RateLimiter Timeconstraint
+        {
+            get { return timeconstraint; }
+            set { SetProperty(ref timeconstraint, value); }
         }
     }
 }

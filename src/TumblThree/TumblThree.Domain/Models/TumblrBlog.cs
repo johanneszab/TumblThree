@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 
@@ -12,32 +13,32 @@ namespace TumblThree.Domain.Models
         private string description;
         private string title;
         private ulong lastId;
-        private uint progress;
+        private int progress;
         private string tags;
-        private uint posts;
-        private uint texts;
-        private uint quotes;
-        private uint photos;
-        private uint numberOfLinks;
-        private uint conversations;
-        private uint videos;
-        private uint audios;
-        private uint photoMetas;
-        private uint videoMetas;
-        private uint audioMetas;
-        private uint downloadedTexts;
-        private uint downloadedQuotes;
-        private uint downloadedPhotos;
-        private uint downloadedLinks;
-        private uint downloadedConversations;
-        private uint downloadedVideos;
-        private uint downloadedAudios;
-        private uint downloadedPhotoMetas;
-        private uint downloadedVideoMetas;
-        private uint downloadedAudioMetas;
-        private uint duplicatePhotos;
-        private uint duplicateVideos;
-        private uint duplicateAudios;
+        private int posts;
+        private int texts;
+        private int quotes;
+        private int photos;
+        private int numberOfLinks;
+        private int conversations;
+        private int videos;
+        private int audios;
+        private int photoMetas;
+        private int videoMetas;
+        private int audioMetas;
+        private int downloadedTexts;
+        private int downloadedQuotes;
+        private int downloadedPhotos;
+        private int downloadedLinks;
+        private int downloadedConversations;
+        private int downloadedVideos;
+        private int downloadedAudios;
+        private int downloadedPhotoMetas;
+        private int downloadedVideoMetas;
+        private int downloadedAudioMetas;
+        private int duplicatePhotos;
+        private int duplicateVideos;
+        private int duplicateAudios;
         private string lastDownloadedPhoto;
         private string lastDownloadedVideo;
         private bool downloadPhoto;
@@ -53,9 +54,9 @@ namespace TumblThree.Domain.Models
         private bool skipGif;
         private bool forceSize;
         private bool forceRescan;
-        private postTypes state;
+        private PostTypes state;
 
-        public enum postTypes
+        public enum PostTypes
         {
             Photo,
             Video,
@@ -71,57 +72,6 @@ namespace TumblThree.Domain.Models
             this.version = "3";
             this.childId = String.Empty;
             this.description = String.Empty;
-            this.title = String.Empty;
-            this.lastId = 0;
-            this.progress = 0;
-            this.tags = String.Empty;
-            this.posts = 0;
-            this.texts = 0;
-            this.quotes = 0;
-            this.photos = 0;
-            this.numberOfLinks = 0;
-            this.conversations = 0;
-            this.videos = 0;
-            this.audios = 0;
-            this.photoMetas = 0;
-            this.videoMetas = 0;
-            this.audioMetas = 0;
-            this.downloadedTexts = 0;
-            this.downloadedQuotes = 0;
-            this.downloadedPhotos = 0;
-            this.downloadedLinks = 0;
-            this.downloadedConversations = 0;
-            this.downloadedVideos = 0;
-            this.downloadedAudios = 0;
-            this.downloadedPhotoMetas = 0;
-            this.downloadedVideoMetas = 0;
-            this.downloadedAudioMetas = 0;
-            this.duplicatePhotos = 0;
-            this.duplicateAudios = 0;
-            this.duplicateVideos = 0;
-            this.downloadText = false;
-            this.downloadQuote = false;
-            this.downloadPhoto = true;
-            this.downloadLink = false;
-            this.downloadConversation = false;
-            this.downloadVideo = false;
-            this.downloadAudio = false;
-            this.createPhotoMeta = false;
-            this.createVideoMeta = false;
-            this.createAudioMeta = false;
-            this.skipGif = false;
-            this.forceSize = false;
-            this.forceRescan = false;
-            this.lastDownloadedPhoto = null;
-            this.lastDownloadedVideo = null;
-        }
-
-        public TumblrBlog(string url)
-        {
-            this.version = "3";
-            this.childId = String.Empty;
-            this.description = String.Empty;
-            this.Url = url;
             this.title = String.Empty;
             this.lastId = 0;
             this.progress = 0;
@@ -197,7 +147,7 @@ namespace TumblThree.Domain.Models
             set { SetProperty(ref lastId, value); }
         }
 
-        public uint Progress
+        public int Progress
         {
             get { return progress; }
             set { SetProperty(ref progress, value); }
@@ -209,145 +159,145 @@ namespace TumblThree.Domain.Models
             set { SetProperty(ref tags, value); Dirty = true; }
         }
 
-        public uint Posts
+        public int Posts
         {
             get { return posts; }
             set { SetProperty(ref posts, value); }
         }
 
-        public uint Texts
+        public int Texts
         {
             get { return texts; }
             set { SetProperty(ref texts, value); }
         }
 
-        public uint Quotes
+        public int Quotes
         {
             get { return quotes; }
             set { SetProperty(ref quotes, value); }
         }
 
-        public uint Photos
+        public int Photos
         {
             get { return photos; }
             set { SetProperty(ref photos, value); }
         }
 
-        public uint NumberOfLinks
+        public int NumberOfLinks
         {
             get { return numberOfLinks; }
             set { SetProperty(ref numberOfLinks, value); }
         }
 
-        public uint Conversations
+        public int Conversations
         {
             get { return conversations; }
             set { SetProperty(ref conversations, value); }
         }
 
-        public uint Videos
+        public int Videos
         {
             get { return videos; }
             set { SetProperty(ref videos, value); }
         }
 
-        public uint Audios
+        public int Audios
         {
             get { return audios; }
             set { SetProperty(ref audios, value); }
         }
 
-        public uint PhotoMetas
+        public int PhotoMetas
         {
             get { return photoMetas; }
             set { SetProperty(ref photoMetas, value); }
         }
 
-        public uint VideoMetas
+        public int VideoMetas
         {
             get { return videoMetas; }
             set { SetProperty(ref videoMetas, value); }
         }
 
-        public uint AudioMetas
+        public int AudioMetas
         {
             get { return audioMetas; }
             set { SetProperty(ref audioMetas, value); }
         }
 
-        public uint DownloadedTexts
+        public int DownloadedTexts
         {
             get { return downloadedTexts; }
             set { SetProperty(ref downloadedTexts, value); }
         }
 
-        public uint DownloadedQuotes
+        public int DownloadedQuotes
         {
             get { return downloadedQuotes; }
             set { SetProperty(ref downloadedQuotes, value); }
         }
 
-        public uint DownloadedPhotos
+        public int DownloadedPhotos
         {
             get { return downloadedPhotos; }
             set { SetProperty(ref downloadedPhotos, value); }
         }
 
-        public uint DownloadedLinks
+        public int DownloadedLinks
         {
             get { return downloadedLinks; }
             set { SetProperty(ref downloadedLinks, value); }
         }
 
-        public uint DownloadedConversations
+        public int DownloadedConversations
         {
             get { return downloadedConversations; }
             set { SetProperty(ref downloadedConversations, value); }
         }
 
-        public uint DownloadedVideos
+        public int DownloadedVideos
         {
             get { return downloadedVideos; }
             set { SetProperty(ref downloadedVideos, value); }
         }
 
-        public uint DownloadedAudios
+        public int DownloadedAudios
         {
             get { return downloadedAudios; }
             set { SetProperty(ref downloadedAudios, value); }
         }
 
-        public uint DownloadedPhotoMetas
+        public int DownloadedPhotoMetas
         {
             get { return downloadedPhotoMetas; }
             set { SetProperty(ref downloadedPhotoMetas, value); }
         }
 
-        public uint DownloadedVideoMetas
+        public int DownloadedVideoMetas
         {
             get { return downloadedVideoMetas; }
             set { SetProperty(ref downloadedVideoMetas, value); }
         }
 
-        public uint DownloadedAudioMetas
+        public int DownloadedAudioMetas
         {
             get { return downloadedAudioMetas; }
             set { SetProperty(ref downloadedAudioMetas, value); }
         }
 
-        public uint DuplicatePhotos
+        public int DuplicatePhotos
         {
             get { return duplicatePhotos; }
             set { SetProperty(ref duplicatePhotos, value); }
         }
 
-        public uint DuplicateVideos
+        public int DuplicateVideos
         {
             get { return duplicateVideos; }
             set { SetProperty(ref duplicateVideos, value); }
         }
 
-        public uint DuplicateAudios
+        public int DuplicateAudios
         {
             get { return duplicateAudios; }
             set { SetProperty(ref duplicateAudios, value); }
@@ -434,16 +384,16 @@ namespace TumblThree.Domain.Models
         public string LastDownloadedPhoto
         {
             get { return lastDownloadedPhoto; }
-            set { SetProperty(ref lastDownloadedPhoto, value); States = postTypes.Photo; }
+            set { SetProperty(ref lastDownloadedPhoto, value); States = PostTypes.Photo; }
         }
 
         public string LastDownloadedVideo
         {
             get { return lastDownloadedVideo; }
-            set { SetProperty(ref lastDownloadedVideo, value); States = postTypes.Video; }
+            set { SetProperty(ref lastDownloadedVideo, value); States = PostTypes.Video; }
         }
 
-        public postTypes States
+        public PostTypes States
         {
             get { return state; }
             set { SetProperty(ref state, value); }
@@ -452,6 +402,33 @@ namespace TumblThree.Domain.Models
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
         {
+        }
+
+        public bool Update()
+        {
+            if (string.IsNullOrEmpty(this.Version) || !this.Version.Equals("3"))
+            {
+                if (!File.Exists(this.ChildId))
+                {
+                    TumblrFiles files = new TumblrFiles();
+                    files.Location = this.Location;
+                    files.Name = this.Name;
+                    files.Links = this.Links.Select(item => item?.Split('/').Last()).ToList();
+                    this.Links.Clear();
+                    this.Version = "3";
+                    this.Type = BlogTypes.tumblr;
+                    this.Dirty = true;
+                    files.Save();
+                    files = null;
+                }
+            } else if (this.Version.Equals("2"))
+            {
+                this.Type = BlogTypes.tumblr;
+                this.Version = "3";
+                this.Dirty = true;
+            }
+
+            return true;
         }
     }
 }

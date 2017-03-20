@@ -10,7 +10,6 @@ namespace TumblThree.Applications.DataModels
     public class TumblrPost
     {
         private Post post;
-        private TumblrJson json;
         private object identification;
         private string url;
         private string shortUrl;
@@ -23,8 +22,6 @@ namespace TumblThree.Applications.DataModels
         private int noteCount;
         private string sourceTitle;
         private string sourceUrl;
-        private string fileName;
-        private string llink;
 
         public TumblrPost(Post post)
         {

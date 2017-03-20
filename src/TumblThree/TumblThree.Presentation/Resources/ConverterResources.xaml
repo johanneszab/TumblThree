@@ -27,7 +27,7 @@
 
     <c:WindowTitleConverter x:Key="WindowTitleConverter"/>
 
-    <c:UIntToDisplayValueConverter x:Key="UIntToDisplayValueConverter"/>
+    <c:IntToDisplayValueConverter x:Key="IntToDisplayValueConverter"/>
 
     <c:IsLessThanConverter x:Key="IsLessThanConverter"/>
 

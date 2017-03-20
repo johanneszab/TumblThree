@@ -6,14 +6,13 @@ namespace TumblThree.Applications
 {
     public class ProgressThrottler<T> : IProgress<T>
     {
-        private int processed;
         System.Timers.Timer resettimer;
         bool reportProgressAfterThrottling = true;
 
         public ProgressThrottler(IProgress<T> progress)
         {
             resettimer = new System.Timers.Timer();
-            resettimer.Interval = 500;
+            resettimer.Interval = 200;
             resettimer.Elapsed += resettimer_Elapsed;
             resettimer.Start();
 

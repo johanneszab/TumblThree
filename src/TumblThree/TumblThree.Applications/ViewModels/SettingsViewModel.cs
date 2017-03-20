@@ -395,7 +395,7 @@ namespace TumblThree.Applications.ViewModels
                 LimitScanBandwidth = false;
                 TimeOut = 120;
                 LimitConnections = true;
-                MaxConnections = 100;
+                MaxConnections = 95;
                 ConnectionTimeInterval = 60;
                 Bandwidth = 102400;
                 ImageSize = 1280;

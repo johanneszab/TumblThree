@@ -17,7 +17,7 @@ namespace TumblThree.Presentation.ValidationRules
                     return new ValidationResult(true, null);
 
             }
-            catch (Exception e)
+            catch
             {
                 return new ValidationResult(false, string.Format(CultureInfo.CurrentCulture, Resources.IntegerTypeError));
             }

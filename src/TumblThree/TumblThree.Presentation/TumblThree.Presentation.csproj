@@ -71,10 +71,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Controls\DateTimeUpDown.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Resources\BrushResources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -119,6 +115,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\CrawlerView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\ManagerView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -141,9 +141,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\DateTimeUpDown.xaml.cs">
-      <DependentUpon>DateTimeUpDown.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Flyout.cs" />
     <Compile Include="Controls\HorizontalFlyoutAlignment.cs" />
     <Compile Include="Controls\InsertMarkerAdorner.cs" />
@@ -173,7 +170,7 @@
     <Compile Include="Converters\StatusToBoolConverter.cs" />
     <Compile Include="Converters\StringListToStringConverter.cs" />
     <Compile Include="Converters\TotalImageConverter.cs" />
-    <Compile Include="Converters\UIntToDisplayValueConverter.cs" />
+    <Compile Include="Converters\IntToDisplayValueConverter.cs" />
     <Compile Include="Converters\WindowTitleConverter.cs" />
     <Compile Include="DesignData\MockSelectionService.cs" />
     <Compile Include="DesignData\MockShellService.cs" />
@@ -196,6 +193,9 @@
     </Compile>
     <Compile Include="Views\DetailsView.xaml.cs">
       <DependentUpon>DetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CrawlerView.xaml.cs">
+      <DependentUpon>CrawlerView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ManagerView.xaml.cs">
       <DependentUpon>ManagerView.xaml</DependentUpon>

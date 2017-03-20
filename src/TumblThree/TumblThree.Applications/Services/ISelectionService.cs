@@ -13,5 +13,10 @@ namespace TumblThree.Applications.Services
         IList<IBlog> SelectedBlogFiles { get; }
 
         IReadOnlyObservableList<QueueListItem> ActiveItems { get; }
+
+        void AddActiveItems(QueueListItem itemToAdd);
+
+        void RemoveActiveItem(QueueListItem itemToRemove);
+
     }
 }

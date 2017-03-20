@@ -63,6 +63,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="ClipboardMonitor.cs" />
+    <Compile Include="Controllers\CrawlerController.cs" />
     <Compile Include="Controllers\DetailsController.cs" />
     <Compile Include="Controllers\ManagerController.cs" />
     <Compile Include="Controllers\ModuleController.cs" />
@@ -73,6 +74,10 @@
     <Compile Include="DataModels\TumblrXml.cs" />
     <Compile Include="Data\StringListConverter.cs" />
     <Compile Include="Data\SupportedFileTypes.cs" />
+    <Compile Include="Downloader\CommonDownloader.cs" />
+    <Compile Include="Downloader\ICommonDownloader.cs" />
+    <Compile Include="Downloader\InstagramDownloader.cs" />
+    <Compile Include="Downloader\TumblrDownloader.cs" />
     <Compile Include="OAuth.cs" />
     <Compile Include="PauseTokenSource.cs" />
     <Compile Include="ProgressThrottler.cs" />
@@ -82,8 +87,10 @@
     <Compile Include="DataModels\FolderItem.cs" />
     <Compile Include="Properties\AppSettings.cs" />
     <Compile Include="Services\ApplicationBusyContext.cs" />
+    <Compile Include="Services\ApplicationUpdateService.cs" />
     <Compile Include="Services\CrawlerService.cs" />
     <Compile Include="Services\CrawlerServiceExtensions.cs" />
+    <Compile Include="Services\IApplicationUpdateService.cs" />
     <Compile Include="Services\IClipboardService.cs" />
     <Compile Include="Services\ICrawlerService.cs" />
     <Compile Include="Services\IEnvironmentService.cs" />
@@ -99,6 +106,7 @@
     <Compile Include="Services\Validator.cs" />
     <Compile Include="ThrottledStream.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
+    <Compile Include="ViewModels\CrawlerViewModel.cs" />
     <Compile Include="ViewModels\DetailsViewModel.cs" />
     <Compile Include="ViewModels\ManagerViewModel.cs" />
     <Compile Include="ViewModels\QueueViewModel.cs" />
@@ -106,6 +114,7 @@
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="Views\IAboutView.cs" />
+    <Compile Include="Views\ICrawlerView.cs" />
     <Compile Include="Views\IDetailsView.cs" />
     <Compile Include="Views\IManagerView.cs" />
     <Compile Include="Views\IQueueView.cs" />

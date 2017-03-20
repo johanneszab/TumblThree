@@ -27,6 +27,8 @@ namespace TumblThree.Presentation.DesignData
 
         public object QueueView { get; set; }
 
+        public object CrawlerView { get; set; }
+
 
         public IReadOnlyCollection<Task> TasksToCompleteBeforeShutdown { get; set; }
 

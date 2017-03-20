@@ -10,11 +10,11 @@ namespace TumblThree.Domain.Models
 
         string Url { get; set; }
 
-        uint Rating { get; set; }
+        int Rating { get; set; }
 
-        uint DownloadedImages { get; set; }
+        int DownloadedImages { get; set; }
 
-        uint TotalCount { get; set; }
+        int TotalCount { get; set; }
 
         bool Dirty { get; set; }
 

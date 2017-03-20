@@ -11,8 +11,8 @@ namespace TumblThree.Domain.Queue
         private readonly ObservableCollection<QueueListItem> items;
         private readonly ReadOnlyObservableList<QueueListItem> readonlyItems;
 
-        private uint queueTotalImageCount;
-        private uint queueDownloadedImageCount;
+        private int queueTotalImageCount;
+        private int queueDownloadedImageCount;
 
         public QueueManager()
         {
@@ -96,13 +96,13 @@ namespace TumblThree.Domain.Queue
             }
         }
 
-        public uint QueueTotalImageCount
+        public int QueueTotalImageCount
         {
             get { return queueTotalImageCount; }
             private set { SetProperty(ref queueTotalImageCount, value); }
         }
 
-        public uint QueueDownloadedImageCount
+        public int QueueDownloadedImageCount
         {
             get { return queueDownloadedImageCount; }
             private set { SetProperty(ref queueDownloadedImageCount, value); }

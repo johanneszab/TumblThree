@@ -24,6 +24,7 @@ namespace TumblThree.Applications.Controllers
         private readonly Lazy<ManagerController> managerController;
         private readonly Lazy<QueueController> queueController;
         private readonly Lazy<DetailsController> detailsController;
+        private readonly Lazy<CrawlerController> crawlerController;
         private readonly Lazy<ShellViewModel> shellViewModel;
         private readonly QueueManager queueManager;
         private AppSettings appSettings;
@@ -33,7 +34,7 @@ namespace TumblThree.Applications.Controllers
 
         [ImportingConstructor]
         public ModuleController(Lazy<ShellService> shellService, IEnvironmentService environmentService, ISettingsProvider settingsProvider, Lazy<ManagerController> managerController,
-            Lazy<QueueController> queueController, Lazy<DetailsController> detailsController, Lazy<ShellViewModel> shellViewModel)
+            Lazy<QueueController> queueController, Lazy<DetailsController> detailsController, Lazy<CrawlerController> crawlerController, Lazy<ShellViewModel> shellViewModel)
         {
             this.shellService = shellService;
             this.environmentService = environmentService;
@@ -41,6 +42,7 @@ namespace TumblThree.Applications.Controllers
             this.detailsController = detailsController;
             this.managerController = managerController;
             this.queueController = queueController;
+            this.crawlerController = crawlerController;
             this.shellViewModel = shellViewModel;
             this.queueManager = new QueueManager();
         }
@@ -52,6 +54,8 @@ namespace TumblThree.Applications.Controllers
         private QueueController QueueController { get { return queueController.Value; } }
 
         private DetailsController DetailsController { get { return detailsController.Value; } }
+
+        private CrawlerController CrawlerController { get { return crawlerController.Value; } }
 
         private ShellViewModel ShellViewModel { get { return shellViewModel.Value; } }
 
@@ -76,6 +80,8 @@ namespace TumblThree.Applications.Controllers
             QueueController.Initialize();
             DetailsController.QueueManager = queueManager;
             DetailsController.Initialize();
+            CrawlerController.QueueManager = queueManager;
+            CrawlerController.Initialize();
 
             ManagerController.BlogManagerFinishedLoading += OnBlogManagerFinishedLoading;
         }
@@ -99,6 +105,7 @@ namespace TumblThree.Applications.Controllers
             DetailsController.Shutdown();
             QueueController.Shutdown();
             ManagerController.Shutdown();
+            CrawlerController.Shutdown();
 
             SaveSettings(appSettingsFileName, appSettings);
             SaveSettings(queueSettingsFileName, queueSettings);

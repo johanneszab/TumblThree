@@ -15,9 +15,9 @@ namespace TumblThree.Presentation.Converters
             if (values[1] == DependencyProperty.UnsetValue) { return DependencyProperty.UnsetValue; }
             if (values[2] == DependencyProperty.UnsetValue) { return DependencyProperty.UnsetValue; }
 
-            var downloaded = (uint)values[0];
-            var total = (uint)values[1];
-            var duplicates = System.Convert.ToUInt32(values[2]);
+            int downloaded = (int)values[0];
+            int total = (int)values[1];
+            int duplicates = System.Convert.ToInt32(values[2]);
 
             //if (downloaded == 0)
             //    return "";

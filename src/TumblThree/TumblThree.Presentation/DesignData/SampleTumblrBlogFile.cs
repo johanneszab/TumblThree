@@ -5,7 +5,7 @@ namespace TumblThree.Presentation.DesignData
 {
     public class SampleTumblrBlogFile : TumblrBlog
     {
-        public SampleTumblrBlogFile(string url) : base(url)
+        public SampleTumblrBlogFile(string url)
         {
             
         }

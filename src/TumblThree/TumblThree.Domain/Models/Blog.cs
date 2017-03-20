@@ -2,6 +2,7 @@
 using System.Waf.Foundation;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 
 namespace TumblThree.Domain.Models
 {
@@ -11,9 +12,11 @@ namespace TumblThree.Domain.Models
 
         private string name;
         private string url;
-        private uint downloadedImages;
-        private uint totalCount;
-        private uint rating;
+        private string location;
+        private BlogTypes type;
+        private int downloadedImages;
+        private int totalCount;
+        private int rating;
         private DateTime dateAdded;
         private DateTime lastCompleteCrawl;
         private bool online;
@@ -22,10 +25,13 @@ namespace TumblThree.Domain.Models
         private IList<string> links;
         private Exception loadError;
 
+
         protected Blog()
         {
             this.name = String.Empty;
             this.url = String.Empty;
+            this.location = String.Empty;
+            this.type = BlogTypes.none;
             this.downloadedImages = 0;
             this.totalCount = 0;
             this.rating = 0;
@@ -49,19 +55,31 @@ namespace TumblThree.Domain.Models
             set { SetProperty(ref url, value); }
         }
 
-        public uint DownloadedImages
+        public string Location
+        {
+            get { return location; }
+            set { SetProperty(ref location, value); }
+        }
+
+        public BlogTypes Type
+        {
+            get { return type; }
+            set { SetProperty(ref type, value); }
+        }
+
+        public int DownloadedImages
         {
             get { return downloadedImages; }
             set { SetProperty(ref downloadedImages, value); }
         }
 
-        public uint TotalCount
+        public int TotalCount
         {
             get { return totalCount; }
             set { SetProperty(ref totalCount, value); }
         }
 
-        public uint Rating
+        public int Rating
         {
             get { return rating; }
             set { SetProperty(ref rating, value); Dirty = true; }
@@ -107,6 +125,50 @@ namespace TumblThree.Domain.Models
         {
             get { return links; }
             set { SetProperty(ref links, value); }
+        }
+
+        public enum BlogTypes
+        {
+            none,
+            tumblr,
+            instagram,
+            twitter
+        }
+
+        private void SaveBlog()
+        {
+            string currentIndex = Path.Combine(location, this.Name + "." + this.Type);
+            string newIndex = Path.Combine(location, this.Name + "." + this.Type + ".new");
+            string backupIndex = Path.Combine(location, this.Name + "." + this.Type + ".bak");
+
+            if (File.Exists(currentIndex))
+            {
+                System.Web.Script.Serialization.JavaScriptSerializer jsJson = new System.Web.Script.Serialization.JavaScriptSerializer();
+                jsJson.MaxJsonLength = 2147483644;
+                File.WriteAllText(newIndex, jsJson.Serialize(this));
+                File.Replace(newIndex, currentIndex, backupIndex, true);
+                File.Delete(backupIndex);
+            }
+            else
+            {
+                System.Web.Script.Serialization.JavaScriptSerializer jsJson = new System.Web.Script.Serialization.JavaScriptSerializer();
+                jsJson.MaxJsonLength = 2147483644;
+                File.WriteAllText(currentIndex, jsJson.Serialize(this));
+            }
+        }
+
+        public bool Save()
+        {
+            try
+            {
+                SaveBlog();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("Blog:Save: {0}", ex);
+                throw;
+            }
         }
     }
 }

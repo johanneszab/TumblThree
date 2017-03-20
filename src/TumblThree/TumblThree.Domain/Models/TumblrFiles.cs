@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Waf.Foundation;
 
 namespace TumblThree.Domain.Models
@@ -9,7 +10,7 @@ namespace TumblThree.Domain.Models
     public class TumblrFiles : Model
     {
         private string name;
-        private string parentId;
+        private string location;
         private string version;
         private IList<string> links;
 
@@ -25,10 +26,10 @@ namespace TumblThree.Domain.Models
             set { SetProperty(ref name, value); }
         }
 
-        public string ParentId
+        public string Location
         {
-            get { return parentId; }
-            set { SetProperty(ref parentId, value); }
+            get { return location; }
+            set { SetProperty(ref location, value); }
         }
 
         public string Version
@@ -41,6 +42,37 @@ namespace TumblThree.Domain.Models
         {
             get { return links; }
             set { SetProperty(ref links, value); }
+        }
+
+        public bool Save()
+        {
+            string currentIndex = Path.Combine(location, this.Name + "_files.tumblr");
+            string newIndex = Path.Combine(location, this.Name + "_files.tumblr.new");
+            string backupIndex = Path.Combine(location, this.Name + "_files.tumblr.bak");
+
+            try
+            {
+                if (File.Exists(currentIndex))
+                {
+                    System.Web.Script.Serialization.JavaScriptSerializer jsJson = new System.Web.Script.Serialization.JavaScriptSerializer();
+                    jsJson.MaxJsonLength = 2147483644;
+                    File.WriteAllText(newIndex, jsJson.Serialize(this)); File.Replace(newIndex, currentIndex, backupIndex, true);
+                    File.Delete(backupIndex);
+                }
+                else
+                {
+                    System.Web.Script.Serialization.JavaScriptSerializer jsJson = new System.Web.Script.Serialization.JavaScriptSerializer();
+                    jsJson.MaxJsonLength = 2147483644;
+                    File.WriteAllText(currentIndex, jsJson.Serialize(this));
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("TumblrFiles:Save: {0}", ex);
+                throw;
+            }
         }
     }
 }

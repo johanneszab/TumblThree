@@ -15,7 +15,7 @@ namespace TumblThree.Presentation.ValidationRules
                 if (UInt32.TryParse((string) value, out temp))
                     return new ValidationResult(true, null);
             }
-            catch (Exception e)
+            catch
             {
                 return new ValidationResult(false, string.Format(CultureInfo.CurrentCulture, Resources.UIntRangeError));
             }

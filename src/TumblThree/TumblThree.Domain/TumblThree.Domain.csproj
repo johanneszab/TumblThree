@@ -48,6 +48,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="System.Web.Extensions" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SharedAssemblyInfo.cs">
@@ -56,6 +57,7 @@
     <Compile Include="Logger.cs" />
     <Compile Include="Models\Blog.cs" />
     <Compile Include="Models\IBlog.cs" />
+    <Compile Include="Models\InstagramBlog.cs" />
     <Compile Include="Models\TumblrBlog.cs" />
     <Compile Include="Models\TumblrFiles.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

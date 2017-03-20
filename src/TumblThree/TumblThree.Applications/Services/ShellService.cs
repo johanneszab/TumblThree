@@ -19,6 +19,7 @@ namespace TumblThree.Applications.Services
         private object contentView;
         private object detailsView;
         private object queueView;
+        private object crawlerView;
         private object settingsView;
         private object aboutView;
         private bool isApplicationBusy;
@@ -57,6 +58,12 @@ namespace TumblThree.Applications.Services
         {
             get { return queueView; }
             set { SetProperty(ref queueView, value); }
+        }
+
+        public object CrawlerView
+        {
+            get { return crawlerView; }
+            set { SetProperty(ref crawlerView, value); }
         }
 
         public object SettingsView
