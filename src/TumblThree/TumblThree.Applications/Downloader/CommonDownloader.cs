@@ -28,10 +28,19 @@ namespace TumblThree.Applications.Downloader
     {
 
         private readonly IShellService shellService;
+        private readonly object lockObject;
+        private readonly IBlog blog;
 
-        public CommonDownloader(IShellService shellService)
+        public CommonDownloader(IShellService shellService): this(shellService, null)
+        {
+            this.lockObject = new object();
+        }
+
+        public CommonDownloader(IShellService shellService, IBlog blog)
         {
             this.shellService = shellService;
+            this.blog = blog;
+            this.lockObject = new object();
         }
 
         protected virtual String RequestData(string url)
@@ -148,93 +157,101 @@ namespace TumblThree.Applications.Downloader
         }
 
 
-        protected virtual bool Download(TumblrFiles blog, string fileLocation, string url, IProgress<DataModels.DownloadProgress> progress, object lockObject, bool locked, ref int counter, ref int totalCounter)
+        protected virtual bool Download(string fileLocation, string url, IProgress<DataModels.DownloadProgress> progress, ref int counter, ref int totalCounter)
         {
             var fileName = url.Split('/').Last();
-            Monitor.Enter(lockObject, ref locked);
+
+            if (!CheckIfFileExists(url))
+            {
+                UpdateProgressQueueInformation(progress, fileName);
+                DownloadBinaryFile(fileLocation, url);
+                UpdateBlogCounter(ref counter, ref totalCounter);
+                return true;
+            }
+            return false;
+        }
+
+        protected virtual bool Download(string fileLocation, string postId, string text, IProgress<DataModels.DownloadProgress> progress, ref int counter, ref int totalCounter)
+        {
+            if (!CheckIfFileExists(postId))
+            {
+                UpdateProgressQueueInformation(progress, "Post: " + postId);
+                AppendToTextFile(fileLocation, text);
+                UpdateBlogCounter(ref counter, ref totalCounter);
+                return true;
+            }
+            return false;
+        }
+
+        protected virtual bool CheckIfFileExists(string url)
+        {
+            var fileName = url.Split('/').Last();
+            Monitor.Enter(lockObject);
             if (blog.Links.Contains(fileName))
             {
                 Monitor.Exit(lockObject);
-                return false;
+                return true;
             }
-            else
-            {
-                Monitor.Exit(lockObject);
-                try
-                {
-                    var newProgress = new DataModels.DownloadProgress();
-                    newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressDownloadImage, fileName); ;
-                    progress.Report(newProgress);
+            Monitor.Exit(lockObject);
+            return false;
+        }
 
-                    using (var stream = ThrottledStream.ReadFromURLIntoStream(url, (shellService.Settings.Bandwidth / shellService.Settings.ParallelImages), shellService.Settings.TimeOut, shellService.Settings.ProxyHost, shellService.Settings.ProxyPort))
-                        ThrottledStream.SaveStreamToDisk(stream, fileLocation);
-                    Interlocked.Increment(ref counter);
-                    Interlocked.Increment(ref totalCounter);
-                    return true;
-                }
-                catch (IOException ex) when ((ex.HResult & 0xFFFF) == 0x27 || (ex.HResult & 0xFFFF) == 0x70)
-                {
-                    Logger.Error("ManagerController:Download: {0}", ex);
-                    shellService.ShowError(ex, Resources.DiskFull);
-                    throw;
-                }
-                catch
-                {
-                    return false;
-                }
+        protected virtual void UpdateProgressQueueInformation(IProgress<DataModels.DownloadProgress> progress, string fileName)
+        {
+            var newProgress = new DataModels.DownloadProgress();
+            newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressDownloadImage, fileName);
+            progress.Report(newProgress);
+        }
+
+        protected virtual bool DownloadBinaryFile(string fileLocation, string url)
+        {
+            try
+            {
+                using (var stream = ThrottledStream.ReadFromURLIntoStream(url,
+                    (shellService.Settings.Bandwidth / shellService.Settings.ParallelImages),
+                    shellService.Settings.TimeOut, shellService.Settings.ProxyHost,
+                    shellService.Settings.ProxyPort))
+                    ThrottledStream.SaveStreamToDisk(stream, fileLocation);
+                return true;
+            }
+            catch (IOException ex) when ((ex.HResult & 0xFFFF) == 0x27 || (ex.HResult & 0xFFFF) == 0x70)
+            {
+                Logger.Error("ManagerController:Download: {0}", ex);
+                shellService.ShowError(ex, Resources.DiskFull);
+                throw;
+            }
+            catch
+            {
+                return false;
             }
         }
 
-        protected virtual bool Download(TumblrFiles blog, string fileLocation, string postId, string text, IProgress<DataModels.DownloadProgress> progress, object lockObject, bool locked, ref int counter, ref int totalCounter)
+        protected virtual bool AppendToTextFile(string fileLocation, string text)
         {
-            Monitor.Enter(lockObject, ref locked);
-            if (blog.Links.Contains(postId))
+            try
             {
-                Monitor.Exit(lockObject);
-                return false;
+                using (StreamWriter sw = new StreamWriter(fileLocation, true))
+                {
+                    sw.WriteLine(text);
+                }
+                return true;
             }
-            else
+            catch (IOException ex) when ((ex.HResult & 0xFFFF) == 0x27 || (ex.HResult & 0xFFFF) == 0x70)
             {
-                try
-                {
-                    var newProgress = new DataModels.DownloadProgress();
-                    newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressDownloadImage, "Post: " + postId);
-                    progress.Report(newProgress);
-
-                    using (StreamWriter sw = new StreamWriter(fileLocation, true))
-                    {
-                        sw.WriteLine(text);
-                    }
-                    Interlocked.Increment(ref counter);
-                    Interlocked.Increment(ref totalCounter);
-                    return true;
-                }
-                catch (IOException ex) when ((ex.HResult & 0xFFFF) == 0x27 || (ex.HResult & 0xFFFF) == 0x70)
-                {
-                    Logger.Error("ManagerController:Download: {0}", ex);
-                    shellService.ShowError(ex, Resources.DiskFull);
-                    throw;
-                }
-                catch
-                {
-                    return false;
-                }
-                finally
-                {
-                    Monitor.Exit(lockObject);
-                }
+                Logger.Error("ManagerController:Download: {0}", ex);
+                shellService.ShowError(ex, Resources.DiskFull);
+                throw;
+            }
+            catch
+            {
+                return false;
             }
         }
 
-        protected virtual void UpdateProgress(TumblrBlog blog, TumblrFiles files, string fileName, object lockObjectProgress, ref int totalCounter)
+        protected virtual void UpdateBlogCounter(ref int counter, ref int totalCounter)
         {
-            lock (lockObjectProgress)
-            {
-                files.Links.Add(fileName);
-                // the following could be moved out of the lock?
-                blog.DownloadedImages = totalCounter;
-                blog.Progress = (int)((double)totalCounter / (double)blog.TotalCount * 100);
-            }
+            Interlocked.Increment(ref counter);
+            Interlocked.Increment(ref totalCounter);
         }
     }
 }

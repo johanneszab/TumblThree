@@ -416,7 +416,7 @@ namespace TumblThree.Applications.Controllers
 
         private async Task TransferGlobalSettingsToBlog(TumblrBlog blog)
         {
-            blog.Location = shellService.Settings.DownloadLocation;
+            blog.Location = Path.Combine(shellService.Settings.DownloadLocation, "Index");
             blog.DownloadAudio = shellService.Settings.DownloadAudios;
             blog.DownloadPhoto = shellService.Settings.DownloadImages;
             blog.DownloadVideo = shellService.Settings.DownloadVideos;
@@ -436,6 +436,10 @@ namespace TumblThree.Applications.Controllers
             TumblrFiles files = new TumblrFiles();
             files.Location = Path.Combine(shellService.Settings.DownloadLocation, "Index");
             files.Name = blog.Name;
+
+            Directory.CreateDirectory(Path.Combine(shellService.Settings.DownloadLocation, "Index"));
+            Directory.CreateDirectory(Path.Combine(shellService.Settings.DownloadLocation, blog.Name));
+
             files.Save();
         }
 
