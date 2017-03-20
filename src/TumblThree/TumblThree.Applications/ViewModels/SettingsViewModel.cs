@@ -525,11 +525,7 @@ namespace TumblThree.Applications.ViewModels
         private void OnTimedEvent()
         {
             if (CrawlerService.AutoDownloadCommand.CanExecute(null))
-                System.Windows.Application.Current.Dispatcher.BeginInvoke(
-                    System.Windows.Threading.DispatcherPriority.Background,
-                    new Action(() => {
-                        CrawlerService.AutoDownloadCommand.Execute(null);
-                    }));
+                QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => CrawlerService.AutoDownloadCommand.Execute(null)));
             CrawlerService.Timer.Change(new TimeSpan(24, 00, 00), Timeout.InfiniteTimeSpan);
         }
 

@@ -74,6 +74,7 @@
     <Compile Include="DataModels\TumblrXml.cs" />
     <Compile Include="Data\StringListConverter.cs" />
     <Compile Include="Data\SupportedFileTypes.cs" />
+    <Compile Include="QueueOnDispatcher.cs" />
     <Compile Include="Downloader\CommonDownloader.cs" />
     <Compile Include="Downloader\ICommonDownloader.cs" />
     <Compile Include="Downloader\InstagramDownloader.cs" />

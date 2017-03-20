@@ -173,7 +173,6 @@ namespace TumblThree.Applications.Controllers
 
         private Task<IReadOnlyList<Blog>> GetFilesAsync(string directory)
         {
-            // run this in an own task:
             return Task<IReadOnlyList<Blog>>.Factory.StartNew(() =>
             {
                 return GetFilesCore(directory);
@@ -183,7 +182,7 @@ namespace TumblThree.Applications.Controllers
 
         private IReadOnlyList<Blog> GetFilesCore(string directory)
         {
-            Logger.Verbose("ManagerController.UpdateBlogFiles:GetFilesAsync Start");
+            Logger.Verbose("ManagerController:GetFilesAsync Start");
 
             List<Blog> blogs = new List<Blog>();
 
@@ -199,6 +198,7 @@ namespace TumblThree.Applications.Controllers
                             byte[] buffer = new byte[18];
                             stream.Seek(0x17, 0);
                             buffer = reader.ReadBytes(17);
+                            // "TumblThree.Domain" in hex
                             byte[] tumblThreeSignature = new byte[] { 0x54, 0x75, 0x6D, 0x62, 0x6C, 0x54, 0x68, 0x72, 0x65, 0x65, 0x2E, 0x44, 0x6F, 0x6D, 0x61, 0x69, 0x6E };
                             if (buffer.SequenceEqual(tumblThreeSignature))
                             {
@@ -214,6 +214,7 @@ namespace TumblThree.Applications.Controllers
                             {
                                 string json = File.ReadAllText(filename);
                                 TumblrBlog blog = new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize<TumblrBlog>(json);
+                                blog.ChildId = Path.Combine(directory, blog.Name + "_files.tumblr");
                                 blog.Location = directory;
                                 blog.Update();
                                 blogs.Add(blog);
@@ -395,20 +396,7 @@ namespace TumblThree.Applications.Controllers
 
                 if (blog.Save())
                 {
-
-                    if (Application.Current.Dispatcher.CheckAccess())
-                    {
-                        selectionService.BlogFiles.Add(blog);
-                    }
-                    else
-                    {
-                        Application.Current.Dispatcher.BeginInvoke(
-                          DispatcherPriority.Background,
-                          new Action(() =>
-                          {
-                              selectionService.BlogFiles.Add(blog);
-                          }));
-                    }
+                    QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => selectionService.BlogFiles.Add(blog)));
                 }
             }
         }

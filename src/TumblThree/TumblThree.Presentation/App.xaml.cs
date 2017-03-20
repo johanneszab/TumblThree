@@ -52,6 +52,9 @@ namespace TumblThree.Presentation
             moduleControllers = container.GetExportedValues<IModuleController>();
             foreach (var moduleController in moduleControllers) { moduleController.Initialize(); }
             foreach (var moduleController in moduleControllers) { moduleController.Run(); }
+
+            Applications.QueueOnDispatcher.Initialize();
+
         }
 
         protected override void OnExit(ExitEventArgs e)

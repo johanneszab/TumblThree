@@ -184,7 +184,7 @@ namespace TumblThree.Applications.Controllers
                 if (pt.IsPaused)
                     pt.WaitWhilePausedWithResponseAsyc().Wait();
 
-                Monitor.Enter(QueueManager.Items);
+                Monitor.Enter(lockObject);
                 if (selectionService.ActiveItems.Count() < QueueManager.Items.Count())
                 {
                     var blogListToCrawlNext = QueueManager.Items.Except(selectionService.ActiveItems);
@@ -195,41 +195,25 @@ namespace TumblThree.Applications.Controllers
 
                     if (selectionService.ActiveItems.Any(item => item.Blog.Name.Contains(blogToCrawlNext.Blog.Name)))
                     {
-                        Application.Current.Dispatcher.BeginInvoke(
-                            DispatcherPriority.Background,
-                            new Action(() => {
-                                Monitor.Enter(QueueManager.Items);
-                                QueueManager.RemoveItem(blogToCrawlNext);
-                                Monitor.Exit(QueueManager.Items);
-                            }));
-                        Monitor.Exit(QueueManager.Items);
+                        QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => QueueManager.RemoveItem(blogToCrawlNext)));
+                        Monitor.Exit(lockObject);
                         continue;
                     }
 
                     if (!blogToCrawlNext.Blog.Online)
                     {
-                        Application.Current.Dispatcher.BeginInvoke(
-                            DispatcherPriority.Background,
-                            new Action(() =>
-                            {
-                                Monitor.Enter(QueueManager.Items);
-                                QueueManager.RemoveItem(blogToCrawlNext);
-                                Monitor.Exit(QueueManager.Items);
-                            }));
-                        Monitor.Exit(QueueManager.Items);
+                        QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => QueueManager.RemoveItem(blogToCrawlNext)));
+                        Monitor.Exit(lockObject);
                         continue;
                     }
 
-                    Monitor.Enter(selectionService.ActiveItems);
                     selectionService.AddActiveItems(blogToCrawlNext);
-                    Monitor.Exit(selectionService.ActiveItems);
-
-                    Monitor.Exit(QueueManager.Items);
+                    Monitor.Exit(lockObject);
                     StartSiteSpecificDownloader(blogToCrawlNext, ct, pt);
                 }
                 else
                 {
-                    Monitor.Exit(QueueManager.Items);
+                    Monitor.Exit(lockObject);
                     Task.Delay(4000, ct).Wait();
                 }
             }
@@ -255,28 +239,17 @@ namespace TumblThree.Applications.Controllers
 
                 if (ct.IsCancellationRequested)
                 {
-                    Application.Current.Dispatcher.BeginInvoke(
-                        DispatcherPriority.Background,
-                        new Action(() => {
-                            Monitor.Enter(selectionService.ActiveItems);
-                            selectionService.RemoveActiveItem(queueListItem);
-                            Monitor.Exit(selectionService.ActiveItems);
-                        }));
+                    Monitor.Enter(lockObject);
+                    QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => selectionService.RemoveActiveItem(queueListItem)));
+                    Monitor.Exit(lockObject);
                     throw new OperationCanceledException(ct);
                 }
                 else
                 {
-                    Application.Current.Dispatcher.BeginInvoke(
-                        DispatcherPriority.Background,
-                        new Action(() => {
-                            Monitor.Enter(QueueManager.Items);
-                            QueueManager.RemoveItem(queueListItem);
-                            Monitor.Exit(QueueManager.Items);
-
-                            Monitor.Enter(selectionService.ActiveItems);
-                            selectionService.RemoveActiveItem(queueListItem);
-                            Monitor.Exit(selectionService.ActiveItems);
-                        }));
+                    Monitor.Enter(lockObject);
+                    QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => QueueManager.RemoveItem(queueListItem)));
+                    QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => selectionService.RemoveActiveItem(queueListItem)));
+                    Monitor.Exit(lockObject);
                 }
             }
         }
