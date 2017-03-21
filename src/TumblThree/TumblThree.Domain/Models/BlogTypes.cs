@@ -2,9 +2,9 @@
 {
     public enum BlogTypes
     {
-        None = 0,
-        Tumblr,
-        Instagram,
-        Twitter
+        none = 0,
+        tumblr,
+        instagram,
+        twitter
     }
 }

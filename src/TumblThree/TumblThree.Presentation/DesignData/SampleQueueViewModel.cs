@@ -10,7 +10,7 @@ namespace TumblThree.Presentation.DesignData
 {
     public class SampleQueueViewModel : QueueViewModel
     {
-        public SampleQueueViewModel() : base(new MockQueueView(), new MockSelectionService())
+        public SampleQueueViewModel() : base(new MockQueueView(), new MockCrawlerService())
         {
             var blogFiles = new[]
             {
@@ -45,7 +45,7 @@ namespace TumblThree.Presentation.DesignData
             var queueManager = new QueueManager();
             queueManager.AddItems(blogFiles.Select(x => new QueueListItem(x)));
             QueueManager = queueManager;
-            ((MockSelectionService)SelectionService).SetBlogFiles(blogFiles.ToArray());
+            ((MockCrawlerService)CrawlerService).SetActiveBlogFiles(blogFiles.ToArray());
         }
 
         private class MockQueueView : MockView, IQueueView

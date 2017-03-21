@@ -26,8 +26,7 @@ namespace TumblThree.Applications.Controllers
     internal class CrawlerController
     {
         private readonly IShellService shellService;
-        private readonly ISelectionService selectionService;
-        private readonly IEnvironmentService environmentService;
+        private readonly IManagerService managerService;
         private readonly ICrawlerService crawlerService;
         private readonly Lazy<CrawlerViewModel> crawlerViewModel;
         private readonly DelegateCommand crawlCommand;
@@ -41,15 +40,13 @@ namespace TumblThree.Applications.Controllers
 
 
         [ImportingConstructor]
-        public CrawlerController(IShellService shellService, IEnvironmentService environmentService, ISelectionService selectionService, ICrawlerService crawlerService,
-            IDownloaderFactory downloaderFactory, Lazy<CrawlerViewModel> crawlerViewModel)
+        public CrawlerController(IShellService shellService, IManagerService managerService, ICrawlerService crawlerService,
+            Lazy<CrawlerViewModel> crawlerViewModel)
         {
             this.shellService = shellService;
-            this.environmentService = environmentService;
-            this.selectionService = selectionService;
+            this.managerService = managerService;
             this.crawlerService = crawlerService;
             this.crawlerViewModel = crawlerViewModel;
-            DownloaderFactory = downloaderFactory;
             this.crawlCommand = new DelegateCommand(Crawl, CanCrawl);
             this.pauseCommand = new DelegateCommand(Pause, CanPause);
             this.resumeCommand = new DelegateCommand(Resume, CanResume);
@@ -61,9 +58,6 @@ namespace TumblThree.Applications.Controllers
         private CrawlerViewModel CrawlerViewModel { get { return crawlerViewModel.Value; } }
 
         public QueueManager QueueManager { get; set; }
-
-        public IDownloaderFactory DownloaderFactory { get; set; }
-
 
         public void Initialize()
         {
@@ -85,7 +79,7 @@ namespace TumblThree.Applications.Controllers
             catch (System.AggregateException)
             {
             }
-            foreach (Blog blog in selectionService.BlogFiles)
+            foreach (Blog blog in managerService.BlogFiles)
             {
                 if (blog.Dirty)
                 {
@@ -163,14 +157,6 @@ namespace TumblThree.Applications.Controllers
                     TaskCreationOptions.LongRunning,
                     TaskScheduler.Default).ContinueWith(task =>
                     {
-                        if (task.Exception != null)
-                        {
-                            foreach (var innerEx in task.Exception.InnerExceptions)
-                            {
-                                Logger.Error("ManagerController:Crawl: {0}", innerEx);
-                                //shellService.ShowError(innerEx, Resources.CrawlerError);
-                            }
-                        }
                         runningTasks.Clear();
                     }));
         }
@@ -188,15 +174,15 @@ namespace TumblThree.Applications.Controllers
                     pt.WaitWhilePausedWithResponseAsyc().Wait();
 
                 Monitor.Enter(lockObject);
-                if (selectionService.ActiveItems.Count() < QueueManager.Items.Count())
+                if (crawlerService.ActiveItems.Count() < QueueManager.Items.Count())
                 {
-                    var queueList = QueueManager.Items.Except(selectionService.ActiveItems);
+                    var queueList = QueueManager.Items.Except(crawlerService.ActiveItems);
                     var nextQueueItem = queueList.First();
 
                     Downloader.Downloader downloader = new Downloader.Downloader(shellService, nextQueueItem.Blog);
                     downloader.IsBlogOnline().Wait();
 
-                    if (selectionService.ActiveItems.Any(item => item.Blog.Name.Contains(nextQueueItem.Blog.Name)))
+                    if (crawlerService.ActiveItems.Any(item => item.Blog.Name.Contains(nextQueueItem.Blog.Name)))
                     {
                         QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => QueueManager.RemoveItem(nextQueueItem)));
                         Monitor.Exit(lockObject);
@@ -210,7 +196,7 @@ namespace TumblThree.Applications.Controllers
                         continue;
                     }
 
-                    selectionService.AddActiveItems(nextQueueItem);
+                    crawlerService.AddActiveItems(nextQueueItem);
                     Monitor.Exit(lockObject);
                     StartSiteSpecificDownloader(nextQueueItem, ct, pt);
                 }
@@ -232,13 +218,13 @@ namespace TumblThree.Applications.Controllers
 
             switch (blog.BlogType)
             {
-                case BlogTypes.Tumblr:
-                    TumblrDownloader crawler = new TumblrDownloader(shellService, crawlerService, selectionService, blog);
-                    crawler.CrawlTumblrBlog(progress, ct, pt);
+                case BlogTypes.tumblr:
+                    TumblrDownloader crawler = new TumblrDownloader(shellService, crawlerService, blog);
+                    crawler.Crawl(progress, ct, pt);
                     break;
-                case BlogTypes.Instagram:
+                case BlogTypes.instagram:
                     break;
-                case BlogTypes.Twitter:
+                case BlogTypes.twitter:
                     break;
                 default:
                     throw new NotImplementedException();
@@ -247,7 +233,7 @@ namespace TumblThree.Applications.Controllers
             if (ct.IsCancellationRequested)
             {
                 Monitor.Enter(lockObject);
-                QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => selectionService.RemoveActiveItem(queueListItem)));
+                QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => crawlerService.RemoveActiveItem(queueListItem)));
                 Monitor.Exit(lockObject);
                 throw new OperationCanceledException(ct);
             }
@@ -255,7 +241,7 @@ namespace TumblThree.Applications.Controllers
             {
                 Monitor.Enter(lockObject);
                 QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => QueueManager.RemoveItem(queueListItem)));
-                QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => selectionService.RemoveActiveItem(queueListItem)));
+                QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => crawlerService.RemoveActiveItem(queueListItem)));
                 Monitor.Exit(lockObject);
             }
         }

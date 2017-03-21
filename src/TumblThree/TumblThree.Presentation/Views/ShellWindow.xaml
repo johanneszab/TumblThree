@@ -12,7 +12,7 @@
 
     <Window.Title>
         <MultiBinding Converter="{StaticResource WindowTitleConverter}">
-            <Binding Path="SelectionService.ActiveItems"/>
+            <Binding Path="CrawlerService.ActiveItems"/>
             <Binding Path="Title"/>
         </MultiBinding>
     </Window.Title>

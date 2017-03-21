@@ -10,7 +10,8 @@ namespace TumblThree.Presentation.DesignData
 {
     public class SampleManagerViewModel : ManagerViewModel
     {
-        public SampleManagerViewModel() : base(new MockManagerView(), new MockShellService(), new Lazy<ISelectionService>(() => new MockSelectionService()), null)
+        public SampleManagerViewModel() : base(new MockManagerView(), new MockShellService(),
+            new Lazy<ISelectionService>(() => new MockSelectionService()), null, new Lazy<IManagerService>(() => new MockManagerService()))
         {
             var blogFiles = new[]
             {
@@ -44,7 +45,7 @@ namespace TumblThree.Presentation.DesignData
                     TotalCount = 82453,
                 }
             };
-            ((MockSelectionService)SelectionService).SetBlogFiles(blogFiles.ToArray());
+            ((MockManagerService)ManagerService).SetBlogFiles(blogFiles.ToArray());
         }
 
         private class MockManagerView : MockView, IManagerView

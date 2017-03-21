@@ -12,16 +12,18 @@ namespace TumblThree.Domain.Models
         private string name;
         private string location;
         private string version;
+        private BlogTypes blogType;
         private IList<string> links;
 
-        public TumblrFiles() : this(String.Empty, String.Empty)
+        public TumblrFiles() : this(String.Empty, String.Empty, BlogTypes.none)
         {
         }
 
-        public TumblrFiles(string name, string location)
+        public TumblrFiles(string name, string location, BlogTypes blogTypes)
         {
             this.name = name;
             this.location = location;
+            this.BlogType = blogType;
             this.version = "1";
             this.links = new List<string>();
         }
@@ -36,6 +38,11 @@ namespace TumblThree.Domain.Models
         {
             get { return location; }
             set { SetProperty(ref location, value); }
+        }
+        public BlogTypes BlogType
+        {
+            get { return blogType; }
+            set { SetProperty(ref blogType, value); }
         }
 
         public string Version
@@ -52,9 +59,9 @@ namespace TumblThree.Domain.Models
 
         public bool Save()
         {
-            string currentIndex = Path.Combine(location, this.Name + "_files.tumblr");
-            string newIndex = Path.Combine(location, this.Name + "_files.tumblr.new");
-            string backupIndex = Path.Combine(location, this.Name + "_files.tumblr.bak");
+            string currentIndex = Path.Combine(location, this.Name + "_files." + this.BlogType);
+            string newIndex = Path.Combine(location, this.Name + "_files." + this.BlogType + ".new");
+            string backupIndex = Path.Combine(location, this.Name + "_files." + this.BlogType + ".bak");
 
             try
             {

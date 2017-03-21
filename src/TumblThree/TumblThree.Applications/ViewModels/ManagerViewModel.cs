@@ -18,17 +18,20 @@ namespace TumblThree.Applications.ViewModels
     {
         private readonly Lazy<ISelectionService> selectionService;
         private Blog selectedBlogFile;
-        private readonly ICrawlerService crawlerService;
+        private readonly Lazy<ICrawlerService> crawlerService;
+        private readonly Lazy<IManagerService> managerService;
         private ICommand showFilesCommand;
         private ICommand visitBlogCommand;
         private ICommand showDetailsCommand;
 
         [ImportingConstructor]
-        public ManagerViewModel(IManagerView view, IShellService shellService, Lazy<ISelectionService> selectionService, ICrawlerService crawlerService) : base(view)
+        public ManagerViewModel(IManagerView view, IShellService shellService, Lazy<ISelectionService> selectionService,
+            Lazy<ICrawlerService> crawlerService, Lazy<IManagerService> managerService) : base(view)
         {
             ShellService = shellService;
             this.selectionService = selectionService;
             this.crawlerService = crawlerService;
+            this.managerService = managerService;
 
             try
             {
@@ -54,7 +57,10 @@ namespace TumblThree.Applications.ViewModels
 
         public IShellService ShellService { get; }
 
-        public ICrawlerService CrawlerService { get { return crawlerService; } }
+        public ICrawlerService CrawlerService { get { return crawlerService.Value; } }
+
+        public IManagerService ManagerService { get { return managerService.Value; } }
+
 
         public ICommand ShowFilesCommand
         {

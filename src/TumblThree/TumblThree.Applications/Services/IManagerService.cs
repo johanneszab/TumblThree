@@ -6,8 +6,8 @@ using TumblThree.Domain.Queue;
 
 namespace TumblThree.Applications.Services
 {
-    public interface ISelectionService
+    public interface IManagerService
     {
-        IList<IBlog> SelectedBlogFiles { get; }
+        ObservableCollection<IBlog> BlogFiles { get; }
     }
 }

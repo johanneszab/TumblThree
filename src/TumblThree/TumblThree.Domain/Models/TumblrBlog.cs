@@ -64,8 +64,8 @@ namespace TumblThree.Domain.Models
         public TumblrBlog(string url, string location, BlogTypes type) : base(url, location, type)
         {
             this.version = "3";
-            this.childId = String.Empty;
             this.description = String.Empty;
+            this.childId = Path.Combine(Location, Name + "_files." + BlogTypes.tumblr);
             this.title = String.Empty;
             this.lastId = 0;
             this.progress = 0;
@@ -109,6 +109,14 @@ namespace TumblThree.Domain.Models
             this.forceRescan = false;
             this.lastDownloadedPhoto = null;
             this.lastDownloadedVideo = null;
+
+            TumblrFiles files = new TumblrFiles(Name, Path.Combine(Location, "Index"), BlogType);
+
+            Directory.CreateDirectory(Path.Combine(Location, "Index"));
+            Directory.CreateDirectory(Path.Combine(Location, Name));
+
+            files.Save();
+            files = null;
         }
 
         public string Version
@@ -408,18 +416,18 @@ namespace TumblThree.Domain.Models
                     files.Location = this.Location;
                     files.Name = this.Name;
                     files.Links = this.Links.Select(item => item?.Split('/').Last()).ToList();
-                    this.Links.Clear();
-                    this.Version = "3";
-                    this.BlogType = BlogTypes.Tumblr;
-                    this.Dirty = true;
+                    Links.Clear();
+                    Version = "3";
+                    BlogType = BlogTypes.tumblr;
+                    Dirty = true;
                     files.Save();
                     files = null;
                 }
             } else if (this.Version.Equals("2"))
             {
-                this.BlogType = BlogTypes.Tumblr;
-                this.Version = "3";
-                this.Dirty = true;
+                BlogType = BlogTypes.tumblr;
+                Version = "3";
+                Dirty = true;
             }
 
             return true;

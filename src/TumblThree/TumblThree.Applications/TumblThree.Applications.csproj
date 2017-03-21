@@ -98,10 +98,12 @@
     <Compile Include="Services\ICrawlerService.cs" />
     <Compile Include="Services\IEnvironmentService.cs" />
     <Compile Include="Services\IDetailsService.cs" />
+    <Compile Include="Services\IManagerService.cs" />
     <Compile Include="Services\IPresentationService.cs" />
     <Compile Include="Services\ISelectionService.cs" />
     <Compile Include="Services\ISettingsProvider.cs" />
     <Compile Include="Services\IShellService.cs" />
+    <Compile Include="Services\ManagerService.cs" />
     <Compile Include="Services\SelectionService.cs" />
     <Compile Include="Services\SettingsProvider.cs" />
     <Compile Include="Services\ShellService.cs" />

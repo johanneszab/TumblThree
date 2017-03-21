@@ -2,6 +2,9 @@
 using System.Windows.Input;
 using System.Waf.Foundation;
 using Guava.RateLimiter;
+using System.Collections.ObjectModel;
+using TumblThree.Domain.Queue;
+using System.Collections.Specialized;
 
 namespace TumblThree.Applications.Services
 {
@@ -27,12 +30,21 @@ namespace TumblThree.Applications.Services
         private System.Threading.Timer timer;
         private RateLimiter timeconstraint;
 
+        private readonly ObservableCollection<QueueListItem> activeItems;
+        private readonly ReadOnlyObservableList<QueueListItem> readonlyActiveItems;
+
         [ImportingConstructor]
         public CrawlerService(IShellService shellService)
         {
             this.shellService = shellService;
             timeconstraint = Guava.RateLimiter.RateLimiter.Create((double)shellService.Settings.MaxConnections / (double)shellService.Settings.ConnectionTimeInterval);
+
+            this.activeItems = new ObservableCollection<QueueListItem>();
+            this.readonlyActiveItems = new ReadOnlyObservableList<QueueListItem>(activeItems);
+            this.activeItems.CollectionChanged += ActiveItemsCollectionChanged;
         }
+
+        public IReadOnlyObservableList<QueueListItem> ActiveItems { get { return readonlyActiveItems; } }
 
         public ICommand AddBlogCommand
         {
@@ -134,6 +146,33 @@ namespace TumblThree.Applications.Services
         {
             get { return timeconstraint; }
             set { SetProperty(ref timeconstraint, value); }
+        }
+
+        public void AddActiveItems(QueueListItem itemToAdd)
+        {
+            activeItems.Add(itemToAdd);
+        }
+
+        public void RemoveActiveItem(QueueListItem itemToRemove)
+        {
+            activeItems.Remove(itemToRemove);
+        }
+
+        public void ClearItems()
+        {
+            activeItems.Clear();
+        }
+
+        private void ActiveItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                RaisePropertyChanged("ActiveItems");
+            }
+            else if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                RaisePropertyChanged("ActiveItems");
+            }
         }
     }
 }

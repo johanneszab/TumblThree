@@ -18,14 +18,16 @@ namespace TumblThree.Applications.Controllers
     {
         private readonly IShellService shellService;
         private readonly ISelectionService selectionService;
+        private readonly IManagerService managerService;
         private readonly Lazy<DetailsViewModel> detailsViewModel;
         private readonly HashSet<IBlog> blogsToSave;
 
         [ImportingConstructor]
-        public DetailsController(IShellService shellService, ISelectionService selectionService, Lazy<DetailsViewModel> detailsViewModel)
+        public DetailsController(IShellService shellService, ISelectionService selectionService, IManagerService managerService, Lazy<DetailsViewModel> detailsViewModel)
         {
             this.shellService = shellService;
             this.selectionService = selectionService;
+            this.managerService = managerService;
             this.detailsViewModel = detailsViewModel;
             this.blogsToSave = new HashSet<IBlog>();
         }
@@ -74,7 +76,6 @@ namespace TumblThree.Applications.Controllers
                 blogsToSave.Add(blog);
             }
 
-            //FIXME: Create proper binding to Selectionservice List<Blogs>.
             return new TumblrBlog()
             {
                 Name = string.Join(", ", sharedBlogFiles.Select(blog => blog.Name).ToArray()),
@@ -135,7 +136,7 @@ namespace TumblThree.Applications.Controllers
             IReadOnlyCollection<IBlog> filesToSave;
             if (blogsToSave.Any())
             {
-                filesToSave = selectionService.BlogFiles.Where(blogs => blogsToSave.Contains(blogs)).ToArray();
+                filesToSave = managerService.BlogFiles.Where(blogs => blogsToSave.Contains(blogs)).ToArray();
             }
             else
             {

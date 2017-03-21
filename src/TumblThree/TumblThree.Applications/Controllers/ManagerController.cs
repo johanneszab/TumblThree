@@ -34,8 +34,8 @@ namespace TumblThree.Applications.Controllers
     internal class ManagerController
     {
         private readonly IShellService shellService;
-        private readonly IEnvironmentService environmentService;
         private readonly ISelectionService selectionService;
+        private readonly IManagerService managerService;
         private readonly ICrawlerService crawlerService;
         private readonly Lazy<ManagerViewModel> managerViewModel;
         private readonly ObservableCollection<Blog> blogFiles;
@@ -54,13 +54,13 @@ namespace TumblThree.Applications.Controllers
         public event BlogManagerFinishedLoadingHandler BlogManagerFinishedLoading;
 
         [ImportingConstructor]
-        public ManagerController(IShellService shellService, IEnvironmentService environmentService, ISelectionService selectionService, ICrawlerService crawlerService,
-            Lazy<ManagerViewModel> managerViewModel)
+        public ManagerController(IShellService shellService, ISelectionService selectionService, ICrawlerService crawlerService,
+            IManagerService managerService, Lazy<ManagerViewModel> managerViewModel)
         {
             this.shellService = shellService;
-            this.environmentService = environmentService;
             this.selectionService = selectionService;
             this.crawlerService = crawlerService;
+            this.managerService = managerService;
             this.managerViewModel = managerViewModel;
             this.blogFiles = new ObservableCollection<Blog>();
             this.addBlogCommand = new DelegateCommand(AddBlog, CanAddBlog);
@@ -130,8 +130,8 @@ namespace TumblThree.Applications.Controllers
 
         private async Task LoadLibrary()
         {
-            Logger.Verbose("ManagerController.UpdateBlogFiles:Start");
-            selectionService.BlogFiles.Clear();
+            Logger.Verbose("ManagerController.LoadLibrary:Start");
+            managerService.BlogFiles.Clear();
             var path = Path.Combine(shellService.Settings.DownloadLocation, "Index");
 
             try
@@ -142,7 +142,7 @@ namespace TumblThree.Applications.Controllers
                         var files = await GetFilesAsync(path);
                         foreach (var file in files)
                         {
-                            selectionService.BlogFiles.Add(file);
+                            managerService.BlogFiles.Add(file);
                         }
 
                         if (BlogManagerFinishedLoading != null)
@@ -182,7 +182,7 @@ namespace TumblThree.Applications.Controllers
 
         private IReadOnlyList<Blog> GetFilesCore(string directory)
         {
-            Logger.Verbose("ManagerController:GetFilesAsync Start");
+            Logger.Verbose("ManagerController:GetFilesCore Start");
 
             List<Blog> blogs = new List<Blog>();
 
@@ -228,7 +228,7 @@ namespace TumblThree.Applications.Controllers
                     throw;
                 }
             }
-            Logger.Verbose("ManagerController.UpdateBlogFiles:GetFilesAsync End");
+            Logger.Verbose("ManagerController.GetFilesCore End");
 
             return blogs;
         }
@@ -251,7 +251,7 @@ namespace TumblThree.Applications.Controllers
 
         private bool CanEnqueueAutoDownload()
         {
-            return selectionService.BlogFiles.Any();
+            return managerService.BlogFiles.Any();
         }
 
         private void EnqueueAutoDownload()
@@ -260,11 +260,11 @@ namespace TumblThree.Applications.Controllers
             {
             }
             if (shellService.Settings.BlogType == shellService.Settings.BlogTypes.ElementAtOrDefault(1))
-                Enqueue(selectionService.BlogFiles.Where(blog => blog.Online).ToArray());
+                Enqueue(managerService.BlogFiles.Where(blog => blog.Online).ToArray());
             if (shellService.Settings.BlogType == shellService.Settings.BlogTypes.ElementAtOrDefault(2))
-                Enqueue(selectionService.BlogFiles.Where(blog => blog.Online && blog.LastCompleteCrawl != System.DateTime.MinValue).ToArray());
+                Enqueue(managerService.BlogFiles.Where(blog => blog.Online && blog.LastCompleteCrawl != System.DateTime.MinValue).ToArray());
             if (shellService.Settings.BlogType == shellService.Settings.BlogTypes.ElementAtOrDefault(3))
-                Enqueue(selectionService.BlogFiles.Where(blog => blog.Online && blog.LastCompleteCrawl == System.DateTime.MinValue).ToArray());
+                Enqueue(managerService.BlogFiles.Where(blog => blog.Online && blog.LastCompleteCrawl == System.DateTime.MinValue).ToArray());
 
             if (crawlerService.IsCrawl && crawlerService.IsPaused)
             {
@@ -318,13 +318,13 @@ namespace TumblThree.Applications.Controllers
                     }
                 }
 
-                var indexFile = Path.Combine(indexPath, blog.Name) + ".tumblr";
+                var indexFile = Path.Combine(indexPath, blog.Name) + blog.BlogType;
                 try
                 {
                     File.Delete(indexFile);
                     if (blog is TumblrBlog)
                     {
-                        var tumblrFiles = Path.Combine(indexPath, blog.Name) + "_files.tumblr";
+                        var tumblrFiles = Path.Combine(indexPath, blog.Name) + "_files." + blog.BlogType;
                         File.Delete(tumblrFiles);
                     }
                 }
@@ -335,7 +335,7 @@ namespace TumblThree.Applications.Controllers
                     return;
                 }
 
-                selectionService.BlogFiles.Remove(blog);
+                managerService.BlogFiles.Remove(blog);
                 QueueManager.RemoveItems(QueueManager.Items.Where(item => item.Blog.Equals(blog)));
             }
         }
@@ -383,15 +383,15 @@ namespace TumblThree.Applications.Controllers
             }
 
             // FIXME: 
-            TumblrBlog blog = new TumblrBlog(blogUrl, shellService.Settings.DownloadLocation, BlogTypes.Tumblr);
+            TumblrBlog blog = new TumblrBlog(blogUrl, Path.Combine(shellService.Settings.DownloadLocation, "Index"), BlogTypes.tumblr);
             TransferGlobalSettingsToBlog(blog);
-            TumblrDownloader downloader = new TumblrDownloader(shellService, crawlerService, selectionService, blog);
+            TumblrDownloader downloader = new TumblrDownloader(shellService, crawlerService, blog);
             await downloader.IsBlogOnline();
             await downloader.UpdateMetaInformation();
 
             lock (lockObject)
             {
-                if (selectionService.BlogFiles.Select(blogs => blogs.Name).ToList().Contains(blog.Name))
+                if (managerService.BlogFiles.Select(blogs => blogs.Name).ToList().Contains(blog.Name))
                 {
                     shellService.ShowError(null, Resources.BlogAlreadyExist, blog.Name);
                     return;
@@ -399,7 +399,7 @@ namespace TumblThree.Applications.Controllers
 
                 if (blog.Save())
                 {
-                    QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => selectionService.BlogFiles.Add(blog)));
+                    QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => managerService.BlogFiles.Add(blog)));
                 }
             }
         }
@@ -407,8 +407,6 @@ namespace TumblThree.Applications.Controllers
 
         private void TransferGlobalSettingsToBlog(TumblrBlog blog)
         {
-            blog.Location = Path.Combine(shellService.Settings.DownloadLocation, "Index");
-            blog.ChildId = Path.Combine(blog.Location, blog.Name + "_files.tumblr");
             blog.DownloadAudio = shellService.Settings.DownloadAudios;
             blog.DownloadPhoto = shellService.Settings.DownloadImages;
             blog.DownloadVideo = shellService.Settings.DownloadVideos;
@@ -421,13 +419,6 @@ namespace TumblThree.Applications.Controllers
             blog.CreateAudioMeta = shellService.Settings.CreateAudioMeta;
             blog.SkipGif = shellService.Settings.SkipGif;
             blog.ForceSize = shellService.Settings.ForceSize;
-
-            TumblrFiles files = new TumblrFiles(blog.Name, Path.Combine(shellService.Settings.DownloadLocation, "Index"));
-
-            Directory.CreateDirectory(Path.Combine(shellService.Settings.DownloadLocation, "Index"));
-            Directory.CreateDirectory(Path.Combine(shellService.Settings.DownloadLocation, blog.Name));
-
-            files.Save();
         }
 
         private void OnClipboardContentChanged(object sender, EventArgs e)

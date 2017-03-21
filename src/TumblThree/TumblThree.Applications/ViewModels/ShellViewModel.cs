@@ -30,13 +30,12 @@ namespace TumblThree.Applications.ViewModels
 
 
         [ImportingConstructor]
-        public ShellViewModel(IShellView view, IShellService shellService, ICrawlerService crawlerService, ISelectionService selectionService, ExportFactory<SettingsViewModel> settingsViewModelFactory,
+        public ShellViewModel(IShellView view, IShellService shellService, ICrawlerService crawlerService, ExportFactory<SettingsViewModel> settingsViewModelFactory,
             ExportFactory<AboutViewModel> aboutViewModelFactory)
             : base(view)
         {
             ShellService = shellService;
             CrawlerService = crawlerService;
-            SelectionService = selectionService;
             settings = shellService.Settings;
             this.settingsViewModelFactory = settingsViewModelFactory;
             this.aboutViewModelFactory = aboutViewModelFactory;
@@ -70,8 +69,6 @@ namespace TumblThree.Applications.ViewModels
         public IShellService ShellService { get; }
 
         public ICrawlerService CrawlerService { get; }
-
-        public ISelectionService SelectionService { get; }
 
         public IReadOnlyList<Tuple<Exception, string>> Errors { get { return errors; } }
 

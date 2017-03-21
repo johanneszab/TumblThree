@@ -25,8 +25,6 @@ namespace TumblThree.Presentation.Services
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), ApplicationInfo.Company, ApplicationInfo.ProductName, "Settings"));
         }
 
-        public IReadOnlyList<string> QueueList { get { return queueList.Value; } }
-
         public string ProfilePath { get { return profilePath.Value; } }
 
         public string AppSettingsPath { get { return appSettingsPath.Value; } }

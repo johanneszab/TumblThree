@@ -21,13 +21,12 @@ using System.ComponentModel.Composition;
 namespace TumblThree.Applications.Downloader
 {
     [Export(typeof(IDownloader))]
-    [ExportMetadata("BlogType", BlogTypes.Tumblr)]
+    [ExportMetadata("BlogType", BlogTypes.tumblr)]
     public class TumblrDownloader : Downloader
     {
 
         private readonly IShellService shellService;
         private readonly ICrawlerService crawlerService;
-        private readonly ISelectionService selectionService;
         private readonly TumblrBlog blog;
         private TumblrFiles files;
         private readonly object lockObjectProgress;
@@ -36,13 +35,12 @@ namespace TumblThree.Applications.Downloader
         private readonly BlockingCollection<Tuple<PostTypes, string, string>> sharedDownloads;
 
 
-        public TumblrDownloader(IShellService shellService, ICrawlerService crawlerService, ISelectionService selectionService, IBlog blog) : base(shellService, blog)
+        public TumblrDownloader(IShellService shellService, ICrawlerService crawlerService, IBlog blog) : base(shellService, blog)
         {
             this.shellService = shellService;
             this.crawlerService = crawlerService;
-            this.selectionService = selectionService;
             this.blog = (TumblrBlog)blog;
-            this.files = new TumblrFiles();
+            this.files = LoadTumblrFiles();
             this.lockObjectProgress = new object();
             this.lockObjectDownload = new object();
             this.downloadList = new List<Tuple<PostTypes, string, string>>();
@@ -176,14 +174,14 @@ namespace TumblThree.Applications.Downloader
                 .Sum(g => g.Count() - 1);
         }
 
-        public void CrawlTumblrBlog(IProgress<DownloadProgress> progress, CancellationToken ct, PauseToken pt)
+        public void Crawl(IProgress<DownloadProgress> progress, CancellationToken ct, PauseToken pt)
         {
-            Logger.Verbose("ManagerController.CrawlCoreTumblrBlog:Start");
+            Logger.Verbose("TumblrDownloader.Crawl:Start");
 
             var grabber = Task.Run(() => GetUrls(progress, ct, pt));
             var downloader = Task.Run(() => DownloadTumblrBlog(progress, ct, pt));
             var blogContent = grabber.Result;
-            bool limitHit = blogContent.Item2;
+            bool apiLimitHit = blogContent.Item2;
             var blogUrls = blogContent.Item3;
 
             var newProgress = new DownloadProgress();
@@ -206,7 +204,7 @@ namespace TumblThree.Applications.Downloader
             if (!ct.IsCancellationRequested)
             {
                 blog.LastCompleteCrawl = DateTime.Now;
-                if (finishedDownloading && !limitHit)
+                if (finishedDownloading && !apiLimitHit)
                     blog.LastId = blogContent.Item1;
             }
 
@@ -215,6 +213,43 @@ namespace TumblThree.Applications.Downloader
             newProgress = new DownloadProgress();
             newProgress.Progress = "";
             progress.Report(newProgress);
+        }
+
+
+        private XDocument GetApiPage(int pageId)
+        {
+            XDocument document = null;
+
+            string url = GetApiUrl(blog.Url, 50, pageId * 50);
+
+            if (shellService.Settings.LimitConnections)
+            {
+                crawlerService.Timeconstraint.Acquire();
+                document = RequestData(url);
+            }
+            else {
+                document = RequestData(url);
+            }
+            return document;
+        }
+
+        private void UpdateTotalPostCount()
+        {
+
+            XDocument document = GetApiPage(1);
+
+            int totalPosts = 0;
+            Int32.TryParse(document.Element("tumblr").Element("posts").Attribute("total").Value, out totalPosts);
+            blog.Posts = totalPosts;
+        }
+
+        private ulong GetHighestPostId()
+        {
+            XDocument document = GetApiPage(1);
+
+            ulong highestId = 0;
+            UInt64.TryParse(document.Element("tumblr").Element("posts").Element("post")?.Attribute("id").Value, out highestId);
+            return highestId;
         }
 
         public Tuple<ulong, bool, List<Tuple<PostTypes, string, string>>> GetUrls(IProgress<DownloadProgress> progress, CancellationToken ct, PauseToken pt)
@@ -232,9 +267,7 @@ namespace TumblThree.Applications.Downloader
             int videoMetas = 0;
             int audioMetas = 0;
             ulong lastId = blog.LastId;
-            bool limitHit = false;
-
-            XDocument blogDoc = null;
+            bool apiLimitHit = false;
 
             if (blog.ForceRescan)
             {
@@ -242,19 +275,10 @@ namespace TumblThree.Applications.Downloader
                 lastId = 0;
             }
 
-            if (shellService.Settings.LimitConnections)
-            {
-                crawlerService.Timeconstraint.Acquire();
-                blogDoc = RequestData(GetApiUrl(blog.Url, 1));
-            }
-            else
-                blogDoc = RequestData(GetApiUrl(blog.Url, 1));
+            UpdateTotalPostCount();
+            int totalPosts = blog.Posts;
 
-            int totalPosts = 0;
-            Int32.TryParse(blogDoc.Element("tumblr").Element("posts").Attribute("total").Value, out totalPosts);
-
-            ulong highestId = 0;
-            UInt64.TryParse(blogDoc.Element("tumblr").Element("posts").Element("post")?.Attribute("id").Value, out highestId);
+            ulong highestId = GetHighestPostId();
 
             // Generate URL list of Images
             // the api shows 50 posts at max, determine the number of pages to crawl
@@ -272,21 +296,11 @@ namespace TumblThree.Applications.Downloader
                                 pt.WaitWhilePausedWithResponseAsyc().Wait();
                             try
                             {
-                                XDocument document = null;
-
-                                string url = GetApiUrl(blog.Url, 50, i * 50);
-
-                                if (shellService.Settings.LimitConnections)
-                                {
-                                    crawlerService.Timeconstraint.Acquire();
-                                    document = RequestData(url);
-                                } else {
-                                    document = RequestData(url);
-                                }
+                                XDocument document = GetApiPage(i);
 
                                 if (document == null)
                                 {
-                                    limitHit = true;
+                                    apiLimitHit = true;
                                 }
 
                                 // only counts single images and photoset, no inline images
@@ -300,12 +314,12 @@ namespace TumblThree.Applications.Downloader
                                 Interlocked.Add(ref links, document.Descendants("post").Where(post => post.Attribute("type").Value == "link").Count());
 
                                 ulong highestPostId = 0;
-                                UInt64.TryParse(blogDoc.Element("tumblr").Element("posts").Element("post")?.Attribute("id").Value, out highestId);
+                                UInt64.TryParse(document.Element("tumblr").Element("posts").Element("post")?.Attribute("id").Value, out highestId);
 
                                 if (highestPostId < lastId)
                                     state.Break();
 
-                                GetUrlsCore(document, ref limitHit, ref totalDownloads, ref photos, ref photoMetas, ref videoMetas, ref audioMetas);
+                                GetUrlsCore(document, ref totalDownloads, ref photos, ref photoMetas, ref videoMetas, ref audioMetas);
                             }
                             catch (Exception ex)
                             {
@@ -324,7 +338,6 @@ namespace TumblThree.Applications.Downloader
             if (loopState.IsCompleted)
             {
                 blog.TotalCount = totalDownloads;
-                blog.Posts = totalPosts;
                 blog.Photos = photos;
                 blog.Videos = videos;
                 blog.Audios = audios;
@@ -337,11 +350,10 @@ namespace TumblThree.Applications.Downloader
                 blog.AudioMetas = audioMetas;
             }
 
-            return Tuple.Create(highestId, limitHit, downloadList);
+            return Tuple.Create(highestId, apiLimitHit, downloadList);
         }
 
         private void GetUrlsCore(XDocument document,
-            ref bool limitHit,
             ref int totalDownloads,
             ref int photos,
             ref int photoMetas,
@@ -662,16 +674,13 @@ namespace TumblThree.Applications.Downloader
             int downloadedVideoMetas = blog.DownloadedVideoMetas;
             int downloadedAudioMetas = blog.DownloadedAudioMetas;
 
-            var indexPath = Path.Combine(shellService.Settings.DownloadLocation, "Index");
             var blogPath = shellService.Settings.DownloadLocation;
 
-            Directory.CreateDirectory(Path.Combine(blogPath, blog.Name));
-
-            files = LoadTumblrFiles();
+            CreateDataFolder();
 
             var loopState = Parallel.ForEach(
                             sharedDownloads.GetConsumingEnumerable(),
-                            new ParallelOptions { MaxDegreeOfParallelism = (shellService.Settings.ParallelImages / selectionService.ActiveItems.Count) },
+                            new ParallelOptions { MaxDegreeOfParallelism = (shellService.Settings.ParallelImages / crawlerService.ActiveItems.Count) },
                             (currentImageUrl, state) =>
                             {
                                 if (ct.IsCancellationRequested)

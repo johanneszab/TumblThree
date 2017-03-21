@@ -18,7 +18,6 @@ namespace TumblThree.Applications.ViewModels
         private QueueManager queueManager;
         private QueueListItem selectedQueueItem;
 
-        //private ICommand crawlSelectedCommand;
         private ICommand removeSelectedCommand;
         private ICommand showBlogDetailsCommand;
         private ICommand openQueueCommand;
@@ -27,10 +26,10 @@ namespace TumblThree.Applications.ViewModels
 
 
         [ImportingConstructor]
-        public QueueViewModel(IQueueView view, ISelectionService selectionService) : base(view)
+        public QueueViewModel(IQueueView view, ICrawlerService crawlerService) : base(view)
         {
             this.selectedQueueItems = new ObservableCollection<QueueListItem>();
-            SelectionService = selectionService;
+            CrawlerService = crawlerService;
         }
 
         public QueueManager QueueManager
@@ -39,7 +38,7 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref queueManager, value); }
         }
 
-        public ISelectionService SelectionService { get; }
+        public ICrawlerService CrawlerService { get; }
 
         public QueueListItem SelectedQueueItem
         {

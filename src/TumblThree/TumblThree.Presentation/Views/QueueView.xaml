@@ -65,7 +65,7 @@
                                         <DataTrigger Value="True">
                                             <DataTrigger.Binding>
                                                 <MultiBinding Converter="{StaticResource IsQueueItemCrawlingMultiConverter}">
-                                                    <Binding Path="DataContext.SelectionService.ActiveItems" ElementName="queueListBox"/>
+                                                    <Binding Path="DataContext.CrawlerService.ActiveItems" ElementName="queueListBox"/>
                                                     <Binding Path="." />
                                                 </MultiBinding>
                                             </DataTrigger.Binding>
@@ -87,7 +87,7 @@
                                         <DataTrigger Value="True">
                                             <DataTrigger.Binding>
                                                 <MultiBinding Converter="{StaticResource IsQueueItemCrawlingMultiConverter}">
-                                                    <Binding Path="DataContext.SelectionService.ActiveItems" ElementName="queueListBox"/>
+                                                    <Binding Path="DataContext.CrawlerService.ActiveItems" ElementName="queueListBox"/>
                                                     <Binding Path="." />
                                                 </MultiBinding>
                                             </DataTrigger.Binding>

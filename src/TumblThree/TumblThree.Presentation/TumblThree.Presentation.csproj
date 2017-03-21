@@ -172,6 +172,8 @@
     <Compile Include="Converters\TotalImageConverter.cs" />
     <Compile Include="Converters\IntToDisplayValueConverter.cs" />
     <Compile Include="Converters\WindowTitleConverter.cs" />
+    <Compile Include="DesignData\MockCrawlerService.cs" />
+    <Compile Include="DesignData\MockManagerService.cs" />
     <Compile Include="DesignData\MockSelectionService.cs" />
     <Compile Include="DesignData\MockShellService.cs" />
     <Compile Include="DesignData\MockView.cs" />
@@ -249,6 +251,10 @@
     <CodeAnalysisDictionary Include="Properties\CodeAnalysisDictionary.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\lib\RateLimiter\RateLimiter\RateLimiter.csproj">
+      <Project>{5b56eeeb-9107-4fc5-bd73-10fe96c9bded}</Project>
+      <Name>RateLimiter</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\lib\WpfApplicationFramework\WpfApplicationFramework\WpfApplicationFramework.csproj">
       <Project>{27b67dfe-0bf1-4435-b036-e4c083eaea03}</Project>
       <Name>WpfApplicationFramework</Name>

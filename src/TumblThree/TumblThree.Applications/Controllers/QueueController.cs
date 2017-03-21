@@ -29,10 +29,9 @@ namespace TumblThree.Applications.Controllers
     {
         private readonly IFileDialogService fileDialogService;
         private readonly IShellService shellService;
-        private readonly ISelectionService selectionService;
-        private readonly IEnvironmentService environmentService;
         private readonly IDetailsService detailsService;
-        private readonly CrawlerService crawlerService;
+        private readonly IManagerService managerService;
+        private readonly ICrawlerService crawlerService;
         private readonly Lazy<QueueViewModel> queueViewModel;
         private readonly DelegateCommand removeSelectedCommand;
         private readonly DelegateCommand showBlogDetailsCommand;
@@ -44,15 +43,14 @@ namespace TumblThree.Applications.Controllers
 
 
         [ImportingConstructor]
-        public QueueController(IFileDialogService fileDialogService, IShellService shellService, IEnvironmentService environmentService, IDetailsService detailsService,
-            CrawlerService crawlerService, ISelectionService selectionService, Lazy<QueueViewModel> queueViewModel)
+        public QueueController(IFileDialogService fileDialogService, IShellService shellService, IDetailsService detailsService, IManagerService managerService,
+            ICrawlerService crawlerService, Lazy<QueueViewModel> queueViewModel)
         {
             this.fileDialogService = fileDialogService;
             this.shellService = shellService;
             this.queueViewModel = queueViewModel;
-            this.environmentService = environmentService;
+            this.managerService = managerService;
             this.crawlerService = crawlerService;
-            this.selectionService = selectionService;
             this.detailsService = detailsService;
             this.removeSelectedCommand = new DelegateCommand(RemoveSelected, CanRemoveSelected);
             this.showBlogDetailsCommand = new DelegateCommand(ShowBlogDetails);
@@ -94,14 +92,7 @@ namespace TumblThree.Applications.Controllers
         public void LoadQueue()
         {
             IReadOnlyList<string> blogFilesToLoad;
-            if (environmentService.QueueList.Any())
-            {
-                blogFilesToLoad = environmentService.QueueList;
-            }
-            else
-            {
-                blogFilesToLoad = QueueSettings.Names;
-            }
+            blogFilesToLoad = QueueSettings.Names;
             InsertFilesCore(0, blogFilesToLoad);
         }
 
@@ -173,7 +164,7 @@ namespace TumblThree.Applications.Controllers
         {
             try
             {
-                InsertBlogFiles(index, fileNames.Select(x => selectionService.BlogFiles.First(blogs => blogs.Name.Contains(x))));
+                InsertBlogFiles(index, fileNames.Select(x => managerService.BlogFiles.First(blogs => blogs.Name.Contains(x))));
             }
             catch (Exception ex)
             {
