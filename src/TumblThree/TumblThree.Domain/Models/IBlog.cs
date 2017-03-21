@@ -20,6 +20,8 @@ namespace TumblThree.Domain.Models
 
         string Notes { get; set; }
 
+        BlogTypes BlogType { get; set; }
+
         DateTime DateAdded { get; set; }
 
         DateTime LastCompleteCrawl { get; set; }

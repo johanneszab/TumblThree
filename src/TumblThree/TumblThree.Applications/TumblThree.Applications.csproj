@@ -75,6 +75,8 @@
     <Compile Include="Data\StringListConverter.cs" />
     <Compile Include="Data\SupportedFileTypes.cs" />
     <Compile Include="Downloader\Downloader.cs" />
+    <Compile Include="Downloader\DownloaderFactory.cs" />
+    <Compile Include="Downloader\IDownloaderFactory.cs" />
     <Compile Include="QueueOnDispatcher.cs" />
     <Compile Include="Downloader\IDownloader.cs" />
     <Compile Include="Downloader\InstagramDownloader.cs" />

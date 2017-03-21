@@ -382,10 +382,12 @@ namespace TumblThree.Applications.Controllers
                 blogUrl = crawlerService.NewBlogUrl;
             }
 
-            TumblrBlog blog = new TumblrBlog(blogUrl, shellService.Settings.DownloadLocation, Blog.BlogTypes.tumblr);
+            // FIXME: 
+            TumblrBlog blog = new TumblrBlog(blogUrl, shellService.Settings.DownloadLocation, BlogTypes.Tumblr);
             TransferGlobalSettingsToBlog(blog);
-            Downloader.Downloader downloader = new Downloader.Downloader(shellService, blog);
+            TumblrDownloader downloader = new TumblrDownloader(shellService, crawlerService, selectionService, blog);
             await downloader.IsBlogOnline();
+            await downloader.UpdateMetaInformation();
 
             lock (lockObject)
             {

@@ -14,7 +14,7 @@ namespace TumblThree.Domain.Models
         private string name;
         private string url;
         private string location;
-        private BlogTypes type;
+        private BlogTypes blogType;
         private int downloadedImages;
         private int totalCount;
         private int rating;
@@ -30,13 +30,13 @@ namespace TumblThree.Domain.Models
         {
         }
 
-        protected Blog(string url, string location, BlogTypes type)
+        protected Blog(string url, string location, BlogTypes blogType)
         {
             this.url = url;
             this.url = ExtractUrl();
             this.name = ExtractSubDomain();
             this.location = location;
-            this.type = type;
+            this.blogType = blogType;
             this.downloadedImages = 0;
             this.totalCount = 0;
             this.rating = 0;
@@ -66,10 +66,10 @@ namespace TumblThree.Domain.Models
             set { SetProperty(ref location, value); }
         }
 
-        public BlogTypes Type
+        public BlogTypes BlogType
         {
-            get { return type; }
-            set { SetProperty(ref type, value); }
+            get { return blogType; }
+            set { SetProperty(ref blogType, value); }
         }
 
         public int DownloadedImages
@@ -132,18 +132,11 @@ namespace TumblThree.Domain.Models
             set { SetProperty(ref links, value); }
         }
 
-        public enum BlogTypes
-        {
-            tumblr,
-            instagram,
-            twitter
-        }
-
         private void SaveBlog()
         {
-            string currentIndex = Path.Combine(location, this.Name + "." + this.Type);
-            string newIndex = Path.Combine(location, this.Name + "." + this.Type + ".new");
-            string backupIndex = Path.Combine(location, this.Name + "." + this.Type + ".bak");
+            string currentIndex = Path.Combine(location, this.Name + "." + this.BlogType);
+            string newIndex = Path.Combine(location, this.Name + "." + this.BlogType + ".new");
+            string backupIndex = Path.Combine(location, this.Name + "." + this.BlogType + ".bak");
 
             if (File.Exists(currentIndex))
             {
@@ -165,6 +158,7 @@ namespace TumblThree.Domain.Models
         {
             try
             {
+                this.Dirty = false;
                 SaveBlog();
                 return true;
             }

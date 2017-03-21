@@ -4,7 +4,6 @@ namespace TumblThree.Applications.Data
 {
     internal static class SupportedFileTypes
     {
-        private static readonly string[] blogTypes = new string[] { "Tumblr", "Instagram", "Twitter" };
         private static readonly string[] blogFileExtensions = new string[] { ".tumblr", ".insta", ".twitter" };
         private static readonly string[] queueFileExtensions = new string[] { ".que" };
 

@@ -56,17 +56,6 @@ namespace TumblThree.Domain.Models
         private bool forceRescan;
         private PostTypes state;
 
-        public enum PostTypes
-        {
-            Photo,
-            Video,
-            Audio,
-            Text,
-            Quote,
-            Conversation,
-            Link
-        }
-
         // DON'T use. Only for Mockup.
         public TumblrBlog()
         {
@@ -421,14 +410,14 @@ namespace TumblThree.Domain.Models
                     files.Links = this.Links.Select(item => item?.Split('/').Last()).ToList();
                     this.Links.Clear();
                     this.Version = "3";
-                    this.Type = BlogTypes.tumblr;
+                    this.BlogType = BlogTypes.Tumblr;
                     this.Dirty = true;
                     files.Save();
                     files = null;
                 }
             } else if (this.Version.Equals("2"))
             {
-                this.Type = BlogTypes.tumblr;
+                this.BlogType = BlogTypes.Tumblr;
                 this.Version = "3";
                 this.Dirty = true;
             }

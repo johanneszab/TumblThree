@@ -16,9 +16,12 @@ using TumblThree.Applications.DataModels;
 using System.Text.RegularExpressions;
 using System.Runtime.Serialization;
 using TumblThree.Domain;
+using System.ComponentModel.Composition;
 
 namespace TumblThree.Applications.Downloader
 {
+    [Export(typeof(IDownloader))]
+    [ExportMetadata("BlogType", BlogTypes.Tumblr)]
     public class TumblrDownloader : Downloader
     {
 
@@ -29,21 +32,21 @@ namespace TumblThree.Applications.Downloader
         private TumblrFiles files;
         private readonly object lockObjectProgress;
         private readonly object lockObjectDownload;
-        private readonly List<Tuple<string, string, string>> downloadList;
-        private readonly BlockingCollection<Tuple<string, string, string>> sharedDownloads;
+        private readonly List<Tuple<PostTypes, string, string>> downloadList;
+        private readonly BlockingCollection<Tuple<PostTypes, string, string>> sharedDownloads;
 
 
-        public TumblrDownloader(IShellService shellService, ICrawlerService crawlerService, ISelectionService selectionService, TumblrBlog blog) : base(shellService, blog)
+        public TumblrDownloader(IShellService shellService, ICrawlerService crawlerService, ISelectionService selectionService, IBlog blog) : base(shellService, blog)
         {
             this.shellService = shellService;
             this.crawlerService = crawlerService;
             this.selectionService = selectionService;
-            this.blog = blog;
+            this.blog = (TumblrBlog)blog;
             this.files = new TumblrFiles();
             this.lockObjectProgress = new object();
             this.lockObjectDownload = new object();
-            this.downloadList = new List<Tuple<string, string, string>>();
-            this.sharedDownloads = new BlockingCollection<Tuple<string, string, string>>();
+            this.downloadList = new List<Tuple<PostTypes, string, string>>();
+            this.sharedDownloads = new BlockingCollection<Tuple<PostTypes, string, string>>();
 
         }
 
@@ -120,7 +123,7 @@ namespace TumblThree.Applications.Downloader
         }
 
 
-        private Task<TumblrBlog> UpdateMetaInformation()
+        public Task<TumblrBlog> UpdateMetaInformation()
         {
             return Task<TumblrBlog>.Factory.StartNew(() =>
             {
@@ -165,10 +168,10 @@ namespace TumblThree.Applications.Downloader
         }
 
 
-        private int DetermineDuplicates(IEnumerable<Tuple<string, string, string>> source, string type)
+        private int DetermineDuplicates(IEnumerable<Tuple<PostTypes, string, string>> source, PostTypes type)
         {
-            return source.Where(url => url.Item2.Equals("type"))
-                .GroupBy(url => url.Item1)
+            return source.Where(url => url.Item1.Equals(type))
+                .GroupBy(url => url.Item2)
                 .Where(g => g.Count() > 1)
                 .Sum(g => g.Count() - 1);
         }
@@ -187,9 +190,9 @@ namespace TumblThree.Applications.Downloader
             newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressUniqueDownloads);
             progress.Report(newProgress);
 
-            int duplicatePhotos = DetermineDuplicates(blogUrls, "Photo");
-            int duplicateVideos = DetermineDuplicates(blogUrls, "Video");
-            int duplicateAudios = DetermineDuplicates(blogUrls, "Audio");
+            int duplicatePhotos = DetermineDuplicates(blogUrls, PostTypes.Photo);
+            int duplicateVideos = DetermineDuplicates(blogUrls, PostTypes.Video);
+            int duplicateAudios = DetermineDuplicates(blogUrls, PostTypes.Audio);
 
             blog.DuplicatePhotos = duplicatePhotos;
             blog.DuplicateVideos = duplicateVideos;
@@ -207,7 +210,6 @@ namespace TumblThree.Applications.Downloader
                     blog.LastId = blogContent.Item1;
             }
 
-            blog.Dirty = false;
             blog.Save();
 
             newProgress = new DownloadProgress();
@@ -215,7 +217,7 @@ namespace TumblThree.Applications.Downloader
             progress.Report(newProgress);
         }
 
-        public Tuple<ulong, bool, List<Tuple<string, string, string>>> GetUrls(IProgress<DownloadProgress> progress, CancellationToken ct, PauseToken pt)
+        public Tuple<ulong, bool, List<Tuple<PostTypes, string, string>>> GetUrls(IProgress<DownloadProgress> progress, CancellationToken ct, PauseToken pt)
         {
             int totalDownloads = 0;
             int numberOfPostsCrawled = 0;
@@ -354,6 +356,7 @@ namespace TumblThree.Applications.Downloader
 
             // FIXME: Everything but not SOLID
             // Add Conditional with Polymorphism
+            // Just use regex instead?
             if (blog.DownloadPhoto == true)
             {
                 foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "photo" &&
@@ -369,8 +372,8 @@ namespace TumblThree.Applications.Downloader
                                 continue;
 
                             UpdateBlogCounter(ref photos, ref totalDownloads);
-                            AddToDownloadList(Tuple.Create(imageUrl, "Photo", post.Attribute("id").Value));
-                            sharedDownloads.Add(Tuple.Create(imageUrl, "Photo", post.Attribute("id").Value));
+                            AddToDownloadList(Tuple.Create(PostTypes.Photo, imageUrl, post.Attribute("id").Value));
+                            sharedDownloads.Add(Tuple.Create(PostTypes.Photo, imageUrl, post.Attribute("id").Value));
                         }
                     }
                     // single image
@@ -381,8 +384,8 @@ namespace TumblThree.Applications.Downloader
                             continue;
 
                         UpdateBlogCounter(ref photos, ref totalDownloads);
-                        AddToDownloadList(Tuple.Create(imageUrl, "Photo", post.Attribute("id").Value));
-                        sharedDownloads.Add(Tuple.Create(imageUrl, "Photo", post.Attribute("id").Value));
+                        AddToDownloadList(Tuple.Create(PostTypes.Photo, imageUrl, post.Attribute("id").Value));
+                        sharedDownloads.Add(Tuple.Create(PostTypes.Photo, imageUrl, post.Attribute("id").Value));
                     }
                 }
                 // check for inline images
@@ -400,8 +403,8 @@ namespace TumblThree.Applications.Downloader
                                 imageUrl = ResizeTumblrImageUrl(imageUrl);
                             }
                             UpdateBlogCounter(ref photos, ref totalDownloads);
-                            AddToDownloadList(Tuple.Create(imageUrl, "Photo", post.Attribute("id").Value));
-                            sharedDownloads.Add(Tuple.Create(imageUrl, "Photo", post.Attribute("id").Value));
+                            AddToDownloadList(Tuple.Create(PostTypes.Photo, imageUrl, post.Attribute("id").Value));
+                            sharedDownloads.Add(Tuple.Create(PostTypes.Photo, imageUrl, post.Attribute("id").Value));
                         }
                     }
                 }
@@ -420,14 +423,14 @@ namespace TumblThree.Applications.Downloader
                         if (shellService.Settings.VideoSize == 1080)
                         {
                             Interlocked.Increment(ref totalDownloads);
-                            AddToDownloadList(Tuple.Create(video.Replace("/480", "") + ".mp4", "Video", post.Attribute("id").Value));
-                            sharedDownloads.Add(Tuple.Create(video.Replace("/480", "") + ".mp4", "Video", post.Attribute("id").Value));
+                            AddToDownloadList(Tuple.Create(PostTypes.Video, video.Replace("/480", "") + ".mp4", post.Attribute("id").Value));
+                            sharedDownloads.Add(Tuple.Create(PostTypes.Video, video.Replace("/480", "") + ".mp4", post.Attribute("id").Value));
                         }
                         else if (shellService.Settings.VideoSize == 480)
                         {
                             Interlocked.Increment(ref totalDownloads);
-                            AddToDownloadList(Tuple.Create("https://vt.tumblr.com/" + video.Replace("/480", "").Split('/').Last() + "_480.mp4", "Video", post.Attribute("id").Value));
-                            sharedDownloads.Add(Tuple.Create("https://vt.tumblr.com/" + video.Replace("/480", "").Split('/').Last() + "_480.mp4", "Video", post.Attribute("id").Value));
+                            AddToDownloadList(Tuple.Create(PostTypes.Video, "https://vt.tumblr.com/" + video.Replace("/480", "").Split('/').Last() + "_480.mp4", post.Attribute("id").Value));
+                            sharedDownloads.Add(Tuple.Create(PostTypes.Video, "https://vt.tumblr.com/" + video.Replace("/480", "").Split('/').Last() + "_480.mp4", post.Attribute("id").Value));
                         }
                     }
                 }
@@ -444,8 +447,8 @@ namespace TumblThree.Applications.Downloader
                     foreach (string audiofile in audioUrl)
                     {
                         Interlocked.Increment(ref totalDownloads);
-                        AddToDownloadList(Tuple.Create(WebUtility.UrlDecode(audiofile), "Audio", post.Attribute("id").Value));
-                        sharedDownloads.Add(Tuple.Create(WebUtility.UrlDecode(audiofile), "Audio", post.Attribute("id").Value));
+                        AddToDownloadList(Tuple.Create(PostTypes.Audio, WebUtility.UrlDecode(audiofile), post.Attribute("id").Value));
+                        sharedDownloads.Add(Tuple.Create(PostTypes.Audio, WebUtility.UrlDecode(audiofile), post.Attribute("id").Value));
                     }
 
                 }
@@ -457,7 +460,7 @@ namespace TumblThree.Applications.Downloader
                 {
                     string textBody = ParseText(post);
                     Interlocked.Increment(ref totalDownloads);
-                    sharedDownloads.Add(Tuple.Create(textBody, "Text", post.Attribute("id").Value));
+                    sharedDownloads.Add(Tuple.Create(PostTypes.Text, textBody, post.Attribute("id").Value));
                 }
             }
             if (blog.DownloadQuote == true)
@@ -467,7 +470,7 @@ namespace TumblThree.Applications.Downloader
                 {
                     string textBody = ParseQuote(post);
                     Interlocked.Increment(ref totalDownloads);
-                    sharedDownloads.Add(Tuple.Create(textBody, "Quote", post.Attribute("id").Value));
+                    sharedDownloads.Add(Tuple.Create(PostTypes.Quote, textBody, post.Attribute("id").Value));
                 }
             }
             if (blog.DownloadLink == true)
@@ -477,7 +480,7 @@ namespace TumblThree.Applications.Downloader
                 {
                     string textBody = ParseLink(post);
                     Interlocked.Increment(ref totalDownloads);
-                    sharedDownloads.Add(Tuple.Create(textBody, "Link", post.Attribute("id").Value));
+                    sharedDownloads.Add(Tuple.Create(PostTypes.Link, textBody, post.Attribute("id").Value));
                 }
             }
             if (blog.DownloadConversation == true)
@@ -487,7 +490,7 @@ namespace TumblThree.Applications.Downloader
                 {
                     string textBody = ParseConversation(post);
                     Interlocked.Increment(ref totalDownloads);
-                    sharedDownloads.Add(Tuple.Create(textBody, "Conversation", post.Attribute("id").Value));
+                    sharedDownloads.Add(Tuple.Create(PostTypes.Conversation, textBody, post.Attribute("id").Value));
                 }
             }
             if (blog.CreatePhotoMeta == true)
@@ -498,7 +501,7 @@ namespace TumblThree.Applications.Downloader
                     string textBody = ParsePhotoMeta(post);
                     Interlocked.Increment(ref totalDownloads);
                     Interlocked.Increment(ref photoMetas);
-                    sharedDownloads.Add(Tuple.Create(textBody, "PhotoMeta", post.Attribute("id").Value));
+                    sharedDownloads.Add(Tuple.Create(PostTypes.PhotoMeta, textBody,  post.Attribute("id").Value));
                 }
             }
             if (blog.CreateVideoMeta == true)
@@ -509,7 +512,7 @@ namespace TumblThree.Applications.Downloader
                     string textBody = ParseVideoMeta(post);
                     Interlocked.Increment(ref totalDownloads);
                     Interlocked.Increment(ref videoMetas);
-                    sharedDownloads.Add(Tuple.Create(textBody, "VideoMeta", post.Attribute("id").Value));
+                    sharedDownloads.Add(Tuple.Create(PostTypes.VideoMeta, textBody, post.Attribute("id").Value));
                 }
             }
             if (blog.CreateAudioMeta == true)
@@ -520,12 +523,12 @@ namespace TumblThree.Applications.Downloader
                     string textBody = ParseAudioMeta(post);
                     Interlocked.Increment(ref totalDownloads);
                     Interlocked.Increment(ref audioMetas);
-                    sharedDownloads.Add(Tuple.Create(textBody, "AudioMeta", post.Attribute("id").Value));
+                    sharedDownloads.Add(Tuple.Create(PostTypes.AudioMeta, textBody, post.Attribute("id").Value));
                 }
             }
         }
 
-        private void AddToDownloadList(Tuple<string, string, string> addToList)
+        private void AddToDownloadList(Tuple<PostTypes, string, string> addToList)
         {
             Monitor.Enter(downloadList);
             downloadList.Add(addToList);
@@ -647,7 +650,7 @@ namespace TumblThree.Applications.Downloader
 
         private bool DownloadTumblrBlog(IProgress<DataModels.DownloadProgress> progress, CancellationToken ct, PauseToken pt)
         {
-            int downloadedImages = blog.DownloadedImages;
+            int downloadedFiles = blog.DownloadedImages;
             int downloadedPhotos = blog.DownloadedPhotos;
             int downloadedVideos = blog.DownloadedVideos;
             int downloadedAudios = blog.DownloadedAudios;
@@ -684,19 +687,19 @@ namespace TumblThree.Applications.Downloader
                                 string postId = String.Empty;
 
                                 // FIXME: Conditional with Polymorphism
-                                switch (currentImageUrl.Item2)
+                                switch (currentImageUrl.Item1)
                                 {
-                                    case "Photo":
-                                        fileName = currentImageUrl.Item1.Split('/').Last();
-                                        url = currentImageUrl.Item1;
+                                    case PostTypes.Photo:
+                                        fileName = currentImageUrl.Item2.Split('/').Last();
+                                        url = currentImageUrl.Item2;
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), fileName);
 
                                         if (!CheckIfFileExists(url))
                                         {
                                             UpdateProgressQueueInformation(progress, fileName);
                                             DownloadBinaryFile(fileLocation, url);
-                                            UpdateBlogCounter(ref downloadedPhotos, ref downloadedImages);
-                                            UpdateBlogProgress(fileName, ref downloadedImages);
+                                            UpdateBlogCounter(ref downloadedPhotos, ref downloadedFiles);
+                                            UpdateBlogProgress(fileName, ref downloadedFiles);
                                             blog.DownloadedPhotos = downloadedPhotos;
                                             if (shellService.Settings.EnablePreview)
                                             {
@@ -707,17 +710,17 @@ namespace TumblThree.Applications.Downloader
                                             }
                                         }
                                         break;
-                                    case "Video":
-                                        fileName = currentImageUrl.Item1.Split('/').Last();
-                                        url = currentImageUrl.Item1;
+                                    case PostTypes.Video:
+                                        fileName = currentImageUrl.Item2.Split('/').Last();
+                                        url = currentImageUrl.Item2;
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), fileName);
 
                                         if (!CheckIfFileExists(url))
                                         {
                                             UpdateProgressQueueInformation(progress, fileName);
                                             DownloadBinaryFile(fileLocation, url);
-                                            UpdateBlogCounter(ref downloadedVideos, ref downloadedImages);
-                                            UpdateBlogProgress(fileName, ref downloadedImages);
+                                            UpdateBlogCounter(ref downloadedVideos, ref downloadedFiles);
+                                            UpdateBlogProgress(fileName, ref downloadedFiles);
                                             blog.DownloadedVideos = downloadedVideos;
                                             if (shellService.Settings.EnablePreview)
                                             {
@@ -725,22 +728,22 @@ namespace TumblThree.Applications.Downloader
                                             }
                                         }
                                         break;
-                                    case "Audio":
-                                        fileName = currentImageUrl.Item1.Split('/').Last();
-                                        url = currentImageUrl.Item1;
+                                    case PostTypes.Audio:
+                                        fileName = currentImageUrl.Item2.Split('/').Last();
+                                        url = currentImageUrl.Item2;
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), currentImageUrl.Item3 + ".swf");
 
                                         if (!CheckIfFileExists(url))
                                         {
                                             UpdateProgressQueueInformation(progress, fileName);
                                             DownloadBinaryFile(fileLocation, url);
-                                            UpdateBlogCounter(ref downloadedAudios, ref downloadedImages);
-                                            UpdateBlogProgress(fileName, ref downloadedImages);
+                                            UpdateBlogCounter(ref downloadedAudios, ref downloadedFiles);
+                                            UpdateBlogProgress(fileName, ref downloadedFiles);
                                             blog.DownloadedAudios = downloadedAudios;
                                         }
                                         break;
-                                    case "Text":
-                                        url = currentImageUrl.Item1;
+                                    case PostTypes.Text:
+                                        url = currentImageUrl.Item2;
                                         postId = currentImageUrl.Item3;
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameTexts));
 
@@ -748,13 +751,13 @@ namespace TumblThree.Applications.Downloader
                                         {
                                             UpdateProgressQueueInformation(progress, postId);
                                             AppendToTextFile(fileLocation, url);
-                                            UpdateBlogCounter(ref downloadedTexts, ref downloadedImages);
-                                            UpdateBlogProgress(postId, ref downloadedImages);
+                                            UpdateBlogCounter(ref downloadedTexts, ref downloadedFiles);
+                                            UpdateBlogProgress(postId, ref downloadedFiles);
                                             blog.DownloadedTexts = downloadedTexts;
                                         }
                                         break;
-                                    case "Quote":
-                                        url = currentImageUrl.Item1;
+                                    case PostTypes.Quote:
+                                        url = currentImageUrl.Item2;
                                         postId = currentImageUrl.Item3;
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameQuotes));
 
@@ -762,13 +765,13 @@ namespace TumblThree.Applications.Downloader
                                         {
                                             UpdateProgressQueueInformation(progress, postId);
                                             AppendToTextFile(fileLocation, url);
-                                            UpdateBlogCounter(ref downloadedQuotes, ref downloadedImages);
-                                            UpdateBlogProgress(postId, ref downloadedImages);
+                                            UpdateBlogCounter(ref downloadedQuotes, ref downloadedFiles);
+                                            UpdateBlogProgress(postId, ref downloadedFiles);
                                             blog.DownloadedQuotes = downloadedQuotes;
                                         }
                                         break;
-                                    case "Link":
-                                        url = currentImageUrl.Item1;
+                                    case PostTypes.Link:
+                                        url = currentImageUrl.Item2;
                                         postId = currentImageUrl.Item3;
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameLinks));
 
@@ -776,13 +779,13 @@ namespace TumblThree.Applications.Downloader
                                         {
                                             UpdateProgressQueueInformation(progress, postId);
                                             AppendToTextFile(fileLocation, url);
-                                            UpdateBlogCounter(ref downloadedLinks, ref downloadedImages);
-                                            UpdateBlogProgress(postId, ref downloadedImages);
+                                            UpdateBlogCounter(ref downloadedLinks, ref downloadedFiles);
+                                            UpdateBlogProgress(postId, ref downloadedFiles);
                                             blog.DownloadedLinks = downloadedLinks;
                                         }
                                         break;
-                                    case "Conversation":
-                                        url = currentImageUrl.Item1;
+                                    case PostTypes.Conversation:
+                                        url = currentImageUrl.Item2;
                                         postId = currentImageUrl.Item3;
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameConversations));
 
@@ -790,13 +793,13 @@ namespace TumblThree.Applications.Downloader
                                         {
                                             UpdateProgressQueueInformation(progress, postId);
                                             AppendToTextFile(fileLocation, url);
-                                            UpdateBlogCounter(ref downloadedConversations, ref downloadedImages);
-                                            UpdateBlogProgress(postId, ref downloadedImages);
+                                            UpdateBlogCounter(ref downloadedConversations, ref downloadedFiles);
+                                            UpdateBlogProgress(postId, ref downloadedFiles);
                                             blog.DownloadedConversations = downloadedConversations;
                                         }
                                         break;
-                                    case "PhotoMeta":
-                                        url = currentImageUrl.Item1;
+                                    case PostTypes.PhotoMeta:
+                                        url = currentImageUrl.Item2;
                                         postId = currentImageUrl.Item3;
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaPhoto));
 
@@ -804,13 +807,13 @@ namespace TumblThree.Applications.Downloader
                                         {
                                             UpdateProgressQueueInformation(progress, postId);
                                             AppendToTextFile(fileLocation, url);
-                                            UpdateBlogCounter(ref downloadedPhotoMetas, ref downloadedImages);
-                                            UpdateBlogProgress(postId, ref downloadedImages);
+                                            UpdateBlogCounter(ref downloadedPhotoMetas, ref downloadedFiles);
+                                            UpdateBlogProgress(postId, ref downloadedFiles);
                                             blog.DownloadedPhotoMetas = downloadedPhotoMetas;
                                         }
                                         break;
-                                    case "VideoMeta":
-                                        url = currentImageUrl.Item1;
+                                    case PostTypes.VideoMeta:
+                                        url = currentImageUrl.Item2;
                                         postId = currentImageUrl.Item3;
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaVideo));
 
@@ -818,13 +821,13 @@ namespace TumblThree.Applications.Downloader
                                         {
                                             UpdateProgressQueueInformation(progress, postId);
                                             AppendToTextFile(fileLocation, url);
-                                            UpdateBlogCounter(ref downloadedVideoMetas, ref downloadedImages);
-                                            UpdateBlogProgress(postId, ref downloadedImages);
+                                            UpdateBlogCounter(ref downloadedVideoMetas, ref downloadedFiles);
+                                            UpdateBlogProgress(postId, ref downloadedFiles);
                                             blog.DownloadedVideoMetas = downloadedVideoMetas;
                                         }
                                         break;
-                                    case "AudioMeta":
-                                        url = currentImageUrl.Item1;
+                                    case PostTypes.AudioMeta:
+                                        url = currentImageUrl.Item2;
                                         postId = currentImageUrl.Item3;
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaAudio));
 
@@ -832,8 +835,8 @@ namespace TumblThree.Applications.Downloader
                                         {
                                             UpdateProgressQueueInformation(progress, postId);
                                             AppendToTextFile(fileLocation, url);
-                                            UpdateBlogCounter(ref downloadedAudioMetas, ref downloadedImages);
-                                            UpdateBlogProgress(postId, ref downloadedImages);
+                                            UpdateBlogCounter(ref downloadedAudioMetas, ref downloadedFiles);
+                                            UpdateBlogProgress(postId, ref downloadedFiles);
                                             blog.DownloadedAudioMetas = downloadedAudioMetas;
                                         }
                                         break;

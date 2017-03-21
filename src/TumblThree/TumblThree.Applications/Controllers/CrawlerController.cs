@@ -42,13 +42,14 @@ namespace TumblThree.Applications.Controllers
 
         [ImportingConstructor]
         public CrawlerController(IShellService shellService, IEnvironmentService environmentService, ISelectionService selectionService, ICrawlerService crawlerService,
-            Lazy<CrawlerViewModel> crawlerViewModel)
+            IDownloaderFactory downloaderFactory, Lazy<CrawlerViewModel> crawlerViewModel)
         {
             this.shellService = shellService;
             this.environmentService = environmentService;
             this.selectionService = selectionService;
             this.crawlerService = crawlerService;
             this.crawlerViewModel = crawlerViewModel;
+            DownloaderFactory = downloaderFactory;
             this.crawlCommand = new DelegateCommand(Crawl, CanCrawl);
             this.pauseCommand = new DelegateCommand(Pause, CanPause);
             this.resumeCommand = new DelegateCommand(Resume, CanResume);
@@ -60,6 +61,9 @@ namespace TumblThree.Applications.Controllers
         private CrawlerViewModel CrawlerViewModel { get { return crawlerViewModel.Value; } }
 
         public QueueManager QueueManager { get; set; }
+
+        public IDownloaderFactory DownloaderFactory { get; set; }
+
 
         public void Initialize()
         {
@@ -85,7 +89,6 @@ namespace TumblThree.Applications.Controllers
             {
                 if (blog.Dirty)
                 {
-                    blog.Dirty = false;
                     blog.Save();
                 }
             }
@@ -222,37 +225,48 @@ namespace TumblThree.Applications.Controllers
 
         private void StartSiteSpecificDownloader(QueueListItem queueListItem, CancellationToken ct, PauseToken pt)
         {
-            if (queueListItem.Blog is TumblrBlog)
+
+            var blog = queueListItem.Blog;
+            blog.Dirty = true;
+            var progress = SetupThrottledQueueListProgress(queueListItem);
+
+            switch (blog.BlogType)
             {
+                case BlogTypes.Tumblr:
+                    TumblrDownloader crawler = new TumblrDownloader(shellService, crawlerService, selectionService, blog);
+                    crawler.CrawlTumblrBlog(progress, ct, pt);
+                    break;
+                case BlogTypes.Instagram:
+                    break;
+                case BlogTypes.Twitter:
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
 
-                var blog = (TumblrBlog)queueListItem.Blog;
-                blog.Dirty = true;
-
-                var progressHandler = new Progress<DataModels.DownloadProgress>(value =>
-                {
-                    queueListItem.Progress = value.Progress;
-                });
-                var progress = new ProgressThrottler<DataModels.DownloadProgress>(progressHandler);
-
-                TumblrDownloader crawler = new TumblrDownloader(shellService, crawlerService, selectionService, blog);
-                crawler.CrawlTumblrBlog(progress, ct, pt);
-
-                if (ct.IsCancellationRequested)
-                {
-                    Monitor.Enter(lockObject);
-                    QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => selectionService.RemoveActiveItem(queueListItem)));
-                    Monitor.Exit(lockObject);
-                    throw new OperationCanceledException(ct);
-                }
-                else
-                {
-                    Monitor.Enter(lockObject);
-                    QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => QueueManager.RemoveItem(queueListItem)));
-                    QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => selectionService.RemoveActiveItem(queueListItem)));
-                    Monitor.Exit(lockObject);
-                }
+            if (ct.IsCancellationRequested)
+            {
+                Monitor.Enter(lockObject);
+                QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => selectionService.RemoveActiveItem(queueListItem)));
+                Monitor.Exit(lockObject);
+                throw new OperationCanceledException(ct);
+            }
+            else
+            {
+                Monitor.Enter(lockObject);
+                QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => QueueManager.RemoveItem(queueListItem)));
+                QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => selectionService.RemoveActiveItem(queueListItem)));
+                Monitor.Exit(lockObject);
             }
         }
 
+        private ProgressThrottler<DataModels.DownloadProgress> SetupThrottledQueueListProgress(QueueListItem queueListItem)
+        {
+            var progressHandler = new Progress<DataModels.DownloadProgress>(value =>
+            {
+                queueListItem.Progress = value.Progress;
+            });
+            return new ProgressThrottler<DataModels.DownloadProgress>(progressHandler);
+        }
     }
 }
