@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TumblThree.Applications.Downloader
 {
-    public interface ICommonDownloader
+    public interface IDownloader
     {
     }
 }

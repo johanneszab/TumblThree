@@ -34,25 +34,25 @@ namespace TumblThree.Presentation.DesignData
                     DateAdded = DateTime.Now,
                     Progress = 66,
                     TotalCount = 234,
+                },
+                new TumblrBlog
+                {
+                    Name = "Landscape Wallpapers",
+                    Url = "http://landscape-wallpaper.tumblr.com/",
+                    DownloadedImages = 17236,
+                    DateAdded = DateTime.Now,
+                    Progress = 95,
+                    TotalCount = 15739,
+                },
+                new TumblrBlog
+                {
+                    Name = "FX Wallpapers",
+                    Url = "http://nature-wallpaper.tumblr.com/",
+                    DownloadedImages = 12845,
+                    DateAdded = DateTime.Now,
+                    Progress = 12,
+                    TotalCount = 82453,
                 }
-                //new TumblrBlog
-                //{
-                //    Name = "Landscape Wallpapers",
-                //    Url = "http://landscape-wallpaper.tumblr.com/",
-                //    DownloadedImages = 17236,
-                //    DateAdded = DateTime.Now,
-                //    Progress = 95,
-                //    TotalCount = 15739,
-                //},
-                //new TumblrBlog
-                //{
-                //    Name = "FX Wallpapers",
-                //    Url = "http://nature-wallpaper.tumblr.com/",
-                //    DownloadedImages = 12845,
-                //    DateAdded = DateTime.Now,
-                //    Progress = 12,
-                //    TotalCount = 82453,
-                //}
             };
             ((MockSelectionService)SelectionService).SetBlogFiles(blogFiles.ToArray());
         }

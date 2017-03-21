@@ -19,7 +19,7 @@ using TumblThree.Domain;
 
 namespace TumblThree.Applications.Downloader
 {
-    public class TumblrDownloader : CommonDownloader
+    public class TumblrDownloader : Downloader
     {
 
         private readonly IShellService shellService;
@@ -33,7 +33,7 @@ namespace TumblThree.Applications.Downloader
         private readonly BlockingCollection<Tuple<string, string, string>> sharedDownloads;
 
 
-        public TumblrDownloader(IShellService shellService, ICrawlerService crawlerService, ISelectionService selectionService, TumblrBlog blog) : base(shellService)
+        public TumblrDownloader(IShellService shellService, ICrawlerService crawlerService, ISelectionService selectionService, TumblrBlog blog) : base(shellService, blog)
         {
             this.shellService = shellService;
             this.crawlerService = crawlerService;
@@ -46,18 +46,6 @@ namespace TumblThree.Applications.Downloader
             this.sharedDownloads = new BlockingCollection<Tuple<string, string, string>>();
 
         }
-
-
-        public async Task<bool> SetUpBlog()
-        {
-            blog.Name = ExtractSubDomain(blog.Url);
-            blog.Url = ExtractUrl(blog.Url);
-            blog.Type = Blog.BlogTypes.tumblr;
-            await UpdateMetaInformation();
-            blog.Online = await IsBlogOnline(blog.Url);
-            return true;
-        }
-
 
         protected new XDocument RequestData(string url)
         {
@@ -110,13 +98,6 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-
-        protected override string ExtractUrl(string url)
-        {
-            return ("https://" + ExtractSubDomain(url) + ".tumblr.com/");
-        }
-
-
         private string GetApiUrl(string url, int count, int start = 0)
         {
             /// <summary>
@@ -136,31 +117,6 @@ namespace TumblThree.Applications.Downloader
             if (start > 0)
                 parameters["start"] = start.ToString();
             return url + "?" + UrlEncode(parameters);
-        }
-
-
-        private new Task<bool> IsBlogOnline(string url)
-        {
-            return Task<bool>.Factory.StartNew(() =>
-            {
-                url = GetApiUrl(url, 1);
-
-                XDocument blogDoc = null;
-
-                if (shellService.Settings.LimitConnections)
-                {
-                    crawlerService.Timeconstraint.Acquire();
-                    blogDoc = RequestData(url);
-                }
-                else
-                    blogDoc = RequestData(url);
-
-                if (blogDoc != null)
-                    return true;
-                else
-                    return false;
-            },
-            TaskCreationOptions.LongRunning);
         }
 
 
@@ -215,19 +171,6 @@ namespace TumblThree.Applications.Downloader
                 .GroupBy(url => url.Item1)
                 .Where(g => g.Count() > 1)
                 .Sum(g => g.Count() - 1);
-        }
-
-        protected override bool CheckIfFileExists(string url)
-        {
-            var fileName = url.Split('/').Last();
-            Monitor.Enter(lockObjectDownload);
-            if (files.Links.Contains(fileName))
-            {
-                Monitor.Exit(lockObjectDownload);
-                return true;
-            }
-            Monitor.Exit(lockObjectDownload);
-            return false;
         }
 
         public void CrawlTumblrBlog(IProgress<DownloadProgress> progress, CancellationToken ct, PauseToken pt)
@@ -704,17 +647,17 @@ namespace TumblThree.Applications.Downloader
 
         private bool DownloadTumblrBlog(IProgress<DataModels.DownloadProgress> progress, CancellationToken ct, PauseToken pt)
         {
-            int downloadedImages = (int)blog.DownloadedImages;
-            int downloadedPhotos = (int)blog.DownloadedPhotos;
-            int downloadedVideos = (int)blog.DownloadedVideos;
-            int downloadedAudios = (int)blog.DownloadedAudios;
-            int downloadedTexts = (int)blog.DownloadedTexts;
-            int downloadedQuotes = (int)blog.DownloadedQuotes;
-            int downloadedLinks = (int)blog.DownloadedLinks;
-            int downloadedConversations = (int)blog.DownloadedConversations;
-            int downloadedPhotoMetas = (int)blog.DownloadedPhotoMetas;
-            int downloadedVideoMetas = (int)blog.DownloadedVideoMetas;
-            int downloadedAudioMetas = (int)blog.DownloadedAudioMetas;
+            int downloadedImages = blog.DownloadedImages;
+            int downloadedPhotos = blog.DownloadedPhotos;
+            int downloadedVideos = blog.DownloadedVideos;
+            int downloadedAudios = blog.DownloadedAudios;
+            int downloadedTexts = blog.DownloadedTexts;
+            int downloadedQuotes = blog.DownloadedQuotes;
+            int downloadedLinks = blog.DownloadedLinks;
+            int downloadedConversations = blog.DownloadedConversations;
+            int downloadedPhotoMetas = blog.DownloadedPhotoMetas;
+            int downloadedVideoMetas = blog.DownloadedVideoMetas;
+            int downloadedAudioMetas = blog.DownloadedAudioMetas;
 
             var indexPath = Path.Combine(shellService.Settings.DownloadLocation, "Index");
             var blogPath = shellService.Settings.DownloadLocation;

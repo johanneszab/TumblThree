@@ -187,29 +187,29 @@ namespace TumblThree.Applications.Controllers
                 Monitor.Enter(lockObject);
                 if (selectionService.ActiveItems.Count() < QueueManager.Items.Count())
                 {
-                    var blogListToCrawlNext = QueueManager.Items.Except(selectionService.ActiveItems);
-                    var blogToCrawlNext = blogListToCrawlNext.First();
+                    var queueList = QueueManager.Items.Except(selectionService.ActiveItems);
+                    var nextQueueItem = queueList.First();
 
-                    CommonDownloader downloader = new CommonDownloader(shellService);
-                    blogToCrawlNext.Blog.Online = downloader.IsBlogOnline(blogToCrawlNext.Blog.Url).Result;
+                    Downloader.Downloader downloader = new Downloader.Downloader(shellService, nextQueueItem.Blog);
+                    downloader.IsBlogOnline().Wait();
 
-                    if (selectionService.ActiveItems.Any(item => item.Blog.Name.Contains(blogToCrawlNext.Blog.Name)))
+                    if (selectionService.ActiveItems.Any(item => item.Blog.Name.Contains(nextQueueItem.Blog.Name)))
                     {
-                        QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => QueueManager.RemoveItem(blogToCrawlNext)));
+                        QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => QueueManager.RemoveItem(nextQueueItem)));
                         Monitor.Exit(lockObject);
                         continue;
                     }
 
-                    if (!blogToCrawlNext.Blog.Online)
+                    if (!nextQueueItem.Blog.Online)
                     {
-                        QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => QueueManager.RemoveItem(blogToCrawlNext)));
+                        QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => QueueManager.RemoveItem(nextQueueItem)));
                         Monitor.Exit(lockObject);
                         continue;
                     }
 
-                    selectionService.AddActiveItems(blogToCrawlNext);
+                    selectionService.AddActiveItems(nextQueueItem);
                     Monitor.Exit(lockObject);
-                    StartSiteSpecificDownloader(blogToCrawlNext, ct, pt);
+                    StartSiteSpecificDownloader(nextQueueItem, ct, pt);
                 }
                 else
                 {

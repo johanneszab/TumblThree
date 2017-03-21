@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -16,31 +15,22 @@ using TumblThree.Domain.Models;
 
 namespace TumblThree.Applications.Downloader
 {
-    /// <summary>
-    /// Object responsible of downloading the actual files and writing
-    /// to disk.
-    /// </summary>
-    /// <remarks>
-    /// Longer comments can be associated with a type or member through
-    /// the remarks tag.
-    /// </remarks>
-    public class CommonDownloader : ICommonDownloader
+    public class Downloader : IDownloader
     {
-
+        private readonly IBlog blog;
         private readonly IShellService shellService;
         private readonly object lockObject;
-        private readonly IBlog blog;
 
-        public CommonDownloader(IShellService shellService): this(shellService, null)
+        public Downloader(IShellService shellService): this(shellService, null)
         {
-            this.lockObject = new object();
         }
 
-        public CommonDownloader(IShellService shellService, IBlog blog)
+        public Downloader(IShellService shellService, IBlog blog)
         {
             this.shellService = shellService;
             this.blog = blog;
             this.lockObject = new object();
+            SetUp();
         }
 
         protected virtual String RequestData(string url)
@@ -95,7 +85,7 @@ namespace TumblThree.Applications.Downloader
         }
 
 
-        protected static string UrlEncode(IDictionary<string, string> parameters)
+        protected string UrlEncode(IDictionary<string, string> parameters)
         {
             var sb = new StringBuilder();
             foreach (var val in parameters)
@@ -107,80 +97,38 @@ namespace TumblThree.Applications.Downloader
         }
 
 
-        protected virtual string ExtractUrl(string url)
+
+        protected bool CreateDataFolder()
         {
-            throw new NotImplementedException();
-        }
-
-
-        public virtual Task<bool> IsBlogOnline(string url)
-        {
-            return Task<bool>.Factory.StartNew(() =>
-            {
-                string request = RequestData(url);
-
-                if (request != null)
-                    return true;
-                else
-                    return false;
-            },
-            TaskCreationOptions.LongRunning);
-        }
-
-
-        protected virtual string ExtractSubDomain(string url)
-        {
-            string[] source = url.Split(new char[] { '.' });
-            if ((source.Count<string>() >= 3) && source[0].StartsWith("http://", true, null))
-            {
-                return source[0].Replace("http://", string.Empty);
-            }
-            else if ((source.Count<string>() >= 3) && source[0].StartsWith("https://", true, null))
-            {
-                return source[0].Replace("https://", string.Empty);
-            }
-            return null;
-        }
-
-
-        public static bool CreateDataFolder(string name, string location)
-        {
-            if (String.IsNullOrEmpty(name))
+            if (String.IsNullOrEmpty(blog.Name))
                 return false;
 
-            if (!Directory.Exists(Path.Combine(location, name)))
+            if (!Directory.Exists(Path.Combine(shellService.Settings.DownloadLocation, blog.Name)))
             {
-                Directory.CreateDirectory(Path.Combine(location, name));
+                Directory.CreateDirectory(Path.Combine(shellService.Settings.DownloadLocation, blog.Name));
                 return true;
             }
             return true;
         }
 
-
-        protected virtual bool Download(string fileLocation, string url, IProgress<DataModels.DownloadProgress> progress, ref int counter, ref int totalCounter)
+        public virtual Task IsBlogOnline()
         {
-            var fileName = url.Split('/').Last();
-
-            if (!CheckIfFileExists(url))
+            return Task.Factory.StartNew(() =>
             {
-                UpdateProgressQueueInformation(progress, fileName);
-                DownloadBinaryFile(fileLocation, url);
-                UpdateBlogCounter(ref counter, ref totalCounter);
-                return true;
-            }
-            return false;
+                string request = RequestData(blog.Url);
+
+                if (request != null)
+                    blog.Online = true;
+                else
+                    blog.Online = false;
+            },
+            TaskCreationOptions.LongRunning);
         }
 
-        protected virtual bool Download(string fileLocation, string postId, string text, IProgress<DataModels.DownloadProgress> progress, ref int counter, ref int totalCounter)
+        protected virtual void SetUp()
         {
-            if (!CheckIfFileExists(postId))
-            {
-                UpdateProgressQueueInformation(progress, "Post: " + postId);
-                AppendToTextFile(fileLocation, text);
-                UpdateBlogCounter(ref counter, ref totalCounter);
-                return true;
-            }
-            return false;
+            CreateDataFolder();
+            IsBlogOnline();
         }
 
         protected virtual bool CheckIfFileExists(string url)
@@ -253,5 +201,6 @@ namespace TumblThree.Applications.Downloader
             Interlocked.Increment(ref counter);
             Interlocked.Increment(ref totalCounter);
         }
+
     }
 }

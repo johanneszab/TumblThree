@@ -152,10 +152,10 @@ namespace TumblThree.Applications.Controllers
 
                         if (shellService.Settings.CheckOnlineStatusAtStartup == true)
                         {
-                            CommonDownloader downloader = new CommonDownloader(shellService);
                             foreach (var file in files)
                             {
-                                file.Online = await downloader.IsBlogOnline(file.Url);
+                                Downloader.Downloader downloader = new Downloader.Downloader(shellService, file);
+                                await downloader.IsBlogOnline();
                             }
                         }
                     }
@@ -382,9 +382,10 @@ namespace TumblThree.Applications.Controllers
                 blogUrl = crawlerService.NewBlogUrl;
             }
 
-            TumblrBlog blog = new TumblrBlog();
-            blog.Url = blogUrl;
-            await TransferGlobalSettingsToBlog(blog);
+            TumblrBlog blog = new TumblrBlog(blogUrl, shellService.Settings.DownloadLocation, Blog.BlogTypes.tumblr);
+            TransferGlobalSettingsToBlog(blog);
+            Downloader.Downloader downloader = new Downloader.Downloader(shellService, blog);
+            await downloader.IsBlogOnline();
 
             lock (lockObject)
             {
@@ -402,9 +403,10 @@ namespace TumblThree.Applications.Controllers
         }
 
 
-        private async Task TransferGlobalSettingsToBlog(TumblrBlog blog)
+        private void TransferGlobalSettingsToBlog(TumblrBlog blog)
         {
             blog.Location = Path.Combine(shellService.Settings.DownloadLocation, "Index");
+            blog.ChildId = Path.Combine(blog.Location, blog.Name + "_files.tumblr");
             blog.DownloadAudio = shellService.Settings.DownloadAudios;
             blog.DownloadPhoto = shellService.Settings.DownloadImages;
             blog.DownloadVideo = shellService.Settings.DownloadVideos;
@@ -418,12 +420,7 @@ namespace TumblThree.Applications.Controllers
             blog.SkipGif = shellService.Settings.SkipGif;
             blog.ForceSize = shellService.Settings.ForceSize;
 
-            var tumblrDownloader = new TumblrDownloader(shellService, crawlerService, selectionService, blog);
-            await tumblrDownloader.SetUpBlog();
-
-            TumblrFiles files = new TumblrFiles();
-            files.Location = Path.Combine(shellService.Settings.DownloadLocation, "Index");
-            files.Name = blog.Name;
+            TumblrFiles files = new TumblrFiles(blog.Name, Path.Combine(shellService.Settings.DownloadLocation, "Index"));
 
             Directory.CreateDirectory(Path.Combine(shellService.Settings.DownloadLocation, "Index"));
             Directory.CreateDirectory(Path.Combine(shellService.Settings.DownloadLocation, blog.Name));

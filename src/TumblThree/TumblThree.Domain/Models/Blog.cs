@@ -3,6 +3,7 @@ using System.Waf.Foundation;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 
 namespace TumblThree.Domain.Models
 {
@@ -25,13 +26,17 @@ namespace TumblThree.Domain.Models
         private IList<string> links;
         private Exception loadError;
 
-
         protected Blog()
         {
-            this.name = String.Empty;
-            this.url = String.Empty;
-            this.location = String.Empty;
-            this.type = BlogTypes.none;
+        }
+
+        protected Blog(string url, string location, BlogTypes type)
+        {
+            this.url = url;
+            this.url = ExtractUrl();
+            this.name = ExtractSubDomain();
+            this.location = location;
+            this.type = type;
             this.downloadedImages = 0;
             this.totalCount = 0;
             this.rating = 0;
@@ -129,7 +134,6 @@ namespace TumblThree.Domain.Models
 
         public enum BlogTypes
         {
-            none,
             tumblr,
             instagram,
             twitter
@@ -169,6 +173,25 @@ namespace TumblThree.Domain.Models
                 Logger.Error("Blog:Save: {0}", ex);
                 throw;
             }
+        }
+
+        protected virtual string ExtractSubDomain()
+        {
+            string[] source = this.Url.Split(new char[] { '.' });
+            if ((source.Count<string>() >= 3) && source[0].StartsWith("http://", true, null))
+            {
+                return source[0].Replace("http://", string.Empty);
+            }
+            else if ((source.Count<string>() >= 3) && source[0].StartsWith("https://", true, null))
+            {
+                return source[0].Replace("https://", string.Empty);
+            }
+            return null;
+        }
+
+        protected virtual string ExtractUrl()
+        {
+            return ("https://" + ExtractSubDomain() + ".tumblr.com/");
         }
     }
 }

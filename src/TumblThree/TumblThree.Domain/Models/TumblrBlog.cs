@@ -67,7 +67,12 @@ namespace TumblThree.Domain.Models
             Link
         }
 
+        // DON'T use. Only for Mockup.
         public TumblrBlog()
+        {
+        }
+
+        public TumblrBlog(string url, string location, BlogTypes type) : base(url, location, type)
         {
             this.version = "3";
             this.childId = String.Empty;

@@ -14,8 +14,14 @@ namespace TumblThree.Domain.Models
         private string version;
         private IList<string> links;
 
-        public TumblrFiles()
+        public TumblrFiles() : this(String.Empty, String.Empty)
         {
+        }
+
+        public TumblrFiles(string name, string location)
+        {
+            this.name = name;
+            this.location = location;
             this.version = "1";
             this.links = new List<string>();
         }
