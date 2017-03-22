@@ -10,15 +10,15 @@ namespace TumblThree.Domain.Models
 
         string Url { get; set; }
 
+        string Location { get; set; }
+
+        string ChildId { get; set; }
+
         int Rating { get; set; }
 
         int DownloadedImages { get; set; }
 
         int TotalCount { get; set; }
-
-        bool Dirty { get; set; }
-
-        string Location { get; set; }
 
         string Notes { get; set; }
 
@@ -29,6 +29,10 @@ namespace TumblThree.Domain.Models
         DateTime LastCompleteCrawl { get; set; }
 
         bool Online { get; set; }
+
+        bool CheckDirectoryForFiles { get; set; }
+
+        bool Dirty { get; set; }
 
         Exception LoadError { get; set; }
 

@@ -142,6 +142,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check directory for files.
+        /// </summary>
+        public static string CheckDirectoryForFiles {
+            get {
+                return ResourceManager.GetString("CheckDirectoryForFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Check for Updates.
         /// </summary>
         public static string CheckForUpdates {
@@ -1020,6 +1029,24 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipBlogsDescription {
             get {
                 return ResourceManager.GetString("ToolTipBlogsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checks the directory for already downloaded files..
+        /// </summary>
+        public static string ToolTipCheckDirectoryForFiles {
+            get {
+                return ResourceManager.GetString("ToolTipCheckDirectoryForFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checks the directory and the database for already downloaded files. Might negatively impact the download speed for large directories..
+        /// </summary>
+        public static string ToolTipCheckDirectoryForFilesDescription {
+            get {
+                return ResourceManager.GetString("ToolTipCheckDirectoryForFilesDescription", resourceCulture);
             }
         }
         

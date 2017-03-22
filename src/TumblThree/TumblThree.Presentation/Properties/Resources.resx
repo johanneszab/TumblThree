@@ -516,4 +516,13 @@
   <data name="DownloadNow" xml:space="preserve">
     <value>Download Now</value>
   </data>
+  <data name="CheckDirectoryForFiles" xml:space="preserve">
+    <value>Check directory for files</value>
+  </data>
+  <data name="ToolTipCheckDirectoryForFiles" xml:space="preserve">
+    <value>Checks the directory for already downloaded files.</value>
+  </data>
+  <data name="ToolTipCheckDirectoryForFilesDescription" xml:space="preserve">
+    <value>Checks the directory and the database for already downloaded files. Might negatively impact the download speed for large directories.</value>
+  </data>
 </root>

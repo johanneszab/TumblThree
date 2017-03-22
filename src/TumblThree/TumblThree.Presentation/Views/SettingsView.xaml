@@ -8,7 +8,7 @@
         xmlns:vr="clr-namespace:TumblThree.Presentation.ValidationRules"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
         xmlns:vm="clr-namespace:TumblThree.Applications.ViewModels;assembly=TumblThree.Applications"
-        mc:Ignorable="d" Title="Settings" Height="1025" Width="700"
+        mc:Ignorable="d" Title="Settings" Height="1060" Width="700"
         d:DataContext="{d:DesignInstance vm:SettingsViewModel}">
 
     <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
@@ -273,6 +273,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Separator Grid.ColumnSpan="2" Grid.Row="0"/>
                 <Label x:Name="perBlogLabel" Grid.Column="0" Grid.Row="1" Margin="5" Content="{x:Static p:Resources.DefaultSettingsForBlogs}" >
@@ -295,8 +296,18 @@
                 <CheckBox x:Name="checkBoxDownloadQuotes" Content="{x:Static p:Resources.DownloadQuotes}" IsChecked="{Binding DownloadQuotes, Mode=TwoWay}" Grid.Column="0" Grid.Row="6" Margin="10" />
                 <CheckBox x:Name="checkBoxDownloadConversations" Content="{x:Static p:Resources.DownloadConversations}" IsChecked="{Binding DownloadConversations, Mode=TwoWay}" Grid.Column="0" Grid.Row="7" Margin="10" />
                 <CheckBox x:Name="checkBoxDownloadLinks" Content="{x:Static p:Resources.DownloadLinks}" IsChecked="{Binding DownloadLinks, Mode=TwoWay}" Grid.Column="0" Grid.Row="8" Margin="10" />
-                <CheckBox x:Name="checkBoxSkipGif" Content="{x:Static p:Resources.SkipGif}" IsChecked="{Binding SkipGif, Mode=TwoWay}" Grid.Column="0" Grid.Row="9" Margin="10"/>
-                <CheckBox x:Name="checkBoxForceSize" Content="{x:Static p:Resources.ForceSize}" IsChecked="{Binding ForceSize, Mode=TwoWay}" Grid.Column="0" Grid.Row="10" Margin="10">
+                <CheckBox x:Name="checkBoxCheckDirectoryForFiles" Content="{x:Static p:Resources.CheckDirectoryForFiles}" IsChecked="{Binding CheckDirectoryForFiles, Mode=TwoWay}" Grid.Column="0" Grid.Row="9" Margin="10" >
+                    <CheckBox.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipCheckDirectoryForFiles}"/>
+                                <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipCheckDirectoryForFilesDescription}"/>
+                            </StackPanel>
+                        </ToolTip>
+                    </CheckBox.ToolTip>
+                </CheckBox>
+                <CheckBox x:Name="checkBoxSkipGif" Content="{x:Static p:Resources.SkipGif}" IsChecked="{Binding SkipGif, Mode=TwoWay}" Grid.Column="0" Grid.Row="10" Margin="10"/>
+                <CheckBox x:Name="checkBoxForceSize" Content="{x:Static p:Resources.ForceSize}" IsChecked="{Binding ForceSize, Mode=TwoWay}" Grid.Column="0" Grid.Row="11" Margin="10">
                     <CheckBox.ToolTip>
                         <ToolTip>
                             <StackPanel>
@@ -306,12 +317,12 @@
                         </ToolTip>
                     </CheckBox.ToolTip>
                 </CheckBox>
-                <Separator Grid.ColumnSpan="2" Grid.Row="11" Margin="0"/>
-                <Label x:Name="globalLabel" Grid.Column="0" Grid.Row="12" Margin="5" Content="{x:Static p:Resources.GlobalSettings}"/>
-                <CheckBox x:Name="checkBoxEnablePreview" Content="{x:Static p:Resources.EnablePreview}" IsChecked="{Binding EnablePreview, Mode=TwoWay}" Grid.Column="0" Grid.Row="13" Margin="10"/>
-                <CheckBox x:Name="checkBoxCheckStatus" Content="{x:Static p:Resources.CheckStatus}" IsChecked="{Binding CheckOnlineStatusAtStartup, Mode=TwoWay}" Grid.Column="0" Grid.Row="14" Margin="10"/>
-                <CheckBox x:Name="checkBoxDeleteIndex" Content="{x:Static p:Resources.DeleteIndex}" IsChecked="{Binding DeleteOnlyIndex, Mode=TwoWay}" Grid.Column="0" Grid.Row="15" Margin="10" />
-                <CheckBox x:Name="checkBoxRemoveIndex" Content="{x:Static p:Resources.RemoveIndex}" IsChecked="{Binding RemoveIndexAfterCrawl, Mode=TwoWay}" Grid.Column="0" Grid.Row="16" Margin="10"/>
+                <Separator Grid.ColumnSpan="2" Grid.Row="12" Margin="0"/>
+                <Label x:Name="globalLabel" Grid.Column="0" Grid.Row="13" Margin="5" Content="{x:Static p:Resources.GlobalSettings}"/>
+                <CheckBox x:Name="checkBoxEnablePreview" Content="{x:Static p:Resources.EnablePreview}" IsChecked="{Binding EnablePreview, Mode=TwoWay}" Grid.Column="0" Grid.Row="14" Margin="10"/>
+                <CheckBox x:Name="checkBoxCheckStatus" Content="{x:Static p:Resources.CheckStatus}" IsChecked="{Binding CheckOnlineStatusAtStartup, Mode=TwoWay}" Grid.Column="0" Grid.Row="15" Margin="10"/>
+                <CheckBox x:Name="checkBoxDeleteIndex" Content="{x:Static p:Resources.DeleteIndex}" IsChecked="{Binding DeleteOnlyIndex, Mode=TwoWay}" Grid.Column="0" Grid.Row="16" Margin="10" />
+                <CheckBox x:Name="checkBoxRemoveIndex" Content="{x:Static p:Resources.RemoveIndex}" IsChecked="{Binding RemoveIndexAfterCrawl, Mode=TwoWay}" Grid.Column="0" Grid.Row="17" Margin="10"/>
             </Grid>
             <Grid MinHeight="36" Height="Auto" Grid.Row="10">
                 <Grid.ColumnDefinitions>

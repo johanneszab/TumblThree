@@ -498,4 +498,13 @@
   <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
     <value>Ein zu hoher Wert führt zu abgelehnten Verbindungen (429 -- Limit Exceeded) zur der Tumblr API. Ein zu kleiner Wert verringert die Downloadgeschwindigkeit.</value>
   </data>
+  <data name="CheckDirectoryForFiles" xml:space="preserve">
+    <value>Prüfe Ordner auf Dateien</value>
+  </data>
+  <data name="ToolTipCheckDirectoryForFiles" xml:space="preserve">
+    <value>Prüfe Ordner auf schon geladene Dateien</value>
+  </data>
+  <data name="ToolTipCheckDirectoryForFilesDescription" xml:space="preserve">
+    <value>Prüft die Datenbank und den Downloadordner auf schon geladene Dateien. Kann die Geschwindigkeit beeinflussen bei vielen Dateien.</value>
+  </data>
 </root>

@@ -229,6 +229,19 @@ namespace TumblThree.Applications.Downloader
             return highestId;
         }
 
+        protected override bool CheckIfFileExistsInDB(string url)
+        {
+            var fileName = url.Split('/').Last();
+            Monitor.Enter(lockObject);
+            if (files.Links.Contains(fileName))
+            {
+                Monitor.Exit(lockObject);
+                return true;
+            }
+            Monitor.Exit(lockObject);
+            return false;
+        }
+
         public Tuple<ulong, bool, List<Tuple<PostTypes, string, string>>> GetUrls(IProgress<DownloadProgress> progress, CancellationToken ct, PauseToken pt)
         {
             int totalDownloads = 0;
@@ -679,7 +692,7 @@ namespace TumblThree.Applications.Downloader
                                         url = currentImageUrl.Item2;
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), fileName);
 
-                                        if (!CheckIfFileExists(url))
+                                        if (!CheckIfFileExistsInDB(url) ^ !CheckIfBlogShouldCheckDirectory(url))
                                         {
                                             UpdateProgressQueueInformation(progress, fileName);
                                             DownloadBinaryFile(fileLocation, url);
@@ -700,7 +713,7 @@ namespace TumblThree.Applications.Downloader
                                         url = currentImageUrl.Item2;
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), fileName);
 
-                                        if (!CheckIfFileExists(url))
+                                        if (!CheckIfFileExistsInDB(url) ^ !CheckIfBlogShouldCheckDirectory(url))
                                         {
                                             UpdateProgressQueueInformation(progress, fileName);
                                             DownloadBinaryFile(fileLocation, url);
@@ -718,7 +731,7 @@ namespace TumblThree.Applications.Downloader
                                         url = currentImageUrl.Item2;
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), currentImageUrl.Item3 + ".swf");
 
-                                        if (!CheckIfFileExists(url))
+                                        if (!CheckIfFileExistsInDB(url) ^ !CheckIfBlogShouldCheckDirectory(url))
                                         {
                                             UpdateProgressQueueInformation(progress, fileName);
                                             DownloadBinaryFile(fileLocation, url);
@@ -732,7 +745,7 @@ namespace TumblThree.Applications.Downloader
                                         postId = currentImageUrl.Item3;
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameTexts));
 
-                                        if (!CheckIfFileExists(postId))
+                                        if (!CheckIfFileExistsInDB(postId))
                                         {
                                             UpdateProgressQueueInformation(progress, postId);
                                             AppendToTextFile(fileLocation, url);
@@ -746,7 +759,7 @@ namespace TumblThree.Applications.Downloader
                                         postId = currentImageUrl.Item3;
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameQuotes));
 
-                                        if (!CheckIfFileExists(postId))
+                                        if (!CheckIfFileExistsInDB(postId))
                                         {
                                             UpdateProgressQueueInformation(progress, postId);
                                             AppendToTextFile(fileLocation, url);
@@ -760,7 +773,7 @@ namespace TumblThree.Applications.Downloader
                                         postId = currentImageUrl.Item3;
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameLinks));
 
-                                        if (!CheckIfFileExists(postId))
+                                        if (!CheckIfFileExistsInDB(postId))
                                         {
                                             UpdateProgressQueueInformation(progress, postId);
                                             AppendToTextFile(fileLocation, url);
@@ -774,7 +787,7 @@ namespace TumblThree.Applications.Downloader
                                         postId = currentImageUrl.Item3;
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameConversations));
 
-                                        if (!CheckIfFileExists(postId))
+                                        if (!CheckIfFileExistsInDB(postId))
                                         {
                                             UpdateProgressQueueInformation(progress, postId);
                                             AppendToTextFile(fileLocation, url);
@@ -788,7 +801,7 @@ namespace TumblThree.Applications.Downloader
                                         postId = currentImageUrl.Item3;
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaPhoto));
 
-                                        if (!CheckIfFileExists(postId))
+                                        if (!CheckIfFileExistsInDB(postId))
                                         {
                                             UpdateProgressQueueInformation(progress, postId);
                                             AppendToTextFile(fileLocation, url);
@@ -802,7 +815,7 @@ namespace TumblThree.Applications.Downloader
                                         postId = currentImageUrl.Item3;
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaVideo));
 
-                                        if (!CheckIfFileExists(postId))
+                                        if (!CheckIfFileExistsInDB(postId))
                                         {
                                             UpdateProgressQueueInformation(progress, postId);
                                             AppendToTextFile(fileLocation, url);
@@ -816,7 +829,7 @@ namespace TumblThree.Applications.Downloader
                                         postId = currentImageUrl.Item3;
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaAudio));
 
-                                        if (!CheckIfFileExists(postId))
+                                        if (!CheckIfFileExistsInDB(postId))
                                         {
                                             UpdateProgressQueueInformation(progress, postId);
                                             AppendToTextFile(fileLocation, url);

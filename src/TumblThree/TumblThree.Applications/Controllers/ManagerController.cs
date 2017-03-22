@@ -276,9 +276,6 @@ namespace TumblThree.Applications.Controllers
 
         public void RemoveBlog()
         {
-            var indexPath = Path.Combine(shellService.Settings.DownloadLocation, "Index");
-            var blogPath = shellService.Settings.DownloadLocation;
-
             var blogs = selectionService.SelectedBlogFiles.ToArray();
 
             foreach (var blog in blogs)
@@ -287,6 +284,7 @@ namespace TumblThree.Applications.Controllers
                 {
                     try
                     {
+                        string blogPath = Directory.GetParent(blog.Location).FullName;
                         Directory.Delete(Path.Combine(blogPath, blog.Name), true);
                     }
                     catch (Exception ex)
@@ -297,15 +295,11 @@ namespace TumblThree.Applications.Controllers
                     }
                 }
 
-                var indexFile = Path.Combine(indexPath, blog.Name) + blog.BlogType;
+                var indexFile = Path.Combine(blog.Location, blog.Name) + "." + blog.BlogType;
                 try
                 {
                     File.Delete(indexFile);
-                    if (blog is TumblrBlog)
-                    {
-                        var tumblrFiles = Path.Combine(indexPath, blog.Name) + "_files." + blog.BlogType;
-                        File.Delete(tumblrFiles);
-                    }
+                    File.Delete(blog.ChildId);
                 }
                 catch (Exception ex)
                 {
@@ -396,6 +390,7 @@ namespace TumblThree.Applications.Controllers
             blog.CreateAudioMeta = shellService.Settings.CreateAudioMeta;
             blog.SkipGif = shellService.Settings.SkipGif;
             blog.ForceSize = shellService.Settings.ForceSize;
+            blog.CheckDirectoryForFiles = shellService.Settings.CheckDirectoryForFiles;
         }
 
         private void OnClipboardContentChanged(object sender, EventArgs e)

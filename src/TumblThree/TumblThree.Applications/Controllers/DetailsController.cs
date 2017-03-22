@@ -117,6 +117,7 @@ namespace TumblThree.Applications.Controllers
                 SkipGif = false,
                 ForceSize = false,
                 ForceRescan = false,
+                CheckDirectoryForFiles = false,
                 Dirty = false
             };
         }
@@ -160,6 +161,7 @@ namespace TumblThree.Applications.Controllers
                     blog.SkipGif = blogFile.SkipGif;
                     blog.ForceSize = blogFile.ForceSize;
                     blog.ForceRescan = blogFile.ForceRescan;
+                    blog.CheckDirectoryForFiles = blogFile.CheckDirectoryForFiles;
                     blog.Dirty = true;                
                 }
             }

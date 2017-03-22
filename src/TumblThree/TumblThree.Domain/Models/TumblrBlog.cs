@@ -9,7 +9,6 @@ namespace TumblThree.Domain.Models
     public class TumblrBlog : Blog
     {
         private string version;
-        private string childId;
         private string description;
         private string title;
         private ulong lastId;
@@ -67,7 +66,6 @@ namespace TumblThree.Domain.Models
         {
             this.version = "3";
             this.description = String.Empty;
-            this.childId = Path.Combine(Location, Name + "_files." + BlogTypes.tumblr);
             this.title = String.Empty;
             this.lastId = 0;
             this.progress = 0;
@@ -115,7 +113,7 @@ namespace TumblThree.Domain.Models
             Directory.CreateDirectory(Location);
             Directory.CreateDirectory(Path.Combine(Directory.GetParent(Location).FullName, Name));
 
-            if (!File.Exists(childId))
+            if (!File.Exists(ChildId))
             {
                 TumblrFiles files = new TumblrFiles(Name, Location, BlogType);
 
@@ -140,12 +138,6 @@ namespace TumblThree.Domain.Models
         {
             get { return title; }
             set { SetProperty(ref title, value); }
-        }
-
-        public string ChildId
-        {
-            get { return childId; }
-            set { SetProperty(ref childId, value); }
         }
 
         public ulong LastId

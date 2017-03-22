@@ -19,7 +19,7 @@ namespace TumblThree.Applications.Downloader
     {
         private readonly IBlog blog;
         private readonly IShellService shellService;
-        private readonly object lockObject;
+        protected readonly object lockObject;
 
         public Downloader(IShellService shellService): this(shellService, null)
         {
@@ -130,11 +130,34 @@ namespace TumblThree.Applications.Downloader
             IsBlogOnline();
         }
 
-        protected virtual bool CheckIfFileExists(string url)
+        protected virtual bool CheckIfFileExistsInDB(string url)
         {
             var fileName = url.Split('/').Last();
             Monitor.Enter(lockObject);
             if (blog.Links.Contains(fileName))
+            {
+                Monitor.Exit(lockObject);
+                return true;
+            }
+            Monitor.Exit(lockObject);
+            return false;
+        }
+
+        protected virtual bool CheckIfBlogShouldCheckDirectory(string url)
+        {
+            if (blog.CheckDirectoryForFiles)
+            {
+                return CheckIfFileExistsInDirectory(url);
+            }
+            return false;
+        }
+
+        protected virtual bool CheckIfFileExistsInDirectory(string url)
+        {
+            var fileName = url.Split('/').Last();
+            Monitor.Enter(lockObject);
+            string blogPath = Directory.GetParent(blog.Location).FullName;
+            if (System.IO.File.Exists(Path.Combine(blogPath, fileName)))
             {
                 Monitor.Exit(lockObject);
                 return true;

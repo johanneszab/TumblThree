@@ -14,6 +14,7 @@ namespace TumblThree.Domain.Models
         private string name;
         private string url;
         private string location;
+        private string childId;
         private BlogTypes blogType;
         private int downloadedImages;
         private int totalCount;
@@ -22,6 +23,7 @@ namespace TumblThree.Domain.Models
         private DateTime lastCompleteCrawl;
         private bool online;
         private bool dirty;
+        private bool checkDirectoryForFiles;
         private string notes;
         private IList<string> links;
         private Exception loadError;
@@ -35,14 +37,16 @@ namespace TumblThree.Domain.Models
             this.url = url;
             this.url = ExtractUrl();
             this.name = ExtractSubDomain();
-            this.location = location;
             this.blogType = blogType;
+            this.childId = Path.Combine(location, Name + "_files." + blogType);
+            this.location = location;
             this.downloadedImages = 0;
             this.totalCount = 0;
             this.rating = 0;
             this.dateAdded = System.DateTime.Now;
             this.lastCompleteCrawl = System.DateTime.MinValue;
             this.online = false;
+            this.checkDirectoryForFiles = false;
             this.dirty = false;
             this.notes = String.Empty;
             this.links = new ObservableCollection<string>();
@@ -64,6 +68,12 @@ namespace TumblThree.Domain.Models
         {
             get { return location; }
             set { SetProperty(ref location, value); }
+        }
+
+        public string ChildId
+        {
+            get { return childId; }
+            set { SetProperty(ref childId, value); }
         }
 
         public BlogTypes BlogType
@@ -108,16 +118,22 @@ namespace TumblThree.Domain.Models
             set { SetProperty(ref online, value); }
         }
 
-        public bool Dirty
-        {
-            get { return dirty; }
-            set { SetProperty(ref dirty, value); }
-        }
-
         public string Notes
         {
             get { return notes; }
             set { SetProperty(ref notes, value); Dirty = true; }
+        }
+
+        public bool CheckDirectoryForFiles
+        {
+            get { return checkDirectoryForFiles; }
+            set { SetProperty(ref checkDirectoryForFiles, value); Dirty = true; }
+        }
+
+        public bool Dirty
+        {
+            get { return dirty; }
+            set { SetProperty(ref dirty, value); }
         }
 
         public Exception LoadError
