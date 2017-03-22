@@ -38,7 +38,6 @@ namespace TumblThree.Applications.Controllers
 
         public void Initialize()
         {
-            //QueueManager.PropertyChanged += QueueManagerPropertyChanged;
             ((INotifyCollectionChanged)selectionService.SelectedBlogFiles).CollectionChanged += SelectedBlogFilesCollectionChanged;
             shellService.DetailsView = DetailsViewModel.View;
         }

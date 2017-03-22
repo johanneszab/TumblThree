@@ -56,9 +56,11 @@ namespace TumblThree.Domain.Models
         private bool forceRescan;
         private PostTypes state;
 
-        // DON'T use. Only for Mockup.
         public TumblrBlog()
         {
+            /// <summary>
+            /// DON'T use. Only for Mockup
+            /// </summary>
         }
 
         public TumblrBlog(string url, string location, BlogTypes type) : base(url, location, type)
@@ -110,13 +112,16 @@ namespace TumblThree.Domain.Models
             this.lastDownloadedPhoto = null;
             this.lastDownloadedVideo = null;
 
-            TumblrFiles files = new TumblrFiles(Name, Path.Combine(Location, "Index"), BlogType);
+            Directory.CreateDirectory(Location);
+            Directory.CreateDirectory(Path.Combine(Directory.GetParent(Location).FullName, Name));
 
-            Directory.CreateDirectory(Path.Combine(Location, "Index"));
-            Directory.CreateDirectory(Path.Combine(Location, Name));
+            if (!File.Exists(childId))
+            {
+                TumblrFiles files = new TumblrFiles(Name, Location, BlogType);
 
-            files.Save();
-            files = null;
+                files.Save();
+                files = null;
+            }
         }
 
         public string Version
@@ -408,28 +413,12 @@ namespace TumblThree.Domain.Models
 
         public bool Update()
         {
-            if (string.IsNullOrEmpty(this.Version) || !this.Version.Equals("3"))
-            {
-                if (!File.Exists(this.ChildId))
-                {
-                    TumblrFiles files = new TumblrFiles();
-                    files.Location = this.Location;
-                    files.Name = this.Name;
-                    files.Links = this.Links.Select(item => item?.Split('/').Last()).ToList();
-                    Links.Clear();
-                    Version = "3";
-                    BlogType = BlogTypes.tumblr;
-                    Dirty = true;
-                    files.Save();
-                    files = null;
-                }
-            } else if (this.Version.Equals("2"))
+            if (!this.Version.Equals("3"))
             {
                 BlogType = BlogTypes.tumblr;
                 Version = "3";
                 Dirty = true;
             }
-
             return true;
         }
     }

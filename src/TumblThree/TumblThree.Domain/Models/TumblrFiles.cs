@@ -19,7 +19,7 @@ namespace TumblThree.Domain.Models
         {
         }
 
-        public TumblrFiles(string name, string location, BlogTypes blogTypes)
+        public TumblrFiles(string name, string location, BlogTypes blogType)
         {
             this.name = name;
             this.location = location;

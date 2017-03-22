@@ -18,6 +18,8 @@ namespace TumblThree.Domain.Models
 
         bool Dirty { get; set; }
 
+        string Location { get; set; }
+
         string Notes { get; set; }
 
         BlogTypes BlogType { get; set; }

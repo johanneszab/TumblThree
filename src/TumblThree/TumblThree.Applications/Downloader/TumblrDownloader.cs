@@ -45,7 +45,6 @@ namespace TumblThree.Applications.Downloader
             this.lockObjectDownload = new object();
             this.downloadList = new List<Tuple<PostTypes, string, string>>();
             this.sharedDownloads = new BlockingCollection<Tuple<PostTypes, string, string>>();
-
         }
 
         protected new XDocument RequestData(string url)
@@ -101,11 +100,6 @@ namespace TumblThree.Applications.Downloader
 
         private string GetApiUrl(string url, int count, int start = 0)
         {
-            /// <summary>
-            /// construct the tumblr api post url of a blog.
-            /// <para>the blog for the url</para>
-            /// </summary>
-            /// <returns>A string containing the api url of the blog.</returns>
             if (url.Last<char>() != '/')
                 url += "/api/read";
             else
@@ -120,36 +114,38 @@ namespace TumblThree.Applications.Downloader
             return url + "?" + UrlEncode(parameters);
         }
 
-
-        public Task<TumblrBlog> UpdateMetaInformation()
+        private XDocument GetApiPage(int pageId)
         {
-            return Task<TumblrBlog>.Factory.StartNew(() =>
+            XDocument document = null;
+
+            string url = GetApiUrl(blog.Url, 50, pageId * 50);
+
+            if (shellService.Settings.LimitConnections)
             {
-                string url = GetApiUrl(blog.Url, 1);
+                crawlerService.Timeconstraint.Acquire();
+                document = RequestData(url);
+            }
+            else {
+                document = RequestData(url);
+            }
+            return document;
+        }
 
-                XDocument blogDoc = null;
+        public Task UpdateMetaInformation()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                XDocument document = GetApiPage(1);
 
-                if (shellService.Settings.LimitConnections)
+                if (document != null)
                 {
-                    crawlerService.Timeconstraint.Acquire();
-                    blogDoc = RequestData(url);
+                    blog.Title = document.Element("tumblr").Element("tumblelog").Attribute("title")?.Value;
+                    blog.Description = document.Element("tumblr").Element("tumblelog")?.Value;
+                    blog.TotalCount = Int32.Parse(document.Element("tumblr").Element("posts").Attribute("total")?.Value);
                 }
-                else
-                    blogDoc = RequestData(url);
-
-                if (blogDoc != null)
-                {
-                    blog.Title = blogDoc.Element("tumblr").Element("tumblelog").Attribute("title")?.Value;
-                    blog.Description = blogDoc.Element("tumblr").Element("tumblelog")?.Value;
-                    blog.TotalCount = Int32.Parse(blogDoc.Element("tumblr").Element("posts").Attribute("total")?.Value);
-                    return blog;
-                }
-                else
-                    return blog;
             },
             TaskCreationOptions.LongRunning);
         }
-
 
         private string ResizeTumblrImageUrl(string imageUrl)
         {
@@ -164,7 +160,6 @@ namespace TumblThree.Applications.Downloader
                 .Replace("_75sq", "_" + shellService.Settings.ImageSize.ToString())
                 .ToString();
         }
-
 
         private int DetermineDuplicates(IEnumerable<Tuple<PostTypes, string, string>> source, PostTypes type)
         {
@@ -213,24 +208,6 @@ namespace TumblThree.Applications.Downloader
             newProgress = new DownloadProgress();
             newProgress.Progress = "";
             progress.Report(newProgress);
-        }
-
-
-        private XDocument GetApiPage(int pageId)
-        {
-            XDocument document = null;
-
-            string url = GetApiUrl(blog.Url, 50, pageId * 50);
-
-            if (shellService.Settings.LimitConnections)
-            {
-                crawlerService.Timeconstraint.Acquire();
-                document = RequestData(url);
-            }
-            else {
-                document = RequestData(url);
-            }
-            return document;
         }
 
         private void UpdateTotalPostCount()
@@ -659,7 +636,6 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-
         private bool DownloadTumblrBlog(IProgress<DataModels.DownloadProgress> progress, CancellationToken ct, PauseToken pt)
         {
             int downloadedFiles = blog.DownloadedImages;
@@ -674,7 +650,7 @@ namespace TumblThree.Applications.Downloader
             int downloadedVideoMetas = blog.DownloadedVideoMetas;
             int downloadedAudioMetas = blog.DownloadedAudioMetas;
 
-            var blogPath = shellService.Settings.DownloadLocation;
+            string blogPath = Directory.GetParent(blog.Location).FullName;
 
             CreateDataFolder();
 

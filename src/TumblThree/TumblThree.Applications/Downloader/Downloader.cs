@@ -84,7 +84,6 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-
         protected string UrlEncode(IDictionary<string, string> parameters)
         {
             var sb = new StringBuilder();
@@ -96,16 +95,16 @@ namespace TumblThree.Applications.Downloader
             return sb.ToString();
         }
 
-
-
         protected bool CreateDataFolder()
         {
             if (String.IsNullOrEmpty(blog.Name))
                 return false;
 
-            if (!Directory.Exists(Path.Combine(shellService.Settings.DownloadLocation, blog.Name)))
+            string blogPath = Directory.GetParent(blog.Location).FullName;
+
+            if (!Directory.Exists(Path.Combine(blogPath, blog.Name)))
             {
-                Directory.CreateDirectory(Path.Combine(shellService.Settings.DownloadLocation, blog.Name));
+                Directory.CreateDirectory(Path.Combine(blogPath, blog.Name));
                 return true;
             }
             return true;
@@ -201,6 +200,5 @@ namespace TumblThree.Applications.Downloader
             Interlocked.Increment(ref counter);
             Interlocked.Increment(ref totalCounter);
         }
-
     }
 }

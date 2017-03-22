@@ -26,27 +26,14 @@ namespace TumblThree.Presentation.Views
             InitializeComponent();
             this.viewModel = new Lazy<QueueViewModel>(() => ViewHelper.GetViewModel<QueueViewModel>(this));
             listBoxDragDropHelper = new ListBoxDragDropHelper<QueueListItem>(queueListBox, MoveItems, TryGetInsertItems, InsertItems);
-            //Loaded += FirstTimeLoadedHandler;
-
         }
 
         private QueueViewModel ViewModel { get { return viewModel.Value; } }
-
-        //private void FirstTimeLoadedHandler(object sender, RoutedEventArgs e)
-        //{
-        //    Loaded -= FirstTimeLoadedHandler;
-        //    //ViewModel.QueueManager.PropertyChanged += QueueManagerPropertyChanged;
-        //}
 
         private void ListBoxItemContextMenuOpening(object sender, RoutedEventArgs e)
         {
             ((FrameworkElement)sender).ContextMenu.DataContext = ViewModel;
         }
-
-        //private void ListBoxItemMouseDoubleClick(object sender, MouseButtonEventArgs e)
-        //{
-        //    ViewModel.CrawlSelectedCommand.Execute(null);
-        //}
 
         private void StatusBarButtonClick(object sender, RoutedEventArgs e)
         {

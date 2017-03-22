@@ -113,7 +113,6 @@ namespace TumblThree.Applications.Controllers
         {
         }
 
-
         private void QueueItemsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             if (e.Action == NotifyCollectionChangedAction.Add)
@@ -126,7 +125,6 @@ namespace TumblThree.Applications.Controllers
                 ManagerViewModel.QueueItems = QueueManager.Items;
             }
         }
-
 
         private async Task LoadLibrary()
         {
@@ -193,33 +191,12 @@ namespace TumblThree.Applications.Controllers
                     using (FileStream stream = new FileStream(filename,
                         FileMode.Open, FileAccess.Read, FileShare.Read))
                     {
-                        using (var reader = new BinaryReader(stream, new ASCIIEncoding()))
-                        {
-                            byte[] buffer = new byte[18];
-                            stream.Seek(0x17, 0);
-                            buffer = reader.ReadBytes(17);
-                            // "TumblThree.Domain" in hex
-                            byte[] tumblThreeSignature = new byte[] { 0x54, 0x75, 0x6D, 0x62, 0x6C, 0x54, 0x68, 0x72, 0x65, 0x65, 0x2E, 0x44, 0x6F, 0x6D, 0x61, 0x69, 0x6E };
-                            if (buffer.SequenceEqual(tumblThreeSignature))
-                            {
-                                stream.Seek(0, 0);
-                                IFormatter formatter = new BinaryFormatter();
-                                TumblrBlog blog = (TumblrBlog)formatter.Deserialize(stream);
-                                blog.ChildId = Path.Combine(directory, blog.Name + "_files.tumblr");
-                                blog.Location = directory;
-                                blog.Update();
-                                blogs.Add(blog);
-                            }
-                            else
-                            {
-                                string json = File.ReadAllText(filename);
-                                TumblrBlog blog = new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize<TumblrBlog>(json);
-                                blog.ChildId = Path.Combine(directory, blog.Name + "_files.tumblr");
-                                blog.Location = directory;
-                                blog.Update();
-                                blogs.Add(blog);
-                            }
-                        }
+                        string json = File.ReadAllText(filename);
+                        TumblrBlog blog = new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize<TumblrBlog>(json);
+                        blog.ChildId = Path.Combine(directory, blog.Name + "_files.tumblr");
+                        blog.Location = directory;
+                        blog.Update();
+                        blogs.Add(blog);
                     }
                 }
                 catch (SerializationException ex)
@@ -246,7 +223,6 @@ namespace TumblThree.Applications.Controllers
         private void Enqueue(IEnumerable<IBlog> blogFiles)
         {
             QueueManager.AddItems(blogFiles.Select(x => new QueueListItem(x)));
-            //shellService.ShowQueueView();
         }
 
         private bool CanEnqueueAutoDownload()
@@ -288,7 +264,6 @@ namespace TumblThree.Applications.Controllers
             },
             TaskCreationOptions.LongRunning);
         }
-
 
         private bool CanRemoveBlog()
         {
@@ -374,7 +349,6 @@ namespace TumblThree.Applications.Controllers
             shellService.ShowDetailsView();
         }
 
-
         public async Task AddBlogAsync(string blogUrl)
         {
             if (String.IsNullOrEmpty(blogUrl))
@@ -403,7 +377,6 @@ namespace TumblThree.Applications.Controllers
                 }
             }
         }
-
 
         private void TransferGlobalSettingsToBlog(TumblrBlog blog)
         {

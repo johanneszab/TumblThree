@@ -18,9 +18,7 @@ namespace TumblThree.Presentation.Views
         {
             InitializeComponent();
             viewModel = new Lazy<ShellViewModel>(() => ViewHelper.GetViewModel<ShellViewModel>(this));
-            //Loaded += LoadedHandler;
         }
-
 
         public double VirtualScreenWidth { get { return SystemParameters.VirtualScreenWidth; } }
 
@@ -52,27 +50,6 @@ namespace TumblThree.Presentation.Views
         }
 
         private ShellViewModel ViewModel { get { return viewModel.Value; } }
-
-        //private void LoadedHandler(object sender, RoutedEventArgs e)
-        //{
-        //    ViewModel.ShellService.PropertyChanged += ShellServicePropertyChanged;
-        //}
-
-        //private void ShellServicePropertyChanged(object sender, PropertyChangedEventArgs e)
-        //{
-        //    if (e.PropertyName == nameof(IShellService.IsApplicationBusy))
-        //    {
-        //        if (ViewModel.ShellService.IsApplicationBusy)
-        //        {
-        //            Mouse.OverrideCursor = Cursors.Wait;
-        //        }
-        //        else
-        //        {
-        //            // Delay removing the wait cursor so that the UI has finished its work as well.
-        //            Dispatcher.InvokeAsync(() => Mouse.OverrideCursor = null, DispatcherPriority.ApplicationIdle);
-        //        }
-        //    }
-        //}
 
         private static void TryExecute(ICommand command)
         {
