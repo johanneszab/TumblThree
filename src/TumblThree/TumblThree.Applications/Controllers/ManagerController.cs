@@ -184,7 +184,11 @@ namespace TumblThree.Applications.Controllers
 
             List<Blog> blogs = new List<Blog>();
 
-            foreach (var filename in Directory.GetFiles(directory, "*.tumblr").Where(name => !name.EndsWith("_files.tumblr")))
+            var supportedFileTypes = Enum.GetNames(typeof(BlogTypes)).ToArray();
+
+            foreach (var filename in Directory.GetFiles(directory, "*").Where(
+                fileName => supportedFileTypes.Any(fileName.Contains) && 
+                !fileName.Contains("_files")))
             {
                 try
                 {

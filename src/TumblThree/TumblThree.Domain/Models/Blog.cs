@@ -142,7 +142,7 @@ namespace TumblThree.Domain.Models
             {
                 System.Web.Script.Serialization.JavaScriptSerializer jsJson = new System.Web.Script.Serialization.JavaScriptSerializer();
                 jsJson.MaxJsonLength = 2147483644;
-                File.WriteAllText(newIndex, jsJson.Serialize(this));
+                File.WriteAllText(newIndex, JsonFormatter.FormatOutput(jsJson.Serialize(this)));
                 File.Replace(newIndex, currentIndex, backupIndex, true);
                 File.Delete(backupIndex);
             }
@@ -150,7 +150,7 @@ namespace TumblThree.Domain.Models
             {
                 System.Web.Script.Serialization.JavaScriptSerializer jsJson = new System.Web.Script.Serialization.JavaScriptSerializer();
                 jsJson.MaxJsonLength = 2147483644;
-                File.WriteAllText(currentIndex, jsJson.Serialize(this));
+                File.WriteAllText(currentIndex, JsonFormatter.FormatOutput(jsJson.Serialize(this)));
             }
         }
 

@@ -15,7 +15,7 @@ namespace TumblThree.Domain.Models
         private BlogTypes blogType;
         private IList<string> links;
 
-        public TumblrFiles() : this(String.Empty, String.Empty, BlogTypes.none)
+        public TumblrFiles() : this(String.Empty, String.Empty, BlogTypes.tumblr)
         {
         }
 
@@ -69,14 +69,15 @@ namespace TumblThree.Domain.Models
                 {
                     System.Web.Script.Serialization.JavaScriptSerializer jsJson = new System.Web.Script.Serialization.JavaScriptSerializer();
                     jsJson.MaxJsonLength = 2147483644;
-                    File.WriteAllText(newIndex, jsJson.Serialize(this)); File.Replace(newIndex, currentIndex, backupIndex, true);
+                    File.WriteAllText(newIndex, JsonFormatter.FormatOutput(jsJson.Serialize(this)));
+                    File.Replace(newIndex, currentIndex, backupIndex, true);
                     File.Delete(backupIndex);
                 }
                 else
                 {
                     System.Web.Script.Serialization.JavaScriptSerializer jsJson = new System.Web.Script.Serialization.JavaScriptSerializer();
                     jsJson.MaxJsonLength = 2147483644;
-                    File.WriteAllText(currentIndex, jsJson.Serialize(this));
+                    File.WriteAllText(currentIndex, JsonFormatter.FormatOutput(jsJson.Serialize(this)));
                 }
 
                 return true;
