@@ -346,7 +346,7 @@ namespace TumblThree.Applications.Downloader
             // FIXME: Everything but not SOLID
             // Add Conditional with Polymorphism
             // Just use regex instead?
-            if (blog.DownloadPhoto == true)
+            if (blog.DownloadPhoto)
             {
                 foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "photo" &&
                 (!tags.Any()) ? true : posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
@@ -357,7 +357,7 @@ namespace TumblThree.Applications.Downloader
                         foreach (var photo in post.Descendants("photoset").Descendants("photo"))
                         {
                             string imageUrl = ParseImageUrl(photo);
-                            if (blog.SkipGif == true && imageUrl.EndsWith(".gif"))
+                            if (blog.SkipGif && imageUrl.EndsWith(".gif"))
                                 continue;
 
                             UpdateBlogCounter(ref photos, ref totalDownloads);
@@ -369,7 +369,7 @@ namespace TumblThree.Applications.Downloader
                     else
                     {
                         string imageUrl = ParseImageUrl(post);
-                        if (blog.SkipGif == true && imageUrl.EndsWith(".gif"))
+                        if (blog.SkipGif && imageUrl.EndsWith(".gif"))
                             continue;
 
                         UpdateBlogCounter(ref photos, ref totalDownloads);
@@ -398,7 +398,7 @@ namespace TumblThree.Applications.Downloader
                     }
                 }
             }
-            if (blog.DownloadVideo == true)
+            if (blog.DownloadVideo)
             {
                 foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "video" &&
                 (!tags.Any()) ? true : posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
@@ -424,7 +424,7 @@ namespace TumblThree.Applications.Downloader
                     }
                 }
             }
-            if (blog.DownloadAudio == true)
+            if (blog.DownloadAudio)
             {
                 foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "audio" &&
                 (!tags.Any()) ? true : posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
@@ -442,7 +442,7 @@ namespace TumblThree.Applications.Downloader
 
                 }
             }
-            if (blog.DownloadText == true)
+            if (blog.DownloadText)
             {
                 foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "regular" &&
                 (!tags.Any()) ? true : posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
@@ -452,7 +452,7 @@ namespace TumblThree.Applications.Downloader
                     sharedDownloads.Add(Tuple.Create(PostTypes.Text, textBody, post.Attribute("id").Value));
                 }
             }
-            if (blog.DownloadQuote == true)
+            if (blog.DownloadQuote)
             {
                 foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "quote" &&
                 (!tags.Any()) ? true : posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
@@ -462,7 +462,7 @@ namespace TumblThree.Applications.Downloader
                     sharedDownloads.Add(Tuple.Create(PostTypes.Quote, textBody, post.Attribute("id").Value));
                 }
             }
-            if (blog.DownloadLink == true)
+            if (blog.DownloadLink)
             {
                 foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "link" &&
                 (!tags.Any()) ? true : posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
@@ -472,7 +472,7 @@ namespace TumblThree.Applications.Downloader
                     sharedDownloads.Add(Tuple.Create(PostTypes.Link, textBody, post.Attribute("id").Value));
                 }
             }
-            if (blog.DownloadConversation == true)
+            if (blog.DownloadConversation)
             {
                 foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "conversation" &&
                 (!tags.Any()) ? true : posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
@@ -482,7 +482,7 @@ namespace TumblThree.Applications.Downloader
                     sharedDownloads.Add(Tuple.Create(PostTypes.Conversation, textBody, post.Attribute("id").Value));
                 }
             }
-            if (blog.CreatePhotoMeta == true)
+            if (blog.CreatePhotoMeta)
             {
                 foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "photo" &&
                 (!tags.Any()) ? true : posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
@@ -493,7 +493,7 @@ namespace TumblThree.Applications.Downloader
                     sharedDownloads.Add(Tuple.Create(PostTypes.PhotoMeta, textBody,  post.Attribute("id").Value));
                 }
             }
-            if (blog.CreateVideoMeta == true)
+            if (blog.CreateVideoMeta)
             {
                 foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "video" &&
                 (!tags.Any()) ? true : posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
@@ -504,7 +504,7 @@ namespace TumblThree.Applications.Downloader
                     sharedDownloads.Add(Tuple.Create(PostTypes.VideoMeta, textBody, post.Attribute("id").Value));
                 }
             }
-            if (blog.CreateAudioMeta == true)
+            if (blog.CreateAudioMeta)
             {
                 foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "audio" &&
                 (!tags.Any()) ? true : posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))

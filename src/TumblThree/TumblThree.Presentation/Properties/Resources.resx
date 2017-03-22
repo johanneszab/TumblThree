@@ -451,7 +451,7 @@
     <value>Throttles the bandwidth of the downloader</value>
   </data>
   <data name="ToolTipLimitBandwidthDescription" xml:space="preserve">
-    <value>Sets the maximum bandwidth available for the downloader in kbyes/s.</value>
+    <value>Sets the maximum bandwidth available for the downloader in kbytes/s.</value>
   </data>
   <data name="LimitScan" xml:space="preserve">
     <value>Limit the scan bandwidth</value>

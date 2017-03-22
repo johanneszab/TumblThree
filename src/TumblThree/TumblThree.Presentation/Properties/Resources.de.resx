@@ -430,7 +430,7 @@
     <value>Lade die angegebenen Größen</value>
   </data>
   <data name="ToolTipForceSize" xml:space="preserve">
-    <value>Läde die ausgewählte Auflösung von Bildern auch wenn die Größe nicht angeboten wurde.</value>
+    <value>Lädt die ausgewählte Auflösung von Bildern auch wenn die Größe nicht angeboten wurde.</value>
   </data>
   <data name="ToolTipForceSizeDescription" xml:space="preserve">
     <value>Falls der Crawler nur kleinere Auflösungen als angegeben findet bewirkt diese Option das die URLs auf die angegebene Auflösung umbennent werden. Die Dateien sind immer vorhanden und ermöglichen manchmal eine größere Auflösung oder sind bloß umbenannte kleinere Auflösungen. Es ist sicher dies zu aktivieren.</value>
@@ -485,5 +485,17 @@
   </data>
   <data name="UIntTypeError" xml:space="preserve">
     <value>Der Wert muss vom Typ Integer sein.</value>
+  </data>
+  <data name="CheckForUpdates" xml:space="preserve">
+    <value>Auf neue Version prüfen</value>
+  </data>
+  <data name="LimitConnections" xml:space="preserve">
+    <value>Limitiere Tumblr Api Verbindungen</value>
+  </data>
+  <data name="ToolTipLimitConnections" xml:space="preserve">
+    <value>Begrenzt Verbindungen zur Tumblr API.</value>
+  </data>
+  <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
+    <value>Ein zu hoher Wert führt zu abgelehnten Verbindungen (429 -- Limit Exceeded) zur der Tumblr API. Ein zu kleiner Wert verringert die Downloadgeschwindigkeit.</value>
   </data>
 </root>

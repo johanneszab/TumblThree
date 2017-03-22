@@ -21,6 +21,7 @@ namespace TumblThree.Applications.ViewModels
         private readonly FolderBrowserDataModel folderBrowser;
         private DelegateCommand displayFolderBrowserCommand;
         private DelegateCommand authenticateCommand;
+        private DelegateCommand saveCommand;
         private DelegateCommand enableAutoDownloadCommand;
         private readonly ExportFactory<AuthenticateViewModel> authenticateViewModelFactory;
         private string downloadLocation;
@@ -64,8 +65,6 @@ namespace TumblThree.Applications.ViewModels
         private bool createAudioMeta;
         private string timerInterval;
 
-        //private bool isloaded = false;
-
         [ImportingConstructor]
         public SettingsViewModel(ISettingsView view, IShellService shellService, CrawlerService crawlerService, ExportFactory<AuthenticateViewModel> authenticateViewModelFactory)
             : base(view)
@@ -77,6 +76,7 @@ namespace TumblThree.Applications.ViewModels
             this.folderBrowser = new FolderBrowserDataModel();
             this.displayFolderBrowserCommand = new DelegateCommand(DisplayFolderBrowser);
             this.authenticateCommand = new DelegateCommand(Authenticate);
+            this.saveCommand = new DelegateCommand(Save);
             this.enableAutoDownloadCommand = new DelegateCommand(EnableAutoDownload);
 
             Load();
@@ -90,6 +90,14 @@ namespace TumblThree.Applications.ViewModels
         public CrawlerService CrawlerService { get; }
 
         public FolderBrowserDataModel FolderBrowser { get { return folderBrowser; } }
+
+        public ICommand DisplayFolderBrowserCommand { get { return displayFolderBrowserCommand; } }
+
+        public ICommand AuthenticateCommand { get { return authenticateCommand; } }
+
+        public ICommand SaveCommand { get { return saveCommand; } }
+
+        public ICommand EnableAutoDownloadCommand { get { return enableAutoDownloadCommand; } }
 
         public void ShowDialog(object owner)
         {
@@ -336,6 +344,108 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref timerInterval, value); }
         }
 
+        private void ViewClosed(object sender, EventArgs e)
+        {
+            if (enableAutoDownloadCommand.CanExecute(null))
+            {
+                enableAutoDownloadCommand.Execute(null);
+            }
+        }
+
+        private void EnableAutoDownload()
+        {
+            if (AutoDownload)
+            {
+                if (CrawlerService.IsTimerSet == false)
+                {
+                    TimeSpan alertTime;
+                    TimeSpan.TryParse(settings.TimerInterval, out alertTime);
+                    DateTime current = DateTime.Now;
+                    TimeSpan timeToGo = alertTime - current.TimeOfDay;
+                    if (timeToGo < TimeSpan.Zero)
+                    {
+                        // time already passed
+                        timeToGo = timeToGo.Add(new TimeSpan(24, 00, 00));
+                    }
+                    CrawlerService.Timer = new System.Threading.Timer(x =>
+                    {
+                        this.OnTimedEvent();
+                    }, null, timeToGo, Timeout.InfiniteTimeSpan);
+
+                    CrawlerService.IsTimerSet = true;
+                }
+            }
+            else
+            {
+                if (CrawlerService.Timer != null)
+                {
+                    CrawlerService.Timer.Dispose();
+                    CrawlerService.IsTimerSet = false;
+                }
+            }
+        }
+
+        private void OnTimedEvent()
+        {
+            if (CrawlerService.AutoDownloadCommand.CanExecute(null))
+                QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => CrawlerService.AutoDownloadCommand.Execute(null)));
+            CrawlerService.Timer.Change(new TimeSpan(24, 00, 00), Timeout.InfiniteTimeSpan);
+        }
+
+        private void DisplayFolderBrowser()
+        {
+            System.Windows.Forms.FolderBrowserDialog dialog = new System.Windows.Forms.FolderBrowserDialog();
+            dialog.SelectedPath = DownloadLocation;
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                DownloadLocation = dialog.SelectedPath;
+            }
+        }
+
+        private void Authenticate()
+        {
+            try
+            {
+                ShellService.OAuthManager["consumer_key"] = ApiKey;
+                ShellService.OAuthManager["consumer_secret"] = SecretKey;
+                OAuthResponse requestToken =
+                    ShellService.OAuthManager.AcquireRequestToken(settings.RequestTokenUrl, "POST");
+                var url = settings.AuthorizeUrl + @"?oauth_token=" + ShellService.OAuthManager["token"];
+
+                var authenticateViewModel = authenticateViewModelFactory.CreateExport().Value;
+                authenticateViewModel.AddUrl(url);
+                authenticateViewModel.ShowDialog(ShellService.ShellView);
+                string oauthTokenUrl = authenticateViewModel.GetUrl();
+
+                Regex regex = new Regex("oauth_verifier=(.*)");
+                string oauthVerifer = regex.Match(oauthTokenUrl).Groups[1].ToString();
+
+                //FIXME: 401 (Unauthorized): "oauth_signature does not match expected value"
+                OAuthResponse accessToken =
+                    ShellService.OAuthManager.AcquireAccessToken(settings.AccessTokenUrl, "POST", oauthVerifer);
+
+                regex = new Regex("oauth_token=(.*)&oauth_token_secret");
+                OAuthToken = regex.Match(accessToken.AllText).Groups[1].ToString();
+
+                regex = new Regex("oauth_token_secret=(.*)");
+                OAuthTokenSecret = regex.Match(accessToken.AllText).Groups[1].ToString();
+
+                ShellService.OAuthManager["token"] = OAuthToken;
+                ShellService.OAuthManager["token_secret"] = OAuthTokenSecret;
+            }
+            catch (System.Net.WebException ex)
+            {
+                Logger.Error("SettingsViewModel:Authenticate: {0}", ex);
+                ShellService.ShowError(ex, Resources.AuthenticationFailure, ex.Message);
+                return;
+            }
+        }
+
+        public void Load()
+        {
+            LoadSettings();
+        }
+
         private void LoadSettings()
         {
             if (settings != null)
@@ -426,14 +536,11 @@ namespace TumblThree.Applications.ViewModels
             }
         }
 
-        private void ViewClosed(object sender, EventArgs e)
+        private void Save()
         {
             SaveSettings();
-            if (enableAutoDownloadCommand.CanExecute(null))
-            {
-                enableAutoDownloadCommand.Execute(null);
-            }
         }
+
         private void SaveSettings()
         {
             settings.DownloadLocation = DownloadLocation;
@@ -476,106 +583,6 @@ namespace TumblThree.Applications.ViewModels
             settings.ProxyHost = ProxyHost;
             settings.ProxyPort = ProxyPort;
             settings.TimerInterval = TimerInterval;
-        }
-
-        public void Load()
-        {
-            LoadSettings();
-        }
-
-        public ICommand DisplayFolderBrowserCommand { get { return displayFolderBrowserCommand; } }
-
-        public ICommand AuthenticateCommand { get { return authenticateCommand; } }
-
-        public ICommand EnableAutoDownloadCommand { get { return enableAutoDownloadCommand; } }
-
-        private void EnableAutoDownload()
-        {
-            if (AutoDownload)
-            {
-                if (CrawlerService.IsTimerSet == false)
-                {
-                    TimeSpan alertTime;
-                    TimeSpan.TryParse(settings.TimerInterval, out alertTime);
-                    DateTime current = DateTime.Now;
-                    TimeSpan timeToGo = alertTime - current.TimeOfDay;
-                    if (timeToGo < TimeSpan.Zero)
-                    {
-                        // time already passed
-                        timeToGo = timeToGo.Add(new TimeSpan(24, 00, 00));
-                    }
-                    CrawlerService.Timer = new System.Threading.Timer(x =>
-                    {
-                        this.OnTimedEvent();
-                    }, null, timeToGo, Timeout.InfiniteTimeSpan);
-
-                    CrawlerService.IsTimerSet = true;
-                }
-            }
-            else
-            {
-                if (CrawlerService.Timer != null)
-                {
-                    CrawlerService.Timer.Dispose();
-                    CrawlerService.IsTimerSet = false;
-                }
-            }
-        }
-
-        private void OnTimedEvent()
-        {
-            if (CrawlerService.AutoDownloadCommand.CanExecute(null))
-                QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => CrawlerService.AutoDownloadCommand.Execute(null)));
-            CrawlerService.Timer.Change(new TimeSpan(24, 00, 00), Timeout.InfiniteTimeSpan);
-        }
-
-        private void DisplayFolderBrowser()
-        {
-            System.Windows.Forms.FolderBrowserDialog dialog = new System.Windows.Forms.FolderBrowserDialog();
-            dialog.SelectedPath = DownloadLocation;
-            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                DownloadLocation = dialog.SelectedPath;
-            }
-        }
-
-        private void Authenticate()
-        {
-            try
-            {
-                ShellService.OAuthManager["consumer_key"] = ApiKey;
-                ShellService.OAuthManager["consumer_secret"] = SecretKey;
-                OAuthResponse requestToken =
-                    ShellService.OAuthManager.AcquireRequestToken(settings.RequestTokenUrl, "POST");
-                var url = settings.AuthorizeUrl + @"?oauth_token=" + ShellService.OAuthManager["token"];
-
-                var authenticateViewModel = authenticateViewModelFactory.CreateExport().Value;
-                authenticateViewModel.AddUrl(url);
-                authenticateViewModel.ShowDialog(ShellService.ShellView);
-                string oauthTokenUrl = authenticateViewModel.GetUrl();
-
-                Regex regex = new Regex("oauth_verifier=(.*)");
-                string oauthVerifer = regex.Match(oauthTokenUrl).Groups[1].ToString();
-
-                //FIXME: 401 (Unauthorized): "oauth_signature does not match expected value"
-                OAuthResponse accessToken =
-                    ShellService.OAuthManager.AcquireAccessToken(settings.AccessTokenUrl, "POST", oauthVerifer);
-
-                regex = new Regex("oauth_token=(.*)&oauth_token_secret");
-                OAuthToken = regex.Match(accessToken.AllText).Groups[1].ToString();
-
-                regex = new Regex("oauth_token_secret=(.*)");
-                OAuthTokenSecret = regex.Match(accessToken.AllText).Groups[1].ToString();
-
-                ShellService.OAuthManager["token"] = OAuthToken;
-                ShellService.OAuthManager["token_secret"] = OAuthTokenSecret;
-            }
-            catch (System.Net.WebException ex)
-            {
-                Logger.Error("SettingsViewModel:Authenticate: {0}", ex);
-                ShellService.ShowError(ex, Resources.AuthenticationFailure, ex.Message);
-                return;
-            }
         }
 
         private void FolderBrowserPropertyChanged(object sender, PropertyChangedEventArgs e)

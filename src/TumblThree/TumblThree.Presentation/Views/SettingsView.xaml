@@ -332,7 +332,7 @@
                         </ToolTip>
                     </Button.ToolTip>
                 </Button>
-                <Button Height="Auto" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="{x:Static p:Resources.Save}" Margin="10" MinWidth="50" Click="closeWindow"/>
+                <Button Command="{Binding SaveCommand}" Height="Auto" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="{x:Static p:Resources.Save}" Margin="10" MinWidth="50" Click="closeWindow"/>
             </Grid>
         </Grid>
     </ScrollViewer>

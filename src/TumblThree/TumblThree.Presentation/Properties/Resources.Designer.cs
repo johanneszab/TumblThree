@@ -1123,7 +1123,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sets the maximum bandwidth available for the downloader in kbyes/s..
+        ///   Looks up a localized string similar to Sets the maximum bandwidth available for the downloader in kbytes/s..
         /// </summary>
         public static string ToolTipLimitBandwidthDescription {
             get {

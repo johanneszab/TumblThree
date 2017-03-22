@@ -148,7 +148,7 @@ namespace TumblThree.Applications.Controllers
                             BlogManagerFinishedLoading(this, EventArgs.Empty);
                         }
 
-                        if (shellService.Settings.CheckOnlineStatusAtStartup == true)
+                        if (shellService.Settings.CheckOnlineStatusAtStartup)
                         {
                             foreach (var file in files)
                             {
