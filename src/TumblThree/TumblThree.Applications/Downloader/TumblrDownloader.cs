@@ -692,7 +692,7 @@ namespace TumblThree.Applications.Downloader
                                         url = currentImageUrl.Item2;
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), fileName);
 
-                                        if (!CheckIfFileExistsInDB(url) ^ !CheckIfBlogShouldCheckDirectory(url))
+                                        if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(url)))
                                         {
                                             UpdateProgressQueueInformation(progress, fileName);
                                             DownloadBinaryFile(fileLocation, url);
@@ -713,7 +713,7 @@ namespace TumblThree.Applications.Downloader
                                         url = currentImageUrl.Item2;
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), fileName);
 
-                                        if (!CheckIfFileExistsInDB(url) ^ !CheckIfBlogShouldCheckDirectory(url))
+                                        if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(url)))
                                         {
                                             UpdateProgressQueueInformation(progress, fileName);
                                             DownloadBinaryFile(fileLocation, url);
@@ -731,7 +731,7 @@ namespace TumblThree.Applications.Downloader
                                         url = currentImageUrl.Item2;
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), currentImageUrl.Item3 + ".swf");
 
-                                        if (!CheckIfFileExistsInDB(url) ^ !CheckIfBlogShouldCheckDirectory(url))
+                                        if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(url)))
                                         {
                                             UpdateProgressQueueInformation(progress, fileName);
                                             DownloadBinaryFile(fileLocation, url);
