@@ -61,6 +61,15 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your application is up to date..
+        /// </summary>
+        public static string ApplicationUpToDate {
+            get {
+                return ResourceManager.GetString("ApplicationUpToDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Audio Caption: {0}.
         /// </summary>
         public static string AudioCaption {
@@ -399,6 +408,15 @@ namespace TumblThree.Applications.Properties {
         public static string MaxBytePerSecond {
             get {
                 return ResourceManager.GetString("MaxBytePerSecond", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New version available for download : {0}.
+        /// </summary>
+        public static string NewVersionAvailable {
+            get {
+                return ResourceManager.GetString("NewVersionAvailable", resourceCulture);
             }
         }
         

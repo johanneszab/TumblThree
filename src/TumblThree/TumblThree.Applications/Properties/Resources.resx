@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ApplicationUpToDate" xml:space="preserve">
+    <value>Your application is up to date.</value>
+  </data>
   <data name="AudioCaption" xml:space="preserve">
     <value>Audio Caption: {0}</value>
   </data>
@@ -230,6 +233,9 @@
   </data>
   <data name="MaxBytePerSecond" xml:space="preserve">
     <value>MaxBytesPerSecond has to be &gt;0</value>
+  </data>
+  <data name="NewVersionAvailable" xml:space="preserve">
+    <value>New version available for download : {0}</value>
   </data>
   <data name="PhotoCaption" xml:space="preserve">
     <value>Photo Caption: {0}</value>

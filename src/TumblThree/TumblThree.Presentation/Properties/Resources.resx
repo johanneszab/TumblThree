@@ -510,4 +510,10 @@
   <data name="ToolTipForceRescanDescription" xml:space="preserve">
     <value>Forces a complete scan using the Tumblr api.</value>
   </data>
+  <data name="CheckForUpdates" xml:space="preserve">
+    <value>Check for Updates</value>
+  </data>
+  <data name="DownloadNow" xml:space="preserve">
+    <value>Download Now</value>
+  </data>
 </root>

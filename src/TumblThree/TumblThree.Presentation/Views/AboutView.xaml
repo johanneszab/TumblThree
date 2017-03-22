@@ -35,6 +35,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <Label Content="{x:Static p:Resources.Product}" Grid.Row="0"/>
@@ -79,6 +80,9 @@
                         </Run>
                     </TextBlock>
                 </Label>
+                <Button Content="{x:Static p:Resources.CheckForUpdates}" Command="{Binding CheckForUpdatesCommand}" Grid.Row="7" MinHeight="26" Margin="6"/>
+                <Label Content="{Binding UpdateText}" Grid.Column="1" Grid.Row="7" MinHeight="26" Margin="6"/>
+                <Button Content="{x:Static p:Resources.DownloadNow}" Command="{Binding DownloadCommand}" Visibility="{Binding IsLatestVersionAvailable,Converter={StaticResource BoolToVisibilityConverter}}" Grid.Column="1" Grid.Row="7" MinHeight="26" Margin="6"/>
             </Grid>
         </StackPanel>
     </DockPanel>

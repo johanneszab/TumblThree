@@ -142,6 +142,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check for Updates.
+        /// </summary>
+        public static string CheckForUpdates {
+            get {
+                return ResourceManager.GetString("CheckForUpdates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Check blog online status on startup.
         /// </summary>
         public static string CheckStatus {
@@ -336,6 +345,15 @@ namespace TumblThree.Presentation.Properties {
         public static string DownloadLocation {
             get {
                 return ResourceManager.GetString("DownloadLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download Now.
+        /// </summary>
+        public static string DownloadNow {
+            get {
+                return ResourceManager.GetString("DownloadNow", resourceCulture);
             }
         }
         
