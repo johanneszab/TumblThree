@@ -125,10 +125,10 @@ namespace TumblThree.Applications.Controllers
 
         private Task SaveCurrentSelectedFileAsync()
         {
-            return Task.Run(() => SaveChanges(DetailsViewModel.BlogFile));
+            return SaveChangesAsync(DetailsViewModel.BlogFile);
         }
 
-        private void SaveChanges(TumblrBlog blogFile)
+        private async Task SaveChangesAsync(TumblrBlog blogFile)
         {
             if (blogFile == null)
             {
