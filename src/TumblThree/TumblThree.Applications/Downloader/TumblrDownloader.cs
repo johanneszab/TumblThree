@@ -161,6 +161,14 @@ namespace TumblThree.Applications.Downloader
                 .ToString();
         }
 
+        /// <returns>
+        /// Return the url without the size and type suffix (e.g. https://68.media.tumblr.com/51a99943f4aa7068b6fd9a6b36e4961b/tumblr_mnj6m9Huml1qat3lvo1).
+        /// </returns>
+        private string GetTumblrCoreImageUrl(string url)
+        {
+            return url.Split('_')[0] + "_" + url.Split('_')[1];
+        }
+
         private int DetermineDuplicates(IEnumerable<Tuple<PostTypes, string, string>> source, PostTypes type)
         {
             return source.Where(url => url.Item1.Equals(type))
@@ -692,7 +700,7 @@ namespace TumblThree.Applications.Downloader
                                         url = currentImageUrl.Item2;
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), fileName);
 
-                                        if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(url)))
+                                        if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(GetTumblrCoreImageUrl(url))))
                                         {
                                             UpdateProgressQueueInformation(progress, fileName);
                                             DownloadBinaryFile(fileLocation, url);
