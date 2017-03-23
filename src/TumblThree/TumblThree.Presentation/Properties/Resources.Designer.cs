@@ -385,6 +385,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download url list.
+        /// </summary>
+        public static string DownloadUrlList {
+            get {
+                return ResourceManager.GetString("DownloadUrlList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Download video meta.
         /// </summary>
         public static string DownloadVideoMeta {
@@ -1101,6 +1110,24 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipDetailsStatsDescription {
             get {
                 return ResourceManager.GetString("ToolTipDetailsStatsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download a url list..
+        /// </summary>
+        public static string ToolTipDownloadUrlList {
+            get {
+                return ResourceManager.GetString("ToolTipDownloadUrlList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloads a url list of the binary files instead of the actual files.
+        /// </summary>
+        public static string ToolTipDownloadUrlListDescription {
+            get {
+                return ResourceManager.GetString("ToolTipDownloadUrlListDescription", resourceCulture);
             }
         }
         

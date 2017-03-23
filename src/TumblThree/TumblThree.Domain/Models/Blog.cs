@@ -24,6 +24,7 @@ namespace TumblThree.Domain.Models
         private bool online;
         private bool dirty;
         private bool checkDirectoryForFiles;
+        private bool downloadUrlList;
         private string notes;
         private IList<string> links;
         private Exception loadError;
@@ -128,6 +129,12 @@ namespace TumblThree.Domain.Models
         {
             get { return checkDirectoryForFiles; }
             set { SetProperty(ref checkDirectoryForFiles, value); Dirty = true; }
+        }
+
+        public bool DownloadUrlList
+        {
+            get { return downloadUrlList; }
+            set { SetProperty(ref downloadUrlList, value); Dirty = true; }
         }
 
         public bool Dirty

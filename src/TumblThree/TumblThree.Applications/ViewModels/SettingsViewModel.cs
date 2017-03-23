@@ -52,6 +52,7 @@ namespace TumblThree.Applications.ViewModels
         private bool removeIndexAfterCrawl;
         private bool forceSize;
         private bool checkDirectoryForFiles;
+        private bool downloadUrlList;
         private string proxyHost;
         private string proxyPort;
         private bool downloadImages;
@@ -271,6 +272,12 @@ namespace TumblThree.Applications.ViewModels
         {
             get { return checkDirectoryForFiles; }
             set { SetProperty(ref checkDirectoryForFiles, value); }
+        }
+
+        public bool DownloadUrlList
+        {
+            get { return downloadUrlList; }
+            set { SetProperty(ref downloadUrlList, value); }
         }
 
         public string ProxyHost
@@ -495,6 +502,7 @@ namespace TumblThree.Applications.ViewModels
                 AutoDownload = settings.AutoDownload;
                 ForceSize = settings.ForceSize;
                 CheckDirectoryForFiles = settings.CheckDirectoryForFiles;
+                DownloadUrlList = settings.DownloadUrlList;
                 ProxyHost = settings.ProxyHost;
                 ProxyPort = settings.ProxyPort;
                 TimerInterval = settings.TimerInterval;
@@ -539,6 +547,7 @@ namespace TumblThree.Applications.ViewModels
                 AutoDownload = false;
                 ForceSize = false;
                 CheckDirectoryForFiles = false;
+                DownloadUrlList = false;
                 ProxyHost = String.Empty;
                 ProxyPort = String.Empty;
                 TimerInterval = "22:40:00";
@@ -590,6 +599,7 @@ namespace TumblThree.Applications.ViewModels
             settings.AutoDownload = AutoDownload;
             settings.ForceSize = ForceSize;
             settings.CheckDirectoryForFiles = CheckDirectoryForFiles;
+            settings.DownloadUrlList = DownloadUrlList;
             settings.ProxyHost = ProxyHost;
             settings.ProxyPort = ProxyPort;
             settings.TimerInterval = TimerInterval;

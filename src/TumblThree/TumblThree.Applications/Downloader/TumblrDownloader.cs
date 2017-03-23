@@ -30,7 +30,6 @@ namespace TumblThree.Applications.Downloader
         private readonly TumblrBlog blog;
         private TumblrFiles files;
         private readonly object lockObjectProgress;
-        private readonly object lockObjectDownload;
         private readonly List<Tuple<PostTypes, string, string>> downloadList;
         private readonly BlockingCollection<Tuple<PostTypes, string, string>> sharedDownloads;
 
@@ -42,7 +41,6 @@ namespace TumblThree.Applications.Downloader
             this.blog = (TumblrBlog)blog;
             this.files = LoadTumblrFiles();
             this.lockObjectProgress = new object();
-            this.lockObjectDownload = new object();
             this.downloadList = new List<Tuple<PostTypes, string, string>>();
             this.sharedDownloads = new BlockingCollection<Tuple<PostTypes, string, string>>();
         }
@@ -240,13 +238,13 @@ namespace TumblThree.Applications.Downloader
         protected override bool CheckIfFileExistsInDB(string url)
         {
             var fileName = url.Split('/').Last();
-            Monitor.Enter(lockObject);
+            Monitor.Enter(lockObjectDb);
             if (files.Links.Contains(fileName))
             {
-                Monitor.Exit(lockObject);
+                Monitor.Exit(lockObjectDb);
                 return true;
             }
-            Monitor.Exit(lockObject);
+            Monitor.Exit(lockObjectDb);
             return false;
         }
 
@@ -657,6 +655,18 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
+        protected virtual bool DownloadBinaryFile(string fileLocation, string fileLocationUrlList, string url)
+        {
+            if (!blog.DownloadUrlList)
+            {
+                return DownloadBinaryFile(fileLocation, url);
+            }
+            else
+            {
+                return AppendToTextFile(fileLocationUrlList, url);
+            }
+        }
+
         private bool DownloadTumblrBlog(IProgress<DataModels.DownloadProgress> progress, CancellationToken ct, PauseToken pt)
         {
             int downloadedFiles = blog.DownloadedImages;
@@ -690,6 +700,7 @@ namespace TumblThree.Applications.Downloader
                                 string fileName = String.Empty;
                                 string url = String.Empty;
                                 string fileLocation = String.Empty;
+                                string fileLocationUrlList = String.Empty;
                                 string postId = String.Empty;
 
                                 // FIXME: Conditional with Polymorphism
@@ -699,11 +710,12 @@ namespace TumblThree.Applications.Downloader
                                         fileName = currentImageUrl.Item2.Split('/').Last();
                                         url = currentImageUrl.Item2;
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), fileName);
+                                        fileLocationUrlList = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNamePhotos));
 
                                         if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(GetTumblrCoreImageUrl(url))))
                                         {
                                             UpdateProgressQueueInformation(progress, fileName);
-                                            DownloadBinaryFile(fileLocation, url);
+                                            DownloadBinaryFile(fileLocation, fileLocationUrlList, url);
                                             UpdateBlogCounter(ref downloadedPhotos, ref downloadedFiles);
                                             UpdateBlogProgress(fileName, ref downloadedFiles);
                                             blog.DownloadedPhotos = downloadedPhotos;
@@ -720,11 +732,12 @@ namespace TumblThree.Applications.Downloader
                                         fileName = currentImageUrl.Item2.Split('/').Last();
                                         url = currentImageUrl.Item2;
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), fileName);
+                                        fileLocationUrlList = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameVideos));
 
                                         if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(url)))
                                         {
                                             UpdateProgressQueueInformation(progress, fileName);
-                                            DownloadBinaryFile(fileLocation, url);
+                                            DownloadBinaryFile(fileLocation, fileLocationUrlList, url);
                                             UpdateBlogCounter(ref downloadedVideos, ref downloadedFiles);
                                             UpdateBlogProgress(fileName, ref downloadedFiles);
                                             blog.DownloadedVideos = downloadedVideos;
@@ -738,11 +751,12 @@ namespace TumblThree.Applications.Downloader
                                         fileName = currentImageUrl.Item2.Split('/').Last();
                                         url = currentImageUrl.Item2;
                                         fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), currentImageUrl.Item3 + ".swf");
+                                        fileLocationUrlList = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameAudios));
 
                                         if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(url)))
                                         {
                                             UpdateProgressQueueInformation(progress, fileName);
-                                            DownloadBinaryFile(fileLocation, url);
+                                            DownloadBinaryFile(fileLocation, fileLocationUrlList, url);
                                             UpdateBlogCounter(ref downloadedAudios, ref downloadedFiles);
                                             UpdateBlogProgress(fileName, ref downloadedFiles);
                                             blog.DownloadedAudios = downloadedAudios;

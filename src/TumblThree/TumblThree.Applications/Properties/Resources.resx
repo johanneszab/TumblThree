@@ -189,6 +189,9 @@
   <data name="DiskFull" xml:space="preserve">
     <value>There is not enough space on the disk.</value>
   </data>
+  <data name="FileNameAudios" xml:space="preserve">
+    <value>audios_url.txt</value>
+  </data>
   <data name="FileNameConversations" xml:space="preserve">
     <value>conversations.txt</value>
   </data>
@@ -204,11 +207,17 @@
   <data name="FileNameMetaVideo" xml:space="preserve">
     <value>videos.txt</value>
   </data>
+  <data name="FileNamePhotos" xml:space="preserve">
+    <value>images_url.txt</value>
+  </data>
   <data name="FileNameQuotes" xml:space="preserve">
     <value>quotes.txt</value>
   </data>
   <data name="FileNameTexts" xml:space="preserve">
     <value>texts.txt</value>
+  </data>
+  <data name="FileNameVideos" xml:space="preserve">
+    <value>videos_url.txt</value>
   </data>
   <data name="Id3Album" xml:space="preserve">
     <value>Id3: Album: {0}</value>

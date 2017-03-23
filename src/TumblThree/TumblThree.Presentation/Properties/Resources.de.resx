@@ -507,4 +507,13 @@
   <data name="ToolTipCheckDirectoryForFilesDescription" xml:space="preserve">
     <value>Prüft die Datenbank und den Downloadordner auf schon geladene Dateien. Kann die Geschwindigkeit beeinflussen bei vielen Dateien.</value>
   </data>
+  <data name="DownloadUrlList" xml:space="preserve">
+    <value>Lade Urlliste</value>
+  </data>
+  <data name="ToolTipDownloadUrlList" xml:space="preserve">
+    <value>Lade eine Urllist.</value>
+  </data>
+  <data name="ToolTipDownloadUrlListDescription" xml:space="preserve">
+    <value>Läd eine Urlliste der Binärendateien anstatt der Dateien selbst.</value>
+  </data>
 </root>

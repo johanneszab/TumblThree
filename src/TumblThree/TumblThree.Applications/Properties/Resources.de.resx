@@ -273,4 +273,13 @@
   <data name="NewVersionAvailable" xml:space="preserve">
     <value>Neuere Version erhältlich : {0}</value>
   </data>
+  <data name="FileNameAudios" xml:space="preserve">
+    <value>audios_url.txt</value>
+  </data>
+  <data name="FileNamePhotos" xml:space="preserve">
+    <value>bilder_url.txt</value>
+  </data>
+  <data name="FileNameVideos" xml:space="preserve">
+    <value>videos_url.txt</value>
+  </data>
 </root>

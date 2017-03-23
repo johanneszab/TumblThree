@@ -19,7 +19,10 @@ namespace TumblThree.Applications.Downloader
     {
         private readonly IBlog blog;
         private readonly IShellService shellService;
-        protected readonly object lockObject;
+        protected readonly object lockObjectDb;
+        protected readonly object lockObjectDirectory;
+        protected readonly object lockObjectDownload;
+
 
         public Downloader(IShellService shellService): this(shellService, null)
         {
@@ -29,7 +32,9 @@ namespace TumblThree.Applications.Downloader
         {
             this.shellService = shellService;
             this.blog = blog;
-            this.lockObject = new object();
+            this.lockObjectDb = new object();
+            this.lockObjectDirectory = new object();
+            this.lockObjectDownload = new object();
             SetUp();
         }
 
@@ -133,13 +138,13 @@ namespace TumblThree.Applications.Downloader
         protected virtual bool CheckIfFileExistsInDB(string url)
         {
             var fileName = url.Split('/').Last();
-            Monitor.Enter(lockObject);
+            Monitor.Enter(lockObjectDb);
             if (blog.Links.Contains(fileName))
             {
-                Monitor.Exit(lockObject);
+                Monitor.Exit(lockObjectDb);
                 return true;
             }
-            Monitor.Exit(lockObject);
+            Monitor.Exit(lockObjectDb);
             return false;
         }
 
@@ -155,14 +160,14 @@ namespace TumblThree.Applications.Downloader
         protected virtual bool CheckIfFileExistsInDirectory(string url)
         {
             var fileName = url.Split('/').Last();
-            Monitor.Enter(lockObject);
+            Monitor.Enter(lockObjectDirectory);
             string blogPath = Path.Combine(Directory.GetParent(blog.Location).FullName, blog.Name);
             if (System.IO.File.Exists(Path.Combine(blogPath, fileName)))
             {
-                Monitor.Exit(lockObject);
+                Monitor.Exit(lockObjectDirectory);
                 return true;
             }
-            Monitor.Exit(lockObject);
+            Monitor.Exit(lockObjectDirectory);
             return false;
         }
 
@@ -200,9 +205,12 @@ namespace TumblThree.Applications.Downloader
         {
             try
             {
-                using (StreamWriter sw = new StreamWriter(fileLocation, true))
+                lock (lockObjectDownload)
                 {
-                    sw.WriteLine(text);
+                    using (StreamWriter sw = new StreamWriter(fileLocation, true))
+                    {
+                        sw.WriteLine(text);
+                    }
                 }
                 return true;
             }

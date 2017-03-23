@@ -277,6 +277,15 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to audios_url.txt.
+        /// </summary>
+        public static string FileNameAudios {
+            get {
+                return ResourceManager.GetString("FileNameAudios", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to conversations.txt.
         /// </summary>
         public static string FileNameConversations {
@@ -322,6 +331,15 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to images_url.txt.
+        /// </summary>
+        public static string FileNamePhotos {
+            get {
+                return ResourceManager.GetString("FileNamePhotos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to quotes.txt.
         /// </summary>
         public static string FileNameQuotes {
@@ -336,6 +354,15 @@ namespace TumblThree.Applications.Properties {
         public static string FileNameTexts {
             get {
                 return ResourceManager.GetString("FileNameTexts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to videos_url.txt.
+        /// </summary>
+        public static string FileNameVideos {
+            get {
+                return ResourceManager.GetString("FileNameVideos", resourceCulture);
             }
         }
         

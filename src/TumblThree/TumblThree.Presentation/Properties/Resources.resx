@@ -525,4 +525,13 @@
   <data name="ToolTipCheckDirectoryForFilesDescription" xml:space="preserve">
     <value>Checks the directory and the database for already downloaded files. Might negatively impact the download speed for large directories.</value>
   </data>
+  <data name="DownloadUrlList" xml:space="preserve">
+    <value>Download url list</value>
+  </data>
+  <data name="ToolTipDownloadUrlList" xml:space="preserve">
+    <value>Download a url list.</value>
+  </data>
+  <data name="ToolTipDownloadUrlListDescription" xml:space="preserve">
+    <value>Downloads a url list of the binary files instead of the actual files</value>
+  </data>
 </root>

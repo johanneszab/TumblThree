@@ -118,6 +118,7 @@ namespace TumblThree.Applications.Controllers
                 ForceSize = false,
                 ForceRescan = false,
                 CheckDirectoryForFiles = false,
+                DownloadUrlList = false,
                 Dirty = false
             };
         }
@@ -162,6 +163,7 @@ namespace TumblThree.Applications.Controllers
                     blog.ForceSize = blogFile.ForceSize;
                     blog.ForceRescan = blogFile.ForceRescan;
                     blog.CheckDirectoryForFiles = blogFile.CheckDirectoryForFiles;
+                    blog.DownloadUrlList = blogFile.DownloadUrlList;
                     blog.Dirty = true;                
                 }
             }
