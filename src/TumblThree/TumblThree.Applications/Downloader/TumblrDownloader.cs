@@ -28,7 +28,7 @@ namespace TumblThree.Applications.Downloader
         private readonly IShellService shellService;
         private readonly ICrawlerService crawlerService;
         private readonly TumblrBlog blog;
-        private TumblrFiles files;
+        private readonly TumblrFiles files;
         private readonly object lockObjectProgress;
         private readonly List<Tuple<PostTypes, string, string>> downloadList;
         private readonly BlockingCollection<Tuple<PostTypes, string, string>> sharedDownloads;
@@ -222,7 +222,7 @@ namespace TumblThree.Applications.Downloader
             XDocument document = GetApiPage(1);
 
             int totalPosts = 0;
-            Int32.TryParse(document.Element("tumblr").Element("posts").Attribute("total").Value, out totalPosts);
+            Int32.TryParse(document?.Element("tumblr").Element("posts").Attribute("total").Value, out totalPosts);
             blog.Posts = totalPosts;
         }
 
@@ -231,7 +231,7 @@ namespace TumblThree.Applications.Downloader
             XDocument document = GetApiPage(1);
 
             ulong highestId = 0;
-            UInt64.TryParse(document.Element("tumblr").Element("posts").Element("post")?.Attribute("id").Value, out highestId);
+            UInt64.TryParse(document?.Element("tumblr").Element("posts").Element("post")?.Attribute("id").Value, out highestId);
             return highestId;
         }
 
@@ -310,7 +310,7 @@ namespace TumblThree.Applications.Downloader
                                 Interlocked.Add(ref links, document.Descendants("post").Where(post => post.Attribute("type").Value == "link").Count());
 
                                 ulong highestPostId = 0;
-                                UInt64.TryParse(document.Element("tumblr").Element("posts").Element("post")?.Attribute("id").Value, out highestId);
+                                UInt64.TryParse(document?.Element("tumblr").Element("posts").Element("post")?.Attribute("id").Value, out highestId);
 
                                 if (highestPostId < lastId)
                                     state.Break();

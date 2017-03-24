@@ -44,7 +44,16 @@ namespace TumblThree.Applications.Downloader
             {
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = "GET";
+                request.ProtocolVersion = HttpVersion.Version11;
                 request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
+                request.ContentType = "x-www-from-urlencoded";
+                request.KeepAlive = false;
+                request.ServicePoint.Expect100Continue = false;
+                request.AllowAutoRedirect = true;
+                request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+                request.Pipelined = true;
+                request.Timeout = shellService.Settings.TimeOut * 1000;
+                ServicePointManager.DefaultConnectionLimit = 400;
                 if (!String.IsNullOrEmpty(shellService.Settings.ProxyHost))
                 {
                     request.Proxy = new WebProxy(shellService.Settings.ProxyHost, Int32.Parse(shellService.Settings.ProxyPort));
@@ -53,15 +62,6 @@ namespace TumblThree.Applications.Downloader
                 {
                     request.Proxy = null;
                 }
-                request.KeepAlive = true;
-                request.AllowAutoRedirect = true;
-                request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-                request.Pipelined = true;
-                request.Timeout = shellService.Settings.TimeOut * 1000;
-                request.ServicePoint.Expect100Continue = false;
-                ServicePointManager.DefaultConnectionLimit = 400;
-                //request.ContentLength = 0;
-                //request.ContentType = "x-www-from-urlencoded";
 
                 int bandwidth = 2000000;
                 if (shellService.Settings.LimitScanBandwidth)

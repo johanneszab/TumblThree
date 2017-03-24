@@ -391,6 +391,7 @@ namespace TumblThree.Applications.Controllers
             blog.SkipGif = shellService.Settings.SkipGif;
             blog.ForceSize = shellService.Settings.ForceSize;
             blog.CheckDirectoryForFiles = shellService.Settings.CheckDirectoryForFiles;
+            blog.DownloadUrlList = shellService.Settings.DownloadUrlList;
         }
 
         private void OnClipboardContentChanged(object sender, EventArgs e)
