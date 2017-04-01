@@ -3,6 +3,7 @@ using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Timers;
 using TumblThree.Applications.Properties;
 
@@ -151,7 +152,7 @@ namespace TumblThree.Applications
         #endregion
 
 
-        public static ThrottledStream ReadFromURLIntoStream(string url, int bandwidthInKb, int timeoutInSeconds, string proxyHost, string proxyPort)
+        public static async Task<ThrottledStream> ReadFromURLIntoStream(string url, int bandwidthInKb, int timeoutInSeconds, string proxyHost, string proxyPort)
         {
             // Create a web request to the URL
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
@@ -176,7 +177,7 @@ namespace TumblThree.Applications
             //request.ContentType = "x-www-from-urlencoded";
 
             // Get the web response
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            HttpWebResponse response = await request.GetResponseAsync() as HttpWebResponse;
 
             // Make sure the response is valid
             if (HttpStatusCode.OK == response.StatusCode)

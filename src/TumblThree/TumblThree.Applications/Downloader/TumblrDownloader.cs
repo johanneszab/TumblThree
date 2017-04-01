@@ -45,7 +45,7 @@ namespace TumblThree.Applications.Downloader
             this.sharedDownloads = new BlockingCollection<Tuple<PostTypes, string, string>>();
         }
 
-        protected new XDocument RequestData(string url)
+        protected new async Task<XDocument> RequestDataAsync(string url)
         {
             try
             {
@@ -76,7 +76,7 @@ namespace TumblThree.Applications.Downloader
                     bandwidth = shellService.Settings.Bandwidth;
                 }
 
-                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+                using (HttpWebResponse response = await request.GetResponseAsync() as HttpWebResponse)
                 {
                     using (ThrottledStream stream = new ThrottledStream(response.GetResponseStream(), (bandwidth / shellService.Settings.ParallelImages) * 1024))
                     {
@@ -112,7 +112,7 @@ namespace TumblThree.Applications.Downloader
             return url + "?" + UrlEncode(parameters);
         }
 
-        private XDocument GetApiPage(int pageId)
+        private async Task<XDocument> GetApiPageAsync(int pageId)
         {
             XDocument document = null;
 
@@ -121,28 +121,24 @@ namespace TumblThree.Applications.Downloader
             if (shellService.Settings.LimitConnections)
             {
                 crawlerService.Timeconstraint.Acquire();
-                document = RequestData(url);
+                document = await RequestDataAsync(url);
             }
             else {
-                document = RequestData(url);
+                document = await RequestDataAsync(url);
             }
             return document;
         }
 
-        public Task UpdateMetaInformation()
+        public async Task UpdateMetaInformationAsync()
         {
-            return Task.Factory.StartNew(() =>
-            {
-                XDocument document = GetApiPage(1);
+            XDocument document = await GetApiPageAsync(1);
 
-                if (document != null)
-                {
-                    blog.Title = document.Element("tumblr").Element("tumblelog").Attribute("title")?.Value;
-                    blog.Description = document.Element("tumblr").Element("tumblelog")?.Value;
-                    blog.TotalCount = Int32.Parse(document.Element("tumblr").Element("posts").Attribute("total")?.Value);
-                }
-            },
-            TaskCreationOptions.LongRunning);
+            if (document != null)
+            {
+                blog.Title = document.Element("tumblr").Element("tumblelog").Attribute("title")?.Value;
+                blog.Description = document.Element("tumblr").Element("tumblelog")?.Value;
+                blog.TotalCount = Int32.Parse(document.Element("tumblr").Element("posts").Attribute("total")?.Value);
+            }
         }
 
         private string ResizeTumblrImageUrl(string imageUrl)
@@ -216,19 +212,18 @@ namespace TumblThree.Applications.Downloader
             progress.Report(newProgress);
         }
 
-        private void UpdateTotalPostCount()
+        private async Task UpdateTotalPostCount()
         {
-
-            XDocument document = GetApiPage(1);
+            XDocument document = await GetApiPageAsync(1);
 
             int totalPosts = 0;
             Int32.TryParse(document?.Element("tumblr").Element("posts").Attribute("total").Value, out totalPosts);
             blog.Posts = totalPosts;
         }
 
-        private ulong GetHighestPostId()
+        private async Task<ulong> GetHighestPostId()
         {
-            XDocument document = GetApiPage(1);
+            XDocument document = await GetApiPageAsync(1);
 
             ulong highestId = 0;
             UInt64.TryParse(document?.Element("tumblr").Element("posts").Element("post")?.Attribute("id").Value, out highestId);
@@ -248,8 +243,10 @@ namespace TumblThree.Applications.Downloader
             return false;
         }
 
-        public Tuple<ulong, bool, List<Tuple<PostTypes, string, string>>> GetUrls(IProgress<DownloadProgress> progress, CancellationToken ct, PauseToken pt)
+        public async Task<Tuple<ulong, bool, List<Tuple<PostTypes, string, string>>>> GetUrls(IProgress<DownloadProgress> progress, CancellationToken ct, PauseToken pt)
         {
+            SemaphoreSlim ss = new SemaphoreSlim(shellService.Settings.ParallelScans);
+            List<Task> trackedTasks = new List<Task>();
             int totalDownloads = 0;
             int numberOfPostsCrawled = 0;
             int photos = 0;
@@ -264,6 +261,7 @@ namespace TumblThree.Applications.Downloader
             int audioMetas = 0;
             ulong lastId = blog.LastId;
             bool apiLimitHit = false;
+            bool loopCompleted = true;
 
             if (blog.ForceRescan)
             {
@@ -271,67 +269,76 @@ namespace TumblThree.Applications.Downloader
                 lastId = 0;
             }
 
-            UpdateTotalPostCount();
+            await UpdateTotalPostCount();
             int totalPosts = blog.Posts;
 
-            ulong highestId = GetHighestPostId();
+            ulong highestId = await GetHighestPostId();
 
             // Generate URL list of Images
             // the api shows 50 posts at max, determine the number of pages to crawl
             int totalPages = (totalPosts / 50) + 1;
 
-            var loopState = Parallel.For(0, totalPages,
-                        new ParallelOptions { MaxDegreeOfParallelism = (shellService.Settings.ParallelScans) },
-                        (i, state) =>
+            foreach (int pageNumber in Enumerable.Range(0, totalPages))
+            {
+                if (!loopCompleted)
+                {
+                    break;
+                }
+
+                if (ct.IsCancellationRequested)
+                {
+                    break;
+                }
+                if (pt.IsPaused)
+                    pt.WaitWhilePausedWithResponseAsyc().Wait();
+
+                await ss.WaitAsync();
+                trackedTasks.Add(Task.Run(async () =>
+                    {
+                        try
                         {
-                            if (ct.IsCancellationRequested)
+                            XDocument document = await GetApiPageAsync(pageNumber);
+
+                            if (document == null)
                             {
-                                state.Break();
-                            }
-                            if (pt.IsPaused)
-                                pt.WaitWhilePausedWithResponseAsyc().Wait();
-                            try
-                            {
-                                XDocument document = GetApiPage(i);
-
-                                if (document == null)
-                                {
-                                    apiLimitHit = true;
-                                }
-
-                                // only counts single images and photoset, no inline images
-                                //Interlocked.Add(ref photos, document.Descendants("post").Where(post => post.Attribute("type").Value == "photo").Count());
-                                //Interlocked.Add(ref photos, document.Descendants("photo").Count() - 1);
-                                Interlocked.Add(ref videos, document.Descendants("post").Where(post => post.Attribute("type").Value == "video").Count());
-                                Interlocked.Add(ref audios, document.Descendants("post").Where(post => post.Attribute("type").Value == "audio").Count());
-                                Interlocked.Add(ref texts, document.Descendants("post").Where(post => post.Attribute("type").Value == "regular").Count());
-                                Interlocked.Add(ref conversations, document.Descendants("post").Where(post => post.Attribute("type").Value == "conversation").Count());
-                                Interlocked.Add(ref quotes, document.Descendants("post").Where(post => post.Attribute("type").Value == "quote").Count());
-                                Interlocked.Add(ref links, document.Descendants("post").Where(post => post.Attribute("type").Value == "link").Count());
-
-                                ulong highestPostId = 0;
-                                UInt64.TryParse(document?.Element("tumblr").Element("posts").Element("post")?.Attribute("id").Value, out highestId);
-
-                                if (highestPostId < lastId)
-                                    state.Break();
-
-                                GetUrlsCore(document, ref totalDownloads, ref photos, ref photoMetas, ref videoMetas, ref audioMetas);
-                            }
-                            catch (Exception ex)
-                            {
-                                Console.WriteLine(ex.Data);
+                                apiLimitHit = true;
                             }
 
-                            numberOfPostsCrawled += 50;
-                            var newProgress = new DownloadProgress();
-                            newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressGetUrl, numberOfPostsCrawled, totalPosts);
-                            progress.Report(newProgress);
+                            // only counts single images and photoset, no inline images
+                            //Interlocked.Add(ref photos, document.Descendants("post").Where(post => post.Attribute("type").Value == "photo").Count());
+                            //Interlocked.Add(ref photos, document.Descendants("photo").Count() - 1);
+                            Interlocked.Add(ref videos, document.Descendants("post").Where(post => post.Attribute("type").Value == "video").Count());
+                            Interlocked.Add(ref audios, document.Descendants("post").Where(post => post.Attribute("type").Value == "audio").Count());
+                            Interlocked.Add(ref texts, document.Descendants("post").Where(post => post.Attribute("type").Value == "regular").Count());
+                            Interlocked.Add(ref conversations, document.Descendants("post").Where(post => post.Attribute("type").Value == "conversation").Count());
+                            Interlocked.Add(ref quotes, document.Descendants("post").Where(post => post.Attribute("type").Value == "quote").Count());
+                            Interlocked.Add(ref links, document.Descendants("post").Where(post => post.Attribute("type").Value == "link").Count());
+
+                            ulong highestPostId = 0;
+                            UInt64.TryParse(document?.Element("tumblr").Element("posts").Element("post")?.Attribute("id").Value, out highestId);
+
+                            if (highestPostId < lastId)
+                                loopCompleted = false;
+
+                            GetUrlsCore(document, ref totalDownloads, ref photos, ref photoMetas, ref videoMetas, ref audioMetas);
                         }
-                );
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Data);
+                        }
+
+                        numberOfPostsCrawled += 50;
+                        var newProgress = new DownloadProgress();
+                        newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressGetUrl, numberOfPostsCrawled, totalPosts);
+                        progress.Report(newProgress);
+                        ss.Release();
+                    }));
+            }
+            await Task.WhenAll(trackedTasks);
 
             sharedDownloads.CompleteAdding();
 
-            if (loopState.IsCompleted)
+            if (!ct.IsCancellationRequested && loopCompleted)
             {
                 blog.TotalCount = totalDownloads;
                 blog.Photos = photos;
@@ -655,20 +662,22 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        protected virtual bool DownloadBinaryFile(string fileLocation, string fileLocationUrlList, string url)
+        protected virtual async Task<bool> DownloadBinaryFile(string fileLocation, string fileLocationUrlList, string url)
         {
             if (!blog.DownloadUrlList)
             {
-                return DownloadBinaryFile(fileLocation, url);
+                return await DownloadBinaryFile(fileLocation, url);
             }
             else
             {
-                return AppendToTextFile(fileLocationUrlList, url);
+                return await AppendToTextFile(fileLocationUrlList, url);
             }
         }
 
-        private bool DownloadTumblrBlog(IProgress<DataModels.DownloadProgress> progress, CancellationToken ct, PauseToken pt)
+        private async Task<bool> DownloadTumblrBlog(IProgress<DataModels.DownloadProgress> progress, CancellationToken ct, PauseToken pt)
         {
+            SemaphoreSlim ss = new SemaphoreSlim(shellService.Settings.ParallelImages / crawlerService.ActiveItems.Count);
+            List<Task> trackedTasks = new List<Task>();
             int downloadedFiles = blog.DownloadedImages;
             int downloadedPhotos = blog.DownloadedPhotos;
             int downloadedVideos = blog.DownloadedVideos;
@@ -680,197 +689,201 @@ namespace TumblThree.Applications.Downloader
             int downloadedPhotoMetas = blog.DownloadedPhotoMetas;
             int downloadedVideoMetas = blog.DownloadedVideoMetas;
             int downloadedAudioMetas = blog.DownloadedAudioMetas;
+            bool loopCompleted = true;
 
             string blogPath = Directory.GetParent(blog.Location).FullName;
 
             CreateDataFolder();
 
-            var loopState = Parallel.ForEach(
-                            sharedDownloads.GetConsumingEnumerable(),
-                            new ParallelOptions { MaxDegreeOfParallelism = (shellService.Settings.ParallelImages / crawlerService.ActiveItems.Count) },
-                            (currentImageUrl, state) =>
+            foreach (var currentImageUrl in sharedDownloads.GetConsumingEnumerable())
+            {
+                if (ct.IsCancellationRequested)
+                {
+                    break;
+                }
+                if (pt.IsPaused)
+                    pt.WaitWhilePausedWithResponseAsyc().Wait();
+
+                await ss.WaitAsync();
+                trackedTasks.Add(Task.Run(async () =>
+                {
+                    string fileName = String.Empty;
+                    string url = String.Empty;
+                    string fileLocation = String.Empty;
+                    string fileLocationUrlList = String.Empty;
+                    string postId = String.Empty;
+
+                    // FIXME: Conditional with Polymorphism
+                    switch (currentImageUrl.Item1)
+                    {
+                        case PostTypes.Photo:
+                            fileName = currentImageUrl.Item2.Split('/').Last();
+                            url = currentImageUrl.Item2;
+                            fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), fileName);
+                            fileLocationUrlList = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNamePhotos));
+
+                            if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(GetTumblrCoreImageUrl(url))))
                             {
-                                if (ct.IsCancellationRequested)
+                                UpdateProgressQueueInformation(progress, fileName);
+                                await DownloadBinaryFile(fileLocation, fileLocationUrlList, url);
+                                UpdateBlogCounter(ref downloadedPhotos, ref downloadedFiles);
+                                UpdateBlogProgress(fileName, ref downloadedFiles);
+                                blog.DownloadedPhotos = downloadedPhotos;
+                                if (shellService.Settings.EnablePreview)
                                 {
-                                    state.Break();
+                                    if (!fileName.EndsWith(".gif"))
+                                        blog.LastDownloadedPhoto = Path.GetFullPath(fileLocation);
+                                    else
+                                        blog.LastDownloadedVideo = Path.GetFullPath(fileLocation);
                                 }
-                                if (pt.IsPaused)
-                                    pt.WaitWhilePausedWithResponseAsyc().Wait();
+                            }
+                            break;
+                        case PostTypes.Video:
+                            fileName = currentImageUrl.Item2.Split('/').Last();
+                            url = currentImageUrl.Item2;
+                            fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), fileName);
+                            fileLocationUrlList = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameVideos));
 
-                                string fileName = String.Empty;
-                                string url = String.Empty;
-                                string fileLocation = String.Empty;
-                                string fileLocationUrlList = String.Empty;
-                                string postId = String.Empty;
-
-                                // FIXME: Conditional with Polymorphism
-                                switch (currentImageUrl.Item1)
+                            if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(url)))
+                            {
+                                UpdateProgressQueueInformation(progress, fileName);
+                                await DownloadBinaryFile(fileLocation, fileLocationUrlList, url);
+                                UpdateBlogCounter(ref downloadedVideos, ref downloadedFiles);
+                                UpdateBlogProgress(fileName, ref downloadedFiles);
+                                blog.DownloadedVideos = downloadedVideos;
+                                if (shellService.Settings.EnablePreview)
                                 {
-                                    case PostTypes.Photo:
-                                        fileName = currentImageUrl.Item2.Split('/').Last();
-                                        url = currentImageUrl.Item2;
-                                        fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), fileName);
-                                        fileLocationUrlList = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNamePhotos));
-
-                                        if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(GetTumblrCoreImageUrl(url))))
-                                        {
-                                            UpdateProgressQueueInformation(progress, fileName);
-                                            DownloadBinaryFile(fileLocation, fileLocationUrlList, url);
-                                            UpdateBlogCounter(ref downloadedPhotos, ref downloadedFiles);
-                                            UpdateBlogProgress(fileName, ref downloadedFiles);
-                                            blog.DownloadedPhotos = downloadedPhotos;
-                                            if (shellService.Settings.EnablePreview)
-                                            {
-                                                if (!fileName.EndsWith(".gif"))
-                                                    blog.LastDownloadedPhoto = Path.GetFullPath(fileLocation);
-                                                else
-                                                    blog.LastDownloadedVideo = Path.GetFullPath(fileLocation);
-                                            }
-                                        }
-                                        break;
-                                    case PostTypes.Video:
-                                        fileName = currentImageUrl.Item2.Split('/').Last();
-                                        url = currentImageUrl.Item2;
-                                        fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), fileName);
-                                        fileLocationUrlList = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameVideos));
-
-                                        if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(url)))
-                                        {
-                                            UpdateProgressQueueInformation(progress, fileName);
-                                            DownloadBinaryFile(fileLocation, fileLocationUrlList, url);
-                                            UpdateBlogCounter(ref downloadedVideos, ref downloadedFiles);
-                                            UpdateBlogProgress(fileName, ref downloadedFiles);
-                                            blog.DownloadedVideos = downloadedVideos;
-                                            if (shellService.Settings.EnablePreview)
-                                            {
-                                                blog.LastDownloadedVideo = Path.GetFullPath(fileLocation);
-                                            }
-                                        }
-                                        break;
-                                    case PostTypes.Audio:
-                                        fileName = currentImageUrl.Item2.Split('/').Last();
-                                        url = currentImageUrl.Item2;
-                                        fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), currentImageUrl.Item3 + ".swf");
-                                        fileLocationUrlList = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameAudios));
-
-                                        if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(url)))
-                                        {
-                                            UpdateProgressQueueInformation(progress, fileName);
-                                            DownloadBinaryFile(fileLocation, fileLocationUrlList, url);
-                                            UpdateBlogCounter(ref downloadedAudios, ref downloadedFiles);
-                                            UpdateBlogProgress(fileName, ref downloadedFiles);
-                                            blog.DownloadedAudios = downloadedAudios;
-                                        }
-                                        break;
-                                    case PostTypes.Text:
-                                        url = currentImageUrl.Item2;
-                                        postId = currentImageUrl.Item3;
-                                        fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameTexts));
-
-                                        if (!CheckIfFileExistsInDB(postId))
-                                        {
-                                            UpdateProgressQueueInformation(progress, postId);
-                                            AppendToTextFile(fileLocation, url);
-                                            UpdateBlogCounter(ref downloadedTexts, ref downloadedFiles);
-                                            UpdateBlogProgress(postId, ref downloadedFiles);
-                                            blog.DownloadedTexts = downloadedTexts;
-                                        }
-                                        break;
-                                    case PostTypes.Quote:
-                                        url = currentImageUrl.Item2;
-                                        postId = currentImageUrl.Item3;
-                                        fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameQuotes));
-
-                                        if (!CheckIfFileExistsInDB(postId))
-                                        {
-                                            UpdateProgressQueueInformation(progress, postId);
-                                            AppendToTextFile(fileLocation, url);
-                                            UpdateBlogCounter(ref downloadedQuotes, ref downloadedFiles);
-                                            UpdateBlogProgress(postId, ref downloadedFiles);
-                                            blog.DownloadedQuotes = downloadedQuotes;
-                                        }
-                                        break;
-                                    case PostTypes.Link:
-                                        url = currentImageUrl.Item2;
-                                        postId = currentImageUrl.Item3;
-                                        fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameLinks));
-
-                                        if (!CheckIfFileExistsInDB(postId))
-                                        {
-                                            UpdateProgressQueueInformation(progress, postId);
-                                            AppendToTextFile(fileLocation, url);
-                                            UpdateBlogCounter(ref downloadedLinks, ref downloadedFiles);
-                                            UpdateBlogProgress(postId, ref downloadedFiles);
-                                            blog.DownloadedLinks = downloadedLinks;
-                                        }
-                                        break;
-                                    case PostTypes.Conversation:
-                                        url = currentImageUrl.Item2;
-                                        postId = currentImageUrl.Item3;
-                                        fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameConversations));
-
-                                        if (!CheckIfFileExistsInDB(postId))
-                                        {
-                                            UpdateProgressQueueInformation(progress, postId);
-                                            AppendToTextFile(fileLocation, url);
-                                            UpdateBlogCounter(ref downloadedConversations, ref downloadedFiles);
-                                            UpdateBlogProgress(postId, ref downloadedFiles);
-                                            blog.DownloadedConversations = downloadedConversations;
-                                        }
-                                        break;
-                                    case PostTypes.PhotoMeta:
-                                        url = currentImageUrl.Item2;
-                                        postId = currentImageUrl.Item3;
-                                        fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaPhoto));
-
-                                        if (!CheckIfFileExistsInDB(postId))
-                                        {
-                                            UpdateProgressQueueInformation(progress, postId);
-                                            AppendToTextFile(fileLocation, url);
-                                            UpdateBlogCounter(ref downloadedPhotoMetas, ref downloadedFiles);
-                                            UpdateBlogProgress(postId, ref downloadedFiles);
-                                            blog.DownloadedPhotoMetas = downloadedPhotoMetas;
-                                        }
-                                        break;
-                                    case PostTypes.VideoMeta:
-                                        url = currentImageUrl.Item2;
-                                        postId = currentImageUrl.Item3;
-                                        fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaVideo));
-
-                                        if (!CheckIfFileExistsInDB(postId))
-                                        {
-                                            UpdateProgressQueueInformation(progress, postId);
-                                            AppendToTextFile(fileLocation, url);
-                                            UpdateBlogCounter(ref downloadedVideoMetas, ref downloadedFiles);
-                                            UpdateBlogProgress(postId, ref downloadedFiles);
-                                            blog.DownloadedVideoMetas = downloadedVideoMetas;
-                                        }
-                                        break;
-                                    case PostTypes.AudioMeta:
-                                        url = currentImageUrl.Item2;
-                                        postId = currentImageUrl.Item3;
-                                        fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaAudio));
-
-                                        if (!CheckIfFileExistsInDB(postId))
-                                        {
-                                            UpdateProgressQueueInformation(progress, postId);
-                                            AppendToTextFile(fileLocation, url);
-                                            UpdateBlogCounter(ref downloadedAudioMetas, ref downloadedFiles);
-                                            UpdateBlogProgress(postId, ref downloadedFiles);
-                                            blog.DownloadedAudioMetas = downloadedAudioMetas;
-                                        }
-                                        break;
-                                    default:
-                                        break;
+                                    blog.LastDownloadedVideo = Path.GetFullPath(fileLocation);
                                 }
-                            });
+                            }
+                            break;
+                        case PostTypes.Audio:
+                            fileName = currentImageUrl.Item2.Split('/').Last();
+                            url = currentImageUrl.Item2;
+                            fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), currentImageUrl.Item3 + ".swf");
+                            fileLocationUrlList = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameAudios));
+
+                            if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(url)))
+                            {
+                                UpdateProgressQueueInformation(progress, fileName);
+                                await DownloadBinaryFile(fileLocation, fileLocationUrlList, url);
+                                UpdateBlogCounter(ref downloadedAudios, ref downloadedFiles);
+                                UpdateBlogProgress(fileName, ref downloadedFiles);
+                                blog.DownloadedAudios = downloadedAudios;
+                            }
+                            break;
+                        case PostTypes.Text:
+                            url = currentImageUrl.Item2;
+                            postId = currentImageUrl.Item3;
+                            fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameTexts));
+
+                            if (!CheckIfFileExistsInDB(postId))
+                            {
+                                UpdateProgressQueueInformation(progress, postId);
+                                await AppendToTextFile(fileLocation, url);
+                                UpdateBlogCounter(ref downloadedTexts, ref downloadedFiles);
+                                UpdateBlogProgress(postId, ref downloadedFiles);
+                                blog.DownloadedTexts = downloadedTexts;
+                            }
+                            break;
+                        case PostTypes.Quote:
+                            url = currentImageUrl.Item2;
+                            postId = currentImageUrl.Item3;
+                            fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameQuotes));
+
+                            if (!CheckIfFileExistsInDB(postId))
+                            {
+                                UpdateProgressQueueInformation(progress, postId);
+                                await AppendToTextFile(fileLocation, url);
+                                UpdateBlogCounter(ref downloadedQuotes, ref downloadedFiles);
+                                UpdateBlogProgress(postId, ref downloadedFiles);
+                                blog.DownloadedQuotes = downloadedQuotes;
+                            }
+                            break;
+                        case PostTypes.Link:
+                            url = currentImageUrl.Item2;
+                            postId = currentImageUrl.Item3;
+                            fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameLinks));
+
+                            if (!CheckIfFileExistsInDB(postId))
+                            {
+                                UpdateProgressQueueInformation(progress, postId);
+                                await AppendToTextFile(fileLocation, url);
+                                UpdateBlogCounter(ref downloadedLinks, ref downloadedFiles);
+                                UpdateBlogProgress(postId, ref downloadedFiles);
+                                blog.DownloadedLinks = downloadedLinks;
+                            }
+                            break;
+                        case PostTypes.Conversation:
+                            url = currentImageUrl.Item2;
+                            postId = currentImageUrl.Item3;
+                            fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameConversations));
+
+                            if (!CheckIfFileExistsInDB(postId))
+                            {
+                                UpdateProgressQueueInformation(progress, postId);
+                                await AppendToTextFile(fileLocation, url);
+                                UpdateBlogCounter(ref downloadedConversations, ref downloadedFiles);
+                                UpdateBlogProgress(postId, ref downloadedFiles);
+                                blog.DownloadedConversations = downloadedConversations;
+                            }
+                            break;
+                        case PostTypes.PhotoMeta:
+                            url = currentImageUrl.Item2;
+                            postId = currentImageUrl.Item3;
+                            fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaPhoto));
+
+                            if (!CheckIfFileExistsInDB(postId))
+                            {
+                                UpdateProgressQueueInformation(progress, postId);
+                                await AppendToTextFile(fileLocation, url);
+                                UpdateBlogCounter(ref downloadedPhotoMetas, ref downloadedFiles);
+                                UpdateBlogProgress(postId, ref downloadedFiles);
+                                blog.DownloadedPhotoMetas = downloadedPhotoMetas;
+                            }
+                            break;
+                        case PostTypes.VideoMeta:
+                            url = currentImageUrl.Item2;
+                            postId = currentImageUrl.Item3;
+                            fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaVideo));
+
+                            if (!CheckIfFileExistsInDB(postId))
+                            {
+                                UpdateProgressQueueInformation(progress, postId);
+                                await AppendToTextFile(fileLocation, url);
+                                UpdateBlogCounter(ref downloadedVideoMetas, ref downloadedFiles);
+                                UpdateBlogProgress(postId, ref downloadedFiles);
+                                blog.DownloadedVideoMetas = downloadedVideoMetas;
+                            }
+                            break;
+                        case PostTypes.AudioMeta:
+                            url = currentImageUrl.Item2;
+                            postId = currentImageUrl.Item3;
+                            fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaAudio));
+
+                            if (!CheckIfFileExistsInDB(postId))
+                            {
+                                UpdateProgressQueueInformation(progress, postId);
+                                await AppendToTextFile(fileLocation, url);
+                                UpdateBlogCounter(ref downloadedAudioMetas, ref downloadedFiles);
+                                UpdateBlogProgress(postId, ref downloadedFiles);
+                                blog.DownloadedAudioMetas = downloadedAudioMetas;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                    ss.Release();
+                }));
+            }
+            await Task.WhenAll(trackedTasks);
 
             blog.LastDownloadedPhoto = null;
             blog.LastDownloadedVideo = null;
 
             files.Save();
 
-            if (loopState.IsCompleted)
+            if (loopCompleted)
                 return true;
 
             return false;

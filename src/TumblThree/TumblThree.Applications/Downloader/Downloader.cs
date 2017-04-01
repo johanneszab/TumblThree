@@ -38,7 +38,7 @@ namespace TumblThree.Applications.Downloader
             SetUp();
         }
 
-        protected virtual String RequestData(string url)
+        protected virtual async Task<string> RequestDataAsync(string url)
         {
             try
             {
@@ -69,7 +69,7 @@ namespace TumblThree.Applications.Downloader
                     bandwidth = shellService.Settings.Bandwidth;
                 }
 
-                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+                using (HttpWebResponse response = await request.GetResponseAsync() as HttpWebResponse)
                 {
                     using (ThrottledStream stream = new ThrottledStream(response.GetResponseStream(), (bandwidth / shellService.Settings.ParallelImages) * 1024))
                     {
@@ -115,24 +115,20 @@ namespace TumblThree.Applications.Downloader
             return true;
         }
 
-        public virtual Task IsBlogOnline()
+        public virtual async Task IsBlogOnline()
         {
-            return Task.Factory.StartNew(() =>
-            {
-                string request = RequestData(blog.Url);
+            string request = await RequestDataAsync(blog.Url);
 
-                if (request != null)
-                    blog.Online = true;
-                else
-                    blog.Online = false;
-            },
-            TaskCreationOptions.LongRunning);
+            if (request != null)
+                blog.Online = true;
+            else
+                blog.Online = false;
         }
 
-        protected virtual void SetUp()
+        protected virtual async void SetUp()
         {
             CreateDataFolder();
-            IsBlogOnline();
+            await IsBlogOnline();
         }
 
         protected virtual bool CheckIfFileExistsInDB(string url)
@@ -178,11 +174,11 @@ namespace TumblThree.Applications.Downloader
             progress.Report(newProgress);
         }
 
-        protected virtual bool DownloadBinaryFile(string fileLocation, string url)
+        protected virtual async Task<bool> DownloadBinaryFile(string fileLocation, string url)
         {
             try
             {
-                using (var stream = ThrottledStream.ReadFromURLIntoStream(url,
+                using (var stream = await ThrottledStream.ReadFromURLIntoStream(url,
                     (shellService.Settings.Bandwidth / shellService.Settings.ParallelImages),
                     shellService.Settings.TimeOut, shellService.Settings.ProxyHost,
                     shellService.Settings.ProxyPort))
@@ -201,7 +197,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        protected virtual bool AppendToTextFile(string fileLocation, string text)
+        protected virtual async Task<bool> AppendToTextFile(string fileLocation, string text)
         {
             try
             {

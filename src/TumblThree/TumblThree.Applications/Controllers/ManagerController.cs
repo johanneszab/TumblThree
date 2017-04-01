@@ -359,7 +359,7 @@ namespace TumblThree.Applications.Controllers
             TransferGlobalSettingsToBlog(blog);
             TumblrDownloader downloader = new TumblrDownloader(shellService, crawlerService, blog);
             await downloader.IsBlogOnline();
-            await downloader.UpdateMetaInformation();
+            await downloader.UpdateMetaInformationAsync();
 
             lock (lockObject)
             {
