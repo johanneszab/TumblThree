@@ -22,7 +22,7 @@ namespace TumblThree.Applications.Downloader
 {
     [Export(typeof(IDownloader))]
     [ExportMetadata("BlogType", BlogTypes.tumblr)]
-    public class TumblrDownloader : Downloader
+    public class TumblrDownloader : Downloader, IDownloader
     {
 
         private readonly IShellService shellService;

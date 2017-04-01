@@ -150,10 +150,10 @@ namespace TumblThree.Applications.Controllers
 
                         if (shellService.Settings.CheckOnlineStatusAtStartup)
                         {
-                            foreach (var file in files)
+                            foreach (var blog in files)
                             {
-                                Downloader.Downloader downloader = new Downloader.Downloader(shellService, file);
-                                await downloader.IsBlogOnline();
+                                //var downloader = DownloaderFactory.GetDownloader(blog.BlogType, shellService, crawlerService, blog);
+                                //downloader.IsBlogOnline().Wait();
                             }
                         }
                     }

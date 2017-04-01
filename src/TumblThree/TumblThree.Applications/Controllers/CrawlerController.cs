@@ -41,12 +41,13 @@ namespace TumblThree.Applications.Controllers
 
         [ImportingConstructor]
         public CrawlerController(IShellService shellService, IManagerService managerService, ICrawlerService crawlerService,
-            Lazy<CrawlerViewModel> crawlerViewModel)
+            IDownloaderFactory downloaderFactory, Lazy<CrawlerViewModel> crawlerViewModel)
         {
             this.shellService = shellService;
             this.managerService = managerService;
             this.crawlerService = crawlerService;
             this.crawlerViewModel = crawlerViewModel;
+            this.DownloaderFactory = downloaderFactory;
             this.crawlCommand = new DelegateCommand(Crawl, CanCrawl);
             this.pauseCommand = new DelegateCommand(Pause, CanPause);
             this.resumeCommand = new DelegateCommand(Resume, CanResume);
@@ -58,6 +59,8 @@ namespace TumblThree.Applications.Controllers
         private CrawlerViewModel CrawlerViewModel { get { return crawlerViewModel.Value; } }
 
         public QueueManager QueueManager { get; set; }
+
+        public IDownloaderFactory DownloaderFactory { get; set; }
 
         public void Initialize()
         {
@@ -178,8 +181,9 @@ namespace TumblThree.Applications.Controllers
                 {
                     var queueList = QueueManager.Items.Except(crawlerService.ActiveItems);
                     var nextQueueItem = queueList.First();
+                    var blog = nextQueueItem.Blog;
 
-                    Downloader.Downloader downloader = new Downloader.Downloader(shellService, nextQueueItem.Blog);
+                    var downloader = DownloaderFactory.GetDownloader(blog.BlogType, shellService, crawlerService, blog);
                     downloader.IsBlogOnline().Wait();
 
                     if (crawlerService.ActiveItems.Any(item => item.Blog.Name.Contains(nextQueueItem.Blog.Name)))
@@ -216,19 +220,8 @@ namespace TumblThree.Applications.Controllers
             blog.Dirty = true;
             var progress = SetupThrottledQueueListProgress(queueListItem);
 
-            switch (blog.BlogType)
-            {
-                case BlogTypes.tumblr:
-                    TumblrDownloader crawler = new TumblrDownloader(shellService, crawlerService, blog);
-                    crawler.Crawl(progress, ct, pt);
-                    break;
-                case BlogTypes.instagram:
-                    break;
-                case BlogTypes.twitter:
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }
+            var downloader = DownloaderFactory.GetDownloader(blog.BlogType, shellService, crawlerService, blog);
+            downloader.Crawl(progress, ct, pt);
 
             if (ct.IsCancellationRequested)
             {

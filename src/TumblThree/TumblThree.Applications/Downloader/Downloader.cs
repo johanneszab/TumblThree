@@ -15,7 +15,7 @@ using TumblThree.Domain.Models;
 
 namespace TumblThree.Applications.Downloader
 {
-    public class Downloader : IDownloader
+    public abstract class Downloader
     {
         private readonly IBlog blog;
         private readonly IShellService shellService;
