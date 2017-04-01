@@ -4,10 +4,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Waf.Applications;
 using TumblThree.Applications.Services;
 using TumblThree.Applications.ViewModels;
@@ -17,15 +15,7 @@ using System.ComponentModel;
 using TumblThree.Applications.Properties;
 using TumblThree.Domain.Queue;
 using System.Windows;
-using System.Windows.Threading;
-using System.Globalization;
-using System.Xml.Linq;
-using System.Net;
-using System.Text;
-using System.Web;
 using System.Collections.Specialized;
-using System.Text.RegularExpressions;
-using System.Collections.Concurrent;
 using TumblThree.Applications.Downloader;
 
 namespace TumblThree.Applications.Controllers
@@ -55,13 +45,14 @@ namespace TumblThree.Applications.Controllers
 
         [ImportingConstructor]
         public ManagerController(IShellService shellService, ISelectionService selectionService, ICrawlerService crawlerService,
-            IManagerService managerService, Lazy<ManagerViewModel> managerViewModel)
+            IManagerService managerService, IDownloaderFactory downloaderFactory, Lazy<ManagerViewModel> managerViewModel)
         {
             this.shellService = shellService;
             this.selectionService = selectionService;
             this.crawlerService = crawlerService;
             this.managerService = managerService;
             this.managerViewModel = managerViewModel;
+            this.DownloaderFactory = downloaderFactory;
             this.blogFiles = new ObservableCollection<Blog>();
             this.addBlogCommand = new DelegateCommand(AddBlog, CanAddBlog);
             this.removeBlogCommand = new DelegateCommand(RemoveBlog, CanRemoveBlog);
@@ -78,6 +69,8 @@ namespace TumblThree.Applications.Controllers
         public ManagerSettings ManagerSettings { get; set; }
 
         public QueueManager QueueManager { get; set; }
+
+        public IDownloaderFactory DownloaderFactory { get; set; }
 
         public async Task Initialize()
         {
@@ -152,8 +145,8 @@ namespace TumblThree.Applications.Controllers
                         {
                             foreach (var blog in files)
                             {
-                                //var downloader = DownloaderFactory.GetDownloader(blog.BlogType, shellService, crawlerService, blog);
-                                //downloader.IsBlogOnline().Wait();
+                                var downloader = DownloaderFactory.GetDownloader(blog.BlogType, shellService, crawlerService, blog);
+                                downloader.IsBlogOnlineAsync().Wait();
                             }
                         }
                     }
@@ -354,11 +347,11 @@ namespace TumblThree.Applications.Controllers
                 blogUrl = crawlerService.NewBlogUrl;
             }
 
-            // FIXME: 
+            // FIXME: Dependency
             TumblrBlog blog = new TumblrBlog(blogUrl, Path.Combine(shellService.Settings.DownloadLocation, "Index"), BlogTypes.tumblr);
             TransferGlobalSettingsToBlog(blog);
-            TumblrDownloader downloader = new TumblrDownloader(shellService, crawlerService, blog);
-            await downloader.IsBlogOnline();
+            var downloader = DownloaderFactory.GetDownloader(blog.BlogType, shellService, crawlerService, blog);
+            await downloader.IsBlogOnlineAsync();
             await downloader.UpdateMetaInformationAsync();
 
             lock (lockObject)

@@ -58,8 +58,10 @@
     <Compile Include="Logger.cs" />
     <Compile Include="Models\Blog.cs" />
     <Compile Include="Models\BlogTypes.cs" />
+    <Compile Include="Models\Files.cs" />
     <Compile Include="Models\IBlog.cs" />
     <Compile Include="Models\IBlogTypeMetaData.cs" />
+    <Compile Include="Models\IFiles.cs" />
     <Compile Include="Models\InstagramBlog.cs" />
     <Compile Include="Models\PostTypes.cs" />
     <Compile Include="Models\TumblrBlog.cs" />

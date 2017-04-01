@@ -1,22 +1,13 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Waf.Applications;
-using System.Windows;
-using System.Windows.Threading;
-using System.Xml.Linq;
 using TumblThree.Applications.Downloader;
-using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Applications.ViewModels;
-using TumblThree.Domain;
 using TumblThree.Domain.Models;
 using TumblThree.Domain.Queue;
 
@@ -184,7 +175,7 @@ namespace TumblThree.Applications.Controllers
                     var blog = nextQueueItem.Blog;
 
                     var downloader = DownloaderFactory.GetDownloader(blog.BlogType, shellService, crawlerService, blog);
-                    downloader.IsBlogOnline().Wait();
+                    downloader.IsBlogOnlineAsync().Wait();
 
                     if (crawlerService.ActiveItems.Any(item => item.Blog.Name.Contains(nextQueueItem.Blog.Name)))
                     {
