@@ -290,19 +290,9 @@ namespace TumblThree.Applications.Downloader
 
         protected virtual async Task<bool> DownloadBlog(IProgress<DataModels.DownloadProgress> progress, CancellationToken ct, PauseToken pt)
         {
-            SemaphoreSlim ss = new SemaphoreSlim(shellService.Settings.ParallelImages / crawlerService.ActiveItems.Count);
+            SemaphoreSlim semaphoreSlim = new SemaphoreSlim(shellService.Settings.ParallelImages / crawlerService.ActiveItems.Count);
             List<Task> trackedTasks = new List<Task>();
-            int downloadedFiles = blog.DownloadedImages;
-            int downloadedPhotos = blog.DownloadedPhotos;
-            int downloadedVideos = blog.DownloadedVideos;
-            int downloadedAudios = blog.DownloadedAudios;
-            int downloadedTexts = blog.DownloadedTexts;
-            int downloadedQuotes = blog.DownloadedQuotes;
-            int downloadedLinks = blog.DownloadedLinks;
-            int downloadedConversations = blog.DownloadedConversations;
-            int downloadedPhotoMetas = blog.DownloadedPhotoMetas;
-            int downloadedVideoMetas = blog.DownloadedVideoMetas;
-            int downloadedAudioMetas = blog.DownloadedAudioMetas;
+            PostCounter counter = new PostCounter(blog);
             bool loopCompleted = true;
 
             string blogPath = Directory.GetParent(blog.Location).FullName;
@@ -318,7 +308,7 @@ namespace TumblThree.Applications.Downloader
                 if (pt.IsPaused)
                     pt.WaitWhilePausedWithResponseAsyc().Wait();
 
-                await ss.WaitAsync();
+                await semaphoreSlim.WaitAsync();
                 trackedTasks.Add(Task.Run(async () =>
                 {
                     string fileName = String.Empty;
@@ -340,9 +330,9 @@ namespace TumblThree.Applications.Downloader
                             {
                                 UpdateProgressQueueInformation(progress, fileName);
                                 await DownloadBinaryFile(fileLocation, fileLocationUrlList, url);
-                                UpdateBlogCounter(ref downloadedPhotos, ref downloadedFiles);
-                                UpdateBlogProgress(fileName, ref downloadedFiles);
-                                blog.DownloadedPhotos = downloadedPhotos;
+                                UpdateBlogCounter(ref counter.Photos, ref counter.TotalDownloads);
+                                UpdateBlogProgress(fileName, ref counter.TotalDownloads);
+                                blog.DownloadedPhotos = counter.Photos;
                                 if (shellService.Settings.EnablePreview)
                                 {
                                     if (!fileName.EndsWith(".gif"))
@@ -362,9 +352,9 @@ namespace TumblThree.Applications.Downloader
                             {
                                 UpdateProgressQueueInformation(progress, fileName);
                                 await DownloadBinaryFile(fileLocation, fileLocationUrlList, url);
-                                UpdateBlogCounter(ref downloadedVideos, ref downloadedFiles);
-                                UpdateBlogProgress(fileName, ref downloadedFiles);
-                                blog.DownloadedVideos = downloadedVideos;
+                                UpdateBlogCounter(ref counter.Videos, ref counter.TotalDownloads);
+                                UpdateBlogProgress(fileName, ref counter.TotalDownloads);
+                                blog.DownloadedVideos = counter.Videos;
                                 if (shellService.Settings.EnablePreview)
                                 {
                                     blog.LastDownloadedVideo = Path.GetFullPath(fileLocation);
@@ -381,9 +371,9 @@ namespace TumblThree.Applications.Downloader
                             {
                                 UpdateProgressQueueInformation(progress, fileName);
                                 await DownloadBinaryFile(fileLocation, fileLocationUrlList, url);
-                                UpdateBlogCounter(ref downloadedAudios, ref downloadedFiles);
-                                UpdateBlogProgress(fileName, ref downloadedFiles);
-                                blog.DownloadedAudios = downloadedAudios;
+                                UpdateBlogCounter(ref counter.Audios, ref counter.TotalDownloads);
+                                UpdateBlogProgress(fileName, ref counter.TotalDownloads);
+                                blog.DownloadedAudios = counter.Audios;
                             }
                             break;
                         case PostTypes.Text:
@@ -395,9 +385,9 @@ namespace TumblThree.Applications.Downloader
                             {
                                 UpdateProgressQueueInformation(progress, postId);
                                 await AppendToTextFile(fileLocation, url);
-                                UpdateBlogCounter(ref downloadedTexts, ref downloadedFiles);
-                                UpdateBlogProgress(postId, ref downloadedFiles);
-                                blog.DownloadedTexts = downloadedTexts;
+                                UpdateBlogCounter(ref counter.Texts, ref counter.TotalDownloads);
+                                UpdateBlogProgress(postId, ref counter.TotalDownloads);
+                                blog.DownloadedTexts = counter.Texts;
                             }
                             break;
                         case PostTypes.Quote:
@@ -409,9 +399,9 @@ namespace TumblThree.Applications.Downloader
                             {
                                 UpdateProgressQueueInformation(progress, postId);
                                 await AppendToTextFile(fileLocation, url);
-                                UpdateBlogCounter(ref downloadedQuotes, ref downloadedFiles);
-                                UpdateBlogProgress(postId, ref downloadedFiles);
-                                blog.DownloadedQuotes = downloadedQuotes;
+                                UpdateBlogCounter(ref counter.Quotes, ref counter.TotalDownloads);
+                                UpdateBlogProgress(postId, ref counter.TotalDownloads);
+                                blog.DownloadedQuotes = counter.Quotes;
                             }
                             break;
                         case PostTypes.Link:
@@ -423,9 +413,9 @@ namespace TumblThree.Applications.Downloader
                             {
                                 UpdateProgressQueueInformation(progress, postId);
                                 await AppendToTextFile(fileLocation, url);
-                                UpdateBlogCounter(ref downloadedLinks, ref downloadedFiles);
-                                UpdateBlogProgress(postId, ref downloadedFiles);
-                                blog.DownloadedLinks = downloadedLinks;
+                                UpdateBlogCounter(ref counter.Links, ref counter.TotalDownloads);
+                                UpdateBlogProgress(postId, ref counter.TotalDownloads);
+                                blog.DownloadedLinks = counter.Links;
                             }
                             break;
                         case PostTypes.Conversation:
@@ -437,9 +427,9 @@ namespace TumblThree.Applications.Downloader
                             {
                                 UpdateProgressQueueInformation(progress, postId);
                                 await AppendToTextFile(fileLocation, url);
-                                UpdateBlogCounter(ref downloadedConversations, ref downloadedFiles);
-                                UpdateBlogProgress(postId, ref downloadedFiles);
-                                blog.DownloadedConversations = downloadedConversations;
+                                UpdateBlogCounter(ref counter.Conversations, ref counter.TotalDownloads);
+                                UpdateBlogProgress(postId, ref counter.TotalDownloads);
+                                blog.DownloadedConversations = counter.Conversations;
                             }
                             break;
                         case PostTypes.PhotoMeta:
@@ -451,9 +441,9 @@ namespace TumblThree.Applications.Downloader
                             {
                                 UpdateProgressQueueInformation(progress, postId);
                                 await AppendToTextFile(fileLocation, url);
-                                UpdateBlogCounter(ref downloadedPhotoMetas, ref downloadedFiles);
-                                UpdateBlogProgress(postId, ref downloadedFiles);
-                                blog.DownloadedPhotoMetas = downloadedPhotoMetas;
+                                UpdateBlogCounter(ref counter.PhotoMetas, ref counter.TotalDownloads);
+                                UpdateBlogProgress(postId, ref counter.TotalDownloads);
+                                blog.DownloadedPhotoMetas = counter.PhotoMetas;
                             }
                             break;
                         case PostTypes.VideoMeta:
@@ -465,9 +455,9 @@ namespace TumblThree.Applications.Downloader
                             {
                                 UpdateProgressQueueInformation(progress, postId);
                                 await AppendToTextFile(fileLocation, url);
-                                UpdateBlogCounter(ref downloadedVideoMetas, ref downloadedFiles);
-                                UpdateBlogProgress(postId, ref downloadedFiles);
-                                blog.DownloadedVideoMetas = downloadedVideoMetas;
+                                UpdateBlogCounter(ref counter.VideoMetas, ref counter.TotalDownloads);
+                                UpdateBlogProgress(postId, ref counter.TotalDownloads);
+                                blog.DownloadedVideoMetas = counter.VideoMetas;
                             }
                             break;
                         case PostTypes.AudioMeta:
@@ -479,15 +469,15 @@ namespace TumblThree.Applications.Downloader
                             {
                                 UpdateProgressQueueInformation(progress, postId);
                                 await AppendToTextFile(fileLocation, url);
-                                UpdateBlogCounter(ref downloadedAudioMetas, ref downloadedFiles);
-                                UpdateBlogProgress(postId, ref downloadedFiles);
-                                blog.DownloadedAudioMetas = downloadedAudioMetas;
+                                UpdateBlogCounter(ref counter.AudioMetas, ref counter.TotalDownloads);
+                                UpdateBlogProgress(postId, ref counter.TotalDownloads);
+                                blog.DownloadedAudioMetas = counter.AudioMetas;
                             }
                             break;
                         default:
                             break;
                     }
-                    ss.Release();
+                    semaphoreSlim.Release();
                 }));
             }
             await Task.WhenAll(trackedTasks);
