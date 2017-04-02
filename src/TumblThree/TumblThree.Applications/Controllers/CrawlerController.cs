@@ -175,7 +175,7 @@ namespace TumblThree.Applications.Controllers
                     var blog = nextQueueItem.Blog;
 
                     var downloader = DownloaderFactory.GetDownloader(blog.BlogType, shellService, crawlerService, blog);
-                    downloader.IsBlogOnlineAsync().Wait();
+                    downloader.IsBlogOnlineAsync().Wait(4000);
 
                     if (crawlerService.ActiveItems.Any(item => item.Blog.Name.Contains(nextQueueItem.Blog.Name)))
                     {
@@ -201,7 +201,6 @@ namespace TumblThree.Applications.Controllers
                     Task.Delay(4000, ct).Wait();
                 }
             }
-
         }
 
         private void StartSiteSpecificDownloader(QueueListItem queueListItem, CancellationToken ct, PauseToken pt)

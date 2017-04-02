@@ -146,7 +146,7 @@ namespace TumblThree.Applications.Controllers
                             foreach (var blog in files)
                             {
                                 var downloader = DownloaderFactory.GetDownloader(blog.BlogType, shellService, crawlerService, blog);
-                                downloader.IsBlogOnlineAsync().Wait();
+                                await downloader.IsBlogOnlineAsync();
                             }
                         }
                     }
