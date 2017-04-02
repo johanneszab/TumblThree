@@ -3,11 +3,11 @@
 namespace TumblThree.Domain.Models
 {
     [Serializable]
-    public class TumblrFiles : Files
+    public class InstagramFiles : Files
     {
         private string version;
 
-        public TumblrFiles(string name, string location, BlogTypes blogType) : base(name, location, blogType)
+        public InstagramFiles(string name, string location, BlogTypes blogType) : base(name, location, blogType)
         {
             this.version = "1";
         }

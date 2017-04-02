@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TumblThree.Domain.Models
 {
@@ -11,7 +7,6 @@ namespace TumblThree.Domain.Models
     {
         public InstagramBlog(string url, string location, BlogTypes type) : base(url, location, type)
         {
-
         }
     }
 }

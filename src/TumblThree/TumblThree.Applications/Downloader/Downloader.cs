@@ -251,6 +251,7 @@ namespace TumblThree.Applications.Downloader
         {
             try
             {
+                // better not await in the lock?
                 lock (lockObjectDownload)
                 {
                     using (StreamWriter sw = new StreamWriter(fileLocation, true))
@@ -299,6 +300,8 @@ namespace TumblThree.Applications.Downloader
 
             CreateDataFolder();
 
+            // Not sure if this is any better than the Parallel.For with synchronous code
+            // since this still runs on the thread pool (see Task.Run() => async)
             foreach (var currentImageUrl in sharedDownloads.GetConsumingEnumerable())
             {
                 await semaphoreSlim.WaitAsync();
@@ -478,8 +481,8 @@ namespace TumblThree.Applications.Downloader
                         default:
                             break;
                     }
+                    semaphoreSlim.Release();
                 }));
-                semaphoreSlim.Release();
             }
             await Task.WhenAll(trackedTasks);
 

@@ -257,6 +257,8 @@ namespace TumblThree.Applications.Downloader
             // the api shows 50 posts at max, determine the number of pages to crawl
             int totalPages = (totalPosts / 50) + 1;
 
+            // Not sure if this is any better than the Parallel.For with synchronous code
+            // since this still runs on the thread pool (see Task.Run() => async)
             foreach (int pageNumber in Enumerable.Range(0, totalPages))
             {
                 await semaphoreSlim.WaitAsync();
@@ -275,36 +277,32 @@ namespace TumblThree.Applications.Downloader
 
                 trackedTasks.Add(Task.Run(async () =>
                     {
-                        try
+
+                        XDocument document = await GetApiPageAsync(pageNumber);
+
+                        if (document == null)
                         {
-                            XDocument document = await GetApiPageAsync(pageNumber);
-
-                            if (document == null)
-                            {
-                                apiLimitHit = true;
-                            }
-
-                            CountPostTypes(document, counter);
-
-                            ulong highestPostId = 0;
-                            UInt64.TryParse(document?.Element("tumblr").Element("posts").Element("post")?.Attribute("id").Value, out highestId);
-
-                            if (highestPostId < lastId)
-                                loopCompleted = false;
-
-                            GetUrlsCore(document, counter);
+                            // add retry logic?
+                            apiLimitHit = true;
                         }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine(ex.Data);
-                        }
+
+                        CountPostTypes(document, counter);
+
+                        ulong highestPostId = 0;
+                        UInt64.TryParse(document?.Element("tumblr").Element("posts").Element("post")?.Attribute("id").Value, out highestId);
+
+                        if (highestPostId < lastId)
+                            loopCompleted = false;
+
+                        GetUrlsCore(document, counter);
+
+                        semaphoreSlim.Release();
 
                         numberOfPostsCrawled += 50;
                         var newProgress = new DownloadProgress();
                         newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressGetUrl, numberOfPostsCrawled, totalPosts);
                         progress.Report(newProgress);
                     }));
-                semaphoreSlim.Release();
             }
             await Task.WhenAll(trackedTasks);
 
