@@ -386,22 +386,19 @@ namespace TumblThree.Applications.Downloader
                 {
                     var videoUrl = post.Descendants("video-player").Where(x => x.Value.Contains("<source src=")).Select(result =>
                         System.Text.RegularExpressions.Regex.Match(
-                        result.Value, "<source src=\"(.*)\" type=\"video/mp4\">").Groups[1].Value).ToList();
+                        result.Value, "<source src=\"(.*)\" type=\"video/mp4\">").Groups[1].Value).First();
 
-                    foreach (string video in videoUrl)
+                    if (shellService.Settings.VideoSize == 1080)
                     {
-                        if (shellService.Settings.VideoSize == 1080)
-                        {
-                            Interlocked.Increment(ref counter.TotalDownloads);
-                            AddToDownloadList(Tuple.Create(PostTypes.Video, video.Replace("/480", "") + ".mp4", post.Attribute("id").Value));
-                            sharedDownloads.Add(Tuple.Create(PostTypes.Video, video.Replace("/480", "") + ".mp4", post.Attribute("id").Value));
-                        }
-                        else if (shellService.Settings.VideoSize == 480)
-                        {
-                            Interlocked.Increment(ref counter.TotalDownloads);
-                            AddToDownloadList(Tuple.Create(PostTypes.Video, "https://vt.tumblr.com/" + video.Replace("/480", "").Split('/').Last() + "_480.mp4", post.Attribute("id").Value));
-                            sharedDownloads.Add(Tuple.Create(PostTypes.Video, "https://vt.tumblr.com/" + video.Replace("/480", "").Split('/').Last() + "_480.mp4", post.Attribute("id").Value));
-                        }
+                        Interlocked.Increment(ref counter.TotalDownloads);
+                        AddToDownloadList(Tuple.Create(PostTypes.Video, videoUrl.Replace("/480", "") + ".mp4", post.Attribute("id").Value));
+                        sharedDownloads.Add(Tuple.Create(PostTypes.Video, videoUrl.Replace("/480", "") + ".mp4", post.Attribute("id").Value));
+                    }
+                    else if (shellService.Settings.VideoSize == 480)
+                    {
+                        Interlocked.Increment(ref counter.TotalDownloads);
+                        AddToDownloadList(Tuple.Create(PostTypes.Video, "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + "_480.mp4", post.Attribute("id").Value));
+                        sharedDownloads.Add(Tuple.Create(PostTypes.Video, "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + "_480.mp4", post.Attribute("id").Value));
                     }
                 }
             }
