@@ -258,7 +258,7 @@ namespace TumblThree.Applications.Downloader
             int totalPages = (totalPosts / 50) + 1;
 
             // Not sure if this is any better than the Parallel.For with synchronous code
-            // since this still runs on the thread pool (see Task.Run() => async)
+            // since this still seems to run on the thread pool.
             foreach (int pageNumber in Enumerable.Range(0, totalPages))
             {
                 await semaphoreSlim.WaitAsync();
@@ -275,7 +275,7 @@ namespace TumblThree.Applications.Downloader
                 if (pt.IsPaused)
                     pt.WaitWhilePausedWithResponseAsyc().Wait();
 
-                trackedTasks.Add(Task.Run(async () =>
+                trackedTasks.Add(new Func<Task>(async () =>
                     {
 
                         XDocument document = await GetApiPageAsync(pageNumber);
@@ -302,7 +302,7 @@ namespace TumblThree.Applications.Downloader
                         var newProgress = new DownloadProgress();
                         newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressGetUrl, numberOfPostsCrawled, totalPosts);
                         progress.Report(newProgress);
-                    }));
+                    })());
             }
             await Task.WhenAll(trackedTasks);
 

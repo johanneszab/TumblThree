@@ -301,7 +301,7 @@ namespace TumblThree.Applications.Downloader
             CreateDataFolder();
 
             // Not sure if this is any better than the Parallel.For with synchronous code
-            // since this still runs on the thread pool (see Task.Run() => async)
+            // since this still seems to run on the thread pool.
             foreach (var currentImageUrl in sharedDownloads.GetConsumingEnumerable())
             {
                 await semaphoreSlim.WaitAsync();
@@ -313,7 +313,7 @@ namespace TumblThree.Applications.Downloader
                 if (pt.IsPaused)
                     pt.WaitWhilePausedWithResponseAsyc().Wait();
 
-                trackedTasks.Add(Task.Run(async () =>
+                trackedTasks.Add(new Func<Task>(async () =>
                 {
                     string fileName = String.Empty;
                     string url = String.Empty;
@@ -482,7 +482,7 @@ namespace TumblThree.Applications.Downloader
                             break;
                     }
                     semaphoreSlim.Release();
-                }));
+                })());
             }
             await Task.WhenAll(trackedTasks);
 
