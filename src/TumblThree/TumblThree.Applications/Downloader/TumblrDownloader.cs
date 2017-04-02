@@ -259,6 +259,8 @@ namespace TumblThree.Applications.Downloader
 
             foreach (int pageNumber in Enumerable.Range(0, totalPages))
             {
+                await semaphoreSlim.WaitAsync();
+
                 if (!loopCompleted)
                 {
                     break;
@@ -271,7 +273,6 @@ namespace TumblThree.Applications.Downloader
                 if (pt.IsPaused)
                     pt.WaitWhilePausedWithResponseAsyc().Wait();
 
-                await semaphoreSlim.WaitAsync();
                 trackedTasks.Add(Task.Run(async () =>
                     {
                         try
@@ -302,8 +303,8 @@ namespace TumblThree.Applications.Downloader
                         var newProgress = new DownloadProgress();
                         newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressGetUrl, numberOfPostsCrawled, totalPosts);
                         progress.Report(newProgress);
-                        semaphoreSlim.Release();
                     }));
+                semaphoreSlim.Release();
             }
             await Task.WhenAll(trackedTasks);
 

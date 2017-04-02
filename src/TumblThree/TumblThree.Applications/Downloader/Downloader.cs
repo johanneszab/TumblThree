@@ -301,6 +301,8 @@ namespace TumblThree.Applications.Downloader
 
             foreach (var currentImageUrl in sharedDownloads.GetConsumingEnumerable())
             {
+                await semaphoreSlim.WaitAsync();
+
                 if (ct.IsCancellationRequested)
                 {
                     break;
@@ -308,7 +310,6 @@ namespace TumblThree.Applications.Downloader
                 if (pt.IsPaused)
                     pt.WaitWhilePausedWithResponseAsyc().Wait();
 
-                await semaphoreSlim.WaitAsync();
                 trackedTasks.Add(Task.Run(async () =>
                 {
                     string fileName = String.Empty;
@@ -477,8 +478,8 @@ namespace TumblThree.Applications.Downloader
                         default:
                             break;
                     }
-                    semaphoreSlim.Release();
                 }));
+                semaphoreSlim.Release();
             }
             await Task.WhenAll(trackedTasks);
 
