@@ -157,6 +157,7 @@ namespace TumblThree.Applications
             // Create a web request to the URL
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "GET";
+            request.ProtocolVersion = HttpVersion.Version11;
             request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
             if (!String.IsNullOrEmpty(proxyHost))
             {
@@ -166,15 +167,11 @@ namespace TumblThree.Applications
             {
                 request.Proxy = null; // WebRequest.GetSystemWebProxy();
             }
-            request.KeepAlive = true;
             request.AllowAutoRedirect = true;
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-            request.Pipelined = true;
-            request.Timeout = timeoutInSeconds * 1000;
-            request.ServicePoint.Expect100Continue = false;
+            request.ReadWriteTimeout = timeoutInSeconds * 1000;
+            request.Timeout = -1;
             ServicePointManager.DefaultConnectionLimit = 400;
-            //request.ContentLength = 0;
-            //request.ContentType = "x-www-from-urlencoded";
 
             // Get the web response
             HttpWebResponse response = await request.GetResponseAsync() as HttpWebResponse;

@@ -40,6 +40,7 @@ namespace TumblThree.Applications.Downloader
             {
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = "GET";
+                request.ProtocolVersion = HttpVersion.Version11;
                 request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
                 if (!String.IsNullOrEmpty(shellService.Settings.ProxyHost))
                 {
@@ -49,15 +50,11 @@ namespace TumblThree.Applications.Downloader
                 {
                     request.Proxy = null;
                 }
-                request.KeepAlive = true;
                 request.AllowAutoRedirect = true;
                 request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-                request.Pipelined = true;
-                request.Timeout = shellService.Settings.TimeOut * 1000;
-                request.ServicePoint.Expect100Continue = false;
+                request.ReadWriteTimeout = shellService.Settings.TimeOut * 1000;
+                request.Timeout = -1;
                 ServicePointManager.DefaultConnectionLimit = 400;
-                //request.ContentLength = 0;
-                //request.ContentType = "x-www-from-urlencoded";
 
                 int bandwidth = 2000000;
                 if (shellService.Settings.LimitScanBandwidth)
@@ -238,10 +235,10 @@ namespace TumblThree.Applications.Downloader
             List<Task> trackedTasks = new List<Task>();
             PostCounter counter = new PostCounter();
             int numberOfPostsCrawled = 0;
-            ulong lastId = blog.LastId;
             bool apiLimitHit = false;
             bool loopCompleted = true;
 
+            ulong lastId = blog.LastId;
             if (blog.ForceRescan)
             {
                 blog.ForceRescan = false;
@@ -257,8 +254,6 @@ namespace TumblThree.Applications.Downloader
             // the api shows 50 posts at max, determine the number of pages to crawl
             int totalPages = (totalPosts / 50) + 1;
 
-            // Not sure if this is any better than the Parallel.For with synchronous code
-            // since this still seems to run on the thread pool.
             foreach (int pageNumber in Enumerable.Range(0, totalPages))
             {
                 await semaphoreSlim.WaitAsync();
@@ -277,26 +272,33 @@ namespace TumblThree.Applications.Downloader
 
                 trackedTasks.Add(new Func<Task>(async () =>
                     {
-
-                        XDocument document = await GetApiPageAsync(pageNumber);
-
-                        if (document == null)
+                        try
                         {
-                            // add retry logic?
-                            apiLimitHit = true;
+                            XDocument document = await GetApiPageAsync(pageNumber);
+
+                            if (document == null)
+                            {
+                                // add retry logic?
+                                apiLimitHit = true;
+                            }
+
+                            CountPostTypes(document, counter);
+
+                            ulong highestPostId = 0;
+                            UInt64.TryParse(document?.Element("tumblr").Element("posts").Element("post")?.Attribute("id").Value, out highestId);
+
+                            if (highestPostId < lastId)
+                                loopCompleted = false;
+
+                            GetUrlsCore(document, counter);
                         }
-
-                        CountPostTypes(document, counter);
-
-                        ulong highestPostId = 0;
-                        UInt64.TryParse(document?.Element("tumblr").Element("posts").Element("post")?.Attribute("id").Value, out highestId);
-
-                        if (highestPostId < lastId)
-                            loopCompleted = false;
-
-                        GetUrlsCore(document, counter);
-
-                        semaphoreSlim.Release();
+                        catch
+                        {
+                        }
+                        finally
+                        {
+                            semaphoreSlim.Release();
+                        }
 
                         numberOfPostsCrawled += 50;
                         var newProgress = new DownloadProgress();

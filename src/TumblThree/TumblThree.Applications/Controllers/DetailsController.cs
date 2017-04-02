@@ -44,14 +44,14 @@ namespace TumblThree.Applications.Controllers
 
         public void Shutdown()
         {
-            var task = SaveCurrentSelectedFileAsync();
+            var task = Task.Run(() => SaveCurrentSelectedFile());
             shellService.AddTaskToCompleteBeforeShutdown(task);
         }
 
         public void SelectBlogFiles(IReadOnlyList<IBlog> blogFiles)
         {
             // Save changes to previous selected files
-            SaveCurrentSelectedFileAsync();
+            SaveCurrentSelectedFile();
 
             if (blogFiles.Count() <= 1)
             {
@@ -123,12 +123,12 @@ namespace TumblThree.Applications.Controllers
             };
         }
 
-        private Task SaveCurrentSelectedFileAsync()
+        private void SaveCurrentSelectedFile()
         {
-            return SaveChangesAsync(DetailsViewModel.BlogFile);
+            SaveChanges(DetailsViewModel.BlogFile);
         }
 
-        private async Task SaveChangesAsync(TumblrBlog blogFile)
+        private void SaveChanges(TumblrBlog blogFile)
         {
             if (blogFile == null)
             {

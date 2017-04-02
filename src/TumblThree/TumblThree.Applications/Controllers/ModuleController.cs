@@ -74,6 +74,7 @@ namespace TumblThree.Applications.Controllers
 
             ManagerController.QueueManager = queueManager;
             ManagerController.ManagerSettings = managerSettings;
+            ManagerController.BlogManagerFinishedLoading += OnBlogManagerFinishedLoading;
             ManagerController.Initialize();
             QueueController.QueueSettings = queueSettings;
             QueueController.QueueManager = queueManager;
@@ -82,8 +83,6 @@ namespace TumblThree.Applications.Controllers
             DetailsController.Initialize();
             CrawlerController.QueueManager = queueManager;
             CrawlerController.Initialize();
-
-            ManagerController.BlogManagerFinishedLoading += OnBlogManagerFinishedLoading;
         }
 
         public async void Run()

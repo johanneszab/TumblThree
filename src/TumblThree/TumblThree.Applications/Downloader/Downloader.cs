@@ -75,13 +75,10 @@ namespace TumblThree.Applications.Downloader
                 request.Method = "GET";
                 request.ProtocolVersion = HttpVersion.Version11;
                 request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
-                request.ContentType = "x-www-from-urlencoded";
-                request.KeepAlive = false;
-                request.ServicePoint.Expect100Continue = false;
                 request.AllowAutoRedirect = true;
                 request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-                request.Pipelined = true;
-                request.Timeout = shellService.Settings.TimeOut * 1000;
+                request.ReadWriteTimeout = shellService.Settings.TimeOut * 1000;
+                request.Timeout = -1;
                 ServicePointManager.DefaultConnectionLimit = 400;
                 if (!String.IsNullOrEmpty(shellService.Settings.ProxyHost))
                 {
@@ -156,6 +153,7 @@ namespace TumblThree.Applications.Downloader
 
         public virtual async Task UpdateMetaInformationAsync()
         {
+            await Task.FromResult<object>(null);
         }
 
         protected virtual async void SetUp()
@@ -243,11 +241,11 @@ namespace TumblThree.Applications.Downloader
             }
             else
             {
-                return await AppendToTextFile(fileLocationUrlList, url);
+                return AppendToTextFile(fileLocationUrlList, url);
             }
         }
 
-        protected virtual async Task<bool> AppendToTextFile(string fileLocation, string text)
+        protected virtual bool AppendToTextFile(string fileLocation, string text)
         {
             try
             {
@@ -300,8 +298,6 @@ namespace TumblThree.Applications.Downloader
 
             CreateDataFolder();
 
-            // Not sure if this is any better than the Parallel.For with synchronous code
-            // since this still seems to run on the thread pool.
             foreach (var currentImageUrl in sharedDownloads.GetConsumingEnumerable())
             {
                 await semaphoreSlim.WaitAsync();
@@ -388,7 +384,7 @@ namespace TumblThree.Applications.Downloader
                             if (!CheckIfFileExistsInDB(postId))
                             {
                                 UpdateProgressQueueInformation(progress, postId);
-                                await AppendToTextFile(fileLocation, url);
+                                AppendToTextFile(fileLocation, url);
                                 UpdateBlogCounter(ref counter.Texts, ref counter.TotalDownloads);
                                 UpdateBlogProgress(postId, ref counter.TotalDownloads);
                                 blog.DownloadedTexts = counter.Texts;
@@ -402,7 +398,7 @@ namespace TumblThree.Applications.Downloader
                             if (!CheckIfFileExistsInDB(postId))
                             {
                                 UpdateProgressQueueInformation(progress, postId);
-                                await AppendToTextFile(fileLocation, url);
+                                AppendToTextFile(fileLocation, url);
                                 UpdateBlogCounter(ref counter.Quotes, ref counter.TotalDownloads);
                                 UpdateBlogProgress(postId, ref counter.TotalDownloads);
                                 blog.DownloadedQuotes = counter.Quotes;
@@ -416,7 +412,7 @@ namespace TumblThree.Applications.Downloader
                             if (!CheckIfFileExistsInDB(postId))
                             {
                                 UpdateProgressQueueInformation(progress, postId);
-                                await AppendToTextFile(fileLocation, url);
+                                AppendToTextFile(fileLocation, url);
                                 UpdateBlogCounter(ref counter.Links, ref counter.TotalDownloads);
                                 UpdateBlogProgress(postId, ref counter.TotalDownloads);
                                 blog.DownloadedLinks = counter.Links;
@@ -430,7 +426,7 @@ namespace TumblThree.Applications.Downloader
                             if (!CheckIfFileExistsInDB(postId))
                             {
                                 UpdateProgressQueueInformation(progress, postId);
-                                await AppendToTextFile(fileLocation, url);
+                                AppendToTextFile(fileLocation, url);
                                 UpdateBlogCounter(ref counter.Conversations, ref counter.TotalDownloads);
                                 UpdateBlogProgress(postId, ref counter.TotalDownloads);
                                 blog.DownloadedConversations = counter.Conversations;
@@ -444,7 +440,7 @@ namespace TumblThree.Applications.Downloader
                             if (!CheckIfFileExistsInDB(postId))
                             {
                                 UpdateProgressQueueInformation(progress, postId);
-                                await AppendToTextFile(fileLocation, url);
+                                AppendToTextFile(fileLocation, url);
                                 UpdateBlogCounter(ref counter.PhotoMetas, ref counter.TotalDownloads);
                                 UpdateBlogProgress(postId, ref counter.TotalDownloads);
                                 blog.DownloadedPhotoMetas = counter.PhotoMetas;
@@ -458,7 +454,7 @@ namespace TumblThree.Applications.Downloader
                             if (!CheckIfFileExistsInDB(postId))
                             {
                                 UpdateProgressQueueInformation(progress, postId);
-                                await AppendToTextFile(fileLocation, url);
+                                AppendToTextFile(fileLocation, url);
                                 UpdateBlogCounter(ref counter.VideoMetas, ref counter.TotalDownloads);
                                 UpdateBlogProgress(postId, ref counter.TotalDownloads);
                                 blog.DownloadedVideoMetas = counter.VideoMetas;
@@ -472,7 +468,7 @@ namespace TumblThree.Applications.Downloader
                             if (!CheckIfFileExistsInDB(postId))
                             {
                                 UpdateProgressQueueInformation(progress, postId);
-                                await AppendToTextFile(fileLocation, url);
+                                AppendToTextFile(fileLocation, url);
                                 UpdateBlogCounter(ref counter.AudioMetas, ref counter.TotalDownloads);
                                 UpdateBlogProgress(postId, ref counter.TotalDownloads);
                                 blog.DownloadedAudioMetas = counter.AudioMetas;
