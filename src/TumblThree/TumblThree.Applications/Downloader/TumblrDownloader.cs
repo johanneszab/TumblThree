@@ -283,15 +283,7 @@ namespace TumblThree.Applications.Downloader
                                 apiLimitHit = true;
                             }
 
-                            // only counts single images and photoset, no inline images
-                            //Interlocked.Add(ref counter.Photos, document.Descendants("post").Where(post => post.Attribute("type").Value == "photo").Count());
-                            //Interlocked.Add(ref counter.Photos, document.Descendants("photo").Count() - 1);
-                            Interlocked.Add(ref counter.Videos, document.Descendants("post").Where(post => post.Attribute("type").Value == "video").Count());
-                            Interlocked.Add(ref counter.Audios, document.Descendants("post").Where(post => post.Attribute("type").Value == "audio").Count());
-                            Interlocked.Add(ref counter.Texts, document.Descendants("post").Where(post => post.Attribute("type").Value == "regular").Count());
-                            Interlocked.Add(ref counter.Conversations, document.Descendants("post").Where(post => post.Attribute("type").Value == "conversation").Count());
-                            Interlocked.Add(ref counter.Quotes, document.Descendants("post").Where(post => post.Attribute("type").Value == "quote").Count());
-                            Interlocked.Add(ref counter.Links, document.Descendants("post").Where(post => post.Attribute("type").Value == "link").Count());
+                            CountPostTypes(document, counter);
 
                             ulong highestPostId = 0;
                             UInt64.TryParse(document?.Element("tumblr").Element("posts").Element("post")?.Attribute("id").Value, out highestId);
@@ -319,17 +311,7 @@ namespace TumblThree.Applications.Downloader
 
             if (!ct.IsCancellationRequested && loopCompleted)
             {
-                blog.TotalCount = counter.TotalDownloads;
-                blog.Photos = counter.Photos;
-                blog.Videos = counter.Videos;
-                blog.Audios = counter.Audios;
-                blog.Texts = counter.Texts;
-                blog.Conversations = counter.Conversations;
-                blog.Quotes = counter.Quotes;
-                blog.NumberOfLinks = counter.Links;
-                blog.PhotoMetas = counter.PhotoMetas;
-                blog.VideoMetas = counter.VideoMetas;
-                blog.AudioMetas = counter.AudioMetas;
+                UpdateBlogStats(counter);
             }
 
             return Tuple.Create(highestId, apiLimitHit, downloadList);
@@ -515,6 +497,34 @@ namespace TumblThree.Applications.Downloader
                     sharedDownloads.Add(Tuple.Create(PostTypes.AudioMeta, textBody, post.Attribute("id").Value));
                 }
             }
+        }
+
+        private void CountPostTypes(XDocument document, PostCounter counter)
+        {
+            // only counts single images and photoset, no inline images
+            //Interlocked.Add(ref counter.Photos, document.Descendants("post").Where(post => post.Attribute("type").Value == "photo").Count());
+            //Interlocked.Add(ref counter.Photos, document.Descendants("photo").Count() - 1);
+            Interlocked.Add(ref counter.Videos, document.Descendants("post").Where(post => post.Attribute("type").Value == "video").Count());
+            Interlocked.Add(ref counter.Audios, document.Descendants("post").Where(post => post.Attribute("type").Value == "audio").Count());
+            Interlocked.Add(ref counter.Texts, document.Descendants("post").Where(post => post.Attribute("type").Value == "regular").Count());
+            Interlocked.Add(ref counter.Conversations, document.Descendants("post").Where(post => post.Attribute("type").Value == "conversation").Count());
+            Interlocked.Add(ref counter.Quotes, document.Descendants("post").Where(post => post.Attribute("type").Value == "quote").Count());
+            Interlocked.Add(ref counter.Links, document.Descendants("post").Where(post => post.Attribute("type").Value == "link").Count());
+        }
+
+        private void UpdateBlogStats(PostCounter counter)
+        {
+            blog.TotalCount = counter.TotalDownloads;
+            blog.Photos = counter.Photos;
+            blog.Videos = counter.Videos;
+            blog.Audios = counter.Audios;
+            blog.Texts = counter.Texts;
+            blog.Conversations = counter.Conversations;
+            blog.Quotes = counter.Quotes;
+            blog.NumberOfLinks = counter.Links;
+            blog.PhotoMetas = counter.PhotoMetas;
+            blog.VideoMetas = counter.VideoMetas;
+            blog.AudioMetas = counter.AudioMetas;
         }
 
         private void AddToDownloadList(Tuple<PostTypes, string, string> addToList)
