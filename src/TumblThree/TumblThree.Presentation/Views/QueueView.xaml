@@ -15,6 +15,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <ListBox x:Name="queueListBox" Grid.Row="0" ItemsSource="{Binding QueueManager.Items}" SelectedItem="{Binding SelectedQueueItem}" SelectionMode="Extended" HorizontalContentAlignment="Stretch"

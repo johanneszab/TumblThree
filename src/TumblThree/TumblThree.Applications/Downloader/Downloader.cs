@@ -138,12 +138,15 @@ namespace TumblThree.Applications.Downloader
 
         public virtual async Task IsBlogOnlineAsync()
         {
-            string request = await RequestDataAsync(blog.Url);
-
-            if (request != null)
+            try
+            {
+                await RequestDataAsync(blog.Url);
                 blog.Online = true;
-            else
+            }
+            catch (WebException)
+            {
                 blog.Online = false;
+            }
         }
 
         public virtual async Task UpdateMetaInformationAsync()
@@ -193,11 +196,11 @@ namespace TumblThree.Applications.Downloader
             return false;
         }
 
-        protected virtual void UpdateProgressQueueInformation(IProgress<DataModels.DownloadProgress> progress, string fileName)
+        protected virtual void UpdateProgressQueueInformation(IProgress<DataModels.DownloadProgress> progress, string format, params object[] args)
         {
             var newProgress = new DataModels.DownloadProgress
             {
-                Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressDownloadImage, fileName)
+                Progress = string.Format(CultureInfo.CurrentCulture, format, args)
             };
             progress.Report(newProgress);
         }
@@ -222,7 +225,8 @@ namespace TumblThree.Applications.Downloader
             {
                 Logger.Error("ManagerController:Download: {0}", ex);
                 shellService.ShowError(ex, Resources.DiskFull);
-                throw;
+                crawlerService.StopCommand.Execute(null);
+                return false;
             }
             catch
             {
@@ -260,7 +264,8 @@ namespace TumblThree.Applications.Downloader
             {
                 Logger.Error("ManagerController:Download: {0}", ex);
                 shellService.ShowError(ex, Resources.DiskFull);
-                throw;
+                crawlerService.StopCommand.Execute(null);
+                return false;
             }
             catch
             {
@@ -268,19 +273,22 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        protected virtual void UpdateBlogCounter(ref int counter, ref int totalCounter)
+        protected virtual void UpdateBlogProgress(ref int totalCounter)
         {
-            Interlocked.Increment(ref counter);
-            Interlocked.Increment(ref totalCounter);
+            blog.DownloadedImages = Interlocked.Increment(ref totalCounter);
+            blog.Progress = (int)((double)totalCounter / (double)blog.TotalCount * 100);
         }
 
-        protected virtual void UpdateBlogProgress(string fileName, ref int totalCounter)
+        protected virtual void UpdateBlogPostCount(ref int postCounter, Action<int> blogCounter)
+        {
+            blogCounter(Interlocked.Increment(ref postCounter));
+        }
+
+        protected virtual void UpdateBlogDB(string fileName)
         {
             lock (lockObjectProgress)
             {
                 files.Links.Add(fileName);
-                blog.DownloadedImages = totalCounter;
-                blog.Progress = (int)((double)totalCounter / (double)blog.TotalCount * 100);
             }
         }
 
@@ -291,7 +299,7 @@ namespace TumblThree.Applications.Downloader
             PostCounter counter = new PostCounter(blog);
             bool loopCompleted = true;
 
-            string blogPath = Directory.GetParent(blog.Location).FullName;
+            string blogDownloadLocation = Path.Combine((Directory.GetParent(blog.Location).FullName), blog.Name);
 
             CreateDataFolder();
 
@@ -321,16 +329,16 @@ namespace TumblThree.Applications.Downloader
                         case PostTypes.Photo:
                             fileName = currentImageUrl.Item2.Split('/').Last();
                             url = currentImageUrl.Item2;
-                            fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), fileName);
-                            fileLocationUrlList = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNamePhotos));
+                            fileLocation = Path.Combine(blogDownloadLocation, fileName);
+                            fileLocationUrlList = Path.Combine(blogDownloadLocation, string.Format(CultureInfo.CurrentCulture, Resources.FileNamePhotos));
 
                             if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(GetCoreImageUrl(url))))
                             {
-                                UpdateProgressQueueInformation(progress, fileName);
+                                UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, fileName);
                                 await DownloadBinaryFile(fileLocation, fileLocationUrlList, url);
-                                UpdateBlogCounter(ref counter.Photos, ref counter.TotalDownloads);
-                                UpdateBlogProgress(fileName, ref counter.TotalDownloads);
-                                blog.DownloadedPhotos = counter.Photos;
+                                UpdateBlogPostCount(ref counter.Photos, value => blog.DownloadedPhotos = value);
+                                UpdateBlogProgress(ref counter.TotalDownloads);
+                                UpdateBlogDB(fileName);
                                 if (shellService.Settings.EnablePreview)
                                 {
                                     if (!fileName.EndsWith(".gif"))
@@ -343,16 +351,16 @@ namespace TumblThree.Applications.Downloader
                         case PostTypes.Video:
                             fileName = currentImageUrl.Item2.Split('/').Last();
                             url = currentImageUrl.Item2;
-                            fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), fileName);
-                            fileLocationUrlList = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameVideos));
+                            fileLocation = Path.Combine(blogDownloadLocation, fileName);
+                            fileLocationUrlList = Path.Combine(blogDownloadLocation, string.Format(CultureInfo.CurrentCulture, Resources.FileNameVideos));
 
                             if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(url)))
                             {
-                                UpdateProgressQueueInformation(progress, fileName);
+                                UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, fileName);
                                 await DownloadBinaryFile(fileLocation, fileLocationUrlList, url);
-                                UpdateBlogCounter(ref counter.Videos, ref counter.TotalDownloads);
-                                UpdateBlogProgress(fileName, ref counter.TotalDownloads);
-                                blog.DownloadedVideos = counter.Videos;
+                                UpdateBlogPostCount(ref counter.Videos, value => blog.DownloadedVideos = value);
+                                UpdateBlogProgress(ref counter.TotalDownloads);
+                                UpdateBlogDB(fileName);
                                 if (shellService.Settings.EnablePreview)
                                 {
                                     blog.LastDownloadedVideo = Path.GetFullPath(fileLocation);
@@ -362,114 +370,115 @@ namespace TumblThree.Applications.Downloader
                         case PostTypes.Audio:
                             fileName = currentImageUrl.Item2.Split('/').Last();
                             url = currentImageUrl.Item2;
-                            fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), currentImageUrl.Item3 + ".swf");
-                            fileLocationUrlList = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameAudios));
+                            fileLocation = Path.Combine(blogDownloadLocation, currentImageUrl.Item3 + ".swf");
+                            fileLocationUrlList = Path.Combine(blogDownloadLocation, string.Format(CultureInfo.CurrentCulture, Resources.FileNameAudios));
 
                             if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(url)))
                             {
-                                UpdateProgressQueueInformation(progress, fileName);
+                                UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, fileName);
                                 await DownloadBinaryFile(fileLocation, fileLocationUrlList, url);
-                                UpdateBlogCounter(ref counter.Audios, ref counter.TotalDownloads);
-                                UpdateBlogProgress(fileName, ref counter.TotalDownloads);
-                                blog.DownloadedAudios = counter.Audios;
+                                UpdateBlogPostCount(ref counter.Audios, value => blog.DownloadedAudios = value);
+                                UpdateBlogProgress(ref counter.TotalDownloads);
+                                UpdateBlogDB(fileName);
                             }
                             break;
                         case PostTypes.Text:
                             url = currentImageUrl.Item2;
                             postId = currentImageUrl.Item3;
-                            fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameTexts));
+                            fileLocation = Path.Combine(blogDownloadLocation, string.Format(CultureInfo.CurrentCulture, Resources.FileNameTexts));
 
                             if (!CheckIfFileExistsInDB(postId))
                             {
-                                UpdateProgressQueueInformation(progress, postId);
+                                UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, postId);
                                 AppendToTextFile(fileLocation, url);
-                                UpdateBlogCounter(ref counter.Texts, ref counter.TotalDownloads);
-                                UpdateBlogProgress(postId, ref counter.TotalDownloads);
-                                blog.DownloadedTexts = counter.Texts;
+                                UpdateBlogPostCount(ref counter.Audios, value => blog.DownloadedTexts = value);
+                                UpdateBlogProgress(ref counter.TotalDownloads);
+                                UpdateBlogDB(postId);
                             }
                             break;
                         case PostTypes.Quote:
                             url = currentImageUrl.Item2;
                             postId = currentImageUrl.Item3;
-                            fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameQuotes));
+                            fileLocation = Path.Combine(blogDownloadLocation, string.Format(CultureInfo.CurrentCulture, Resources.FileNameQuotes));
 
                             if (!CheckIfFileExistsInDB(postId))
                             {
-                                UpdateProgressQueueInformation(progress, postId);
+                                UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, postId);
                                 AppendToTextFile(fileLocation, url);
-                                UpdateBlogCounter(ref counter.Quotes, ref counter.TotalDownloads);
-                                UpdateBlogProgress(postId, ref counter.TotalDownloads);
-                                blog.DownloadedQuotes = counter.Quotes;
+                                UpdateBlogPostCount(ref counter.Quotes, value => blog.DownloadedQuotes = value);
+                                UpdateBlogProgress(ref counter.TotalDownloads);
+                                UpdateBlogDB(postId);
                             }
                             break;
                         case PostTypes.Link:
                             url = currentImageUrl.Item2;
                             postId = currentImageUrl.Item3;
-                            fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameLinks));
+                            fileLocation = Path.Combine(blogDownloadLocation, string.Format(CultureInfo.CurrentCulture, Resources.FileNameLinks));
 
                             if (!CheckIfFileExistsInDB(postId))
                             {
-                                UpdateProgressQueueInformation(progress, postId);
+                                UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, postId);
                                 AppendToTextFile(fileLocation, url);
-                                UpdateBlogCounter(ref counter.Links, ref counter.TotalDownloads);
-                                UpdateBlogProgress(postId, ref counter.TotalDownloads);
-                                blog.DownloadedLinks = counter.Links;
+                                UpdateBlogPostCount(ref counter.Links, value => blog.DownloadedLinks = value);
+                                UpdateBlogProgress(ref counter.TotalDownloads);
+                                UpdateBlogDB(postId);
                             }
                             break;
                         case PostTypes.Conversation:
                             url = currentImageUrl.Item2;
                             postId = currentImageUrl.Item3;
-                            fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameConversations));
+                            fileLocation = Path.Combine(blogDownloadLocation, string.Format(CultureInfo.CurrentCulture, Resources.FileNameConversations));
 
                             if (!CheckIfFileExistsInDB(postId))
                             {
-                                UpdateProgressQueueInformation(progress, postId);
+                                UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, postId);
                                 AppendToTextFile(fileLocation, url);
-                                UpdateBlogCounter(ref counter.Conversations, ref counter.TotalDownloads);
-                                UpdateBlogProgress(postId, ref counter.TotalDownloads);
+                                UpdateBlogPostCount(ref counter.Conversations, value => blog.DownloadedConversations = value);
+                                UpdateBlogProgress(ref counter.TotalDownloads);
+                                UpdateBlogDB(postId);
                                 blog.DownloadedConversations = counter.Conversations;
                             }
                             break;
                         case PostTypes.PhotoMeta:
                             url = currentImageUrl.Item2;
                             postId = currentImageUrl.Item3;
-                            fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaPhoto));
+                            fileLocation = Path.Combine(blogDownloadLocation, string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaPhoto));
 
                             if (!CheckIfFileExistsInDB(postId))
                             {
-                                UpdateProgressQueueInformation(progress, postId);
+                                UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, postId);
                                 AppendToTextFile(fileLocation, url);
-                                UpdateBlogCounter(ref counter.PhotoMetas, ref counter.TotalDownloads);
-                                UpdateBlogProgress(postId, ref counter.TotalDownloads);
-                                blog.DownloadedPhotoMetas = counter.PhotoMetas;
+                                UpdateBlogPostCount(ref counter.PhotoMetas, value => blog.DownloadedPhotoMetas = value);
+                                UpdateBlogProgress(ref counter.TotalDownloads);
+                                UpdateBlogDB(postId);
                             }
                             break;
                         case PostTypes.VideoMeta:
                             url = currentImageUrl.Item2;
                             postId = currentImageUrl.Item3;
-                            fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaVideo));
+                            fileLocation = Path.Combine(blogDownloadLocation, string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaVideo));
 
                             if (!CheckIfFileExistsInDB(postId))
                             {
-                                UpdateProgressQueueInformation(progress, postId);
+                                UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, postId);
                                 AppendToTextFile(fileLocation, url);
-                                UpdateBlogCounter(ref counter.VideoMetas, ref counter.TotalDownloads);
-                                UpdateBlogProgress(postId, ref counter.TotalDownloads);
-                                blog.DownloadedVideoMetas = counter.VideoMetas;
+                                UpdateBlogPostCount(ref counter.VideoMetas, value => blog.DownloadedVideoMetas = value);
+                                UpdateBlogProgress(ref counter.TotalDownloads);
+                                UpdateBlogDB(postId);
                             }
                             break;
                         case PostTypes.AudioMeta:
                             url = currentImageUrl.Item2;
                             postId = currentImageUrl.Item3;
-                            fileLocation = Path.Combine(Path.Combine(blogPath, blog.Name), string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaAudio));
+                            fileLocation = Path.Combine(blogDownloadLocation, string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaAudio));
 
                             if (!CheckIfFileExistsInDB(postId))
                             {
-                                UpdateProgressQueueInformation(progress, postId);
+                                UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, postId);
                                 AppendToTextFile(fileLocation, url);
-                                UpdateBlogCounter(ref counter.AudioMetas, ref counter.TotalDownloads);
-                                UpdateBlogProgress(postId, ref counter.TotalDownloads);
-                                blog.DownloadedAudioMetas = counter.AudioMetas;
+                                UpdateBlogPostCount(ref counter.AudioMetas, value => blog.DownloadedAudioMetas = value);
+                                UpdateBlogProgress(ref counter.TotalDownloads);
+                                UpdateBlogDB(postId);
                             }
                             break;
                         default:
@@ -485,10 +494,7 @@ namespace TumblThree.Applications.Downloader
 
             files.Save();
 
-            if (loopCompleted)
-                return true;
-
-            return false;
+            return loopCompleted;
         }
     }
 }

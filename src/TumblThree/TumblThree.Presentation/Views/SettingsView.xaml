@@ -326,7 +326,7 @@
                         </ToolTip>
                     </CheckBox.ToolTip>
                 </CheckBox>
-                <Separator Grid.ColumnSpan="2" Grid.Row="11" Margin="0"/>
+                <Separator Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="11" Margin="0"/>
                 <Label x:Name="globalLabel" Grid.Column="0" Grid.Row="12" Margin="5" Content="{x:Static p:Resources.GlobalSettings}"/>
                 <CheckBox x:Name="checkBoxEnablePreview" Content="{x:Static p:Resources.EnablePreview}" IsChecked="{Binding EnablePreview, Mode=TwoWay}" Grid.Column="0" Grid.Row="13" Margin="10"/>
                 <CheckBox x:Name="checkBoxCheckStatus" Content="{x:Static p:Resources.CheckStatus}" IsChecked="{Binding CheckOnlineStatusAtStartup, Mode=TwoWay}" Grid.Column="0" Grid.Row="14" Margin="10"/>

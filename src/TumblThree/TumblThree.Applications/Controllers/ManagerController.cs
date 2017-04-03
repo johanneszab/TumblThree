@@ -17,6 +17,7 @@ using TumblThree.Domain.Queue;
 using System.Windows;
 using System.Collections.Specialized;
 using TumblThree.Applications.Downloader;
+using System.Threading;
 
 namespace TumblThree.Applications.Controllers
 {
@@ -382,6 +383,7 @@ namespace TumblThree.Applications.Controllers
             if (Clipboard.ContainsText())
             {
 
+                SemaphoreSlim semaphoreSlim = new SemaphoreSlim(100);
                 // Count each whitespace as new url
                 string[] urls = Clipboard.GetText().Split();
 
@@ -389,8 +391,10 @@ namespace TumblThree.Applications.Controllers
                 {
                     if (Validator.IsValidTumblrUrl(url))
                     {
+                        semaphoreSlim.WaitAsync();
                         Task.Factory.StartNew(() => AddBlogAsync(url),
                         TaskCreationOptions.LongRunning);
+                        semaphoreSlim.Release();
                     }
                 }
             }
