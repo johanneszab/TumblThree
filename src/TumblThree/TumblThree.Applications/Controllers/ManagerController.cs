@@ -382,21 +382,21 @@ namespace TumblThree.Applications.Controllers
         {
             if (Clipboard.ContainsText())
             {
-
-                SemaphoreSlim semaphoreSlim = new SemaphoreSlim(100);
                 // Count each whitespace as new url
                 string[] urls = Clipboard.GetText().Split();
 
-                foreach (string url in urls)
-                {
-                    if (Validator.IsValidTumblrUrl(url))
-                    {
-                        semaphoreSlim.WaitAsync();
-                        Task.Factory.StartNew(() => AddBlogAsync(url),
-                        TaskCreationOptions.LongRunning);
-                        semaphoreSlim.Release();
-                    }
-                }
+                AddBlogBatchedAsync(urls);
+            }
+        }
+
+        private async Task AddBlogBatchedAsync(string[] urls)
+        {
+            SemaphoreSlim semaphoreSlim = new SemaphoreSlim(15);
+            foreach (string url in urls.Where(Validator.IsValidTumblrUrl))
+            {
+                await semaphoreSlim.WaitAsync();
+                await AddBlogAsync(url);
+                semaphoreSlim.Release();
             }
         }
 

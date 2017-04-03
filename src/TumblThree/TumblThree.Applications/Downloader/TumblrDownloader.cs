@@ -38,50 +38,43 @@ namespace TumblThree.Applications.Downloader
 
         private new async Task<XDocument> RequestDataAsync(string url)
         {
-            //try
-            //{
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                request.Method = "GET";
-                request.ProtocolVersion = HttpVersion.Version11;
-                request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
-                request.AllowAutoRedirect = true;
-                request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-                request.ReadWriteTimeout = shellService.Settings.TimeOut * 1000;
-                request.Timeout = -1;
-                ServicePointManager.DefaultConnectionLimit = 400;
-                if (!String.IsNullOrEmpty(shellService.Settings.ProxyHost))
-                {
-                    request.Proxy = new WebProxy(shellService.Settings.ProxyHost, Int32.Parse(shellService.Settings.ProxyPort));
-                }
-                else
-                {
-                    request.Proxy = null;
-                }
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "GET";
+            request.ProtocolVersion = HttpVersion.Version11;
+            request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
+            request.AllowAutoRedirect = true;
+            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+            request.ReadWriteTimeout = shellService.Settings.TimeOut * 1000;
+            request.Timeout = -1;
+            ServicePointManager.DefaultConnectionLimit = 400;
+            if (!String.IsNullOrEmpty(shellService.Settings.ProxyHost))
+            {
+                request.Proxy = new WebProxy(shellService.Settings.ProxyHost, Int32.Parse(shellService.Settings.ProxyPort));
+            }
+            else
+            {
+                request.Proxy = null;
+            }
 
-                int bandwidth = 2000000;
-                if (shellService.Settings.LimitScanBandwidth)
-                {
-                    bandwidth = shellService.Settings.Bandwidth;
-                }
+            int bandwidth = 2000000;
+            if (shellService.Settings.LimitScanBandwidth)
+            {
+                bandwidth = shellService.Settings.Bandwidth;
+            }
 
-                using (HttpWebResponse response = await request.GetResponseAsync() as HttpWebResponse)
+            using (HttpWebResponse response = await request.GetResponseAsync() as HttpWebResponse)
+            {
+                using (ThrottledStream stream = new ThrottledStream(response.GetResponseStream(), (bandwidth / shellService.Settings.ParallelImages) * 1024))
                 {
-                    using (ThrottledStream stream = new ThrottledStream(response.GetResponseStream(), (bandwidth / shellService.Settings.ParallelImages) * 1024))
+                    using (BufferedStream buffer = new BufferedStream(stream))
                     {
-                        using (BufferedStream buffer = new BufferedStream(stream))
+                        using (StreamReader reader = new StreamReader(buffer))
                         {
-                            using (StreamReader reader = new StreamReader(buffer))
-                            {
-                                return XDocument.Load(reader);
-                            }
+                            return XDocument.Load(reader);
                         }
                     }
                 }
-            //}
-            //catch (WebException we)
-            //{
-            //    return new XDocument();
-            //}
+            }
         }
 
         private string GetApiUrl(string url, int count, int start = 0)
@@ -110,6 +103,19 @@ namespace TumblThree.Applications.Downloader
                 return await RequestDataAsync(url);
             }
             return await RequestDataAsync(url);
+        }
+
+        public new async Task IsBlogOnlineAsync()
+        {
+            try
+            {
+                await GetApiPageAsync(1);
+                blog.Online = true;
+            }
+            catch (WebException)
+            {
+                blog.Online = false;
+            }
         }
 
         public override async Task UpdateMetaInformationAsync()
@@ -272,7 +278,8 @@ namespace TumblThree.Applications.Downloader
                             CountPostTypes(document);
 
                             ulong highestPostId = 0;
-                            ulong.TryParse(document.Element("tumblr").Element("posts").Element("post")?.Attribute("id").Value, out highestId);
+                            ulong.TryParse(document.Element("tumblr").Element("posts").Element("post")?.Attribute("id").Value,
+                                out highestPostId);
 
                             if (highestPostId < lastId)
                                 loopCompleted = false;
@@ -285,7 +292,7 @@ namespace TumblThree.Applications.Downloader
                             {
                                 // add retry logic?
                                 apiLimitHit = true;
-                                Logger.Error("TumblrDownloader:GetUrls: {0}", webException);
+                                Logger.Error("TumblrDownloader:GetUrls:WebException {0}", webException);
                                 shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
                             }
                         }
@@ -441,7 +448,8 @@ namespace TumblThree.Applications.Downloader
         private void CountPostTypes(XContainer document)
         {
             Interlocked.Add(ref counter.Photos, document.Descendants("post").Count(post => post.Attribute("type").Value == "photo"));
-            Interlocked.Add(ref counter.Photos, document.Descendants("photo").Count() - 1);
+            if (document.Descendants("photo").Any())
+                Interlocked.Add(ref counter.Photos, document.Descendants("photo").Count() - 1);
             Interlocked.Add(ref counter.Photos, document.Descendants("post").Count(post => post.Nodes().ToString().Contains("tumblr_inline")));
             Interlocked.Add(ref counter.Videos, document.Descendants("post").Count(post => post.Attribute("type").Value == "video"));
             Interlocked.Add(ref counter.Audios, document.Descendants("post").Count(post => post.Attribute("type").Value == "audio"));
@@ -493,7 +501,7 @@ namespace TumblThree.Applications.Downloader
                 return;
             }
             var regex = new Regex("<img src=\"(.*?)\"");
-            foreach (Match match in regex.Matches(post.Element("regular-body")?.Value))
+            foreach (Match match in regex.Matches(post.Value))
             {
                 var imageUrl = match.Groups[1].Value;
                 if (blog.ForceSize)

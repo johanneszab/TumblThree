@@ -64,49 +64,42 @@ namespace TumblThree.Applications.Downloader
 
         protected virtual async Task<string> RequestDataAsync(string url)
         {
-            try
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "GET";
+            request.ProtocolVersion = HttpVersion.Version11;
+            request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
+            request.AllowAutoRedirect = true;
+            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+            request.ReadWriteTimeout = shellService.Settings.TimeOut * 1000;
+            request.Timeout = -1;
+            ServicePointManager.DefaultConnectionLimit = 400;
+            if (!String.IsNullOrEmpty(shellService.Settings.ProxyHost))
             {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                request.Method = "GET";
-                request.ProtocolVersion = HttpVersion.Version11;
-                request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
-                request.AllowAutoRedirect = true;
-                request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-                request.ReadWriteTimeout = shellService.Settings.TimeOut * 1000;
-                request.Timeout = -1;
-                ServicePointManager.DefaultConnectionLimit = 400;
-                if (!String.IsNullOrEmpty(shellService.Settings.ProxyHost))
-                {
-                    request.Proxy = new WebProxy(shellService.Settings.ProxyHost, Int32.Parse(shellService.Settings.ProxyPort));
-                }
-                else
-                {
-                    request.Proxy = null;
-                }
+                request.Proxy = new WebProxy(shellService.Settings.ProxyHost, Int32.Parse(shellService.Settings.ProxyPort));
+            }
+            else
+            {
+                request.Proxy = null;
+            }
 
-                int bandwidth = 2000000;
-                if (shellService.Settings.LimitScanBandwidth)
-                {
-                    bandwidth = shellService.Settings.Bandwidth;
-                }
+            int bandwidth = 2000000;
+            if (shellService.Settings.LimitScanBandwidth)
+            {
+                bandwidth = shellService.Settings.Bandwidth;
+            }
 
-                using (HttpWebResponse response = await request.GetResponseAsync() as HttpWebResponse)
+            using (HttpWebResponse response = await request.GetResponseAsync() as HttpWebResponse)
+            {
+                using (ThrottledStream stream = new ThrottledStream(response.GetResponseStream(), (bandwidth / shellService.Settings.ParallelImages) * 1024))
                 {
-                    using (ThrottledStream stream = new ThrottledStream(response.GetResponseStream(), (bandwidth / shellService.Settings.ParallelImages) * 1024))
+                    using (BufferedStream buffer = new BufferedStream(stream))
                     {
-                        using (BufferedStream buffer = new BufferedStream(stream))
+                        using (StreamReader reader = new StreamReader(buffer))
                         {
-                            using (StreamReader reader = new StreamReader(buffer))
-                            {
-                                return reader.ReadToEnd();
-                            }
+                            return reader.ReadToEnd();
                         }
                     }
                 }
-            }
-            catch
-            {
-                return null;
             }
         }
 
@@ -136,7 +129,7 @@ namespace TumblThree.Applications.Downloader
             return true;
         }
 
-        public virtual async Task IsBlogOnlineAsync()
+        public async Task IsBlogOnlineAsync()
         {
             try
             {
@@ -335,16 +328,18 @@ namespace TumblThree.Applications.Downloader
                             if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(GetCoreImageUrl(url))))
                             {
                                 UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, fileName);
-                                await DownloadBinaryFile(fileLocation, fileLocationUrlList, url);
-                                UpdateBlogPostCount(ref counter.Photos, value => blog.DownloadedPhotos = value);
-                                UpdateBlogProgress(ref counter.TotalDownloads);
-                                UpdateBlogDB(fileName);
-                                if (shellService.Settings.EnablePreview)
+                                if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url))
                                 {
-                                    if (!fileName.EndsWith(".gif"))
-                                        blog.LastDownloadedPhoto = Path.GetFullPath(fileLocation);
-                                    else
-                                        blog.LastDownloadedVideo = Path.GetFullPath(fileLocation);
+                                    UpdateBlogPostCount(ref counter.Photos, value => blog.DownloadedPhotos = value);
+                                    UpdateBlogProgress(ref counter.TotalDownloads);
+                                    UpdateBlogDB(fileName);
+                                    if (shellService.Settings.EnablePreview)
+                                    {
+                                        if (!fileName.EndsWith(".gif"))
+                                            blog.LastDownloadedPhoto = Path.GetFullPath(fileLocation);
+                                        else
+                                            blog.LastDownloadedVideo = Path.GetFullPath(fileLocation);
+                                    }
                                 }
                             }
                             break;
@@ -357,13 +352,15 @@ namespace TumblThree.Applications.Downloader
                             if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(url)))
                             {
                                 UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, fileName);
-                                await DownloadBinaryFile(fileLocation, fileLocationUrlList, url);
-                                UpdateBlogPostCount(ref counter.Videos, value => blog.DownloadedVideos = value);
-                                UpdateBlogProgress(ref counter.TotalDownloads);
-                                UpdateBlogDB(fileName);
-                                if (shellService.Settings.EnablePreview)
+                                if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url))
                                 {
-                                    blog.LastDownloadedVideo = Path.GetFullPath(fileLocation);
+                                    UpdateBlogPostCount(ref counter.Videos, value => blog.DownloadedVideos = value);
+                                    UpdateBlogProgress(ref counter.TotalDownloads);
+                                    UpdateBlogDB(fileName);
+                                    if (shellService.Settings.EnablePreview)
+                                    {
+                                        blog.LastDownloadedVideo = Path.GetFullPath(fileLocation);
+                                    }
                                 }
                             }
                             break;
@@ -376,10 +373,12 @@ namespace TumblThree.Applications.Downloader
                             if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(url)))
                             {
                                 UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, fileName);
-                                await DownloadBinaryFile(fileLocation, fileLocationUrlList, url);
-                                UpdateBlogPostCount(ref counter.Audios, value => blog.DownloadedAudios = value);
-                                UpdateBlogProgress(ref counter.TotalDownloads);
-                                UpdateBlogDB(fileName);
+                                if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url))
+                                {
+                                    UpdateBlogPostCount(ref counter.Audios, value => blog.DownloadedAudios = value);
+                                    UpdateBlogProgress(ref counter.TotalDownloads);
+                                    UpdateBlogDB(fileName);
+                                }
                             }
                             break;
                         case PostTypes.Text:
@@ -390,10 +389,12 @@ namespace TumblThree.Applications.Downloader
                             if (!CheckIfFileExistsInDB(postId))
                             {
                                 UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, postId);
-                                AppendToTextFile(fileLocation, url);
-                                UpdateBlogPostCount(ref counter.Audios, value => blog.DownloadedTexts = value);
-                                UpdateBlogProgress(ref counter.TotalDownloads);
-                                UpdateBlogDB(postId);
+                                if (AppendToTextFile(fileLocation, url))
+                                {
+                                    UpdateBlogPostCount(ref counter.Audios, value => blog.DownloadedTexts = value);
+                                    UpdateBlogProgress(ref counter.TotalDownloads);
+                                    UpdateBlogDB(postId);
+                                }
                             }
                             break;
                         case PostTypes.Quote:
@@ -404,10 +405,12 @@ namespace TumblThree.Applications.Downloader
                             if (!CheckIfFileExistsInDB(postId))
                             {
                                 UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, postId);
-                                AppendToTextFile(fileLocation, url);
-                                UpdateBlogPostCount(ref counter.Quotes, value => blog.DownloadedQuotes = value);
-                                UpdateBlogProgress(ref counter.TotalDownloads);
-                                UpdateBlogDB(postId);
+                                if (AppendToTextFile(fileLocation, url))
+                                {
+                                    UpdateBlogPostCount(ref counter.Quotes, value => blog.DownloadedQuotes = value);
+                                    UpdateBlogProgress(ref counter.TotalDownloads);
+                                    UpdateBlogDB(postId);
+                                }
                             }
                             break;
                         case PostTypes.Link:
@@ -418,10 +421,12 @@ namespace TumblThree.Applications.Downloader
                             if (!CheckIfFileExistsInDB(postId))
                             {
                                 UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, postId);
-                                AppendToTextFile(fileLocation, url);
-                                UpdateBlogPostCount(ref counter.Links, value => blog.DownloadedLinks = value);
-                                UpdateBlogProgress(ref counter.TotalDownloads);
-                                UpdateBlogDB(postId);
+                                if (AppendToTextFile(fileLocation, url))
+                                {
+                                    UpdateBlogPostCount(ref counter.Links, value => blog.DownloadedLinks = value);
+                                    UpdateBlogProgress(ref counter.TotalDownloads);
+                                    UpdateBlogDB(postId);
+                                }
                             }
                             break;
                         case PostTypes.Conversation:
@@ -432,11 +437,12 @@ namespace TumblThree.Applications.Downloader
                             if (!CheckIfFileExistsInDB(postId))
                             {
                                 UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, postId);
-                                AppendToTextFile(fileLocation, url);
-                                UpdateBlogPostCount(ref counter.Conversations, value => blog.DownloadedConversations = value);
-                                UpdateBlogProgress(ref counter.TotalDownloads);
-                                UpdateBlogDB(postId);
-                                blog.DownloadedConversations = counter.Conversations;
+                                if (AppendToTextFile(fileLocation, url))
+                                {
+                                    UpdateBlogPostCount(ref counter.Conversations, value => blog.DownloadedConversations = value);
+                                    UpdateBlogProgress(ref counter.TotalDownloads);
+                                    UpdateBlogDB(postId);
+                                }
                             }
                             break;
                         case PostTypes.PhotoMeta:
@@ -447,10 +453,12 @@ namespace TumblThree.Applications.Downloader
                             if (!CheckIfFileExistsInDB(postId))
                             {
                                 UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, postId);
-                                AppendToTextFile(fileLocation, url);
-                                UpdateBlogPostCount(ref counter.PhotoMetas, value => blog.DownloadedPhotoMetas = value);
-                                UpdateBlogProgress(ref counter.TotalDownloads);
-                                UpdateBlogDB(postId);
+                                if (AppendToTextFile(fileLocation, url))
+                                {
+                                    UpdateBlogPostCount(ref counter.PhotoMetas, value => blog.DownloadedPhotoMetas = value);
+                                    UpdateBlogProgress(ref counter.TotalDownloads);
+                                    UpdateBlogDB(postId);
+                                }
                             }
                             break;
                         case PostTypes.VideoMeta:
@@ -461,10 +469,12 @@ namespace TumblThree.Applications.Downloader
                             if (!CheckIfFileExistsInDB(postId))
                             {
                                 UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, postId);
-                                AppendToTextFile(fileLocation, url);
-                                UpdateBlogPostCount(ref counter.VideoMetas, value => blog.DownloadedVideoMetas = value);
-                                UpdateBlogProgress(ref counter.TotalDownloads);
-                                UpdateBlogDB(postId);
+                                if (AppendToTextFile(fileLocation, url))
+                                {
+                                    UpdateBlogPostCount(ref counter.VideoMetas, value => blog.DownloadedVideoMetas = value);
+                                    UpdateBlogProgress(ref counter.TotalDownloads);
+                                    UpdateBlogDB(postId);
+                                }
                             }
                             break;
                         case PostTypes.AudioMeta:
@@ -475,10 +485,12 @@ namespace TumblThree.Applications.Downloader
                             if (!CheckIfFileExistsInDB(postId))
                             {
                                 UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, postId);
-                                AppendToTextFile(fileLocation, url);
-                                UpdateBlogPostCount(ref counter.AudioMetas, value => blog.DownloadedAudioMetas = value);
-                                UpdateBlogProgress(ref counter.TotalDownloads);
-                                UpdateBlogDB(postId);
+                                if (AppendToTextFile(fileLocation, url))
+                                {
+                                    UpdateBlogPostCount(ref counter.AudioMetas, value => blog.DownloadedAudioMetas = value);
+                                    UpdateBlogProgress(ref counter.TotalDownloads);
+                                    UpdateBlogDB(postId);
+                                }
                             }
                             break;
                         default:
