@@ -4,10 +4,8 @@ using System.Collections.Specialized;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
-using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Applications.ViewModels;
-using TumblThree.Domain;
 using TumblThree.Domain.Models;
 using TumblThree.Domain.Queue;
 
@@ -67,7 +65,7 @@ namespace TumblThree.Applications.Controllers
 
         public TumblrBlog CreateFromMultiple(IEnumerable<TumblrBlog> blogFiles)
         {
-            if (blogFiles.Count() < 1) { throw new ArgumentException("The collection must have at least one item.", "blogFiles"); }
+            if (!blogFiles.Any()) { throw new ArgumentException("The collection must have at least one item.", nameof(blogFiles)); }
 
             var sharedBlogFiles = blogFiles.Cast<TumblrBlog>().ToArray();
             foreach (Blog blog in sharedBlogFiles)

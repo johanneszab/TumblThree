@@ -37,7 +37,7 @@ namespace TumblThree.Applications.Services
         public CrawlerService(IShellService shellService)
         {
             this.shellService = shellService;
-            timeconstraint = Guava.RateLimiter.RateLimiter.Create((double)shellService.Settings.MaxConnections / (double)shellService.Settings.ConnectionTimeInterval);
+            timeconstraint = RateLimiter.Create((double)shellService.Settings.MaxConnections / (double)shellService.Settings.ConnectionTimeInterval);
 
             this.activeItems = new ObservableCollection<QueueListItem>();
             this.readonlyActiveItems = new ReadOnlyObservableList<QueueListItem>(activeItems);

@@ -17,7 +17,7 @@ namespace TumblThree.Applications
         /// <summary>
         /// Number of Bytes that are allowed per second
         /// </summary>
-        public int MaxBytesPerSecond
+        private int MaxBytesPerSecond
         {
             get { return maxBytesPerSecond; }
             set
@@ -35,9 +35,9 @@ namespace TumblThree.Applications
         #region Private Members
 
         private int processed;
-        System.Timers.Timer resettimer;
-        AutoResetEvent wh = new AutoResetEvent(true);
-        private Stream parent;
+        readonly System.Timers.Timer resettimer;
+        readonly AutoResetEvent wh = new AutoResetEvent(true);
+        private readonly Stream parent;
 
         #endregion
 
@@ -57,7 +57,7 @@ namespace TumblThree.Applications
             resettimer.Start();
         }
 
-        protected void Throttle(int bytes)
+        private void Throttle(int bytes)
         {
             try
             {
@@ -159,6 +159,11 @@ namespace TumblThree.Applications
             request.Method = "GET";
             request.ProtocolVersion = HttpVersion.Version11;
             request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
+            request.AllowAutoRedirect = true;
+            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+            request.ReadWriteTimeout = timeoutInSeconds * 1000;
+            request.Timeout = -1;
+            ServicePointManager.DefaultConnectionLimit = 400;
             if (!String.IsNullOrEmpty(proxyHost))
             {
                 request.Proxy = new WebProxy(proxyHost, Int32.Parse(proxyPort));
@@ -167,11 +172,6 @@ namespace TumblThree.Applications
             {
                 request.Proxy = null; // WebRequest.GetSystemWebProxy();
             }
-            request.AllowAutoRedirect = true;
-            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-            request.ReadWriteTimeout = timeoutInSeconds * 1000;
-            request.Timeout = -1;
-            ServicePointManager.DefaultConnectionLimit = 400;
 
             // Get the web response
             HttpWebResponse response = await request.GetResponseAsync() as HttpWebResponse;

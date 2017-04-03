@@ -118,8 +118,8 @@ namespace TumblThree.Domain.Models
             this.createPhotoMeta = false;
             this.createVideoMeta = false;
             this.createAudioMeta = false;
-            this.dateAdded = System.DateTime.Now;
-            this.lastCompleteCrawl = System.DateTime.MinValue;
+            this.dateAdded = DateTime.Now;
+            this.lastCompleteCrawl = DateTime.MinValue;
             this.online = false;
             this.lastDownloadedPhoto = null;
             this.lastDownloadedVideo = null;
@@ -467,16 +467,16 @@ namespace TumblThree.Domain.Models
 
             if (File.Exists(currentIndex))
             {
-                System.Web.Script.Serialization.JavaScriptSerializer jsJson = new System.Web.Script.Serialization.JavaScriptSerializer();
-                jsJson.MaxJsonLength = 2147483644;
+                System.Web.Script.Serialization.JavaScriptSerializer jsJson =
+                    new System.Web.Script.Serialization.JavaScriptSerializer { MaxJsonLength = 2147483644 };
                 File.WriteAllText(newIndex, JsonFormatter.FormatOutput(jsJson.Serialize(this)));
                 File.Replace(newIndex, currentIndex, backupIndex, true);
                 File.Delete(backupIndex);
             }
             else
             {
-                System.Web.Script.Serialization.JavaScriptSerializer jsJson = new System.Web.Script.Serialization.JavaScriptSerializer();
-                jsJson.MaxJsonLength = 2147483644;
+                System.Web.Script.Serialization.JavaScriptSerializer jsJson =
+                    new System.Web.Script.Serialization.JavaScriptSerializer { MaxJsonLength = 2147483644 };
                 File.WriteAllText(currentIndex, JsonFormatter.FormatOutput(jsJson.Serialize(this)));
             }
         }

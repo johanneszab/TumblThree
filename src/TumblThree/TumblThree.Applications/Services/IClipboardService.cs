@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace TumblThree.Applications.Services
+﻿namespace TumblThree.Applications.Services
 {
     public interface IClipboardService
     {

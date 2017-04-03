@@ -26,15 +26,17 @@ namespace TumblThree.Applications.Downloader
         private readonly IShellService shellService;
         private readonly ICrawlerService crawlerService;
         private readonly TumblrBlog blog;
+        private readonly PostCounter counter;
 
         public TumblrDownloader(IShellService shellService, ICrawlerService crawlerService, IBlog blog) : base(shellService, crawlerService, blog)
         {
             this.shellService = shellService;
             this.crawlerService = crawlerService;
             this.blog = (TumblrBlog)blog;
+            this.counter = new PostCounter();
         }
 
-        protected new async Task<XDocument> RequestDataAsync(string url)
+        private new async Task<XDocument> RequestDataAsync(string url)
         {
             try
             {
@@ -42,6 +44,11 @@ namespace TumblThree.Applications.Downloader
                 request.Method = "GET";
                 request.ProtocolVersion = HttpVersion.Version11;
                 request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
+                request.AllowAutoRedirect = true;
+                request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+                request.ReadWriteTimeout = shellService.Settings.TimeOut * 1000;
+                request.Timeout = -1;
+                ServicePointManager.DefaultConnectionLimit = 400;
                 if (!String.IsNullOrEmpty(shellService.Settings.ProxyHost))
                 {
                     request.Proxy = new WebProxy(shellService.Settings.ProxyHost, Int32.Parse(shellService.Settings.ProxyPort));
@@ -50,11 +57,6 @@ namespace TumblThree.Applications.Downloader
                 {
                     request.Proxy = null;
                 }
-                request.AllowAutoRedirect = true;
-                request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-                request.ReadWriteTimeout = shellService.Settings.TimeOut * 1000;
-                request.Timeout = -1;
-                ServicePointManager.DefaultConnectionLimit = 400;
 
                 int bandwidth = 2000000;
                 if (shellService.Settings.LimitScanBandwidth)
@@ -100,7 +102,7 @@ namespace TumblThree.Applications.Downloader
 
         private async Task<XDocument> GetApiPageAsync(int pageId)
         {
-            XDocument document = null;
+            XDocument document;
 
             string url = GetApiUrl(blog.Url, 50, pageId * 50);
 
@@ -119,7 +121,7 @@ namespace TumblThree.Applications.Downloader
         {
             XDocument document = await GetApiPageAsync(1);
 
-            if (document != null)
+            if (document.Root.Descendants().Any())
             {
                 blog.Title = document.Element("tumblr").Element("tumblelog").Attribute("title")?.Value;
                 blog.Description = document.Element("tumblr").Element("tumblelog")?.Value;
@@ -149,9 +151,9 @@ namespace TumblThree.Applications.Downloader
             return url.Split('_')[0] + "_" + url.Split('_')[1];
         }
 
-        private int DetermineDuplicates(IEnumerable<Tuple<PostTypes, string, string>> source, PostTypes type)
+        private int DetermineDuplicates(PostTypes type)
         {
-            return source.Where(url => url.Item1.Equals(type))
+            return downloadList.Where(url => url.Item1.Equals(type))
                 .GroupBy(url => url.Item2)
                 .Where(g => g.Count() > 1)
                 .Sum(g => g.Count() - 1);
@@ -163,17 +165,18 @@ namespace TumblThree.Applications.Downloader
 
             var grabber = Task.Run(() => GetUrls(progress, ct, pt));
             var downloader = Task.Run(() => DownloadBlog(progress, ct, pt));
-            var blogContent = grabber.Result;
-            bool apiLimitHit = blogContent.Item2;
-            var blogUrls = blogContent.Item3;
+            var grabberResult = grabber.Result;
+            bool apiLimitHit = grabberResult.Item2;
 
-            var newProgress = new DownloadProgress();
-            newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressUniqueDownloads);
+            var newProgress = new DownloadProgress
+            {
+                Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressUniqueDownloads)
+            };
             progress.Report(newProgress);
 
-            int duplicatePhotos = DetermineDuplicates(blogUrls, PostTypes.Photo);
-            int duplicateVideos = DetermineDuplicates(blogUrls, PostTypes.Video);
-            int duplicateAudios = DetermineDuplicates(blogUrls, PostTypes.Audio);
+            int duplicatePhotos = DetermineDuplicates(PostTypes.Photo);
+            int duplicateVideos = DetermineDuplicates(PostTypes.Video);
+            int duplicateAudios = DetermineDuplicates(PostTypes.Audio);
 
             blog.DuplicatePhotos = duplicatePhotos;
             blog.DuplicateVideos = duplicateVideos;
@@ -182,19 +185,16 @@ namespace TumblThree.Applications.Downloader
 
             bool finishedDownloading = downloader.Result;
 
-            Task.WaitAll(grabber, downloader);
-
             if (!ct.IsCancellationRequested)
             {
                 blog.LastCompleteCrawl = DateTime.Now;
                 if (finishedDownloading && !apiLimitHit)
-                    blog.LastId = blogContent.Item1;
+                    blog.LastId = grabberResult.Item1;
             }
 
             blog.Save();
 
-            newProgress = new DownloadProgress();
-            newProgress.Progress = "";
+            newProgress = new DownloadProgress { Progress = "" };
             progress.Report(newProgress);
         }
 
@@ -202,8 +202,8 @@ namespace TumblThree.Applications.Downloader
         {
             XDocument document = await GetApiPageAsync(1);
 
-            int totalPosts = 0;
-            Int32.TryParse(document?.Element("tumblr").Element("posts").Attribute("total").Value, out totalPosts);
+            int totalPosts;
+            int.TryParse(document?.Element("tumblr").Element("posts").Attribute("total").Value, out totalPosts);
             blog.Posts = totalPosts;
         }
 
@@ -211,14 +211,14 @@ namespace TumblThree.Applications.Downloader
         {
             XDocument document = await GetApiPageAsync(1);
 
-            ulong highestId = 0;
-            UInt64.TryParse(document?.Element("tumblr").Element("posts").Element("post")?.Attribute("id").Value, out highestId);
+            ulong highestId;
+            ulong.TryParse(document?.Element("tumblr").Element("posts").Element("post")?.Attribute("id").Value, out highestId);
             return highestId;
         }
 
         protected override bool CheckIfFileExistsInDB(string url)
         {
-            var fileName = url.Split('/').Last();
+            string fileName = url.Split('/').Last();
             Monitor.Enter(lockObjectDb);
             if (files.Links.Contains(fileName))
             {
@@ -229,11 +229,10 @@ namespace TumblThree.Applications.Downloader
             return false;
         }
 
-        public async Task<Tuple<ulong, bool, List<Tuple<PostTypes, string, string>>>> GetUrls(IProgress<DownloadProgress> progress, CancellationToken ct, PauseToken pt)
+        private async Task<Tuple<ulong, bool>> GetUrls(IProgress<DownloadProgress> progress, CancellationToken ct, PauseToken pt)
         {
             SemaphoreSlim semaphoreSlim = new SemaphoreSlim(shellService.Settings.ParallelScans);
             List<Task> trackedTasks = new List<Task>();
-            PostCounter counter = new PostCounter();
             int numberOfPostsCrawled = 0;
             bool apiLimitHit = false;
             bool loopCompleted = true;
@@ -276,21 +275,21 @@ namespace TumblThree.Applications.Downloader
                         {
                             XDocument document = await GetApiPageAsync(pageNumber);
 
-                            if (document == null)
+                            if (document.Root.Descendants().Any())
                             {
                                 // add retry logic?
                                 apiLimitHit = true;
                             }
 
-                            CountPostTypes(document, counter);
+                            CountPostTypes(document);
 
                             ulong highestPostId = 0;
-                            UInt64.TryParse(document?.Element("tumblr").Element("posts").Element("post")?.Attribute("id").Value, out highestId);
+                            ulong.TryParse(document.Element("tumblr").Element("posts").Element("post")?.Attribute("id").Value, out highestId);
 
                             if (highestPostId < lastId)
                                 loopCompleted = false;
 
-                            GetUrlsCore(document, counter);
+                            AddUrlsToDownloadList(document);
                         }
                         catch
                         {
@@ -312,13 +311,13 @@ namespace TumblThree.Applications.Downloader
 
             if (!ct.IsCancellationRequested && loopCompleted)
             {
-                UpdateBlogStats(counter);
+                UpdateBlogStats();
             }
 
-            return Tuple.Create(highestId, apiLimitHit, downloadList);
+            return Tuple.Create(highestId, apiLimitHit);
         }
 
-        private void GetUrlsCore(XDocument document, PostCounter counter)
+        private void AddUrlsToDownloadList(XDocument document)
         {
             List<string> tags = new List<string>();
             if (!String.IsNullOrWhiteSpace(blog.Tags))
@@ -331,188 +330,187 @@ namespace TumblThree.Applications.Downloader
             // Just use regex instead?
             if (blog.DownloadPhoto)
             {
-                foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "photo" &&
-                (!tags.Any()) ? true : posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
+                foreach (var post in document.Descendants("post"))
                 {
-                    // photoset
-                    if (post.Descendants("photoset").Count() > 0)
+                    if (post.Attribute("type").Value == "photo" && (!tags.Any()) || post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
                     {
-                        foreach (var photo in post.Descendants("photoset").Descendants("photo"))
+                        // photoset
+                        if (post.Descendants("photoset").Any())
                         {
-                            string imageUrl = ParseImageUrl(photo);
-                            if (blog.SkipGif && imageUrl.EndsWith(".gif"))
-                                continue;
+                            foreach (var photo in post.Descendants("photoset").Descendants("photo"))
+                            {
+                                string imageUrl = ParseImageUrl(photo);
+                                if (blog.SkipGif && imageUrl.EndsWith(".gif"))
+                                {
+                                    continue;
+                                }
 
-                            UpdateBlogCounter(ref counter.Photos, ref counter.TotalDownloads);
-                            AddToDownloadList(Tuple.Create(PostTypes.Photo, imageUrl, post.Attribute("id").Value));
-                            sharedDownloads.Add(Tuple.Create(PostTypes.Photo, imageUrl, post.Attribute("id").Value));
+                                AddToDownloadList(Tuple.Create(PostTypes.Photo, imageUrl, post.Attribute("id").Value));
+                            }
                         }
-                    }
-                    // single image
-                    else
-                    {
-                        string imageUrl = ParseImageUrl(post);
-                        if (blog.SkipGif && imageUrl.EndsWith(".gif"))
-                            continue;
+                        // single image
+                        else
+                        {
+                            string imageUrl = ParseImageUrl(post);
+                            if (blog.SkipGif && imageUrl.EndsWith(".gif"))
+                            {
+                                continue;
+                            }
 
-                        UpdateBlogCounter(ref counter.Photos, ref counter.TotalDownloads);
-                        AddToDownloadList(Tuple.Create(PostTypes.Photo, imageUrl, post.Attribute("id").Value));
-                        sharedDownloads.Add(Tuple.Create(PostTypes.Photo, imageUrl, post.Attribute("id").Value));
+                            AddToDownloadList(Tuple.Create(PostTypes.Photo, imageUrl, post.Attribute("id").Value));
+                        }
                     }
                 }
                 // check for inline images
-                foreach (var post in document.Descendants("post").Where(posts => true &&
-                (!tags.Any()) ? true : posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
+                foreach (var post in document.Descendants("post"))
                 {
-                    if (String.Concat(post.Nodes()).Contains("tumblr_inline"))
+                    if (!tags.Any() || post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
                     {
-                        Regex regex = new Regex("<img src=\"(.*?)\"");
-                        foreach (Match match in regex.Matches(post.Element("regular-body")?.Value))
+                        if (String.Concat(post.Nodes()).Contains("tumblr_inline"))
                         {
-                            var imageUrl = match.Groups[1].Value;
-                            if (blog.ForceSize)
+                            Regex regex = new Regex("<img src=\"(.*?)\"");
+                            foreach (Match match in regex.Matches(post.Element("regular-body")?.Value))
                             {
-                                imageUrl = ResizeTumblrImageUrl(imageUrl);
+                                var imageUrl = match.Groups[1].Value;
+                                if (blog.ForceSize)
+                                {
+                                    imageUrl = ResizeTumblrImageUrl(imageUrl);
+                                }
+                                AddToDownloadList(Tuple.Create(PostTypes.Photo, imageUrl, post.Attribute("id").Value));
                             }
-                            UpdateBlogCounter(ref counter.Photos, ref counter.TotalDownloads);
-                            AddToDownloadList(Tuple.Create(PostTypes.Photo, imageUrl, post.Attribute("id").Value));
-                            sharedDownloads.Add(Tuple.Create(PostTypes.Photo, imageUrl, post.Attribute("id").Value));
                         }
                     }
                 }
             }
             if (blog.DownloadVideo)
             {
-                foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "video" &&
-                (!tags.Any()) ? true : posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
+                foreach (var post in document.Descendants("post"))
                 {
-                    var videoUrl = post.Descendants("video-player").Where(x => x.Value.Contains("<source src=")).Select(result =>
-                        System.Text.RegularExpressions.Regex.Match(
-                        result.Value, "<source src=\"(.*)\" type=\"video/mp4\">").Groups[1].Value).First();
+                    if (post.Attribute("type").Value == "video" && (!tags.Any()) || post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
+                    {
+                        var videoUrl = post.Descendants("video-player").Where(x => x.Value.Contains("<source src=")).Select(result => Regex.Match(result.Value, "<source src=\"(.*)\" type=\"video/mp4\">").Groups[1].Value).First();
 
-                    if (shellService.Settings.VideoSize == 1080)
-                    {
-                        Interlocked.Increment(ref counter.TotalDownloads);
-                        AddToDownloadList(Tuple.Create(PostTypes.Video, videoUrl.Replace("/480", "") + ".mp4", post.Attribute("id").Value));
-                        sharedDownloads.Add(Tuple.Create(PostTypes.Video, videoUrl.Replace("/480", "") + ".mp4", post.Attribute("id").Value));
-                    }
-                    else if (shellService.Settings.VideoSize == 480)
-                    {
-                        Interlocked.Increment(ref counter.TotalDownloads);
-                        AddToDownloadList(Tuple.Create(PostTypes.Video, "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + "_480.mp4", post.Attribute("id").Value));
-                        sharedDownloads.Add(Tuple.Create(PostTypes.Video, "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + "_480.mp4", post.Attribute("id").Value));
+                        if (shellService.Settings.VideoSize == 1080)
+                        {
+                            AddToDownloadList(Tuple.Create(PostTypes.Video, videoUrl.Replace("/480", "") + ".mp4", post.Attribute("id").Value));
+                        }
+                        else if (shellService.Settings.VideoSize == 480)
+                        {
+                            AddToDownloadList(Tuple.Create(PostTypes.Video, "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + "_480.mp4", post.Attribute("id").Value));
+                        }
                     }
                 }
             }
             if (blog.DownloadAudio)
             {
-                foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "audio" &&
-                (!tags.Any()) ? true : posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
+                foreach (var post in document.Descendants("post"))
                 {
-                    var audioUrl = post.Descendants("audio-player").Where(x => x.Value.Contains("src=")).Select(result =>
-                        System.Text.RegularExpressions.Regex.Match(
-                        result.Value, "src=\"(.*)\" height").Groups[1].Value).ToList();
-
-                    foreach (string audiofile in audioUrl)
+                    if (post.Attribute("type").Value == "audio" && (!tags.Any()) || post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
                     {
-                        Interlocked.Increment(ref counter.TotalDownloads);
-                        AddToDownloadList(Tuple.Create(PostTypes.Audio, WebUtility.UrlDecode(audiofile), post.Attribute("id").Value));
-                        sharedDownloads.Add(Tuple.Create(PostTypes.Audio, WebUtility.UrlDecode(audiofile), post.Attribute("id").Value));
-                    }
+                        var audioUrl = post.Descendants("audio-player").Where(x => x.Value.Contains("src=")).Select(result => Regex.Match(result.Value, "src=\"(.*)\" height").Groups[1].Value).ToList();
 
+                        foreach (string audiofile in audioUrl)
+                        {
+                            AddToDownloadList(Tuple.Create(PostTypes.Audio, WebUtility.UrlDecode(audiofile), post.Attribute("id").Value));
+                        }
+                    }
                 }
             }
             if (blog.DownloadText)
             {
-                foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "regular" &&
-                (!tags.Any()) ? true : posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
+                foreach (var post in document.Descendants("post"))
                 {
-                    string textBody = ParseText(post);
-                    Interlocked.Increment(ref counter.TotalDownloads);
-                    sharedDownloads.Add(Tuple.Create(PostTypes.Text, textBody, post.Attribute("id").Value));
+                    if (post.Attribute("type").Value == "regular" && (!tags.Any()) || post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
+                    {
+                        string textBody = ParseText(post);
+                        AddToDownloadList(Tuple.Create(PostTypes.Text, textBody, post.Attribute("id").Value));
+                    }
                 }
             }
             if (blog.DownloadQuote)
             {
-                foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "quote" &&
-                (!tags.Any()) ? true : posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
+                foreach (var post in document.Descendants("post"))
                 {
-                    string textBody = ParseQuote(post);
-                    Interlocked.Increment(ref counter.TotalDownloads);
-                    sharedDownloads.Add(Tuple.Create(PostTypes.Quote, textBody, post.Attribute("id").Value));
+                    if (post.Attribute("type").Value == "quote" && (!tags.Any()) || post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
+                    {
+                        string textBody = ParseQuote(post);
+                        AddToDownloadList(Tuple.Create(PostTypes.Quote, textBody, post.Attribute("id").Value));
+                    }
                 }
             }
             if (blog.DownloadLink)
             {
-                foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "link" &&
-                (!tags.Any()) ? true : posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
+                foreach (var post in document.Descendants("post"))
                 {
-                    string textBody = ParseLink(post);
-                    Interlocked.Increment(ref counter.TotalDownloads);
-                    sharedDownloads.Add(Tuple.Create(PostTypes.Link, textBody, post.Attribute("id").Value));
+                    if (post.Attribute("type").Value == "link" && (!tags.Any()) || post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
+                    {
+                        string textBody = ParseLink(post);
+                        AddToDownloadList(Tuple.Create(PostTypes.Link, textBody, post.Attribute("id").Value));
+                    }
                 }
             }
             if (blog.DownloadConversation)
             {
-                foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "conversation" &&
-                (!tags.Any()) ? true : posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
+                foreach (var post in document.Descendants("post"))
                 {
-                    string textBody = ParseConversation(post);
-                    Interlocked.Increment(ref counter.TotalDownloads);
-                    sharedDownloads.Add(Tuple.Create(PostTypes.Conversation, textBody, post.Attribute("id").Value));
+                    if (post.Attribute("type").Value == "conversation" && (!tags.Any()) || post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
+                    {
+                        string textBody = ParseConversation(post);
+                        AddToDownloadList(Tuple.Create(PostTypes.Conversation, textBody, post.Attribute("id").Value));
+                    }
                 }
             }
             if (blog.CreatePhotoMeta)
             {
-                foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "photo" &&
-                (!tags.Any()) ? true : posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
+                foreach (var post in document.Descendants("post"))
                 {
-                    string textBody = ParsePhotoMeta(post);
-                    Interlocked.Increment(ref counter.TotalDownloads);
-                    Interlocked.Increment(ref counter.PhotoMetas);
-                    sharedDownloads.Add(Tuple.Create(PostTypes.PhotoMeta, textBody,  post.Attribute("id").Value));
+                    if (post.Attribute("type").Value == "photo" && (!tags.Any()) || post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
+                    {
+                        string textBody = ParsePhotoMeta(post);
+                        AddToDownloadList(Tuple.Create(PostTypes.PhotoMeta, textBody, post.Attribute("id").Value));
+                    }
                 }
             }
             if (blog.CreateVideoMeta)
             {
-                foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "video" &&
-                (!tags.Any()) ? true : posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
+                foreach (var post in document.Descendants("post"))
                 {
-                    string textBody = ParseVideoMeta(post);
-                    Interlocked.Increment(ref counter.TotalDownloads);
-                    Interlocked.Increment(ref counter.VideoMetas);
-                    sharedDownloads.Add(Tuple.Create(PostTypes.VideoMeta, textBody, post.Attribute("id").Value));
+                    if (post.Attribute("type").Value == "video" && (!tags.Any()) || post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
+                    {
+                        string textBody = ParseVideoMeta(post);
+                        AddToDownloadList(Tuple.Create(PostTypes.VideoMeta, textBody, post.Attribute("id").Value));
+                    }
                 }
             }
             if (blog.CreateAudioMeta)
             {
-                foreach (var post in document.Descendants("post").Where(posts => posts.Attribute("type").Value == "audio" &&
-                (!tags.Any()) ? true : posts.Descendants("tag").Where(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)).Any()))
+                foreach (var post in document.Descendants("post"))
                 {
-                    string textBody = ParseAudioMeta(post);
-                    Interlocked.Increment(ref counter.TotalDownloads);
-                    Interlocked.Increment(ref counter.AudioMetas);
-                    sharedDownloads.Add(Tuple.Create(PostTypes.AudioMeta, textBody, post.Attribute("id").Value));
+                    if (post.Attribute("type").Value == "audio" && (!tags.Any()) || post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
+                    {
+                        string textBody = ParseAudioMeta(post);
+                        AddToDownloadList(Tuple.Create(PostTypes.AudioMeta, textBody, post.Attribute("id").Value));
+                    }
                 }
             }
         }
 
-        private void CountPostTypes(XDocument document, PostCounter counter)
+        private void CountPostTypes(XContainer document)
         {
-            // only counts single images and photoset, no inline images
-            //Interlocked.Add(ref counter.Photos, document.Descendants("post").Where(post => post.Attribute("type").Value == "photo").Count());
-            //Interlocked.Add(ref counter.Photos, document.Descendants("photo").Count() - 1);
-            Interlocked.Add(ref counter.Videos, document.Descendants("post").Where(post => post.Attribute("type").Value == "video").Count());
-            Interlocked.Add(ref counter.Audios, document.Descendants("post").Where(post => post.Attribute("type").Value == "audio").Count());
-            Interlocked.Add(ref counter.Texts, document.Descendants("post").Where(post => post.Attribute("type").Value == "regular").Count());
-            Interlocked.Add(ref counter.Conversations, document.Descendants("post").Where(post => post.Attribute("type").Value == "conversation").Count());
-            Interlocked.Add(ref counter.Quotes, document.Descendants("post").Where(post => post.Attribute("type").Value == "quote").Count());
-            Interlocked.Add(ref counter.Links, document.Descendants("post").Where(post => post.Attribute("type").Value == "link").Count());
+            Interlocked.Add(ref counter.Photos, document.Descendants("post").Count(post => post.Attribute("type").Value == "photo"));
+            Interlocked.Add(ref counter.Photos, document.Descendants("photo").Count() - 1);
+            Interlocked.Add(ref counter.Photos, document.Descendants("post").Count(post => post.Nodes().ToString().Contains("tumblr_inline")));
+            Interlocked.Add(ref counter.Videos, document.Descendants("post").Count(post => post.Attribute("type").Value == "video"));
+            Interlocked.Add(ref counter.Audios, document.Descendants("post").Count(post => post.Attribute("type").Value == "audio"));
+            Interlocked.Add(ref counter.Texts, document.Descendants("post").Count(post => post.Attribute("type").Value == "regular"));
+            Interlocked.Add(ref counter.Conversations, document.Descendants("post").Count(post => post.Attribute("type").Value == "conversation"));
+            Interlocked.Add(ref counter.Quotes, document.Descendants("post").Count(post => post.Attribute("type").Value == "quote"));
+            Interlocked.Add(ref counter.Links, document.Descendants("post").Count(post => post.Attribute("type").Value == "link"));
         }
 
-        private void UpdateBlogStats(PostCounter counter)
+        private void UpdateBlogStats()
         {
-            blog.TotalCount = counter.TotalDownloads;
+            blog.TotalCount = downloadList.Count;
             blog.Photos = counter.Photos;
             blog.Videos = counter.Videos;
             blog.Audios = counter.Audios;
@@ -527,15 +525,15 @@ namespace TumblThree.Applications.Downloader
 
         private void AddToDownloadList(Tuple<PostTypes, string, string> addToList)
         {
-            Monitor.Enter(downloadList);
             downloadList.Add(addToList);
-            Monitor.Exit(downloadList);
+            sharedDownloads.Add(addToList);
         }
 
         private string ParseImageUrl(XElement post)
         {
-            var imageUrl = post.Elements("photo-url").Where(photo_url =>
-                photo_url.Attribute("max-width").Value == shellService.Settings.ImageSize.ToString()).FirstOrDefault().Value;
+            var imageUrl = post.Elements("photo-url")
+                .FirstOrDefault(photo_url => photo_url.Attribute("max-width")
+                .Value == shellService.Settings.ImageSize.ToString()).Value;
 
             if (blog.ForceSize)
             {

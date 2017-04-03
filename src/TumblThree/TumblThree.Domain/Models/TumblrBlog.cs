@@ -16,11 +16,11 @@ namespace TumblThree.Domain.Models
         private bool forceSize;
         private bool forceRescan;
 
+        /// <summary>
+        /// DON'T use. Only for Mockup
+        /// </summary>
         public TumblrBlog()
         {
-            /// <summary>
-            /// DON'T use. Only for Mockup
-            /// </summary>
         }
 
         public TumblrBlog(string url, string location, BlogTypes type) : base(url, location, type)

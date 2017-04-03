@@ -86,8 +86,7 @@ namespace TumblThree.Applications.Controllers
 
         public void LoadQueue()
         {
-            IReadOnlyList<string> blogFilesToLoad;
-            blogFilesToLoad = QueueSettings.Names;
+            IReadOnlyList<string> blogFilesToLoad = QueueSettings.Names;
             InsertFilesCore(0, blogFilesToLoad);
         }
 
@@ -165,7 +164,6 @@ namespace TumblThree.Applications.Controllers
             {
                 Logger.Error("QueueController.InsertFileCore: {0}", ex);
                 shellService.ShowError(ex, Resources.CouldNotLoadQueuelist);
-                return;
             }
         }
 
@@ -177,12 +175,7 @@ namespace TumblThree.Applications.Controllers
                 return;
             }
 
-            var queueList = new List<string>();
-
-            foreach (var item in QueueManager.Items)
-            {
-                queueList.Add(item.Blog.Name);
-            }
+            var queueList = QueueManager.Items.Select(item => item.Blog.Name).ToList();
 
             try
             {

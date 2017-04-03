@@ -12,17 +12,17 @@ namespace TumblThree.Applications.Properties
             Initialize();
         }
 
-        public static string[] imageSizes =
+        private static readonly string[] imageSizes =
             new string[] {
                 "1280", "500", "400", "250", "100", "75"
         };
 
-        public static string[] videoSizes =
+        private static readonly string[] videoSizes =
             new string[] {
                 "1080", "480"
         };
 
-        public static string[] blogTypes =
+        private static readonly string[] blogTypes =
             new string[] {
                 Resources.BlogTypesNone, Resources.BlogTypesAll, Resources.BlogTypesOnceFinished, Resources.BlogTypesNeverFinished
         };

@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Waf.Foundation;
+﻿using System.Collections.ObjectModel;
 using TumblThree.Domain.Models;
-using TumblThree.Domain.Queue;
 
 namespace TumblThree.Applications.Services
 {

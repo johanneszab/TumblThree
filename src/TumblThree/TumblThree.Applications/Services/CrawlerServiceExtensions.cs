@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TumblThree.Applications.Services
+﻿namespace TumblThree.Applications.Services
 {
     public static class CrawlerServiceExtensions
     {

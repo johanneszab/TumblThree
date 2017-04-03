@@ -10,9 +10,9 @@ namespace TumblThree.Presentation.ValidationRules
 
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
-            TimeSpan temp;
             if (((string)value).Length > 7)
             {
+                TimeSpan temp;
                 if (TimeSpan.TryParse((string)value, out temp))
                     return new ValidationResult(true, null);
             }

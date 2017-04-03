@@ -23,17 +23,13 @@ namespace TumblThree.Applications.Downloader
         private readonly IShellService shellService;
         private readonly ICrawlerService crawlerService;
         protected readonly object lockObjectDb;
-        protected readonly object lockObjectDirectory;
-        protected readonly object lockObjectDownload;
+        private readonly object lockObjectDirectory;
+        private readonly object lockObjectDownload;
         private readonly object lockObjectProgress;
-        protected readonly List<Tuple<PostTypes, string, string>> downloadList;
+        protected readonly ConcurrentBag<Tuple<PostTypes, string, string>> downloadList;
         protected readonly BlockingCollection<Tuple<PostTypes, string, string>> sharedDownloads;
 
-        public Downloader(IShellService shellService): this(shellService, null, null)
-        {
-        }
-
-        public Downloader(IShellService shellService, ICrawlerService crawlerService, IBlog blog)
+        protected Downloader(IShellService shellService, ICrawlerService crawlerService = null, IBlog blog = null)
         {
             this.shellService = shellService;
             this.crawlerService = crawlerService;
@@ -43,7 +39,7 @@ namespace TumblThree.Applications.Downloader
             this.lockObjectDirectory = new object();
             this.lockObjectDownload = new object();
             this.lockObjectProgress = new object();
-            this.downloadList = new List<Tuple<PostTypes, string, string>>();
+            this.downloadList = new ConcurrentBag<Tuple<PostTypes, string, string>>();
             this.sharedDownloads = new BlockingCollection<Tuple<PostTypes, string, string>>();
             SetUp();
         }
@@ -55,10 +51,9 @@ namespace TumblThree.Applications.Downloader
             try
             {
                 string json = File.ReadAllText(filename);
-                System.Web.Script.Serialization.JavaScriptSerializer jsJson = new System.Web.Script.Serialization.JavaScriptSerializer();
-                jsJson.MaxJsonLength = 2147483644;
-                IFiles files = jsJson.Deserialize<Files>(json);
-                return files;
+                var jsJson =
+                    new System.Web.Script.Serialization.JavaScriptSerializer { MaxJsonLength = 2147483644 };
+                return jsJson.Deserialize<Files>(json);
             }
             catch (InvalidOperationException ex)
             {
@@ -115,7 +110,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        protected string UrlEncode(IDictionary<string, string> parameters)
+        protected static string UrlEncode(IDictionary<string, string> parameters)
         {
             var sb = new StringBuilder();
             foreach (var val in parameters)
@@ -126,9 +121,9 @@ namespace TumblThree.Applications.Downloader
             return sb.ToString();
         }
 
-        protected bool CreateDataFolder()
+        private bool CreateDataFolder()
         {
-            if (String.IsNullOrEmpty(blog.Name))
+            if (string.IsNullOrEmpty(blog.Name))
                 return false;
 
             string blogPath = Directory.GetParent(blog.Location).FullName;
@@ -156,7 +151,7 @@ namespace TumblThree.Applications.Downloader
             await Task.FromResult<object>(null);
         }
 
-        protected virtual async void SetUp()
+        private async void SetUp()
         {
             CreateDataFolder();
             await IsBlogOnlineAsync();
@@ -164,7 +159,7 @@ namespace TumblThree.Applications.Downloader
 
         protected virtual bool CheckIfFileExistsInDB(string url)
         {
-            var fileName = url.Split('/').Last();
+            string fileName = url.Split('/').Last();
             Monitor.Enter(lockObjectDb);
             if (blog.Links.Contains(fileName))
             {
@@ -186,10 +181,10 @@ namespace TumblThree.Applications.Downloader
 
         protected virtual bool CheckIfFileExistsInDirectory(string url)
         {
-            var fileName = url.Split('/').Last();
+            string fileName = url.Split('/').Last();
             Monitor.Enter(lockObjectDirectory);
             string blogPath = Path.Combine(Directory.GetParent(blog.Location).FullName, blog.Name);
-            if (System.IO.File.Exists(Path.Combine(blogPath, fileName)))
+            if (File.Exists(Path.Combine(blogPath, fileName)))
             {
                 Monitor.Exit(lockObjectDirectory);
                 return true;
@@ -200,8 +195,10 @@ namespace TumblThree.Applications.Downloader
 
         protected virtual void UpdateProgressQueueInformation(IProgress<DataModels.DownloadProgress> progress, string fileName)
         {
-            var newProgress = new DataModels.DownloadProgress();
-            newProgress.Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressDownloadImage, fileName);
+            var newProgress = new DataModels.DownloadProgress
+            {
+                Progress = string.Format(CultureInfo.CurrentCulture, Resources.ProgressDownloadImage, fileName)
+            };
             progress.Report(newProgress);
         }
 
@@ -214,7 +211,7 @@ namespace TumblThree.Applications.Downloader
         {
             try
             {
-                using (var stream = await ThrottledStream.ReadFromURLIntoStream(url,
+                using (ThrottledStream stream = await ThrottledStream.ReadFromURLIntoStream(url,
                     (shellService.Settings.Bandwidth / shellService.Settings.ParallelImages),
                     shellService.Settings.TimeOut, shellService.Settings.ProxyHost,
                     shellService.Settings.ProxyPort))
@@ -252,7 +249,7 @@ namespace TumblThree.Applications.Downloader
                 // better not await in the lock?
                 lock (lockObjectDownload)
                 {
-                    using (StreamWriter sw = new StreamWriter(fileLocation, true))
+                    using (var sw = new StreamWriter(fileLocation, true))
                     {
                         sw.WriteLine(text);
                     }
@@ -304,6 +301,7 @@ namespace TumblThree.Applications.Downloader
 
                 if (ct.IsCancellationRequested)
                 {
+                    loopCompleted = false;
                     break;
                 }
                 if (pt.IsPaused)
@@ -311,11 +309,11 @@ namespace TumblThree.Applications.Downloader
 
                 trackedTasks.Add(new Func<Task>(async () =>
                 {
-                    string fileName = String.Empty;
-                    string url = String.Empty;
-                    string fileLocation = String.Empty;
-                    string fileLocationUrlList = String.Empty;
-                    string postId = String.Empty;
+                    string fileName;
+                    string url;
+                    string fileLocation;
+                    string fileLocationUrlList;
+                    string postId;
 
                     // FIXME: Conditional with Polymorphism
                     switch (currentImageUrl.Item1)

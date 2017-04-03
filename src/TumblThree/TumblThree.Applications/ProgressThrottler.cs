@@ -1,23 +1,20 @@
 ﻿using System;
-using System.Threading;
 using System.Timers;
 
 namespace TumblThree.Applications
 {
     public class ProgressThrottler<T> : IProgress<T>
     {
-        System.Timers.Timer resettimer;
         bool reportProgressAfterThrottling = true;
 
         public ProgressThrottler(IProgress<T> progress)
         {
-            resettimer = new System.Timers.Timer();
-            resettimer.Interval = 200;
+            var resettimer = new Timer { Interval = 200 };
             resettimer.Elapsed += resettimer_Elapsed;
             resettimer.Start();
 
             if (progress == null)
-                throw new ArgumentNullException("progress");
+                throw new ArgumentNullException(nameof(progress));
 
             _progress = progress;
         }

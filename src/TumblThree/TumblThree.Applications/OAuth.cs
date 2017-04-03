@@ -64,16 +64,18 @@ namespace TumblThree.Applications
         public OAuthManager()
         {
             _random = new Random();
-            _params = new Dictionary<String, String>();
-            _params["consumer_key"] = "";
-            _params["consumer_secret"] = "";
-            _params["timestamp"] = GenerateTimeStamp();
-            _params["nonce"] = GenerateNonce();
-            _params["signature_method"] = "HMAC-SHA1";
-            _params["signature"] = "";
-            _params["token"] = "";
-            _params["token_secret"] = "";
-            _params["version"] = "1.0";
+            _params = new Dictionary<String, String>
+            {
+                ["consumer_key"] = "",
+                ["consumer_secret"] = "",
+                ["timestamp"] = GenerateTimeStamp(),
+                ["nonce"] = GenerateNonce(),
+                ["signature_method"] = "HMAC-SHA1",
+                ["signature"] = "",
+                ["token"] = "",
+                ["token_secret"] = "",
+                ["version"] = "1.0"
+            };
         }
 
         /// <summary>
@@ -480,12 +482,7 @@ namespace TumblThree.Applications
             return authHeader;
         }
 
-        private string GetAuthorizationHeader(string uri, string method)
-        {
-            return GetAuthorizationHeader(uri, method, null);
-        }
-
-        private string GetAuthorizationHeader(string uri, string method, string realm)
+        private string GetAuthorizationHeader(string uri, string method, string realm = null)
         {
             if (string.IsNullOrEmpty(this._params["consumer_key"]))
                 throw new ArgumentNullException("consumer_key");

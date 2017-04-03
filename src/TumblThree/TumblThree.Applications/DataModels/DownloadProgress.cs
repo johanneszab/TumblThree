@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TumblThree.Applications.DataModels
+﻿namespace TumblThree.Applications.DataModels
 {
     public class DownloadProgress
     {

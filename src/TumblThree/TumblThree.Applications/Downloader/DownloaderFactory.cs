@@ -12,7 +12,7 @@ namespace TumblThree.Applications.Downloader
     public class DownloaderFactory : IDownloaderFactory
     {
         [ImportMany(typeof(IDownloader))]
-        public IEnumerable<Lazy<IDownloader, IBlogTypeMetaData>> DownloaderFactoryLazy { get; set; }
+        private IEnumerable<Lazy<IDownloader, IBlogTypeMetaData>> DownloaderFactoryLazy { get; set; }
 
 
         [ImportingConstructor]
@@ -37,8 +37,6 @@ namespace TumblThree.Applications.Downloader
             {
                 case BlogTypes.tumblr:
                     return new TumblrDownloader(shellService, crawlerService, blog);
-                case BlogTypes.instagram:
-                    //return new InstagramDownloader(shellService, crawlerService, blog);
                 default:
                     throw new ArgumentException("Website is not supported!", "blogType");
             }

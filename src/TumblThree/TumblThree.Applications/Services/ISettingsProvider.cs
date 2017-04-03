@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TumblThree.Applications.Services
+﻿namespace TumblThree.Applications.Services
 {
     internal interface ISettingsProvider
     {

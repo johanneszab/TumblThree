@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.Waf.Foundation;
 using System.Windows.Input;
-using TumblThree.Domain.Models;
 using TumblThree.Domain.Queue;
 
 namespace TumblThree.Applications.Services

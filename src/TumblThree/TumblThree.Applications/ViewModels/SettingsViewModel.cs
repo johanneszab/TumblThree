@@ -19,10 +19,10 @@ namespace TumblThree.Applications.ViewModels
 
         private readonly AppSettings settings;
         private readonly FolderBrowserDataModel folderBrowser;
-        private DelegateCommand displayFolderBrowserCommand;
-        private DelegateCommand authenticateCommand;
-        private DelegateCommand saveCommand;
-        private DelegateCommand enableAutoDownloadCommand;
+        private readonly DelegateCommand displayFolderBrowserCommand;
+        private readonly DelegateCommand authenticateCommand;
+        private readonly DelegateCommand saveCommand;
+        private readonly DelegateCommand enableAutoDownloadCommand;
         private readonly ExportFactory<AuthenticateViewModel> authenticateViewModelFactory;
         private string downloadLocation;
         private string apiKey;
@@ -381,7 +381,7 @@ namespace TumblThree.Applications.ViewModels
                         // time already passed
                         timeToGo = timeToGo.Add(new TimeSpan(24, 00, 00));
                     }
-                    CrawlerService.Timer = new System.Threading.Timer(x =>
+                    CrawlerService.Timer = new Timer(x =>
                     {
                         this.OnTimedEvent();
                     }, null, timeToGo, Timeout.InfiniteTimeSpan);
@@ -402,7 +402,7 @@ namespace TumblThree.Applications.ViewModels
         private void OnTimedEvent()
         {
             if (CrawlerService.AutoDownloadCommand.CanExecute(null))
-                QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => CrawlerService.AutoDownloadCommand.Execute(null)));
+                QueueOnDispatcher.CheckBeginInvokeOnUI(() => CrawlerService.AutoDownloadCommand.Execute(null));
             CrawlerService.Timer.Change(new TimeSpan(24, 00, 00), Timeout.InfiniteTimeSpan);
         }
 
@@ -451,7 +451,6 @@ namespace TumblThree.Applications.ViewModels
             {
                 Logger.Error("SettingsViewModel:Authenticate: {0}", ex);
                 ShellService.ShowError(ex, Resources.AuthenticationFailure, ex.Message);
-                return;
             }
         }
 

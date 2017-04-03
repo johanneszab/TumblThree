@@ -73,7 +73,7 @@ namespace TumblThree.Applications.Controllers
             catch (System.AggregateException)
             {
             }
-            foreach (Blog blog in managerService.BlogFiles)
+            foreach (IBlog blog in managerService.BlogFiles)
             {
                 if (blog.Dirty)
                 {
@@ -87,7 +87,7 @@ namespace TumblThree.Applications.Controllers
             return crawlerService.IsCrawl;
         }
 
-        public void Stop()
+        private void Stop()
         {
             if (resumeCommand.CanExecute(null))
                 resumeCommand.Execute(null);
@@ -105,7 +105,7 @@ namespace TumblThree.Applications.Controllers
             return crawlerService.IsCrawl && !crawlerService.IsPaused;
         }
 
-        public void Pause()
+        private void Pause()
         {
             crawlBlogsPause.PauseWithResponseAsync().Wait();
             crawlerService.IsPaused = true;
@@ -118,7 +118,7 @@ namespace TumblThree.Applications.Controllers
             return crawlerService.IsCrawl && crawlerService.IsPaused;
         }
 
-        public void Resume()
+        private void Resume()
         {
             crawlBlogsPause.Resume();
             crawlerService.IsPaused = false;
@@ -170,23 +170,23 @@ namespace TumblThree.Applications.Controllers
                 Monitor.Enter(lockObject);
                 if (crawlerService.ActiveItems.Count() < QueueManager.Items.Count())
                 {
-                    var queueList = QueueManager.Items.Except(crawlerService.ActiveItems);
-                    var nextQueueItem = queueList.First();
-                    var blog = nextQueueItem.Blog;
+                    IEnumerable<QueueListItem> queueList = QueueManager.Items.Except(crawlerService.ActiveItems);
+                    QueueListItem nextQueueItem = queueList.First();
+                    IBlog blog = nextQueueItem.Blog;
 
-                    var downloader = DownloaderFactory.GetDownloader(blog.BlogType, shellService, crawlerService, blog);
+                    IDownloader downloader = DownloaderFactory.GetDownloader(blog.BlogType, shellService, crawlerService, blog);
                     downloader.IsBlogOnlineAsync().Wait(4000);
 
                     if (crawlerService.ActiveItems.Any(item => item.Blog.Name.Contains(nextQueueItem.Blog.Name)))
                     {
-                        QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => QueueManager.RemoveItem(nextQueueItem)));
+                        QueueOnDispatcher.CheckBeginInvokeOnUI(() => QueueManager.RemoveItem(nextQueueItem));
                         Monitor.Exit(lockObject);
                         continue;
                     }
 
                     if (!nextQueueItem.Blog.Online)
                     {
-                        QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => QueueManager.RemoveItem(nextQueueItem)));
+                        QueueOnDispatcher.CheckBeginInvokeOnUI(() => QueueManager.RemoveItem(nextQueueItem));
                         Monitor.Exit(lockObject);
                         continue;
                     }
@@ -210,21 +210,21 @@ namespace TumblThree.Applications.Controllers
             blog.Dirty = true;
             var progress = SetupThrottledQueueListProgress(queueListItem);
 
-            var downloader = DownloaderFactory.GetDownloader(blog.BlogType, shellService, crawlerService, blog);
+            IDownloader downloader = DownloaderFactory.GetDownloader(blog.BlogType, shellService, crawlerService, blog);
             downloader.Crawl(progress, ct, pt);
 
             if (ct.IsCancellationRequested)
             {
                 Monitor.Enter(lockObject);
-                QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => crawlerService.RemoveActiveItem(queueListItem)));
+                QueueOnDispatcher.CheckBeginInvokeOnUI(() => crawlerService.RemoveActiveItem(queueListItem));
                 Monitor.Exit(lockObject);
                 throw new OperationCanceledException(ct);
             }
             else
             {
                 Monitor.Enter(lockObject);
-                QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => QueueManager.RemoveItem(queueListItem)));
-                QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => crawlerService.RemoveActiveItem(queueListItem)));
+                QueueOnDispatcher.CheckBeginInvokeOnUI(() => QueueManager.RemoveItem(queueListItem));
+                QueueOnDispatcher.CheckBeginInvokeOnUI(() => crawlerService.RemoveActiveItem(queueListItem));
                 Monitor.Exit(lockObject);
             }
         }

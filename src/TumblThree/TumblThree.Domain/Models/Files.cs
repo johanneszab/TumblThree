@@ -16,7 +16,7 @@ namespace TumblThree.Domain.Models
         {
         }
 
-        public Files(string name, string location, BlogTypes blogType)
+        protected Files(string name, string location, BlogTypes blogType)
         {
             this.name = name;
             this.location = location;
@@ -57,16 +57,16 @@ namespace TumblThree.Domain.Models
             {
                 if (File.Exists(currentIndex))
                 {
-                    System.Web.Script.Serialization.JavaScriptSerializer jsJson = new System.Web.Script.Serialization.JavaScriptSerializer();
-                    jsJson.MaxJsonLength = 2147483644;
+                    System.Web.Script.Serialization.JavaScriptSerializer jsJson =
+                        new System.Web.Script.Serialization.JavaScriptSerializer { MaxJsonLength = 2147483644 };
                     File.WriteAllText(newIndex, JsonFormatter.FormatOutput(jsJson.Serialize(this)));
                     File.Replace(newIndex, currentIndex, backupIndex, true);
                     File.Delete(backupIndex);
                 }
                 else
                 {
-                    System.Web.Script.Serialization.JavaScriptSerializer jsJson = new System.Web.Script.Serialization.JavaScriptSerializer();
-                    jsJson.MaxJsonLength = 2147483644;
+                    System.Web.Script.Serialization.JavaScriptSerializer jsJson =
+                        new System.Web.Script.Serialization.JavaScriptSerializer { MaxJsonLength = 2147483644 };
                     File.WriteAllText(currentIndex, JsonFormatter.FormatOutput(jsJson.Serialize(this)));
                 }
 

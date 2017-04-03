@@ -9,9 +9,9 @@ namespace TumblThree.Presentation.ValidationRules
     {
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
-            UInt32 temp = 0;
             try
             {
+                uint temp = 0;
                 if (UInt32.TryParse((string) value, out temp))
                     return new ValidationResult(true, null);
             }

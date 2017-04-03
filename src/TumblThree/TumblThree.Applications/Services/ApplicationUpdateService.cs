@@ -15,12 +15,15 @@ namespace TumblThree.Applications.Services
     [Export(typeof(IApplicationUpdateService))]
     public class ApplicationUpdateService : IApplicationUpdateService
     {
+
+        private readonly IShellService shellService;
         private string downloadLink;
         private string version;
 
         [ImportingConstructor]
-        public ApplicationUpdateService()
+        public ApplicationUpdateService(IShellService shellService)
         {
+            this.shellService = shellService;
         }
 
         public string GetLatestReleaseFromServer()
@@ -39,6 +42,15 @@ namespace TumblThree.Applications.Services
                 request.UnsafeAuthenticatedConnectionSharing = true;
                 request.UserAgent = ApplicationInfo.ProductName;
                 request.KeepAlive = false;
+                if (!String.IsNullOrEmpty(shellService.Settings.ProxyHost))
+                {
+                    request.Proxy = new WebProxy(shellService.Settings.ProxyHost, Int32.Parse(shellService.Settings.ProxyPort));
+                }
+                else
+                {
+                    request.Proxy = null;
+                }
+
                 string result;
                 using (var resp = request.GetResponse() as HttpWebResponse)
                 {
@@ -46,8 +58,8 @@ namespace TumblThree.Applications.Services
                         new StreamReader(resp.GetResponseStream());
                     result = reader.ReadToEnd();
                 }
-                System.Web.Script.Serialization.JavaScriptSerializer jsonDeserializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-                jsonDeserializer.MaxJsonLength = 2147483644;
+                System.Web.Script.Serialization.JavaScriptSerializer jsonDeserializer =
+                    new System.Web.Script.Serialization.JavaScriptSerializer { MaxJsonLength = 2147483644 };
                 var jsonReader = JsonReaderWriterFactory.CreateJsonReader(Encoding.UTF8.GetBytes(result), new System.Xml.XmlDictionaryReaderQuotas());
                 var root = XElement.Load(jsonReader);
                 version = root.Element("tag_name").Value;

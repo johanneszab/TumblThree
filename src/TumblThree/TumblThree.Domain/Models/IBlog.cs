@@ -87,5 +87,7 @@ namespace TumblThree.Domain.Models
         Exception LoadError { get; set; }
 
         IList<string> Links { get; set; }
+
+        bool Save();
     }
 }
