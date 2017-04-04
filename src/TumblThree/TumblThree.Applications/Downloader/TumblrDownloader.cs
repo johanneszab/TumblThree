@@ -26,14 +26,12 @@ namespace TumblThree.Applications.Downloader
         private readonly IShellService shellService;
         private readonly ICrawlerService crawlerService;
         private readonly TumblrBlog blog;
-        private readonly PostCounter counter;
 
         public TumblrDownloader(IShellService shellService, ICrawlerService crawlerService, IBlog blog) : base(shellService, crawlerService, blog)
         {
             this.shellService = shellService;
             this.crawlerService = crawlerService;
             this.blog = (TumblrBlog)blog;
-            this.counter = new PostCounter();
         }
 
         private new async Task<XDocument> RequestDataAsync(string url)
@@ -323,7 +321,20 @@ namespace TumblThree.Applications.Downloader
                 tags = blog.Tags.Split(',').Select(x => x.Trim()).ToList();
             }
 
-            // Just use regex instead?
+            AddPhotoUrlToDownloadList(document, tags);
+            AddVideoUrlToDownloadList(document, tags);
+            AddAudioUrlToDownloadList(document, tags);
+            AddTextUrlToDownloadList(document, tags);
+            AddQuoteUrlToDownloadList(document, tags);
+            AddLinkUrlToDownloadList(document, tags);
+            AddConversationUrlToDownloadList(document, tags);
+            AddPhotoMetaUrlToDownloadList(document, tags);
+            AddVideoMetaUrlToDownloadList(document, tags);
+            AddAudioMetaUrlToDownloadList(document, tags);
+        }
+
+        private void AddPhotoUrlToDownloadList(XDocument document, IList<string> tags)
+        {
             if (blog.DownloadPhoto)
             {
                 foreach (var post in document.Descendants("post"))
@@ -344,6 +355,10 @@ namespace TumblThree.Applications.Downloader
                     }
                 }
             }
+        }
+
+        private void AddVideoUrlToDownloadList(XDocument document, IList<string> tags)
+        {
             if (blog.DownloadVideo)
             {
                 foreach (var post in document.Descendants("post"))
@@ -354,6 +369,10 @@ namespace TumblThree.Applications.Downloader
                     }
                 }
             }
+        }
+
+        private void AddAudioUrlToDownloadList(XDocument document, IList<string> tags)
+        {
             if (blog.DownloadAudio)
             {
                 foreach (var post in document.Descendants("post"))
@@ -364,6 +383,10 @@ namespace TumblThree.Applications.Downloader
                     }
                 }
             }
+        }
+
+        private void AddTextUrlToDownloadList(XDocument document, IList<string> tags)
+        {
             if (blog.DownloadText)
             {
                 foreach (var post in document.Descendants("post"))
@@ -375,6 +398,10 @@ namespace TumblThree.Applications.Downloader
                     }
                 }
             }
+        }
+
+        private void AddQuoteUrlToDownloadList(XDocument document, IList<string> tags)
+        {
             if (blog.DownloadQuote)
             {
                 foreach (var post in document.Descendants("post"))
@@ -386,6 +413,10 @@ namespace TumblThree.Applications.Downloader
                     }
                 }
             }
+        }
+
+        private void AddLinkUrlToDownloadList(XDocument document, IList<string> tags)
+        {
             if (blog.DownloadLink)
             {
                 foreach (var post in document.Descendants("post"))
@@ -397,6 +428,10 @@ namespace TumblThree.Applications.Downloader
                     }
                 }
             }
+        }
+
+        private void AddConversationUrlToDownloadList(XDocument document, IList<string> tags)
+        {
             if (blog.DownloadConversation)
             {
                 foreach (var post in document.Descendants("post"))
@@ -408,6 +443,10 @@ namespace TumblThree.Applications.Downloader
                     }
                 }
             }
+        }
+
+        private void AddPhotoMetaUrlToDownloadList(XDocument document, IList<string> tags)
+        {
             if (blog.CreatePhotoMeta)
             {
                 foreach (var post in document.Descendants("post"))
@@ -419,6 +458,10 @@ namespace TumblThree.Applications.Downloader
                     }
                 }
             }
+        }
+
+        private void AddVideoMetaUrlToDownloadList(XDocument document, IList<string> tags)
+        {
             if (blog.CreateVideoMeta)
             {
                 foreach (var post in document.Descendants("post"))
@@ -430,6 +473,10 @@ namespace TumblThree.Applications.Downloader
                     }
                 }
             }
+        }
+
+        private void AddAudioMetaUrlToDownloadList(XDocument document, IList<string> tags)
+        {
             if (blog.CreateAudioMeta)
             {
                 foreach (var post in document.Descendants("post"))
@@ -441,20 +488,6 @@ namespace TumblThree.Applications.Downloader
                     }
                 }
             }
-        }
-
-        private void CountPostTypes(XContainer document)
-        {
-            Interlocked.Add(ref counter.Photos, document.Descendants("post").Count(post => post.Attribute("type").Value == "photo"));
-            if (document.Descendants("photo").Any())
-                Interlocked.Add(ref counter.Photos, document.Descendants("photo").Count() - 1);
-            Interlocked.Add(ref counter.Photos, document.Descendants("post").Count(post => post.Nodes().ToString().Contains("tumblr_inline")));
-            Interlocked.Add(ref counter.Videos, document.Descendants("post").Count(post => post.Attribute("type").Value == "video"));
-            Interlocked.Add(ref counter.Audios, document.Descendants("post").Count(post => post.Attribute("type").Value == "audio"));
-            Interlocked.Add(ref counter.Texts, document.Descendants("post").Count(post => post.Attribute("type").Value == "regular"));
-            Interlocked.Add(ref counter.Conversations, document.Descendants("post").Count(post => post.Attribute("type").Value == "conversation"));
-            Interlocked.Add(ref counter.Quotes, document.Descendants("post").Count(post => post.Attribute("type").Value == "quote"));
-            Interlocked.Add(ref counter.Links, document.Descendants("post").Count(post => post.Attribute("type").Value == "link"));
         }
 
         private void UpdateBlogStats()
