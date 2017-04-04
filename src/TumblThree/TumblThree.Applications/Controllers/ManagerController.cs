@@ -73,7 +73,7 @@ namespace TumblThree.Applications.Controllers
 
         public IDownloaderFactory DownloaderFactory { get; set; }
 
-        public void Initialize()
+        public async Task Initialize()
         {
             crawlerService.AddBlogCommand = addBlogCommand;
             crawlerService.RemoveBlogCommand = removeBlogCommand;
@@ -99,7 +99,7 @@ namespace TumblThree.Applications.Controllers
             if (shellService.Settings.CheckClipboard)
                 shellService.ClipboardMonitor.OnClipboardContentChanged += OnClipboardContentChanged;
 
-            Task.Run(() => LoadLibrary());
+            await LoadLibrary();
         }
 
 
