@@ -26,8 +26,8 @@ namespace TumblThree.Applications.Downloader
         private readonly object lockObjectDirectory;
         private readonly object lockObjectDownload;
         private readonly object lockObjectProgress;
-        protected readonly ConcurrentBag<Tuple<PostTypes, string, string>> downloadList;
-        protected readonly BlockingCollection<Tuple<PostTypes, string, string>> sharedDownloads;
+        protected readonly ConcurrentBag<Tuple<PostTypes, string, string>> statisticsBag;
+        protected readonly BlockingCollection<Tuple<PostTypes, string, string>> producerConsumerCollection;
 
         protected Downloader(IShellService shellService, ICrawlerService crawlerService = null, IBlog blog = null)
         {
@@ -39,8 +39,8 @@ namespace TumblThree.Applications.Downloader
             this.lockObjectDirectory = new object();
             this.lockObjectDownload = new object();
             this.lockObjectProgress = new object();
-            this.downloadList = new ConcurrentBag<Tuple<PostTypes, string, string>>();
-            this.sharedDownloads = new BlockingCollection<Tuple<PostTypes, string, string>>();
+            this.statisticsBag = new ConcurrentBag<Tuple<PostTypes, string, string>>();
+            this.producerConsumerCollection = new BlockingCollection<Tuple<PostTypes, string, string>>();
             SetUp();
         }
 
@@ -296,7 +296,7 @@ namespace TumblThree.Applications.Downloader
 
             CreateDataFolder();
 
-            foreach (var currentImageUrl in sharedDownloads.GetConsumingEnumerable())
+            foreach (var currentImageUrl in producerConsumerCollection.GetConsumingEnumerable())
             {
                 await semaphoreSlim.WaitAsync();
 

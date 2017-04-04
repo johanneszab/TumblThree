@@ -157,7 +157,7 @@ namespace TumblThree.Applications.Downloader
 
         private int DetermineDuplicates(PostTypes type)
         {
-            return downloadList.Where(url => url.Item1.Equals(type))
+            return statisticsBag.Where(url => url.Item1.Equals(type))
                 .GroupBy(url => url.Item2)
                 .Where(g => g.Count() > 1)
                 .Sum(g => g.Count() - 1);
@@ -275,8 +275,6 @@ namespace TumblThree.Applications.Downloader
                         {
                             XDocument document = await GetApiPageAsync(pageNumber);
 
-                            CountPostTypes(document);
-
                             ulong highestPostId = 0;
                             ulong.TryParse(document.Element("tumblr").Element("posts").Element("post")?.Attribute("id").Value,
                                 out highestPostId);
@@ -307,7 +305,7 @@ namespace TumblThree.Applications.Downloader
             }
             await Task.WhenAll(trackedTasks);
 
-            sharedDownloads.CompleteAdding();
+            producerConsumerCollection.CompleteAdding();
 
             if (!ct.IsCancellationRequested && loopCompleted)
             {
@@ -461,23 +459,23 @@ namespace TumblThree.Applications.Downloader
 
         private void UpdateBlogStats()
         {
-            blog.TotalCount = downloadList.Count;
-            blog.Photos = counter.Photos;
-            blog.Videos = counter.Videos;
-            blog.Audios = counter.Audios;
-            blog.Texts = counter.Texts;
-            blog.Conversations = counter.Conversations;
-            blog.Quotes = counter.Quotes;
-            blog.NumberOfLinks = counter.Links;
-            blog.PhotoMetas = counter.PhotoMetas;
-            blog.VideoMetas = counter.VideoMetas;
-            blog.AudioMetas = counter.AudioMetas;
+            blog.TotalCount = statisticsBag.Count;
+            blog.Photos = statisticsBag.Count(url => url.Item1.Equals(PostTypes.Photo));
+            blog.Videos = statisticsBag.Count(url => url.Item1.Equals(PostTypes.Video));
+            blog.Audios = statisticsBag.Count(url => url.Item1.Equals(PostTypes.Audio));
+            blog.Texts = statisticsBag.Count(url => url.Item1.Equals(PostTypes.Text));
+            blog.Conversations = statisticsBag.Count(url => url.Item1.Equals(PostTypes.Conversation));
+            blog.Quotes = statisticsBag.Count(url => url.Item1.Equals(PostTypes.Quote));
+            blog.NumberOfLinks = statisticsBag.Count(url => url.Item1.Equals(PostTypes.Link));
+            blog.PhotoMetas = statisticsBag.Count(url => url.Item1.Equals(PostTypes.PhotoMeta));
+            blog.VideoMetas = statisticsBag.Count(url => url.Item1.Equals(PostTypes.VideoMeta));
+            blog.AudioMetas = statisticsBag.Count(url => url.Item1.Equals(PostTypes.AudioMeta));
         }
 
         private void AddToDownloadList(Tuple<PostTypes, string, string> addToList)
         {
-            downloadList.Add(addToList);
-            sharedDownloads.Add(addToList);
+            statisticsBag.Add(addToList);
+            producerConsumerCollection.Add(addToList);
         }
 
         private string ParseImageUrl(XContainer post)
