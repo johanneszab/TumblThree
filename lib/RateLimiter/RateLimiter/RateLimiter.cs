@@ -295,13 +295,13 @@ namespace Guava.RateLimiter
 
         public override string ToString()
         {
-            return $"RateLimiter[stableRate={GetRate()}fqps]";
+            return string.Format("RateLimiter[stableRate={0}fqps]", GetRate());
         }
 
         private static void CheckPermits(int permits)
         {
             if(permits <= 0)
-                throw new ArgumentOutOfRangeException(nameof(permits), $"Requested permits ({permits}) must be positive");
+                throw new ArgumentOutOfRangeException(nameof(permits), string.Format("Requested permits (0) must be positive", permits));
         }
     }
 }
