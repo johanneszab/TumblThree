@@ -459,6 +459,11 @@ namespace TumblThree.Domain.Models
             set { SetProperty(ref state, value); }
         }
 
+        public string DownloadLocation()
+        {
+            return Path.Combine((Directory.GetParent(Location).FullName), Name);
+        }
+
         private void SaveBlog()
         {
             string currentIndex = Path.Combine(location, this.Name + "." + this.BlogType);

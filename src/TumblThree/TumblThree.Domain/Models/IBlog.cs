@@ -89,5 +89,7 @@ namespace TumblThree.Domain.Models
         IList<string> Links { get; set; }
 
         bool Save();
+
+        string DownloadLocation();
     }
 }

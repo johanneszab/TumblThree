@@ -239,7 +239,7 @@ namespace TumblThree.Applications.Downloader
             List<Task> trackedTasks = new List<Task>();
             int numberOfPostsCrawled = 0;
             bool apiLimitHit = false;
-            bool loopCompleted = true;
+            bool completeGrab = true;
 
             ulong lastId = GetLastPostId();
 
@@ -255,7 +255,7 @@ namespace TumblThree.Applications.Downloader
             {
                 await semaphoreSlim.WaitAsync();
 
-                if (!loopCompleted)
+                if (!completeGrab)
                 {
                     break;
                 }
@@ -273,12 +273,7 @@ namespace TumblThree.Applications.Downloader
                         {
                             XDocument document = await GetApiPageAsync(pageNumber);
 
-                            ulong highestPostId = 0;
-                            ulong.TryParse(document.Element("tumblr").Element("posts").Element("post")?.Attribute("id").Value,
-                                out highestPostId);
-
-                            if (highestPostId < lastId)
-                                loopCompleted = false;
+                            completeGrab = CheckPostAge(document, lastId);
 
                             AddUrlsToDownloadList(document);
                         }
@@ -305,12 +300,25 @@ namespace TumblThree.Applications.Downloader
 
             producerConsumerCollection.CompleteAdding();
 
-            if (!ct.IsCancellationRequested && loopCompleted)
+            if (!ct.IsCancellationRequested && completeGrab)
             {
                 UpdateBlogStats();
             }
 
             return Tuple.Create(highestId, apiLimitHit);
+        }
+
+        private static bool CheckPostAge(XDocument document, ulong lastId)
+        {
+            ulong highestPostId = 0;
+            ulong.TryParse(document.Element("tumblr").Element("posts").Element("post")?.Attribute("id").Value,
+                out highestPostId);
+
+            if (highestPostId < lastId)
+            {
+                return false;
+            }
+            return true;
         }
 
         private void AddUrlsToDownloadList(XDocument document)

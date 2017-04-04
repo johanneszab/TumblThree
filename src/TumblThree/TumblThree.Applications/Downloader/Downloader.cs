@@ -291,7 +291,7 @@ namespace TumblThree.Applications.Downloader
         {
             SemaphoreSlim semaphoreSlim = new SemaphoreSlim(shellService.Settings.ParallelImages / crawlerService.ActiveItems.Count);
             List<Task> trackedTasks = new List<Task>();
-            bool loopCompleted = true;
+            bool completeDownload = true;
 
             CreateDataFolder();
 
@@ -301,7 +301,7 @@ namespace TumblThree.Applications.Downloader
 
                 if (ct.IsCancellationRequested)
                 {
-                    loopCompleted = false;
+                    completeDownload = false;
                     break;
                 }
                 if (pt.IsPaused)
@@ -354,16 +354,18 @@ namespace TumblThree.Applications.Downloader
 
             files.Save();
 
-            return loopCompleted;
+            return completeDownload;
         }
+
+
 
         private async Task DownloadPhotoAsync(IProgress<DataModels.DownloadProgress> progress, Tuple<PostTypes, string, string> downloadItem)
         {
-            string blogDownloadLocation = Path.Combine((Directory.GetParent(blog.Location).FullName), blog.Name);
-            string fileName = downloadItem.Item2.Split('/').Last();
-            string url = downloadItem.Item2;
-            string fileLocation = Path.Combine(blogDownloadLocation, fileName);
-            string fileLocationUrlList = Path.Combine(blogDownloadLocation, string.Format(CultureInfo.CurrentCulture, Resources.FileNamePhotos));
+            string blogDownloadLocation = blog.DownloadLocation();
+            string fileName = FileName(downloadItem);
+            string url = Url(downloadItem);
+            string fileLocation = FileLocation(blogDownloadLocation, fileName);
+            string fileLocationUrlList = FileLocationLocalized(blogDownloadLocation, Resources.FileNamePhotos);
 
             if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(GetCoreImageUrl(url))))
             {
@@ -386,11 +388,11 @@ namespace TumblThree.Applications.Downloader
 
         private async Task DownloadVideoAsync(IProgress<DataModels.DownloadProgress> progress, Tuple<PostTypes, string, string> downloadItem)
         {
-            string blogDownloadLocation = Path.Combine((Directory.GetParent(blog.Location).FullName), blog.Name);
-            string fileName = downloadItem.Item2.Split('/').Last();
-            string url = downloadItem.Item2;
-            string fileLocation = Path.Combine(blogDownloadLocation, fileName);
-            string fileLocationUrlList = Path.Combine(blogDownloadLocation, string.Format(CultureInfo.CurrentCulture, Resources.FileNameVideos));
+            string blogDownloadLocation = blog.DownloadLocation();
+            string fileName = FileName(downloadItem);
+            string url = Url(downloadItem);
+            string fileLocation = FileLocation(blogDownloadLocation, fileName);
+            string fileLocationUrlList = FileLocationLocalized(blogDownloadLocation, Resources.FileNameVideos);
 
             if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(url)))
             {
@@ -410,11 +412,11 @@ namespace TumblThree.Applications.Downloader
 
         private async Task DownloadAudioAsync(IProgress<DataModels.DownloadProgress> progress, Tuple<PostTypes, string, string> downloadItem)
         {
-            string blogDownloadLocation = Path.Combine((Directory.GetParent(blog.Location).FullName), blog.Name);
-            string fileName = downloadItem.Item2.Split('/').Last();
-            string url = downloadItem.Item2;
-            string fileLocation = Path.Combine(blogDownloadLocation, downloadItem.Item3 + ".swf");
-            string fileLocationUrlList = Path.Combine(blogDownloadLocation, string.Format(CultureInfo.CurrentCulture, Resources.FileNameAudios));
+            string blogDownloadLocation = blog.DownloadLocation();
+            string fileName = FileName(downloadItem);
+            string url = Url(downloadItem);
+            string fileLocation = FileLocation(blogDownloadLocation, downloadItem.Item3 + ".swf");
+            string fileLocationUrlList = FileLocationLocalized(blogDownloadLocation, Resources.FileNameAudios);
 
             if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(url)))
             {
@@ -427,12 +429,13 @@ namespace TumblThree.Applications.Downloader
                 }
             }
         }
+
         private void DownloadText(IProgress<DataModels.DownloadProgress> progress, Tuple<PostTypes, string, string> downloadItem)
         {
-            string blogDownloadLocation = Path.Combine((Directory.GetParent(blog.Location).FullName), blog.Name);
-            string url = downloadItem.Item2;
-            string postId = downloadItem.Item3;
-            string fileLocation = Path.Combine(blogDownloadLocation, string.Format(CultureInfo.CurrentCulture, Resources.FileNameTexts));
+            string blogDownloadLocation = blog.DownloadLocation();
+            string url = Url(downloadItem);
+            string postId = PostId(downloadItem);
+            string fileLocation = FileLocationLocalized(blogDownloadLocation, Resources.FileNameTexts);
 
             if (!CheckIfFileExistsInDB(postId))
             {
@@ -445,12 +448,13 @@ namespace TumblThree.Applications.Downloader
                 }
             }
         }
+
         private void DownloadQuote(IProgress<DataModels.DownloadProgress> progress, Tuple<PostTypes, string, string> downloadItem)
         {
-            string blogDownloadLocation = Path.Combine((Directory.GetParent(blog.Location).FullName), blog.Name);
-            string url = downloadItem.Item2;
-            string postId = downloadItem.Item3;
-            string fileLocation = Path.Combine(blogDownloadLocation, string.Format(CultureInfo.CurrentCulture, Resources.FileNameQuotes));
+            string blogDownloadLocation = blog.DownloadLocation();
+            string url = Url(downloadItem);
+            string postId = PostId(downloadItem);
+            string fileLocation = FileLocationLocalized(blogDownloadLocation, Resources.FileNameQuotes);
 
             if (!CheckIfFileExistsInDB(postId))
             {
@@ -465,10 +469,10 @@ namespace TumblThree.Applications.Downloader
         }
         private void DownloadLink(IProgress<DataModels.DownloadProgress> progress, Tuple<PostTypes, string, string> downloadItem)
         {
-            string blogDownloadLocation = Path.Combine((Directory.GetParent(blog.Location).FullName), blog.Name);
-            string url = downloadItem.Item2;
-            string postId = downloadItem.Item3;
-            string fileLocation = Path.Combine(blogDownloadLocation, string.Format(CultureInfo.CurrentCulture, Resources.FileNameLinks));
+            string blogDownloadLocation = blog.DownloadLocation();
+            string url = Url(downloadItem);
+            string postId = PostId(downloadItem);
+            string fileLocation = FileLocationLocalized(blogDownloadLocation, Resources.FileNameLinks);
 
             if (!CheckIfFileExistsInDB(postId))
             {
@@ -483,10 +487,10 @@ namespace TumblThree.Applications.Downloader
         }
         private void DownloadConversation(IProgress<DataModels.DownloadProgress> progress, Tuple<PostTypes, string, string> downloadItem)
         {
-            string blogDownloadLocation = Path.Combine((Directory.GetParent(blog.Location).FullName), blog.Name);
-            string url = downloadItem.Item2;
-            string postId = downloadItem.Item3;
-            string fileLocation = Path.Combine(blogDownloadLocation, string.Format(CultureInfo.CurrentCulture, Resources.FileNameConversations));
+            string blogDownloadLocation = blog.DownloadLocation();
+            string url = Url(downloadItem);
+            string postId = PostId(downloadItem);
+            string fileLocation = FileLocationLocalized(blogDownloadLocation, Resources.FileNameConversations);
 
             if (!CheckIfFileExistsInDB(postId))
             {
@@ -501,10 +505,10 @@ namespace TumblThree.Applications.Downloader
         }
         private void DownloadPhotoMeta(IProgress<DataModels.DownloadProgress> progress, Tuple<PostTypes, string, string> downloadItem)
         {
-            string blogDownloadLocation = Path.Combine((Directory.GetParent(blog.Location).FullName), blog.Name);
-            string url = downloadItem.Item2;
-            string postId = downloadItem.Item3;
-            string fileLocation = Path.Combine(blogDownloadLocation, string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaPhoto));
+            string blogDownloadLocation = blog.DownloadLocation();
+            string url = Url(downloadItem);
+            string postId = PostId(downloadItem);
+            string fileLocation = FileLocationLocalized(blogDownloadLocation, Resources.FileNameMetaPhoto);
 
             if (!CheckIfFileExistsInDB(postId))
             {
@@ -519,10 +523,10 @@ namespace TumblThree.Applications.Downloader
         }
         private void DownloadVideoMeta(IProgress<DataModels.DownloadProgress> progress, Tuple<PostTypes, string, string> downloadItem)
         {
-            string blogDownloadLocation = Path.Combine((Directory.GetParent(blog.Location).FullName), blog.Name);
-            string url = downloadItem.Item2;
-            string postId = downloadItem.Item3;
-            string fileLocation = Path.Combine(blogDownloadLocation, string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaVideo));
+            string blogDownloadLocation = blog.DownloadLocation();
+            string url = Url(downloadItem);
+            string postId = PostId(downloadItem);
+            string fileLocation = FileLocationLocalized(blogDownloadLocation, Resources.FileNameMetaVideo);
 
             if (!CheckIfFileExistsInDB(postId))
             {
@@ -537,10 +541,10 @@ namespace TumblThree.Applications.Downloader
         }
         private void DownloadAudioMeta(IProgress<DataModels.DownloadProgress> progress, Tuple<PostTypes, string, string> downloadItem)
         {
-            string blogDownloadLocation = Path.Combine((Directory.GetParent(blog.Location).FullName), blog.Name);
-            string url = downloadItem.Item2;
-            string postId = downloadItem.Item3;
-            string fileLocation = Path.Combine(blogDownloadLocation, string.Format(CultureInfo.CurrentCulture, Resources.FileNameMetaAudio));
+            string blogDownloadLocation = blog.DownloadLocation();
+            string url = Url(downloadItem);
+            string postId = PostId(downloadItem);
+            string fileLocation = FileLocationLocalized(blogDownloadLocation, Resources.FileNameMetaAudio);
 
             if (!CheckIfFileExistsInDB(postId))
             {
@@ -552,6 +556,31 @@ namespace TumblThree.Applications.Downloader
                     UpdateBlogDB(postId);
                 }
             }
+        }
+
+        private static string Url(Tuple<PostTypes, string, string> downloadItem)
+        {
+            return downloadItem.Item2;
+        }
+
+        private static string FileName(Tuple<PostTypes, string, string> downloadItem)
+        {
+            return downloadItem.Item2.Split('/').Last();
+        }
+
+        private static string FileLocation(string blogDownloadLocation, string fileName)
+        {
+            return Path.Combine(blogDownloadLocation, fileName);
+        }
+
+        private static string FileLocationLocalized(string blogDownloadLocation, string fileName)
+        {
+            return Path.Combine(blogDownloadLocation, string.Format(CultureInfo.CurrentCulture, fileName));
+        }
+
+        private static string PostId(Tuple<PostTypes, string, string> downloadItem)
+        {
+            return downloadItem.Item3;
         }
     }
 }
