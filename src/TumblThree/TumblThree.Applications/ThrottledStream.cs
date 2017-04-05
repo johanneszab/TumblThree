@@ -143,7 +143,6 @@ namespace TumblThree.Applications
         public static async Task<ThrottledStream> ReadFromURLIntoStream(string url, int bandwidthInKb, int timeoutInSeconds,
             string proxyHost, string proxyPort)
         {
-            // Create a web request to the URL
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "GET";
             request.ProtocolVersion = HttpVersion.Version11;
@@ -160,22 +159,109 @@ namespace TumblThree.Applications
             }
             else
             {
-                request.Proxy = null; // WebRequest.GetSystemWebProxy();
+                request.Proxy = null;
             }
-
-            // Get the web response
             var response = await request.GetResponseAsync() as HttpWebResponse;
-
-            // Make sure the response is valid
             if (HttpStatusCode.OK == response.StatusCode)
             {
-                // Open the response stream
                 Stream responseStream = response.GetResponseStream();
                 return new ThrottledStream(responseStream, bandwidthInKb * 1024);
             }
             else
             {
                 return null;
+            }
+        }
+
+        // FIXME: Needs a complete rewrite.
+        public static async Task<bool> DownloadFileWithResume(string url, string destinationPath, int bandwidthInKb, int timeoutInSeconds,
+    string proxyHost, string proxyPort, int numberOfRetries)
+        {
+            using (FileStream fileStream = File.Open(destinationPath, FileMode.Create, FileAccess.Write, FileShare.Read))
+            {
+                long totalBytesToReceive = 0;
+                long totalBytesReceived = 0;
+                int attemptCount = 0;
+                bool isFinished = false;
+
+                while (!isFinished)
+                {
+                    attemptCount += 1;
+
+                    if (attemptCount > numberOfRetries)
+                    {
+                        //throw new InvalidOperationException("Too many attempts to download. Aborting.");
+                        return false;
+                    }
+
+                    try
+                    {
+                        var request = (HttpWebRequest)WebRequest.Create(url);
+                        request.Method = "GET";
+                        request.ProtocolVersion = HttpVersion.Version11;
+                        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+                        request.UserAgent =
+                            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
+                        request.AllowAutoRedirect = true;
+                        request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+                        request.ReadWriteTimeout = timeoutInSeconds * 1000;
+                        request.Timeout = -1;
+                        ServicePointManager.DefaultConnectionLimit = 400;
+                        if (!string.IsNullOrEmpty(proxyHost))
+                        {
+                            request.Proxy = new WebProxy(proxyHost, int.Parse(proxyPort));
+                        }
+                        else
+                        {
+                            request.Proxy = null;
+                        }
+
+                        if (totalBytesReceived != 0)
+                        {
+                            request.AddRange(totalBytesReceived, totalBytesToReceive);
+                        }
+
+                        using (WebResponse response = await request.GetResponseAsync())
+                        {
+                            if (totalBytesToReceive == 0)
+                            {
+                                totalBytesToReceive = response.ContentLength;
+                            }
+
+                            using (Stream responseStream = response.GetResponseStream())
+                            {
+                                using (var throttledStream = new ThrottledStream(responseStream, bandwidthInKb * 1024))
+                                {
+                                    var buffer = new byte[4096];
+                                    int bytesRead = throttledStream.Read(buffer, 0, buffer.Length);
+                                    while (bytesRead > 0)
+                                    {
+                                        fileStream.Write(buffer, 0, bytesRead);
+                                        totalBytesReceived += bytesRead;
+                                        bytesRead = throttledStream.Read(buffer, 0, buffer.Length);
+                                    }
+                                }
+                            }
+                        }
+                        isFinished = true;
+                    }
+                    catch (IOException ioException)
+                    {
+                        
+                    }
+                    catch (WebException webException)
+                    {
+                        if (webException.Status == WebExceptionStatus.ConnectionClosed)
+                        {
+                            // retry
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
+                }
+                return isFinished;
             }
         }
 

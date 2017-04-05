@@ -203,14 +203,10 @@ namespace TumblThree.Applications.Downloader
         {
             try
             {
-                using (ThrottledStream stream = await ThrottledStream.ReadFromURLIntoStream(url,
+                return await ThrottledStream.DownloadFileWithResume(url, fileLocation,
                     (shellService.Settings.Bandwidth / shellService.Settings.ParallelImages),
                     shellService.Settings.TimeOut, shellService.Settings.ProxyHost,
-                    shellService.Settings.ProxyPort))
-                {
-                    ThrottledStream.SaveStreamToDisk(stream, fileLocation);
-                }
-                return true;
+                    shellService.Settings.ProxyPort, 30);
             }
             catch (IOException ex) when ((ex.HResult & 0xFFFF) == 0x27 || (ex.HResult & 0xFFFF) == 0x70)
             {
