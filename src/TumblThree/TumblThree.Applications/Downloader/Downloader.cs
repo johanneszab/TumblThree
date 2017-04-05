@@ -24,9 +24,9 @@ namespace TumblThree.Applications.Downloader
         private readonly IShellService shellService;
         private readonly ICrawlerService crawlerService;
         protected readonly object lockObjectDb;
-        private readonly object lockObjectDirectory;
-        private readonly object lockObjectDownload;
-        private readonly object lockObjectProgress;
+        protected readonly object lockObjectDirectory;
+        protected readonly object lockObjectDownload;
+        protected readonly object lockObjectProgress;
         protected readonly ConcurrentBag<Tuple<PostTypes, string, string>> statisticsBag;
         protected readonly BlockingCollection<Tuple<PostTypes, string, string>> producerConsumerCollection;
 
@@ -48,20 +48,7 @@ namespace TumblThree.Applications.Downloader
 
         private IFiles LoadFiles()
         {
-            string filename = blog.ChildId;
-
-            try
-            {
-                string json = File.ReadAllText(filename);
-                var jsJson =
-                    new System.Web.Script.Serialization.JavaScriptSerializer { MaxJsonLength = 2147483644 };
-                return jsJson.Deserialize<Files>(json);
-            }
-            catch (InvalidOperationException ex)
-            {
-                ex.Data["Filename"] = filename;
-                throw;
-            }
+            return new Files().Load(blog.ChildId);
         }
 
         protected virtual async Task<string> RequestDataAsync(string url)
@@ -121,11 +108,11 @@ namespace TumblThree.Applications.Downloader
             if (string.IsNullOrEmpty(blog.Name))
                 return false;
 
-            string blogPath = Directory.GetParent(blog.Location).FullName;
+            string blogPath = blog.DownloadLocation();
 
-            if (!Directory.Exists(Path.Combine(blogPath, blog.Name)))
+            if (!Directory.Exists(blogPath))
             {
-                Directory.CreateDirectory(Path.Combine(blogPath, blog.Name));
+                Directory.CreateDirectory(blogPath);
                 return true;
             }
             return true;
@@ -181,7 +168,7 @@ namespace TumblThree.Applications.Downloader
         {
             string fileName = url.Split('/').Last();
             Monitor.Enter(lockObjectDirectory);
-            string blogPath = Path.Combine(Directory.GetParent(blog.Location).FullName, blog.Name);
+            string blogPath = blog.DownloadLocation();
             if (File.Exists(Path.Combine(blogPath, fileName)))
             {
                 Monitor.Exit(lockObjectDirectory);

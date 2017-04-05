@@ -153,6 +153,20 @@ namespace TumblThree.Applications.Downloader
             return url.Split('_')[0] + "_" + url.Split('_')[1];
         }
 
+        protected override bool CheckIfFileExistsInDirectory(string url)
+        {
+            string fileName = url.Split('/').Last();
+            Monitor.Enter(lockObjectDirectory);
+            string blogPath = blog.DownloadLocation();
+            if (Directory.EnumerateFiles(blogPath).Any(file => file.Contains(fileName)))
+            {
+                Monitor.Exit(lockObjectDirectory);
+                return true;
+            }
+            Monitor.Exit(lockObjectDirectory);
+            return false;
+        }
+
         private int DetermineDuplicates(PostTypes type)
         {
             return statisticsBag.Where(url => url.Item1.Equals(type))

@@ -47,6 +47,24 @@ namespace TumblThree.Domain.Models
             set { SetProperty(ref links, value); }
         }
 
+        public IFiles Load(string fileLocation)
+        {
+            try
+            {
+                string json = File.ReadAllText(fileLocation);
+                var jsJson =
+                    new System.Web.Script.Serialization.JavaScriptSerializer { MaxJsonLength = 2147483644 };
+                var file = jsJson.Deserialize<Files>(json);
+                file.Location = Path.Combine((Directory.GetParent(fileLocation).FullName));
+                return file;
+            }
+            catch (InvalidOperationException ex)
+            {
+                ex.Data["Filename"] = fileLocation;
+                throw;
+            }
+        }
+
         public bool Save()
         {
             string currentIndex = Path.Combine(location, this.Name + "_files." + this.BlogType);

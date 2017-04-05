@@ -8,5 +8,7 @@ namespace TumblThree.Domain.Models
         IList<string> Links { get; set; }
 
         bool Save();
+
+        IFiles Load(string fileLocation);
     }
 }

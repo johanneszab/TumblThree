@@ -90,6 +90,8 @@ namespace TumblThree.Domain.Models
 
         bool Save();
 
+        IBlog Load(string fileLocation);
+
         string DownloadLocation();
     }
 }

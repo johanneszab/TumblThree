@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace TumblThree.Domain.Models
 {
     [Serializable]
-    public abstract class Blog : Model, IBlog
+    public class Blog : Model, IBlog
     {
 
         private string name;
@@ -68,7 +69,7 @@ namespace TumblThree.Domain.Models
         private PostTypes state;
 
 
-        protected Blog()
+        public Blog()
         {
         }
 
@@ -462,6 +463,28 @@ namespace TumblThree.Domain.Models
         public string DownloadLocation()
         {
             return Path.Combine((Directory.GetParent(Location).FullName), Name);
+        }
+
+        public IBlog Load(string fileLocation)
+        {
+            try
+            {
+                using (FileStream stream = new FileStream(fileLocation,
+                    FileMode.Open, FileAccess.Read, FileShare.Read))
+                {
+                    string json = File.ReadAllText(fileLocation);
+                    var blog = new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize<TumblrBlog>(json);
+                    blog.Location = Path.Combine((Directory.GetParent(fileLocation).FullName));
+                    blog.ChildId = Path.Combine(blog.Location, blog.Name + "_files.tumblr");
+                    blog.Update();
+                    return blog;
+                }
+            }
+            catch (SerializationException ex)
+            {
+                ex.Data["Filename"] = fileLocation;
+                throw;
+            }
         }
 
         private void SaveBlog()

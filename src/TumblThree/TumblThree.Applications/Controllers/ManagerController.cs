@@ -131,8 +131,8 @@ namespace TumblThree.Applications.Controllers
                 if (Directory.Exists(path))
                 {
                     {
-                        IReadOnlyList<Blog> files = await GetFilesAsync(path);
-                        foreach (Blog file in files)
+                        IReadOnlyList<IBlog> files = await GetFilesAsync(path);
+                        foreach (IBlog file in files)
                         {
                             managerService.BlogFiles.Add(file);
                         }
@@ -159,17 +159,17 @@ namespace TumblThree.Applications.Controllers
             Logger.Verbose("ManagerController.LoadLibrary:End");
         }
 
-        private Task<IReadOnlyList<Blog>> GetFilesAsync(string directory)
+        private Task<IReadOnlyList<IBlog>> GetFilesAsync(string directory)
         {
-            return Task<IReadOnlyList<Blog>>.Factory.StartNew(() => GetFilesCore(directory),
+            return Task<IReadOnlyList<IBlog>>.Factory.StartNew(() => GetFilesCore(directory),
             TaskCreationOptions.LongRunning);
         }
 
-        private IReadOnlyList<Blog> GetFilesCore(string directory)
+        private IReadOnlyList<IBlog> GetFilesCore(string directory)
         {
             Logger.Verbose("ManagerController:GetFilesCore Start");
 
-            List<Blog> blogs = new List<Blog>();
+            List<IBlog> blogs = new List<IBlog>();
 
             var supportedFileTypes = Enum.GetNames(typeof(BlogTypes)).ToArray();
 
@@ -177,24 +177,7 @@ namespace TumblThree.Applications.Controllers
                 fileName => supportedFileTypes.Any(fileName.Contains) && 
                 !fileName.Contains("_files")))
             {
-                try
-                {
-                    using (FileStream stream = new FileStream(filename,
-                        FileMode.Open, FileAccess.Read, FileShare.Read))
-                    {
-                        string json = File.ReadAllText(filename);
-                        var blog = new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize<TumblrBlog>(json);
-                        blog.ChildId = Path.Combine(directory, blog.Name + "_files.tumblr");
-                        blog.Location = directory;
-                        blog.Update();
-                        blogs.Add(blog);
-                    }
-                }
-                catch (SerializationException ex)
-                {
-                    ex.Data["Filename"] = filename;
-                    throw;
-                }
+                blogs.Add(new Blog().Load(filename));
             }
             Logger.Verbose("ManagerController.GetFilesCore End");
 
@@ -268,8 +251,8 @@ namespace TumblThree.Applications.Controllers
                 {
                     try
                     {
-                        string blogPath = Directory.GetParent(blog.Location).FullName;
-                        Directory.Delete(Path.Combine(blogPath, blog.Name), true);
+                        string blogPath = blog.DownloadLocation();
+                        Directory.Delete(blogPath, true);
                     }
                     catch (Exception ex)
                     {
