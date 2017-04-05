@@ -34,7 +34,7 @@ namespace Guava.RateLimiter
                 case TimeUnit.Days:
                     return value*86400000000;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(unit), unit, null);
+                    throw new ArgumentOutOfRangeException("unit", unit, null);
             }
         }
 
@@ -57,7 +57,7 @@ namespace Guava.RateLimiter
                 case TimeUnit.Days:
                     return value*86400000000;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(unit), unit, null);
+                    throw new ArgumentOutOfRangeException("unit", unit, null);
             }
         }
 
@@ -80,7 +80,7 @@ namespace Guava.RateLimiter
                 case TimeUnit.Days:
                     return value*86400000;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(unit), unit, null);
+                    throw new ArgumentOutOfRangeException("unit", unit, null);
             }
         }
 
@@ -103,7 +103,7 @@ namespace Guava.RateLimiter
                 case TimeUnit.Days:
                     return value * 86400000000000;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(unit), unit, null);
+                    throw new ArgumentOutOfRangeException("unit", unit, null);
             }
         }
     }
