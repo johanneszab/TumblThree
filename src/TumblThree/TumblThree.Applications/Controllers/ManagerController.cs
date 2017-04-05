@@ -1,48 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
-using System.Runtime.Serialization;
 using System.Waf.Applications;
+using System.Windows;
+
+using TumblThree.Applications.Downloader;
+using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Applications.ViewModels;
 using TumblThree.Domain;
 using TumblThree.Domain.Models;
-using System.ComponentModel;
-using TumblThree.Applications.Properties;
 using TumblThree.Domain.Queue;
-using System.Windows;
-using System.Collections.Specialized;
-using TumblThree.Applications.Downloader;
-using System.Threading;
 
 namespace TumblThree.Applications.Controllers
 {
     [Export]
     internal class ManagerController
     {
-        private readonly IShellService shellService;
-        private readonly ISelectionService selectionService;
-        private readonly IManagerService managerService;
-        private readonly ICrawlerService crawlerService;
-        private readonly Lazy<ManagerViewModel> managerViewModel;
-        private readonly ObservableCollection<Blog> blogFiles;
-        private readonly DelegateCommand addBlogCommand;
-        private readonly DelegateCommand removeBlogCommand;
-        private readonly DelegateCommand showFilesCommand;
-        private readonly DelegateCommand visitBlogCommand;
-        private readonly DelegateCommand enqueueSelectedCommand;
-        private readonly DelegateCommand listenClipboardCommand;
-        private readonly DelegateCommand autoDownloadCommand;
-        private readonly DelegateCommand showDetailsCommand;
-
-        private readonly object lockObject = new object();
+        #region Delegates
 
         public delegate void BlogManagerFinishedLoadingHandler(object sender, EventArgs e);
-        public event BlogManagerFinishedLoadingHandler BlogManagerFinishedLoading;
+
+        #endregion
+
+        private readonly DelegateCommand addBlogCommand;
+        private readonly DelegateCommand autoDownloadCommand;
+        private readonly ObservableCollection<Blog> blogFiles;
+        private readonly ICrawlerService crawlerService;
+        private readonly DelegateCommand enqueueSelectedCommand;
+        private readonly DelegateCommand listenClipboardCommand;
+
+        private readonly object lockObject = new object();
+        private readonly IManagerService managerService;
+        private readonly Lazy<ManagerViewModel> managerViewModel;
+        private readonly DelegateCommand removeBlogCommand;
+        private readonly ISelectionService selectionService;
+        private readonly IShellService shellService;
+        private readonly DelegateCommand showDetailsCommand;
+        private readonly DelegateCommand showFilesCommand;
+        private readonly DelegateCommand visitBlogCommand;
 
         [ImportingConstructor]
         public ManagerController(IShellService shellService, ISelectionService selectionService, ICrawlerService crawlerService,
@@ -53,25 +56,29 @@ namespace TumblThree.Applications.Controllers
             this.crawlerService = crawlerService;
             this.managerService = managerService;
             this.managerViewModel = managerViewModel;
-            this.DownloaderFactory = downloaderFactory;
-            this.blogFiles = new ObservableCollection<Blog>();
-            this.addBlogCommand = new DelegateCommand(AddBlog, CanAddBlog);
-            this.removeBlogCommand = new DelegateCommand(RemoveBlog, CanRemoveBlog);
-            this.showFilesCommand = new DelegateCommand(ShowFiles, CanShowFiles);
-            this.visitBlogCommand = new DelegateCommand(VisitBlog, CanVisitBlog);
-            this.enqueueSelectedCommand = new DelegateCommand(EnqueueSelected, CanEnqueueSelected);
-            this.listenClipboardCommand = new DelegateCommand(ListenClipboard);
-            this.autoDownloadCommand = new DelegateCommand(EnqueueAutoDownload, CanEnqueueAutoDownload);
-            this.showDetailsCommand = new DelegateCommand(ShowDetailsCommand);
+            DownloaderFactory = downloaderFactory;
+            blogFiles = new ObservableCollection<Blog>();
+            addBlogCommand = new DelegateCommand(AddBlog, CanAddBlog);
+            removeBlogCommand = new DelegateCommand(RemoveBlog, CanRemoveBlog);
+            showFilesCommand = new DelegateCommand(ShowFiles, CanShowFiles);
+            visitBlogCommand = new DelegateCommand(VisitBlog, CanVisitBlog);
+            enqueueSelectedCommand = new DelegateCommand(EnqueueSelected, CanEnqueueSelected);
+            listenClipboardCommand = new DelegateCommand(ListenClipboard);
+            autoDownloadCommand = new DelegateCommand(EnqueueAutoDownload, CanEnqueueAutoDownload);
+            showDetailsCommand = new DelegateCommand(ShowDetailsCommand);
         }
 
-        private ManagerViewModel ManagerViewModel { get { return managerViewModel.Value; } }
+        private ManagerViewModel ManagerViewModel
+        {
+            get { return managerViewModel.Value; }
+        }
 
         public ManagerSettings ManagerSettings { get; set; }
 
         public QueueManager QueueManager { get; set; }
 
         public IDownloaderFactory DownloaderFactory { get; set; }
+        public event BlogManagerFinishedLoadingHandler BlogManagerFinishedLoading;
 
         public async Task Initialize()
         {
@@ -97,11 +104,12 @@ namespace TumblThree.Applications.Controllers
             shellService.ContentView = ManagerViewModel.View;
 
             if (shellService.Settings.CheckClipboard)
+            {
                 shellService.ClipboardMonitor.OnClipboardContentChanged += OnClipboardContentChanged;
+            }
 
             await LoadLibrary();
         }
-
 
         public void Shutdown()
         {
@@ -112,7 +120,6 @@ namespace TumblThree.Applications.Controllers
             if (e.Action == NotifyCollectionChangedAction.Add)
             {
                 ManagerViewModel.QueueItems = QueueManager.Items;
-
             }
             else if (e.Action == NotifyCollectionChangedAction.Remove)
             {
@@ -141,15 +148,15 @@ namespace TumblThree.Applications.Controllers
 
                         if (shellService.Settings.CheckOnlineStatusAtStartup)
                         {
-                            foreach (var blog in files)
+                            foreach (IBlog blog in files)
                             {
-                                IDownloader downloader = DownloaderFactory.GetDownloader(blog.BlogType, shellService, crawlerService, blog);
+                                IDownloader downloader = DownloaderFactory.GetDownloader(blog.BlogType, shellService,
+                                    crawlerService, blog);
                                 await downloader.IsBlogOnlineAsync();
                             }
                         }
                     }
                 }
-
             }
             catch (Exception ex)
             {
@@ -162,20 +169,20 @@ namespace TumblThree.Applications.Controllers
         private Task<IReadOnlyList<IBlog>> GetFilesAsync(string directory)
         {
             return Task<IReadOnlyList<IBlog>>.Factory.StartNew(() => GetFilesCore(directory),
-            TaskCreationOptions.LongRunning);
+                TaskCreationOptions.LongRunning);
         }
 
         private IReadOnlyList<IBlog> GetFilesCore(string directory)
         {
             Logger.Verbose("ManagerController:GetFilesCore Start");
 
-            List<IBlog> blogs = new List<IBlog>();
+            var blogs = new List<IBlog>();
 
-            var supportedFileTypes = Enum.GetNames(typeof(BlogTypes)).ToArray();
+            string[] supportedFileTypes = Enum.GetNames(typeof(BlogTypes)).ToArray();
 
             foreach (string filename in Directory.GetFiles(directory, "*").Where(
-                fileName => supportedFileTypes.Any(fileName.Contains) && 
-                !fileName.Contains("_files")))
+                fileName => supportedFileTypes.Any(fileName.Contains) &&
+                            !fileName.Contains("_files")))
             {
                 blogs.Add(new Blog().Load(filename));
             }
@@ -210,11 +217,19 @@ namespace TumblThree.Applications.Controllers
             {
             }
             if (shellService.Settings.BlogType == shellService.Settings.BlogTypes.ElementAtOrDefault(1))
+            {
                 Enqueue(managerService.BlogFiles.Where(blog => blog.Online).ToArray());
+            }
             if (shellService.Settings.BlogType == shellService.Settings.BlogTypes.ElementAtOrDefault(2))
-                Enqueue(managerService.BlogFiles.Where(blog => blog.Online && blog.LastCompleteCrawl != DateTime.MinValue).ToArray());
+            {
+                Enqueue(
+                    managerService.BlogFiles.Where(blog => blog.Online && blog.LastCompleteCrawl != DateTime.MinValue).ToArray());
+            }
             if (shellService.Settings.BlogType == shellService.Settings.BlogTypes.ElementAtOrDefault(3))
-                Enqueue(managerService.BlogFiles.Where(blog => blog.Online && blog.LastCompleteCrawl == DateTime.MinValue).ToArray());
+            {
+                Enqueue(
+                    managerService.BlogFiles.Where(blog => blog.Online && blog.LastCompleteCrawl == DateTime.MinValue).ToArray());
+            }
 
             if (crawlerService.IsCrawl && crawlerService.IsPaused)
             {
@@ -228,12 +243,15 @@ namespace TumblThree.Applications.Controllers
             }
         }
 
-        private bool CanAddBlog() { return Validator.IsValidTumblrUrl(crawlerService.NewBlogUrl); }
+        private bool CanAddBlog()
+        {
+            return Validator.IsValidTumblrUrl(crawlerService.NewBlogUrl);
+        }
 
         private void AddBlog()
         {
             Task.Factory.StartNew(() => AddBlogAsync(null),
-            TaskCreationOptions.LongRunning);
+                TaskCreationOptions.LongRunning);
         }
 
         private bool CanRemoveBlog()
@@ -292,7 +310,6 @@ namespace TumblThree.Applications.Controllers
             foreach (IBlog blog in selectionService.SelectedBlogFiles.ToArray())
             {
                 System.Diagnostics.Process.Start("explorer.exe", Path.Combine(path, blog.Name));
-
             }
         }
 
@@ -303,7 +320,7 @@ namespace TumblThree.Applications.Controllers
 
         private void VisitBlog()
         {
-            foreach (var blog in selectionService.SelectedBlogFiles.ToArray())
+            foreach (IBlog blog in selectionService.SelectedBlogFiles.ToArray())
             {
                 System.Diagnostics.Process.Start(blog.Url);
             }
@@ -316,7 +333,7 @@ namespace TumblThree.Applications.Controllers
 
         private async Task AddBlogAsync(string blogUrl)
         {
-            if (String.IsNullOrEmpty(blogUrl))
+            if (string.IsNullOrEmpty(blogUrl))
             {
                 blogUrl = crawlerService.NewBlogUrl;
             }
@@ -374,7 +391,7 @@ namespace TumblThree.Applications.Controllers
 
         private async Task AddBlogBatchedAsync(string[] urls)
         {
-            SemaphoreSlim semaphoreSlim = new SemaphoreSlim(15);
+            var semaphoreSlim = new SemaphoreSlim(15);
             foreach (string url in urls.Where(Validator.IsValidTumblrUrl))
             {
                 await semaphoreSlim.WaitAsync();

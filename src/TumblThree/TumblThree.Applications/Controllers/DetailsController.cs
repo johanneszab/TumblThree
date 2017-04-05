@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
+
 using TumblThree.Applications.Services;
 using TumblThree.Applications.ViewModels;
 using TumblThree.Domain.Models;
@@ -14,36 +15,28 @@ namespace TumblThree.Applications.Controllers
     [Export, Export(typeof(IDetailsService))]
     internal class DetailsController : IDetailsService
     {
-        private readonly IShellService shellService;
-        private readonly ISelectionService selectionService;
-        private readonly IManagerService managerService;
-        private readonly Lazy<DetailsViewModel> detailsViewModel;
         private readonly HashSet<IBlog> blogsToSave;
+        private readonly Lazy<DetailsViewModel> detailsViewModel;
+        private readonly IManagerService managerService;
+        private readonly ISelectionService selectionService;
+        private readonly IShellService shellService;
 
         [ImportingConstructor]
-        public DetailsController(IShellService shellService, ISelectionService selectionService, IManagerService managerService, Lazy<DetailsViewModel> detailsViewModel)
+        public DetailsController(IShellService shellService, ISelectionService selectionService, IManagerService managerService,
+            Lazy<DetailsViewModel> detailsViewModel)
         {
             this.shellService = shellService;
             this.selectionService = selectionService;
             this.managerService = managerService;
             this.detailsViewModel = detailsViewModel;
-            this.blogsToSave = new HashSet<IBlog>();
+            blogsToSave = new HashSet<IBlog>();
         }
 
         public QueueManager QueueManager { get; set; }
 
-        private DetailsViewModel DetailsViewModel { get { return detailsViewModel.Value; } }
-
-        public void Initialize()
+        private DetailsViewModel DetailsViewModel
         {
-            ((INotifyCollectionChanged)selectionService.SelectedBlogFiles).CollectionChanged += SelectedBlogFilesCollectionChanged;
-            shellService.DetailsView = DetailsViewModel.View;
-        }
-
-        public void Shutdown()
-        {
-            var task = Task.Run(() => SaveCurrentSelectedFile());
-            shellService.AddTaskToCompleteBeforeShutdown(task);
+            get { return detailsViewModel.Value; }
         }
 
         public void SelectBlogFiles(IReadOnlyList<IBlog> blogFiles)
@@ -63,11 +56,26 @@ namespace TumblThree.Applications.Controllers
             }
         }
 
+        public void Initialize()
+        {
+            ((INotifyCollectionChanged)selectionService.SelectedBlogFiles).CollectionChanged += SelectedBlogFilesCollectionChanged;
+            shellService.DetailsView = DetailsViewModel.View;
+        }
+
+        public void Shutdown()
+        {
+            Task task = Task.Run(() => SaveCurrentSelectedFile());
+            shellService.AddTaskToCompleteBeforeShutdown(task);
+        }
+
         public TumblrBlog CreateFromMultiple(IEnumerable<TumblrBlog> blogFiles)
         {
-            if (!blogFiles.Any()) { throw new ArgumentException("The collection must have at least one item.", nameof(blogFiles)); }
+            if (!blogFiles.Any())
+            {
+                throw new ArgumentException("The collection must have at least one item.", nameof(blogFiles));
+            }
 
-            var sharedBlogFiles = blogFiles.Cast<TumblrBlog>().ToArray();
+            TumblrBlog[] sharedBlogFiles = blogFiles.Cast<TumblrBlog>().ToArray();
             foreach (Blog blog in sharedBlogFiles)
             {
                 blogsToSave.Add(blog);
@@ -77,7 +85,6 @@ namespace TumblThree.Applications.Controllers
             {
                 Name = string.Join(", ", sharedBlogFiles.Select(blog => blog.Name).ToArray()),
                 Url = string.Join(", ", sharedBlogFiles.Select(blog => blog.Url).ToArray()),
-
                 Posts = sharedBlogFiles.Sum(blogs => blogs.Posts),
                 TotalCount = sharedBlogFiles.Sum(blogs => blogs.TotalCount),
                 Texts = sharedBlogFiles.Sum(blogs => blogs.Texts),
@@ -90,7 +97,6 @@ namespace TumblThree.Applications.Controllers
                 PhotoMetas = sharedBlogFiles.Sum(blogs => blogs.PhotoMetas),
                 VideoMetas = sharedBlogFiles.Sum(blogs => blogs.VideoMetas),
                 AudioMetas = sharedBlogFiles.Sum(blogs => blogs.AudioMetas),
-
                 DownloadedTexts = sharedBlogFiles.Sum(blogs => blogs.DownloadedTexts),
                 DownloadedQuotes = sharedBlogFiles.Sum(blogs => blogs.DownloadedQuotes),
                 DownloadedPhotos = sharedBlogFiles.Sum(blogs => blogs.DownloadedPhotos),
@@ -101,7 +107,6 @@ namespace TumblThree.Applications.Controllers
                 DownloadedPhotoMetas = sharedBlogFiles.Sum(blogs => blogs.DownloadedPhotoMetas),
                 DownloadedVideoMetas = sharedBlogFiles.Sum(blogs => blogs.DownloadedVideoMetas),
                 DownloadedAudioMetas = sharedBlogFiles.Sum(blogs => blogs.DownloadedAudioMetas),
-
                 DownloadAudio = false,
                 DownloadConversation = false,
                 DownloadLink = false,
@@ -144,7 +149,6 @@ namespace TumblThree.Applications.Controllers
 
             if (blogFile.Dirty)
             {
-
                 foreach (TumblrBlog blog in filesToSave)
                 {
                     blog.DownloadAudio = blogFile.DownloadAudio;
@@ -162,7 +166,7 @@ namespace TumblThree.Applications.Controllers
                     blog.ForceRescan = blogFile.ForceRescan;
                     blog.CheckDirectoryForFiles = blogFile.CheckDirectoryForFiles;
                     blog.DownloadUrlList = blogFile.DownloadUrlList;
-                    blog.Dirty = true;                
+                    blog.Dirty = true;
                 }
             }
 
@@ -171,7 +175,10 @@ namespace TumblThree.Applications.Controllers
 
         private void RemoveBlogFilesToSave(IEnumerable<IBlog> blogFiles)
         {
-            foreach (var x in blogFiles) { blogsToSave.Remove(x); }
+            foreach (IBlog x in blogFiles)
+            {
+                blogsToSave.Remove(x);
+            }
         }
 
         private void SelectedBlogFilesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

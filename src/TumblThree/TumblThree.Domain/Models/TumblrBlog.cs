@@ -7,17 +7,17 @@ namespace TumblThree.Domain.Models
     [Serializable]
     public class TumblrBlog : Blog
     {
-        private string version;
         private string description;
-        private string title;
-        private ulong lastId;
-        private string tags;
-        private bool skipGif;
-        private bool forceSize;
         private bool forceRescan;
+        private bool forceSize;
+        private ulong lastId;
+        private bool skipGif;
+        private string tags;
+        private string title;
+        private string version;
 
         /// <summary>
-        /// DON'T use. Only for Mockup
+        ///     DON'T use. Only for Mockup
         /// </summary>
         public TumblrBlog()
         {
@@ -25,14 +25,14 @@ namespace TumblThree.Domain.Models
 
         public TumblrBlog(string url, string location, BlogTypes type) : base(url, location, type)
         {
-            this.version = "3";
-            this.description = String.Empty;
-            this.title = String.Empty;
-            this.lastId = 0;
-            this.tags = String.Empty;
-            this.skipGif = false;
-            this.forceSize = false;
-            this.forceRescan = false;
+            version = "3";
+            description = string.Empty;
+            title = string.Empty;
+            lastId = 0;
+            tags = string.Empty;
+            skipGif = false;
+            forceSize = false;
+            forceRescan = false;
 
             Directory.CreateDirectory(Location);
             Directory.CreateDirectory(Path.Combine(Directory.GetParent(Location).FullName, Name));
@@ -73,25 +73,41 @@ namespace TumblThree.Domain.Models
         public string Tags
         {
             get { return tags; }
-            set { SetProperty(ref tags, value); Dirty = true; }
+            set
+            {
+                SetProperty(ref tags, value);
+                Dirty = true;
+            }
         }
 
         public bool SkipGif
         {
             get { return skipGif; }
-            set { SetProperty(ref skipGif, value); Dirty = true; }
+            set
+            {
+                SetProperty(ref skipGif, value);
+                Dirty = true;
+            }
         }
 
         public bool ForceSize
         {
             get { return forceSize; }
-            set { SetProperty(ref forceSize, value); Dirty = true; }
+            set
+            {
+                SetProperty(ref forceSize, value);
+                Dirty = true;
+            }
         }
 
         public bool ForceRescan
         {
             get { return forceRescan; }
-            set { SetProperty(ref forceRescan, value); Dirty = true; }
+            set
+            {
+                SetProperty(ref forceRescan, value);
+                Dirty = true;
+            }
         }
 
         [OnDeserialized]
@@ -101,7 +117,7 @@ namespace TumblThree.Domain.Models
 
         public bool Update()
         {
-            if (!this.Version.Equals("3"))
+            if (!Version.Equals("3"))
             {
                 BlogType = BlogTypes.tumblr;
                 Version = "3";

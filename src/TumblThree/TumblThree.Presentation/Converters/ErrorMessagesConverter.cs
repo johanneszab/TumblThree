@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
+
 using TumblThree.Presentation.Properties;
 
 namespace TumblThree.Presentation.Converters
@@ -12,7 +13,7 @@ namespace TumblThree.Presentation.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            IEnumerable<Tuple<Exception, string>> errorMessages = values?.FirstOrDefault() as IEnumerable<Tuple<Exception, string>>;
+            var errorMessages = values?.FirstOrDefault() as IEnumerable<Tuple<Exception, string>>;
             if (errorMessages != null)
             {
                 string message = errorMessages.Any() ? errorMessages.Last().Item2 : "";
@@ -20,7 +21,6 @@ namespace TumblThree.Presentation.Converters
             }
             return DependencyProperty.UnsetValue;
         }
-
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {

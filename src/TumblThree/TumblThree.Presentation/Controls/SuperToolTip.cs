@@ -5,16 +5,17 @@ namespace TumblThree.Presentation.Controls
 {
     public class SuperToolTip : Control
     {
-        static SuperToolTip()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(SuperToolTip), new FrameworkPropertyMetadata(typeof(SuperToolTip)));
-        }
+        public static readonly DependencyProperty DescriptionProperty =
+            DependencyProperty.Register(nameof(Description), typeof(string), typeof(SuperToolTip),
+                new FrameworkPropertyMetadata(""));
 
         public static readonly DependencyProperty TitleProperty =
             DependencyProperty.Register(nameof(Title), typeof(string), typeof(SuperToolTip), new FrameworkPropertyMetadata(""));
 
-        public static readonly DependencyProperty DescriptionProperty =
-            DependencyProperty.Register(nameof(Description), typeof(string), typeof(SuperToolTip), new FrameworkPropertyMetadata(""));
+        static SuperToolTip()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(SuperToolTip), new FrameworkPropertyMetadata(typeof(SuperToolTip)));
+        }
 
         public string Title
         {

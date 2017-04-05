@@ -1,6 +1,6 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Windows.Controls;
+
 using TumblThree.Presentation.Properties;
 
 namespace TumblThree.Presentation.ValidationRules
@@ -12,8 +12,10 @@ namespace TumblThree.Presentation.ValidationRules
             try
             {
                 uint temp = 0;
-                if (UInt32.TryParse((string) value, out temp))
+                if (uint.TryParse((string)value, out temp))
+                {
                     return new ValidationResult(true, null);
+                }
             }
             catch
             {

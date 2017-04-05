@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Waf.Foundation;
+
 using TumblThree.Applications;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
@@ -16,7 +17,6 @@ namespace TumblThree.Presentation.DesignData
             Settings = new AppSettings();
         }
 
-
         public AppSettings Settings { get; set; }
 
         public object ShellView { get; set; }
@@ -29,14 +29,11 @@ namespace TumblThree.Presentation.DesignData
 
         public object CrawlerView { get; set; }
 
-
         public IReadOnlyCollection<Task> TasksToCompleteBeforeShutdown { get; set; }
 
         public bool IsApplicationBusy { get; set; }
 
-
         public event CancelEventHandler Closing;
-
 
         public void ShowError(Exception exception, string displayMessage)
         {
@@ -47,14 +44,6 @@ namespace TumblThree.Presentation.DesignData
         }
 
         public void ShowQueueView()
-        {
-        }
-
-        public void ShowSettingsView()
-        {
-        }
-
-        public void ShowAboutView()
         {
         }
 
@@ -69,6 +58,14 @@ namespace TumblThree.Presentation.DesignData
         public IDisposable SetApplicationBusy()
         {
             return null;
+        }
+
+        public void ShowSettingsView()
+        {
+        }
+
+        public void ShowAboutView()
+        {
         }
 
         protected virtual void OnClosing(CancelEventArgs e)

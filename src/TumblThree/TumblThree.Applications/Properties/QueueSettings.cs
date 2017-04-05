@@ -9,17 +9,18 @@ namespace TumblThree.Applications.Properties
         [DataMember(Name = "Names")]
         private readonly List<string> names;
 
-
         public QueueSettings()
         {
-            this.names = new List<string>();
+            names = new List<string>();
         }
-
 
         [DataMember]
         public string LastCrawledBlogName { get; set; }
 
-        public IReadOnlyList<string> Names { get { return names; } }
+        public IReadOnlyList<string> Names
+        {
+            get { return names; }
+        }
 
         ExtensionDataObject IExtensibleDataObject.ExtensionData { get; set; }
 

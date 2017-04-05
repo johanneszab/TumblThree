@@ -9,7 +9,7 @@ namespace TumblThree.Domain.Models
 
         public TumblrFiles(string name, string location, BlogTypes blogType) : base(name, location, blogType)
         {
-            this.version = "1";
+            version = "1";
         }
 
         public string Version

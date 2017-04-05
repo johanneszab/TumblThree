@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows.Controls;
+
 using TumblThree.Applications.ViewModels;
 using TumblThree.Applications.Views;
-using TumblThree.Domain.Models;
 
 namespace TumblThree.Presentation.DesignData
 {
@@ -20,9 +18,15 @@ namespace TumblThree.Presentation.DesignData
 
         private class MockShellView : MockView, IShellView
         {
-            public double VirtualScreenWidth { get { return 0; } }
+            public double VirtualScreenWidth
+            {
+                get { return 0; }
+            }
 
-            public double VirtualScreenHeight { get { return 0; } }
+            public double VirtualScreenHeight
+            {
+                get { return 0; }
+            }
 
             public double Left { get; set; }
 

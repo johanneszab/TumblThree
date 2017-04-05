@@ -9,28 +9,27 @@ namespace TumblThree.Presentation.Controls
     public class Flyout : Popup
     {
         public static readonly DependencyProperty HorizontalFlyoutAlignmentProperty =
-            DependencyProperty.Register(nameof(HorizontalFlyoutAlignment), typeof(HorizontalFlyoutAlignment), typeof(Flyout), new PropertyMetadata(HorizontalFlyoutAlignment.Left));
+            DependencyProperty.Register(nameof(HorizontalFlyoutAlignment), typeof(HorizontalFlyoutAlignment), typeof(Flyout),
+                new PropertyMetadata(HorizontalFlyoutAlignment.Left));
 
         public new static readonly DependencyProperty HorizontalOffsetProperty =
             DependencyProperty.Register(nameof(HorizontalOffset), typeof(double), typeof(Flyout), new PropertyMetadata(0d));
 
-
         private readonly Stopwatch closedStopwatch;
-
 
         static Flyout()
         {
             StaysOpenProperty.OverrideMetadata(typeof(Flyout), new FrameworkPropertyMetadata(false));
             AllowsTransparencyProperty.OverrideMetadata(typeof(Flyout), new FrameworkPropertyMetadata(true));
             PopupAnimationProperty.OverrideMetadata(typeof(Flyout), new FrameworkPropertyMetadata(PopupAnimation.Slide));
-            IsOpenProperty.OverrideMetadata(typeof(Flyout), new FrameworkPropertyMetadata(IsOpenPropertyChangedCallback, IsOpenCoerceValueCallback));
+            IsOpenProperty.OverrideMetadata(typeof(Flyout),
+                new FrameworkPropertyMetadata(IsOpenPropertyChangedCallback, IsOpenCoerceValueCallback));
         }
 
         public Flyout()
         {
             closedStopwatch = new Stopwatch();
         }
-
 
         public HorizontalFlyoutAlignment HorizontalFlyoutAlignment
         {
@@ -43,7 +42,6 @@ namespace TumblThree.Presentation.Controls
             get { return (double)GetValue(HorizontalOffsetProperty); }
             set { SetValue(HorizontalOffsetProperty, value); }
         }
-
 
         protected override void OnOpened(EventArgs e)
         {
@@ -63,7 +61,7 @@ namespace TumblThree.Presentation.Controls
                     SetBaseHorizontalOffset(-target.ActualWidth + child.ActualWidth + HorizontalOffset);
                 }
             }
-            else if (HorizontalFlyoutAlignment == Controls.HorizontalFlyoutAlignment.Right)
+            else if (HorizontalFlyoutAlignment == HorizontalFlyoutAlignment.Right)
             {
                 if (!SystemParameters.MenuDropAlignment)
                 {

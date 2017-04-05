@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 
 namespace TumblThree.Presentation.Controls
@@ -17,8 +16,10 @@ namespace TumblThree.Presentation.Controls
 
         static Rating()
         {
-            RangeBase.MinimumProperty.OverrideMetadata(typeof(Rating), new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsMeasure));
-            RangeBase.MaximumProperty.OverrideMetadata(typeof(Rating), new FrameworkPropertyMetadata(5.0, FrameworkPropertyMetadataOptions.AffectsMeasure));
+            MinimumProperty.OverrideMetadata(typeof(Rating),
+                new FrameworkPropertyMetadata(0.0, FrameworkPropertyMetadataOptions.AffectsMeasure));
+            MaximumProperty.OverrideMetadata(typeof(Rating),
+                new FrameworkPropertyMetadata(5.0, FrameworkPropertyMetadataOptions.AffectsMeasure));
             IsSnapToTickEnabledProperty.OverrideMetadata(typeof(Rating), new FrameworkPropertyMetadata(true));
             SmallChangeProperty.OverrideMetadata(typeof(Rating), new FrameworkPropertyMetadata(1.0));
             DefaultStyleKeyProperty.OverrideMetadata(typeof(Rating), new FrameworkPropertyMetadata(typeof(Rating)));
@@ -39,7 +40,7 @@ namespace TumblThree.Presentation.Controls
         protected override void OnValueChanged(double oldValue, double newValue)
         {
             base.OnValueChanged(oldValue, newValue);
-            foreach (var ratingItem in ratingItems)
+            foreach (RatingItem ratingItem in ratingItems)
             {
                 ratingItem.Value = Value;
             }
@@ -48,7 +49,7 @@ namespace TumblThree.Presentation.Controls
         private void ItemMouseEnter(object sender, MouseEventArgs e)
         {
             double mouseOverValue = ((RatingItem)sender).ItemValue;
-            foreach (var ratingItem in ratingItems)
+            foreach (RatingItem ratingItem in ratingItems)
             {
                 ratingItem.MouseOverValue = mouseOverValue;
             }
@@ -56,7 +57,7 @@ namespace TumblThree.Presentation.Controls
 
         private void ItemMouseLeave(object sender, MouseEventArgs e)
         {
-            foreach (var ratingItem in ratingItems)
+            foreach (RatingItem ratingItem in ratingItems)
             {
                 ratingItem.MouseOverValue = -1;
             }
@@ -71,7 +72,7 @@ namespace TumblThree.Presentation.Controls
         private void GenerateRatingItems()
         {
             // Clean up old items
-            foreach (var item in ratingItems)
+            foreach (RatingItem item in ratingItems)
             {
                 item.MouseEnter -= ItemMouseEnter;
                 item.MouseLeave -= ItemMouseLeave;
@@ -80,7 +81,7 @@ namespace TumblThree.Presentation.Controls
 
             // Create new items
             var items = new List<RatingItem>();
-            for (int i = 0; i < Convert.ToInt32(GetValue(MaximumProperty), CultureInfo.InvariantCulture); i++)
+            for (var i = 0; i < Convert.ToInt32(GetValue(MaximumProperty), CultureInfo.InvariantCulture); i++)
             {
                 var item = new RatingItem() { ItemValue = i + 1, Value = Value };
                 item.MouseEnter += ItemMouseEnter;

@@ -2,27 +2,30 @@
 using System.ComponentModel.Composition;
 using System.Waf.Applications;
 using System.Windows;
+
 using TumblThree.Applications.ViewModels;
 using TumblThree.Applications.Views;
 
 namespace TumblThree.Presentation.Views
 {
     /// <summary>
-    /// Interaction logic for SettingsView.xaml
+    ///     Interaction logic for SettingsView.xaml
     /// </summary>
     [Export(typeof(ISettingsView)), PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class SettingsView : Window, ISettingsView
     {
-
         private readonly Lazy<SettingsViewModel> viewModel;
 
         public SettingsView()
         {
             InitializeComponent();
-            this.viewModel = new Lazy<SettingsViewModel>(() => ViewHelper.GetViewModel<SettingsViewModel>(this));
+            viewModel = new Lazy<SettingsViewModel>(() => ViewHelper.GetViewModel<SettingsViewModel>(this));
         }
 
-        private SettingsViewModel ViewModel { get { return viewModel.Value; } }
+        private SettingsViewModel ViewModel
+        {
+            get { return viewModel.Value; }
+        }
 
         public void ShowDialog(object owner)
         {
@@ -32,7 +35,7 @@ namespace TumblThree.Presentation.Views
 
         private void closeWindow(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Close();
         }
     }
 }

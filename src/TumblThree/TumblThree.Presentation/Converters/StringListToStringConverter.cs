@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Data;
+
 using TumblThree.Applications.Data;
 
 namespace TumblThree.Presentation.Converters
@@ -16,7 +17,7 @@ namespace TumblThree.Presentation.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            string text = (string)value;
+            var text = (string)value;
             return StringListConverter.FromString(text, GetSeparator(parameter));
         }
 

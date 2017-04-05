@@ -8,16 +8,17 @@
             <Setter.Value>
                 <ControlTemplate TargetType="ctrl:RatingItem">
                     <Grid Background="{TemplateBinding Background}">
-                        <Rectangle Fill="Transparent" IsHitTestVisible="True"/>
+                        <Rectangle Fill="Transparent" IsHitTestVisible="True" />
 
-                        <Path x:Name="item" Fill="White" Stretch="Uniform" Stroke="{TemplateBinding BorderBrush}" StrokeLineJoin="Round" 
+                        <Path x:Name="item" Fill="White" Stretch="Uniform" Stroke="{TemplateBinding BorderBrush}"
+                              StrokeLineJoin="Round"
                               Margin="{Binding Padding, RelativeSource={RelativeSource AncestorType={x:Type ctrl:Rating}}}"
-                              StrokeThickness="0.4" VerticalAlignment="Stretch" Opacity="1" 
+                              StrokeThickness="0.4" VerticalAlignment="Stretch" Opacity="1"
                               Data="M15,0 L18.6,11.373603 L30,11.459046 L20.824955,18.573566 L24.270519,30 L15,23.023449 L5.7294912,30 L9.1750822,18.573566 L0,11.459046 L11.399999,11.373603 z" />
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="RatingItemState" Value="Filled">
-                            <Setter Property="Fill" TargetName="item" Value="Yellow"/>
+                            <Setter Property="Fill" TargetName="item" Value="Yellow" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -26,15 +27,17 @@
     </Style>
 
     <Style TargetType="{x:Type ctrl:Rating}">
-        <Setter Property="Height" Value="18"/>
+        <Setter Property="Height" Value="18" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ctrl:Rating}">
-                    <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                    <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
                         <ItemsControl x:Name="PART_RatingItems">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal"/>
+                                    <StackPanel Orientation="Horizontal" />
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
                         </ItemsControl>

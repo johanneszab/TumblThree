@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Waf.Foundation;
 using System.Windows.Data;
+
 using TumblThree.Domain.Queue;
 
 namespace TumblThree.Presentation.Converters
@@ -14,7 +15,9 @@ namespace TumblThree.Presentation.Converters
             var currentQueuelistItem = (QueueListItem)values[1];
 
             if (crawlingQueuelistItem.Contains(currentQueuelistItem))
+            {
                 return true;
+            }
 
             return false;
         }

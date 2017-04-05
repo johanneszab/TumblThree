@@ -1,44 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Waf.Applications;
+using System.Waf.Applications.Services;
+using System.Waf.Foundation;
+
+using TumblThree.Applications.Data;
+using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Applications.ViewModels;
 using TumblThree.Domain;
 using TumblThree.Domain.Models;
-using System.ComponentModel;
-using TumblThree.Applications.Properties;
 using TumblThree.Domain.Queue;
-using System.Waf.Foundation;
-using System.Waf.Applications.Services;
-using TumblThree.Applications.Data;
 
 namespace TumblThree.Applications.Controllers
 {
     [Export]
     internal class QueueController
     {
-        private readonly IFileDialogService fileDialogService;
-        private readonly IShellService shellService;
-        private readonly IDetailsService detailsService;
-        private readonly IManagerService managerService;
+        private readonly DelegateCommand clearQueueCommand;
         private readonly ICrawlerService crawlerService;
+        private readonly IDetailsService detailsService;
+        private readonly IFileDialogService fileDialogService;
+        private readonly IManagerService managerService;
+        private readonly DelegateCommand openQueueCommand;
+        private readonly FileType openQueuelistFileType;
         private readonly Lazy<QueueViewModel> queueViewModel;
         private readonly DelegateCommand removeSelectedCommand;
-        private readonly DelegateCommand showBlogDetailsCommand;
-        private readonly DelegateCommand openQueueCommand;
         private readonly DelegateCommand saveQueueCommand;
-        private readonly DelegateCommand clearQueueCommand;
-        private readonly FileType openQueuelistFileType;
         private readonly FileType saveQueuelistFileType;
-
+        private readonly IShellService shellService;
+        private readonly DelegateCommand showBlogDetailsCommand;
 
         [ImportingConstructor]
-        public QueueController(IFileDialogService fileDialogService, IShellService shellService, IDetailsService detailsService, IManagerService managerService,
+        public QueueController(IFileDialogService fileDialogService, IShellService shellService, IDetailsService detailsService,
+            IManagerService managerService,
             ICrawlerService crawlerService, Lazy<QueueViewModel> queueViewModel)
         {
             this.fileDialogService = fileDialogService;
@@ -47,21 +48,23 @@ namespace TumblThree.Applications.Controllers
             this.managerService = managerService;
             this.crawlerService = crawlerService;
             this.detailsService = detailsService;
-            this.removeSelectedCommand = new DelegateCommand(RemoveSelected, CanRemoveSelected);
-            this.showBlogDetailsCommand = new DelegateCommand(ShowBlogDetails);
-            this.openQueueCommand = new DelegateCommand(OpenList);
-            this.saveQueueCommand = new DelegateCommand(SaveList);
-            this.clearQueueCommand = new DelegateCommand(ClearList);
-            this.openQueuelistFileType = new FileType(Resources.Queuelist, SupportedFileTypes.QueueFileExtensions);
-            this.saveQueuelistFileType = new FileType(Resources.Queuelist, SupportedFileTypes.QueueFileExtensions.First());
+            removeSelectedCommand = new DelegateCommand(RemoveSelected, CanRemoveSelected);
+            showBlogDetailsCommand = new DelegateCommand(ShowBlogDetails);
+            openQueueCommand = new DelegateCommand(OpenList);
+            saveQueueCommand = new DelegateCommand(SaveList);
+            clearQueueCommand = new DelegateCommand(ClearList);
+            openQueuelistFileType = new FileType(Resources.Queuelist, SupportedFileTypes.QueueFileExtensions);
+            saveQueuelistFileType = new FileType(Resources.Queuelist, SupportedFileTypes.QueueFileExtensions.First());
         }
 
         public QueueSettings QueueSettings { get; set; }
 
         public QueueManager QueueManager { get; set; }
 
-        private QueueViewModel QueueViewModel { get { return queueViewModel.Value; } }
-
+        private QueueViewModel QueueViewModel
+        {
+            get { return queueViewModel.Value; }
+        }
 
         public void Initialize()
         {
@@ -102,9 +105,11 @@ namespace TumblThree.Applications.Controllers
 
         private void RemoveSelected()
         {
-            var queueItemsToExclude = QueueViewModel.SelectedQueueItems.Except(new[] { QueueViewModel.SelectedQueueItem }).ToArray();
-            QueueListItem nextQueueItem = CollectionHelper.GetNextElementOrDefault(QueueManager.Items.Except(queueItemsToExclude).ToArray(),
-                QueueViewModel.SelectedQueueItem);
+            QueueListItem[] queueItemsToExclude =
+                QueueViewModel.SelectedQueueItems.Except(new[] { QueueViewModel.SelectedQueueItem }).ToArray();
+            QueueListItem nextQueueItem =
+                CollectionHelper.GetNextElementOrDefault(QueueManager.Items.Except(queueItemsToExclude).ToArray(),
+                    QueueViewModel.SelectedQueueItem);
 
             QueueManager.RemoveItems(QueueViewModel.SelectedQueueItems);
             QueueViewModel.SelectedQueueItem = nextQueueItem ?? QueueManager.Items.LastOrDefault();
@@ -123,7 +128,7 @@ namespace TumblThree.Applications.Controllers
 
         private void OpenList()
         {
-            var result = fileDialogService.ShowOpenFileDialog(shellService.ShellView, openQueuelistFileType);
+            FileDialogResult result = fileDialogService.ShowOpenFileDialog(shellService.ShellView, openQueuelistFileType);
             if (!result.IsValid)
             {
                 return;
@@ -136,8 +141,7 @@ namespace TumblThree.Applications.Controllers
             List<string> queueList;
             try
             {
-
-                using (FileStream stream = new FileStream(queuelistFileName,
+                using (var stream = new FileStream(queuelistFileName,
                     FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
                     IFormatter formatter = new BinaryFormatter();
@@ -169,20 +173,22 @@ namespace TumblThree.Applications.Controllers
 
         private void SaveList()
         {
-            var result = fileDialogService.ShowSaveFileDialog(shellService.ShellView, saveQueuelistFileType);
+            FileDialogResult result = fileDialogService.ShowSaveFileDialog(shellService.ShellView, saveQueuelistFileType);
             if (!result.IsValid)
             {
                 return;
             }
 
-            var queueList = QueueManager.Items.Select(item => item.Blog.Name).ToList();
+            List<string> queueList = QueueManager.Items.Select(item => item.Blog.Name).ToList();
 
             try
             {
-                var targetFolder = Path.GetDirectoryName(result.FileName);
-                var name = Path.GetFileNameWithoutExtension(result.FileName);
+                string targetFolder = Path.GetDirectoryName(result.FileName);
+                string name = Path.GetFileNameWithoutExtension(result.FileName);
 
-                using (FileStream stream = new FileStream(Path.Combine(targetFolder, name) + ".que", FileMode.Create, FileAccess.Write, FileShare.None))
+                using (
+                    var stream = new FileStream(Path.Combine(targetFolder, name) + ".que", FileMode.Create, FileAccess.Write,
+                        FileShare.None))
                 {
                     IFormatter formatter = new BinaryFormatter();
                     formatter.Serialize(stream, queueList);
@@ -212,6 +218,5 @@ namespace TumblThree.Applications.Controllers
         {
             removeSelectedCommand.RaiseCanExecuteChanged();
         }
-
     }
 }

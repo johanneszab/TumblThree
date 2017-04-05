@@ -3,48 +3,48 @@
                     xmlns:waf="http://waf.codeplex.com/schemas"
                     xmlns:c="clr-namespace:TumblThree.Presentation.Converters">
 
-    <waf:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    <waf:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
 
-    <waf:InvertBooleanConverter x:Key="InvertBooleanConverter"/>
+    <waf:InvertBooleanConverter x:Key="InvertBooleanConverter" />
 
-    <waf:StringFormatConverter x:Key="StringFormatConverter"/>
+    <waf:StringFormatConverter x:Key="StringFormatConverter" />
 
-    <waf:ValidationErrorsConverter x:Key="ValidationErrorsConverter"/>
+    <waf:ValidationErrorsConverter x:Key="ValidationErrorsConverter" />
 
-    <c:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+    <c:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
 
-    <c:BlogQueueInfoConverter x:Key="BlogQueueInfoConverter"/>
+    <c:BlogQueueInfoConverter x:Key="BlogQueueInfoConverter" />
 
-    <c:DetailsProgressConverter x:Key="DetailsProgressConverter"/>
+    <c:DetailsProgressConverter x:Key="DetailsProgressConverter" />
 
-    <c:BlogQueueProgressConverter x:Key="BlogQueueProgressConverter"/>
+    <c:BlogQueueProgressConverter x:Key="BlogQueueProgressConverter" />
 
-    <c:StatusToBoolConverter x:Key="StatusToBoolConverter"/>
+    <c:StatusToBoolConverter x:Key="StatusToBoolConverter" />
 
-    <c:TotalImageConverter x:Key="TotalImageConverter"/>
+    <c:TotalImageConverter x:Key="TotalImageConverter" />
 
-    <c:ErrorMessagesConverter x:Key="ErrorMessagesConverter"/>
+    <c:ErrorMessagesConverter x:Key="ErrorMessagesConverter" />
 
-    <c:WindowTitleConverter x:Key="WindowTitleConverter"/>
+    <c:WindowTitleConverter x:Key="WindowTitleConverter" />
 
-    <c:IntToDisplayValueConverter x:Key="IntToDisplayValueConverter"/>
+    <c:IntToDisplayValueConverter x:Key="IntToDisplayValueConverter" />
 
-    <c:IsLessThanConverter x:Key="IsLessThanConverter"/>
+    <c:IsLessThanConverter x:Key="IsLessThanConverter" />
 
-    <c:DateToDisplayValueConverter x:Key="DateToDisplayValueConverter"/>
+    <c:DateToDisplayValueConverter x:Key="DateToDisplayValueConverter" />
 
-    <c:RatingToStarsConverter x:Key="RatingToStarsConverter"/>
+    <c:RatingToStarsConverter x:Key="RatingToStarsConverter" />
 
-    <c:ItemsCountConverter x:Key="ItemsCountConverter"/>
+    <c:ItemsCountConverter x:Key="ItemsCountConverter" />
 
-    <c:StringListToStringConverter x:Key="StringListToStringConverter"/>
+    <c:StringListToStringConverter x:Key="StringListToStringConverter" />
 
-    <c:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+    <c:InverseBooleanConverter x:Key="InverseBooleanConverter" />
 
-    <c:IsQueueItemCrawlingMultiConverter x:Key="IsQueueItemCrawlingMultiConverter"/>
+    <c:IsQueueItemCrawlingMultiConverter x:Key="IsQueueItemCrawlingMultiConverter" />
 
-    <c:IsBlogInQueueMultiConverter x:Key="IsBlogInQueueMultiConverter"/>
+    <c:IsBlogInQueueMultiConverter x:Key="IsBlogInQueueMultiConverter" />
 
-    <c:NullImageConverter x:Key="NullImageConverter"/>
+    <c:NullImageConverter x:Key="NullImageConverter" />
 
 </ResourceDictionary>

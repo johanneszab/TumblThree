@@ -7,8 +7,14 @@ namespace TumblThree.Applications.Data
         private static readonly string[] blogFileExtensions = new string[] { ".tumblr", ".insta", ".twitter" };
         private static readonly string[] queueFileExtensions = new string[] { ".que" };
 
-        public static IReadOnlyList<string> BlogFileExtensions { get { return blogFileExtensions; } }
+        public static IReadOnlyList<string> BlogFileExtensions
+        {
+            get { return blogFileExtensions; }
+        }
 
-        public static IReadOnlyList<string> QueueFileExtensions { get { return queueFileExtensions; } }
+        public static IReadOnlyList<string> QueueFileExtensions
+        {
+            get { return queueFileExtensions; }
+        }
     }
 }

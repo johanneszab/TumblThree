@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Threading.Tasks;
 using System.Waf.Applications;
 using System.Windows.Input;
+
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Applications.Views;
@@ -17,11 +18,11 @@ namespace TumblThree.Applications.ViewModels
     {
         private readonly IApplicationUpdateService applicationUpdateService;
         private readonly DelegateCommand showWebsiteCommand;
-        private DelegateCommand checkForUpdatesCommand;
-        private DelegateCommand downloadCommand;
-        private string updateText;
+        private readonly DelegateCommand checkForUpdatesCommand;
+        private readonly DelegateCommand downloadCommand;
         private bool isCheckInProgress;
         private bool isLatestVersionAvailable;
+        private string updateText;
 
         [ImportingConstructor]
         public AboutViewModel(IAboutView view, IApplicationUpdateService applicationUpdateService)
@@ -33,22 +34,45 @@ namespace TumblThree.Applications.ViewModels
             this.applicationUpdateService = applicationUpdateService;
         }
 
+        public ICommand ShowWebsiteCommand
+        {
+            get { return showWebsiteCommand; }
+        }
 
-        public ICommand ShowWebsiteCommand { get { return showWebsiteCommand; } }
+        public ICommand CheckForUpdatesCommand
+        {
+            get { return checkForUpdatesCommand; }
+        }
 
-        public ICommand CheckForUpdatesCommand { get { return checkForUpdatesCommand; } }
+        public ICommand DownloadCommand
+        {
+            get { return downloadCommand; }
+        }
 
-        public ICommand DownloadCommand { get { return downloadCommand; } }
+        public string ProductName
+        {
+            get { return ApplicationInfo.ProductName; }
+        }
 
-        public string ProductName { get { return ApplicationInfo.ProductName; } }
+        public string Version
+        {
+            get { return ApplicationInfo.Version; }
+        }
 
-        public string Version { get { return ApplicationInfo.Version; } }
+        public string OSVersion
+        {
+            get { return Environment.OSVersion.ToString(); }
+        }
 
-        public string OSVersion { get { return Environment.OSVersion.ToString(); } }
+        public string NetVersion
+        {
+            get { return Environment.Version.ToString(); }
+        }
 
-        public string NetVersion { get { return Environment.Version.ToString(); } }
-
-        public bool Is64BitProcess { get { return Environment.Is64BitProcess; } }
+        public bool Is64BitProcess
+        {
+            get { return Environment.Is64BitProcess; }
+        }
 
         public bool IsCheckInProgress
         {
@@ -68,7 +92,6 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref updateText, value); }
         }
 
-
         public void ShowDialog(object owner)
         {
             ViewCore.ShowDialog(owner);
@@ -76,7 +99,7 @@ namespace TumblThree.Applications.ViewModels
 
         private void ShowWebsite(object parameter)
         {
-            string url = (string)parameter;
+            var url = (string)parameter;
             try
             {
                 Process.Start(url);
@@ -104,7 +127,7 @@ namespace TumblThree.Applications.ViewModels
             UpdateText = string.Empty;
             TaskScheduler scheduler = TaskScheduler.FromCurrentSynchronizationContext();
             Task<string>.Factory.StartNew(() => applicationUpdateService.GetLatestReleaseFromServer())
-                .ContinueWith(CheckForUpdatesComplete, scheduler);
+                        .ContinueWith(CheckForUpdatesComplete, scheduler);
         }
 
         private void CheckForUpdatesComplete(Task<string> task)

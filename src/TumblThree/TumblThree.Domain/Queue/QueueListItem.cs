@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Waf.Foundation;
+
 using TumblThree.Domain.Models;
 
 namespace TumblThree.Domain.Queue

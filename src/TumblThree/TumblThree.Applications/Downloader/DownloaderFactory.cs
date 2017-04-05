@@ -2,27 +2,27 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+
 using TumblThree.Applications.Services;
 using TumblThree.Domain.Models;
 
 namespace TumblThree.Applications.Downloader
 {
     [Export(typeof(IDownloaderFactory))]
-
     public class DownloaderFactory : IDownloaderFactory
     {
-        [ImportMany(typeof(IDownloader))]
-        private IEnumerable<Lazy<IDownloader, IBlogTypeMetaData>> DownloaderFactoryLazy { get; set; }
-
-
         [ImportingConstructor]
         public DownloaderFactory()
         {
         }
 
+        [ImportMany(typeof(IDownloader))]
+        private IEnumerable<Lazy<IDownloader, IBlogTypeMetaData>> DownloaderFactoryLazy { get; set; }
+
         public IDownloader GetDownloader(BlogTypes blogtype)
         {
-            var downloaderInstance = DownloaderFactoryLazy.FirstOrDefault(list => list.Metadata.BlogType == blogtype);
+            Lazy<IDownloader, IBlogTypeMetaData> downloaderInstance =
+                DownloaderFactoryLazy.FirstOrDefault(list => list.Metadata.BlogType == blogtype);
 
             if (downloaderInstance != null)
             {

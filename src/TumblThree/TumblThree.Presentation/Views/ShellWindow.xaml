@@ -1,60 +1,65 @@
 ﻿<Window x:Class="TumblThree.Presentation.Views.ShellWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:p="clr-namespace:TumblThree.Presentation.Properties"
         xmlns:dd="clr-namespace:TumblThree.Presentation.DesignData"
         xmlns:ctrl="clr-namespace:TumblThree.Presentation.Controls"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:TumblThree.Applications.ViewModels;assembly=TumblThree.Applications"
         mc:Ignorable="d" Icon="{StaticResource TumblThreeIcon}" Width="800" Height="500"
         d:DataContext="{d:DesignInstance dd:SampleShellViewModel, IsDesignTimeCreatable=True}">
 
     <Window.Title>
         <MultiBinding Converter="{StaticResource WindowTitleConverter}">
-            <Binding Path="CrawlerService.ActiveItems"/>
-            <Binding Path="Title"/>
+            <Binding Path="CrawlerService.ActiveItems" />
+            <Binding Path="Title" />
         </MultiBinding>
     </Window.Title>
 
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo>
             <TaskbarItemInfo.ThumbButtonInfos>
-                <ThumbButtonInfo x:Name="playButton" Command="{Binding CrawlerService.CrawlCommand}" ImageSource="{StaticResource PlayButtonImage}"/>
-                <ThumbButtonInfo x:Name="resumeButton" Command="{Binding CrawlerService.ResumeCommand}" ImageSource="{StaticResource ResumeButtonImage}"/>
-                <ThumbButtonInfo x:Name="pauseButton" Command="{Binding CrawlerService.PauseCommand}" ImageSource="{StaticResource PauseButtonImage}"/>
-                <ThumbButtonInfo x:Name="stopButton" Command="{Binding CrawlerService.StopCommand}" ImageSource="{StaticResource StopButtonImage}"/>
+                <ThumbButtonInfo x:Name="playButton" Command="{Binding CrawlerService.CrawlCommand}"
+                                 ImageSource="{StaticResource PlayButtonImage}" />
+                <ThumbButtonInfo x:Name="resumeButton" Command="{Binding CrawlerService.ResumeCommand}"
+                                 ImageSource="{StaticResource ResumeButtonImage}" />
+                <ThumbButtonInfo x:Name="pauseButton" Command="{Binding CrawlerService.PauseCommand}"
+                                 ImageSource="{StaticResource PauseButtonImage}" />
+                <ThumbButtonInfo x:Name="stopButton" Command="{Binding CrawlerService.StopCommand}"
+                                 ImageSource="{StaticResource StopButtonImage}" />
             </TaskbarItemInfo.ThumbButtonInfos>
         </TaskbarItemInfo>
     </Window.TaskbarItemInfo>
 
     <Window.InputBindings>
-        <KeyBinding Command="{Binding CrawlerService.RemoveBlogCommand}" Key="Delete" Modifiers="Shift"/>
-        <KeyBinding Command="{Binding GarbageCollectorCommand}" Key="G" Modifiers="Ctrl+Shift"/>
-        <KeyBinding Command="{Binding CrawlerService.CrawlCommand}" Key="Space"/>
-        <KeyBinding Command="{Binding CrawlerService.PauseCommand}" Key="Space" Modifiers="Ctrl"/>
-        <KeyBinding Command="{Binding CrawlerService.StopCommand}" Key="Space" Modifiers="Shift"/>
+        <KeyBinding Command="{Binding CrawlerService.RemoveBlogCommand}" Key="Delete" Modifiers="Shift" />
+        <KeyBinding Command="{Binding GarbageCollectorCommand}" Key="G" Modifiers="Ctrl+Shift" />
+        <KeyBinding Command="{Binding CrawlerService.CrawlCommand}" Key="Space" />
+        <KeyBinding Command="{Binding CrawlerService.PauseCommand}" Key="Space" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding CrawlerService.StopCommand}" Key="Space" Modifiers="Shift" />
     </Window.InputBindings>
 
     <Grid x:Name="grid">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="250" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="2"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="2" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Border Grid.ColumnSpan="3" Grid.Row="0" BorderBrush="Transparent" BorderThickness="0,0,0,1" Background="{StaticResource ErrorBackground}">
+        <Border Grid.ColumnSpan="3" Grid.Row="0" BorderBrush="Transparent" BorderThickness="0,0,0,1"
+                Background="{StaticResource ErrorBackground}">
             <Border.Style>
                 <Style TargetType="Border">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding Errors.Count}" Value="0">
-                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Setter Property="Visibility" Value="Collapsed" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -62,48 +67,53 @@
 
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Foreground="White" Padding="5,4" TextTrimming="CharacterEllipsis">
                     <TextBlock.Text>
                         <MultiBinding Converter="{StaticResource ErrorMessagesConverter}">
-                            <Binding Path="Errors"/>
-                            <Binding Path="Errors.Count"/>
+                            <Binding Path="Errors" />
+                            <Binding Path="Errors.Count" />
                         </MultiBinding>
                     </TextBlock.Text>
                     <TextBlock.ToolTip>
-                        <ctrl:SuperToolTip Title="{x:Static p:Resources.InternalErrorDescription}" Description="{Binding LastError.Item1.Message}"/>
+                        <ctrl:SuperToolTip Title="{x:Static p:Resources.InternalErrorDescription}"
+                                           Description="{Binding LastError.Item1.Message}" />
                     </TextBlock.ToolTip>
                 </TextBlock>
 
-                <Button Command="{Binding CloseErrorCommand}" Style="{StaticResource CloseButtonStyle}" Grid.Column="1"/>
+                <Button Command="{Binding CloseErrorCommand}" Style="{StaticResource CloseButtonStyle}" Grid.Column="1" />
             </Grid>
         </Border>
 
-        <ContentControl Content="{Binding ShellService.ContentView}" Grid.Column="0" Grid.Row="1" Focusable="False"/>
+        <ContentControl Content="{Binding ShellService.ContentView}" Grid.Column="0" Grid.Row="1" Focusable="False" />
 
-        <GridSplitter x:Name="gridSplitter" Grid.Column="1" Grid.Row="1" Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" Width="6" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+        <GridSplitter x:Name="gridSplitter" Grid.Column="1" Grid.Row="1"
+                      Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" Width="6"
+                      VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
 
         <DockPanel Grid.Column="2" Grid.Row="1">
             <Grid DockPanel.Dock="Top" Margin="0,0,0,1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <ToggleButton Content="{x:Static p:Resources.Details}" IsChecked="{Binding IsDetailsViewVisible}" Grid.Column="0"
-                              Height="23" BorderThickness="0" Margin="0,0,1,0"/>
-                <ToggleButton Content="{x:Static p:Resources.Queue}" IsChecked="{Binding IsQueueViewVisible}" Grid.Column="1"
-                              Height="23" BorderThickness="0" Margin="0,0,1,0"/>
+                <ToggleButton Content="{x:Static p:Resources.Details}" IsChecked="{Binding IsDetailsViewVisible}"
+                              Grid.Column="0"
+                              Height="23" BorderThickness="0" Margin="0,0,1,0" />
+                <ToggleButton Content="{x:Static p:Resources.Queue}" IsChecked="{Binding IsQueueViewVisible}"
+                              Grid.Column="1"
+                              Height="23" BorderThickness="0" Margin="0,0,1,0" />
 
             </Grid>
 
-            <ContentControl Content="{Binding DetailsView}" Focusable="False"/>
+            <ContentControl Content="{Binding DetailsView}" Focusable="False" />
         </DockPanel>
-        
-        <ContentControl Content="{Binding ShellService.CrawlerView}" Focusable="False" Grid.ColumnSpan="3" Grid.Row="3"/>
+
+        <ContentControl Content="{Binding ShellService.CrawlerView}" Focusable="False" Grid.ColumnSpan="3" Grid.Row="3" />
     </Grid>
 
 </Window>

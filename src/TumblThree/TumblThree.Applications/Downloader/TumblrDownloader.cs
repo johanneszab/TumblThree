@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+
+using TumblThree.Applications.DataModels;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
-using TumblThree.Domain.Models;
-using TumblThree.Applications.DataModels;
-using System.Text.RegularExpressions;
 using TumblThree.Domain;
-using System.ComponentModel.Composition;
+using TumblThree.Domain.Models;
 
 namespace TumblThree.Applications.Downloader
 {
@@ -22,85 +23,17 @@ namespace TumblThree.Applications.Downloader
     [ExportMetadata("BlogType", BlogTypes.tumblr)]
     public class TumblrDownloader : Downloader, IDownloader
     {
+        private readonly TumblrBlog blog;
+        private readonly ICrawlerService crawlerService;
 
         private readonly IShellService shellService;
-        private readonly ICrawlerService crawlerService;
-        private readonly TumblrBlog blog;
 
-        public TumblrDownloader(IShellService shellService, ICrawlerService crawlerService, IBlog blog) : base(shellService, crawlerService, blog)
+        public TumblrDownloader(IShellService shellService, ICrawlerService crawlerService, IBlog blog)
+            : base(shellService, crawlerService, blog)
         {
             this.shellService = shellService;
             this.crawlerService = crawlerService;
             this.blog = (TumblrBlog)blog;
-        }
-
-        private new async Task<XDocument> RequestDataAsync(string url)
-        {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            request.Method = "GET";
-            request.ProtocolVersion = HttpVersion.Version11;
-            request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
-            request.AllowAutoRedirect = true;
-            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-            request.ReadWriteTimeout = shellService.Settings.TimeOut * 1000;
-            request.Timeout = -1;
-            ServicePointManager.DefaultConnectionLimit = 400;
-            if (!String.IsNullOrEmpty(shellService.Settings.ProxyHost))
-            {
-                request.Proxy = new WebProxy(shellService.Settings.ProxyHost, Int32.Parse(shellService.Settings.ProxyPort));
-            }
-            else
-            {
-                request.Proxy = null;
-            }
-
-            int bandwidth = 2000000;
-            if (shellService.Settings.LimitScanBandwidth)
-            {
-                bandwidth = shellService.Settings.Bandwidth;
-            }
-
-            using (HttpWebResponse response = await request.GetResponseAsync() as HttpWebResponse)
-            {
-                using (ThrottledStream stream = new ThrottledStream(response.GetResponseStream(), (bandwidth / shellService.Settings.ParallelImages) * 1024))
-                {
-                    using (BufferedStream buffer = new BufferedStream(stream))
-                    {
-                        using (StreamReader reader = new StreamReader(buffer))
-                        {
-                            return XDocument.Load(reader);
-                        }
-                    }
-                }
-            }
-        }
-
-        private string GetApiUrl(string url, int count, int start = 0)
-        {
-            if (url.Last<char>() != '/')
-                url += "/api/read";
-            else
-                url += "api/read";
-
-            var parameters = new Dictionary<string, string>
-            {
-              { "num", count.ToString() }
-            };
-            if (start > 0)
-                parameters["start"] = start.ToString();
-            return url + "?" + UrlEncode(parameters);
-        }
-
-        private async Task<XDocument> GetApiPageAsync(int pageId)
-        {
-            string url = GetApiUrl(blog.Url, 50, pageId * 50);
-
-            if (shellService.Settings.LimitConnections)
-            {
-                crawlerService.Timeconstraint.Acquire();
-                return await RequestDataAsync(url);
-            }
-            return await RequestDataAsync(url);
         }
 
         public new async Task IsBlogOnlineAsync()
@@ -126,14 +59,124 @@ namespace TumblThree.Applications.Downloader
                 {
                     blog.Title = document.Element("tumblr").Element("tumblelog").Attribute("title")?.Value;
                     blog.Description = document.Element("tumblr").Element("tumblelog")?.Value;
-                    blog.TotalCount = Int32.Parse(document.Element("tumblr").Element("posts").Attribute("total")?.Value);
+                    blog.TotalCount = int.Parse(document.Element("tumblr").Element("posts").Attribute("total")?.Value);
                 }
             }
         }
 
+        public void Crawl(IProgress<DownloadProgress> progress, CancellationToken ct, PauseToken pt)
+        {
+            Logger.Verbose("TumblrDownloader.Crawl:Start");
+
+            Task<Tuple<ulong, bool>> grabber = Task.Run(() => GetUrls(progress, ct, pt));
+            Task<bool> downloader = Task.Run(() => DownloadBlog(progress, ct, pt));
+            Tuple<ulong, bool> grabberResult = grabber.Result;
+            bool apiLimitHit = grabberResult.Item2;
+
+            UpdateProgressQueueInformation(progress, Resources.ProgressUniqueDownloads);
+
+            blog.DuplicatePhotos = DetermineDuplicates(PostTypes.Photo);
+            blog.DuplicateVideos = DetermineDuplicates(PostTypes.Video);
+            blog.DuplicateAudios = DetermineDuplicates(PostTypes.Audio);
+            blog.TotalCount = (blog.TotalCount - blog.DuplicatePhotos - blog.DuplicateAudios - blog.DuplicateVideos);
+
+            bool finishedDownloading = downloader.Result;
+
+            if (!ct.IsCancellationRequested)
+            {
+                blog.LastCompleteCrawl = DateTime.Now;
+                if (finishedDownloading && !apiLimitHit)
+                {
+                    blog.LastId = grabberResult.Item1;
+                }
+            }
+
+            blog.Save();
+
+            UpdateProgressQueueInformation(progress, "");
+        }
+
+        private new async Task<XDocument> RequestDataAsync(string url)
+        {
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "GET";
+            request.ProtocolVersion = HttpVersion.Version11;
+            request.UserAgent =
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
+            request.AllowAutoRedirect = true;
+            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+            request.ReadWriteTimeout = shellService.Settings.TimeOut * 1000;
+            request.Timeout = -1;
+            ServicePointManager.DefaultConnectionLimit = 400;
+            if (!string.IsNullOrEmpty(shellService.Settings.ProxyHost))
+            {
+                request.Proxy = new WebProxy(shellService.Settings.ProxyHost, int.Parse(shellService.Settings.ProxyPort));
+            }
+            else
+            {
+                request.Proxy = null;
+            }
+
+            var bandwidth = 2000000;
+            if (shellService.Settings.LimitScanBandwidth)
+            {
+                bandwidth = shellService.Settings.Bandwidth;
+            }
+
+            using (var response = await request.GetResponseAsync() as HttpWebResponse)
+            {
+                using (
+                    var stream = new ThrottledStream(response.GetResponseStream(),
+                        (bandwidth / shellService.Settings.ParallelImages) * 1024))
+                {
+                    using (var buffer = new BufferedStream(stream))
+                    {
+                        using (var reader = new StreamReader(buffer))
+                        {
+                            return XDocument.Load(reader);
+                        }
+                    }
+                }
+            }
+        }
+
+        private string GetApiUrl(string url, int count, int start = 0)
+        {
+            if (url.Last<char>() != '/')
+            {
+                url += "/api/read";
+            }
+            else
+            {
+                url += "api/read";
+            }
+
+            var parameters = new Dictionary<string, string>
+            {
+                { "num", count.ToString() }
+            };
+            if (start > 0)
+            {
+                parameters["start"] = start.ToString();
+            }
+            return url + "?" + UrlEncode(parameters);
+        }
+
+        private async Task<XDocument> GetApiPageAsync(int pageId)
+        {
+            string url = GetApiUrl(blog.Url, 50, pageId * 50);
+
+            if (shellService.Settings.LimitConnections)
+            {
+                crawlerService.Timeconstraint.Acquire();
+                return await RequestDataAsync(url);
+            }
+            return await RequestDataAsync(url);
+        }
+
         private string ResizeTumblrImageUrl(string imageUrl)
         {
-            StringBuilder sb = new StringBuilder(imageUrl);
+            var sb = new StringBuilder(imageUrl);
             return sb
                 .Replace("_1280", "_" + shellService.Settings.ImageSize.ToString())
                 .Replace("_540", "_" + shellService.Settings.ImageSize.ToString())
@@ -146,7 +189,8 @@ namespace TumblThree.Applications.Downloader
         }
 
         /// <returns>
-        /// Return the url without the size and type suffix (e.g. https://68.media.tumblr.com/51a99943f4aa7068b6fd9a6b36e4961b/tumblr_mnj6m9Huml1qat3lvo1).
+        ///     Return the url without the size and type suffix (e.g.
+        ///     https://68.media.tumblr.com/51a99943f4aa7068b6fd9a6b36e4961b/tumblr_mnj6m9Huml1qat3lvo1).
         /// </returns>
         protected override string GetCoreImageUrl(string url)
         {
@@ -170,39 +214,9 @@ namespace TumblThree.Applications.Downloader
         private int DetermineDuplicates(PostTypes type)
         {
             return statisticsBag.Where(url => url.Item1.Equals(type))
-                .GroupBy(url => url.Item2)
-                .Where(g => g.Count() > 1)
-                .Sum(g => g.Count() - 1);
-        }
-
-        public void Crawl(IProgress<DownloadProgress> progress, CancellationToken ct, PauseToken pt)
-        {
-            Logger.Verbose("TumblrDownloader.Crawl:Start");
-
-            var grabber = Task.Run(() => GetUrls(progress, ct, pt));
-            var downloader = Task.Run(() => DownloadBlog(progress, ct, pt));
-            var grabberResult = grabber.Result;
-            bool apiLimitHit = grabberResult.Item2;
-
-            UpdateProgressQueueInformation(progress, Resources.ProgressUniqueDownloads);
-
-            blog.DuplicatePhotos = DetermineDuplicates(PostTypes.Photo);
-            blog.DuplicateVideos = DetermineDuplicates(PostTypes.Video);
-            blog.DuplicateAudios = DetermineDuplicates(PostTypes.Audio);
-            blog.TotalCount = (blog.TotalCount - blog.DuplicatePhotos - blog.DuplicateAudios - blog.DuplicateVideos);
-
-            bool finishedDownloading = downloader.Result;
-
-            if (!ct.IsCancellationRequested)
-            {
-                blog.LastCompleteCrawl = DateTime.Now;
-                if (finishedDownloading && !apiLimitHit)
-                    blog.LastId = grabberResult.Item1;
-            }
-
-            blog.Save();
-
-            UpdateProgressQueueInformation(progress, "");
+                                .GroupBy(url => url.Item2)
+                                .Where(g => g.Count() > 1)
+                                .Sum(g => g.Count() - 1);
         }
 
         private async Task UpdateTotalPostCount()
@@ -249,11 +263,11 @@ namespace TumblThree.Applications.Downloader
 
         private async Task<Tuple<ulong, bool>> GetUrls(IProgress<DownloadProgress> progress, CancellationToken ct, PauseToken pt)
         {
-            SemaphoreSlim semaphoreSlim = new SemaphoreSlim(shellService.Settings.ParallelScans);
-            List<Task> trackedTasks = new List<Task>();
-            int numberOfPostsCrawled = 0;
-            bool apiLimitHit = false;
-            bool completeGrab = true;
+            var semaphoreSlim = new SemaphoreSlim(shellService.Settings.ParallelScans);
+            var trackedTasks = new List<Task>();
+            var numberOfPostsCrawled = 0;
+            var apiLimitHit = false;
+            var completeGrab = true;
 
             ulong lastId = GetLastPostId();
 
@@ -279,36 +293,38 @@ namespace TumblThree.Applications.Downloader
                     break;
                 }
                 if (pt.IsPaused)
+                {
                     pt.WaitWhilePausedWithResponseAsyc().Wait();
+                }
 
                 trackedTasks.Add(new Func<Task>(async () =>
+                {
+                    try
                     {
-                        try
-                        {
-                            XDocument document = await GetApiPageAsync(pageNumber);
+                        XDocument document = await GetApiPageAsync(pageNumber);
 
-                            completeGrab = CheckPostAge(document, lastId);
+                        completeGrab = CheckPostAge(document, lastId);
 
-                            AddUrlsToDownloadList(document);
-                        }
-                        catch (WebException webException)
+                        AddUrlsToDownloadList(document);
+                    }
+                    catch (WebException webException)
+                    {
+                        if (webException.Message.Contains("429"))
                         {
-                            if (webException.Message.Contains("429"))
-                            {
-                                // add retry logic?
-                                apiLimitHit = true;
-                                Logger.Error("TumblrDownloader:GetUrls:WebException {0}", webException);
-                                shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
-                            }
+                            // add retry logic?
+                            apiLimitHit = true;
+                            Logger.Error("TumblrDownloader:GetUrls:WebException {0}", webException);
+                            shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
                         }
-                        finally
-                        {
-                            semaphoreSlim.Release();
-                        }
+                    }
+                    finally
+                    {
+                        semaphoreSlim.Release();
+                    }
 
-                        numberOfPostsCrawled += 50;
-                        UpdateProgressQueueInformation(progress, Resources.ProgressGetUrl, numberOfPostsCrawled, totalPosts);
-                    })());
+                    numberOfPostsCrawled += 50;
+                    UpdateProgressQueueInformation(progress, Resources.ProgressGetUrl, numberOfPostsCrawled, totalPosts);
+                })());
             }
             await Task.WhenAll(trackedTasks);
 
@@ -359,9 +375,10 @@ namespace TumblThree.Applications.Downloader
         {
             if (blog.DownloadPhoto)
             {
-                foreach (var post in document.Descendants("post"))
+                foreach (XElement post in document.Descendants("post"))
                 {
-                    if (post.Attribute("type").Value == "photo" && (!tags.Any()) || post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
+                    if (post.Attribute("type").Value == "photo" && (!tags.Any()) ||
+                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
                     {
                         AddPhotoUrl(post);
                         AddPhotoSetUrl(post);
@@ -369,7 +386,7 @@ namespace TumblThree.Applications.Downloader
                 }
 
                 // check for inline images
-                foreach (var post in document.Descendants("post"))
+                foreach (XElement post in document.Descendants("post"))
                 {
                     if (!tags.Any() || post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
                     {
@@ -383,9 +400,10 @@ namespace TumblThree.Applications.Downloader
         {
             if (blog.DownloadVideo)
             {
-                foreach (var post in document.Descendants("post"))
+                foreach (XElement post in document.Descendants("post"))
                 {
-                    if (post.Attribute("type").Value == "video" && (!tags.Any()) || post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
+                    if (post.Attribute("type").Value == "video" && (!tags.Any()) ||
+                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
                     {
                         AddVideoUrl(post);
                     }
@@ -397,9 +415,10 @@ namespace TumblThree.Applications.Downloader
         {
             if (blog.DownloadAudio)
             {
-                foreach (var post in document.Descendants("post"))
+                foreach (XElement post in document.Descendants("post"))
                 {
-                    if (post.Attribute("type").Value == "audio" && (!tags.Any()) || post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
+                    if (post.Attribute("type").Value == "audio" && (!tags.Any()) ||
+                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
                     {
                         AddAudioUrl(post);
                     }
@@ -411,9 +430,10 @@ namespace TumblThree.Applications.Downloader
         {
             if (blog.DownloadText)
             {
-                foreach (var post in document.Descendants("post"))
+                foreach (XElement post in document.Descendants("post"))
                 {
-                    if (post.Attribute("type").Value == "regular" && (!tags.Any()) || post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
+                    if (post.Attribute("type").Value == "regular" && (!tags.Any()) ||
+                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
                     {
                         string textBody = ParseText(post);
                         AddToDownloadList(Tuple.Create(PostTypes.Text, textBody, post.Attribute("id").Value));
@@ -426,9 +446,10 @@ namespace TumblThree.Applications.Downloader
         {
             if (blog.DownloadQuote)
             {
-                foreach (var post in document.Descendants("post"))
+                foreach (XElement post in document.Descendants("post"))
                 {
-                    if (post.Attribute("type").Value == "quote" && (!tags.Any()) || post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
+                    if (post.Attribute("type").Value == "quote" && (!tags.Any()) ||
+                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
                     {
                         string textBody = ParseQuote(post);
                         AddToDownloadList(Tuple.Create(PostTypes.Quote, textBody, post.Attribute("id").Value));
@@ -441,9 +462,10 @@ namespace TumblThree.Applications.Downloader
         {
             if (blog.DownloadLink)
             {
-                foreach (var post in document.Descendants("post"))
+                foreach (XElement post in document.Descendants("post"))
                 {
-                    if (post.Attribute("type").Value == "link" && (!tags.Any()) || post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
+                    if (post.Attribute("type").Value == "link" && (!tags.Any()) ||
+                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
                     {
                         string textBody = ParseLink(post);
                         AddToDownloadList(Tuple.Create(PostTypes.Link, textBody, post.Attribute("id").Value));
@@ -456,9 +478,10 @@ namespace TumblThree.Applications.Downloader
         {
             if (blog.DownloadConversation)
             {
-                foreach (var post in document.Descendants("post"))
+                foreach (XElement post in document.Descendants("post"))
                 {
-                    if (post.Attribute("type").Value == "conversation" && (!tags.Any()) || post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
+                    if (post.Attribute("type").Value == "conversation" && (!tags.Any()) ||
+                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
                     {
                         string textBody = ParseConversation(post);
                         AddToDownloadList(Tuple.Create(PostTypes.Conversation, textBody, post.Attribute("id").Value));
@@ -471,9 +494,10 @@ namespace TumblThree.Applications.Downloader
         {
             if (blog.CreatePhotoMeta)
             {
-                foreach (var post in document.Descendants("post"))
+                foreach (XElement post in document.Descendants("post"))
                 {
-                    if (post.Attribute("type").Value == "photo" && (!tags.Any()) || post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
+                    if (post.Attribute("type").Value == "photo" && (!tags.Any()) ||
+                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
                     {
                         string textBody = ParsePhotoMeta(post);
                         AddToDownloadList(Tuple.Create(PostTypes.PhotoMeta, textBody, post.Attribute("id").Value));
@@ -486,9 +510,10 @@ namespace TumblThree.Applications.Downloader
         {
             if (blog.CreateVideoMeta)
             {
-                foreach (var post in document.Descendants("post"))
+                foreach (XElement post in document.Descendants("post"))
                 {
-                    if (post.Attribute("type").Value == "video" && (!tags.Any()) || post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
+                    if (post.Attribute("type").Value == "video" && (!tags.Any()) ||
+                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
                     {
                         string textBody = ParseVideoMeta(post);
                         AddToDownloadList(Tuple.Create(PostTypes.VideoMeta, textBody, post.Attribute("id").Value));
@@ -501,9 +526,10 @@ namespace TumblThree.Applications.Downloader
         {
             if (blog.CreateAudioMeta)
             {
-                foreach (var post in document.Descendants("post"))
+                foreach (XElement post in document.Descendants("post"))
                 {
-                    if (post.Attribute("type").Value == "audio" && (!tags.Any()) || post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
+                    if (post.Attribute("type").Value == "audio" && (!tags.Any()) ||
+                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
                     {
                         string textBody = ParseAudioMeta(post);
                         AddToDownloadList(Tuple.Create(PostTypes.AudioMeta, textBody, post.Attribute("id").Value));
@@ -536,8 +562,8 @@ namespace TumblThree.Applications.Downloader
         private string ParseImageUrl(XContainer post)
         {
             string imageUrl = post.Elements("photo-url")
-                .FirstOrDefault(photo_url => photo_url.Attribute("max-width")
-                .Value == shellService.Settings.ImageSize.ToString()).Value;
+                                  .FirstOrDefault(photo_url => photo_url.Attribute("max-width")
+                                                                        .Value == shellService.Settings.ImageSize.ToString()).Value;
 
             if (blog.ForceSize)
             {
@@ -556,7 +582,7 @@ namespace TumblThree.Applications.Downloader
             var regex = new Regex("<img src=\"(.*?)\"");
             foreach (Match match in regex.Matches(post.Value))
             {
-                var imageUrl = match.Groups[1].Value;
+                string imageUrl = match.Groups[1].Value;
                 if (blog.ForceSize)
                 {
                     imageUrl = ResizeTumblrImageUrl(imageUrl);
@@ -582,9 +608,9 @@ namespace TumblThree.Applications.Downloader
                 return;
             }
             foreach (string imageUrl in post.Descendants("photoset")
-                .Descendants("photo")
-                .Select(ParseImageUrl)
-                .Where(imageUrl => !blog.SkipGif || !imageUrl.EndsWith(".gif")))
+                                            .Descendants("photo")
+                                            .Select(ParseImageUrl)
+                                            .Where(imageUrl => !blog.SkipGif || !imageUrl.EndsWith(".gif")))
             {
                 AddToDownloadList(Tuple.Create(PostTypes.Photo, imageUrl, post.Attribute("id").Value));
             }
@@ -593,10 +619,10 @@ namespace TumblThree.Applications.Downloader
         private void AddVideoUrl(XElement post)
         {
             string videoUrl = post.Descendants("video-player")
-                .Where(x => x.Value.Contains("<source src="))
-                .Select(result => Regex.Match(result.Value, "<source src=\"(.*)\" type=\"video/mp4\">")
-                .Groups[1].Value)
-                .FirstOrDefault();
+                                  .Where(x => x.Value.Contains("<source src="))
+                                  .Select(result => Regex.Match(result.Value, "<source src=\"(.*)\" type=\"video/mp4\">")
+                                                         .Groups[1].Value)
+                                  .FirstOrDefault();
 
             if (shellService.Settings.VideoSize == 1080)
             {
@@ -604,99 +630,149 @@ namespace TumblThree.Applications.Downloader
             }
             else if (shellService.Settings.VideoSize == 480)
             {
-                AddToDownloadList(Tuple.Create(PostTypes.Video, "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + "_480.mp4", post.Attribute("id").Value));
+                AddToDownloadList(Tuple.Create(PostTypes.Video,
+                    "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + "_480.mp4",
+                    post.Attribute("id").Value));
             }
         }
 
         private void AddAudioUrl(XElement post)
         {
             string audioUrl = post.Descendants("audio-player")
-                .Where(x => x.Value.Contains("src="))
-                .Select(result => Regex.Match(result.Value, "src=\"(.*)\" height")
-                .Groups[1].Value)
-                .FirstOrDefault();
-            
+                                  .Where(x => x.Value.Contains("src="))
+                                  .Select(result => Regex.Match(result.Value, "src=\"(.*)\" height")
+                                                         .Groups[1].Value)
+                                  .FirstOrDefault();
+
             AddToDownloadList(Tuple.Create(PostTypes.Audio, WebUtility.UrlDecode(audioUrl), post.Attribute("id").Value));
         }
 
         private static string ParsePhotoMeta(XElement post)
         {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
-                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
-                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
-                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.PhotoUrl, post.Element("photo-url").Value) +
-                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.PhotoCaption, post.Element("photo-caption")?.Value) +
-                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
-                Environment.NewLine;
+            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.PhotoUrl, post.Element("photo-url").Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.PhotoCaption, post.Element("photo-caption")?.Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Tags,
+                       string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
+                   Environment.NewLine;
         }
 
         private static string ParseVideoMeta(XElement post)
         {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
-                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
-                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
-                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.VideoPlayer, post.Element("video-player")?.Value) +
-                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
-                Environment.NewLine;
+            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.VideoPlayer, post.Element("video-player")?.Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Tags,
+                       string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
+                   Environment.NewLine;
         }
 
         private static string ParseAudioMeta(XElement post)
         {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
-                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
-                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
-                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.AudioCaption, post.Element("audio-caption")?.Value) +
-                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Artist, post.Element("id3-artist")?.Value) +
-                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Title, post.Element("id3-title")?.Value) +
-                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Track, post.Element("id3-track")?.Value) +
-                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Album, post.Element("id3-album")?.Value) +
-                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Year, post.Element("id3-year")?.Value) +
-                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
-                Environment.NewLine;
+            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.AudioCaption, post.Element("audio-caption")?.Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Id3Artist, post.Element("id3-artist")?.Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Id3Title, post.Element("id3-title")?.Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Id3Track, post.Element("id3-track")?.Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Id3Album, post.Element("id3-album")?.Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Id3Year, post.Element("id3-year")?.Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Tags,
+                       string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
+                   Environment.NewLine;
         }
 
         private static string ParseConversation(XElement post)
         {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
-                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
-                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
-                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Conversation, post.Element("conversation-text")?.Value) +
-                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
-                Environment.NewLine;
+            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Conversation, post.Element("conversation-text")?.Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Tags,
+                       string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
+                   Environment.NewLine;
         }
 
         private static string ParseLink(XElement post)
         {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
-                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
-                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
-                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Link, post.Element("link-text")?.Value) +
-                Environment.NewLine + post.Element("link-url")?.Value +
-                Environment.NewLine + post.Element("link-description")?.Value +
-                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
-                Environment.NewLine;
+            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Link, post.Element("link-text")?.Value) +
+                   Environment.NewLine + post.Element("link-url")?.Value +
+                   Environment.NewLine + post.Element("link-description")?.Value +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Tags,
+                       string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
+                   Environment.NewLine;
         }
 
         private static string ParseQuote(XElement post)
         {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
-                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
-                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
-                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Quote, post.Element("quote-text")?.Value) +
-                Environment.NewLine + post.Element("quote-source")?.Value +
-                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
-                Environment.NewLine;
+            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Quote, post.Element("quote-text")?.Value) +
+                   Environment.NewLine + post.Element("quote-source")?.Value +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Tags,
+                       string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
+                   Environment.NewLine;
         }
 
         private static string ParseText(XElement post)
         {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
-                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
-                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
-                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Title, post.Element("regular-title")?.Value) +
-                Environment.NewLine + post.Element("regular-body")?.Value +
-                Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
-                Environment.NewLine;
+            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Title, post.Element("regular-title")?.Value) +
+                   Environment.NewLine + post.Element("regular-body")?.Value +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Tags,
+                       string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
+                   Environment.NewLine;
         }
     }
 }

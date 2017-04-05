@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.Composition;
 using System.Waf.Applications;
 using System.Windows.Input;
+
 using TumblThree.Applications.Services;
 using TumblThree.Applications.Views;
 using TumblThree.Domain.Models;
@@ -19,10 +20,13 @@ namespace TumblThree.Applications.ViewModels
         public DetailsViewModel(IDetailsView view, IClipboardService clipboardService) : base(view)
         {
             this.clipboardService = clipboardService;
-            this.copyUrlCommand = new DelegateCommand(CopyUrlToClipboard);
+            copyUrlCommand = new DelegateCommand(CopyUrlToClipboard);
         }
 
-        public ICommand CopyUrlCommand { get { return copyUrlCommand; } }
+        public ICommand CopyUrlCommand
+        {
+            get { return copyUrlCommand; }
+        }
 
         public TumblrBlog BlogFile
         {

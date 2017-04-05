@@ -6,12 +6,12 @@ namespace TumblThree.Presentation
     internal static class DispatcherHelper
     {
         /// <summary>
-        /// Execute the event queue of the dispatcher.
+        ///     Execute the event queue of the dispatcher.
         /// </summary>
-        [SecurityPermissionAttribute(SecurityAction.Demand, Flags = SecurityPermissionFlag.UnmanagedCode)]
+        [SecurityPermission(SecurityAction.Demand, Flags = SecurityPermissionFlag.UnmanagedCode)]
         internal static void DoEvents()
         {
-            DispatcherFrame frame = new DispatcherFrame();
+            var frame = new DispatcherFrame();
             Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background,
                 new DispatcherOperationCallback(ExitFrame), frame);
             Dispatcher.PushFrame(frame);

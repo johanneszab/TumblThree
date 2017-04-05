@@ -5,11 +5,10 @@ namespace TumblThree.Applications.DataModels
 {
     public class FolderBrowserDataModel : Model
     {
-        private string indexPath;
         private string blogPath;
-        private IReadOnlyList<FolderItem> subDirectories;
+        private string indexPath;
         private FolderItem selectedSubDirectory;
-
+        private IReadOnlyList<FolderItem> subDirectories;
 
         public string IndexPath
         {

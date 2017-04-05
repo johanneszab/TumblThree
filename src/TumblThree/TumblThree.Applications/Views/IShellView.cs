@@ -22,11 +22,9 @@ namespace TumblThree.Applications.Views
 
         double GridSplitterPosition { get; set; }
 
-
         event CancelEventHandler Closing;
 
         event EventHandler Closed;
-
 
         void Show();
 

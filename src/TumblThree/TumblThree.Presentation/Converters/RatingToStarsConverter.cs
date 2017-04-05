@@ -30,7 +30,6 @@ namespace TumblThree.Presentation.Converters
                 return 1;
             }
             return 0;
-
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

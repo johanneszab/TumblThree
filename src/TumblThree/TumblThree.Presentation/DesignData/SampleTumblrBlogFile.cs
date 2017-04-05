@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using TumblThree.Domain.Models;
+﻿using TumblThree.Domain.Models;
 
 namespace TumblThree.Presentation.DesignData
 {
@@ -7,7 +6,6 @@ namespace TumblThree.Presentation.DesignData
     {
         public SampleTumblrBlogFile(string url)
         {
-            
         }
     }
 }

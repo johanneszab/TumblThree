@@ -15,7 +15,7 @@ namespace TumblThree.Applications.Data
         public static IEnumerable<string> FromString(string text, string separator = null)
         {
             return (text ?? "").Split(new[] { GetSeparator(separator).Trim(' ') }, StringSplitOptions.RemoveEmptyEntries)
-                .Select(x => x.Trim(' ')).Where(x => !string.IsNullOrEmpty(x)).ToArray();
+                               .Select(x => x.Trim(' ')).Where(x => !string.IsNullOrEmpty(x)).ToArray();
         }
 
         private static string GetSeparator(string separator)

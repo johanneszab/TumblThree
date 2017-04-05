@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Waf.Foundation;
 using System.Windows.Data;
+
 using TumblThree.Domain.Models;
 using TumblThree.Domain.Queue;
 
@@ -16,7 +17,9 @@ namespace TumblThree.Presentation.Converters
             var currentQueuelistItem = (TumblrBlog)values[1];
 
             if (crawlingQueuelistItem.Any(item => item.Blog.Name.Contains(currentQueuelistItem.Name)))
+            {
                 return true;
+            }
 
             return false;
         }

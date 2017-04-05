@@ -1,13 +1,14 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.Waf.Applications;
+
 using TumblThree.Applications.ViewModels;
 using TumblThree.Applications.Views;
 
 namespace TumblThree.Presentation.Views
 {
     /// <summary>
-    /// Interaction logic for QueueView.xaml
+    ///     Interaction logic for QueueView.xaml
     /// </summary>
     [Export(typeof(IDetailsView))]
     public partial class DetailsView : IDetailsView
@@ -17,9 +18,12 @@ namespace TumblThree.Presentation.Views
         public DetailsView()
         {
             InitializeComponent();
-            this.viewModel = new Lazy<DetailsViewModel>(() => ViewHelper.GetViewModel<DetailsViewModel>(this));
+            viewModel = new Lazy<DetailsViewModel>(() => ViewHelper.GetViewModel<DetailsViewModel>(this));
         }
 
-        private DetailsViewModel ViewModel { get { return viewModel.Value; } }
+        private DetailsViewModel ViewModel
+        {
+            get { return viewModel.Value; }
+        }
     }
 }

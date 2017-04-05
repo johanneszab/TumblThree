@@ -3,135 +3,162 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:p="clr-namespace:TumblThree.Presentation.Properties"
              xmlns:ctrl="clr-namespace:TumblThree.Presentation.Controls"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dd="clr-namespace:TumblThree.Presentation.DesignData"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance dd:SampleManagerViewModel, IsDesignTimeCreatable=True}"
-             d:DesignHeight="300" d:DesignWidth="600" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+             d:DesignHeight="300" d:DesignWidth="600"
+             Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <DataGrid x:Name="blogFilesGrid" ItemsSource="{Binding ManagerService.BlogFiles}" SelectedItem="{Binding SelectedBlogFile}" CanUserReorderColumns="True" BorderBrush="White" BorderThickness="0,1,0,0"
-                  ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" Grid.Row="0" Grid.Column="0"
+        <DataGrid x:Name="blogFilesGrid" ItemsSource="{Binding ManagerService.BlogFiles}"
+                  SelectedItem="{Binding SelectedBlogFile}" CanUserReorderColumns="True" BorderBrush="White"
+                  BorderThickness="0,1,0,0"
+                  ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                  Grid.Row="0" Grid.Column="0"
                   ctrl:SelectionBehavior.SyncSelectedItems="{Binding SelectionService.SelectedBlogFiles}">
             <DataGrid.Resources>
                 <Style TargetType="ctrl:RatingItem">
                     <Style.Triggers>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGridRow}}}" Value="True"/>
-                                <Condition Binding="{Binding IsKeyboardFocusWithin, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGridRow}}}" Value="True"/>
+                                <Condition
+                                    Binding="{Binding IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGridRow}}}"
+                                    Value="True" />
+                                <Condition
+                                    Binding="{Binding IsKeyboardFocusWithin, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGridRow}}}"
+                                    Value="True" />
                             </MultiDataTrigger.Conditions>
-                            <Setter Property="BorderBrush" Value="LightGray"/>
+                            <Setter Property="BorderBrush" Value="LightGray" />
                         </MultiDataTrigger>
                     </Style.Triggers>
                 </Style>
             </DataGrid.Resources>
             <DataGrid.InputBindings>
                 <!-- <KeyBinding Command="{Binding CrawlerService.CrawlCommand}" Key="Return"/> -->
-                <KeyBinding Command="{Binding CrawlerService.EnqueueSelectedCommand}" Key="Return" Modifiers="Shift"/>
+                <KeyBinding Command="{Binding CrawlerService.EnqueueSelectedCommand}" Key="Return" Modifiers="Shift" />
             </DataGrid.InputBindings>
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
                     <Setter Property="ContextMenu">
                         <Setter.Value>
                             <ContextMenu>
-                                <MenuItem Command="{Binding CrawlerService.EnqueueSelectedCommand}" Header="{x:Static p:Resources.EnqueueSelection}" InputGestureText="{x:Static p:Resources.ShiftReturn}"/>
-                                <Separator/>
-                                <MenuItem Command="{Binding ShowDetailsCommand}" Header="{x:Static p:Resources.ShowDetails}"/>
-                                <MenuItem Command="{Binding ShowFilesCommand}" Header="{x:Static p:Resources.ShowFiles}"/>
-                                <MenuItem Command="{Binding VisitBlogCommand}" Header="{x:Static p:Resources.VisitBlog}"/>
+                                <MenuItem Command="{Binding CrawlerService.EnqueueSelectedCommand}"
+                                          Header="{x:Static p:Resources.EnqueueSelection}"
+                                          InputGestureText="{x:Static p:Resources.ShiftReturn}" />
+                                <Separator />
+                                <MenuItem Command="{Binding ShowDetailsCommand}"
+                                          Header="{x:Static p:Resources.ShowDetails}" />
+                                <MenuItem Command="{Binding ShowFilesCommand}"
+                                          Header="{x:Static p:Resources.ShowFiles}" />
+                                <MenuItem Command="{Binding VisitBlogCommand}"
+                                          Header="{x:Static p:Resources.VisitBlog}" />
                             </ContextMenu>
                         </Setter.Value>
                     </Setter>
-                    <EventSetter Event="ContextMenuOpening" Handler="DataGridRowContextMenuOpening"/>
-                    <EventSetter Event="MouseDoubleClick" Handler="DataGridRowMouseDoubleClick"/>
-                    <EventSetter Event="MouseMove" Handler="DataGridRowMouseMove"/>
+                    <EventSetter Event="ContextMenuOpening" Handler="DataGridRowContextMenuOpening" />
+                    <EventSetter Event="MouseDoubleClick" Handler="DataGridRowMouseDoubleClick" />
+                    <EventSetter Event="MouseMove" Handler="DataGridRowMouseMove" />
                     <Style.Triggers>
                         <DataTrigger Value="True">
                             <DataTrigger.Binding>
                                 <MultiBinding Converter="{StaticResource IsBlogInQueueMultiConverter}">
-                                    <Binding Path="DataContext.QueueItems" ElementName="blogFilesGrid"/>
+                                    <Binding Path="DataContext.QueueItems" ElementName="blogFilesGrid" />
                                     <Binding Path="." />
                                 </MultiBinding>
                             </DataTrigger.Binding>
                             <DataTrigger.Setters>
-                                <Setter Property="Background" Value="#FFA596FF"></Setter>
+                                <Setter Property="Background" Value="#FFA596FF" />
                             </DataTrigger.Setters>
                         </DataTrigger>
                         <DataTrigger Value="True">
                             <DataTrigger.Binding>
                                 <MultiBinding Converter="{StaticResource IsBlogInQueueMultiConverter}">
-                                    <Binding Path="DataContext.CrawlerService.ActiveItems" ElementName="blogFilesGrid"/>
+                                    <Binding Path="DataContext.CrawlerService.ActiveItems" ElementName="blogFilesGrid" />
                                     <Binding Path="." />
                                 </MultiBinding>
                             </DataTrigger.Binding>
                             <DataTrigger.Setters>
-                                <Setter Property="Background" Value="#FF84FF84"></Setter>
+                                <Setter Property="Background" Value="#FF84FF84" />
                             </DataTrigger.Setters>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Online}" Value="False">
-                            <Setter Property="Background" Value="#FFFF7171"></Setter>
+                            <Setter Property="Background" Value="#FFFF7171" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </DataGrid.RowStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="{x:Static p:Resources.Name}" Binding="{Binding Name}" IsReadOnly="True" Width="200"
-                                    ElementStyle="{StaticResource TextCellElementStyle}"/>
-                <DataGridTextColumn x:Name="downloadedImagesColumn" Header="{x:Static p:Resources.DownloadedFiles}" Binding="{Binding DownloadedImages, Converter={StaticResource IntToDisplayValueConverter}}" 
+                <DataGridTextColumn Header="{x:Static p:Resources.Name}" Binding="{Binding Name}" IsReadOnly="True"
+                                    Width="200"
+                                    ElementStyle="{StaticResource TextCellElementStyle}" />
+                <DataGridTextColumn x:Name="downloadedImagesColumn" Header="{x:Static p:Resources.DownloadedFiles}"
+                                    Binding="{Binding DownloadedImages, Converter={StaticResource IntToDisplayValueConverter}}"
                                     IsReadOnly="True" Width="SizeToHeader">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextCellElementStyle}">
-                            <Setter Property="HorizontalAlignment" Value="Right"/>
+                            <Setter Property="HorizontalAlignment" Value="Right" />
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn x:Name="totalCountColumn" Header="{x:Static p:Resources.NumberOfDownloads}" Binding="{Binding TotalCount, Converter={StaticResource IntToDisplayValueConverter}}" 
+                <DataGridTextColumn x:Name="totalCountColumn" Header="{x:Static p:Resources.NumberOfDownloads}"
+                                    Binding="{Binding TotalCount, Converter={StaticResource IntToDisplayValueConverter}}"
                                     IsReadOnly="True" Width="SizeToHeader">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextCellElementStyle}">
-                            <Setter Property="HorizontalAlignment" Value="Right"/>
+                            <Setter Property="HorizontalAlignment" Value="Right" />
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn x:Name="urlColumn" Header="{x:Static p:Resources.Url}" Binding="{Binding Url}" IsReadOnly="True" Width="250" 
-                                    ElementStyle="{StaticResource TextCellElementStyle}"/>
+                <DataGridTextColumn x:Name="urlColumn" Header="{x:Static p:Resources.Url}" Binding="{Binding Url}"
+                                    IsReadOnly="True" Width="250"
+                                    ElementStyle="{StaticResource TextCellElementStyle}" />
                 <DataGridTemplateColumn x:Name="progressColumn" Header="{x:Static p:Resources.Progress}" Width="200">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ProgressBar Value="{Binding Progress, Mode=OneWay}" Height="15" Minimum="0" Maximum="100" Foreground="{StaticResource ActiveForeground}"/>
+                            <ProgressBar Value="{Binding Progress, Mode=OneWay}" Height="15" Minimum="0" Maximum="100"
+                                         Foreground="{StaticResource ActiveForeground}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn x:Name="onlineColumn" Header="{x:Static p:Resources.Online}" Binding="{Binding Online, Converter={StaticResource StatusToBoolConverter}}" IsReadOnly="True" Width="80" 
-                                    ElementStyle="{StaticResource TextCellElementStyle}"/>
-                <DataGridTextColumn x:Name="tagsColumn" Header="{x:Static p:Resources.Tags}" Binding="{Binding Tags, Mode=TwoWay}" 
-                                    IsReadOnly="False" Width="120" ElementStyle="{StaticResource TextCellElementStyle}"/>
-                <DataGridTextColumn x:Name="dateAddedColumn" Header="{x:Static p:Resources.DateAdded}" Binding="{Binding DateAdded, Converter={StaticResource DateToDisplayValueConverter}}" IsReadOnly="True" Width="120"
-                                    ElementStyle="{StaticResource TextCellElementStyle}"/>
-                <DataGridTextColumn x:Name="lastCompleteCrawlColumn" Header="{x:Static p:Resources.LastCompleteCrawl}" Binding="{Binding LastCompleteCrawl, Converter={StaticResource DateToDisplayValueConverter}}" IsReadOnly="True" Width="120"
-                                    ElementStyle="{StaticResource TextCellElementStyle}"/>
-                <DataGridTemplateColumn x:Name="ratingColumn" Header="{x:Static p:Resources.Rating}" SortMemberPath="Rating" Width="110">
+                <DataGridTextColumn x:Name="onlineColumn" Header="{x:Static p:Resources.Online}"
+                                    Binding="{Binding Online, Converter={StaticResource StatusToBoolConverter}}"
+                                    IsReadOnly="True" Width="80"
+                                    ElementStyle="{StaticResource TextCellElementStyle}" />
+                <DataGridTextColumn x:Name="tagsColumn" Header="{x:Static p:Resources.Tags}"
+                                    Binding="{Binding Tags, Mode=TwoWay}"
+                                    IsReadOnly="False" Width="120" ElementStyle="{StaticResource TextCellElementStyle}" />
+                <DataGridTextColumn x:Name="dateAddedColumn" Header="{x:Static p:Resources.DateAdded}"
+                                    Binding="{Binding DateAdded, Converter={StaticResource DateToDisplayValueConverter}}"
+                                    IsReadOnly="True" Width="120"
+                                    ElementStyle="{StaticResource TextCellElementStyle}" />
+                <DataGridTextColumn x:Name="lastCompleteCrawlColumn" Header="{x:Static p:Resources.LastCompleteCrawl}"
+                                    Binding="{Binding LastCompleteCrawl, Converter={StaticResource DateToDisplayValueConverter}}"
+                                    IsReadOnly="True" Width="120"
+                                    ElementStyle="{StaticResource TextCellElementStyle}" />
+                <DataGridTemplateColumn x:Name="ratingColumn" Header="{x:Static p:Resources.Rating}"
+                                        SortMemberPath="Rating" Width="110">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ctrl:Rating Value="{Binding Rating, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RatingToStarsConverter}}"
+                            <ctrl:Rating
+                                Value="{Binding Rating, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RatingToStarsConverter}}"
                                 Padding="3,2" TickPlacement="TopLeft">
                                 <ctrl:Rating.Style>
                                     <Style TargetType="ctrl:Rating">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Setter Property="Visibility" Value="Collapsed" />
                                         <Style.Triggers>
                                             <MultiDataTrigger>
                                                 <MultiDataTrigger.Conditions>
-                                                    <Condition Binding="{Binding Online}" Value="True"/>
+                                                    <Condition Binding="{Binding Online}" Value="True" />
                                                 </MultiDataTrigger.Conditions>
-                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Setter Property="Visibility" Value="Visible" />
                                             </MultiDataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -140,8 +167,9 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn x:Name="notesColumn" Header="{x:Static p:Resources.Notes}" Binding="{Binding Notes, Mode=TwoWay}" 
-                                    IsReadOnly="False" Width="120" ElementStyle="{StaticResource TextCellElementStyle}"/>
+                <DataGridTextColumn x:Name="notesColumn" Header="{x:Static p:Resources.Notes}"
+                                    Binding="{Binding Notes, Mode=TwoWay}"
+                                    IsReadOnly="False" Width="120" ElementStyle="{StaticResource TextCellElementStyle}" />
             </DataGrid.Columns>
         </DataGrid>
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using TumblThree.Applications.Services;
 using TumblThree.Applications.ViewModels;
 using TumblThree.Applications.Views;
@@ -11,7 +12,8 @@ namespace TumblThree.Presentation.DesignData
     public class SampleManagerViewModel : ManagerViewModel
     {
         public SampleManagerViewModel() : base(new MockManagerView(), new MockShellService(),
-            new Lazy<ISelectionService>(() => new MockSelectionService()), null, new Lazy<IManagerService>(() => new MockManagerService()))
+            new Lazy<ISelectionService>(() => new MockSelectionService()), null,
+            new Lazy<IManagerService>(() => new MockManagerService()))
         {
             var blogFiles = new[]
             {

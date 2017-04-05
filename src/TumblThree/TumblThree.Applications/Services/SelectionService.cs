@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Waf.Foundation;
+
 using TumblThree.Domain.Models;
 
 namespace TumblThree.Applications.Services
@@ -14,9 +15,12 @@ namespace TumblThree.Applications.Services
         [ImportingConstructor]
         public SelectionService()
         {
-            this.selectedBlogFiles = new ObservableCollection<IBlog>();
+            selectedBlogFiles = new ObservableCollection<IBlog>();
         }
 
-        public IList<IBlog> SelectedBlogFiles { get { return selectedBlogFiles; } }
+        public IList<IBlog> SelectedBlogFiles
+        {
+            get { return selectedBlogFiles; }
+        }
     }
 }

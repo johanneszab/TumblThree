@@ -1,23 +1,4 @@
-﻿#region File Header
-
-// /******************************************************************************
-//  * 
-//  *      Copyright (C) Ankesh Dave 2015 All Rights Reserved. Confidential
-//  * 
-//  ******************************************************************************
-//  * 
-//  *      Project:        OutlookGoogleSyncRefresh
-//  *      SubProject:     OutlookGoogleSyncRefresh.Common
-//  *      Author:         Dave, Ankesh
-//  *      Created On:     27-02-2015 5:10 PM
-//  *      Modified On:    27-02-2015 5:10 PM
-//  *      FileName:       DispatcherHelper.cs
-//  * 
-//  *****************************************************************************/
-
-#endregion
-
-#region Imports
+﻿#region Imports
 
 using System;
 using System.Text;
@@ -32,17 +13,11 @@ namespace TumblThree.Applications
     /// </summary>
     public static class QueueOnDispatcher
     {
-        #region Properties
-
         /// <summary>
         ///     Gets a reference to the UI thread's dispatcher, after the
         ///     <see cref="Initialize" /> method has been called on the UI thread.
         /// </summary>
         public static Dispatcher UIDispatcher { get; private set; }
-
-        #endregion
-
-        #region Private Methods
 
         private static void CheckDispatcher()
         {
@@ -54,10 +29,6 @@ namespace TumblThree.Applications
                 throw new InvalidOperationException(error.ToString());
             }
         }
-
-        #endregion
-
-        #region Public Methods
 
         /// <summary>
         ///     Executes an action on the UI thread. If this method is called
@@ -128,7 +99,5 @@ namespace TumblThree.Applications
         {
             UIDispatcher = null;
         }
-
-        #endregion
     }
 }

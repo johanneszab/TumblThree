@@ -11,14 +11,15 @@ namespace TumblThree.Presentation.Controls
 {
     public static class SelectionBehavior
     {
-        private static List<Tuple<IMultiSelector, INotifyCollectionChanged>> multiSelectorWithObservableList = new List<Tuple<IMultiSelector, INotifyCollectionChanged>>();
-        private static HashSet<object> syncListsThatAreUpdating = new HashSet<object>();
-        private static HashSet<Selector> selectorsThatAreUpdating = new HashSet<Selector>();
+        private static readonly List<Tuple<IMultiSelector, INotifyCollectionChanged>> multiSelectorWithObservableList =
+            new List<Tuple<IMultiSelector, INotifyCollectionChanged>>();
 
+        private static readonly HashSet<Selector> selectorsThatAreUpdating = new HashSet<Selector>();
+        private static readonly HashSet<object> syncListsThatAreUpdating = new HashSet<object>();
 
         public static readonly DependencyProperty SyncSelectedItemsProperty =
-            DependencyProperty.RegisterAttached("SyncSelectedItems", typeof(IList), typeof(SelectionBehavior), new FrameworkPropertyMetadata(null, SyncSelectedItemsPropertyChanged));
-
+            DependencyProperty.RegisterAttached("SyncSelectedItems", typeof(IList), typeof(SelectionBehavior),
+                new FrameworkPropertyMetadata(null, SyncSelectedItemsPropertyChanged));
 
         [AttachedPropertyBrowsableForType(typeof(Selector))]
         public static IList GetSyncSelectedItems(DependencyObject obj)
@@ -33,30 +34,44 @@ namespace TumblThree.Presentation.Controls
 
         private static void SyncSelectedItemsPropertyChanged(DependencyObject element, DependencyPropertyChangedEventArgs e)
         {
-            Selector selector = element as Selector;
+            var selector = element as Selector;
             if (selector == null)
             {
-                throw new ArgumentException("The attached property SelectedItems can only be used with a Selector.", nameof(element));
+                throw new ArgumentException("The attached property SelectedItems can only be used with a Selector.",
+                    nameof(element));
             }
             TryCleanUpOldItem(selector);
             try
             {
                 IMultiSelector multiSelector = TryGetMultiSelector(selector);
-                if (multiSelector == null) { return; }
+                if (multiSelector == null)
+                {
+                    return;
+                }
 
-                var list = GetSyncSelectedItems(selector);
-                if (list == null) { return; }
+                IList list = GetSyncSelectedItems(selector);
+                if (list == null)
+                {
+                    return;
+                }
 
-                if (multiSelector.SelectedItems.Count > 0) { multiSelector.SelectedItems.Clear(); }
-                foreach (var item in list)
+                if (multiSelector.SelectedItems.Count > 0)
+                {
+                    multiSelector.SelectedItems.Clear();
+                }
+                foreach (object item in list)
                 {
                     multiSelector.SelectedItems.Add(item);
                 }
 
                 var observableList = list as INotifyCollectionChanged;
-                if (observableList == null) { return; }
+                if (observableList == null)
+                {
+                    return;
+                }
 
-                multiSelectorWithObservableList.Add(new Tuple<IMultiSelector, INotifyCollectionChanged>(multiSelector, observableList));
+                multiSelectorWithObservableList.Add(new Tuple<IMultiSelector, INotifyCollectionChanged>(multiSelector,
+                    observableList));
                 CollectionChangedEventManager.AddHandler(observableList, ListCollectionChanged);
             }
             finally
@@ -67,34 +82,40 @@ namespace TumblThree.Presentation.Controls
 
         private static void TryCleanUpOldItem(Selector selector)
         {
-            selector.SelectionChanged -= SelectorSelectionChanged;  // Remove a previously added event handler.
+            selector.SelectionChanged -= SelectorSelectionChanged; // Remove a previously added event handler.
 
-            var item = multiSelectorWithObservableList.FirstOrDefault(x => x.Item1.Selector == selector);
-            if (item == null) { return; }
+            Tuple<IMultiSelector, INotifyCollectionChanged> item =
+                multiSelectorWithObservableList.FirstOrDefault(x => x.Item1.Selector == selector);
+            if (item == null)
+            {
+                return;
+            }
 
             multiSelectorWithObservableList.Remove(item);
             CollectionChangedEventManager.RemoveHandler(item.Item2, ListCollectionChanged);
         }
 
-
         private static void ListCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (syncListsThatAreUpdating.Contains(sender)) { return; }
+            if (syncListsThatAreUpdating.Contains(sender))
+            {
+                return;
+            }
 
-            var multiSelector = multiSelectorWithObservableList.First(x => x.Item2 == sender).Item1;
+            IMultiSelector multiSelector = multiSelectorWithObservableList.First(x => x.Item2 == sender).Item1;
             selectorsThatAreUpdating.Add(multiSelector.Selector);
             try
             {
                 if (e.Action == NotifyCollectionChangedAction.Add)
                 {
-                    foreach (var items in e.NewItems)
+                    foreach (object items in e.NewItems)
                     {
                         multiSelector.SelectedItems.Add(items);
                     }
                 }
                 else if (e.Action == NotifyCollectionChangedAction.Remove)
                 {
-                    foreach (var items in e.OldItems)
+                    foreach (object items in e.OldItems)
                     {
                         multiSelector.SelectedItems.Remove(items);
                     }
@@ -121,19 +142,25 @@ namespace TumblThree.Presentation.Controls
         private static void SelectorSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selector = (Selector)sender;
-            if (selectorsThatAreUpdating.Contains(selector)) { return; }
+            if (selectorsThatAreUpdating.Contains(selector))
+            {
+                return;
+            }
 
-            var list = GetSyncSelectedItems(selector);
-            if (list == null) { return; }
+            IList list = GetSyncSelectedItems(selector);
+            if (list == null)
+            {
+                return;
+            }
 
             syncListsThatAreUpdating.Add(list);
             try
             {
-                foreach (var item in e.RemovedItems)
+                foreach (object item in e.RemovedItems)
                 {
                     list.Remove(item);
                 }
-                foreach (var item in e.AddedItems)
+                foreach (object item in e.AddedItems)
                 {
                     list.Add(item);
                 }
@@ -146,11 +173,16 @@ namespace TumblThree.Presentation.Controls
 
         private static IMultiSelector TryGetMultiSelector(Selector selector)
         {
-            if (selector is ListBox) { return new ListBoxAdapter((ListBox)selector); }
-            if (selector is MultiSelector) { return new MultiSelectorAdapter((MultiSelector)selector); }
+            if (selector is ListBox)
+            {
+                return new ListBoxAdapter((ListBox)selector);
+            }
+            if (selector is MultiSelector)
+            {
+                return new MultiSelectorAdapter((MultiSelector)selector);
+            }
             return null;
         }
-
 
         private interface IMultiSelector
         {
@@ -168,9 +200,15 @@ namespace TumblThree.Presentation.Controls
                 this.listBox = listBox;
             }
 
-            public Selector Selector { get { return listBox; } }
+            public Selector Selector
+            {
+                get { return listBox; }
+            }
 
-            public IList SelectedItems { get { return listBox.SelectedItems; } }
+            public IList SelectedItems
+            {
+                get { return listBox.SelectedItems; }
+            }
         }
 
         private class MultiSelectorAdapter : IMultiSelector
@@ -182,9 +220,15 @@ namespace TumblThree.Presentation.Controls
                 this.multiSelector = multiSelector;
             }
 
-            public Selector Selector { get { return multiSelector; } }
+            public Selector Selector
+            {
+                get { return multiSelector; }
+            }
 
-            public IList SelectedItems { get { return multiSelector.SelectedItems; } }
+            public IList SelectedItems
+            {
+                get { return multiSelector.SelectedItems; }
+            }
         }
     }
 }

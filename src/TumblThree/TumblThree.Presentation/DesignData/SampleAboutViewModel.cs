@@ -9,7 +9,6 @@ namespace TumblThree.Presentation.DesignData
         {
         }
 
-
         private class MockAboutView : MockView, IAboutView
         {
             public void ShowDialog(object owner)

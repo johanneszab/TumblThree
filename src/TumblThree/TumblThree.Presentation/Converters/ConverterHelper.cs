@@ -6,8 +6,9 @@ namespace TumblThree.Presentation.Converters
     {
         public static bool IsParameterSet(string expectedParameter, object actualParameter)
         {
-            string parameter = actualParameter as string;
-            return !string.IsNullOrEmpty(parameter) && string.Equals(parameter, expectedParameter, StringComparison.OrdinalIgnoreCase);
+            var parameter = actualParameter as string;
+            return !string.IsNullOrEmpty(parameter) &&
+                   string.Equals(parameter, expectedParameter, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

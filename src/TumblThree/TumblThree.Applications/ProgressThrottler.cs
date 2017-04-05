@@ -5,6 +5,7 @@ namespace TumblThree.Applications
 {
     public class ProgressThrottler<T> : IProgress<T>
     {
+        private readonly IProgress<T> _progress;
         bool reportProgressAfterThrottling = true;
 
         public ProgressThrottler(IProgress<T> progress)
@@ -14,12 +15,12 @@ namespace TumblThree.Applications
             resettimer.Start();
 
             if (progress == null)
+            {
                 throw new ArgumentNullException(nameof(progress));
+            }
 
             _progress = progress;
         }
-
-        private readonly IProgress<T> _progress;
 
         public void Report(T value)
         {

@@ -10,7 +10,10 @@ namespace TumblThree.Presentation.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values.First() == DependencyProperty.UnsetValue) { return DependencyProperty.UnsetValue; }
+            if (values.First() == DependencyProperty.UnsetValue)
+            {
+                return DependencyProperty.UnsetValue;
+            }
 
             double value = System.Convert.ToDouble(values[0]);
             double threshold = System.Convert.ToDouble(values[1]);

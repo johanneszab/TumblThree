@@ -7,25 +7,28 @@ namespace TumblThree.Applications.Properties
 {
     public sealed class AppSettings : IExtensibleDataObject
     {
+        private static readonly string[] blogTypes =
+            new string[]
+            {
+                Resources.BlogTypesNone, Resources.BlogTypesAll, Resources.BlogTypesOnceFinished, Resources.BlogTypesNeverFinished
+            };
+
+        private static readonly string[] imageSizes =
+            new string[]
+            {
+                "1280", "500", "400", "250", "100", "75"
+            };
+
+        private static readonly string[] videoSizes =
+            new string[]
+            {
+                "1080", "480"
+            };
+
         public AppSettings()
         {
             Initialize();
         }
-
-        private static readonly string[] imageSizes =
-            new string[] {
-                "1280", "500", "400", "250", "100", "75"
-        };
-
-        private static readonly string[] videoSizes =
-            new string[] {
-                "1080", "480"
-        };
-
-        private static readonly string[] blogTypes =
-            new string[] {
-                Resources.BlogTypesNone, Resources.BlogTypesAll, Resources.BlogTypesOnceFinished, Resources.BlogTypesNeverFinished
-        };
 
         [DataMember]
         public string RequestTokenUrl { get; set; }
@@ -181,31 +184,22 @@ namespace TumblThree.Applications.Properties
         [DataMember]
         public Dictionary<object, Tuple<int, double>> ColumnWidths { get; set; }
 
-        ExtensionDataObject IExtensibleDataObject.ExtensionData { get; set; }
-
         public ObservableCollection<string> ImageSizes
         {
-            get
-            {
-                return new ObservableCollection<string>(imageSizes);
-            }
+            get { return new ObservableCollection<string>(imageSizes); }
         }
 
         public ObservableCollection<string> VideoSizes
         {
-            get
-            {
-                return new ObservableCollection<string>(videoSizes);
-            }
+            get { return new ObservableCollection<string>(videoSizes); }
         }
 
         public ObservableCollection<string> BlogTypes
         {
-            get
-            {
-                return new ObservableCollection<string>(blogTypes);
-            }
+            get { return new ObservableCollection<string>(blogTypes); }
         }
+
+        ExtensionDataObject IExtensibleDataObject.ExtensionData { get; set; }
 
         private void Initialize()
         {
@@ -258,8 +252,8 @@ namespace TumblThree.Applications.Properties
             ForceSize = false;
             CheckDirectoryForFiles = false;
             DownloadUrlList = false;
-            ProxyHost = String.Empty;
-            ProxyPort = String.Empty;
+            ProxyHost = string.Empty;
+            ProxyPort = string.Empty;
             ColumnWidths = new Dictionary<object, Tuple<int, double>>();
         }
 

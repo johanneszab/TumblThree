@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Runtime;
+using System.Threading.Tasks;
 using System.Waf;
 using System.Waf.Applications;
 using System.Windows;
 using System.Windows.Threading;
+
 using TumblThree.Applications.Services;
 using TumblThree.Applications.ViewModels;
 using TumblThree.Domain;
 using TumblThree.Presentation.Properties;
-using TumblThree.Presentation.Services;
 
 namespace TumblThree.Presentation
 {
@@ -40,31 +39,42 @@ namespace TumblThree.Presentation
             catalog.Catalogs.Add(new AssemblyCatalog(typeof(App).Assembly));
 
             container = new CompositionContainer(catalog, CompositionOptions.DisableSilentRejection);
-            CompositionBatch batch = new CompositionBatch();
+            var batch = new CompositionBatch();
             batch.AddExportedValue(container);
             container.Compose(batch);
 
             // Initialize all presentation services
-            var presentationServices = container.GetExportedValues<IPresentationService>();
-            foreach (var presentationService in presentationServices) { presentationService.Initialize(); }
+            IEnumerable<IPresentationService> presentationServices = container.GetExportedValues<IPresentationService>();
+            foreach (IPresentationService presentationService in presentationServices)
+            {
+                presentationService.Initialize();
+            }
 
             // Initialize and run all module controllers
             moduleControllers = container.GetExportedValues<IModuleController>();
-            foreach (var moduleController in moduleControllers) { moduleController.Initialize(); }
-            foreach (var moduleController in moduleControllers) { moduleController.Run(); }
+            foreach (IModuleController moduleController in moduleControllers)
+            {
+                moduleController.Initialize();
+            }
+            foreach (IModuleController moduleController in moduleControllers)
+            {
+                moduleController.Run();
+            }
 
             Applications.QueueOnDispatcher.Initialize();
-
         }
 
         protected override void OnExit(ExitEventArgs e)
         {
             // Shutdown the module controllers in reverse order
-            foreach (var moduleController in moduleControllers.Reverse()) { moduleController.Shutdown(); }
+            foreach (IModuleController moduleController in moduleControllers.Reverse())
+            {
+                moduleController.Shutdown();
+            }
 
             // Wait until all registered tasks are finished
             var shellService = container.GetExportedValue<IShellService>();
-            var tasksToWait = shellService.TasksToCompleteBeforeShutdown.ToArray();
+            Task[] tasksToWait = shellService.TasksToCompleteBeforeShutdown.ToArray();
             while (tasksToWait.Any(t => !t.IsCompleted && !t.IsCanceled && !t.IsFaulted))
             {
                 DispatcherHelper.DoEvents();
@@ -75,7 +85,6 @@ namespace TumblThree.Presentation
             catalog.Dispose();
             base.OnExit(e);
         }
-
 
         private static void InitializeCultures()
         {
@@ -101,14 +110,17 @@ namespace TumblThree.Presentation
 
         private static void HandleException(Exception e, bool isTerminating)
         {
-            if (e == null) { return; }
+            if (e == null)
+            {
+                return;
+            }
 
             Logger.Error(e.ToString());
 
             if (!isTerminating)
             {
                 MessageBox.Show(string.Format(CultureInfo.CurrentCulture,
-                        Presentation.Properties.Resources.UnknownError, e.ToString()),
+                    Presentation.Properties.Resources.UnknownError, e.ToString()),
                     ApplicationInfo.ProductName, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -118,7 +130,9 @@ namespace TumblThree.Presentation
             var comException = e.Exception as System.Runtime.InteropServices.COMException;
 
             if (comException != null && comException.ErrorCode == -2147221040)
+            {
                 e.Handled = true;
+            }
         }
     }
 }

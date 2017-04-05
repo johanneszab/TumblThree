@@ -3,112 +3,132 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:p="clr-namespace:TumblThree.Presentation.Properties"
              xmlns:ctrl="clr-namespace:TumblThree.Presentation.Controls"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dd="clr-namespace:TumblThree.Presentation.DesignData"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance dd:SampleManagerViewModel, IsDesignTimeCreatable=True}"
-             d:DesignHeight="50" d:DesignWidth="1000" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+             d:DesignHeight="50" d:DesignWidth="1000"
+             Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
 
-    <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" Grid.ColumnSpan="3" Grid.Row="3">
+    <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                  Grid.ColumnSpan="3" Grid.Row="3">
         <Grid Focusable="False">
             <Grid.Resources>
                 <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="VerticalAlignment" Value="Center" />
                 </Style>
             </Grid.Resources>
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" MaxWidth="65" />
-                <ColumnDefinition Width="10"/>
-                <ColumnDefinition Width="4*" MinWidth="80" MaxWidth="420"/>
-                <ColumnDefinition Width="10"/>
-                <ColumnDefinition Width="*" MinWidth="60"/>
-                <ColumnDefinition Width="*" MinWidth="60"/>
-                <ColumnDefinition Width="*" MinWidth="60"/>
-                <ColumnDefinition Width="*" MinWidth="60"/>
-                <ColumnDefinition Width="*" MinWidth="60"/>
-                <ColumnDefinition Width="*" MinWidth="60"/>
-                <ColumnDefinition Width="*" MinWidth="60"/>
-                <ColumnDefinition Width="*" MinWidth="60"/>
-                <ColumnDefinition Width="*" MinWidth="60"/>
-                <ColumnDefinition Width="*" MinWidth="60"/>
-                <ColumnDefinition Width="*" MinWidth="60"/>
-                <ColumnDefinition Width="*" MinWidth="60"/>
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="4*" MinWidth="80" MaxWidth="420" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="*" MinWidth="60" />
+                <ColumnDefinition Width="*" MinWidth="60" />
+                <ColumnDefinition Width="*" MinWidth="60" />
+                <ColumnDefinition Width="*" MinWidth="60" />
+                <ColumnDefinition Width="*" MinWidth="60" />
+                <ColumnDefinition Width="*" MinWidth="60" />
+                <ColumnDefinition Width="*" MinWidth="60" />
+                <ColumnDefinition Width="*" MinWidth="60" />
+                <ColumnDefinition Width="*" MinWidth="60" />
+                <ColumnDefinition Width="*" MinWidth="60" />
+                <ColumnDefinition Width="*" MinWidth="60" />
+                <ColumnDefinition Width="*" MinWidth="60" />
             </Grid.ColumnDefinitions>
 
-            <Label x:Name="urlLabel" Content="{x:Static p:Resources.BlogUrl}" HorizontalAlignment="Stretch" Grid.RowSpan="2" Grid.Column="0" VerticalAlignment="Center"/>
-            <TextBox x:Name="url" Text="{Binding CrawlerService.NewBlogUrl, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" Grid.RowSpan="2" Grid.Column="2" TextWrapping="Wrap" VerticalAlignment="Center"/>
-            <Button HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2" Grid.Column="4"  Command="{Binding CrawlerService.AddBlogCommand}">
+            <Label x:Name="urlLabel" Content="{x:Static p:Resources.BlogUrl}" HorizontalAlignment="Stretch"
+                   Grid.RowSpan="2" Grid.Column="0" VerticalAlignment="Center" />
+            <TextBox x:Name="url" Text="{Binding CrawlerService.NewBlogUrl, UpdateSourceTrigger=PropertyChanged}"
+                     HorizontalAlignment="Stretch" Grid.RowSpan="2" Grid.Column="2" TextWrapping="Wrap"
+                     VerticalAlignment="Center" />
+            <Button HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2"
+                    Grid.Column="4" Command="{Binding CrawlerService.AddBlogCommand}">
                 <StackPanel>
                     <Image Source="{DynamicResource AddBlogIcon}" Height="30" />
                     <TextBlock Text="{x:Static p:Resources.AddBlog}" />
                 </StackPanel>
             </Button>
-            <Button HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2" Grid.Column="5" Command="{Binding CrawlerService.RemoveBlogCommand}">
+            <Button HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2"
+                    Grid.Column="5" Command="{Binding CrawlerService.RemoveBlogCommand}">
                 <StackPanel>
                     <Image Source="{DynamicResource RemoveBlogIcon}" Height="30" />
                     <TextBlock Text="{x:Static p:Resources.RemoveBlog}" />
                 </StackPanel>
             </Button>
-            <Button HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2" Grid.Column="6" Command="{Binding CrawlerService.ShowFilesCommand}">
+            <Button HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2"
+                    Grid.Column="6" Command="{Binding CrawlerService.ShowFilesCommand}">
                 <StackPanel>
                     <Image Source="{DynamicResource ExplorerIcon}" Height="30" />
                     <TextBlock Text="{x:Static p:Resources.ShowFiles}" />
                 </StackPanel>
             </Button>
-            <Button HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2" Grid.Column="7" Command="{Binding CrawlerService.EnqueueSelectedCommand}">
+            <Button HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2"
+                    Grid.Column="7" Command="{Binding CrawlerService.EnqueueSelectedCommand}">
                 <StackPanel>
                     <Image Source="{DynamicResource AddQueueIcon}" Height="30" />
                     <TextBlock Text="{x:Static p:Resources.AddToQueue}" />
                 </StackPanel>
             </Button>
-            <Button HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2" Grid.Column="8" Command="{Binding CrawlerService.RemoveBlogFromQueueCommand}">
+            <Button HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2"
+                    Grid.Column="8" Command="{Binding CrawlerService.RemoveBlogFromQueueCommand}">
                 <StackPanel>
                     <Image Source="{DynamicResource RemoveQueueIcon}" Height="30" />
                     <TextBlock Text="{x:Static p:Resources.RemoveFromQueue}" />
                 </StackPanel>
             </Button>
-            <Button HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2" Grid.Column="9" Command="{Binding CrawlerService.CrawlCommand}">
+            <Button HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2"
+                    Grid.Column="9" Command="{Binding CrawlerService.CrawlCommand}">
                 <StackPanel>
                     <Image Source="{DynamicResource ScanIcon}" Height="30" />
                     <TextBlock Text="{x:Static p:Resources.Crawl}" />
                 </StackPanel>
             </Button>
-            <Button HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2" Grid.Column="10" Command="{Binding CrawlerService.PauseCommand}">
+            <Button HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2"
+                    Grid.Column="10" Command="{Binding CrawlerService.PauseCommand}">
                 <StackPanel>
                     <Image Source="{DynamicResource PauseIcon}" Height="30" />
                     <TextBlock Text="{x:Static p:Resources.Pause}" />
                 </StackPanel>
             </Button>
-            <Button HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2" Grid.Column="11" Command="{Binding CrawlerService.ResumeCommand}">
+            <Button HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2"
+                    Grid.Column="11" Command="{Binding CrawlerService.ResumeCommand}">
                 <StackPanel>
                     <Image Source="{DynamicResource ResumeIcon}" Height="30" />
                     <TextBlock Text="{x:Static p:Resources.Resume}" />
                 </StackPanel>
             </Button>
-            <Button HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2" Grid.Column="12" Command="{Binding CrawlerService.StopCommand}">
+            <Button HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2"
+                    Grid.Column="12" Command="{Binding CrawlerService.StopCommand}">
                 <StackPanel>
                     <Image Source="{DynamicResource StopIcon}" Height="30" />
                     <TextBlock Text="{x:Static p:Resources.Stop}" />
                 </StackPanel>
             </Button>
-            <ToggleButton HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top" IsChecked="{Binding ShellService.Settings.CheckClipboard, Mode=TwoWay}" Grid.RowSpan="2" Grid.Column="13" Command="{Binding CrawlerService.ListenClipboardCommand}">
+            <ToggleButton HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top"
+                          IsChecked="{Binding ShellService.Settings.CheckClipboard, Mode=TwoWay}" Grid.RowSpan="2"
+                          Grid.Column="13" Command="{Binding CrawlerService.ListenClipboardCommand}">
                 <StackPanel>
                     <Image Source="{DynamicResource ClipboardIcon}" Height="30" />
                     <TextBlock Text="{x:Static p:Resources.ClipboardMonitor}" />
                 </StackPanel>
             </ToggleButton>
-            <Button HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2" Grid.Column="14" Command="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.ShowSettingsCommand}">
+            <Button HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2"
+                    Grid.Column="14"
+                    Command="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.ShowSettingsCommand}">
                 <StackPanel>
                     <Image Source="{DynamicResource SettingsIcon}" Height="30" />
                     <TextBlock Text="{x:Static p:Resources.Settings}" />
                 </StackPanel>
             </Button>
-            <Button HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2" Grid.Column="15" Command="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.ShowAboutCommand}">
+            <Button HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2"
+                    Grid.Column="15"
+                    Command="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.ShowAboutCommand}">
                 <StackPanel>
                     <Image Source="{DynamicResource AboutIcon}" Height="30" />
                     <TextBlock Text="{x:Static p:Resources.About}" />

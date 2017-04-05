@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Waf.Foundation;
+
 using TumblThree.Domain.Models;
 
 namespace TumblThree.Applications.Services
@@ -13,9 +14,12 @@ namespace TumblThree.Applications.Services
         [ImportingConstructor]
         public ManagerService()
         {
-            this.blogFiles = new ObservableCollection<IBlog>();
+            blogFiles = new ObservableCollection<IBlog>();
         }
 
-        public ObservableCollection<IBlog> BlogFiles { get { return blogFiles; } }
+        public ObservableCollection<IBlog> BlogFiles
+        {
+            get { return blogFiles; }
+        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using TumblThree.Applications.Services;
+
 using TumblThree.Applications.ViewModels;
 using TumblThree.Applications.Views;
 using TumblThree.Domain.Models;
@@ -50,10 +50,13 @@ namespace TumblThree.Presentation.DesignData
 
         private class MockQueueView : MockView, IQueueView
         {
+            public void FocusSelectedItem()
+            {
+            }
 
-            public void FocusSelectedItem() { }
-
-            public void ScrollIntoView(QueueListItem item) { }
+            public void ScrollIntoView(QueueListItem item)
+            {
+            }
         }
     }
 }

@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+
 using TumblThree.Applications.ViewModels;
 using TumblThree.Applications.Views;
 using TumblThree.Domain.Models;
@@ -15,7 +16,7 @@ using TumblThree.Domain.Models;
 namespace TumblThree.Presentation.Views
 {
     /// <summary>
-    /// Interaction logic for ManagerView.xaml
+    ///     Interaction logic for ManagerView.xaml
     /// </summary>
     [Export(typeof(IManagerView))]
     public partial class ManagerView : IManagerView
@@ -25,13 +26,39 @@ namespace TumblThree.Presentation.Views
         public ManagerView()
         {
             InitializeComponent();
-            this.viewModel = new Lazy<ManagerViewModel>(() => ViewHelper.GetViewModel<ManagerViewModel>(this));
+            viewModel = new Lazy<ManagerViewModel>(() => ViewHelper.GetViewModel<ManagerViewModel>(this));
 
             Loaded += LoadedHandler;
             blogFilesGrid.Sorting += BlogFilesGridSorting;
         }
 
-        private ManagerViewModel ViewModel { get { return viewModel.Value; } }
+        private ManagerViewModel ViewModel
+        {
+            get { return viewModel.Value; }
+        }
+
+        public Dictionary<object, Tuple<int, double>> DataGridColumnRestore
+        {
+            get
+            {
+                var columnWidths = new Dictionary<object, Tuple<int, double>>();
+                foreach (DataGridColumn column in blogFilesGrid.Columns)
+                {
+                    columnWidths.Add(column.Header, Tuple.Create(column.DisplayIndex, column.Width.Value));
+                }
+                return columnWidths;
+            }
+            set
+            {
+                foreach (DataGridColumn column in blogFilesGrid.Columns)
+                {
+                    Tuple<int, double> entry;
+                    value.TryGetValue(column.Header, out entry);
+                    column.DisplayIndex = entry.Item1;
+                    column.Width = new DataGridLength(entry.Item2, DataGridLengthUnitType.Pixel);
+                }
+            }
+        }
 
         private void LoadedHandler(object sender, RoutedEventArgs e)
         {
@@ -45,7 +72,9 @@ namespace TumblThree.Presentation.Views
             {
                 return;
             }
-            var newDirection = e.Column.SortDirection == ListSortDirection.Ascending ? ListSortDirection.Descending : ListSortDirection.Ascending;
+            ListSortDirection newDirection = e.Column.SortDirection == ListSortDirection.Ascending
+                ? ListSortDirection.Descending
+                : ListSortDirection.Ascending;
         }
 
         private void FocusBlogFilesGrid()
@@ -69,32 +98,9 @@ namespace TumblThree.Presentation.Views
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 var draggedItem = (DataGridRow)sender;
-                var items = blogFilesGrid.ItemsSource.Cast<Blog>().ToList();
-                var selectedItems = blogFilesGrid.SelectedItems.Cast<Blog>().OrderBy(x => items.IndexOf(x)).ToArray();
+                List<Blog> items = blogFilesGrid.ItemsSource.Cast<Blog>().ToList();
+                Blog[] selectedItems = blogFilesGrid.SelectedItems.Cast<Blog>().OrderBy(x => items.IndexOf(x)).ToArray();
                 DragDrop.DoDragDrop(draggedItem, selectedItems.ToArray(), DragDropEffects.Copy);
-            }
-        }
-
-        public Dictionary<object, Tuple<int, double>> DataGridColumnRestore
-        {
-            get
-            {
-                Dictionary<object, Tuple<int, double>> columnWidths = new Dictionary<object, Tuple<int,double>>();
-                foreach (DataGridColumn column in blogFilesGrid.Columns)
-                {
-                    columnWidths.Add(column.Header, Tuple.Create(column.DisplayIndex, column.Width.Value));
-                }
-                return columnWidths;
-            }
-            set
-            {
-                foreach (DataGridColumn column in blogFilesGrid.Columns)
-                {
-                    Tuple<int, double> entry;
-                    value.TryGetValue(column.Header, out entry);
-                    column.DisplayIndex = entry.Item1;
-                    column.Width = new DataGridLength(entry.Item2, DataGridLengthUnitType.Pixel);
-                }
             }
         }
     }

@@ -6,26 +6,25 @@ namespace TumblThree.Presentation.Controls
     public class RatingItem : ButtonBase
     {
         private static readonly DependencyPropertyKey IsMouseOverRatingPropertyKey =
-            DependencyProperty.RegisterReadOnly(nameof(IsMouseOverRating), typeof(bool), typeof(RatingItem), new FrameworkPropertyMetadata(false));
+            DependencyProperty.RegisterReadOnly(nameof(IsMouseOverRating), typeof(bool), typeof(RatingItem),
+                new FrameworkPropertyMetadata(false));
 
         public static readonly DependencyProperty IsMouseOverRatingProperty = IsMouseOverRatingPropertyKey.DependencyProperty;
 
         private static readonly DependencyPropertyKey RatingItemStatePropertyKey =
-            DependencyProperty.RegisterReadOnly(nameof(RatingItemState), typeof(RatingItemState), typeof(RatingItem), new FrameworkPropertyMetadata(RatingItemState.Empty));
+            DependencyProperty.RegisterReadOnly(nameof(RatingItemState), typeof(RatingItemState), typeof(RatingItem),
+                new FrameworkPropertyMetadata(RatingItemState.Empty));
 
         public static readonly DependencyProperty RatingItemStateProperty = RatingItemStatePropertyKey.DependencyProperty;
 
+        private double mouseOverValue;
 
+        private double value;
 
         static RatingItem()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(RatingItem), new FrameworkPropertyMetadata(typeof(RatingItem)));
         }
-
-
-        private double value;
-        private double mouseOverValue;
-
 
         internal int ItemValue { get; set; }
 

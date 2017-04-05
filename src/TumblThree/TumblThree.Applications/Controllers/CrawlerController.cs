@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Waf.Applications;
+
+using TumblThree.Applications.DataModels;
 using TumblThree.Applications.Downloader;
 using TumblThree.Applications.Services;
 using TumblThree.Applications.ViewModels;
@@ -16,19 +18,18 @@ namespace TumblThree.Applications.Controllers
     [Export]
     internal class CrawlerController
     {
-        private readonly IShellService shellService;
-        private readonly IManagerService managerService;
+        private readonly DelegateCommand crawlCommand;
         private readonly ICrawlerService crawlerService;
         private readonly Lazy<CrawlerViewModel> crawlerViewModel;
-        private readonly DelegateCommand crawlCommand;
+        private readonly object lockObject;
+        private readonly IManagerService managerService;
         private readonly DelegateCommand pauseCommand;
         private readonly DelegateCommand resumeCommand;
+        private readonly List<Task> runningTasks;
+        private readonly IShellService shellService;
         private readonly DelegateCommand stopCommand;
         private CancellationTokenSource crawlBlogsCancellation;
         private PauseTokenSource crawlBlogsPause;
-        private readonly List<Task> runningTasks;
-        private readonly object lockObject;
-
 
         [ImportingConstructor]
         public CrawlerController(IShellService shellService, IManagerService managerService, ICrawlerService crawlerService,
@@ -38,16 +39,19 @@ namespace TumblThree.Applications.Controllers
             this.managerService = managerService;
             this.crawlerService = crawlerService;
             this.crawlerViewModel = crawlerViewModel;
-            this.DownloaderFactory = downloaderFactory;
-            this.crawlCommand = new DelegateCommand(Crawl, CanCrawl);
-            this.pauseCommand = new DelegateCommand(Pause, CanPause);
-            this.resumeCommand = new DelegateCommand(Resume, CanResume);
-            this.stopCommand = new DelegateCommand(Stop, CanStop);
-            this.runningTasks = new List<Task>();
-            this.lockObject = new object();
+            DownloaderFactory = downloaderFactory;
+            crawlCommand = new DelegateCommand(Crawl, CanCrawl);
+            pauseCommand = new DelegateCommand(Pause, CanPause);
+            resumeCommand = new DelegateCommand(Resume, CanResume);
+            stopCommand = new DelegateCommand(Stop, CanStop);
+            runningTasks = new List<Task>();
+            lockObject = new object();
         }
 
-        private CrawlerViewModel CrawlerViewModel { get { return crawlerViewModel.Value; } }
+        private CrawlerViewModel CrawlerViewModel
+        {
+            get { return crawlerViewModel.Value; }
+        }
 
         public QueueManager QueueManager { get; set; }
 
@@ -67,10 +71,12 @@ namespace TumblThree.Applications.Controllers
             try
             {
                 if (stopCommand.CanExecute(null))
+                {
                     stopCommand.Execute(null);
+                }
                 Task.WaitAll(runningTasks.ToArray());
             }
-            catch (System.AggregateException)
+            catch (AggregateException)
             {
             }
             foreach (IBlog blog in managerService.BlogFiles)
@@ -90,7 +96,9 @@ namespace TumblThree.Applications.Controllers
         private void Stop()
         {
             if (resumeCommand.CanExecute(null))
+            {
                 resumeCommand.Execute(null);
+            }
 
             crawlBlogsCancellation.Cancel();
             crawlerService.IsCrawl = false;
@@ -144,15 +152,14 @@ namespace TumblThree.Applications.Controllers
             pauseCommand.RaiseCanExecuteChanged();
             stopCommand.RaiseCanExecuteChanged();
 
-            for (int i = 0; i < shellService.Settings.ParallelBlogs; i++)
+            for (var i = 0; i < shellService.Settings.ParallelBlogs; i++)
+            {
                 runningTasks.Add(
-                Task.Factory.StartNew(() => RunCrawlerTasks(cancellation.Token, pause.Token),
-                    cancellation.Token,
-                    TaskCreationOptions.LongRunning,
-                    TaskScheduler.Default).ContinueWith(task =>
-                    {
-                        runningTasks.Clear();
-                    }));
+                    Task.Factory.StartNew(() => RunCrawlerTasks(cancellation.Token, pause.Token),
+                        cancellation.Token,
+                        TaskCreationOptions.LongRunning,
+                        TaskScheduler.Default).ContinueWith(task => { runningTasks.Clear(); }));
+            }
         }
 
         private void RunCrawlerTasks(CancellationToken ct, PauseToken pt)
@@ -165,7 +172,9 @@ namespace TumblThree.Applications.Controllers
                 }
 
                 if (pt.IsPaused)
+                {
                     pt.WaitWhilePausedWithResponseAsyc().Wait();
+                }
 
                 Monitor.Enter(lockObject);
                 if (crawlerService.ActiveItems.Count() < QueueManager.Items.Count())
@@ -205,10 +214,9 @@ namespace TumblThree.Applications.Controllers
 
         private void StartSiteSpecificDownloader(QueueListItem queueListItem, CancellationToken ct, PauseToken pt)
         {
-
-            var blog = queueListItem.Blog;
+            IBlog blog = queueListItem.Blog;
             blog.Dirty = true;
-            var progress = SetupThrottledQueueListProgress(queueListItem);
+            ProgressThrottler<DownloadProgress> progress = SetupThrottledQueueListProgress(queueListItem);
 
             IDownloader downloader = DownloaderFactory.GetDownloader(blog.BlogType, shellService, crawlerService, blog);
             downloader.Crawl(progress, ct, pt);
@@ -231,10 +239,7 @@ namespace TumblThree.Applications.Controllers
 
         private ProgressThrottler<DataModels.DownloadProgress> SetupThrottledQueueListProgress(QueueListItem queueListItem)
         {
-            var progressHandler = new Progress<DataModels.DownloadProgress>(value =>
-            {
-                queueListItem.Progress = value.Progress;
-            });
+            var progressHandler = new Progress<DataModels.DownloadProgress>(value => { queueListItem.Progress = value.Progress; });
             return new ProgressThrottler<DataModels.DownloadProgress>(progressHandler);
         }
     }

@@ -1,13 +1,14 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.Waf.Applications;
+
 using TumblThree.Applications.ViewModels;
 using TumblThree.Applications.Views;
 
 namespace TumblThree.Presentation.Views
 {
     /// <summary>
-    /// Interaction logic for CrawlerView.xaml
+    ///     Interaction logic for CrawlerView.xaml
     /// </summary>
     [Export(typeof(ICrawlerView))]
     public partial class CrawlerView : ICrawlerView
@@ -17,9 +18,12 @@ namespace TumblThree.Presentation.Views
         public CrawlerView()
         {
             InitializeComponent();
-            this.viewModel = new Lazy<CrawlerViewModel>(() => ViewHelper.GetViewModel<CrawlerViewModel>(this));
+            viewModel = new Lazy<CrawlerViewModel>(() => ViewHelper.GetViewModel<CrawlerViewModel>(this));
         }
 
-        private CrawlerViewModel ViewModel { get { return viewModel.Value; } }
+        private CrawlerViewModel ViewModel
+        {
+            get { return viewModel.Value; }
+        }
     }
 }

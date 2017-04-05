@@ -1,85 +1,87 @@
 ﻿using System;
-using System.Waf.Applications;
-using TumblThree.Applications.Views;
-using System.ComponentModel.Composition;
-using TumblThree.Applications.Services;
-using TumblThree.Applications.Properties;
-using TumblThree.Applications.DataModels;
 using System.ComponentModel;
-using System.Windows.Input;
+using System.ComponentModel.Composition;
 using System.Text.RegularExpressions;
-using TumblThree.Domain;
 using System.Threading;
+using System.Waf.Applications;
+using System.Windows.Input;
+
+using TumblThree.Applications.DataModels;
+using TumblThree.Applications.Properties;
+using TumblThree.Applications.Services;
+using TumblThree.Applications.Views;
+using TumblThree.Domain;
 
 namespace TumblThree.Applications.ViewModels
 {
     [Export]
     public class SettingsViewModel : ViewModel<ISettingsView>
     {
+        private readonly DelegateCommand authenticateCommand;
+        private readonly ExportFactory<AuthenticateViewModel> authenticateViewModelFactory;
+        private readonly DelegateCommand displayFolderBrowserCommand;
+        private readonly DelegateCommand enableAutoDownloadCommand;
+        private readonly FolderBrowserDataModel folderBrowser;
+        private readonly DelegateCommand saveCommand;
 
         private readonly AppSettings settings;
-        private readonly FolderBrowserDataModel folderBrowser;
-        private readonly DelegateCommand displayFolderBrowserCommand;
-        private readonly DelegateCommand authenticateCommand;
-        private readonly DelegateCommand saveCommand;
-        private readonly DelegateCommand enableAutoDownloadCommand;
-        private readonly ExportFactory<AuthenticateViewModel> authenticateViewModelFactory;
-        private string downloadLocation;
         private string apiKey;
-        private string secretKey;
-        private string oauthToken;
-        private string oauthTokenSecret;
-        private string oauthCallbackUrl;
-        private int parallelImages;
-        private int parallelBlogs;
-        private int parallelScans;
-        private bool limitScanBandwidth;
-        private int timeOut;
-        private bool limitConnections;
-        private int maxConnections;
-        private int connectionTimeInterval;
+        private bool autoDownload;
         private int bandwidth;
-        private int imageSize;
-        private int videoSize;
         private string blogType;
         private bool checkClipboard;
-        private bool showPicturePreview;
-        private bool deleteOnlyIndex;
-        private bool checkOnlineStatusAtStartup;
-        private bool skipGif;
-        private bool enablePreview;
-        private bool autoDownload;
-        private bool removeIndexAfterCrawl;
-        private bool forceSize;
         private bool checkDirectoryForFiles;
-        private bool downloadUrlList;
-        private string proxyHost;
-        private string proxyPort;
-        private bool downloadImages;
-        private bool downloadVideos;
-        private bool downloadAudios;
-        private bool downloadTexts;
-        private bool downloadConversations;
-        private bool downloadQuotes;
-        private bool downloadLinks;
+        private bool checkOnlineStatusAtStartup;
+        private int connectionTimeInterval;
+        private bool createAudioMeta;
         private bool createImageMeta;
         private bool createVideoMeta;
-        private bool createAudioMeta;
+        private bool deleteOnlyIndex;
+        private bool downloadAudios;
+        private bool downloadConversations;
+        private bool downloadImages;
+        private bool downloadLinks;
+        private string downloadLocation;
+        private bool downloadQuotes;
+        private bool downloadTexts;
+        private bool downloadUrlList;
+        private bool downloadVideos;
+        private bool enablePreview;
+        private bool forceSize;
+        private int imageSize;
+        private bool limitConnections;
+        private bool limitScanBandwidth;
+        private int maxConnections;
+        private string oauthCallbackUrl;
+        private string oauthToken;
+        private string oauthTokenSecret;
+        private int parallelBlogs;
+        private int parallelImages;
+        private int parallelScans;
+        private string proxyHost;
+        private string proxyPort;
+        private bool removeIndexAfterCrawl;
+        private string secretKey;
+        private bool showPicturePreview;
+        private bool skipGif;
+        private int timeOut;
         private string timerInterval;
+        private int videoSize;
 
         [ImportingConstructor]
-        public SettingsViewModel(ISettingsView view, IShellService shellService, CrawlerService crawlerService, ExportFactory<AuthenticateViewModel> authenticateViewModelFactory)
+        public SettingsViewModel(ISettingsView view, IShellService shellService, CrawlerService crawlerService,
+            ExportFactory<AuthenticateViewModel> authenticateViewModelFactory)
             : base(view)
         {
             ShellService = shellService;
             settings = ShellService.Settings;
             CrawlerService = crawlerService;
             this.authenticateViewModelFactory = authenticateViewModelFactory;
-            this.folderBrowser = new FolderBrowserDataModel();
-            this.displayFolderBrowserCommand = new DelegateCommand(DisplayFolderBrowser);
-            this.authenticateCommand = new DelegateCommand(Authenticate);
-            this.saveCommand = new DelegateCommand(Save);
-            this.enableAutoDownloadCommand = new DelegateCommand(EnableAutoDownload);
+            folderBrowser = new FolderBrowserDataModel();
+            displayFolderBrowserCommand = new DelegateCommand(DisplayFolderBrowser);
+            authenticateCommand = new DelegateCommand(Authenticate);
+            saveCommand = new DelegateCommand(Save);
+            enableAutoDownloadCommand = new DelegateCommand(EnableAutoDownload);
 
             Load();
             view.Closed += ViewClosed;
@@ -91,19 +93,29 @@ namespace TumblThree.Applications.ViewModels
 
         public CrawlerService CrawlerService { get; }
 
-        public FolderBrowserDataModel FolderBrowser { get { return folderBrowser; } }
-
-        public ICommand DisplayFolderBrowserCommand { get { return displayFolderBrowserCommand; } }
-
-        public ICommand AuthenticateCommand { get { return authenticateCommand; } }
-
-        public ICommand SaveCommand { get { return saveCommand; } }
-
-        public ICommand EnableAutoDownloadCommand { get { return enableAutoDownloadCommand; } }
-
-        public void ShowDialog(object owner)
+        public FolderBrowserDataModel FolderBrowser
         {
-            ViewCore.ShowDialog(owner);
+            get { return folderBrowser; }
+        }
+
+        public ICommand DisplayFolderBrowserCommand
+        {
+            get { return displayFolderBrowserCommand; }
+        }
+
+        public ICommand AuthenticateCommand
+        {
+            get { return authenticateCommand; }
+        }
+
+        public ICommand SaveCommand
+        {
+            get { return saveCommand; }
+        }
+
+        public ICommand EnableAutoDownloadCommand
+        {
+            get { return enableAutoDownloadCommand; }
         }
 
         public string OAuthToken
@@ -358,6 +370,11 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref timerInterval, value); }
         }
 
+        public void ShowDialog(object owner)
+        {
+            ViewCore.ShowDialog(owner);
+        }
+
         private void ViewClosed(object sender, EventArgs e)
         {
             if (enableAutoDownloadCommand.CanExecute(null))
@@ -381,10 +398,7 @@ namespace TumblThree.Applications.ViewModels
                         // time already passed
                         timeToGo = timeToGo.Add(new TimeSpan(24, 00, 00));
                     }
-                    CrawlerService.Timer = new Timer(x =>
-                    {
-                        this.OnTimedEvent();
-                    }, null, timeToGo, Timeout.InfiniteTimeSpan);
+                    CrawlerService.Timer = new Timer(x => { OnTimedEvent(); }, null, timeToGo, Timeout.InfiniteTimeSpan);
 
                     CrawlerService.IsTimerSet = true;
                 }
@@ -402,13 +416,15 @@ namespace TumblThree.Applications.ViewModels
         private void OnTimedEvent()
         {
             if (CrawlerService.AutoDownloadCommand.CanExecute(null))
+            {
                 QueueOnDispatcher.CheckBeginInvokeOnUI(() => CrawlerService.AutoDownloadCommand.Execute(null));
+            }
             CrawlerService.Timer.Change(new TimeSpan(24, 00, 00), Timeout.InfiniteTimeSpan);
         }
 
         private void DisplayFolderBrowser()
         {
-            System.Windows.Forms.FolderBrowserDialog dialog = new System.Windows.Forms.FolderBrowserDialog();
+            var dialog = new System.Windows.Forms.FolderBrowserDialog();
             dialog.SelectedPath = DownloadLocation;
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
@@ -424,14 +440,14 @@ namespace TumblThree.Applications.ViewModels
                 ShellService.OAuthManager["consumer_secret"] = SecretKey;
                 OAuthResponse requestToken =
                     ShellService.OAuthManager.AcquireRequestToken(settings.RequestTokenUrl, "POST");
-                var url = settings.AuthorizeUrl + @"?oauth_token=" + ShellService.OAuthManager["token"];
+                string url = settings.AuthorizeUrl + @"?oauth_token=" + ShellService.OAuthManager["token"];
 
-                var authenticateViewModel = authenticateViewModelFactory.CreateExport().Value;
+                AuthenticateViewModel authenticateViewModel = authenticateViewModelFactory.CreateExport().Value;
                 authenticateViewModel.AddUrl(url);
                 authenticateViewModel.ShowDialog(ShellService.ShellView);
                 string oauthTokenUrl = authenticateViewModel.GetUrl();
 
-                Regex regex = new Regex("oauth_verifier=(.*)");
+                var regex = new Regex("oauth_verifier=(.*)");
                 string oauthVerifer = regex.Match(oauthTokenUrl).Groups[1].ToString();
 
                 //FIXME: 401 (Unauthorized): "oauth_signature does not match expected value"
@@ -547,8 +563,8 @@ namespace TumblThree.Applications.ViewModels
                 ForceSize = false;
                 CheckDirectoryForFiles = false;
                 DownloadUrlList = false;
-                ProxyHost = String.Empty;
-                ProxyPort = String.Empty;
+                ProxyHost = string.Empty;
+                ProxyPort = string.Empty;
                 TimerInterval = "22:40:00";
             }
         }
@@ -611,6 +627,5 @@ namespace TumblThree.Applications.ViewModels
                 settings.DownloadLocation = e.PropertyName;
             }
         }
-
     }
 }

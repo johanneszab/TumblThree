@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
+
 using TumblThree.Presentation.Properties;
 
 namespace TumblThree.Presentation.Converters
@@ -9,7 +10,7 @@ namespace TumblThree.Presentation.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            var totalImageCount = values[0];
+            object totalImageCount = values[0];
             return string.Format(CultureInfo.CurrentCulture, Resources.NumberOfItems, totalImageCount);
         }
 

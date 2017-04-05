@@ -5,6 +5,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Waf.Foundation;
+
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Views;
 
@@ -13,34 +14,54 @@ namespace TumblThree.Applications.Services
     [Export(typeof(IShellService)), Export]
     internal class ShellService : Model, IShellService
     {
+        private readonly List<ApplicationBusyContext> applicationBusyContext;
         private readonly Lazy<IShellView> shellView;
         private readonly List<Task> tasksToCompleteBeforeShutdown;
-        private readonly List<ApplicationBusyContext> applicationBusyContext;
-        private object contentView;
-        private object detailsView;
-        private object queueView;
-        private object crawlerView;
-        private object settingsView;
         private object aboutView;
+        private ClipboardMonitor clipboardMonitor;
+        private object contentView;
+        private object crawlerView;
+        private object detailsView;
         private bool isApplicationBusy;
         private bool isClosingEventInitialized;
-        private event CancelEventHandler closing;
-        private ClipboardMonitor clipboardMonitor;
         private OAuthManager oauthManager;
+        private object queueView;
+        private object settingsView;
 
         [ImportingConstructor]
         public ShellService(Lazy<IShellView> shellView)
         {
             this.shellView = shellView;
-            this.tasksToCompleteBeforeShutdown = new List<Task>();
-            this.applicationBusyContext = new List<ApplicationBusyContext>();
-            this.clipboardMonitor = new ClipboardMonitor();
-            this.oauthManager = new OAuthManager();
+            tasksToCompleteBeforeShutdown = new List<Task>();
+            applicationBusyContext = new List<ApplicationBusyContext>();
+            clipboardMonitor = new ClipboardMonitor();
+            oauthManager = new OAuthManager();
         }
+
+        public object SettingsView
+        {
+            get { return settingsView; }
+            set { SetProperty(ref settingsView, value); }
+        }
+
+        public object AboutView
+        {
+            get { return aboutView; }
+            set { SetProperty(ref aboutView, value); }
+        }
+
+        public Action<Exception, string> ShowErrorAction { get; set; }
+
+        public Action ShowDetailsViewAction { get; set; }
+
+        public Action ShowQueueViewAction { get; set; }
 
         public AppSettings Settings { get; set; }
 
-        public object ShellView { get { return shellView.Value; } }
+        public object ShellView
+        {
+            get { return shellView.Value; }
+        }
 
         public object ContentView
         {
@@ -66,25 +87,10 @@ namespace TumblThree.Applications.Services
             set { SetProperty(ref crawlerView, value); }
         }
 
-        public object SettingsView
+        public IReadOnlyCollection<Task> TasksToCompleteBeforeShutdown
         {
-            get { return settingsView; }
-            set { SetProperty(ref settingsView, value); }
+            get { return tasksToCompleteBeforeShutdown; }
         }
-
-        public object AboutView
-        {
-            get { return aboutView; }
-            set { SetProperty(ref aboutView, value); }
-        }
-
-        public Action<Exception, string> ShowErrorAction { get; set; }
-        
-        public Action ShowDetailsViewAction { get; set; }
-
-        public Action ShowQueueViewAction { get; set; }
-
-        public IReadOnlyCollection<Task> TasksToCompleteBeforeShutdown { get { return tasksToCompleteBeforeShutdown; } }
 
         public bool IsApplicationBusy
         {
@@ -133,6 +139,20 @@ namespace TumblThree.Applications.Services
             return context;
         }
 
+        public ClipboardMonitor ClipboardMonitor
+        {
+            get { return clipboardMonitor; }
+            set { SetProperty(ref clipboardMonitor, value); }
+        }
+
+        public OAuthManager OAuthManager
+        {
+            get { return oauthManager; }
+            set { SetProperty(ref oauthManager, value); }
+        }
+
+        private event CancelEventHandler closing;
+
         protected virtual void OnClosing(CancelEventArgs e)
         {
             closing?.Invoke(this, e);
@@ -146,7 +166,10 @@ namespace TumblThree.Applications.Services
 
         private void InitializeClosingEvent()
         {
-            if (isClosingEventInitialized) { return; }
+            if (isClosingEventInitialized)
+            {
+                return;
+            }
 
             isClosingEventInitialized = true;
             shellView.Value.Closing += ShellViewClosing;
@@ -163,18 +186,6 @@ namespace TumblThree.Applications.Services
             OAuthManager["consumer_secret"] = Settings.SecretKey;
             OAuthManager["token"] = Settings.OAuthToken;
             OAuthManager["token_secret"] = Settings.OAuthTokenSecret;
-        }
-
-        public ClipboardMonitor ClipboardMonitor
-        {
-            get { return clipboardMonitor; }
-            set { SetProperty(ref clipboardMonitor, value); }
-        }
-
-        public OAuthManager OAuthManager
-        {
-            get { return oauthManager; }
-            set { SetProperty(ref oauthManager, value); }
         }
     }
 }

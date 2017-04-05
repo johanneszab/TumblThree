@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Waf.Applications;
 using System.Windows;
+
 using TumblThree.Applications.ViewModels;
 using TumblThree.Applications.Views;
 using TumblThree.Domain.Models;
@@ -13,22 +14,26 @@ using TumblThree.Presentation.Controls;
 namespace TumblThree.Presentation.Views
 {
     /// <summary>
-    /// Interaction logic for QueueView.xaml
+    ///     Interaction logic for QueueView.xaml
     /// </summary>
     [Export(typeof(IQueueView))]
     public partial class QueueView : IQueueView
     {
-        private readonly Lazy<QueueViewModel> viewModel;
         private readonly ListBoxDragDropHelper<QueueListItem> listBoxDragDropHelper;
+        private readonly Lazy<QueueViewModel> viewModel;
 
         public QueueView()
         {
             InitializeComponent();
-            this.viewModel = new Lazy<QueueViewModel>(() => ViewHelper.GetViewModel<QueueViewModel>(this));
-            listBoxDragDropHelper = new ListBoxDragDropHelper<QueueListItem>(queueListBox, MoveItems, TryGetInsertItems, InsertItems);
+            viewModel = new Lazy<QueueViewModel>(() => ViewHelper.GetViewModel<QueueViewModel>(this));
+            listBoxDragDropHelper = new ListBoxDragDropHelper<QueueListItem>(queueListBox, MoveItems, TryGetInsertItems,
+                InsertItems);
         }
 
-        private QueueViewModel ViewModel { get { return viewModel.Value; } }
+        private QueueViewModel ViewModel
+        {
+            get { return viewModel.Value; }
+        }
 
         private void ListBoxItemContextMenuOpening(object sender, RoutedEventArgs e)
         {

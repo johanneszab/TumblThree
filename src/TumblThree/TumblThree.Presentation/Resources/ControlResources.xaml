@@ -2,8 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Style TargetType="Label">
-        <Setter Property="Padding" Value="4,4"/>
-        <Setter Property="BorderBrush" Value="{StaticResource DefaultBorderBrush}"/>
+        <Setter Property="Padding" Value="4,4" />
+        <Setter Property="BorderBrush" Value="{StaticResource DefaultBorderBrush}" />
     </Style>
 
     <Style TargetType="TextBlock">
@@ -11,64 +11,64 @@
     </Style>
 
     <Style TargetType="{x:Type DataGrid}">
-        <Setter Property="AutoGenerateColumns" Value="False"/>
-        <Setter Property="CanUserAddRows" Value="False"/>
-        <Setter Property="CanUserDeleteRows" Value="False"/>
-        <Setter Property="CanUserReorderColumns" Value="False"/>
-        <Setter Property="HeadersVisibility" Value="Column"/>
-        <Setter Property="HorizontalGridLinesBrush" Value="LightGray"/>
-        <Setter Property="VerticalGridLinesBrush" Value="LightGray"/>
+        <Setter Property="AutoGenerateColumns" Value="False" />
+        <Setter Property="CanUserAddRows" Value="False" />
+        <Setter Property="CanUserDeleteRows" Value="False" />
+        <Setter Property="CanUserReorderColumns" Value="False" />
+        <Setter Property="HeadersVisibility" Value="Column" />
+        <Setter Property="HorizontalGridLinesBrush" Value="LightGray" />
+        <Setter Property="VerticalGridLinesBrush" Value="LightGray" />
     </Style>
 
     <Style TargetType="ProgressBar">
-        <Setter Property="Height" Value="2"/>
+        <Setter Property="Height" Value="2" />
     </Style>
 
     <Style x:Key="IconButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-        <Setter Property="Width" Value="40"/>
-        <Setter Property="Height" Value="37"/>
-        <Setter Property="Margin" Value="4,0"/>
-        <Setter Property="FontFamily" Value="Segoe UI Symbol"/>
-        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Width" Value="40" />
+        <Setter Property="Height" Value="37" />
+        <Setter Property="Margin" Value="4,0" />
+        <Setter Property="FontFamily" Value="Segoe UI Symbol" />
+        <Setter Property="FontSize" Value="14" />
     </Style>
 
     <Style x:Key="IconToggleButtonStyle" TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
-        <Setter Property="Width" Value="40"/>
-        <Setter Property="Height" Value="37"/>
-        <Setter Property="Margin" Value="4,0"/>
-        <Setter Property="FontFamily" Value="Segoe UI Symbol"/>
-        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Width" Value="40" />
+        <Setter Property="Height" Value="37" />
+        <Setter Property="Margin" Value="4,0" />
+        <Setter Property="FontFamily" Value="Segoe UI Symbol" />
+        <Setter Property="FontSize" Value="14" />
     </Style>
 
     <Style x:Key="InplaceButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-        <Setter Property="FontFamily" Value="Segoe UI Symbol"/>
-        <Setter Property="FontSize" Value="11"/>
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Padding" Value="5,0"/>
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="FontFamily" Value="Segoe UI Symbol" />
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="5,0" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Background" Value="Transparent" />
     </Style>
 
     <Style x:Key="CloseButtonStyle" TargetType="Button" BasedOn="{StaticResource InplaceButtonStyle}">
-        <Setter Property="Content" Value="&#xE10A;"/>
+        <Setter Property="Content" Value="&#xE10A;" />
     </Style>
 
     <Style x:Key="AppBarTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
-        <Setter Property="Padding" Value="3"/>
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="VerticalAlignment" Value="Top"/>
-        <Setter Property="TextAlignment" Value="Center"/>
-        <Setter Property="TextWrapping" Value="Wrap"/>
-        <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
+        <Setter Property="Padding" Value="3" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="TextAlignment" Value="Center" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="TextOptions.TextFormattingMode" Value="Display" />
     </Style>
 
     <Style x:Key="TextCellElementStyle" TargetType="{x:Type TextBlock}">
-        <Setter Property="Padding" Value="4,2,4,3"/>
+        <Setter Property="Padding" Value="4,2,4,3" />
     </Style>
 
     <Style x:Key="TextCellEditingStyle" TargetType="{x:Type TextBox}">
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Padding" Value="2,2,2,3"/>
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="2,2,2,3" />
     </Style>
 
     <Style TargetType="{x:Type TextBox}">
@@ -76,16 +76,21 @@
             <Setter.Value>
                 <ControlTemplate>
                     <Grid>
-                        <Border BorderBrush="#FFCB2E2E" BorderThickness="1" Background="#11FF0000" IsHitTestVisible="False" x:Name="errorBorder"/>
+                        <Border BorderBrush="#FFCB2E2E" BorderThickness="1" Background="#11FF0000"
+                                IsHitTestVisible="False" x:Name="errorBorder" />
                         <AdornedElementPlaceholder x:Name="placeholder" />
-                        <Popup AllowsTransparency="True" HorizontalAlignment="Right" HorizontalOffset="0" VerticalOffset="0" PopupAnimation="Fade" Placement="Right" 
-                                   PlacementTarget="{Binding ElementName=errorBorder}" IsOpen="{Binding ElementName=placeholder, Path=AdornedElement.IsFocused, Mode=OneWay}">
+                        <Popup AllowsTransparency="True" HorizontalAlignment="Right" HorizontalOffset="0"
+                               VerticalOffset="0" PopupAnimation="Fade" Placement="Right"
+                               PlacementTarget="{Binding ElementName=errorBorder}"
+                               IsOpen="{Binding ElementName=placeholder, Path=AdornedElement.IsFocused, Mode=OneWay}">
                             <StackPanel Orientation="Horizontal">
-                                <Polygon  VerticalAlignment="Center" Points="0,4 4,0 4,8" Fill="#FFCB2E2E" Stretch="Fill" Stroke="#FFCB2E2E"
-                                      StrokeThickness="2" />
+                                <Polygon VerticalAlignment="Center" Points="0,4 4,0 4,8" Fill="#FFCB2E2E"
+                                         Stretch="Fill" Stroke="#FFCB2E2E"
+                                         StrokeThickness="2" />
                                 <Border Background="#FFCB2E2E" CornerRadius="4" Padding="4">
-                                    <TextBlock HorizontalAlignment="Center" Foreground="White" FontWeight="Bold" Margin="2,0,0,0"
-                                                   Text="{Binding ElementName=placeholder, Path=AdornedElement.ToolTip, Mode=OneWay}" />
+                                    <TextBlock HorizontalAlignment="Center" Foreground="White" FontWeight="Bold"
+                                               Margin="2,0,0,0"
+                                               Text="{Binding ElementName=placeholder, Path=AdornedElement.ToolTip, Mode=OneWay}" />
                                 </Border>
                             </StackPanel>
                         </Popup>
@@ -95,7 +100,8 @@
         </Setter>
         <Style.Triggers>
             <Trigger Property="Validation.HasError" Value="True">
-                <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}" />
+                <Setter Property="ToolTip"
+                        Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}" />
             </Trigger>
         </Style.Triggers>
     </Style>

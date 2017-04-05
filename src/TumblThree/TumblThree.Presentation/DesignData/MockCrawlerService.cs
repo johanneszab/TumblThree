@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Waf.Foundation;
 using System.Windows.Input;
+
 using TumblThree.Applications.Services;
 using TumblThree.Domain.Models;
 using TumblThree.Domain.Queue;
@@ -16,33 +17,28 @@ namespace TumblThree.Presentation.DesignData
 
         public MockCrawlerService()
         {
-            this.activeItems = new ObservableCollection<QueueListItem>();
-            this.readonlyActiveItems = new ReadOnlyObservableList<QueueListItem>(activeItems);
+            activeItems = new ObservableCollection<QueueListItem>();
+            readonlyActiveItems = new ReadOnlyObservableList<QueueListItem>(activeItems);
         }
 
-        public IReadOnlyObservableList<QueueListItem> ActiveItems { get { return readonlyActiveItems; } }
+        public ICommand AddBlogToQueueCommand { get; set; }
 
-        public void SetActiveBlogFiles(IEnumerable<IBlog> blogFilesToAdd)
+        public IReadOnlyObservableList<QueueListItem> ActiveItems
         {
-            activeItems.Clear();
-            blogFilesToAdd.ToList().ForEach(x => activeItems.Add(new QueueListItem(x)));
+            get { return readonlyActiveItems; }
         }
 
         public void AddActiveItems(QueueListItem itemToAdd)
         {
-
         }
 
         public void RemoveActiveItem(QueueListItem itemToRemove)
         {
-
         }
 
         public ICommand RemoveBlogCommand { get; set; }
 
         public ICommand AddBlogCommand { get; set; }
-
-        public ICommand AddBlogToQueueCommand { get; set; }
 
         public ICommand RemoveBlogFromQueueCommand { get; set; }
 
@@ -69,5 +65,11 @@ namespace TumblThree.Presentation.DesignData
         public string NewBlogUrl { get; set; }
 
         public Guava.RateLimiter.RateLimiter Timeconstraint { get; set; }
+
+        public void SetActiveBlogFiles(IEnumerable<IBlog> blogFilesToAdd)
+        {
+            activeItems.Clear();
+            blogFilesToAdd.ToList().ForEach(x => activeItems.Add(new QueueListItem(x)));
+        }
     }
 }

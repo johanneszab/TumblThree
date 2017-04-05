@@ -8,34 +8,7 @@ namespace TumblThree.Applications
     {
         bool disposed = false;
 
-        private static class NativeMethods
-        {
-            /// <summary>
-            /// Places the given window in the system-maintained clipboard format listener list.
-            /// </summary>
-            [DllImport("user32.dll", SetLastError = true)]
-            [return: MarshalAs(UnmanagedType.Bool)]
-            public static extern bool AddClipboardFormatListener(IntPtr hwnd);
-
-            /// <summary>
-            /// Removes the given window from the system-maintained clipboard format listener list.
-            /// </summary>
-            [DllImport("user32.dll", SetLastError = true)]
-            [return: MarshalAs(UnmanagedType.Bool)]
-            public static extern bool RemoveClipboardFormatListener(IntPtr hwnd);
-
-            /// <summary>
-            /// Sent when the contents of the clipboard have changed.
-            /// </summary>
-            public const int WM_CLIPBOARDUPDATE = 0x031D;
-
-            /// <summary>
-            /// To find message-only windows, specify HWND_MESSAGE in the hwndParent parameter of the FindWindowEx function.
-            /// </summary>
-            public static IntPtr HWND_MESSAGE = new IntPtr(-3);
-        }
-
-        private HwndSource hwndSource = new HwndSource(0, 0, 0, 0, 0, 0, 0, null, NativeMethods.HWND_MESSAGE);
+        private readonly HwndSource hwndSource = new HwndSource(0, 0, 0, 0, 0, 0, 0, null, NativeMethods.HWND_MESSAGE);
 
         public ClipboardMonitor()
         {
@@ -49,14 +22,42 @@ namespace TumblThree.Applications
             GC.SuppressFinalize(this);
         }
 
+        private static class NativeMethods
+        {
+            /// <summary>
+            ///     Sent when the contents of the clipboard have changed.
+            /// </summary>
+            public const int WM_CLIPBOARDUPDATE = 0x031D;
+
+            /// <summary>
+            ///     To find message-only windows, specify HWND_MESSAGE in the hwndParent parameter of the FindWindowEx function.
+            /// </summary>
+            public static readonly IntPtr HWND_MESSAGE = new IntPtr(-3);
+
+            /// <summary>
+            ///     Places the given window in the system-maintained clipboard format listener list.
+            /// </summary>
+            [DllImport("user32.dll", SetLastError = true)]
+            [return: MarshalAs(UnmanagedType.Bool)]
+            public static extern bool AddClipboardFormatListener(IntPtr hwnd);
+
+            /// <summary>
+            ///     Removes the given window from the system-maintained clipboard format listener list.
+            /// </summary>
+            [DllImport("user32.dll", SetLastError = true)]
+            [return: MarshalAs(UnmanagedType.Bool)]
+            public static extern bool RemoveClipboardFormatListener(IntPtr hwnd);
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (disposed)
+            {
                 return;
+            }
 
             if (disposing)
             {
-
                 NativeMethods.RemoveClipboardFormatListener(hwndSource.Handle);
                 hwndSource.RemoveHook(WndProc);
                 hwndSource.Dispose();
@@ -82,7 +83,7 @@ namespace TumblThree.Applications
         }
 
         /// <summary>
-        /// Occurs when the clipboard content changes.
+        ///     Occurs when the clipboard content changes.
         /// </summary>
         public event EventHandler OnClipboardContentChanged;
     }

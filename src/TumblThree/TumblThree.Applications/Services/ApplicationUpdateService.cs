@@ -5,7 +5,9 @@ using System.Net;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Waf.Applications;
+using System.Xml;
 using System.Xml.Linq;
+
 using TumblThree.Domain;
 
 namespace TumblThree.Applications.Services
@@ -15,7 +17,6 @@ namespace TumblThree.Applications.Services
     [Export(typeof(IApplicationUpdateService))]
     public class ApplicationUpdateService : IApplicationUpdateService
     {
-
         private readonly IShellService shellService;
         private string downloadLink;
         private string version;
@@ -42,9 +43,9 @@ namespace TumblThree.Applications.Services
                 request.UnsafeAuthenticatedConnectionSharing = true;
                 request.UserAgent = ApplicationInfo.ProductName;
                 request.KeepAlive = false;
-                if (!String.IsNullOrEmpty(shellService.Settings.ProxyHost))
+                if (!string.IsNullOrEmpty(shellService.Settings.ProxyHost))
                 {
-                    request.Proxy = new WebProxy(shellService.Settings.ProxyHost, Int32.Parse(shellService.Settings.ProxyPort));
+                    request.Proxy = new WebProxy(shellService.Settings.ProxyHost, int.Parse(shellService.Settings.ProxyPort));
                 }
                 else
                 {
@@ -58,10 +59,11 @@ namespace TumblThree.Applications.Services
                         new StreamReader(resp.GetResponseStream());
                     result = reader.ReadToEnd();
                 }
-                System.Web.Script.Serialization.JavaScriptSerializer jsonDeserializer =
+                var jsonDeserializer =
                     new System.Web.Script.Serialization.JavaScriptSerializer { MaxJsonLength = 2147483644 };
-                var jsonReader = JsonReaderWriterFactory.CreateJsonReader(Encoding.UTF8.GetBytes(result), new System.Xml.XmlDictionaryReaderQuotas());
-                var root = XElement.Load(jsonReader);
+                XmlDictionaryReader jsonReader = JsonReaderWriterFactory.CreateJsonReader(Encoding.UTF8.GetBytes(result),
+                    new System.Xml.XmlDictionaryReaderQuotas());
+                XElement root = XElement.Load(jsonReader);
                 version = root.Element("tag_name").Value;
                 downloadLink = root.Element("assets").Element("item").Element("browser_download_url").Value;
             }

@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Waf.Applications;
-using TumblThree.Applications.Views;
 using System.ComponentModel.Composition;
+using System.Waf.Applications;
+
 using TumblThree.Applications.Services;
+using TumblThree.Applications.Views;
 
 namespace TumblThree.Applications.ViewModels
 {
     [Export]
     public class AuthenticateViewModel : ViewModel<IAuthenticateView>
     {
-
         private string oauthCallbackUrl;
 
         [ImportingConstructor]
@@ -18,10 +18,16 @@ namespace TumblThree.Applications.ViewModels
         {
             view.Closed += ViewClosed;
             ShellService = shellService;
-            this.oauthCallbackUrl = shellService.Settings.OAuthCallbackUrl;
+            oauthCallbackUrl = shellService.Settings.OAuthCallbackUrl;
         }
 
         public IShellService ShellService { get; }
+
+        public string OAuthCallbackUrl
+        {
+            get { return oauthCallbackUrl; }
+            set { SetProperty(ref oauthCallbackUrl, value); }
+        }
 
         //public IView View { get; set; }
 
@@ -42,12 +48,6 @@ namespace TumblThree.Applications.ViewModels
         public string GetUrl()
         {
             return ViewCore.GetUrl();
-        }
-
-        public string OAuthCallbackUrl
-        {
-            get { return oauthCallbackUrl; }
-            set { SetProperty(ref oauthCallbackUrl, value); }
         }
     }
 }

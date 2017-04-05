@@ -2,17 +2,17 @@
 {
     public class PostCounter
     {
-        public int TotalDownloads;
-        public int Photos;
-        public int Videos;
+        public int AudioMetas;
         public int Audios;
-        public int Texts;
         public int Conversations;
-        public int Quotes;
         public int Links;
         public int PhotoMetas;
+        public int Photos;
+        public int Quotes;
+        public int Texts;
+        public int TotalDownloads;
         public int VideoMetas;
-        public int AudioMetas;
+        public int Videos;
 
         public PostCounter()
         {
@@ -33,5 +33,4 @@
             AudioMetas = blog.DownloadedAudioMetas;
         }
     }
-
 }

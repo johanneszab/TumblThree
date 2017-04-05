@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Waf.Foundation;
 using System.Windows.Data;
+
 using TumblThree.Domain.Queue;
 
 namespace TumblThree.Presentation.Converters
@@ -13,7 +14,7 @@ namespace TumblThree.Presentation.Converters
         {
             var crawlingQueuelistItem = (ReadOnlyObservableList<QueueListItem>)values[0];
 
-            return String.Join(" - ", crawlingQueuelistItem.Select(x => x.Blog.Name).ToArray());
+            return string.Join(" - ", crawlingQueuelistItem.Select(x => x.Blog.Name).ToArray());
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

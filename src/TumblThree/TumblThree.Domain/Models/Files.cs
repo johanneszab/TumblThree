@@ -7,12 +7,12 @@ namespace TumblThree.Domain.Models
 {
     public class Files : Model, IFiles
     {
-        private string name;
-        private string location;
         private BlogTypes blogType;
         private IList<string> links;
+        private string location;
+        private string name;
 
-        public Files() : this(String.Empty, String.Empty, BlogTypes.tumblr)
+        public Files() : this(string.Empty, string.Empty, BlogTypes.tumblr)
         {
         }
 
@@ -20,8 +20,8 @@ namespace TumblThree.Domain.Models
         {
             this.name = name;
             this.location = location;
-            this.BlogType = blogType;
-            this.links = new List<string>();
+            BlogType = blogType;
+            links = new List<string>();
         }
 
         public string Name
@@ -35,6 +35,7 @@ namespace TumblThree.Domain.Models
             get { return location; }
             set { SetProperty(ref location, value); }
         }
+
         public BlogTypes BlogType
         {
             get { return blogType; }
@@ -67,15 +68,15 @@ namespace TumblThree.Domain.Models
 
         public bool Save()
         {
-            string currentIndex = Path.Combine(location, this.Name + "_files." + this.BlogType);
-            string newIndex = Path.Combine(location, this.Name + "_files." + this.BlogType + ".new");
-            string backupIndex = Path.Combine(location, this.Name + "_files." + this.BlogType + ".bak");
+            string currentIndex = Path.Combine(location, Name + "_files." + BlogType);
+            string newIndex = Path.Combine(location, Name + "_files." + BlogType + ".new");
+            string backupIndex = Path.Combine(location, Name + "_files." + BlogType + ".bak");
 
             try
             {
                 if (File.Exists(currentIndex))
                 {
-                    System.Web.Script.Serialization.JavaScriptSerializer jsJson =
+                    var jsJson =
                         new System.Web.Script.Serialization.JavaScriptSerializer { MaxJsonLength = 2147483644 };
                     File.WriteAllText(newIndex, JsonFormatter.FormatOutput(jsJson.Serialize(this)));
                     File.Replace(newIndex, currentIndex, backupIndex, true);
@@ -83,7 +84,7 @@ namespace TumblThree.Domain.Models
                 }
                 else
                 {
-                    System.Web.Script.Serialization.JavaScriptSerializer jsJson =
+                    var jsJson =
                         new System.Web.Script.Serialization.JavaScriptSerializer { MaxJsonLength = 2147483644 };
                     File.WriteAllText(currentIndex, JsonFormatter.FormatOutput(jsJson.Serialize(this)));
                 }

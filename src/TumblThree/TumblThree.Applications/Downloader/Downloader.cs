@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain;
@@ -19,30 +20,30 @@ namespace TumblThree.Applications.Downloader
     public abstract class Downloader
     {
         private readonly IBlog blog;
-        protected readonly IFiles files;
         private readonly PostCounter counter;
-        private readonly IShellService shellService;
         private readonly ICrawlerService crawlerService;
+        protected readonly IFiles files;
         protected readonly object lockObjectDb;
         protected readonly object lockObjectDirectory;
         protected readonly object lockObjectDownload;
         protected readonly object lockObjectProgress;
-        protected readonly ConcurrentBag<Tuple<PostTypes, string, string>> statisticsBag;
         protected readonly BlockingCollection<Tuple<PostTypes, string, string>> producerConsumerCollection;
+        private readonly IShellService shellService;
+        protected readonly ConcurrentBag<Tuple<PostTypes, string, string>> statisticsBag;
 
         protected Downloader(IShellService shellService, ICrawlerService crawlerService = null, IBlog blog = null)
         {
             this.shellService = shellService;
             this.crawlerService = crawlerService;
             this.blog = blog;
-            this.counter = new PostCounter(blog);
-            this.files = LoadFiles();
-            this.lockObjectDb = new object();
-            this.lockObjectDirectory = new object();
-            this.lockObjectDownload = new object();
-            this.lockObjectProgress = new object();
-            this.statisticsBag = new ConcurrentBag<Tuple<PostTypes, string, string>>();
-            this.producerConsumerCollection = new BlockingCollection<Tuple<PostTypes, string, string>>();
+            counter = new PostCounter(blog);
+            files = LoadFiles();
+            lockObjectDb = new object();
+            lockObjectDirectory = new object();
+            lockObjectDownload = new object();
+            lockObjectProgress = new object();
+            statisticsBag = new ConcurrentBag<Tuple<PostTypes, string, string>>();
+            producerConsumerCollection = new BlockingCollection<Tuple<PostTypes, string, string>>();
             SetUp();
         }
 
@@ -53,37 +54,40 @@ namespace TumblThree.Applications.Downloader
 
         protected virtual async Task<string> RequestDataAsync(string url)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "GET";
             request.ProtocolVersion = HttpVersion.Version11;
-            request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
+            request.UserAgent =
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
             request.AllowAutoRedirect = true;
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
             request.ReadWriteTimeout = shellService.Settings.TimeOut * 1000;
             request.Timeout = -1;
             ServicePointManager.DefaultConnectionLimit = 400;
-            if (!String.IsNullOrEmpty(shellService.Settings.ProxyHost))
+            if (!string.IsNullOrEmpty(shellService.Settings.ProxyHost))
             {
-                request.Proxy = new WebProxy(shellService.Settings.ProxyHost, Int32.Parse(shellService.Settings.ProxyPort));
+                request.Proxy = new WebProxy(shellService.Settings.ProxyHost, int.Parse(shellService.Settings.ProxyPort));
             }
             else
             {
                 request.Proxy = null;
             }
 
-            int bandwidth = 2000000;
+            var bandwidth = 2000000;
             if (shellService.Settings.LimitScanBandwidth)
             {
                 bandwidth = shellService.Settings.Bandwidth;
             }
 
-            using (HttpWebResponse response = await request.GetResponseAsync() as HttpWebResponse)
+            using (var response = await request.GetResponseAsync() as HttpWebResponse)
             {
-                using (ThrottledStream stream = new ThrottledStream(response.GetResponseStream(), (bandwidth / shellService.Settings.ParallelImages) * 1024))
+                using (
+                    var stream = new ThrottledStream(response.GetResponseStream(),
+                        (bandwidth / shellService.Settings.ParallelImages) * 1024))
                 {
-                    using (BufferedStream buffer = new BufferedStream(stream))
+                    using (var buffer = new BufferedStream(stream))
                     {
-                        using (StreamReader reader = new StreamReader(buffer))
+                        using (var reader = new StreamReader(buffer))
                         {
                             return reader.ReadToEnd();
                         }
@@ -95,7 +99,7 @@ namespace TumblThree.Applications.Downloader
         protected static string UrlEncode(IDictionary<string, string> parameters)
         {
             var sb = new StringBuilder();
-            foreach (var val in parameters)
+            foreach (KeyValuePair<string, string> val in parameters)
             {
                 sb.AppendFormat("{0}={1}&", val.Key, HttpUtility.UrlEncode(val.Value));
             }
@@ -106,7 +110,9 @@ namespace TumblThree.Applications.Downloader
         private bool CreateDataFolder()
         {
             if (string.IsNullOrEmpty(blog.Name))
+            {
                 return false;
+            }
 
             string blogPath = blog.DownloadLocation();
 
@@ -178,7 +184,8 @@ namespace TumblThree.Applications.Downloader
             return false;
         }
 
-        protected virtual void UpdateProgressQueueInformation(IProgress<DataModels.DownloadProgress> progress, string format, params object[] args)
+        protected virtual void UpdateProgressQueueInformation(IProgress<DataModels.DownloadProgress> progress, string format,
+            params object[] args)
         {
             var newProgress = new DataModels.DownloadProgress
             {
@@ -200,7 +207,9 @@ namespace TumblThree.Applications.Downloader
                     (shellService.Settings.Bandwidth / shellService.Settings.ParallelImages),
                     shellService.Settings.TimeOut, shellService.Settings.ProxyHost,
                     shellService.Settings.ProxyPort))
+                {
                     ThrottledStream.SaveStreamToDisk(stream, fileLocation);
+                }
                 return true;
             }
             catch (IOException ex) when ((ex.HResult & 0xFFFF) == 0x27 || (ex.HResult & 0xFFFF) == 0x70)
@@ -274,15 +283,16 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        protected virtual async Task<bool> DownloadBlog(IProgress<DataModels.DownloadProgress> progress, CancellationToken ct, PauseToken pt)
+        protected virtual async Task<bool> DownloadBlog(IProgress<DataModels.DownloadProgress> progress, CancellationToken ct,
+            PauseToken pt)
         {
-            SemaphoreSlim semaphoreSlim = new SemaphoreSlim(shellService.Settings.ParallelImages / crawlerService.ActiveItems.Count);
-            List<Task> trackedTasks = new List<Task>();
-            bool completeDownload = true;
+            var semaphoreSlim = new SemaphoreSlim(shellService.Settings.ParallelImages / crawlerService.ActiveItems.Count);
+            var trackedTasks = new List<Task>();
+            var completeDownload = true;
 
             CreateDataFolder();
 
-            foreach (var downloadItem in producerConsumerCollection.GetConsumingEnumerable())
+            foreach (Tuple<PostTypes, string, string> downloadItem in producerConsumerCollection.GetConsumingEnumerable())
             {
                 await semaphoreSlim.WaitAsync();
 
@@ -292,7 +302,9 @@ namespace TumblThree.Applications.Downloader
                     break;
                 }
                 if (pt.IsPaused)
+                {
                     pt.WaitWhilePausedWithResponseAsyc().Wait();
+                }
 
                 trackedTasks.Add(new Func<Task>(async () =>
                 {
@@ -344,9 +356,8 @@ namespace TumblThree.Applications.Downloader
             return completeDownload;
         }
 
-
-
-        private async Task DownloadPhotoAsync(IProgress<DataModels.DownloadProgress> progress, Tuple<PostTypes, string, string> downloadItem)
+        private async Task DownloadPhotoAsync(IProgress<DataModels.DownloadProgress> progress,
+            Tuple<PostTypes, string, string> downloadItem)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string fileName = FileName(downloadItem);
@@ -365,15 +376,20 @@ namespace TumblThree.Applications.Downloader
                     if (shellService.Settings.EnablePreview)
                     {
                         if (!fileName.EndsWith(".gif"))
+                        {
                             blog.LastDownloadedPhoto = Path.GetFullPath(fileLocation);
+                        }
                         else
+                        {
                             blog.LastDownloadedVideo = Path.GetFullPath(fileLocation);
+                        }
                     }
                 }
             }
         }
 
-        private async Task DownloadVideoAsync(IProgress<DataModels.DownloadProgress> progress, Tuple<PostTypes, string, string> downloadItem)
+        private async Task DownloadVideoAsync(IProgress<DataModels.DownloadProgress> progress,
+            Tuple<PostTypes, string, string> downloadItem)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string fileName = FileName(downloadItem);
@@ -397,7 +413,8 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        private async Task DownloadAudioAsync(IProgress<DataModels.DownloadProgress> progress, Tuple<PostTypes, string, string> downloadItem)
+        private async Task DownloadAudioAsync(IProgress<DataModels.DownloadProgress> progress,
+            Tuple<PostTypes, string, string> downloadItem)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string fileName = FileName(downloadItem);
@@ -454,6 +471,7 @@ namespace TumblThree.Applications.Downloader
                 }
             }
         }
+
         private void DownloadLink(IProgress<DataModels.DownloadProgress> progress, Tuple<PostTypes, string, string> downloadItem)
         {
             string blogDownloadLocation = blog.DownloadLocation();
@@ -472,7 +490,9 @@ namespace TumblThree.Applications.Downloader
                 }
             }
         }
-        private void DownloadConversation(IProgress<DataModels.DownloadProgress> progress, Tuple<PostTypes, string, string> downloadItem)
+
+        private void DownloadConversation(IProgress<DataModels.DownloadProgress> progress,
+            Tuple<PostTypes, string, string> downloadItem)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string url = Url(downloadItem);
@@ -490,7 +510,9 @@ namespace TumblThree.Applications.Downloader
                 }
             }
         }
-        private void DownloadPhotoMeta(IProgress<DataModels.DownloadProgress> progress, Tuple<PostTypes, string, string> downloadItem)
+
+        private void DownloadPhotoMeta(IProgress<DataModels.DownloadProgress> progress,
+            Tuple<PostTypes, string, string> downloadItem)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string url = Url(downloadItem);
@@ -508,7 +530,9 @@ namespace TumblThree.Applications.Downloader
                 }
             }
         }
-        private void DownloadVideoMeta(IProgress<DataModels.DownloadProgress> progress, Tuple<PostTypes, string, string> downloadItem)
+
+        private void DownloadVideoMeta(IProgress<DataModels.DownloadProgress> progress,
+            Tuple<PostTypes, string, string> downloadItem)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string url = Url(downloadItem);
@@ -526,7 +550,9 @@ namespace TumblThree.Applications.Downloader
                 }
             }
         }
-        private void DownloadAudioMeta(IProgress<DataModels.DownloadProgress> progress, Tuple<PostTypes, string, string> downloadItem)
+
+        private void DownloadAudioMeta(IProgress<DataModels.DownloadProgress> progress,
+            Tuple<PostTypes, string, string> downloadItem)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string url = Url(downloadItem);

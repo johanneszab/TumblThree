@@ -4,10 +4,11 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Waf.Applications;
 using System.Windows.Input;
-using TumblThree.Applications.Views;
-using TumblThree.Domain.Queue;
-using TumblThree.Domain.Models;
+
 using TumblThree.Applications.Services;
+using TumblThree.Applications.Views;
+using TumblThree.Domain.Models;
+using TumblThree.Domain.Queue;
 
 namespace TumblThree.Applications.ViewModels
 {
@@ -15,20 +16,19 @@ namespace TumblThree.Applications.ViewModels
     public class QueueViewModel : ViewModel<IQueueView>
     {
         private readonly ObservableCollection<QueueListItem> selectedQueueItems;
+        private ICommand clearQueueCommand;
+        private ICommand openQueueCommand;
         private QueueManager queueManager;
-        private QueueListItem selectedQueueItem;
 
         private ICommand removeSelectedCommand;
-        private ICommand showBlogDetailsCommand;
-        private ICommand openQueueCommand;
         private ICommand saveQueueCommand;
-        private ICommand clearQueueCommand;
-
+        private QueueListItem selectedQueueItem;
+        private ICommand showBlogDetailsCommand;
 
         [ImportingConstructor]
         public QueueViewModel(IQueueView view, ICrawlerService crawlerService) : base(view)
         {
-            this.selectedQueueItems = new ObservableCollection<QueueListItem>();
+            selectedQueueItems = new ObservableCollection<QueueListItem>();
             CrawlerService = crawlerService;
         }
 
@@ -46,7 +46,10 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref selectedQueueItem, value); }
         }
 
-        public IList<QueueListItem> SelectedQueueItems { get { return selectedQueueItems; } }
+        public IList<QueueListItem> SelectedQueueItems
+        {
+            get { return selectedQueueItems; }
+        }
 
         public ICommand RemoveSelectedCommand
         {
@@ -79,6 +82,5 @@ namespace TumblThree.Applications.ViewModels
         }
 
         public Action<int, IEnumerable<IBlog>> InsertBlogFilesAction { get; set; }
-
     }
 }

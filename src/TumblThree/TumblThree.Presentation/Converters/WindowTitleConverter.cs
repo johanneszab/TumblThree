@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Waf.Foundation;
 using System.Windows.Data;
+
 using TumblThree.Domain.Queue;
 
 namespace TumblThree.Presentation.Converters
@@ -15,9 +16,12 @@ namespace TumblThree.Presentation.Converters
             //return string.Join(" - ", stringList);
 
             var crawlingQueuelistItem = (ReadOnlyObservableList<QueueListItem>)values[0];
-            if (crawlingQueuelistItem.Count() == 0) { return values[1]; }
+            if (crawlingQueuelistItem.Count() == 0)
+            {
+                return values[1];
+            }
 
-            var blogStringArray = String.Join(" - ", crawlingQueuelistItem.Select(x => x.Blog.Name));
+            string blogStringArray = string.Join(" - ", crawlingQueuelistItem.Select(x => x.Blog.Name));
             return values[1] + " - " + blogStringArray;
         }
 

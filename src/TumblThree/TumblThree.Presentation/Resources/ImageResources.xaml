@@ -21,13 +21,13 @@
         <DrawingImage.Drawing>
             <GeometryDrawing>
                 <GeometryDrawing.Geometry>
-                    <RectangleGeometry Rect="0,0,20,20"/>
+                    <RectangleGeometry Rect="0,0,20,20" />
                 </GeometryDrawing.Geometry>
                 <GeometryDrawing.Brush>
                     <VisualBrush>
                         <VisualBrush.Visual>
                             <Border BorderBrush="Transparent" BorderThickness="0.5">
-                                <TextBlock Text="&#xE100;" FontFamily="Segoe UI Symbol" FontSize="20"/>
+                                <TextBlock Text="&#xE100;" FontFamily="Segoe UI Symbol" FontSize="20" />
                             </Border>
                         </VisualBrush.Visual>
                     </VisualBrush>
@@ -40,13 +40,13 @@
         <DrawingImage.Drawing>
             <GeometryDrawing>
                 <GeometryDrawing.Geometry>
-                    <RectangleGeometry Rect="0,0,20,20"/>
+                    <RectangleGeometry Rect="0,0,20,20" />
                 </GeometryDrawing.Geometry>
                 <GeometryDrawing.Brush>
                     <VisualBrush>
                         <VisualBrush.Visual>
                             <Border BorderBrush="Transparent" BorderThickness="0.5">
-                                <TextBlock Text="&#xE102;" FontFamily="Segoe UI Symbol" FontSize="20"/>
+                                <TextBlock Text="&#xE102;" FontFamily="Segoe UI Symbol" FontSize="20" />
                             </Border>
                         </VisualBrush.Visual>
                     </VisualBrush>
@@ -59,13 +59,13 @@
         <DrawingImage.Drawing>
             <GeometryDrawing>
                 <GeometryDrawing.Geometry>
-                    <RectangleGeometry Rect="0,0,20,20"/>
+                    <RectangleGeometry Rect="0,0,20,20" />
                 </GeometryDrawing.Geometry>
                 <GeometryDrawing.Brush>
                     <VisualBrush>
                         <VisualBrush.Visual>
                             <Border BorderBrush="Transparent" BorderThickness="0.5">
-                                <TextBlock Text="&#xE103;" FontFamily="Segoe UI Symbol" FontSize="20"/>
+                                <TextBlock Text="&#xE103;" FontFamily="Segoe UI Symbol" FontSize="20" />
                             </Border>
                         </VisualBrush.Visual>
                     </VisualBrush>
@@ -78,13 +78,13 @@
         <DrawingImage.Drawing>
             <GeometryDrawing>
                 <GeometryDrawing.Geometry>
-                    <RectangleGeometry Rect="0,0,20,20"/>
+                    <RectangleGeometry Rect="0,0,20,20" />
                 </GeometryDrawing.Geometry>
                 <GeometryDrawing.Brush>
                     <VisualBrush>
                         <VisualBrush.Visual>
                             <Border BorderBrush="Transparent" BorderThickness="0.5">
-                                <TextBlock Text="&#xE117;" FontFamily="Segoe UI Symbol" FontSize="20"/>
+                                <TextBlock Text="&#xE117;" FontFamily="Segoe UI Symbol" FontSize="20" />
                             </Border>
                         </VisualBrush.Visual>
                     </VisualBrush>
@@ -97,13 +97,13 @@
         <DrawingImage.Drawing>
             <GeometryDrawing>
                 <GeometryDrawing.Geometry>
-                    <RectangleGeometry Rect="0,0,20,20"/>
+                    <RectangleGeometry Rect="0,0,20,20" />
                 </GeometryDrawing.Geometry>
                 <GeometryDrawing.Brush>
                     <VisualBrush>
                         <VisualBrush.Visual>
                             <Border BorderBrush="Transparent" BorderThickness="0.5">
-                                <TextBlock Text="&#xE15B;" FontFamily="Segoe UI Symbol" FontSize="20"/>
+                                <TextBlock Text="&#xE15B;" FontFamily="Segoe UI Symbol" FontSize="20" />
                             </Border>
                         </VisualBrush.Visual>
                     </VisualBrush>
@@ -116,13 +116,13 @@
         <DrawingImage.Drawing>
             <GeometryDrawing>
                 <GeometryDrawing.Geometry>
-                    <RectangleGeometry Rect="0,0,20,20"/>
+                    <RectangleGeometry Rect="0,0,20,20" />
                 </GeometryDrawing.Geometry>
                 <GeometryDrawing.Brush>
                     <VisualBrush>
                         <VisualBrush.Visual>
                             <Border BorderBrush="Transparent" BorderThickness="0.5">
-                                <TextBlock Text="&#xE101;" FontFamily="Segoe UI Symbol" FontSize="20"/>
+                                <TextBlock Text="&#xE101;" FontFamily="Segoe UI Symbol" FontSize="20" />
                             </Border>
                         </VisualBrush.Visual>
                     </VisualBrush>
@@ -135,13 +135,13 @@
         <DrawingImage.Drawing>
             <GeometryDrawing>
                 <GeometryDrawing.Geometry>
-                    <RectangleGeometry Rect="0,0,20,20"/>
+                    <RectangleGeometry Rect="0,0,20,20" />
                 </GeometryDrawing.Geometry>
                 <GeometryDrawing.Brush>
                     <VisualBrush>
                         <VisualBrush.Visual>
                             <Border BorderBrush="Transparent" BorderThickness="0.5">
-                                <TextBlock Text="&#xE110;" FontFamily="Segoe UI Symbol" FontSize="20"/>
+                                <TextBlock Text="&#xE110;" FontFamily="Segoe UI Symbol" FontSize="20" />
                             </Border>
                         </VisualBrush.Visual>
                     </VisualBrush>
@@ -154,13 +154,13 @@
         <DrawingImage.Drawing>
             <GeometryDrawing>
                 <GeometryDrawing.Geometry>
-                    <RectangleGeometry Rect="0,0,20,20"/>
+                    <RectangleGeometry Rect="0,0,20,20" />
                 </GeometryDrawing.Geometry>
                 <GeometryDrawing.Brush>
                     <VisualBrush>
                         <VisualBrush.Visual>
                             <Border BorderBrush="Transparent" BorderThickness="0.5">
-                                <TextBlock Text="&#xE1FD;" FontFamily="Segoe UI Symbol" FontSize="20"/>
+                                <TextBlock Text="&#xE1FD;" FontFamily="Segoe UI Symbol" FontSize="20" />
                             </Border>
                         </VisualBrush.Visual>
                     </VisualBrush>

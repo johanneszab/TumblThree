@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
+
 using TumblThree.Applications.Properties;
 
 namespace TumblThree.Applications.Services
@@ -24,9 +25,11 @@ namespace TumblThree.Applications.Services
 
         bool IsApplicationBusy { get; }
 
-        event CancelEventHandler Closing;
-
         ClipboardMonitor ClipboardMonitor { get; set; }
+
+        OAuthManager OAuthManager { get; set; }
+
+        event CancelEventHandler Closing;
 
         void ShowError(Exception exception, string displayMessage);
 
@@ -37,7 +40,5 @@ namespace TumblThree.Applications.Services
         void AddTaskToCompleteBeforeShutdown(Task task);
 
         IDisposable SetApplicationBusy();
-
-        OAuthManager OAuthManager { get; set; }
     }
 }

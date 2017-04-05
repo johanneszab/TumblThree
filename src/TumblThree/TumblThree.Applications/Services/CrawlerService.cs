@@ -1,50 +1,68 @@
-﻿using System.ComponentModel.Composition;
-using System.Windows.Input;
-using System.Waf.Foundation;
-using Guava.RateLimiter;
-using System.Collections.ObjectModel;
-using TumblThree.Domain.Queue;
+﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel.Composition;
+using System.Waf.Foundation;
+using System.Windows.Input;
+
+using Guava.RateLimiter;
+
+using TumblThree.Domain.Queue;
 
 namespace TumblThree.Applications.Services
 {
     [Export(typeof(ICrawlerService)), Export]
     public class CrawlerService : Model, ICrawlerService
     {
+        private readonly ObservableCollection<QueueListItem> activeItems;
+        private readonly ReadOnlyObservableList<QueueListItem> readonlyActiveItems;
         private readonly IShellService shellService;
         private ICommand addBlogCommand;
-        private ICommand removeBlogCommand;
-        private ICommand showFilesCommand;
-        private ICommand enqueueSelectedCommand;
-        private ICommand removeBlogFromQueueCommand;
-        private ICommand crawlCommand;
-        private ICommand pauseCommand;
-        private ICommand resumeCommand;
-        private ICommand stopCommand;
-        private ICommand listenClipboardCommand;
         private ICommand autoDownloadCommand;
+        private ICommand crawlCommand;
+        private ICommand enqueueSelectedCommand;
         private bool isCrawl;
         private bool isPaused;
         private bool isTimerSet;
+        private ICommand listenClipboardCommand;
         private string newBlogUrl;
-        private System.Threading.Timer timer;
+        private ICommand pauseCommand;
+        private ICommand removeBlogCommand;
+        private ICommand removeBlogFromQueueCommand;
+        private ICommand resumeCommand;
+        private ICommand showFilesCommand;
+        private ICommand stopCommand;
         private RateLimiter timeconstraint;
-
-        private readonly ObservableCollection<QueueListItem> activeItems;
-        private readonly ReadOnlyObservableList<QueueListItem> readonlyActiveItems;
+        private System.Threading.Timer timer;
 
         [ImportingConstructor]
         public CrawlerService(IShellService shellService)
         {
             this.shellService = shellService;
-            timeconstraint = RateLimiter.Create((double)shellService.Settings.MaxConnections / (double)shellService.Settings.ConnectionTimeInterval);
+            timeconstraint =
+                RateLimiter.Create((double)shellService.Settings.MaxConnections /
+                                   (double)shellService.Settings.ConnectionTimeInterval);
 
-            this.activeItems = new ObservableCollection<QueueListItem>();
-            this.readonlyActiveItems = new ReadOnlyObservableList<QueueListItem>(activeItems);
-            this.activeItems.CollectionChanged += ActiveItemsCollectionChanged;
+            activeItems = new ObservableCollection<QueueListItem>();
+            readonlyActiveItems = new ReadOnlyObservableList<QueueListItem>(activeItems);
+            activeItems.CollectionChanged += ActiveItemsCollectionChanged;
         }
 
-        public IReadOnlyObservableList<QueueListItem> ActiveItems { get { return readonlyActiveItems; } }
+        public bool IsTimerSet
+        {
+            get { return isTimerSet; }
+            set { SetProperty(ref isTimerSet, value); }
+        }
+
+        public System.Threading.Timer Timer
+        {
+            get { return timer; }
+            set { SetProperty(ref timer, value); }
+        }
+
+        public IReadOnlyObservableList<QueueListItem> ActiveItems
+        {
+            get { return readonlyActiveItems; }
+        }
 
         public ICommand AddBlogCommand
         {
@@ -122,18 +140,6 @@ namespace TumblThree.Applications.Services
         {
             get { return isPaused; }
             set { SetProperty(ref isPaused, value); }
-        }
-
-        public bool IsTimerSet
-        {
-            get { return isTimerSet; }
-            set { SetProperty(ref isTimerSet, value); }
-        }
-
-        public System.Threading.Timer Timer
-        {
-            get { return timer; }
-            set { SetProperty(ref timer, value); }
         }
 
         public string NewBlogUrl

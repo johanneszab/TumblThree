@@ -14,16 +14,15 @@ namespace TumblThree.Presentation.Controls
 {
     public class ListBoxDragDropHelper<TItem>
     {
-        private readonly ListBox listBox;
-        private readonly Action<int, IEnumerable<TItem>> moveItemsAction;
-        private readonly Func<DragEventArgs, IEnumerable> tryGetInsertItemsAction;
         private readonly Action<int, IEnumerable> insertItemsAction;
         private readonly InsertMarkerAdorner insertMarkerAdorner;
+        private readonly ListBox listBox;
+        private readonly Action<int, IEnumerable<TItem>> moveItemsAction;
         private readonly ThrottledAction throttledAutoScrollAction;
-        private DragEventArgs lastPreviewDragOverEventArgs;
+        private readonly Func<DragEventArgs, IEnumerable> tryGetInsertItemsAction;
         private ListBoxItem dragSource;
+        private DragEventArgs lastPreviewDragOverEventArgs;
         private Point? startPoint;
-
 
         public ListBoxDragDropHelper(ListBox listBox, Action<int, IEnumerable<TItem>> moveItemsAction,
             Func<DragEventArgs, IEnumerable> tryGetInsertItemsAction, Action<int, IEnumerable> insertItemsAction)
@@ -32,8 +31,9 @@ namespace TumblThree.Presentation.Controls
             this.moveItemsAction = moveItemsAction;
             this.tryGetInsertItemsAction = tryGetInsertItemsAction ?? (eventArgs => null);
             this.insertItemsAction = insertItemsAction;
-            this.insertMarkerAdorner = new InsertMarkerAdorner(listBox);
-            this.throttledAutoScrollAction = new ThrottledAction(ThrottledAutoScroll, ThrottledActionMode.InvokeMaxEveryDelayTime, TimeSpan.FromMilliseconds(250));
+            insertMarkerAdorner = new InsertMarkerAdorner(listBox);
+            throttledAutoScrollAction = new ThrottledAction(ThrottledAutoScroll, ThrottledActionMode.InvokeMaxEveryDelayTime,
+                TimeSpan.FromMilliseconds(250));
 
             listBox.Loaded += ListBoxLoaded;
             if (listBox.IsLoaded)
@@ -45,18 +45,19 @@ namespace TumblThree.Presentation.Controls
             listBox.Drop += ListBoxDrop;
 
             var listboxItemStyle = new Style(typeof(ListBoxItem), listBox.ItemContainerStyle);
-            listboxItemStyle.Setters.Add(new EventSetter(ListBoxItem.PreviewMouseLeftButtonDownEvent, (MouseButtonEventHandler)ListBoxItemPreviewMouseLeftButtonDown));
-            listboxItemStyle.Setters.Add(new EventSetter(ListBoxItem.PreviewMouseMoveEvent, (MouseEventHandler)ListBoxItemPreviewMouseMove));
-            listboxItemStyle.Setters.Add(new EventSetter(ListBoxItem.DragEnterEvent, (DragEventHandler)ListBoxItemDragEnter));
-            listboxItemStyle.Setters.Add(new EventSetter(ListBoxItem.DragLeaveEvent, (DragEventHandler)ListBoxItemDragLeave));
-            listboxItemStyle.Setters.Add(new EventSetter(ListBoxItem.DropEvent, (DragEventHandler)ListBoxItemDrop));
+            listboxItemStyle.Setters.Add(new EventSetter(UIElement.PreviewMouseLeftButtonDownEvent,
+                (MouseButtonEventHandler)ListBoxItemPreviewMouseLeftButtonDown));
+            listboxItemStyle.Setters.Add(new EventSetter(UIElement.PreviewMouseMoveEvent,
+                (MouseEventHandler)ListBoxItemPreviewMouseMove));
+            listboxItemStyle.Setters.Add(new EventSetter(UIElement.DragEnterEvent, (DragEventHandler)ListBoxItemDragEnter));
+            listboxItemStyle.Setters.Add(new EventSetter(UIElement.DragLeaveEvent, (DragEventHandler)ListBoxItemDragLeave));
+            listboxItemStyle.Setters.Add(new EventSetter(UIElement.DropEvent, (DragEventHandler)ListBoxItemDrop));
             listBox.ItemContainerStyle = listboxItemStyle;
         }
 
-
         private void InitializeAdornerLayer()
         {
-            var adornerLayer = AdornerLayer.GetAdornerLayer(listBox);
+            AdornerLayer adornerLayer = AdornerLayer.GetAdornerLayer(listBox);
             adornerLayer.Add(insertMarkerAdorner);
         }
 
@@ -74,7 +75,7 @@ namespace TumblThree.Presentation.Controls
         {
             if (moveItemsAction != null && e.LeftButton == MouseButtonState.Pressed && startPoint != null)
             {
-                var position = e.GetPosition(null);
+                Point position = e.GetPosition(null);
                 if (Math.Abs(position.X - startPoint.Value.X) < SystemParameters.MinimumHorizontalDragDistance
                     && Math.Abs(position.Y - startPoint.Value.Y) < SystemParameters.MinimumVerticalDragDistance)
                 {
@@ -82,8 +83,8 @@ namespace TumblThree.Presentation.Controls
                 }
 
                 var target = (ListBoxItem)sender;
-                var items = listBox.Items.Cast<TItem>().ToList();
-                var selectedItems = listBox.SelectedItems.Cast<TItem>().OrderBy(x => items.IndexOf(x)).ToArray();
+                List<TItem> items = listBox.Items.Cast<TItem>().ToList();
+                TItem[] selectedItems = listBox.SelectedItems.Cast<TItem>().OrderBy(x => items.IndexOf(x)).ToArray();
 
                 dragSource = target;
                 DragDrop.DoDragDrop(target, selectedItems, DragDropEffects.Move);
@@ -160,7 +161,7 @@ namespace TumblThree.Presentation.Controls
             {
                 return;
             }
-            var targetData = ((ListBoxItem)sender).DataContext;
+            object targetData = ((ListBoxItem)sender).DataContext;
             int newIndex = listBox.Items.IndexOf(targetData);
 
             if (e.Effects == DragDropEffects.Move)
@@ -169,7 +170,7 @@ namespace TumblThree.Presentation.Controls
             }
             else if (e.Effects.HasFlag(DragDropEffects.Copy))
             {
-                var droppedData = tryGetInsertItemsAction(e);
+                IEnumerable droppedData = tryGetInsertItemsAction(e);
                 insertItemsAction(newIndex + 1, droppedData);
                 SelectItems(newIndex + 1, droppedData.Cast<object>().Count());
             }
@@ -193,7 +194,7 @@ namespace TumblThree.Presentation.Controls
             }
             else if (e.Effects.HasFlag(DragDropEffects.Copy))
             {
-                var droppedData = tryGetInsertItemsAction(e);
+                IEnumerable droppedData = tryGetInsertItemsAction(e);
                 insertItemsAction(newIndex + 1, droppedData);
                 SelectItems(newIndex + 1, droppedData.Cast<object>().Count());
             }
@@ -214,15 +215,15 @@ namespace TumblThree.Presentation.Controls
 
         private bool CanInsertItems(DragEventArgs e)
         {
-            var items = tryGetInsertItemsAction(e);
+            IEnumerable items = tryGetInsertItemsAction(e);
             return items != null && items.Cast<object>().Any();
         }
 
         private void SelectItems(int index, int count)
         {
-            var items = listBox.Items.Cast<object>().Skip(index).Take(count);
+            IEnumerable<object> items = listBox.Items.Cast<object>().Skip(index).Take(count);
             listBox.SelectedItems.Clear();
-            foreach (var item in items)
+            foreach (object item in items)
             {
                 listBox.SelectedItems.Add(item);
             }
@@ -239,13 +240,16 @@ namespace TumblThree.Presentation.Controls
             listBox.Dispatcher.InvokeAsync(() =>
             {
                 var listBoxItem = (ListBoxItem)listBox.ItemContainerGenerator.ContainerFromItem(listBox.SelectedItem);
-                if (listBoxItem != null) { listBoxItem.Focus(); }
+                if (listBoxItem != null)
+                {
+                    listBoxItem.Focus();
+                }
             }, DispatcherPriority.Background);
         }
 
         private static TChild FindVisualChild<TChild>(DependencyObject obj) where TChild : DependencyObject
         {
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
+            for (var i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
             {
                 DependencyObject child = VisualTreeHelper.GetChild(obj, i);
                 if (child is TChild)
@@ -254,7 +258,7 @@ namespace TumblThree.Presentation.Controls
                 }
                 else
                 {
-                    TChild childOfChild = FindVisualChild<TChild>(child);
+                    var childOfChild = FindVisualChild<TChild>(child);
                     if (childOfChild != null)
                     {
                         return childOfChild;

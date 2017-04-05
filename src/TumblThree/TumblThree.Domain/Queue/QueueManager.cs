@@ -10,19 +10,34 @@ namespace TumblThree.Domain.Queue
     {
         private readonly ObservableCollection<QueueListItem> items;
         private readonly ReadOnlyObservableList<QueueListItem> readonlyItems;
+        private int queueDownloadedImageCount;
 
         private int queueTotalImageCount;
-        private int queueDownloadedImageCount;
 
         public QueueManager()
         {
-            this.items = new ObservableCollection<QueueListItem>();
-            this.readonlyItems = new ReadOnlyObservableList<QueueListItem>(items);
+            items = new ObservableCollection<QueueListItem>();
+            readonlyItems = new ReadOnlyObservableList<QueueListItem>(items);
 
-            this.items.CollectionChanged += ItemsCollectionChanged;
+            items.CollectionChanged += ItemsCollectionChanged;
         }
 
-        public IReadOnlyObservableList<QueueListItem> Items { get { return readonlyItems; } }
+        public IReadOnlyObservableList<QueueListItem> Items
+        {
+            get { return readonlyItems; }
+        }
+
+        public int QueueTotalImageCount
+        {
+            get { return queueTotalImageCount; }
+            private set { SetProperty(ref queueTotalImageCount, value); }
+        }
+
+        public int QueueDownloadedImageCount
+        {
+            get { return queueDownloadedImageCount; }
+            private set { SetProperty(ref queueDownloadedImageCount, value); }
+        }
 
         public void AddAndReplaceItems(IEnumerable<QueueListItem> itemsToAdd)
         {
@@ -37,7 +52,7 @@ namespace TumblThree.Domain.Queue
 
         public void InsertItems(int index, IEnumerable<QueueListItem> itemsToInsert)
         {
-            foreach (var item in itemsToInsert)
+            foreach (QueueListItem item in itemsToInsert)
             {
                 items.Insert(index++, item);
             }
@@ -45,7 +60,7 @@ namespace TumblThree.Domain.Queue
 
         public void RemoveItems(IEnumerable<QueueListItem> itemsToRemove)
         {
-            foreach (var item in itemsToRemove.ToArray())
+            foreach (QueueListItem item in itemsToRemove.ToArray())
             {
                 items.Remove(item);
             }
@@ -71,13 +86,12 @@ namespace TumblThree.Domain.Queue
                     itemsToMove = itemsToMove.Reverse();
                 }
 
-                foreach (var item in itemsToMove)
+                foreach (QueueListItem item in itemsToMove)
                 {
                     int currentIndex = items.IndexOf(item);
                     if (currentIndex != newIndex)
                     {
                         items.Move(currentIndex, newIndex);
-
                     }
                 }
             }
@@ -88,7 +102,6 @@ namespace TumblThree.Domain.Queue
             if (e.Action == NotifyCollectionChangedAction.Add)
             {
                 UpdateTotalImageCount();
-                
             }
             else if (e.Action == NotifyCollectionChangedAction.Remove)
             {
@@ -96,26 +109,16 @@ namespace TumblThree.Domain.Queue
             }
         }
 
-        public int QueueTotalImageCount
-        {
-            get { return queueTotalImageCount; }
-            private set { SetProperty(ref queueTotalImageCount, value); }
-        }
-
-        public int QueueDownloadedImageCount
-        {
-            get { return queueDownloadedImageCount; }
-            private set { SetProperty(ref queueDownloadedImageCount, value); }
-        }
-
         private void UpdateDownloadedImageCount()
         {
             if (items.Any())
             {
-                var loadedItems = items.Where(x => x.Blog.DownloadedImages > 0);
+                IEnumerable<QueueListItem> loadedItems = items.Where(x => x.Blog.DownloadedImages > 0);
 
-                QueueDownloadedImageCount = loadedItems.Select(x => x.Blog.DownloadedImages).Aggregate((current, next) => current + next);
-            } else
+                QueueDownloadedImageCount =
+                    loadedItems.Select(x => x.Blog.DownloadedImages).Aggregate((current, next) => current + next);
+            }
+            else
             {
                 QueueDownloadedImageCount = 0;
             }
@@ -125,10 +128,12 @@ namespace TumblThree.Domain.Queue
         {
             if (items.Any())
             {
-                var loadedItems = items.Where(x => x.Blog.TotalCount > 0);
+                IEnumerable<QueueListItem> loadedItems = items.Where(x => x.Blog.TotalCount > 0);
 
-                QueueTotalImageCount = loadedItems.Select(x => x.Blog.TotalCount).DefaultIfEmpty().Aggregate((current, next) => current + next);
-            } else
+                QueueTotalImageCount =
+                    loadedItems.Select(x => x.Blog.TotalCount).DefaultIfEmpty().Aggregate((current, next) => current + next);
+            }
+            else
             {
                 QueueTotalImageCount = 0;
             }

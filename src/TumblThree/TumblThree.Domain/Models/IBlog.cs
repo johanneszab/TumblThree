@@ -70,7 +70,7 @@ namespace TumblThree.Domain.Models
 
         string LastDownloadedPhoto { get; set; }
 
-        string LastDownloadedVideo{ get; set; }
+        string LastDownloadedVideo { get; set; }
 
         BlogTypes BlogType { get; set; }
 

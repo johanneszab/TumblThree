@@ -1,7 +1,9 @@
-﻿using Guava.RateLimiter;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Waf.Foundation;
 using System.Windows.Input;
+
+using Guava.RateLimiter;
+
 using TumblThree.Domain.Queue;
 
 namespace TumblThree.Applications.Services
@@ -38,10 +40,10 @@ namespace TumblThree.Applications.Services
 
         IReadOnlyObservableList<QueueListItem> ActiveItems { get; }
 
+        RateLimiter Timeconstraint { get; set; }
+
         void AddActiveItems(QueueListItem itemToAdd);
 
         void RemoveActiveItem(QueueListItem itemToRemove);
-
-        RateLimiter Timeconstraint { get; set; }
     }
 }

@@ -1,28 +1,29 @@
 ﻿using System;
+using System.Collections.Specialized;
 using System.ComponentModel.Composition;
 using System.Waf.Applications;
+using System.Waf.Foundation;
 using System.Windows.Input;
+
+using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Applications.Views;
-using TumblThree.Domain.Models;
 using TumblThree.Domain;
-using TumblThree.Applications.Properties;
+using TumblThree.Domain.Models;
 using TumblThree.Domain.Queue;
-using System.Waf.Foundation;
-using System.Collections.Specialized;
 
 namespace TumblThree.Applications.ViewModels
 {
     [Export]
     public class ManagerViewModel : ViewModel<IManagerView>
     {
-        private readonly Lazy<ISelectionService> selectionService;
-        private Blog selectedBlogFile;
         private readonly Lazy<ICrawlerService> crawlerService;
         private readonly Lazy<IManagerService> managerService;
+        private readonly Lazy<ISelectionService> selectionService;
+        private Blog selectedBlogFile;
+        private ICommand showDetailsCommand;
         private ICommand showFilesCommand;
         private ICommand visitBlogCommand;
-        private ICommand showDetailsCommand;
 
         [ImportingConstructor]
         public ManagerViewModel(IManagerView view, IShellService shellService, Lazy<ISelectionService> selectionService,
@@ -36,7 +37,9 @@ namespace TumblThree.Applications.ViewModels
             try
             {
                 if (shellService.Settings.ColumnWidths.Count != 0)
+                {
                     view.DataGridColumnRestore = ShellService.Settings.ColumnWidths;
+                }
             }
             catch (Exception ex)
             {
@@ -48,19 +51,22 @@ namespace TumblThree.Applications.ViewModels
             ShellService.Closing += ViewClosed;
         }
 
-        public void ViewClosed(object sender, EventArgs e)
+        public ISelectionService SelectionService
         {
-            ShellService.Settings.ColumnWidths = ViewCore.DataGridColumnRestore;
+            get { return selectionService.Value; }
         }
-
-        public ISelectionService SelectionService { get { return selectionService.Value; } }
 
         public IShellService ShellService { get; }
 
-        public ICrawlerService CrawlerService { get { return crawlerService.Value; } }
+        public ICrawlerService CrawlerService
+        {
+            get { return crawlerService.Value; }
+        }
 
-        public IManagerService ManagerService { get { return managerService.Value; } }
-
+        public IManagerService ManagerService
+        {
+            get { return managerService.Value; }
+        }
 
         public ICommand ShowFilesCommand
         {
@@ -87,6 +93,11 @@ namespace TumblThree.Applications.ViewModels
         }
 
         public IReadOnlyObservableList<QueueListItem> QueueItems { get; set; }
+
+        public void ViewClosed(object sender, EventArgs e)
+        {
+            ShellService.Settings.ColumnWidths = ViewCore.DataGridColumnRestore;
+        }
 
         public void QueueItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {

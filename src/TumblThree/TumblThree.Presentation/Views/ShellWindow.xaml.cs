@@ -3,6 +3,7 @@ using System.ComponentModel.Composition;
 using System.Waf.Applications;
 using System.Windows;
 using System.Windows.Input;
+
 using TumblThree.Applications.ViewModels;
 using TumblThree.Applications.Views;
 
@@ -11,7 +12,6 @@ namespace TumblThree.Presentation.Views
     [Export(typeof(IShellView))]
     public partial class ShellWindow : Window, IShellView
     {
-
         private readonly Lazy<ShellViewModel> viewModel;
 
         public ShellWindow()
@@ -20,9 +20,20 @@ namespace TumblThree.Presentation.Views
             viewModel = new Lazy<ShellViewModel>(() => ViewHelper.GetViewModel<ShellViewModel>(this));
         }
 
-        public double VirtualScreenWidth { get { return SystemParameters.VirtualScreenWidth; } }
+        private ShellViewModel ViewModel
+        {
+            get { return viewModel.Value; }
+        }
 
-        public double VirtualScreenHeight { get { return SystemParameters.VirtualScreenHeight; } }
+        public double VirtualScreenWidth
+        {
+            get { return SystemParameters.VirtualScreenWidth; }
+        }
+
+        public double VirtualScreenHeight
+        {
+            get { return SystemParameters.VirtualScreenHeight; }
+        }
 
         public bool IsMaximized
         {
@@ -43,13 +54,8 @@ namespace TumblThree.Presentation.Views
         public double GridSplitterPosition
         {
             get { return grid.ColumnDefinitions[2].Width.Value; }
-            set
-            {
-                grid.ColumnDefinitions[2].Width = new GridLength(value, GridUnitType.Pixel);
-            }
+            set { grid.ColumnDefinitions[2].Width = new GridLength(value, GridUnitType.Pixel); }
         }
-
-        private ShellViewModel ViewModel { get { return viewModel.Value; } }
 
         private static void TryExecute(ICommand command)
         {

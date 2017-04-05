@@ -3,6 +3,7 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Waf.Applications;
 using System.Windows.Threading;
+
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Applications.ViewModels;
@@ -15,26 +16,27 @@ namespace TumblThree.Applications.Controllers
     internal class ModuleController : IModuleController
     {
         private const string appSettingsFileName = "Settings.xml";
-        private const string queueSettingsFileName = "Queuelist.xml";
         private const string managerSettingsFileName = "Manager.xml";
-
-        private readonly Lazy<ShellService> shellService;
+        private const string queueSettingsFileName = "Queuelist.xml";
+        private readonly Lazy<CrawlerController> crawlerController;
+        private readonly Lazy<DetailsController> detailsController;
         private readonly IEnvironmentService environmentService;
-        private readonly ISettingsProvider settingsProvider;
         private readonly Lazy<ManagerController> managerController;
         private readonly Lazy<QueueController> queueController;
-        private readonly Lazy<DetailsController> detailsController;
-        private readonly Lazy<CrawlerController> crawlerController;
-        private readonly Lazy<ShellViewModel> shellViewModel;
         private readonly QueueManager queueManager;
-        private AppSettings appSettings;
-        private QueueSettings queueSettings;
-        private ManagerSettings managerSettings;
+        private readonly ISettingsProvider settingsProvider;
 
+        private readonly Lazy<ShellService> shellService;
+        private readonly Lazy<ShellViewModel> shellViewModel;
+        private AppSettings appSettings;
+        private ManagerSettings managerSettings;
+        private QueueSettings queueSettings;
 
         [ImportingConstructor]
-        public ModuleController(Lazy<ShellService> shellService, IEnvironmentService environmentService, ISettingsProvider settingsProvider, Lazy<ManagerController> managerController,
-            Lazy<QueueController> queueController, Lazy<DetailsController> detailsController, Lazy<CrawlerController> crawlerController, Lazy<ShellViewModel> shellViewModel)
+        public ModuleController(Lazy<ShellService> shellService, IEnvironmentService environmentService,
+            ISettingsProvider settingsProvider, Lazy<ManagerController> managerController,
+            Lazy<QueueController> queueController, Lazy<DetailsController> detailsController,
+            Lazy<CrawlerController> crawlerController, Lazy<ShellViewModel> shellViewModel)
         {
             this.shellService = shellService;
             this.environmentService = environmentService;
@@ -44,21 +46,38 @@ namespace TumblThree.Applications.Controllers
             this.queueController = queueController;
             this.crawlerController = crawlerController;
             this.shellViewModel = shellViewModel;
-            this.queueManager = new QueueManager();
+            queueManager = new QueueManager();
         }
 
-        private ShellService ShellService { get { return shellService.Value; } }
+        private ShellService ShellService
+        {
+            get { return shellService.Value; }
+        }
 
-        private ManagerController ManagerController { get { return managerController.Value; } }
+        private ManagerController ManagerController
+        {
+            get { return managerController.Value; }
+        }
 
-        private QueueController QueueController { get { return queueController.Value; } }
+        private QueueController QueueController
+        {
+            get { return queueController.Value; }
+        }
 
-        private DetailsController DetailsController { get { return detailsController.Value; } }
+        private DetailsController DetailsController
+        {
+            get { return detailsController.Value; }
+        }
 
-        private CrawlerController CrawlerController { get { return crawlerController.Value; } }
+        private CrawlerController CrawlerController
+        {
+            get { return crawlerController.Value; }
+        }
 
-        private ShellViewModel ShellViewModel { get { return shellViewModel.Value; } }
-
+        private ShellViewModel ShellViewModel
+        {
+            get { return shellViewModel.Value; }
+        }
 
         public void Initialize()
         {
@@ -94,11 +113,6 @@ namespace TumblThree.Applications.Controllers
             await Dispatcher.CurrentDispatcher.InvokeAsync(QueueController.Run, DispatcherPriority.ApplicationIdle);
         }
 
-        private void OnBlogManagerFinishedLoading(object sender, EventArgs e)
-        {
-            QueueController.LoadQueue();
-        }
-
         public void Shutdown()
         {
             DetailsController.Shutdown();
@@ -109,6 +123,11 @@ namespace TumblThree.Applications.Controllers
             SaveSettings(appSettingsFileName, appSettings);
             SaveSettings(queueSettingsFileName, queueSettings);
             SaveSettings(managerSettingsFileName, managerSettings);
+        }
+
+        private void OnBlogManagerFinishedLoading(object sender, EventArgs e)
+        {
+            QueueController.LoadQueue();
         }
 
         private T LoadSettings<T>(string fileName) where T : class, new()

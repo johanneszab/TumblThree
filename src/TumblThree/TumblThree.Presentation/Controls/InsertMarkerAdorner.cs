@@ -7,17 +7,15 @@ namespace TumblThree.Presentation.Controls
     public class InsertMarkerAdorner : Adorner
     {
         private readonly FrameworkElement control;
+        private Rect adornerViewRect;
         private FrameworkElement item;
         private bool showMarkerAfterItem;
-        private Rect adornerViewRect;
-
 
         public InsertMarkerAdorner(FrameworkElement control)
             : base(control)
         {
             this.control = control;
         }
-
 
         public void ShowMarker(FrameworkElement item, bool showMarkerAfterItem)
         {
@@ -28,7 +26,7 @@ namespace TumblThree.Presentation.Controls
 
         public void ResetMarker()
         {
-            this.item = null;
+            item = null;
             InvalidateVisual();
         }
 

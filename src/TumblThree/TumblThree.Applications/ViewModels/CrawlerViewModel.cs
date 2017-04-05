@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.Composition;
 using System.Waf.Applications;
+
 using TumblThree.Applications.Services;
 using TumblThree.Applications.Views;
 
@@ -18,6 +19,5 @@ namespace TumblThree.Applications.ViewModels
         public IShellService ShellService { get; }
 
         public ICrawlerService CrawlerService { get; }
-
     }
 }

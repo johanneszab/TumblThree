@@ -11,20 +11,22 @@ namespace TumblThree.Presentation.Controls
     public class SearchableTextBlock : TextBlock
     {
         public static new readonly DependencyProperty TextProperty =
-            DependencyProperty.Register(nameof(Text), typeof(string), typeof(SearchableTextBlock), new FrameworkPropertyMetadata(string.Empty, ControlPropertyChangedCallback));
+            DependencyProperty.Register(nameof(Text), typeof(string), typeof(SearchableTextBlock),
+                new FrameworkPropertyMetadata(string.Empty, ControlPropertyChangedCallback));
 
         public static readonly DependencyProperty SearchTextProperty =
-            DependencyProperty.Register(nameof(SearchText), typeof(string), typeof(SearchableTextBlock), new FrameworkPropertyMetadata(string.Empty, ControlPropertyChangedCallback));
+            DependencyProperty.Register(nameof(SearchText), typeof(string), typeof(SearchableTextBlock),
+                new FrameworkPropertyMetadata(string.Empty, ControlPropertyChangedCallback));
 
         public static readonly DependencyProperty HighlightBackgroundProperty =
-            DependencyProperty.Register(nameof(HighlightBackground), typeof(Brush), typeof(SearchableTextBlock), new FrameworkPropertyMetadata(Brushes.Orange, ControlPropertyChangedCallback));
+            DependencyProperty.Register(nameof(HighlightBackground), typeof(Brush), typeof(SearchableTextBlock),
+                new FrameworkPropertyMetadata(Brushes.Orange, ControlPropertyChangedCallback));
 
         public static readonly DependencyProperty IsMatchCaseProperty =
-            DependencyProperty.Register(nameof(IsMatchCase), typeof(bool), typeof(SearchableTextBlock), new FrameworkPropertyMetadata(false, ControlPropertyChangedCallback));
-
+            DependencyProperty.Register(nameof(IsMatchCase), typeof(bool), typeof(SearchableTextBlock),
+                new FrameworkPropertyMetadata(false, ControlPropertyChangedCallback));
 
         private IReadOnlyList<string> textParts = new string[0];
-
 
         public new string Text
         {
@@ -50,19 +52,18 @@ namespace TumblThree.Presentation.Controls
             set { SetValue(IsMatchCaseProperty, value); }
         }
 
-
         private void UpdateContet()
         {
-            var newTextParts = SplitText();
+            IReadOnlyList<string> newTextParts = SplitText();
             if (textParts.SequenceEqual(newTextParts))
             {
                 return;
             }
 
-            var highlightBackground = HighlightBackground;
+            Brush highlightBackground = HighlightBackground;
             Inlines.Clear();
-            bool isHighlight = false;
-            foreach (var textPart in newTextParts)
+            var isHighlight = false;
+            foreach (string textPart in newTextParts)
             {
                 if (!string.IsNullOrEmpty(textPart))
                 {
@@ -84,17 +85,19 @@ namespace TumblThree.Presentation.Controls
 
         private IReadOnlyList<string> SplitText()
         {
-            var text = Text;
-            var searchText = SearchText;
+            string text = Text;
+            string searchText = SearchText;
 
             if (string.IsNullOrEmpty(searchText))
             {
                 return new[] { text };
             }
 
-            List<string> textParts = new List<string>();
-            int index = 0;
-            var comparisonType = IsMatchCase ? StringComparison.CurrentCulture : StringComparison.CurrentCultureIgnoreCase;
+            var textParts = new List<string>();
+            var index = 0;
+            StringComparison comparisonType = IsMatchCase
+                ? StringComparison.CurrentCulture
+                : StringComparison.CurrentCultureIgnoreCase;
             while (true)
             {
                 int position = text.IndexOf(searchText, index, comparisonType);

@@ -1,73 +1,72 @@
 ﻿using System;
-using System.Waf.Foundation;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Waf.Foundation;
 
 namespace TumblThree.Domain.Models
 {
     [Serializable]
     public class Blog : Model, IBlog
     {
-
-        private string name;
-        private string url;
-        private string location;
-        private string childId;
-        private BlogTypes blogType;
-        private int downloadedImages;
-        private int totalCount;
-        private int rating;
-        private int progress;
-        private int posts;
-        private int texts;
-        private int quotes;
-        private int photos;
-        private int numberOfLinks;
-        private int conversations;
-        private int videos;
-        private int audios;
-        private int photoMetas;
-        private int videoMetas;
         private int audioMetas;
-        private int downloadedTexts;
-        private int downloadedQuotes;
-        private int downloadedPhotos;
-        private int downloadedLinks;
-        private int downloadedConversations;
-        private int downloadedVideos;
-        private int downloadedAudios;
-        private int downloadedPhotoMetas;
-        private int downloadedVideoMetas;
-        private int downloadedAudioMetas;
-        private int duplicatePhotos;
-        private int duplicateVideos;
-        private int duplicateAudios;
-        private bool downloadPhoto;
-        private bool downloadVideo;
-        private bool downloadAudio;
-        private bool downloadText;
-        private bool downloadQuote;
-        private bool downloadConversation;
-        private bool downloadLink;
+        private int audios;
+        private BlogTypes blogType;
+        private bool checkDirectoryForFiles;
+        private string childId;
+        private int conversations;
+        private bool createAudioMeta;
         private bool createPhotoMeta;
         private bool createVideoMeta;
-        private bool createAudioMeta;
         private DateTime dateAdded;
+        private bool dirty;
+        private bool downloadAudio;
+        private bool downloadConversation;
+        private int downloadedAudioMetas;
+        private int downloadedAudios;
+        private int downloadedConversations;
+        private int downloadedImages;
+        private int downloadedLinks;
+        private int downloadedPhotoMetas;
+        private int downloadedPhotos;
+        private int downloadedQuotes;
+        private int downloadedTexts;
+        private int downloadedVideoMetas;
+        private int downloadedVideos;
+        private bool downloadLink;
+        private bool downloadPhoto;
+        private bool downloadQuote;
+        private bool downloadText;
+        private bool downloadUrlList;
+        private bool downloadVideo;
+        private int duplicateAudios;
+        private int duplicatePhotos;
+        private int duplicateVideos;
         private DateTime lastCompleteCrawl;
-        private bool online;
         private string lastDownloadedPhoto;
         private string lastDownloadedVideo;
-        private bool dirty;
-        private bool checkDirectoryForFiles;
-        private bool downloadUrlList;
-        private string notes;
         private IList<string> links;
         private Exception loadError;
-        private PostTypes state;
+        private string location;
 
+        private string name;
+        private string notes;
+        private int numberOfLinks;
+        private bool online;
+        private int photoMetas;
+        private int photos;
+        private int posts;
+        private int progress;
+        private int quotes;
+        private int rating;
+        private PostTypes state;
+        private int texts;
+        private int totalCount;
+        private string url;
+        private int videoMetas;
+        private int videos;
 
         public Blog()
         {
@@ -77,57 +76,181 @@ namespace TumblThree.Domain.Models
         {
             this.url = url;
             this.url = ExtractUrl();
-            this.name = ExtractSubDomain();
+            name = ExtractSubDomain();
             this.blogType = blogType;
-            this.childId = Path.Combine(location, Name + "_files." + blogType);
+            childId = Path.Combine(location, Name + "_files." + blogType);
             this.location = location;
-            this.downloadedImages = 0;
-            this.totalCount = 0;
-            this.rating = 0;
-            this.progress = 0;
-            this.posts = 0;
-            this.texts = 0;
-            this.quotes = 0;
-            this.photos = 0;
-            this.numberOfLinks = 0;
-            this.conversations = 0;
-            this.videos = 0;
-            this.audios = 0;
-            this.photoMetas = 0;
-            this.videoMetas = 0;
-            this.audioMetas = 0;
-            this.downloadedTexts = 0;
-            this.downloadedQuotes = 0;
-            this.downloadedPhotos = 0;
-            this.downloadedLinks = 0;
-            this.downloadedConversations = 0;
-            this.downloadedVideos = 0;
-            this.downloadedAudios = 0;
-            this.downloadedPhotoMetas = 0;
-            this.downloadedVideoMetas = 0;
-            this.downloadedAudioMetas = 0;
-            this.duplicatePhotos = 0;
-            this.duplicateAudios = 0;
-            this.duplicateVideos = 0;
-            this.downloadText = false;
-            this.downloadQuote = false;
-            this.downloadPhoto = true;
-            this.downloadLink = false;
-            this.downloadConversation = false;
-            this.downloadVideo = false;
-            this.downloadAudio = false;
-            this.createPhotoMeta = false;
-            this.createVideoMeta = false;
-            this.createAudioMeta = false;
-            this.dateAdded = DateTime.Now;
-            this.lastCompleteCrawl = DateTime.MinValue;
-            this.online = false;
-            this.lastDownloadedPhoto = null;
-            this.lastDownloadedVideo = null;
-            this.checkDirectoryForFiles = false;
-            this.dirty = false;
-            this.notes = String.Empty;
-            this.links = new ObservableCollection<string>();
+            downloadedImages = 0;
+            totalCount = 0;
+            rating = 0;
+            progress = 0;
+            posts = 0;
+            texts = 0;
+            quotes = 0;
+            photos = 0;
+            numberOfLinks = 0;
+            conversations = 0;
+            videos = 0;
+            audios = 0;
+            photoMetas = 0;
+            videoMetas = 0;
+            audioMetas = 0;
+            downloadedTexts = 0;
+            downloadedQuotes = 0;
+            downloadedPhotos = 0;
+            downloadedLinks = 0;
+            downloadedConversations = 0;
+            downloadedVideos = 0;
+            downloadedAudios = 0;
+            downloadedPhotoMetas = 0;
+            downloadedVideoMetas = 0;
+            downloadedAudioMetas = 0;
+            duplicatePhotos = 0;
+            duplicateAudios = 0;
+            duplicateVideos = 0;
+            downloadText = false;
+            downloadQuote = false;
+            downloadPhoto = true;
+            downloadLink = false;
+            downloadConversation = false;
+            downloadVideo = false;
+            downloadAudio = false;
+            createPhotoMeta = false;
+            createVideoMeta = false;
+            createAudioMeta = false;
+            dateAdded = DateTime.Now;
+            lastCompleteCrawl = DateTime.MinValue;
+            online = false;
+            lastDownloadedPhoto = null;
+            lastDownloadedVideo = null;
+            checkDirectoryForFiles = false;
+            dirty = false;
+            notes = string.Empty;
+            links = new ObservableCollection<string>();
+        }
+
+        public int DuplicatePhotos
+        {
+            get { return duplicatePhotos; }
+            set { SetProperty(ref duplicatePhotos, value); }
+        }
+
+        public int DuplicateVideos
+        {
+            get { return duplicateVideos; }
+            set { SetProperty(ref duplicateVideos, value); }
+        }
+
+        public int DuplicateAudios
+        {
+            get { return duplicateAudios; }
+            set { SetProperty(ref duplicateAudios, value); }
+        }
+
+        public bool DownloadText
+        {
+            get { return downloadText; }
+            set
+            {
+                SetProperty(ref downloadText, value);
+                Dirty = true;
+            }
+        }
+
+        public bool DownloadQuote
+        {
+            get { return downloadQuote; }
+            set
+            {
+                SetProperty(ref downloadQuote, value);
+                Dirty = true;
+            }
+        }
+
+        public bool DownloadPhoto
+        {
+            get { return downloadPhoto; }
+            set
+            {
+                SetProperty(ref downloadPhoto, value);
+                Dirty = true;
+            }
+        }
+
+        public bool DownloadLink
+        {
+            get { return downloadLink; }
+            set
+            {
+                SetProperty(ref downloadLink, value);
+                Dirty = true;
+            }
+        }
+
+        public bool DownloadConversation
+        {
+            get { return downloadConversation; }
+            set
+            {
+                SetProperty(ref downloadConversation, value);
+                Dirty = true;
+            }
+        }
+
+        public bool DownloadVideo
+        {
+            get { return downloadVideo; }
+            set
+            {
+                SetProperty(ref downloadVideo, value);
+                Dirty = true;
+            }
+        }
+
+        public bool DownloadAudio
+        {
+            get { return downloadAudio; }
+            set
+            {
+                SetProperty(ref downloadAudio, value);
+                Dirty = true;
+            }
+        }
+
+        public bool CreatePhotoMeta
+        {
+            get { return createPhotoMeta; }
+            set
+            {
+                SetProperty(ref createPhotoMeta, value);
+                Dirty = true;
+            }
+        }
+
+        public bool CreateVideoMeta
+        {
+            get { return createVideoMeta; }
+            set
+            {
+                SetProperty(ref createVideoMeta, value);
+                Dirty = true;
+            }
+        }
+
+        public bool CreateAudioMeta
+        {
+            get { return createAudioMeta; }
+            set
+            {
+                SetProperty(ref createAudioMeta, value);
+                Dirty = true;
+            }
+        }
+
+        public PostTypes States
+        {
+            get { return state; }
+            set { SetProperty(ref state, value); }
         }
 
         public string Name
@@ -175,7 +298,11 @@ namespace TumblThree.Domain.Models
         public int Rating
         {
             get { return rating; }
-            set { SetProperty(ref rating, value); Dirty = true; }
+            set
+            {
+                SetProperty(ref rating, value);
+                Dirty = true;
+            }
         }
 
         public int Posts
@@ -304,84 +431,6 @@ namespace TumblThree.Domain.Models
             set { SetProperty(ref downloadedAudioMetas, value); }
         }
 
-        public int DuplicatePhotos
-        {
-            get { return duplicatePhotos; }
-            set { SetProperty(ref duplicatePhotos, value); }
-        }
-
-        public int DuplicateVideos
-        {
-            get { return duplicateVideos; }
-            set { SetProperty(ref duplicateVideos, value); }
-        }
-
-        public int DuplicateAudios
-        {
-            get { return duplicateAudios; }
-            set { SetProperty(ref duplicateAudios, value); }
-        }
-
-        public bool DownloadText
-        {
-            get { return downloadText; }
-            set { SetProperty(ref downloadText, value); Dirty = true; }
-        }
-
-        public bool DownloadQuote
-        {
-            get { return downloadQuote; }
-            set { SetProperty(ref downloadQuote, value); Dirty = true; }
-        }
-
-        public bool DownloadPhoto
-        {
-            get { return downloadPhoto; }
-            set { SetProperty(ref downloadPhoto, value); Dirty = true; }
-        }
-
-        public bool DownloadLink
-        {
-            get { return downloadLink; }
-            set { SetProperty(ref downloadLink, value); Dirty = true; }
-        }
-
-        public bool DownloadConversation
-        {
-            get { return downloadConversation; }
-            set { SetProperty(ref downloadConversation, value); Dirty = true; }
-        }
-
-        public bool DownloadVideo
-        {
-            get { return downloadVideo; }
-            set { SetProperty(ref downloadVideo, value); Dirty = true; }
-        }
-
-        public bool DownloadAudio
-        {
-            get { return downloadAudio; }
-            set { SetProperty(ref downloadAudio, value); Dirty = true; }
-        }
-
-        public bool CreatePhotoMeta
-        {
-            get { return createPhotoMeta; }
-            set { SetProperty(ref createPhotoMeta, value); Dirty = true; }
-        }
-
-        public bool CreateVideoMeta
-        {
-            get { return createVideoMeta; }
-            set { SetProperty(ref createVideoMeta, value); Dirty = true; }
-        }
-
-        public bool CreateAudioMeta
-        {
-            get { return createAudioMeta; }
-            set { SetProperty(ref createAudioMeta, value); Dirty = true; }
-        }
-
         public DateTime DateAdded
         {
             get { return dateAdded; }
@@ -409,19 +458,31 @@ namespace TumblThree.Domain.Models
         public string Notes
         {
             get { return notes; }
-            set { SetProperty(ref notes, value); Dirty = true; }
+            set
+            {
+                SetProperty(ref notes, value);
+                Dirty = true;
+            }
         }
 
         public bool CheckDirectoryForFiles
         {
             get { return checkDirectoryForFiles; }
-            set { SetProperty(ref checkDirectoryForFiles, value); Dirty = true; }
+            set
+            {
+                SetProperty(ref checkDirectoryForFiles, value);
+                Dirty = true;
+            }
         }
 
         public bool DownloadUrlList
         {
             get { return downloadUrlList; }
-            set { SetProperty(ref downloadUrlList, value); Dirty = true; }
+            set
+            {
+                SetProperty(ref downloadUrlList, value);
+                Dirty = true;
+            }
         }
 
         public bool Dirty
@@ -445,19 +506,21 @@ namespace TumblThree.Domain.Models
         public string LastDownloadedPhoto
         {
             get { return lastDownloadedPhoto; }
-            set { SetProperty(ref lastDownloadedPhoto, value); States = PostTypes.Photo; }
+            set
+            {
+                SetProperty(ref lastDownloadedPhoto, value);
+                States = PostTypes.Photo;
+            }
         }
 
         public string LastDownloadedVideo
         {
             get { return lastDownloadedVideo; }
-            set { SetProperty(ref lastDownloadedVideo, value); States = PostTypes.Video; }
-        }
-
-        public PostTypes States
-        {
-            get { return state; }
-            set { SetProperty(ref state, value); }
+            set
+            {
+                SetProperty(ref lastDownloadedVideo, value);
+                States = PostTypes.Video;
+            }
         }
 
         public string DownloadLocation()
@@ -469,7 +532,7 @@ namespace TumblThree.Domain.Models
         {
             try
             {
-                using (FileStream stream = new FileStream(fileLocation,
+                using (var stream = new FileStream(fileLocation,
                     FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
                     string json = File.ReadAllText(fileLocation);
@@ -487,33 +550,11 @@ namespace TumblThree.Domain.Models
             }
         }
 
-        private void SaveBlog()
-        {
-            string currentIndex = Path.Combine(location, this.Name + "." + this.BlogType);
-            string newIndex = Path.Combine(location, this.Name + "." + this.BlogType + ".new");
-            string backupIndex = Path.Combine(location, this.Name + "." + this.BlogType + ".bak");
-
-            if (File.Exists(currentIndex))
-            {
-                System.Web.Script.Serialization.JavaScriptSerializer jsJson =
-                    new System.Web.Script.Serialization.JavaScriptSerializer { MaxJsonLength = 2147483644 };
-                File.WriteAllText(newIndex, JsonFormatter.FormatOutput(jsJson.Serialize(this)));
-                File.Replace(newIndex, currentIndex, backupIndex, true);
-                File.Delete(backupIndex);
-            }
-            else
-            {
-                System.Web.Script.Serialization.JavaScriptSerializer jsJson =
-                    new System.Web.Script.Serialization.JavaScriptSerializer { MaxJsonLength = 2147483644 };
-                File.WriteAllText(currentIndex, JsonFormatter.FormatOutput(jsJson.Serialize(this)));
-            }
-        }
-
         public bool Save()
         {
             try
             {
-                this.Dirty = false;
+                Dirty = false;
                 SaveBlog();
                 return true;
             }
@@ -524,9 +565,31 @@ namespace TumblThree.Domain.Models
             }
         }
 
+        private void SaveBlog()
+        {
+            string currentIndex = Path.Combine(location, Name + "." + BlogType);
+            string newIndex = Path.Combine(location, Name + "." + BlogType + ".new");
+            string backupIndex = Path.Combine(location, Name + "." + BlogType + ".bak");
+
+            if (File.Exists(currentIndex))
+            {
+                var jsJson =
+                    new System.Web.Script.Serialization.JavaScriptSerializer { MaxJsonLength = 2147483644 };
+                File.WriteAllText(newIndex, JsonFormatter.FormatOutput(jsJson.Serialize(this)));
+                File.Replace(newIndex, currentIndex, backupIndex, true);
+                File.Delete(backupIndex);
+            }
+            else
+            {
+                var jsJson =
+                    new System.Web.Script.Serialization.JavaScriptSerializer { MaxJsonLength = 2147483644 };
+                File.WriteAllText(currentIndex, JsonFormatter.FormatOutput(jsJson.Serialize(this)));
+            }
+        }
+
         protected virtual string ExtractSubDomain()
         {
-            string[] source = this.Url.Split(new char[] { '.' });
+            string[] source = Url.Split(new char[] { '.' });
             if ((source.Count<string>() >= 3) && source[0].StartsWith("http://", true, null))
             {
                 return source[0].Replace("http://", string.Empty);

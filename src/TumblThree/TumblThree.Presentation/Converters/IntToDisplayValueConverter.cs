@@ -8,14 +8,14 @@ namespace TumblThree.Presentation.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            int number = (int)value;
+            var number = (int)value;
             return number != 0 ? (object)number : "";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            string displayValue = value as string;
-            return string.IsNullOrEmpty(displayValue) ? 0 : Int32.Parse(displayValue, CultureInfo.CurrentCulture);
+            var displayValue = value as string;
+            return string.IsNullOrEmpty(displayValue) ? 0 : int.Parse(displayValue, CultureInfo.CurrentCulture);
         }
     }
 }

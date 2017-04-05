@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
+
 using TumblThree.Presentation.Properties;
 
 namespace TumblThree.Presentation.Converters
@@ -10,9 +11,11 @@ namespace TumblThree.Presentation.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var boolValue = value is bool && (bool)value;
+            bool boolValue = value is bool && (bool)value;
 
-            return boolValue ? string.Format(CultureInfo.CurrentCulture, Resources.Online) : string.Format(CultureInfo.CurrentCulture, Resources.Offline);
+            return boolValue
+                ? string.Format(CultureInfo.CurrentCulture, Resources.Online)
+                : string.Format(CultureInfo.CurrentCulture, Resources.Offline);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -5,15 +5,15 @@ namespace TumblThree.Domain
     public static class JsonFormatter
     {
         /// <summary>
-        /// Adds indentation and line breaks to output of JavaScriptSerializer
+        ///     Adds indentation and line breaks to output of JavaScriptSerializer
         /// </summary>
         public static string FormatOutput(string jsonString)
         {
             var stringBuilder = new StringBuilder();
 
-            bool escaping = false;
-            bool inQuotes = false;
-            int indentation = 0;
+            var escaping = false;
+            var inQuotes = false;
+            var indentation = 0;
 
             foreach (char character in jsonString)
             {

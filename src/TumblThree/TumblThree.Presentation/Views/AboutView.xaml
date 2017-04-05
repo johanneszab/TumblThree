@@ -2,77 +2,90 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:p="clr-namespace:TumblThree.Presentation.Properties"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:dd="clr-namespace:TumblThree.Presentation.DesignData"
-        mc:Ignorable="d" Title="{x:Static p:Resources.About}" Icon="{StaticResource TumblThreeIcon}" MinWidth="200" MinHeight="120" 
+        mc:Ignorable="d" Title="{x:Static p:Resources.About}" Icon="{StaticResource TumblThreeIcon}" MinWidth="200"
+        MinHeight="120"
         SizeToContent="WidthAndHeight" ShowInTaskbar="False" ResizeMode="NoResize"
         d:DataContext="{d:DesignInstance dd:SampleAboutViewModel, IsDesignTimeCreatable=True}">
 
     <DockPanel>
         <Border DockPanel.Dock="Bottom" Background="{StaticResource DefaultBackground}" Margin="0,11,0,0">
-            <Button Content="{x:Static p:Resources.Ok}" IsDefault="True" IsCancel="True" HorizontalAlignment="Center" MinWidth="75" Margin="11"/>
+            <Button Content="{x:Static p:Resources.Ok}" IsDefault="True" IsCancel="True" HorizontalAlignment="Center"
+                    MinWidth="75" Margin="11" />
         </Border>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Image Source="../Resources/Images/Tumblr.png"  Width="256" Margin="22,11,22,0"/>
+            <Image Source="../Resources/Images/Tumblr.png" Width="256" Margin="22,11,22,0" />
 
             <Grid Margin="0,11,22,11" VerticalAlignment="Center">
                 <Grid.Resources>
                     <Style TargetType="Label">
-                        <Setter Property="Margin" Value="6"/>
+                        <Setter Property="Margin" Value="6" />
                     </Style>
                 </Grid.Resources>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <Label Content="{x:Static p:Resources.Product}" Grid.Row="0"/>
-                <Label Content="{Binding ProductName}" Grid.Column="1"/>
+                <Label Content="{x:Static p:Resources.Product}" Grid.Row="0" />
+                <Label Content="{Binding ProductName}" Grid.Column="1" />
 
-                <Label Content="{x:Static p:Resources.Version}" Grid.Row="1"/>
-                <Label Content="{Binding Version}" Grid.Column="1" Grid.Row="1"/>
+                <Label Content="{x:Static p:Resources.Version}" Grid.Row="1" />
+                <Label Content="{Binding Version}" Grid.Column="1" Grid.Row="1" />
 
-                <Label Content="{x:Static p:Resources.License}" Grid.Row="2"/>
+                <Label Content="{x:Static p:Resources.License}" Grid.Row="2" />
                 <Label Grid.Column="1" Grid.Row="2">
-                    <Hyperlink Command="{Binding ShowWebsiteCommand}" CommandParameter="https://github.com/johanneszab/TumblThree/blob/master/LICENSE.txt">The MIT License (MIT)</Hyperlink>
+                    <Hyperlink Command="{Binding ShowWebsiteCommand}"
+                               CommandParameter="https://github.com/johanneszab/TumblThree/blob/master/LICENSE.txt">
+                        The
+                        MIT License (MIT)
+                    </Hyperlink>
                 </Label>
 
-                <Label Content="{x:Static p:Resources.Website}" Grid.Row="3"/>
+                <Label Content="{x:Static p:Resources.Website}" Grid.Row="3" />
                 <Label Grid.Column="1" Grid.Row="3">
-                    <Hyperlink Command="{Binding ShowWebsiteCommand}" CommandParameter="https://github.com/johanneszab/TumblThree">github.com/johanneszab/thumblthree</Hyperlink>
+                    <Hyperlink Command="{Binding ShowWebsiteCommand}"
+                               CommandParameter="https://github.com/johanneszab/TumblThree">
+                        github.com/johanneszab/thumblthree
+                    </Hyperlink>
                 </Label>
 
-                <Label Content="{x:Static p:Resources.ThirdPartySoftware}" Grid.Row="4"/>
+                <Label Content="{x:Static p:Resources.ThirdPartySoftware}" Grid.Row="4" />
                 <Label Grid.Column="1" Grid.Row="4">
-                    <Hyperlink Command="{Binding ShowWebsiteCommand}" CommandParameter="https://github.com/johanneszab/TumblThree/blob/master/LICENSE-3RD-PARTY.txt">Third-party Software and Licenses</Hyperlink>
+                    <Hyperlink Command="{Binding ShowWebsiteCommand}"
+                               CommandParameter="https://github.com/johanneszab/TumblThree/blob/master/LICENSE-3RD-PARTY.txt">
+                        Third-party
+                        Software and Licenses
+                    </Hyperlink>
                 </Label>
 
-                <Label Content="{x:Static p:Resources.OperatingSystem}" Grid.Row="5"/>
-                <Label Content="{Binding OSVersion}" Grid.Column="1" Grid.Row="5"/>
+                <Label Content="{x:Static p:Resources.OperatingSystem}" Grid.Row="5" />
+                <Label Content="{Binding OSVersion}" Grid.Column="1" Grid.Row="5" />
 
-                <Label Content="{x:Static p:Resources.NetFramework}" Grid.Row="6"/>
+                <Label Content="{x:Static p:Resources.NetFramework}" Grid.Row="6" />
                 <Label Grid.Column="1" Grid.Row="6">
                     <TextBlock>
-                        <Run Text="{Binding NetVersion, Mode=OneWay}"/>
+                        <Run Text="{Binding NetVersion, Mode=OneWay}" />
                         <Run>
                             <Run.Style>
                                 <Style TargetType="Run">
-                                    <Setter Property="Text" Value="{x:Static p:Resources.Info32Bit}"/>
+                                    <Setter Property="Text" Value="{x:Static p:Resources.Info32Bit}" />
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding Is64BitProcess}" Value="True">
-                                            <Setter Property="Text" Value="{x:Static p:Resources.Info64Bit}"/>
+                                            <Setter Property="Text" Value="{x:Static p:Resources.Info64Bit}" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -80,9 +93,12 @@
                         </Run>
                     </TextBlock>
                 </Label>
-                <Button Content="{x:Static p:Resources.CheckForUpdates}" Command="{Binding CheckForUpdatesCommand}" Grid.Row="7" MinHeight="26" Margin="6"/>
-                <Label Content="{Binding UpdateText}" Grid.Column="1" Grid.Row="7" MinHeight="26" Margin="6"/>
-                <Button Content="{x:Static p:Resources.DownloadNow}" Command="{Binding DownloadCommand}" Visibility="{Binding IsLatestVersionAvailable,Converter={StaticResource BoolToVisibilityConverter}}" Grid.Column="1" Grid.Row="7" MinHeight="26" Margin="6"/>
+                <Button Content="{x:Static p:Resources.CheckForUpdates}" Command="{Binding CheckForUpdatesCommand}"
+                        Grid.Row="7" MinHeight="26" Margin="6" />
+                <Label Content="{Binding UpdateText}" Grid.Column="1" Grid.Row="7" MinHeight="26" Margin="6" />
+                <Button Content="{x:Static p:Resources.DownloadNow}" Command="{Binding DownloadCommand}"
+                        Visibility="{Binding IsLatestVersionAvailable,Converter={StaticResource BoolToVisibilityConverter}}"
+                        Grid.Column="1" Grid.Row="7" MinHeight="26" Margin="6" />
             </Grid>
         </StackPanel>
     </DockPanel>

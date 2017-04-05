@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Markup;
+
 using TumblThree.Applications.Services;
 
 namespace TumblThree.Presentation.Services

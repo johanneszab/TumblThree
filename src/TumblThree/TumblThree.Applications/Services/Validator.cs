@@ -4,7 +4,8 @@
     {
         public static bool IsValidTumblrUrl(string url)
         {
-            return url != null && url.Length > 18 && url.Contains(".tumblr.com") && (url.StartsWith("http://", true, null) || url.StartsWith("https://", true, null));
+            return url != null && url.Length > 18 && url.Contains(".tumblr.com") &&
+                   (url.StartsWith("http://", true, null) || url.StartsWith("https://", true, null));
         }
     }
 }

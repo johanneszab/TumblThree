@@ -5,7 +5,7 @@
         xmlns:p="clr-namespace:TumblThree.Presentation.Properties"
         xmlns:dd="clr-namespace:TumblThree.Presentation.DesignData"
         xmlns:ctrl="clr-namespace:TumblThree.Presentation.Controls"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:TumblThree.Applications.ViewModels;assembly=TumblThree.Applications"
         mc:Ignorable="d" Title="AuthenticateView" Height="540" Width="600"
         d:DataContext="{d:DesignInstance vm:AuthenticateViewModel}">
@@ -13,11 +13,12 @@
 
     <Grid Margin="0" VerticalAlignment="Stretch" Grid.Row="0">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <WebBrowser x:Name="browser" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" Margin="10,10,10,10" VerticalAlignment="Top" Width="Auto" Height="Auto"/>
+        <WebBrowser x:Name="browser" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" Margin="10,10,10,10"
+                    VerticalAlignment="Top" Width="Auto" Height="Auto" />
     </Grid>
 </Window>
