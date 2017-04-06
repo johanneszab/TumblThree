@@ -116,7 +116,7 @@ namespace Guava.RateLimiter
         public static RateLimiter Create(double permitsPerSecond, long warmupPeriod, TimeUnit unit = TimeUnit.Seconds, double coldFactor = 3.0)
         {
             if(warmupPeriod < 0)
-                throw new ArgumentOutOfRangeException("warmupPeriod", "WarmupPeriod must not be negative");
+                throw new ArgumentOutOfRangeException(nameof(warmupPeriod), "WarmupPeriod must not be negative");
 
             return Create(SleepingStopwatch.CreateFromSystemTimer(), permitsPerSecond, warmupPeriod, unit, coldFactor);
         }
@@ -155,7 +155,7 @@ namespace Guava.RateLimiter
         protected RateLimiter(ISleepingStopwatch stopwatch)
         {
             if(stopwatch == null)
-                throw new ArgumentNullException("stopwatch");
+                throw new ArgumentNullException(nameof(stopwatch));
 
             this._stopwatch = stopwatch;
         }
@@ -183,7 +183,7 @@ namespace Guava.RateLimiter
         public void SetRate(double permitsPerSecond)
         {
             if (permitsPerSecond <= 0.0)
-                throw new ArgumentOutOfRangeException("permitsPerSecond", "Rate must be positive");
+                throw new ArgumentOutOfRangeException(nameof(permitsPerSecond), "Rate must be positive");
 
             lock (Mutex())
                 DoSetRate(permitsPerSecond, _stopwatch.ReadMicros());
@@ -295,13 +295,13 @@ namespace Guava.RateLimiter
 
         public override string ToString()
         {
-            return string.Format("RateLimiter[stableRate={0}fqps]", GetRate());
+            return $"RateLimiter[stableRate={GetRate()}fqps]";
         }
 
         private static void CheckPermits(int permits)
         {
             if(permits <= 0)
-                throw new ArgumentOutOfRangeException("permits", string.Format("Requested permits (0) must be positive", permits));
+                throw new ArgumentOutOfRangeException(nameof(permits), $"Requested permits ({permits}) must be positive");
         }
     }
 }

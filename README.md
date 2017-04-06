@@ -49,7 +49,8 @@ TumblThree is the code rewrite of [TumblTwo](https://github.com/johanneszab/Tumb
 
 * Key Mappings
 
-  * Currently mapped keys are: 
+  * Currently mapped keys are:
+  	* double click on a blog adds it to the queue
     * space -- start crawl
     * ctrl-space -- pause crawl
     * shift-space -- stop crawl
@@ -58,8 +59,8 @@ TumblThree is the code rewrite of [TumblTwo](https://github.com/johanneszab/Tumb
 	
 * Saved Settings
 
-  * Application settings are stored in _C:\Users\"Username"\AppData\Local\TumblThree_. 
-  * For each blog there is also an index file in the download location (default: in the _.\Blogs\_ folder relative to the executable) named after the _blogname_.tumblr. Here are blog relative information stored like what files have been downloaded, the url of the blog and when it was added. This allows you to move your downloaded files (photos, videos, audio files) to a different location without interfering with the backup process.
+  * Application settings are stored in _C:\\Users\\Username\\AppData\\Local\\TumblThree\\_. 
+  * For each blog there is also an index file in the download location (default: in the _.\\Blogs\\_ folder relative to the executable) named after the _blogname_.tumblr. Here are blog relative information stored like what files have been downloaded, the url of the blog and when it was added. This allows you to move your downloaded files (photos, videos, audio files) to a different location without interfering with the backup process.
 
 ### Current Limitations: ###
 
@@ -68,7 +69,7 @@ TumblThree is the code rewrite of [TumblTwo](https://github.com/johanneszab/Tumb
  
 ### How To Build The Source Code To Help Further Developing: ###
 
-* Download [Visual Studio](https://www.visualstudio.com/vs/community/).
+* Download [Visual Studio](https://www.visualstudio.com/vs/community/). The minimum required version is Visual Studio 2015 (C# 6.0 feature support).
 * Download the [source code as .zip file](https://github.com/johanneszab/TumblThree/archive/master.zip) or use the [GitHub Desktop](https://desktop.github.com/) and [checkout the code](https://github.com/johanneszab/TumblThree.git).
 * Open the TumblThree.sln solution file in the src/ directory of the code.
 * Build the Source once before editing anything. Build->Build Solution.
