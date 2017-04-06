@@ -104,6 +104,8 @@ namespace TumblThree.Applications.Downloader
             request.UserAgent =
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
             request.AllowAutoRedirect = true;
+            request.KeepAlive = true;
+            request.Pipelined = true;
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
             request.ReadWriteTimeout = shellService.Settings.TimeOut * 1000;
             request.Timeout = -1;

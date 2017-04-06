@@ -100,6 +100,9 @@ namespace TumblThree.Applications.Properties
         public int ConnectionTimeInterval { get; set; }
 
         [DataMember]
+        public int MaxNumberOfRetries { get; set; }
+
+        [DataMember]
         public int Bandwidth { get; set; }
 
         [DataMember]
@@ -226,6 +229,7 @@ namespace TumblThree.Applications.Properties
             LimitConnections = true;
             MaxConnections = 95;
             ConnectionTimeInterval = 60;
+            MaxNumberOfRetries = 10;
             Bandwidth = 102400;
             ImageSize = 1280;
             VideoSize = 1080;

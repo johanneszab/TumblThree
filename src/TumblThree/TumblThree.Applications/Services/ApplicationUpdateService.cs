@@ -42,7 +42,8 @@ namespace TumblThree.Applications.Services
                 request.ServicePoint.Expect100Continue = false;
                 request.UnsafeAuthenticatedConnectionSharing = true;
                 request.UserAgent = ApplicationInfo.ProductName;
-                request.KeepAlive = false;
+                request.KeepAlive = true;
+                request.Pipelined = true;
                 if (!string.IsNullOrEmpty(shellService.Settings.ProxyHost))
                 {
                     request.Proxy = new WebProxy(shellService.Settings.ProxyHost, int.Parse(shellService.Settings.ProxyPort));

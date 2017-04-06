@@ -149,6 +149,8 @@ namespace TumblThree.Applications
             request.UserAgent =
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
             request.AllowAutoRedirect = true;
+            request.KeepAlive = true;
+            request.Pipelined = true;
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
             request.ReadWriteTimeout = timeoutInSeconds * 1000;
             request.Timeout = -1;
@@ -173,24 +175,32 @@ namespace TumblThree.Applications
             }
         }
 
-        // FIXME: Needs a complete rewrite.
-        public static async Task<bool> DownloadFileWithResume(string url, string destinationPath, int bandwidthInKb, int timeoutInSeconds,
-    string proxyHost, string proxyPort, int numberOfRetries)
+        // FIXME: Needs a complete rewrite. Also a append/cache function for resuming incomplete files on the disk.
+        public static async Task<bool> DownloadFileWithResume(string url, string destinationPath, int bandwidthInKb,
+            int timeoutInSeconds,
+            string proxyHost, string proxyPort, int numberOfRetries)
         {
-            using (FileStream fileStream = File.Open(destinationPath, FileMode.Create, FileAccess.Write, FileShare.Read))
-            {
-                long totalBytesToReceive = 0;
-                long totalBytesReceived = 0;
-                int attemptCount = 0;
-                bool isFinished = false;
+            long totalBytesToReceive = 0;
+            long totalBytesReceived = 0;
+            var attemptCount = 0;
+            var isFinished = false;
 
+            if (File.Exists(destinationPath))
+            {
+                var fileInfo = new FileInfo(destinationPath);
+                totalBytesReceived = fileInfo.Length;
+            }
+            FileMode fileMode = totalBytesReceived > 0 ? FileMode.Append : FileMode.Create;
+
+            using (FileStream fileStream = File.Open(destinationPath, fileMode, FileAccess.Write, FileShare.Read))
+            {
                 while (!isFinished)
                 {
                     attemptCount += 1;
 
                     if (attemptCount > numberOfRetries)
                     {
-                        //throw new InvalidOperationException("Too many attempts to download. Aborting.");
+                        //throw new InvalidOperationException("Too many attempts. Aborting.");
                         return false;
                     }
 
@@ -199,10 +209,13 @@ namespace TumblThree.Applications
                         var request = (HttpWebRequest)WebRequest.Create(url);
                         request.Method = "GET";
                         request.ProtocolVersion = HttpVersion.Version11;
-                        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+                        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 |
+                                                               SecurityProtocolType.Tls;
                         request.UserAgent =
                             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
                         request.AllowAutoRedirect = true;
+                        request.KeepAlive = true;
+                        request.Pipelined = true;
                         request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
                         request.ReadWriteTimeout = timeoutInSeconds * 1000;
                         request.Timeout = -1;
@@ -216,17 +229,11 @@ namespace TumblThree.Applications
                             request.Proxy = null;
                         }
 
-                        if (totalBytesReceived != 0)
-                        {
-                            request.AddRange(totalBytesReceived, totalBytesToReceive);
-                        }
-
+                        request.AddRange(totalBytesReceived);
+                    
                         using (WebResponse response = await request.GetResponseAsync())
                         {
-                            if (totalBytesToReceive == 0)
-                            {
-                                totalBytesToReceive = response.ContentLength;
-                            }
+                            totalBytesToReceive = totalBytesReceived + response.ContentLength;
 
                             using (Stream responseStream = response.GetResponseStream())
                             {
@@ -243,11 +250,21 @@ namespace TumblThree.Applications
                                 }
                             }
                         }
-                        isFinished = true;
+                        if (totalBytesReceived >= totalBytesToReceive)
+                        {
+                            // isFinished = true;
+                            break;
+                        }
                     }
                     catch (IOException ioException)
                     {
-                        
+                        // file in use
+                        long win32ErrorCode = ioException.HResult & 0xFFFF;
+                        if (win32ErrorCode == 0x21 || win32ErrorCode == 0x20)
+                        {
+                            return false;
+                        }
+                        // else: retry (IOException: Received an unexpected EOF or 0 bytes from the transport stream)
                     }
                     catch (WebException webException)
                     {
@@ -261,7 +278,7 @@ namespace TumblThree.Applications
                         }
                     }
                 }
-                return isFinished;
+                return true;
             }
         }
 
