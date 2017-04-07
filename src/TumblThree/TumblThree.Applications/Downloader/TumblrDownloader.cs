@@ -361,16 +361,23 @@ namespace TumblThree.Applications.Downloader
                 tags = blog.Tags.Split(',').Select(x => x.Trim()).ToList();
             }
 
-            AddPhotoUrlToDownloadList(document, tags);
-            AddVideoUrlToDownloadList(document, tags);
-            AddAudioUrlToDownloadList(document, tags);
-            AddTextUrlToDownloadList(document, tags);
-            AddQuoteUrlToDownloadList(document, tags);
-            AddLinkUrlToDownloadList(document, tags);
-            AddConversationUrlToDownloadList(document, tags);
-            AddPhotoMetaUrlToDownloadList(document, tags);
-            AddVideoMetaUrlToDownloadList(document, tags);
-            AddAudioMetaUrlToDownloadList(document, tags);
+            try
+            {
+                AddPhotoUrlToDownloadList(document, tags);
+                AddVideoUrlToDownloadList(document, tags);
+                AddAudioUrlToDownloadList(document, tags);
+                AddTextUrlToDownloadList(document, tags);
+                AddQuoteUrlToDownloadList(document, tags);
+                AddLinkUrlToDownloadList(document, tags);
+                AddConversationUrlToDownloadList(document, tags);
+                AddPhotoMetaUrlToDownloadList(document, tags);
+                AddVideoMetaUrlToDownloadList(document, tags);
+                AddAudioMetaUrlToDownloadList(document, tags);
+            }
+            catch (NullReferenceException)
+            {
+                
+            }
         }
 
         private void AddPhotoUrlToDownloadList(XDocument document, IList<string> tags)
@@ -628,19 +635,15 @@ namespace TumblThree.Applications.Downloader
 
             if (shellService.Settings.VideoSize == 1080)
             {
-                if (videoUrl != null)
-                {
-                    AddToDownloadList(Tuple.Create(PostTypes.Video, videoUrl.Replace("/480", "") + ".mp4", post.Attribute("id").Value));
-                }
+
+                AddToDownloadList(Tuple.Create(PostTypes.Video, videoUrl.Replace("/480", "") + ".mp4", post.Attribute("id").Value));
             }
             else if (shellService.Settings.VideoSize == 480)
             {
-                if (videoUrl != null)
-                {
-                    AddToDownloadList(Tuple.Create(PostTypes.Video,
-                        "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + "_480.mp4",
-                        post.Attribute("id").Value));
-                }
+
+                AddToDownloadList(Tuple.Create(PostTypes.Video,
+                    "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + "_480.mp4",
+                    post.Attribute("id").Value));
             }
         }
 

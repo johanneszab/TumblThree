@@ -545,7 +545,7 @@ namespace TumblThree.Applications.ViewModels
                 CheckClipboard = true;
                 ShowPicturePreview = true;
                 DeleteOnlyIndex = true;
-                CheckOnlineStatusAtStartup = true;
+                CheckOnlineStatusAtStartup = false;
                 SkipGif = false;
                 EnablePreview = true;
                 RemoveIndexAfterCrawl = false;
