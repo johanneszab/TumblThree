@@ -176,9 +176,9 @@ namespace TumblThree.Applications
         }
 
         // FIXME: Needs a complete rewrite. Also a append/cache function for resuming incomplete files on the disk.
+        // Should be in separated class with support for events for downloadspeed, is resumable file?, etc.
         public static async Task<bool> DownloadFileWithResume(string url, string destinationPath, int bandwidthInKb,
-            int timeoutInSeconds,
-            string proxyHost, string proxyPort, int numberOfRetries)
+            int timeoutInSeconds, string proxyHost, string proxyPort, int numberOfRetries, CancellationToken ct)
         {
             long totalBytesToReceive = 0;
             long totalBytesReceived = 0;
@@ -219,6 +219,7 @@ namespace TumblThree.Applications
                         request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
                         request.ReadWriteTimeout = timeoutInSeconds * 1000;
                         request.Timeout = -1;
+                        ct.Register(() => request.Abort());
                         ServicePointManager.DefaultConnectionLimit = 400;
                         if (!string.IsNullOrEmpty(proxyHost))
                         {

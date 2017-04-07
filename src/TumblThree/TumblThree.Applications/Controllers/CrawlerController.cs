@@ -155,25 +155,20 @@ namespace TumblThree.Applications.Controllers
             for (var i = 0; i < shellService.Settings.ParallelBlogs; i++)
             {
                 runningTasks.Add(
-                    Task.Factory.StartNew(() => RunCrawlerTasks(cancellation.Token, pause.Token),
-                        cancellation.Token,
-                        TaskCreationOptions.LongRunning,
-                        TaskScheduler.Default).ContinueWith(task => { runningTasks.Clear(); }));
+                    Task.Run(() => RunCrawlerTasks(cancellation.Token, pause.Token),
+                        cancellation.Token).ContinueWith(task => { runningTasks.Clear(); }));
             }
         }
 
-        private void RunCrawlerTasks(CancellationToken ct, PauseToken pt)
+        private async Task RunCrawlerTasks(CancellationToken ct, PauseToken pt)
         {
             while (true)
             {
-                if (ct.IsCancellationRequested)
-                {
-                    throw new OperationCanceledException(ct);
-                }
+                ct.ThrowIfCancellationRequested();
 
                 if (pt.IsPaused)
                 {
-                    pt.WaitWhilePausedWithResponseAsyc().Wait();
+                    pt.WaitWhilePausedWithResponseAsyc().Wait(ct);
                 }
 
                 Monitor.Enter(lockObject);
@@ -207,7 +202,7 @@ namespace TumblThree.Applications.Controllers
                 else
                 {
                     Monitor.Exit(lockObject);
-                    Task.Delay(4000, ct).Wait();
+                    await Task.Delay(4000, ct);
                 }
             }
         }
@@ -226,7 +221,7 @@ namespace TumblThree.Applications.Controllers
                 Monitor.Enter(lockObject);
                 QueueOnDispatcher.CheckBeginInvokeOnUI(() => crawlerService.RemoveActiveItem(queueListItem));
                 Monitor.Exit(lockObject);
-                throw new OperationCanceledException(ct);
+                ct.ThrowIfCancellationRequested();
             }
             else
             {

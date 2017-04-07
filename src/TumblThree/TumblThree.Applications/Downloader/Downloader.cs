@@ -201,14 +201,15 @@ namespace TumblThree.Applications.Downloader
             return url;
         }
 
-        protected virtual async Task<bool> DownloadBinaryFile(string fileLocation, string url)
+        protected virtual async Task<bool> DownloadBinaryFile(string fileLocation, string url, CancellationToken ct)
         {
             try
             {
                 return await ThrottledStream.DownloadFileWithResume(url, fileLocation,
                     (shellService.Settings.Bandwidth / shellService.Settings.ParallelImages),
                     shellService.Settings.TimeOut, shellService.Settings.ProxyHost,
-                    shellService.Settings.ProxyPort, shellService.Settings.MaxNumberOfRetries);
+                    shellService.Settings.ProxyPort, shellService.Settings.MaxNumberOfRetries,
+                    ct);
             }
             catch (IOException ex) when ((ex.HResult & 0xFFFF) == 0x27 || (ex.HResult & 0xFFFF) == 0x70)
             {
@@ -223,11 +224,11 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        protected virtual async Task<bool> DownloadBinaryFile(string fileLocation, string fileLocationUrlList, string url)
+        protected virtual async Task<bool> DownloadBinaryFile(string fileLocation, string fileLocationUrlList, string url, CancellationToken ct)
         {
             if (!blog.DownloadUrlList)
             {
-                return await DownloadBinaryFile(fileLocation, url);
+                return await DownloadBinaryFile(fileLocation, url, ct);
             }
             else
             {
@@ -309,13 +310,13 @@ namespace TumblThree.Applications.Downloader
                     switch (downloadItem.Item1)
                     {
                         case PostTypes.Photo:
-                            await DownloadPhotoAsync(progress, downloadItem);
+                            await DownloadPhotoAsync(progress, downloadItem, ct);
                             break;
                         case PostTypes.Video:
-                            await DownloadVideoAsync(progress, downloadItem);
+                            await DownloadVideoAsync(progress, downloadItem, ct);
                             break;
                         case PostTypes.Audio:
-                            await DownloadAudioAsync(progress, downloadItem);
+                            await DownloadAudioAsync(progress, downloadItem, ct);
                             break;
                         case PostTypes.Text:
                             DownloadText(progress, downloadItem);
@@ -355,7 +356,7 @@ namespace TumblThree.Applications.Downloader
         }
 
         private async Task DownloadPhotoAsync(IProgress<DataModels.DownloadProgress> progress,
-            Tuple<PostTypes, string, string> downloadItem)
+            Tuple<PostTypes, string, string> downloadItem, CancellationToken ct)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string fileName = FileName(downloadItem);
@@ -366,7 +367,7 @@ namespace TumblThree.Applications.Downloader
             if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(GetCoreImageUrl(url))))
             {
                 UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, fileName);
-                if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url))
+                if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url, ct))
                 {
                     UpdateBlogPostCount(ref counter.Photos, value => blog.DownloadedPhotos = value);
                     UpdateBlogProgress(ref counter.TotalDownloads);
@@ -387,7 +388,7 @@ namespace TumblThree.Applications.Downloader
         }
 
         private async Task DownloadVideoAsync(IProgress<DataModels.DownloadProgress> progress,
-            Tuple<PostTypes, string, string> downloadItem)
+            Tuple<PostTypes, string, string> downloadItem, CancellationToken ct)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string fileName = FileName(downloadItem);
@@ -398,7 +399,7 @@ namespace TumblThree.Applications.Downloader
             if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(url)))
             {
                 UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, fileName);
-                if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url))
+                if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url, ct))
                 {
                     UpdateBlogPostCount(ref counter.Videos, value => blog.DownloadedVideos = value);
                     UpdateBlogProgress(ref counter.TotalDownloads);
@@ -412,7 +413,7 @@ namespace TumblThree.Applications.Downloader
         }
 
         private async Task DownloadAudioAsync(IProgress<DataModels.DownloadProgress> progress,
-            Tuple<PostTypes, string, string> downloadItem)
+            Tuple<PostTypes, string, string> downloadItem, CancellationToken ct)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string fileName = FileName(downloadItem);
@@ -423,7 +424,7 @@ namespace TumblThree.Applications.Downloader
             if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(url)))
             {
                 UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, fileName);
-                if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url))
+                if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url, ct))
                 {
                     UpdateBlogPostCount(ref counter.Audios, value => blog.DownloadedAudios = value);
                     UpdateBlogProgress(ref counter.TotalDownloads);
