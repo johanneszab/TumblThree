@@ -30,7 +30,7 @@ namespace TumblThree.Applications.Controllers
 
         #endregion
 
-        private readonly DelegateCommand addBlogCommand;
+        private readonly AsyncDelegateCommand addBlogCommand;
         private readonly DelegateCommand autoDownloadCommand;
         private readonly ObservableCollection<Blog> blogFiles;
         private readonly ICrawlerService crawlerService;
@@ -58,7 +58,7 @@ namespace TumblThree.Applications.Controllers
             this.managerViewModel = managerViewModel;
             DownloaderFactory = downloaderFactory;
             blogFiles = new ObservableCollection<Blog>();
-            addBlogCommand = new DelegateCommand(AddBlog, CanAddBlog);
+            addBlogCommand = new AsyncDelegateCommand(AddBlog, CanAddBlog);
             removeBlogCommand = new DelegateCommand(RemoveBlog, CanRemoveBlog);
             showFilesCommand = new DelegateCommand(ShowFiles, CanShowFiles);
             visitBlogCommand = new DelegateCommand(VisitBlog, CanVisitBlog);
@@ -168,8 +168,7 @@ namespace TumblThree.Applications.Controllers
 
         private Task<IReadOnlyList<IBlog>> GetFilesAsync(string directory)
         {
-            return Task<IReadOnlyList<IBlog>>.Factory.StartNew(() => GetFilesCore(directory),
-                TaskCreationOptions.LongRunning);
+            return Task.Run(() => GetFilesCore(directory));
         }
 
         private IReadOnlyList<IBlog> GetFilesCore(string directory)
@@ -248,10 +247,9 @@ namespace TumblThree.Applications.Controllers
             return Validator.IsValidTumblrUrl(crawlerService.NewBlogUrl);
         }
 
-        private void AddBlog()
+        private async Task AddBlog()
         {
-            Task.Factory.StartNew(() => AddBlogAsync(null),
-                TaskCreationOptions.LongRunning);
+            await AddBlogAsync(null);
         }
 
         private bool CanRemoveBlog()

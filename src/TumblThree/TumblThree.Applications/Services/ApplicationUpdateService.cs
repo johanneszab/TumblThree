@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Threading.Tasks;
 using System.Waf.Applications;
 using System.Xml;
 using System.Xml.Linq;
@@ -27,7 +28,7 @@ namespace TumblThree.Applications.Services
             this.shellService = shellService;
         }
 
-        public string GetLatestReleaseFromServer()
+        public async Task<string> GetLatestReleaseFromServer()
         {
             version = null;
             downloadLink = null;
@@ -54,7 +55,7 @@ namespace TumblThree.Applications.Services
                 }
 
                 string result;
-                using (var resp = request.GetResponse() as HttpWebResponse)
+                using (var resp = await request.GetResponseAsync() as HttpWebResponse)
                 {
                     var reader =
                         new StreamReader(resp.GetResponseStream());

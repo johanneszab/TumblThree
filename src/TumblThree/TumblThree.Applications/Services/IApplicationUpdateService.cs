@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace TumblThree.Applications.Services
 {
     public interface IApplicationUpdateService
     {
-        string GetLatestReleaseFromServer();
+        Task<string> GetLatestReleaseFromServer();
 
         bool IsNewVersionAvailable();
 

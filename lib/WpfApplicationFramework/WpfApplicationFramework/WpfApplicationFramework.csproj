@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Applications\ApplicationInfo.cs" />
+    <Compile Include="Applications\AsyncDelegateCommand.cs" />
     <Compile Include="Applications\CollectionChangedEventListener.cs" />
     <Compile Include="Applications\Controller.cs" />
     <Compile Include="Applications\DataModel.cs" />

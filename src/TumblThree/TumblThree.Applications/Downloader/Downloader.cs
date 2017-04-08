@@ -206,10 +206,7 @@ namespace TumblThree.Applications.Downloader
             try
             {
                 return await ThrottledStream.DownloadFileWithResume(url, fileLocation,
-                    (shellService.Settings.Bandwidth / shellService.Settings.ParallelImages),
-                    shellService.Settings.TimeOut, shellService.Settings.ProxyHost,
-                    shellService.Settings.ProxyPort, shellService.Settings.MaxNumberOfRetries,
-                    ct);
+                    shellService.Settings, ct);
             }
             catch (IOException ex) when ((ex.HResult & 0xFFFF) == 0x27 || (ex.HResult & 0xFFFF) == 0x70)
             {

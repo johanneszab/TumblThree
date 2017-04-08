@@ -18,7 +18,7 @@ namespace TumblThree.Applications.ViewModels
     {
         private readonly IApplicationUpdateService applicationUpdateService;
         private readonly DelegateCommand showWebsiteCommand;
-        private readonly DelegateCommand checkForUpdatesCommand;
+        private readonly AsyncDelegateCommand checkForUpdatesCommand;
         private readonly DelegateCommand downloadCommand;
         private bool isCheckInProgress;
         private bool isLatestVersionAvailable;
@@ -29,7 +29,7 @@ namespace TumblThree.Applications.ViewModels
             : base(view)
         {
             showWebsiteCommand = new DelegateCommand(ShowWebsite);
-            checkForUpdatesCommand = new DelegateCommand(CheckForUpdates);
+            checkForUpdatesCommand = new AsyncDelegateCommand(CheckForUpdates);
             downloadCommand = new DelegateCommand(DownloadNewVersion);
             this.applicationUpdateService = applicationUpdateService;
         }
@@ -115,7 +115,7 @@ namespace TumblThree.Applications.ViewModels
             Process.Start(new ProcessStartInfo(applicationUpdateService.GetDownloadUri().AbsoluteUri));
         }
 
-        private void CheckForUpdates()
+        private async Task CheckForUpdates()
         {
             if (IsCheckInProgress || IsLatestVersionAvailable)
             {
@@ -125,15 +125,13 @@ namespace TumblThree.Applications.ViewModels
             IsCheckInProgress = true;
             IsLatestVersionAvailable = false;
             UpdateText = string.Empty;
-            TaskScheduler scheduler = TaskScheduler.FromCurrentSynchronizationContext();
-            Task<string>.Factory.StartNew(() => applicationUpdateService.GetLatestReleaseFromServer())
-                        .ContinueWith(CheckForUpdatesComplete, scheduler);
+            await CheckForUpdatesComplete(applicationUpdateService.GetLatestReleaseFromServer());
         }
 
-        private void CheckForUpdatesComplete(Task<string> task)
+        private async Task CheckForUpdatesComplete(Task<string> task)
         {
             IsCheckInProgress = false;
-            if (task.Result == null)
+            if (await task == null)
             {
                 if (applicationUpdateService.IsNewVersionAvailable())
                 {
@@ -148,7 +146,7 @@ namespace TumblThree.Applications.ViewModels
             }
             else
             {
-                UpdateText = task.Result;
+                UpdateText = await task;
             }
         }
     }

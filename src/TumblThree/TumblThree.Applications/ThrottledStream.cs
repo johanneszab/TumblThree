@@ -140,8 +140,7 @@ namespace TumblThree.Applications
             parent.Write(buffer, offset, count);
         }
 
-        public static async Task<ThrottledStream> ReadFromURLIntoStream(string url, int bandwidthInKb, int timeoutInSeconds,
-            string proxyHost, string proxyPort)
+        public static async Task<ThrottledStream> ReadFromURLIntoStream(string url, AppSettings settings)
         {
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "GET";
@@ -152,12 +151,12 @@ namespace TumblThree.Applications
             request.KeepAlive = true;
             request.Pipelined = true;
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-            request.ReadWriteTimeout = timeoutInSeconds * 1000;
+            request.ReadWriteTimeout = settings.TimeOut * 1000;
             request.Timeout = -1;
             ServicePointManager.DefaultConnectionLimit = 400;
-            if (!string.IsNullOrEmpty(proxyHost))
+            if (!string.IsNullOrEmpty(settings.ProxyHost))
             {
-                request.Proxy = new WebProxy(proxyHost, int.Parse(proxyPort));
+                request.Proxy = new WebProxy(settings.ProxyHost, int.Parse(settings.ProxyPort));
             }
             else
             {
@@ -167,7 +166,7 @@ namespace TumblThree.Applications
             if (HttpStatusCode.OK == response.StatusCode)
             {
                 Stream responseStream = response.GetResponseStream();
-                return new ThrottledStream(responseStream, bandwidthInKb * 1024);
+                return new ThrottledStream(responseStream, settings.Bandwidth * 1024);
             }
             else
             {
@@ -177,8 +176,8 @@ namespace TumblThree.Applications
 
         // FIXME: Needs a complete rewrite. Also a append/cache function for resuming incomplete files on the disk.
         // Should be in separated class with support for events for downloadspeed, is resumable file?, etc.
-        public static async Task<bool> DownloadFileWithResume(string url, string destinationPath, int bandwidthInKb,
-            int timeoutInSeconds, string proxyHost, string proxyPort, int numberOfRetries, CancellationToken ct)
+        // Should check if file is complete, else it will trigger an WebException -- 416 requested range not satisfiable at every request 
+        public static async Task<bool> DownloadFileWithResume(string url, string destinationPath, AppSettings settings, CancellationToken ct)
         {
             long totalBytesToReceive = 0;
             long totalBytesReceived = 0;
@@ -198,7 +197,7 @@ namespace TumblThree.Applications
                 {
                     attemptCount += 1;
 
-                    if (attemptCount > numberOfRetries)
+                    if (attemptCount > settings.MaxNumberOfRetries)
                     {
                         //throw new InvalidOperationException("Too many attempts. Aborting.");
                         return false;
@@ -217,13 +216,13 @@ namespace TumblThree.Applications
                         request.KeepAlive = true;
                         request.Pipelined = true;
                         request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-                        request.ReadWriteTimeout = timeoutInSeconds * 1000;
+                        request.ReadWriteTimeout = settings.TimeOut * 1000;
                         request.Timeout = -1;
                         ct.Register(() => request.Abort());
                         ServicePointManager.DefaultConnectionLimit = 400;
-                        if (!string.IsNullOrEmpty(proxyHost))
+                        if (!string.IsNullOrEmpty(settings.ProxyHost))
                         {
-                            request.Proxy = new WebProxy(proxyHost, int.Parse(proxyPort));
+                            request.Proxy = new WebProxy(settings.ProxyHost, int.Parse(settings.ProxyPort));
                         }
                         else
                         {
@@ -238,7 +237,7 @@ namespace TumblThree.Applications
 
                             using (Stream responseStream = response.GetResponseStream())
                             {
-                                using (var throttledStream = new ThrottledStream(responseStream, bandwidthInKb * 1024))
+                                using (var throttledStream = new ThrottledStream(responseStream, settings.Bandwidth * 1024))
                                 {
                                     var buffer = new byte[4096];
                                     int bytesRead = throttledStream.Read(buffer, 0, buffer.Length);
