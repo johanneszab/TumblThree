@@ -199,7 +199,7 @@ namespace TumblThree.Applications.Controllers
 
                     crawlerService.AddActiveItems(nextQueueItem);
                     Monitor.Exit(lockObject);
-                    StartSiteSpecificDownloader(nextQueueItem, ct, pt);
+                    await StartSiteSpecificDownloader(nextQueueItem, ct, pt);
                 }
                 else
                 {
@@ -209,21 +209,20 @@ namespace TumblThree.Applications.Controllers
             }
         }
 
-        private void StartSiteSpecificDownloader(QueueListItem queueListItem, CancellationToken ct, PauseToken pt)
+        private async Task StartSiteSpecificDownloader(QueueListItem queueListItem, CancellationToken ct, PauseToken pt)
         {
             IBlog blog = queueListItem.Blog;
             blog.Dirty = true;
             ProgressThrottler<DownloadProgress> progress = SetupThrottledQueueListProgress(queueListItem);
 
             IDownloader downloader = DownloaderFactory.GetDownloader(blog.BlogType, shellService, crawlerService, blog);
-            downloader.Crawl(progress, ct, pt);
+            await downloader.Crawl(progress, ct, pt);
 
             if (ct.IsCancellationRequested)
             {
                 Monitor.Enter(lockObject);
                 QueueOnDispatcher.CheckBeginInvokeOnUI(() => crawlerService.RemoveActiveItem(queueListItem));
                 Monitor.Exit(lockObject);
-                ct.ThrowIfCancellationRequested();
             }
             else
             {

@@ -64,13 +64,13 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        public void Crawl(IProgress<DownloadProgress> progress, CancellationToken ct, PauseToken pt)
+        public async Task Crawl(IProgress<DownloadProgress> progress, CancellationToken ct, PauseToken pt)
         {
             Logger.Verbose("TumblrDownloader.Crawl:Start");
 
-            Task<Tuple<ulong, bool>> grabber = Task.Run(() => GetUrls(progress, ct, pt));
-            Task<bool> downloader = Task.Run(() => DownloadBlog(progress, ct, pt));
-            Tuple<ulong, bool> grabberResult = grabber.Result;
+            Task<Tuple<ulong, bool>> grabber = GetUrlsAsync(progress, ct, pt);
+            Task<bool> downloader = DownloadBlogAsync(progress, ct, pt);
+            Tuple<ulong, bool> grabberResult = await grabber;
             bool apiLimitHit = grabberResult.Item2;
 
             UpdateProgressQueueInformation(progress, Resources.ProgressUniqueDownloads);
@@ -80,7 +80,7 @@ namespace TumblThree.Applications.Downloader
             blog.DuplicateAudios = DetermineDuplicates(PostTypes.Audio);
             blog.TotalCount = (blog.TotalCount - blog.DuplicatePhotos - blog.DuplicateAudios - blog.DuplicateVideos);
 
-            bool finishedDownloading = downloader.Result;
+            bool finishedDownloading = await downloader;
 
             if (!ct.IsCancellationRequested)
             {
@@ -263,7 +263,7 @@ namespace TumblThree.Applications.Downloader
             return lastId;
         }
 
-        private async Task<Tuple<ulong, bool>> GetUrls(IProgress<DownloadProgress> progress, CancellationToken ct, PauseToken pt)
+        private async Task<Tuple<ulong, bool>> GetUrlsAsync(IProgress<DownloadProgress> progress, CancellationToken ct, PauseToken pt)
         {
             var semaphoreSlim = new SemaphoreSlim(shellService.Settings.ParallelScans);
             var trackedTasks = new List<Task>();

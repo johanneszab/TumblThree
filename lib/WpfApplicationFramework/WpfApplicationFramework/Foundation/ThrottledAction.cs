@@ -28,6 +28,7 @@ namespace System.Waf.Foundation
     /// <remarks>This class is thread-safe.</remarks>
     public class ThrottledAction
     {
+        private readonly TaskScheduler taskScheduler;
         private readonly object timerLock = new object();
         private readonly Timer timer;
         private readonly Action action;
@@ -56,6 +57,7 @@ namespace System.Waf.Foundation
         public ThrottledAction(Action action, ThrottledActionMode mode, TimeSpan delayTime)
         {
             if (action == null) { throw new ArgumentNullException("action"); }
+            this.taskScheduler = SynchronizationContext.Current != null ? TaskScheduler.FromCurrentSynchronizationContext() : TaskScheduler.Default;
             this.timer = new Timer(TimerCallback);
             this.action = action;
             this.mode = mode;
@@ -103,7 +105,7 @@ namespace System.Waf.Foundation
                 isRunning = false;
             }
 
-            Task.Run(action, CancellationToken.None);
+            Task.Factory.StartNew(action, CancellationToken.None, TaskCreationOptions.DenyChildAttach, taskScheduler);
         }
     }
 }

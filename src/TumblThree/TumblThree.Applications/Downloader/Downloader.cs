@@ -279,7 +279,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        protected virtual async Task<bool> DownloadBlog(IProgress<DataModels.DownloadProgress> progress, CancellationToken ct,
+        protected virtual async Task<bool> DownloadBlogAsync(IProgress<DataModels.DownloadProgress> progress, CancellationToken ct,
             PauseToken pt)
         {
             var semaphoreSlim = new SemaphoreSlim(shellService.Settings.ParallelImages / crawlerService.ActiveItems.Count);

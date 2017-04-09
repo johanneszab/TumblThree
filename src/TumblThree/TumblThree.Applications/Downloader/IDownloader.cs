@@ -8,7 +8,7 @@ namespace TumblThree.Applications.Downloader
 {
     public interface IDownloader
     {
-        void Crawl(IProgress<DownloadProgress> progress, CancellationToken ct, PauseToken pt);
+        Task Crawl(IProgress<DownloadProgress> progress, CancellationToken ct, PauseToken pt);
 
         Task IsBlogOnlineAsync();
 
