@@ -383,7 +383,7 @@ namespace TumblThree.Applications.Controllers
                 // Count each whitespace as new url
                 string[] urls = Clipboard.GetText().Split();
 
-                AddBlogBatchedAsync(urls);
+                Task addBlogBatchedTask = AddBlogBatchedAsync(urls);
             }
         }
 

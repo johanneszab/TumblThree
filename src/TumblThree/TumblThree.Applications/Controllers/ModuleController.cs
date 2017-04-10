@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.IO;
+using System.Threading.Tasks;
 using System.Waf.Applications;
 using System.Windows.Threading;
 
@@ -94,7 +95,7 @@ namespace TumblThree.Applications.Controllers
             ManagerController.QueueManager = queueManager;
             ManagerController.ManagerSettings = managerSettings;
             ManagerController.BlogManagerFinishedLoading += OnBlogManagerFinishedLoading;
-            ManagerController.Initialize();
+            Task managerControllerInit = ManagerController.Initialize();
             QueueController.QueueSettings = queueSettings;
             QueueController.QueueManager = queueManager;
             QueueController.Initialize();
