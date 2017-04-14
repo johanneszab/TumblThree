@@ -69,7 +69,7 @@ namespace TumblThree.Applications.ViewModels
         private int videoSize;
 
         [ImportingConstructor]
-        public SettingsViewModel(ISettingsView view, IShellService shellService, CrawlerService crawlerService,
+        public SettingsViewModel(ISettingsView view, IShellService shellService, ICrawlerService crawlerService,
             ExportFactory<AuthenticateViewModel> authenticateViewModelFactory)
             : base(view)
         {
@@ -91,7 +91,7 @@ namespace TumblThree.Applications.ViewModels
 
         public IShellService ShellService { get; }
 
-        public CrawlerService CrawlerService { get; }
+        public ICrawlerService CrawlerService { get; }
 
         public FolderBrowserDataModel FolderBrowser
         {
@@ -387,10 +387,10 @@ namespace TumblThree.Applications.ViewModels
         {
             if (AutoDownload)
             {
-                if (CrawlerService.IsTimerSet == false)
+                if (!CrawlerService.IsTimerSet)
                 {
                     TimeSpan alertTime;
-                    TimeSpan.TryParse(settings.TimerInterval, out alertTime);
+                    TimeSpan.TryParse(TimerInterval, out alertTime);
                     DateTime current = DateTime.Now;
                     TimeSpan timeToGo = alertTime - current.TimeOfDay;
                     if (timeToGo < TimeSpan.Zero)
@@ -424,8 +424,7 @@ namespace TumblThree.Applications.ViewModels
 
         private void DisplayFolderBrowser()
         {
-            var dialog = new System.Windows.Forms.FolderBrowserDialog();
-            dialog.SelectedPath = DownloadLocation;
+            var dialog = new System.Windows.Forms.FolderBrowserDialog { SelectedPath = DownloadLocation };
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 DownloadLocation = dialog.SelectedPath;

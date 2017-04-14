@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Waf.Foundation;
 using System.Windows.Input;
 
@@ -62,9 +63,14 @@ namespace TumblThree.Presentation.DesignData
 
         public bool IsPaused { get; set; }
 
+        public bool IsTimerSet { get; set; }
+
+
         public string NewBlogUrl { get; set; }
 
         public Guava.RateLimiter.RateLimiter Timeconstraint { get; set; }
+
+        public Timer Timer { get; set; }
 
         public void SetActiveBlogFiles(IEnumerable<IBlog> blogFilesToAdd)
         {

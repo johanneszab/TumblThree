@@ -29,8 +29,6 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref oauthCallbackUrl, value); }
         }
 
-        //public IView View { get; set; }
-
         public void ShowDialog(object owner)
         {
             ViewCore.ShowDialog(owner);

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Threading;
 using System.Waf.Foundation;
 using System.Windows.Input;
 
@@ -36,11 +37,15 @@ namespace TumblThree.Applications.Services
 
         bool IsPaused { get; set; }
 
+        bool IsTimerSet { get; set; }
+
         string NewBlogUrl { get; set; }
 
         IReadOnlyObservableList<QueueListItem> ActiveItems { get; }
 
         RateLimiter Timeconstraint { get; set; }
+
+        Timer Timer { get; set; }
 
         void AddActiveItems(QueueListItem itemToAdd);
 

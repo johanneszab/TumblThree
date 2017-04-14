@@ -59,9 +59,9 @@ namespace TumblThree.Domain.Models
                 file.Location = Path.Combine((Directory.GetParent(fileLocation).FullName));
                 return file;
             }
-            catch (InvalidOperationException ex)
+            catch (ArgumentException ex)
             {
-                ex.Data["Filename"] = fileLocation;
+                ex.Data.Add("Filename", fileLocation);
                 throw;
             }
         }

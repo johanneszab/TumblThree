@@ -543,9 +543,9 @@ namespace TumblThree.Domain.Models
                     return blog;
                 }
             }
-            catch (SerializationException ex)
+            catch (ArgumentException ex)
             {
-                ex.Data["Filename"] = fileLocation;
+                ex.Data.Add("Filename", fileLocation);
                 throw;
             }
         }
