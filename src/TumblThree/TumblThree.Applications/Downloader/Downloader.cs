@@ -205,7 +205,7 @@ namespace TumblThree.Applications.Downloader
         {
             try
             {
-                return await ThrottledStream.DownloadFileWithResume(url, fileLocation,
+                return await ThrottledStream.DownloadFileWithResumeAsync(url, fileLocation,
                     shellService.Settings, ct);
             }
             catch (IOException ex) when ((ex.HResult & 0xFFFF) == 0x27 || (ex.HResult & 0xFFFF) == 0x70)

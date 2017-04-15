@@ -174,32 +174,63 @@ namespace TumblThree.Applications
             }
         }
 
+        private static async Task<long> CheckDownloadSizeAsync(string url, AppSettings settings, CancellationToken ct)
+        {
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "GET";
+            request.ProtocolVersion = HttpVersion.Version11;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 |
+                                                   SecurityProtocolType.Tls;
+            request.UserAgent =
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
+            request.AllowAutoRedirect = true;
+            request.KeepAlive = true;
+            request.Pipelined = true;
+            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+            request.ReadWriteTimeout = settings.TimeOut * 1000;
+            request.Timeout = -1;
+            ct.Register(() => request.Abort());
+            ServicePointManager.DefaultConnectionLimit = 400;
+            if (!string.IsNullOrEmpty(settings.ProxyHost))
+            {
+                request.Proxy = new WebProxy(settings.ProxyHost, int.Parse(settings.ProxyPort));
+            }
+            else
+            {
+                request.Proxy = null;
+            }
+
+            using (WebResponse response = await request.GetResponseAsync())
+            {
+                return response.ContentLength;
+            }
+        }
+
         // FIXME: Needs a complete rewrite. Also a append/cache function for resuming incomplete files on the disk.
         // Should be in separated class with support for events for downloadspeed, is resumable file?, etc.
         // Should check if file is complete, else it will trigger an WebException -- 416 requested range not satisfiable at every request 
-        public static async Task<bool> DownloadFileWithResume(string url, string destinationPath, AppSettings settings, CancellationToken ct)
+        public static async Task<bool> DownloadFileWithResumeAsync(string url, string destinationPath, AppSettings settings, CancellationToken ct)
         {
-            long totalBytesToReceive = 0;
             long totalBytesReceived = 0;
             var attemptCount = 0;
-            var isFinished = false;
 
             if (File.Exists(destinationPath))
             {
                 var fileInfo = new FileInfo(destinationPath);
                 totalBytesReceived = fileInfo.Length;
+                if (await CheckDownloadSizeAsync(url, settings, ct) == totalBytesReceived)
+                    return true;
             }
             FileMode fileMode = totalBytesReceived > 0 ? FileMode.Append : FileMode.Create;
 
             using (FileStream fileStream = File.Open(destinationPath, fileMode, FileAccess.Write, FileShare.Read))
             {
-                while (!isFinished)
+                while (true)
                 {
                     attemptCount += 1;
 
                     if (attemptCount > settings.MaxNumberOfRetries)
                     {
-                        //throw new InvalidOperationException("Too many attempts. Aborting.");
                         return false;
                     }
 
@@ -230,7 +261,8 @@ namespace TumblThree.Applications
                         }
 
                         request.AddRange(totalBytesReceived);
-                    
+
+                        long totalBytesToReceive = 0;
                         using (WebResponse response = await request.GetResponseAsync())
                         {
                             totalBytesToReceive = totalBytesReceived + response.ContentLength;
@@ -252,7 +284,6 @@ namespace TumblThree.Applications
                         }
                         if (totalBytesReceived >= totalBytesToReceive)
                         {
-                            // isFinished = true;
                             break;
                         }
                     }
@@ -264,7 +295,7 @@ namespace TumblThree.Applications
                         {
                             return false;
                         }
-                        // else: retry (IOException: Received an unexpected EOF or 0 bytes from the transport stream)
+                        // retry (IOException: Received an unexpected EOF or 0 bytes from the transport stream)
                     }
                     catch (WebException webException)
                     {

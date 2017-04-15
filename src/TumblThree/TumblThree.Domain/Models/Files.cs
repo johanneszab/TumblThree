@@ -12,6 +12,8 @@ namespace TumblThree.Domain.Models
     [DataContract]
     public class Files : Model, IFiles
     {
+        private List<string> links;
+
         public Files() : this(string.Empty, string.Empty, BlogTypes.tumblr)
         {
         }
@@ -21,6 +23,7 @@ namespace TumblThree.Domain.Models
             Name = name;
             Location = location;
             BlogType = blogType;
+            this.links = new List<string>();
         }
 
         [DataMember]
@@ -33,7 +36,11 @@ namespace TumblThree.Domain.Models
         public BlogTypes BlogType { get; set; }
 
         [DataMember]
-        public IList<string> Links { get; set; }
+        public List<string> Links
+        {
+            get { return links; }
+            set { SetProperty(ref links, value); }
+        }
 
         public IFiles Load(string fileLocation)
         {
@@ -42,7 +49,7 @@ namespace TumblThree.Domain.Models
                 using (var stream = new FileStream(fileLocation,
                     FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    var serializer = new DataContractJsonSerializer(this.GetType());
+                    var serializer = new DataContractJsonSerializer(typeof(TumblrFiles));
                     var file = (Files)serializer.ReadObject(stream);
                     file.Location = Path.Combine((Directory.GetParent(fileLocation).FullName));
                     return file;
@@ -70,7 +77,7 @@ namespace TumblThree.Domain.Models
                         using (XmlDictionaryWriter writer = JsonReaderWriterFactory.CreateJsonWriter(
                             stream, Encoding.UTF8, true, true, "  "))
                         {
-                            var serializer = new DataContractJsonSerializer(this.GetType());
+                            var serializer = new DataContractJsonSerializer(typeof(TumblrFiles));
                             serializer.WriteObject(writer, this);
                             writer.Flush();
                         }
@@ -85,7 +92,7 @@ namespace TumblThree.Domain.Models
                         using (XmlDictionaryWriter writer = JsonReaderWriterFactory.CreateJsonWriter(
                             stream, Encoding.UTF8, true, true, "  "))
                         {
-                            var serializer = new DataContractJsonSerializer(this.GetType());
+                            var serializer = new DataContractJsonSerializer(typeof(TumblrFiles));
                             serializer.WriteObject(writer, this);
                             writer.Flush();
                         }

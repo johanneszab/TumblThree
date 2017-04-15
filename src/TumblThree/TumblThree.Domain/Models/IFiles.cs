@@ -5,7 +5,7 @@ namespace TumblThree.Domain.Models
 {
     public interface IFiles : INotifyPropertyChanged
     {
-        IList<string> Links { get; set; }
+        List<string> Links { get; set; }
 
         bool Save();
 

@@ -43,6 +43,9 @@ namespace TumblThree.Domain.Models
             BlogType = blogType;
             ChildId = Path.Combine(location, Name + "_files." + blogType);
             Location = location;
+
+            DateAdded = DateTime.Now;
+            LastCompleteCrawl = new DateTime(0L, DateTimeKind.Utc);
         }
 
         [DataMember]
@@ -360,7 +363,7 @@ namespace TumblThree.Domain.Models
                 using (var stream = new FileStream(fileLocation,
                     FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    var serializer = new DataContractJsonSerializer(this.GetType());
+                    var serializer = new DataContractJsonSerializer(typeof(TumblrBlog));
                     var blog = (Blog)serializer.ReadObject(stream);
                     blog.Location = Path.Combine((Directory.GetParent(fileLocation).FullName));
                     blog.ChildId = Path.Combine(blog.Location, blog.Name + "_files.tumblr");
@@ -402,7 +405,7 @@ namespace TumblThree.Domain.Models
                     using (XmlDictionaryWriter writer = JsonReaderWriterFactory.CreateJsonWriter(
                         stream, Encoding.UTF8, true, true, "  "))
                     {
-                        var serializer = new DataContractJsonSerializer(this.GetType());
+                        var serializer = new DataContractJsonSerializer(typeof(TumblrBlog));
                         serializer.WriteObject(writer, this);
                         writer.Flush();
                     }
@@ -417,7 +420,7 @@ namespace TumblThree.Domain.Models
                     using (XmlDictionaryWriter writer = JsonReaderWriterFactory.CreateJsonWriter(
                         stream, Encoding.UTF8, true, true, "  "))
                     {
-                        var serializer = new DataContractJsonSerializer(this.GetType());
+                        var serializer = new DataContractJsonSerializer(typeof(TumblrBlog));
                         serializer.WriteObject(writer, this);
                         writer.Flush();
                     }
