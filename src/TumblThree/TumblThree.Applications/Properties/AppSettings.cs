@@ -108,8 +108,10 @@ namespace TumblThree.Applications.Properties
         [DataMember]
         public int ImageSize { get; set; }
 
+        [DataMember]
         public int VideoSize { get; set; }
 
+        [DataMember]
         public string BlogType { get; set; }
 
         [DataMember]

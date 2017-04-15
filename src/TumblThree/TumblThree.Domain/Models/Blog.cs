@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Waf.Foundation;
 
 namespace TumblThree.Domain.Models
@@ -50,7 +49,6 @@ namespace TumblThree.Domain.Models
         private IList<string> links;
         private Exception loadError;
         private string location;
-
         private string name;
         private string notes;
         private int numberOfLinks;
@@ -60,6 +58,7 @@ namespace TumblThree.Domain.Models
         private int posts;
         private int progress;
         private int quotes;
+        private string tags;
         private int rating;
         private PostTypes state;
         private int texts;
@@ -83,6 +82,7 @@ namespace TumblThree.Domain.Models
             downloadedImages = 0;
             totalCount = 0;
             rating = 0;
+            tags = string.Empty;
             progress = 0;
             posts = 0;
             texts = 0;
@@ -293,6 +293,16 @@ namespace TumblThree.Domain.Models
         {
             get { return totalCount; }
             set { SetProperty(ref totalCount, value); }
+        }
+
+        public string Tags
+        {
+            get { return tags; }
+            set
+            {
+                SetProperty(ref tags, value);
+                Dirty = true;
+            }
         }
 
         public int Rating

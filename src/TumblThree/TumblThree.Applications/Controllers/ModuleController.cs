@@ -16,9 +16,9 @@ namespace TumblThree.Applications.Controllers
     [Export(typeof(IModuleController)), Export]
     internal class ModuleController : IModuleController
     {
-        private const string appSettingsFileName = "Settings.xml";
-        private const string managerSettingsFileName = "Manager.xml";
-        private const string queueSettingsFileName = "Queuelist.xml";
+        private const string appSettingsFileName = "Settings.json";
+        private const string managerSettingsFileName = "Manager.json";
+        private const string queueSettingsFileName = "Queuelist.json";
         private readonly Lazy<CrawlerController> crawlerController;
         private readonly Lazy<DetailsController> detailsController;
         private readonly IEnvironmentService environmentService;

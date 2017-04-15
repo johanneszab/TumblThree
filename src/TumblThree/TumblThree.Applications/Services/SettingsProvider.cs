@@ -1,7 +1,8 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.IO;
-using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
+using System.Text;
 
 namespace TumblThree.Applications.Services
 {
@@ -25,7 +26,7 @@ namespace TumblThree.Applications.Services
             {
                 using (var stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
                 {
-                    var serializer = new DataContractSerializer(typeof(T), knownTypes);
+                    var serializer = new DataContractJsonSerializer(typeof(T), knownTypes);
                     return (T)serializer.ReadObject(stream) ?? new T();
                 }
             }
@@ -54,8 +55,13 @@ namespace TumblThree.Applications.Services
             }
             using (var stream = new FileStream(fileName, FileMode.Create, FileAccess.Write))
             {
-                var serializer = new DataContractSerializer(settings.GetType(), knownTypes);
-                serializer.WriteObject(stream, settings);
+                using (var writer = JsonReaderWriterFactory.CreateJsonWriter(
+                    stream, Encoding.UTF8, true, true, "  "))
+                {
+                    var serializer = new DataContractJsonSerializer(settings.GetType(), knownTypes);
+                    serializer.WriteObject(writer, settings);
+                    writer.Flush();
+                }
             }
         }
     }

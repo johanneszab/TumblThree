@@ -14,6 +14,8 @@ namespace TumblThree.Domain.Models
 
         string ChildId { get; set; }
 
+        string Tags { get; set; }
+
         int Rating { get; set; }
 
         int Progress { get; set; }

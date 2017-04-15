@@ -14,7 +14,7 @@ namespace TumblThree.Presentation.Converters
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             var crawlingQueuelistItem = (ReadOnlyObservableList<QueueListItem>)values[0];
-            var currentQueuelistItem = (TumblrBlog)values[1];
+            var currentQueuelistItem = (IBlog)values[1];
 
             if (crawlingQueuelistItem.Any(item => item.Blog.Name.Contains(currentQueuelistItem.Name)))
             {

@@ -5,6 +5,7 @@ using System.Waf.Foundation;
 
 namespace TumblThree.Domain.Models
 {
+    [Serializable]
     public class Files : Model, IFiles
     {
         private BlogTypes blogType;
