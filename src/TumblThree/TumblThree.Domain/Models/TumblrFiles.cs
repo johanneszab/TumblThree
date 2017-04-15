@@ -1,21 +1,18 @@
 ﻿using System;
+using System.Runtime.Serialization;
 
 namespace TumblThree.Domain.Models
 {
-    [Serializable]
+    [DataContract]
     public class TumblrFiles : Files
     {
-        private string version;
 
         public TumblrFiles(string name, string location, BlogTypes blogType) : base(name, location, blogType)
         {
-            version = "1";
+            Version = "1";
         }
 
-        public string Version
-        {
-            get { return version; }
-            set { SetProperty(ref version, value); }
-        }
+        [DataMember]
+        public string Version { get; set; }
     }
 }

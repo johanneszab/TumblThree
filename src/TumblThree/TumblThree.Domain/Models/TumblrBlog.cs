@@ -1,20 +1,14 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Runtime.Serialization;
 
 namespace TumblThree.Domain.Models
 {
-    [Serializable]
+    [DataContract]
     public class TumblrBlog : Blog
     {
-        private string description;
         private bool forceRescan;
         private bool forceSize;
-        private ulong lastId;
         private bool skipGif;
-        private string tags;
-        private string title;
-        private string version;
 
         /// <summary>
         ///     DON'T use. Only for Mockup
@@ -25,14 +19,7 @@ namespace TumblThree.Domain.Models
 
         public TumblrBlog(string url, string location, BlogTypes type) : base(url, location, type)
         {
-            version = "3";
-            description = string.Empty;
-            title = string.Empty;
-            lastId = 0;
-            tags = string.Empty;
-            skipGif = false;
-            forceSize = false;
-            forceRescan = false;
+            Version = "3";
 
             Directory.CreateDirectory(Location);
             Directory.CreateDirectory(Path.Combine(Directory.GetParent(Location).FullName, Name));
@@ -46,40 +33,19 @@ namespace TumblThree.Domain.Models
             }
         }
 
-        public string Version
-        {
-            get { return version; }
-            set { SetProperty(ref version, value); }
-        }
+        [DataMember]
+        public string Version { get; set; }
 
-        public string Description
-        {
-            get { return description; }
-            set { SetProperty(ref description, value); }
-        }
+        [DataMember]
+        public string Description { get; set; }
 
-        public string Title
-        {
-            get { return title; }
-            set { SetProperty(ref title, value); }
-        }
+        [DataMember]
+        public string Title { get; set; }
 
-        public ulong LastId
-        {
-            get { return lastId; }
-            set { SetProperty(ref lastId, value); }
-        }
+        [DataMember]
+        public ulong LastId { get; set; }
 
-        public string Tags
-        {
-            get { return tags; }
-            set
-            {
-                SetProperty(ref tags, value);
-                Dirty = true;
-            }
-        }
-
+        [DataMember]
         public bool SkipGif
         {
             get { return skipGif; }
@@ -90,6 +56,7 @@ namespace TumblThree.Domain.Models
             }
         }
 
+        [DataMember]
         public bool ForceSize
         {
             get { return forceSize; }
@@ -100,6 +67,7 @@ namespace TumblThree.Domain.Models
             }
         }
 
+        [DataMember]
         public bool ForceRescan
         {
             get { return forceRescan; }
