@@ -225,7 +225,7 @@ namespace TumblThree.Applications.Properties
             DownloadLocation = @".\Blogs\";
             ParallelImages = 25;
             ParallelBlogs = 2;
-            ParallelScans = 4;
+            ParallelScans = 20;
             LimitScanBandwidth = false;
             TimeOut = 120;
             LimitConnections = true;
@@ -239,7 +239,7 @@ namespace TumblThree.Applications.Properties
             CheckClipboard = true;
             ShowPicturePreview = true;
             DeleteOnlyIndex = true;
-            CheckOnlineStatusAtStartup = false;
+            CheckOnlineStatusAtStartup = true;
             SkipGif = false;
             EnablePreview = true;
             RemoveIndexAfterCrawl = false;

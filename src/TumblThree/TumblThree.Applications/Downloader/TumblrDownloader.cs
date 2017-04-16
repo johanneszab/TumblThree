@@ -11,6 +11,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
+using HtmlAgilityPack;
+
 using TumblThree.Applications.DataModels;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
@@ -27,6 +29,7 @@ namespace TumblThree.Applications.Downloader
         private readonly ICrawlerService crawlerService;
 
         private readonly IShellService shellService;
+        private int numberOfPagesCrawled = 0;
 
         public TumblrDownloader(IShellService shellService, ICrawlerService crawlerService, IBlog blog)
             : base(shellService, crawlerService, blog)
@@ -36,110 +39,31 @@ namespace TumblThree.Applications.Downloader
             this.blog = (TumblrBlog)blog;
         }
 
-        public new async Task IsBlogOnlineAsync()
-        {
-            try
-            {
-                await GetApiPageAsync(1);
-                blog.Online = true;
-            }
-            catch (WebException)
-            {
-                blog.Online = false;
-            }
-        }
-
-        public override async Task UpdateMetaInformationAsync()
-        {
-            if (blog.Online)
-            {
-                XDocument document = await GetApiPageAsync(1);
-
-                if (document.Root.Descendants().Any())
-                {
-                    blog.Title = document.Element("tumblr").Element("tumblelog").Attribute("title")?.Value;
-                    blog.Description = document.Element("tumblr").Element("tumblelog")?.Value;
-                    blog.TotalCount = int.Parse(document.Element("tumblr").Element("posts").Attribute("total")?.Value);
-                }
-            }
-        }
-
         public async Task Crawl(IProgress<DownloadProgress> progress, CancellationToken ct, PauseToken pt)
         {
             Logger.Verbose("TumblrDownloader.Crawl:Start");
 
-            Task<Tuple<ulong, bool>> grabber = GetUrlsAsync(progress, ct, pt);
+            Task grabber = GetUrlsAsync(progress, ct, pt);
             Task<bool> downloader = DownloadBlogAsync(progress, ct, pt);
-            Tuple<ulong, bool> grabberResult = await grabber;
-            bool apiLimitHit = grabberResult.Item2;
+
+            await grabber;
 
             UpdateProgressQueueInformation(progress, Resources.ProgressUniqueDownloads);
-
             blog.DuplicatePhotos = DetermineDuplicates(PostTypes.Photo);
             blog.DuplicateVideos = DetermineDuplicates(PostTypes.Video);
             blog.DuplicateAudios = DetermineDuplicates(PostTypes.Audio);
             blog.TotalCount = (blog.TotalCount - blog.DuplicatePhotos - blog.DuplicateAudios - blog.DuplicateVideos);
 
-            bool finishedDownloading = await downloader;
+            await downloader;
 
             if (!ct.IsCancellationRequested)
             {
                 blog.LastCompleteCrawl = DateTime.Now;
-                if (finishedDownloading && !apiLimitHit)
-                {
-                    blog.LastId = grabberResult.Item1;
-                }
             }
 
             blog.Save();
 
             UpdateProgressQueueInformation(progress, "");
-        }
-
-        private new async Task<XDocument> RequestDataAsync(string url)
-        {
-            var request = (HttpWebRequest)WebRequest.Create(url);
-            request.Method = "GET";
-            request.ProtocolVersion = HttpVersion.Version11;
-            request.UserAgent =
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
-            request.AllowAutoRedirect = true;
-            request.KeepAlive = true;
-            request.Pipelined = true;
-            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-            request.ReadWriteTimeout = shellService.Settings.TimeOut * 1000;
-            request.Timeout = -1;
-            ServicePointManager.DefaultConnectionLimit = 400;
-            if (!string.IsNullOrEmpty(shellService.Settings.ProxyHost))
-            {
-                request.Proxy = new WebProxy(shellService.Settings.ProxyHost, int.Parse(shellService.Settings.ProxyPort));
-            }
-            else
-            {
-                request.Proxy = null;
-            }
-
-            var bandwidth = 2000000;
-            if (shellService.Settings.LimitScanBandwidth)
-            {
-                bandwidth = shellService.Settings.Bandwidth;
-            }
-
-            using (var response = await request.GetResponseAsync() as HttpWebResponse)
-            {
-                using (
-                    var stream = new ThrottledStream(response.GetResponseStream(),
-                        (bandwidth / shellService.Settings.ParallelImages) * 1024))
-                {
-                    using (var buffer = new BufferedStream(stream))
-                    {
-                        using (var reader = new StreamReader(buffer))
-                        {
-                            return XDocument.Load(reader);
-                        }
-                    }
-                }
-            }
         }
 
         private string GetApiUrl(string url, int count, int start = 0)
@@ -162,18 +86,6 @@ namespace TumblThree.Applications.Downloader
                 parameters["start"] = start.ToString();
             }
             return url + "?" + UrlEncode(parameters);
-        }
-
-        private async Task<XDocument> GetApiPageAsync(int pageId)
-        {
-            string url = GetApiUrl(blog.Url, 50, pageId * 50);
-
-            if (shellService.Settings.LimitConnections)
-            {
-                crawlerService.Timeconstraint.Acquire();
-                return await RequestDataAsync(url);
-            }
-            return await RequestDataAsync(url);
         }
 
         private string ResizeTumblrImageUrl(string imageUrl)
@@ -221,24 +133,6 @@ namespace TumblThree.Applications.Downloader
                                 .Sum(g => g.Count() - 1);
         }
 
-        private async Task UpdateTotalPostCount()
-        {
-            XDocument document = await GetApiPageAsync(1);
-
-            int totalPosts;
-            int.TryParse(document?.Element("tumblr").Element("posts").Attribute("total").Value, out totalPosts);
-            blog.Posts = totalPosts;
-        }
-
-        private async Task<ulong> GetHighestPostId()
-        {
-            XDocument document = await GetApiPageAsync(1);
-
-            ulong highestId;
-            ulong.TryParse(document?.Element("tumblr").Element("posts").Element("post")?.Attribute("id").Value, out highestId);
-            return highestId;
-        }
-
         protected override bool CheckIfFileExistsInDB(string url)
         {
             string fileName = url.Split('/').Last();
@@ -252,43 +146,65 @@ namespace TumblThree.Applications.Downloader
             return false;
         }
 
-        private ulong GetLastPostId()
+        protected async Task<int> GetTimeOfFirstPostAsync()
         {
-            ulong lastId = blog.LastId;
-            if (blog.ForceRescan)
+            var archiveDoc = new HtmlDocument();
+            archiveDoc.LoadHtml(await RequestDataAsync(blog.Url + "archive/"));
+
+            // determine the timespan of the blog to parallelize the search
+            // gets the month and year of the first post of the blog
+            HtmlNode months_widget = archiveDoc.DocumentNode
+                                               .Descendants("div")
+                                               .FirstOrDefault(n => n.Attributes["id"]?.Value == "browse_months_widget");
+            if (months_widget != null)
             {
-                blog.ForceRescan = false;
-                lastId = 0;
+                HtmlNode firstYearSection = months_widget.Descendants("section").LastOrDefault();
+
+                int firstMonth =
+                    int.Parse(
+                        firstYearSection.Element("nav").Descendants("a").FirstOrDefault().Attributes["href"].Value.Split('/')
+                                                                                                            .Last());
+                int firstYear = int.Parse(firstYearSection.Attributes["id"].Value.Split('_').Last());
+
+                // subtract a month to make sure to get all posts
+                if (firstMonth == 1)
+                {
+                    firstYear--;
+                    firstMonth = 12;
+                }
+                else
+                {
+                    firstMonth--;
+                }
+
+                // determine timespan of the blog or from the last complete crawl to now.
+                if (blog.LastCompleteCrawl == DateTime.MinValue || blog.ForceRescan)
+                {
+                    blog.ForceRescan = false;
+                    var dateTimeOfFirstPost = new DateTime(firstYear, firstMonth, 01, 0, 0, 0, DateTimeKind.Utc);
+                    var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+                    return (int)(dateTimeOfFirstPost.ToUniversalTime() - epoch).TotalSeconds;
+                }
+                else
+                {
+                    var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+                    return (int)(blog.LastCompleteCrawl.ToUniversalTime() - epoch).TotalSeconds;
+                }
             }
-            return lastId;
+            return (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
         }
 
-        private async Task<Tuple<ulong, bool>> GetUrlsAsync(IProgress<DownloadProgress> progress, CancellationToken ct, PauseToken pt)
+        private async Task GetUrlsAsync(IProgress<DownloadProgress> progress, CancellationToken ct, PauseToken pt)
         {
             var semaphoreSlim = new SemaphoreSlim(shellService.Settings.ParallelScans);
             var trackedTasks = new List<Task>();
-            var numberOfPostsCrawled = 0;
-            var apiLimitHit = false;
-            var completeGrab = true;
 
-            ulong lastId = GetLastPostId();
+            var unixTimeNow = (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+            int timeDifferencePerCrawler = (unixTimeNow - await GetTimeOfFirstPostAsync()) / shellService.Settings.ParallelScans;
 
-            await UpdateTotalPostCount();
-            int totalPosts = blog.Posts;
-
-            ulong highestId = await GetHighestPostId();
-
-            // The Tumblr api v1 shows 50 posts at max, determine the number of pages to crawl
-            int totalPages = (totalPosts / 50) + 1;
-
-            foreach (int pageNumber in Enumerable.Range(0, totalPages))
+            foreach (int crawlerNumber in Enumerable.Range(0, shellService.Settings.ParallelScans))
             {
                 await semaphoreSlim.WaitAsync();
-
-                if (!completeGrab)
-                {
-                    break;
-                }
 
                 if (ct.IsCancellationRequested)
                 {
@@ -303,57 +219,36 @@ namespace TumblThree.Applications.Downloader
                 {
                     try
                     {
-                        XDocument document = await GetApiPageAsync(pageNumber);
+                        var document = new HtmlDocument();
+                        string archiveTime = (unixTimeNow - crawlerNumber * timeDifferencePerCrawler).ToString();
+                        string archiveTimeOfPrevCrawler =
+                            (unixTimeNow - ((crawlerNumber + 1) * timeDifferencePerCrawler)).ToString();
 
-                        completeGrab = CheckPostAge(document, lastId);
+                        document.LoadHtml(await RequestDataAsync(blog.Url + "archive?before_time=" + archiveTime));
 
-                        AddUrlsToDownloadList(document);
+                        await AddUrlsToDownloadList(document, progress, archiveTimeOfPrevCrawler);
                     }
-                    catch (WebException webException)
+                    catch (WebException)
                     {
-                        if (webException.Message.Contains("429"))
-                        {
-                            // add retry logic?
-                            apiLimitHit = true;
-                            Logger.Error("TumblrDownloader:GetUrls:WebException {0}", webException);
-                            shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
-                        }
                     }
                     finally
                     {
                         semaphoreSlim.Release();
                     }
-
-                    numberOfPostsCrawled += 50;
-                    UpdateProgressQueueInformation(progress, Resources.ProgressGetUrl, numberOfPostsCrawled, totalPosts);
                 })());
             }
             await Task.WhenAll(trackedTasks);
 
             producerConsumerCollection.CompleteAdding();
 
-            if (!ct.IsCancellationRequested && completeGrab)
+            if (!ct.IsCancellationRequested)
             {
                 UpdateBlogStats();
             }
-
-            return Tuple.Create(highestId, apiLimitHit);
         }
 
-        private static bool CheckPostAge(XDocument document, ulong lastId)
-        {
-            ulong highestPostId = 0;
-            ulong.TryParse(document.Element("tumblr").Element("posts").Element("post")?.Attribute("id").Value,
-                out highestPostId);
-
-            if (highestPostId < lastId)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        private void AddUrlsToDownloadList(XDocument document)
+        private async Task AddUrlsToDownloadList(HtmlDocument document, IProgress<DownloadProgress> progress,
+            string archiveTimeOfPrevCrawler)
         {
             var tags = new List<string>();
             if (!string.IsNullOrWhiteSpace(blog.Tags))
@@ -361,187 +256,54 @@ namespace TumblThree.Applications.Downloader
                 tags = blog.Tags.Split(',').Select(x => x.Trim()).ToList();
             }
 
+            AddPhotoUrlToDownloadList(document, tags);
+            AddVideoUrlToDownloadList(document, tags);
+
+            string archiveTime;
             try
             {
-                AddPhotoUrlToDownloadList(document, tags);
-                AddVideoUrlToDownloadList(document, tags);
-                AddAudioUrlToDownloadList(document, tags);
-                AddTextUrlToDownloadList(document, tags);
-                AddQuoteUrlToDownloadList(document, tags);
-                AddLinkUrlToDownloadList(document, tags);
-                AddConversationUrlToDownloadList(document, tags);
-                AddPhotoMetaUrlToDownloadList(document, tags);
-                AddVideoMetaUrlToDownloadList(document, tags);
-                AddAudioMetaUrlToDownloadList(document, tags);
+                archiveTime =
+                    document.DocumentNode.SelectSingleNode("//a[@id='next_page_link']").Attributes["href"].Value.Replace(
+                        "/archive?before_time=", "");
+                if (int.Parse(archiveTime) < int.Parse(archiveTimeOfPrevCrawler))
+                {
+                    return;
+                }
             }
-            catch (NullReferenceException)
+            catch
             {
-                
+                return;
             }
+            Interlocked.Increment(ref numberOfPagesCrawled);
+            UpdateProgressQueueInformation(progress, Resources.ProgressGetUrl, numberOfPagesCrawled);
+            document = new HtmlDocument();
+            document.LoadHtml(await RequestDataAsync(blog.Url + "archive?before_time=" + archiveTime));
+            await AddUrlsToDownloadList(document, progress, archiveTimeOfPrevCrawler);
         }
 
-        private void AddPhotoUrlToDownloadList(XDocument document, IList<string> tags)
+        private void AddPhotoUrlToDownloadList(HtmlDocument document, IList<string> tags)
         {
             if (blog.DownloadPhoto)
             {
-                foreach (XElement post in document.Descendants("post"))
+                foreach (HtmlNode post in document.DocumentNode.Descendants("div"))
                 {
-                    if (post.Attribute("type").Value == "photo" && (!tags.Any()) ||
-                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
+                    if (post.GetAttributeValue("class", "").Contains("is_photo"))
                     {
                         AddPhotoUrl(post);
-                        AddPhotoSetUrl(post);
-                    }
-                }
-
-                // check for inline images
-                foreach (XElement post in document.Descendants("post"))
-                {
-                    if (!tags.Any() || post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
-                    {
-                        AddInlinePhotoUrl(post);
                     }
                 }
             }
         }
 
-        private void AddVideoUrlToDownloadList(XDocument document, IList<string> tags)
+        private void AddVideoUrlToDownloadList(HtmlDocument document, IList<string> tags)
         {
             if (blog.DownloadVideo)
             {
-                foreach (XElement post in document.Descendants("post"))
+                foreach (HtmlNode post in document.DocumentNode.Descendants("div"))
                 {
-                    if (post.Attribute("type").Value == "video" && (!tags.Any()) ||
-                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
+                    if (post.GetAttributeValue("class", "").Contains("is_video"))
                     {
                         AddVideoUrl(post);
-                    }
-                }
-            }
-        }
-
-        private void AddAudioUrlToDownloadList(XDocument document, IList<string> tags)
-        {
-            if (blog.DownloadAudio)
-            {
-                foreach (XElement post in document.Descendants("post"))
-                {
-                    if (post.Attribute("type").Value == "audio" && (!tags.Any()) ||
-                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
-                    {
-                        AddAudioUrl(post);
-                    }
-                }
-            }
-        }
-
-        private void AddTextUrlToDownloadList(XDocument document, IList<string> tags)
-        {
-            if (blog.DownloadText)
-            {
-                foreach (XElement post in document.Descendants("post"))
-                {
-                    if (post.Attribute("type").Value == "regular" && (!tags.Any()) ||
-                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
-                    {
-                        string textBody = ParseText(post);
-                        AddToDownloadList(Tuple.Create(PostTypes.Text, textBody, post.Attribute("id").Value));
-                    }
-                }
-            }
-        }
-
-        private void AddQuoteUrlToDownloadList(XDocument document, IList<string> tags)
-        {
-            if (blog.DownloadQuote)
-            {
-                foreach (XElement post in document.Descendants("post"))
-                {
-                    if (post.Attribute("type").Value == "quote" && (!tags.Any()) ||
-                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
-                    {
-                        string textBody = ParseQuote(post);
-                        AddToDownloadList(Tuple.Create(PostTypes.Quote, textBody, post.Attribute("id").Value));
-                    }
-                }
-            }
-        }
-
-        private void AddLinkUrlToDownloadList(XDocument document, IList<string> tags)
-        {
-            if (blog.DownloadLink)
-            {
-                foreach (XElement post in document.Descendants("post"))
-                {
-                    if (post.Attribute("type").Value == "link" && (!tags.Any()) ||
-                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
-                    {
-                        string textBody = ParseLink(post);
-                        AddToDownloadList(Tuple.Create(PostTypes.Link, textBody, post.Attribute("id").Value));
-                    }
-                }
-            }
-        }
-
-        private void AddConversationUrlToDownloadList(XDocument document, IList<string> tags)
-        {
-            if (blog.DownloadConversation)
-            {
-                foreach (XElement post in document.Descendants("post"))
-                {
-                    if (post.Attribute("type").Value == "conversation" && (!tags.Any()) ||
-                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
-                    {
-                        string textBody = ParseConversation(post);
-                        AddToDownloadList(Tuple.Create(PostTypes.Conversation, textBody, post.Attribute("id").Value));
-                    }
-                }
-            }
-        }
-
-        private void AddPhotoMetaUrlToDownloadList(XDocument document, IList<string> tags)
-        {
-            if (blog.CreatePhotoMeta)
-            {
-                foreach (XElement post in document.Descendants("post"))
-                {
-                    if (post.Attribute("type").Value == "photo" && (!tags.Any()) ||
-                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
-                    {
-                        string textBody = ParsePhotoMeta(post);
-                        AddToDownloadList(Tuple.Create(PostTypes.PhotoMeta, textBody, post.Attribute("id").Value));
-                    }
-                }
-            }
-        }
-
-        private void AddVideoMetaUrlToDownloadList(XDocument document, IList<string> tags)
-        {
-            if (blog.CreateVideoMeta)
-            {
-                foreach (XElement post in document.Descendants("post"))
-                {
-                    if (post.Attribute("type").Value == "video" && (!tags.Any()) ||
-                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
-                    {
-                        string textBody = ParseVideoMeta(post);
-                        AddToDownloadList(Tuple.Create(PostTypes.VideoMeta, textBody, post.Attribute("id").Value));
-                    }
-                }
-            }
-        }
-
-        private void AddAudioMetaUrlToDownloadList(XDocument document, IList<string> tags)
-        {
-            if (blog.CreateAudioMeta)
-            {
-                foreach (XElement post in document.Descendants("post"))
-                {
-                    if (post.Attribute("type").Value == "audio" && (!tags.Any()) ||
-                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
-                    {
-                        string textBody = ParseAudioMeta(post);
-                        AddToDownloadList(Tuple.Create(PostTypes.AudioMeta, textBody, post.Attribute("id").Value));
                     }
                 }
             }
@@ -564,20 +326,21 @@ namespace TumblThree.Applications.Downloader
 
         private void AddToDownloadList(Tuple<PostTypes, string, string> addToList)
         {
-            statisticsBag.Add(addToList);
-            producerConsumerCollection.Add(addToList);
+            if (statisticsBag.All(download => download.Item3 != addToList.Item3))
+            {
+                statisticsBag.Add(addToList);
+                producerConsumerCollection.Add(addToList);
+            }
         }
 
-        private string ParseImageUrl(XContainer post)
+        private string ParseImageUrl(HtmlNode post)
         {
-            string imageUrl = post.Elements("photo-url")
-                                  .FirstOrDefault(photo_url => photo_url.Attribute("max-width")
-                                                                        .Value == shellService.Settings.ImageSize.ToString()).Value;
+            string imageUrl = post.Descendants("div").Where(n => n.GetAttributeValue("class", "")
+                                                                  .Contains("has_imageurl"))
+                                  .Select(n => n.GetAttributeValue("data-imageurl", ""))
+                                  .FirstOrDefault().ToString();
 
-            if (blog.ForceSize)
-            {
-                imageUrl = ResizeTumblrImageUrl(imageUrl);
-            }
+            imageUrl = ResizeTumblrImageUrl(imageUrl);
 
             return imageUrl;
         }
@@ -600,50 +363,50 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        private void AddPhotoUrl(XElement post)
+        private void AddPhotoUrl(HtmlNode post)
         {
             string imageUrl = ParseImageUrl(post);
             if (blog.SkipGif && imageUrl.EndsWith(".gif"))
             {
                 return;
             }
-            AddToDownloadList(Tuple.Create(PostTypes.Photo, imageUrl, post.Attribute("id").Value));
+            AddToDownloadList(Tuple.Create(PostTypes.Photo, imageUrl, post.Attributes["id"].Value.Split('_').Last()));
         }
 
         private void AddPhotoSetUrl(XElement post)
         {
-            if (!post.Descendants("photoset").Any())
-            {
-                return;
-            }
-            foreach (string imageUrl in post.Descendants("photoset")
-                                            .Descendants("photo")
-                                            .Select(ParseImageUrl)
-                                            .Where(imageUrl => !blog.SkipGif || !imageUrl.EndsWith(".gif")))
-            {
-                AddToDownloadList(Tuple.Create(PostTypes.Photo, imageUrl, post.Attribute("id").Value));
-            }
+            //if (!post.Descendants("photoset").Any())
+            //{
+            //    return;
+            //}
+            //foreach (string imageUrl in post.Descendants("photoset")
+            //    .Descendants("photo")
+            //    .Select(ParseImageUrl)
+            //    .Where(imageUrl => !blog.SkipGif || !imageUrl.EndsWith(".gif")))
+            //{
+            //    AddToDownloadList(Tuple.Create(PostTypes.Photo, imageUrl, post.Attribute("id").Value));
+            //}
         }
 
-        private void AddVideoUrl(XElement post)
+        private void AddVideoUrl(HtmlNode post)
         {
-            string videoUrl = post.Descendants("video-player")
-                                  .Where(x => x.Value.Contains("<source src="))
-                                  .Select(result => Regex.Match(result.Value, "<source src=\"(.*)\" type=\"video/mp4\">")
-                                                         .Groups[1].Value)
-                                  .FirstOrDefault();
+            string videoUrl =
+                post.Descendants("div")
+                    .Where(n => n.GetAttributeValue("class", "").Contains("has_imageurl"))
+                    .Select(n => n.GetAttributeValue("data-imageurl", ""))
+                    .FirstOrDefault();
+            videoUrl = videoUrl.Split('/').Last();
+            string postId = post.Attributes["id"].Value.Split('_').Last();
 
             if (shellService.Settings.VideoSize == 1080)
             {
-
-                AddToDownloadList(Tuple.Create(PostTypes.Video, videoUrl.Replace("/480", "") + ".mp4", post.Attribute("id").Value));
+                videoUrl = "https://vt.tumblr.com/" + videoUrl.Split('_')[0] + "_" + videoUrl.Split('_')[1] + ".mp4";
+                AddToDownloadList(Tuple.Create(PostTypes.Video, videoUrl, postId));
             }
             else if (shellService.Settings.VideoSize == 480)
             {
-
-                AddToDownloadList(Tuple.Create(PostTypes.Video,
-                    "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + "_480.mp4",
-                    post.Attribute("id").Value));
+                videoUrl = "https://vt.tumblr.com/" + videoUrl.Split('_')[0] + "_" + videoUrl.Split('_')[1] + "_480.mp4";
+                AddToDownloadList(Tuple.Create(PostTypes.Video, videoUrl, postId));
             }
         }
 

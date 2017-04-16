@@ -196,7 +196,7 @@
     <value>Скачивается {0}.</value>
   </data>
   <data name="ProgressGetUrl" xml:space="preserve">
-    <value>Всего найдено {0} уникальных ссылок в {1} сообщениях</value>
+    <value>Evaluated {0} tumblr pages.</value>
   </data>
   <data name="ProgressUniqueDownloads" xml:space="preserve">
     <value>Определяются уникальные и удалаются дублирующиеся файлы...</value>

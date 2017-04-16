@@ -218,7 +218,7 @@ namespace TumblThree.Applications
             {
                 var fileInfo = new FileInfo(destinationPath);
                 totalBytesReceived = fileInfo.Length;
-                if (totalBytesReceived >= await CheckDownloadSizeAsync(url, settings, ct))
+				if (totalBytesReceived >= await CheckDownloadSizeAsync(url, settings, ct))
                     return true;
             }
             FileMode fileMode = totalBytesReceived > 0 ? FileMode.Append : FileMode.Create;

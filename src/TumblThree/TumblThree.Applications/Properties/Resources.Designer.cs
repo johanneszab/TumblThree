@@ -484,7 +484,7 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Evaluated {0} tumblr post urls out of {1} total posts..
+        ///   Looks up a localized string similar to Evaluated {0} tumblr pages..
         /// </summary>
         public static string ProgressGetUrl {
             get {

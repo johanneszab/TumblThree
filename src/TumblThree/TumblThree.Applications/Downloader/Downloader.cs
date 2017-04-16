@@ -36,8 +36,8 @@ namespace TumblThree.Applications.Downloader
             this.shellService = shellService;
             this.crawlerService = crawlerService;
             this.blog = blog;
-            counter = new PostCounter(blog);
             files = LoadFiles();
+            counter = new PostCounter(blog);
             lockObjectDb = new object();
             lockObjectDirectory = new object();
             lockObjectDownload = new object();
@@ -65,6 +65,7 @@ namespace TumblThree.Applications.Downloader
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
             request.ReadWriteTimeout = shellService.Settings.TimeOut * 1000;
             request.Timeout = -1;
+            request.CookieContainer = SharedCookieService.GetUriCookieContainer(new Uri("https://www.tumblr.com/"));
             ServicePointManager.DefaultConnectionLimit = 400;
             if (!string.IsNullOrEmpty(shellService.Settings.ProxyHost))
             {
@@ -201,7 +202,7 @@ namespace TumblThree.Applications.Downloader
             return url;
         }
 
-        protected virtual async Task<bool> DownloadBinaryFile(string fileLocation, string url, CancellationToken ct)
+        protected virtual async Task<bool> DownloadBinaryFile(string fileLocation, string url,CancellationToken ct)
         {
             try
             {
@@ -221,7 +222,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        protected virtual async Task<bool> DownloadBinaryFile(string fileLocation, string fileLocationUrlList, string url, CancellationToken ct)
+        protected virtual async Task<bool> DownloadBinaryFile(string fileLocation, string fileLocationUrlList, string url,CancellationToken ct)
         {
             if (!blog.DownloadUrlList)
             {

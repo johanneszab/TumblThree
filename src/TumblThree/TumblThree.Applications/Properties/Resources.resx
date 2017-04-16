@@ -259,7 +259,7 @@
     <value>Downloading {0}.</value>
   </data>
   <data name="ProgressGetUrl" xml:space="preserve">
-    <value>Evaluated {0} tumblr post urls out of {1} total posts.</value>
+    <value>Evaluated {0} tumblr pages.</value>
   </data>
   <data name="ProgressUniqueDownloads" xml:space="preserve">
     <value>Calculating unique downloads, removing duplicates ...</value>

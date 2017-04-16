@@ -268,7 +268,7 @@ namespace TumblThree.Applications.Controllers
                     try
                     {
                         string blogPath = blog.DownloadLocation();
-                        Directory.Delete(blogPath, true);
+                        Directory.Delete(Path.Combine(blogPath, blog.Name), true);
                     }
                     catch (Exception ex)
                     {
