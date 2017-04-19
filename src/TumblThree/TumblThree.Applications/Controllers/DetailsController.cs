@@ -47,12 +47,12 @@ namespace TumblThree.Applications.Controllers
             if (blogFiles.Count() <= 1)
             {
                 DetailsViewModel.Count = 1;
-                DetailsViewModel.BlogFile = blogFiles.Cast<TumblrBlog>().FirstOrDefault();
+                DetailsViewModel.BlogFile = blogFiles.FirstOrDefault();
             }
             else
             {
                 DetailsViewModel.Count = blogFiles.Count();
-                DetailsViewModel.BlogFile = CreateFromMultiple(blogFiles.Cast<TumblrBlog>().ToArray());
+                DetailsViewModel.BlogFile = CreateFromMultiple(blogFiles.ToArray());
             }
         }
 
@@ -68,20 +68,20 @@ namespace TumblThree.Applications.Controllers
             shellService.AddTaskToCompleteBeforeShutdown(task);
         }
 
-        public TumblrBlog CreateFromMultiple(IEnumerable<TumblrBlog> blogFiles)
+        public IBlog CreateFromMultiple(IEnumerable<IBlog> blogFiles)
         {
             if (!blogFiles.Any())
             {
                 throw new ArgumentException("The collection must have at least one item.", nameof(blogFiles));
             }
 
-            TumblrBlog[] sharedBlogFiles = blogFiles.Cast<TumblrBlog>().ToArray();
-            foreach (Blog blog in sharedBlogFiles)
+            IBlog[] sharedBlogFiles = blogFiles.ToArray();
+            foreach (IBlog blog in sharedBlogFiles)
             {
                 blogsToSave.Add(blog);
             }
 
-            return new TumblrBlog()
+            return new Blog()
             {
                 Name = string.Join(", ", sharedBlogFiles.Select(blog => blog.Name).ToArray()),
                 Url = string.Join(", ", sharedBlogFiles.Select(blog => blog.Url).ToArray()),
@@ -131,7 +131,7 @@ namespace TumblThree.Applications.Controllers
             SaveChanges(DetailsViewModel.BlogFile);
         }
 
-        private void SaveChanges(TumblrBlog blogFile)
+        private void SaveChanges(IBlog blogFile)
         {
             if (blogFile == null)
             {
@@ -149,7 +149,7 @@ namespace TumblThree.Applications.Controllers
 
             if (blogFile.Dirty)
             {
-                foreach (TumblrBlog blog in filesToSave)
+                foreach (IBlog blog in filesToSave)
                 {
                     blog.DownloadAudio = blogFile.DownloadAudio;
                     blog.DownloadConversation = blogFile.DownloadConversation;

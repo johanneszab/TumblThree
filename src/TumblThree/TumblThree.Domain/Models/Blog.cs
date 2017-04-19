@@ -25,17 +25,51 @@ namespace TumblThree.Domain.Models
         private bool downloadText;
         private bool downloadUrlList;
         private bool downloadVideo;
+        private bool forceRescan;
+        private bool forceSize;
         private string lastDownloadedPhoto;
         private string lastDownloadedVideo;
         private string notes;
-        private string tags;
         private int rating;
+        private bool skipGif;
+        private string tags;
+        private int duplicatePhotos;
+        private int duplicateVideos;
+        private int duplicateAudios;
+        private int totalCount;
+        private int posts;
+        private int texts;
+        private int photos;
+        private int numberOfLinks;
+        private int conversations;
+        private int videos;
+        private int audios;
+        private int photoMetas;
+        private int videoMetas;
+        private int audioMetas;
+        private int downloadedTexts;
+        private int downloadedQuotes;
+        private int downloadedPhotos;
+        private int downloadedLinks;
+        private int downloadedConversations;
+        private int downloadedVideos;
+        private int downloadedAudios;
+        private int downloadedPhotoMetas;
+        private int downloadedVideoMetas;
+        private int downloadedAudioMetas;
+        private DateTime dateAdded;
+        private DateTime lastCompleteCrawl;
+        private bool online;
+        private int progress;
+        private int quotes;
+        private List<string> links;
+        private int downloadedImages;
 
         public Blog()
         {
         }
 
-        protected Blog(string url, string location, BlogTypes blogType)
+        public Blog(string url, string location, BlogTypes blogType)
         {
             Url = url;
             Url = ExtractUrl();
@@ -43,19 +77,47 @@ namespace TumblThree.Domain.Models
             BlogType = blogType;
             ChildId = Path.Combine(location, Name + "_files." + blogType);
             Location = location;
-
+            Version = "3";
             DateAdded = DateTime.Now;
-            LastCompleteCrawl = new DateTime(0L, DateTimeKind.Utc);
+
+            Directory.CreateDirectory(Location);
+            Directory.CreateDirectory(Path.Combine(Directory.GetParent(Location).FullName, Name));
+
+            if (!File.Exists(ChildId))
+            {
+                IFiles files = new Files(Name, Location, BlogType);
+
+                files.Save();
+                files = null;
+            }
         }
 
         [DataMember]
-        public int DuplicatePhotos { get; set; }
+        public PostTypes States { get; set; }
 
         [DataMember]
-        public int DuplicateVideos { get; set; }
+        public string Version { get; set; }
 
         [DataMember]
-        public int DuplicateAudios { get; set; }
+        public int DuplicatePhotos
+        {
+            get { return duplicatePhotos; }
+            set { SetProperty(ref duplicatePhotos, value); }
+        }
+
+        [DataMember]
+        public int DuplicateVideos
+        {
+            get { return duplicateVideos; }
+            set { SetProperty(ref duplicateVideos, value); }
+        }
+
+        [DataMember]
+        public int DuplicateAudios
+        {
+            get { return duplicateAudios; }
+            set { SetProperty(ref duplicateAudios, value); }
+        }
 
         [DataMember]
         public bool DownloadText
@@ -168,9 +230,6 @@ namespace TumblThree.Domain.Models
         }
 
         [DataMember]
-        public PostTypes States { get; set; }
-
-        [DataMember]
         public string Name { get; set; }
 
         [DataMember]
@@ -185,10 +244,17 @@ namespace TumblThree.Domain.Models
         public BlogTypes BlogType { get; set; }
 
         [DataMember]
-        public int DownloadedImages { get; set; }
-
+        public int DownloadedImages
+        {
+            get { return downloadedImages; }
+            set { SetProperty(ref downloadedImages, value); }
+        }
         [DataMember]
-        public int TotalCount { get; set; }
+        public int TotalCount
+        {
+            get { return totalCount; }
+            set { SetProperty(ref totalCount, value); }
+        }
 
         [DataMember]
         public string Tags
@@ -213,79 +279,179 @@ namespace TumblThree.Domain.Models
         }
 
         [DataMember]
-        public int Posts { get; set; }
+        public int Posts
+        {
+            get { return posts; }
+            set { SetProperty(ref posts, value); }
+        }
 
         [DataMember]
-        public int Texts { get; set; }
+        public int Texts
+        {
+            get { return texts; }
+            set { SetProperty(ref texts, value); }
+        }
 
         [DataMember]
-        public int Quotes { get; set; }
+        public int Quotes
+        {
+            get { return quotes; }
+            set { SetProperty(ref quotes, value); }
+        }
 
         [DataMember]
-        public int Photos { get; set; }
+        public int Photos
+        {
+            get { return photos; }
+            set { SetProperty(ref photos, value); }
+        }
 
         [DataMember]
-        public int NumberOfLinks { get; set; }
+        public int NumberOfLinks
+        {
+            get { return numberOfLinks; }
+            set { SetProperty(ref numberOfLinks, value); }
+        }
 
         [DataMember]
-        public int Conversations { get; set; }
+        public int Conversations
+        {
+            get { return conversations; }
+            set { SetProperty(ref conversations, value); }
+        }
 
         [DataMember]
-        public int Videos { get; set; }
+        public int Videos
+        {
+            get { return videos; }
+            set { SetProperty(ref videos, value); }
+        }
 
         [DataMember]
-        public int Audios { get; set; }
+        public int Audios
+        {
+            get { return audios; }
+            set { SetProperty(ref audios, value); }
+        }
 
         [DataMember]
-        public int PhotoMetas { get; set; }
+        public int PhotoMetas
+        {
+            get { return photoMetas; }
+            set { SetProperty(ref photoMetas, value); }
+        }
 
         [DataMember]
-        public int VideoMetas { get; set; }
+        public int VideoMetas
+        {
+            get { return videoMetas; }
+            set { SetProperty(ref videoMetas, value); }
+        }
 
         [DataMember]
-        public int AudioMetas { get; set; }
+        public int AudioMetas
+        {
+            get { return audioMetas; }
+            set { SetProperty(ref audioMetas, value); }
+        }
 
         [DataMember]
-        public int DownloadedTexts { get; set; }
+        public int DownloadedTexts
+        {
+            get { return downloadedTexts; }
+            set { SetProperty(ref downloadedTexts, value); }
+        }
 
         [DataMember]
-        public int DownloadedQuotes { get; set; }
+        public int DownloadedQuotes
+        {
+            get { return downloadedQuotes; }
+            set { SetProperty(ref downloadedQuotes, value); }
+        }
 
         [DataMember]
-        public int DownloadedPhotos { get; set; }
+        public int DownloadedPhotos
+        {
+            get { return downloadedPhotos; }
+            set { SetProperty(ref downloadedPhotos, value); }
+        }
 
         [DataMember]
-        public int DownloadedLinks { get; set; }
+        public int DownloadedLinks
+        {
+            get { return downloadedLinks; }
+            set { SetProperty(ref downloadedLinks, value); }
+        }
 
         [DataMember]
-        public int DownloadedConversations { get; set; }
+        public int DownloadedConversations
+        {
+            get { return downloadedConversations; }
+            set { SetProperty(ref downloadedConversations, value); }
+        }
 
         [DataMember]
-        public int DownloadedVideos { get; set; }
+        public int DownloadedVideos
+        {
+            get { return downloadedVideos; }
+            set { SetProperty(ref downloadedVideos, value); }
+        }
 
         [DataMember]
-        public int DownloadedAudios { get; set; }
+        public int DownloadedAudios
+        {
+            get { return downloadedAudios; }
+            set { SetProperty(ref downloadedAudios, value); }
+        }
 
         [DataMember]
-        public int DownloadedPhotoMetas { get; set; }
+        public int DownloadedPhotoMetas
+        {
+            get { return downloadedPhotoMetas; }
+            set { SetProperty(ref downloadedPhotoMetas, value); }
+        }
 
         [DataMember]
-        public int DownloadedVideoMetas { get; set; }
+        public int DownloadedVideoMetas
+        {
+            get { return downloadedVideoMetas; }
+            set { SetProperty(ref downloadedVideoMetas, value); }
+        }
 
         [DataMember]
-        public int DownloadedAudioMetas { get; set; }
+        public int DownloadedAudioMetas
+        {
+            get { return downloadedAudioMetas; }
+            set { SetProperty(ref downloadedAudioMetas, value); }
+        }
 
         [DataMember]
-        public DateTime DateAdded { get; set; }
+        public DateTime DateAdded
+        {
+            get { return dateAdded; }
+            set { SetProperty(ref dateAdded, value); }
+        }
+
+        [DataMember(IsRequired = false, EmitDefaultValue = false)]
+        public DateTime LastCompleteCrawl
+        {
+            get { return lastCompleteCrawl; }
+            set { SetProperty(ref lastCompleteCrawl, value); }
+        }
 
         [DataMember]
-        public DateTime LastCompleteCrawl { get; set; }
+        public bool Online
+        {
+            get { return online; }
+            set { SetProperty(ref online, value); }
+        }
 
         [DataMember]
-        public bool Online { get; set; }
-
-        [DataMember]
-        public int Progress { get; set; }
+        public int Progress
+        {
+            get { return progress; }
+            set { SetProperty(ref progress, value); }
+        }
 
         [DataMember]
         public string Notes
@@ -327,7 +493,11 @@ namespace TumblThree.Domain.Models
         public Exception LoadError { get; set; }
 
         [DataMember]
-        public IList<string> Links { get; set; }
+        public List<string> Links
+        {
+            get { return links; }
+            set { SetProperty(ref links, value); }
+        }
 
         [DataMember]
         public string LastDownloadedPhoto
@@ -351,6 +521,48 @@ namespace TumblThree.Domain.Models
             }
         }
 
+        [DataMember]
+        public string Description { get; set; }
+
+        [DataMember]
+        public string Title { get; set; }
+
+        [DataMember]
+        public ulong LastId { get; set; }
+
+        [DataMember]
+        public bool SkipGif
+        {
+            get { return skipGif; }
+            set
+            {
+                SetProperty(ref skipGif, value);
+                Dirty = true;
+            }
+        }
+
+        [DataMember]
+        public bool ForceSize
+        {
+            get { return forceSize; }
+            set
+            {
+                SetProperty(ref forceSize, value);
+                Dirty = true;
+            }
+        }
+
+        [DataMember]
+        public bool ForceRescan
+        {
+            get { return forceRescan; }
+            set
+            {
+                SetProperty(ref forceRescan, value);
+                Dirty = true;
+            }
+        }
+
         public string DownloadLocation()
         {
             return Path.Combine((Directory.GetParent(Location).FullName), Name);
@@ -363,7 +575,7 @@ namespace TumblThree.Domain.Models
                 using (var stream = new FileStream(fileLocation,
                     FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    var serializer = new DataContractJsonSerializer(typeof(TumblrBlog));
+                    var serializer = new DataContractJsonSerializer(GetType());
                     var blog = (Blog)serializer.ReadObject(stream);
                     blog.Location = Path.Combine((Directory.GetParent(fileLocation).FullName));
                     blog.ChildId = Path.Combine(blog.Location, blog.Name + "_files.tumblr");
@@ -405,7 +617,7 @@ namespace TumblThree.Domain.Models
                     using (XmlDictionaryWriter writer = JsonReaderWriterFactory.CreateJsonWriter(
                         stream, Encoding.UTF8, true, true, "  "))
                     {
-                        var serializer = new DataContractJsonSerializer(typeof(TumblrBlog));
+                        var serializer = new DataContractJsonSerializer(GetType());
                         serializer.WriteObject(writer, this);
                         writer.Flush();
                     }
@@ -420,7 +632,7 @@ namespace TumblThree.Domain.Models
                     using (XmlDictionaryWriter writer = JsonReaderWriterFactory.CreateJsonWriter(
                         stream, Encoding.UTF8, true, true, "  "))
                     {
-                        var serializer = new DataContractJsonSerializer(typeof(TumblrBlog));
+                        var serializer = new DataContractJsonSerializer(GetType());
                         serializer.WriteObject(writer, this);
                         writer.Flush();
                     }
@@ -445,6 +657,11 @@ namespace TumblThree.Domain.Models
         protected virtual string ExtractUrl()
         {
             return ("https://" + ExtractSubDomain() + ".tumblr.com/");
+        }
+
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context)
+        {
         }
     }
 }

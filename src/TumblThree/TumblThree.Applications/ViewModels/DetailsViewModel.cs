@@ -13,7 +13,7 @@ namespace TumblThree.Applications.ViewModels
     {
         private readonly IClipboardService clipboardService;
         private readonly DelegateCommand copyUrlCommand;
-        private TumblrBlog blogFile;
+        private IBlog blogFile;
         private int count = 0;
 
         [ImportingConstructor]
@@ -28,7 +28,7 @@ namespace TumblThree.Applications.ViewModels
             get { return copyUrlCommand; }
         }
 
-        public TumblrBlog BlogFile
+        public IBlog BlogFile
         {
             get { return blogFile; }
             set { SetProperty(ref blogFile, value); }

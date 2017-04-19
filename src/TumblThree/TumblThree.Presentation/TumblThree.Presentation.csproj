@@ -183,7 +183,7 @@
     <Compile Include="DesignData\SampleManagerViewModel.cs" />
     <Compile Include="DesignData\SampleQueueViewModel.cs" />
     <Compile Include="DesignData\SampleShellViewModel.cs" />
-    <Compile Include="DesignData\SampleTumblrBlogFile.cs" />
+    <Compile Include="DesignData\SampleBlogFile.cs" />
     <Compile Include="DispatcherHelper.cs" />
     <Compile Include="Services\ClipboardService.cs" />
     <Compile Include="Services\EnvironmentService.cs" />
