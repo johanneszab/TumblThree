@@ -23,7 +23,7 @@ namespace TumblThree.Applications.Downloader
     [ExportMetadata("BlogType", BlogTypes.tumblr)]
     public class TumblrDownloader : Downloader, IDownloader
     {
-        private readonly TumblrBlog blog;
+        private readonly IBlog blog;
         private readonly ICrawlerService crawlerService;
 
         private readonly IShellService shellService;
@@ -33,7 +33,7 @@ namespace TumblThree.Applications.Downloader
         {
             this.shellService = shellService;
             this.crawlerService = crawlerService;
-            this.blog = (TumblrBlog)blog;
+            this.blog = blog;
         }
 
         public new async Task IsBlogOnlineAsync()

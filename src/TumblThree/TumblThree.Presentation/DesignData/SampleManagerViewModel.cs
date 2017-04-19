@@ -17,7 +17,7 @@ namespace TumblThree.Presentation.DesignData
         {
             var blogFiles = new[]
             {
-                new TumblrBlog
+                new Blog
                 {
                     Name = "Nature Wallpapers",
                     DownloadedImages = 123,
@@ -28,7 +28,7 @@ namespace TumblThree.Presentation.DesignData
                     DateAdded = DateTime.Now,
                     Rating = 33
                 },
-                new TumblrBlog
+                new Blog
                 {
                     Name = "Landscape Wallpapers",
                     Url = "http://landscape-wallpaper.tumblr.com/",
@@ -37,7 +37,7 @@ namespace TumblThree.Presentation.DesignData
                     Progress = 95,
                     TotalCount = 15739,
                 },
-                new TumblrBlog
+                new Blog
                 {
                     Name = "FX Wallpapers",
                     Url = "http://nature-wallpaper.tumblr.com/",

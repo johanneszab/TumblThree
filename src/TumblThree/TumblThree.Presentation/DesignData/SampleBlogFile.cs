@@ -2,9 +2,9 @@
 
 namespace TumblThree.Presentation.DesignData
 {
-    public class SampleTumblrBlogFile : TumblrBlog
+    public class SampleBlogFile : Blog
     {
-        public SampleTumblrBlogFile(string url)
+        public SampleBlogFile(string url)
         {
         }
     }

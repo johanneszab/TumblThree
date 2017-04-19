@@ -8,11 +8,17 @@ namespace TumblThree.Domain.Models
     {
         string Name { get; set; }
 
+        string Title { get; set; }
+
+        string Description { get; set; }
+
         string Url { get; set; }
 
         string Location { get; set; }
 
         string ChildId { get; set; }
+
+        ulong LastId { get; set; }
 
         string Tags { get; set; }
 
@@ -66,6 +72,38 @@ namespace TumblThree.Domain.Models
 
         int TotalCount { get; set; }
 
+        bool DownloadAudio { get; set; }
+
+        bool DownloadPhoto { get; set; }
+
+        bool DownloadVideo { get; set; }
+
+        bool DownloadText { get; set; }
+
+        bool DownloadConversation { get; set; }
+
+        bool DownloadLink { get; set; }
+
+        bool DownloadQuote { get; set; }
+
+        bool CreatePhotoMeta { get; set; }
+
+        bool CreateVideoMeta { get; set; }
+
+        bool CreateAudioMeta { get; set; }
+
+        bool SkipGif { get; set; }
+
+        bool ForceSize { get; set; }
+
+        bool ForceRescan { get; set; }
+
+        int DuplicatePhotos { get; set; }
+
+        int DuplicateVideos { get; set; }
+
+        int DuplicateAudios { get; set; }
+
         string Notes { get; set; }
 
         bool DownloadUrlList { get; set; }
@@ -88,7 +126,7 @@ namespace TumblThree.Domain.Models
 
         Exception LoadError { get; set; }
 
-        IList<string> Links { get; set; }
+        List<string> Links { get; set; }
 
         bool Save();
 

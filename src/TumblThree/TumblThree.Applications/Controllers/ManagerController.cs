@@ -222,12 +222,12 @@ namespace TumblThree.Applications.Controllers
             if (shellService.Settings.BlogType == shellService.Settings.BlogTypes.ElementAtOrDefault(2))
             {
                 Enqueue(
-                    managerService.BlogFiles.Where(blog => blog.Online && blog.LastCompleteCrawl != DateTime.MinValue).ToArray());
+                    managerService.BlogFiles.Where(blog => blog.Online && blog.LastCompleteCrawl != new DateTime(0L, DateTimeKind.Utc)).ToArray());
             }
             if (shellService.Settings.BlogType == shellService.Settings.BlogTypes.ElementAtOrDefault(3))
             {
                 Enqueue(
-                    managerService.BlogFiles.Where(blog => blog.Online && blog.LastCompleteCrawl == DateTime.MinValue).ToArray());
+                    managerService.BlogFiles.Where(blog => blog.Online && blog.LastCompleteCrawl == new DateTime(0L, DateTimeKind.Utc)).ToArray());
             }
 
             if (crawlerService.IsCrawl && crawlerService.IsPaused)
@@ -337,7 +337,7 @@ namespace TumblThree.Applications.Controllers
             }
 
             // FIXME: Dependency
-            var blog = new TumblrBlog(blogUrl, Path.Combine(shellService.Settings.DownloadLocation, "Index"), BlogTypes.tumblr);
+            var blog = new Blog(blogUrl, Path.Combine(shellService.Settings.DownloadLocation, "Index"), BlogTypes.tumblr);
             TransferGlobalSettingsToBlog(blog);
             IDownloader downloader = DownloaderFactory.GetDownloader(blog.BlogType, shellService, crawlerService, blog);
             await downloader.IsBlogOnlineAsync();
@@ -358,7 +358,7 @@ namespace TumblThree.Applications.Controllers
             }
         }
 
-        private void TransferGlobalSettingsToBlog(TumblrBlog blog)
+        private void TransferGlobalSettingsToBlog(IBlog blog)
         {
             blog.DownloadAudio = shellService.Settings.DownloadAudios;
             blog.DownloadPhoto = shellService.Settings.DownloadImages;
