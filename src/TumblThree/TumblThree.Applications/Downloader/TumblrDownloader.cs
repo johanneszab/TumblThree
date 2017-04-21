@@ -98,26 +98,7 @@ namespace TumblThree.Applications.Downloader
 
         private new async Task<XDocument> RequestDataAsync(string url)
         {
-            var request = (HttpWebRequest)WebRequest.Create(url);
-            request.Method = "GET";
-            request.ProtocolVersion = HttpVersion.Version11;
-            request.UserAgent =
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
-            request.AllowAutoRedirect = true;
-            request.KeepAlive = true;
-            request.Pipelined = true;
-            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-            request.ReadWriteTimeout = shellService.Settings.TimeOut * 1000;
-            request.Timeout = -1;
-            ServicePointManager.DefaultConnectionLimit = 400;
-            if (!string.IsNullOrEmpty(shellService.Settings.ProxyHost))
-            {
-                request.Proxy = new WebProxy(shellService.Settings.ProxyHost, int.Parse(shellService.Settings.ProxyPort));
-            }
-            else
-            {
-                request.Proxy = null;
-            }
+            HttpWebRequest request = CreateWebReqeust(url);
 
             var bandwidth = 2000000;
             if (shellService.Settings.LimitScanBandwidth)

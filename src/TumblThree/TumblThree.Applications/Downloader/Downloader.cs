@@ -52,7 +52,7 @@ namespace TumblThree.Applications.Downloader
             return new Files().Load(blog.ChildId);
         }
 
-        protected virtual async Task<string> RequestDataAsync(string url)
+        protected HttpWebRequest CreateWebReqeust(string url)
         {
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "GET";
@@ -74,6 +74,12 @@ namespace TumblThree.Applications.Downloader
             {
                 request.Proxy = null;
             }
+            return request;
+        }
+
+        protected virtual async Task<string> RequestDataAsync(string url)
+        {
+            HttpWebRequest request = CreateWebReqeust(url);
 
             var bandwidth = 2000000;
             if (shellService.Settings.LimitScanBandwidth)

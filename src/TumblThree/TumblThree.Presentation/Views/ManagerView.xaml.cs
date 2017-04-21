@@ -96,12 +96,13 @@ namespace TumblThree.Presentation.Views
 
         private void DataGridRowMouseMove(object sender, MouseEventArgs e)
         {
-            // FIXME: InvalidOperationException: Dispatcher processing has been suspended, but messages are still being processed.
-            // happens if the cell is moved/drag dropped while being edited.
-            // Potentially this issue: https://blogs.msdn.microsoft.com/nickkramer/2006/05/05/nested-message-loops-are-evil-if-youre-a-platform/
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 var draggedItem = (DataGridRow)sender;
+
+                if (draggedItem.IsEditing)
+                    return;
+
                 List<QueueListItem> items = blogFilesGrid.ItemsSource.Cast<IBlog>().Select(x => new QueueListItem(x)).ToList();
                 IEnumerable<QueueListItem> selectedItems = blogFilesGrid.SelectedItems
                     .Cast<IBlog>()
