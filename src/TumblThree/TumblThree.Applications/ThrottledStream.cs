@@ -140,7 +140,7 @@ namespace TumblThree.Applications
             parent.Write(buffer, offset, count);
         }
 
-        public static async Task<ThrottledStream> ReadFromURLIntoStream(string url, AppSettings settings)
+        private static HttpWebRequest CreateWebReqeust(string url, AppSettings settings)
         {
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "GET";
@@ -162,6 +162,13 @@ namespace TumblThree.Applications
             {
                 request.Proxy = null;
             }
+            return request;
+        }
+
+        public static async Task<ThrottledStream> ReadFromURLIntoStream(string url, AppSettings settings)
+        {
+            HttpWebRequest request = CreateWebReqeust(url, settings);
+
             var response = await request.GetResponseAsync() as HttpWebResponse;
             if (HttpStatusCode.OK == response.StatusCode)
             {
@@ -176,29 +183,8 @@ namespace TumblThree.Applications
 
         private static async Task<long> CheckDownloadSizeAsync(string url, AppSettings settings, CancellationToken ct)
         {
-            var request = (HttpWebRequest)WebRequest.Create(url);
-            request.Method = "GET";
-            request.ProtocolVersion = HttpVersion.Version11;
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 |
-                                                   SecurityProtocolType.Tls;
-            request.UserAgent =
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
-            request.AllowAutoRedirect = true;
-            request.KeepAlive = true;
-            request.Pipelined = true;
-            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-            request.ReadWriteTimeout = settings.TimeOut * 1000;
-            request.Timeout = -1;
+            HttpWebRequest request = CreateWebReqeust(url, settings);
             ct.Register(() => request.Abort());
-            ServicePointManager.DefaultConnectionLimit = 400;
-            if (!string.IsNullOrEmpty(settings.ProxyHost))
-            {
-                request.Proxy = new WebProxy(settings.ProxyHost, int.Parse(settings.ProxyPort));
-            }
-            else
-            {
-                request.Proxy = null;
-            }
 
             using (WebResponse response = await request.GetResponseAsync())
             {
@@ -218,7 +204,7 @@ namespace TumblThree.Applications
             {
                 var fileInfo = new FileInfo(destinationPath);
                 totalBytesReceived = fileInfo.Length;
-				if (totalBytesReceived >= await CheckDownloadSizeAsync(url, settings, ct))
+                if (totalBytesReceived >= await CheckDownloadSizeAsync(url, settings, ct))
                     return true;
             }
             FileMode fileMode = totalBytesReceived > 0 ? FileMode.Append : FileMode.Create;
@@ -236,30 +222,8 @@ namespace TumblThree.Applications
 
                     try
                     {
-                        var request = (HttpWebRequest)WebRequest.Create(url);
-                        request.Method = "GET";
-                        request.ProtocolVersion = HttpVersion.Version11;
-                        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 |
-                                                               SecurityProtocolType.Tls;
-                        request.UserAgent =
-                            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
-                        request.AllowAutoRedirect = true;
-                        request.KeepAlive = true;
-                        request.Pipelined = true;
-                        request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-                        request.ReadWriteTimeout = settings.TimeOut * 1000;
-                        request.Timeout = -1;
+                        HttpWebRequest request = CreateWebReqeust(url, settings);
                         ct.Register(() => request.Abort());
-                        ServicePointManager.DefaultConnectionLimit = 400;
-                        if (!string.IsNullOrEmpty(settings.ProxyHost))
-                        {
-                            request.Proxy = new WebProxy(settings.ProxyHost, int.Parse(settings.ProxyPort));
-                        }
-                        else
-                        {
-                            request.Proxy = null;
-                        }
-
                         request.AddRange(totalBytesReceived);
 
                         long totalBytesToReceive = 0;

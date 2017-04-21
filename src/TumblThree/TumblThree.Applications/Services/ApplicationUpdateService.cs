@@ -28,32 +28,37 @@ namespace TumblThree.Applications.Services
             this.shellService = shellService;
         }
 
+        private HttpWebRequest CreateWebReqeust(string url)
+        {
+            var request =
+                WebRequest.Create(url)
+                    as HttpWebRequest;
+            request.Method = "GET";
+            request.ProtocolVersion = HttpVersion.Version11;
+            request.ContentType = "application/json";
+            request.ServicePoint.Expect100Continue = false;
+            request.UnsafeAuthenticatedConnectionSharing = true;
+            request.UserAgent = ApplicationInfo.ProductName;
+            request.KeepAlive = true;
+            request.Pipelined = true;
+            if (!string.IsNullOrEmpty(shellService.Settings.ProxyHost))
+            {
+                request.Proxy = new WebProxy(shellService.Settings.ProxyHost, int.Parse(shellService.Settings.ProxyPort));
+            }
+            else
+            {
+                request.Proxy = null;
+            }
+            return request;
+        }
+
         public async Task<string> GetLatestReleaseFromServer()
         {
             version = null;
             downloadLink = null;
             try
             {
-                var request =
-                    WebRequest.Create(new Uri("https://api.github.com/repos/johanneszab/tumblthree/releases/latest"))
-                        as HttpWebRequest;
-                request.Method = "GET";
-                request.ProtocolVersion = HttpVersion.Version11;
-                request.ContentType = "application/json";
-                request.ServicePoint.Expect100Continue = false;
-                request.UnsafeAuthenticatedConnectionSharing = true;
-                request.UserAgent = ApplicationInfo.ProductName;
-                request.KeepAlive = true;
-                request.Pipelined = true;
-                if (!string.IsNullOrEmpty(shellService.Settings.ProxyHost))
-                {
-                    request.Proxy = new WebProxy(shellService.Settings.ProxyHost, int.Parse(shellService.Settings.ProxyPort));
-                }
-                else
-                {
-                    request.Proxy = null;
-                }
-
+                var request = CreateWebReqeust(@"https://api.github.com/repos/johanneszab/tumblthree/releases/latest");
                 string result;
                 using (var resp = await request.GetResponseAsync() as HttpWebResponse)
                 {
