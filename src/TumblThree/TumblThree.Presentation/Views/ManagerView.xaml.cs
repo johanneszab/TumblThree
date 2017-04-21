@@ -12,6 +12,7 @@ using System.Windows.Input;
 using TumblThree.Applications.ViewModels;
 using TumblThree.Applications.Views;
 using TumblThree.Domain.Models;
+using TumblThree.Domain.Queue;
 
 namespace TumblThree.Presentation.Views
 {
@@ -95,12 +96,18 @@ namespace TumblThree.Presentation.Views
 
         private void DataGridRowMouseMove(object sender, MouseEventArgs e)
         {
+            // FIXME: InvalidOperationException: Dispatcher processing has been suspended, but messages are still being processed.
+            // happens if the cell is moved/drag dropped while being edited.
+            // Potentially this issue: https://blogs.msdn.microsoft.com/nickkramer/2006/05/05/nested-message-loops-are-evil-if-youre-a-platform/
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 var draggedItem = (DataGridRow)sender;
-                List<Blog> items = blogFilesGrid.ItemsSource.Cast<Blog>().ToList();
-                Blog[] selectedItems = blogFilesGrid.SelectedItems.Cast<Blog>().OrderBy(x => items.IndexOf(x)).ToArray();
-                DragDrop.DoDragDrop(draggedItem, selectedItems.ToArray(), DragDropEffects.Copy);
+                List<QueueListItem> items = blogFilesGrid.ItemsSource.Cast<IBlog>().Select(x => new QueueListItem(x)).ToList();
+                IEnumerable<QueueListItem> selectedItems = blogFilesGrid.SelectedItems
+                    .Cast<IBlog>()
+                    .OrderBy(x => items.IndexOf(new QueueListItem(x)))
+                    .Select(x => new QueueListItem(x));
+                DragDrop.DoDragDrop(draggedItem, selectedItems.Select(x => x.Blog).ToArray(), DragDropEffects.Copy);
             }
         }
     }
