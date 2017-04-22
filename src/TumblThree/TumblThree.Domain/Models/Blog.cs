@@ -241,6 +241,7 @@ namespace TumblThree.Domain.Models
         [DataMember]
         public string ChildId { get; set; }
 
+        [DataMember]
         public BlogTypes BlogType { get; set; }
 
         [DataMember]
@@ -582,7 +583,7 @@ namespace TumblThree.Domain.Models
                     return blog;
                 }
             }
-            catch (ArgumentException ex)
+            catch (SerializationException ex)
             {
                 ex.Data.Add("Filename", fileLocation);
                 throw;
