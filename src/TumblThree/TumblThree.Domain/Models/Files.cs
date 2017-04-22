@@ -59,7 +59,7 @@ namespace TumblThree.Domain.Models
                     return file;
                 }
             }
-            catch (ArgumentException ex)
+            catch (SerializationException ex)
             {
                 ex.Data.Add("Filename", fileLocation);
                 throw;
