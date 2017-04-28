@@ -534,4 +534,7 @@
   <data name="ToolTipDownloadUrlListDescription" xml:space="preserve">
     <value>Downloads a url list of the binary files instead of the actual files</value>
   </data>
+  <data name="DownloadAnswers" xml:space="preserve">
+    <value>Download answer posts</value>
+  </data>
 </root>

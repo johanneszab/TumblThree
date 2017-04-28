@@ -282,4 +282,7 @@
   <data name="FileNameVideos" xml:space="preserve">
     <value>videos_url.txt</value>
   </data>
+  <data name="FileNameAnswers" xml:space="preserve">
+    <value>antworten.txt</value>
+  </data>
 </root>

@@ -351,6 +351,7 @@ namespace TumblThree.Applications.Downloader
                 AddQuoteUrlToDownloadList(document, tags);
                 AddLinkUrlToDownloadList(document, tags);
                 AddConversationUrlToDownloadList(document, tags);
+                AddAnswerUrlToDownloadList(document, tags);
                 AddPhotoMetaUrlToDownloadList(document, tags);
                 AddVideoMetaUrlToDownloadList(document, tags);
                 AddAudioMetaUrlToDownloadList(document, tags);
@@ -480,6 +481,22 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
+        private void AddAnswerUrlToDownloadList(XDocument document, IList<string> tags)
+        {
+            if (blog.DownloadAnswer)
+            {
+                foreach (XElement post in document.Descendants("post"))
+                {
+                    if (post.Attribute("type").Value == "answer" && (!tags.Any()) ||
+                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
+                    {
+                        string textBody = ParseAnswer(post);
+                        AddToDownloadList(Tuple.Create(PostTypes.Answer, textBody, post.Attribute("id").Value));
+                    }
+                }
+            }
+        }
+
         private void AddPhotoMetaUrlToDownloadList(XDocument document, IList<string> tags)
         {
             if (blog.CreatePhotoMeta)
@@ -535,6 +552,7 @@ namespace TumblThree.Applications.Downloader
             blog.Videos = statisticsBag.Count(url => url.Item1.Equals(PostTypes.Video));
             blog.Audios = statisticsBag.Count(url => url.Item1.Equals(PostTypes.Audio));
             blog.Texts = statisticsBag.Count(url => url.Item1.Equals(PostTypes.Text));
+            blog.Answers = statisticsBag.Count(url => url.Item1.Equals(PostTypes.Answer));
             blog.Conversations = statisticsBag.Count(url => url.Item1.Equals(PostTypes.Conversation));
             blog.Quotes = statisticsBag.Count(url => url.Item1.Equals(PostTypes.Quote));
             blog.NumberOfLinks = statisticsBag.Count(url => url.Item1.Equals(PostTypes.Link));
@@ -761,6 +779,24 @@ namespace TumblThree.Applications.Downloader
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Title, post.Element("regular-title")?.Value) +
                    Environment.NewLine + post.Element("regular-body")?.Value +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Tags,
+                       string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +
+                   Environment.NewLine;
+        }
+
+        private static string ParseAnswer(XElement post)
+        {
+            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                   Environment.NewLine +
+                   post.Element("question")?.Value +
+                   Environment.NewLine +
+                   post.Element("answer")?.Value +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Tags,
                        string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) +

@@ -277,6 +277,15 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to answers.txt.
+        /// </summary>
+        public static string FileNameAnswers {
+            get {
+                return ResourceManager.GetString("FileNameAnswers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to audios_url.txt.
         /// </summary>
         public static string FileNameAudios {

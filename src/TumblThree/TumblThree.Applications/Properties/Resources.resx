@@ -189,6 +189,9 @@
   <data name="DiskFull" xml:space="preserve">
     <value>There is not enough space on the disk.</value>
   </data>
+  <data name="FileNameAnswers" xml:space="preserve">
+    <value>answers.txt</value>
+  </data>
   <data name="FileNameAudios" xml:space="preserve">
     <value>audios_url.txt</value>
   </data>

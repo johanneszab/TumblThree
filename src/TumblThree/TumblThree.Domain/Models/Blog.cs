@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -23,6 +24,7 @@ namespace TumblThree.Domain.Models
         private bool downloadPhoto;
         private bool downloadQuote;
         private bool downloadText;
+        private bool downloadAnswer;
         private bool downloadUrlList;
         private bool downloadVideo;
         private bool forceRescan;
@@ -39,6 +41,7 @@ namespace TumblThree.Domain.Models
         private int totalCount;
         private int posts;
         private int texts;
+        private int answers;
         private int photos;
         private int numberOfLinks;
         private int conversations;
@@ -51,6 +54,7 @@ namespace TumblThree.Domain.Models
         private int downloadedQuotes;
         private int downloadedPhotos;
         private int downloadedLinks;
+        private int downloadedAnswers;
         private int downloadedConversations;
         private int downloadedVideos;
         private int downloadedAudios;
@@ -159,6 +163,17 @@ namespace TumblThree.Domain.Models
             set
             {
                 SetProperty(ref downloadLink, value);
+                Dirty = true;
+            }
+        }
+
+        [DataMember]
+        public bool DownloadAnswer
+        {
+            get { return downloadAnswer; }
+            set
+            {
+                SetProperty(ref downloadAnswer, value);
                 Dirty = true;
             }
         }
@@ -294,6 +309,13 @@ namespace TumblThree.Domain.Models
         }
 
         [DataMember]
+        public int Answers
+        {
+            get { return answers; }
+            set { SetProperty(ref answers, value); }
+        }
+
+        [DataMember]
         public int Quotes
         {
             get { return quotes; }
@@ -389,6 +411,13 @@ namespace TumblThree.Domain.Models
         {
             get { return downloadedConversations; }
             set { SetProperty(ref downloadedConversations, value); }
+        }
+
+        [DataMember]
+        public int DownloadedAnswers
+        {
+            get { return downloadedAnswers; }
+            set { SetProperty(ref downloadedAnswers, value); }
         }
 
         [DataMember]

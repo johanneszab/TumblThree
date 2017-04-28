@@ -30,6 +30,8 @@ namespace TumblThree.Domain.Models
 
         int Texts { get; set; }
 
+        int Answers { get; set; }
+
         int Quotes { get; set; }
 
         int Photos { get; set; }
@@ -56,6 +58,8 @@ namespace TumblThree.Domain.Models
 
         int DownloadedLinks { get; set; }
 
+        int DownloadedAnswers { get; set; }
+
         int DownloadedConversations { get; set; }
 
         int DownloadedVideos { get; set; }
@@ -79,6 +83,8 @@ namespace TumblThree.Domain.Models
         bool DownloadVideo { get; set; }
 
         bool DownloadText { get; set; }
+
+        bool DownloadAnswer { get; set; }
 
         bool DownloadConversation { get; set; }
 

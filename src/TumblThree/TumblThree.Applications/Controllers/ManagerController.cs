@@ -364,6 +364,7 @@ namespace TumblThree.Applications.Controllers
             blog.DownloadPhoto = shellService.Settings.DownloadImages;
             blog.DownloadVideo = shellService.Settings.DownloadVideos;
             blog.DownloadText = shellService.Settings.DownloadTexts;
+            blog.DownloadAnswer = shellService.Settings.DownloadAnswers;
             blog.DownloadQuote = shellService.Settings.DownloadQuotes;
             blog.DownloadConversation = shellService.Settings.DownloadConversations;
             blog.DownloadLink = shellService.Settings.DownloadLinks;

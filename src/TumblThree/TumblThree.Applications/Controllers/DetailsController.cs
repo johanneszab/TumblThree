@@ -88,6 +88,7 @@ namespace TumblThree.Applications.Controllers
                 Posts = sharedBlogFiles.Sum(blogs => blogs.Posts),
                 TotalCount = sharedBlogFiles.Sum(blogs => blogs.TotalCount),
                 Texts = sharedBlogFiles.Sum(blogs => blogs.Texts),
+                Answers = sharedBlogFiles.Sum(blogs => blogs.Answers),
                 Quotes = sharedBlogFiles.Sum(blogs => blogs.Quotes),
                 Photos = sharedBlogFiles.Sum(blogs => blogs.Photos),
                 NumberOfLinks = sharedBlogFiles.Sum(blogs => blogs.NumberOfLinks),
@@ -102,6 +103,7 @@ namespace TumblThree.Applications.Controllers
                 DownloadedPhotos = sharedBlogFiles.Sum(blogs => blogs.DownloadedPhotos),
                 DownloadedLinks = sharedBlogFiles.Sum(blogs => blogs.DownloadedLinks),
                 DownloadedConversations = sharedBlogFiles.Sum(blogs => blogs.DownloadedConversations),
+                DownloadedAnswers = sharedBlogFiles.Sum(blogs => blogs.DownloadedAnswers),
                 DownloadedVideos = sharedBlogFiles.Sum(blogs => blogs.DownloadedVideos),
                 DownloadedAudios = sharedBlogFiles.Sum(blogs => blogs.DownloadedAudios),
                 DownloadedPhotoMetas = sharedBlogFiles.Sum(blogs => blogs.DownloadedPhotoMetas),
@@ -113,6 +115,7 @@ namespace TumblThree.Applications.Controllers
                 DownloadPhoto = false,
                 DownloadQuote = false,
                 DownloadText = false,
+                DownloadAnswer = false,
                 DownloadVideo = false,
                 CreatePhotoMeta = false,
                 CreateVideoMeta = false,
@@ -157,6 +160,7 @@ namespace TumblThree.Applications.Controllers
                     blog.DownloadPhoto = blogFile.DownloadPhoto;
                     blog.DownloadQuote = blogFile.DownloadQuote;
                     blog.DownloadText = blogFile.DownloadText;
+                    blog.DownloadAnswer = blogFile.DownloadAnswer;
                     blog.DownloadVideo = blogFile.DownloadVideo;
                     blog.CreatePhotoMeta = blogFile.CreatePhotoMeta;
                     blog.CreateVideoMeta = blogFile.CreateVideoMeta;

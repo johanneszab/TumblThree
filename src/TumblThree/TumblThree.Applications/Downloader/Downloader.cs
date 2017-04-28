@@ -333,6 +333,9 @@ namespace TumblThree.Applications.Downloader
                         case PostTypes.Conversation:
                             DownloadConversation(progress, downloadItem);
                             break;
+                        case PostTypes.Answer:
+                            DownloadAnswer(progress, downloadItem);
+                            break;
                         case PostTypes.PhotoMeta:
                             DownloadPhotoMeta(progress, downloadItem);
                             break;
@@ -507,6 +510,26 @@ namespace TumblThree.Applications.Downloader
                 if (AppendToTextFile(fileLocation, url))
                 {
                     UpdateBlogPostCount(ref counter.Conversations, value => blog.DownloadedConversations = value);
+                    UpdateBlogProgress(ref counter.TotalDownloads);
+                    UpdateBlogDB(postId);
+                }
+            }
+        }
+
+        private void DownloadAnswer(IProgress<DataModels.DownloadProgress> progress,
+            Tuple<PostTypes, string, string> downloadItem)
+        {
+            string blogDownloadLocation = blog.DownloadLocation();
+            string url = Url(downloadItem);
+            string postId = PostId(downloadItem);
+            string fileLocation = FileLocationLocalized(blogDownloadLocation, Resources.FileNameAnswers);
+
+            if (!CheckIfFileExistsInDB(postId))
+            {
+                UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, postId);
+                if (AppendToTextFile(fileLocation, url))
+                {
+                    UpdateBlogPostCount(ref counter.Answers, value => blog.DownloadedAnswers = value);
                     UpdateBlogProgress(ref counter.TotalDownloads);
                     UpdateBlogDB(postId);
                 }

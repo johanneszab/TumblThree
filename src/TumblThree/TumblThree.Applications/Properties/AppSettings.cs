@@ -154,6 +154,9 @@ namespace TumblThree.Applications.Properties
         public bool DownloadConversations { get; set; }
 
         [DataMember]
+        public bool DownloadAnswers { get; set; }
+
+        [DataMember]
         public bool DownloadLinks { get; set; }
 
         [DataMember]
