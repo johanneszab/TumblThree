@@ -135,6 +135,12 @@ namespace TumblThree.Applications.Downloader
                     try
                     {
                         string document = await RequestDataAsync(blog.Url + "/page/" + crawlerNumber);
+                        if (!CheckIfLoggedIn(document))
+                        {
+                            Logger.Error("TumblrLikedByDownloader:GetUrlsAsync: {0}", "User not logged in");
+                            shellService.ShowError(new Exception("User not logged in"), Resources.NotLoggedIn, blog.Name);
+                            return;
+                        }
 
                         await AddUrlsToDownloadList(document, progress, crawlerNumber, ct, pt);
                     }
@@ -155,6 +161,11 @@ namespace TumblThree.Applications.Downloader
             {
                 UpdateBlogStats();
             }
+        }
+
+        private bool CheckIfLoggedIn(string document)
+        {
+            return !document.Contains("<div class=\"signup_view account login\"");
         }
 
         private async Task AddUrlsToDownloadList(string document, IProgress<DownloadProgress> progress, int crawlerNumber, CancellationToken ct, PauseToken pt)

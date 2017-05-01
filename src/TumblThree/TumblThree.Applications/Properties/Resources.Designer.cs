@@ -457,6 +457,15 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You need to login to tumblr.com for downloading {0}. Go to the Settings-&gt;Authenticate..
+        /// </summary>
+        public static string NotLoggedIn {
+            get {
+                return ResourceManager.GetString("NotLoggedIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Photo Caption: {0}.
         /// </summary>
         public static string PhotoCaption {
