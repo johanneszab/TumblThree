@@ -29,7 +29,7 @@ namespace TumblThree.Applications.ViewModels
             : base(view)
         {
             showWebsiteCommand = new DelegateCommand(ShowWebsite);
-            checkForUpdatesCommand = new AsyncDelegateCommand(CheckForUpdatesAsync);
+            checkForUpdatesCommand = new AsyncDelegateCommand(CheckForUpdates);
             downloadCommand = new DelegateCommand(DownloadNewVersion);
             this.applicationUpdateService = applicationUpdateService;
         }
@@ -115,7 +115,7 @@ namespace TumblThree.Applications.ViewModels
             Process.Start(new ProcessStartInfo(applicationUpdateService.GetDownloadUri().AbsoluteUri));
         }
 
-        private async Task CheckForUpdatesAsync()
+        private async Task CheckForUpdates()
         {
             if (IsCheckInProgress || IsLatestVersionAvailable)
             {
@@ -125,11 +125,10 @@ namespace TumblThree.Applications.ViewModels
             IsCheckInProgress = true;
             IsLatestVersionAvailable = false;
             UpdateText = string.Empty;
-            TaskScheduler scheduler = TaskScheduler.FromCurrentSynchronizationContext();
-            await CheckForUpdatesCompleteAsync(applicationUpdateService.GetLatestReleaseFromServer());
+            await CheckForUpdatesComplete(applicationUpdateService.GetLatestReleaseFromServer());
         }
 
-        private async Task CheckForUpdatesCompleteAsync(Task<string> task)
+        private async Task CheckForUpdatesComplete(Task<string> task)
         {
             IsCheckInProgress = false;
             if (await task == null)

@@ -277,6 +277,15 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to answers.txt.
+        /// </summary>
+        public static string FileNameAnswers {
+            get {
+                return ResourceManager.GetString("FileNameAnswers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to audios_url.txt.
         /// </summary>
         public static string FileNameAudios {
@@ -484,11 +493,20 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Evaluated {0} tumblr pages..
+        ///   Looks up a localized string similar to Evaluated {0} tumblr post urls out of {1} total posts..
         /// </summary>
-        public static string ProgressGetUrl {
+        public static string ProgressGetUrlLong {
             get {
-                return ResourceManager.GetString("ProgressGetUrl", resourceCulture);
+                return ResourceManager.GetString("ProgressGetUrlLong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Evaluated {0} tumblr blog sites..
+        /// </summary>
+        public static string ProgressGetUrlShort {
+            get {
+                return ResourceManager.GetString("ProgressGetUrlShort", resourceCulture);
             }
         }
         

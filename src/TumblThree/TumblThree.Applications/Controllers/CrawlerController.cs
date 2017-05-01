@@ -18,7 +18,7 @@ namespace TumblThree.Applications.Controllers
     [Export]
     internal class CrawlerController
     {
-        private readonly DelegateCommand crawlCommand;
+        private readonly AsyncDelegateCommand crawlCommand;
         private readonly ICrawlerService crawlerService;
         private readonly Lazy<CrawlerViewModel> crawlerViewModel;
         private readonly object lockObject;
@@ -40,7 +40,7 @@ namespace TumblThree.Applications.Controllers
             this.crawlerService = crawlerService;
             this.crawlerViewModel = crawlerViewModel;
             DownloaderFactory = downloaderFactory;
-            crawlCommand = new DelegateCommand(Crawl, CanCrawl);
+            crawlCommand = new AsyncDelegateCommand(Crawl, CanCrawl);
             pauseCommand = new DelegateCommand(Pause, CanPause);
             resumeCommand = new DelegateCommand(Resume, CanResume);
             stopCommand = new DelegateCommand(Stop, CanStop);
@@ -139,7 +139,7 @@ namespace TumblThree.Applications.Controllers
             return !crawlerService.IsCrawl;
         }
 
-        private void Crawl()
+        private async Task Crawl()
         {
             var cancellation = new CancellationTokenSource();
             var pause = new PauseTokenSource();
@@ -154,10 +154,12 @@ namespace TumblThree.Applications.Controllers
 
             for (var i = 0; i < shellService.Settings.ParallelBlogs; i++)
             {
-                runningTasks.Add(
-                    Task.Run(() => RunCrawlerTasks(cancellation.Token, pause.Token),
-                    cancellation.Token).ContinueWith(task => { runningTasks.Clear(); }));
+                runningTasks.Add(Task.Run(() => RunCrawlerTasks(cancellation.Token, pause.Token)));
             }
+
+            try { await Task.WhenAll(runningTasks.ToArray()); }
+            catch {}
+            finally { runningTasks.Clear(); }
         }
 
         private async Task RunCrawlerTasks(CancellationToken ct, PauseToken pt)

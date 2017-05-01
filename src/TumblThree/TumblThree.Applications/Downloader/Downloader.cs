@@ -36,8 +36,8 @@ namespace TumblThree.Applications.Downloader
             this.shellService = shellService;
             this.crawlerService = crawlerService;
             this.blog = blog;
-            files = LoadFiles();
             counter = new PostCounter(blog);
+            files = LoadFiles();
             lockObjectDb = new object();
             lockObjectDirectory = new object();
             lockObjectDownload = new object();
@@ -65,6 +65,7 @@ namespace TumblThree.Applications.Downloader
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
             request.ReadWriteTimeout = shellService.Settings.TimeOut * 1000;
             request.Timeout = -1;
+            request.CookieContainer = SharedCookieService.GetUriCookieContainer(new Uri("https://www.tumblr.com/"));
             ServicePointManager.DefaultConnectionLimit = 400;
             if (!string.IsNullOrEmpty(shellService.Settings.ProxyHost))
             {
@@ -207,11 +208,12 @@ namespace TumblThree.Applications.Downloader
             return url;
         }
 
-        protected virtual async Task<bool> DownloadBinaryFile(string fileLocation, string url,CancellationToken ct)
+        protected virtual async Task<bool> DownloadBinaryFile(string fileLocation, string url, CancellationToken ct)
         {
             try
             {
-                return await ThrottledStream.DownloadFileWithResumeAsync(url, fileLocation,
+                var fileDownloader = new FileDownloader();
+                return await fileDownloader.DownloadFileWithResumeAsync(url, fileLocation,
                     shellService.Settings, ct);
             }
             catch (IOException ex) when ((ex.HResult & 0xFFFF) == 0x27 || (ex.HResult & 0xFFFF) == 0x70)
@@ -227,7 +229,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        protected virtual async Task<bool> DownloadBinaryFile(string fileLocation, string fileLocationUrlList, string url,CancellationToken ct)
+        protected virtual async Task<bool> DownloadBinaryFile(string fileLocation, string fileLocationUrlList, string url, CancellationToken ct)
         {
             if (!blog.DownloadUrlList)
             {
@@ -332,6 +334,9 @@ namespace TumblThree.Applications.Downloader
                             break;
                         case PostTypes.Conversation:
                             DownloadConversation(progress, downloadItem);
+                            break;
+                        case PostTypes.Answer:
+                            DownloadAnswer(progress, downloadItem);
                             break;
                         case PostTypes.PhotoMeta:
                             DownloadPhotoMeta(progress, downloadItem);
@@ -507,6 +512,26 @@ namespace TumblThree.Applications.Downloader
                 if (AppendToTextFile(fileLocation, url))
                 {
                     UpdateBlogPostCount(ref counter.Conversations, value => blog.DownloadedConversations = value);
+                    UpdateBlogProgress(ref counter.TotalDownloads);
+                    UpdateBlogDB(postId);
+                }
+            }
+        }
+
+        private void DownloadAnswer(IProgress<DataModels.DownloadProgress> progress,
+            Tuple<PostTypes, string, string> downloadItem)
+        {
+            string blogDownloadLocation = blog.DownloadLocation();
+            string url = Url(downloadItem);
+            string postId = PostId(downloadItem);
+            string fileLocation = FileLocationLocalized(blogDownloadLocation, Resources.FileNameAnswers);
+
+            if (!CheckIfFileExistsInDB(postId))
+            {
+                UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, postId);
+                if (AppendToTextFile(fileLocation, url))
+                {
+                    UpdateBlogPostCount(ref counter.Answers, value => blog.DownloadedAnswers = value);
                     UpdateBlogProgress(ref counter.TotalDownloads);
                     UpdateBlogDB(postId);
                 }

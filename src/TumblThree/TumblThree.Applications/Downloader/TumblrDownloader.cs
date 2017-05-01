@@ -206,15 +206,6 @@ namespace TumblThree.Applications.Downloader
             {
                 await semaphoreSlim.WaitAsync();
 
-                if (ct.IsCancellationRequested)
-                {
-                    break;
-                }
-                if (pt.IsPaused)
-                {
-                    pt.WaitWhilePausedWithResponseAsyc().Wait();
-                }
-
                 trackedTasks.Add(new Func<Task>(async () =>
                 {
                     try
@@ -226,7 +217,7 @@ namespace TumblThree.Applications.Downloader
 
                         document.LoadHtml(await RequestDataAsync(blog.Url + "archive?before_time=" + archiveTime));
 
-                        await AddUrlsToDownloadList(document, progress, archiveTimeOfPrevCrawler);
+                        await AddUrlsToDownloadList(document, progress, archiveTimeOfPrevCrawler, ct, pt);
                     }
                     catch (WebException)
                     {
@@ -248,8 +239,17 @@ namespace TumblThree.Applications.Downloader
         }
 
         private async Task AddUrlsToDownloadList(HtmlDocument document, IProgress<DownloadProgress> progress,
-            string archiveTimeOfPrevCrawler)
+            string archiveTimeOfPrevCrawler, CancellationToken ct, PauseToken pt)
         {
+            if (ct.IsCancellationRequested)
+            {
+                return;
+            }
+            if (pt.IsPaused)
+            {
+                pt.WaitWhilePausedWithResponseAsyc().Wait();
+            }
+
             var tags = new List<string>();
             if (!string.IsNullOrWhiteSpace(blog.Tags))
             {
@@ -275,10 +275,10 @@ namespace TumblThree.Applications.Downloader
                 return;
             }
             Interlocked.Increment(ref numberOfPagesCrawled);
-            UpdateProgressQueueInformation(progress, Resources.ProgressGetUrl, numberOfPagesCrawled);
+            UpdateProgressQueueInformation(progress, Resources.ProgressGetUrlShort, numberOfPagesCrawled);
             document = new HtmlDocument();
             document.LoadHtml(await RequestDataAsync(blog.Url + "archive?before_time=" + archiveTime));
-            await AddUrlsToDownloadList(document, progress, archiveTimeOfPrevCrawler);
+            await AddUrlsToDownloadList(document, progress, archiveTimeOfPrevCrawler, ct, pt);
         }
 
         private void AddPhotoUrlToDownloadList(HtmlDocument document, IList<string> tags)

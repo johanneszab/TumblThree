@@ -10,6 +10,7 @@
         public int Photos;
         public int Quotes;
         public int Texts;
+        public int Answers;
         public int TotalDownloads;
         public int VideoMetas;
         public int Videos;
@@ -25,6 +26,7 @@
             Videos = blog.DownloadedVideos;
             Audios = blog.DownloadedAudios;
             Texts = blog.DownloadedTexts;
+            Answers = blog.DownloadedAnswers;
             Conversations = blog.DownloadedConversations;
             Quotes = blog.DownloadedQuotes;
             Links = blog.DownloadedLinks;

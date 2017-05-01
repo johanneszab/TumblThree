@@ -43,6 +43,7 @@ namespace TumblThree.Applications.ViewModels
         private string downloadLocation;
         private bool downloadQuotes;
         private bool downloadTexts;
+        private bool downloadAnswers;
         private bool downloadUrlList;
         private bool downloadVideos;
         private bool enablePreview;
@@ -327,6 +328,12 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref downloadTexts, value); }
         }
 
+        public bool DownloadAnswers
+        {
+            get { return downloadAnswers; }
+            set { SetProperty(ref downloadAnswers, value); }
+        }
+
         public bool DownloadQuotes
         {
             get { return downloadQuotes; }
@@ -524,6 +531,7 @@ namespace TumblThree.Applications.ViewModels
                 DownloadImages = settings.DownloadImages;
                 DownloadVideos = settings.DownloadVideos;
                 DownloadTexts = settings.DownloadTexts;
+                DownloadAnswers = settings.DownloadAnswers;
                 DownloadAudios = settings.DownloadAudios;
                 DownloadConversations = settings.DownloadConversations;
                 DownloadLinks = settings.DownloadLinks;
@@ -549,7 +557,7 @@ namespace TumblThree.Applications.ViewModels
                 DownloadLocation = ".\\Blogs";
                 ParallelImages = 25;
                 ParallelBlogs = 2;
-                ParallelScans = 20;
+                ParallelScans = 4;
                 LimitScanBandwidth = false;
                 TimeOut = 120;
                 LimitConnections = true;
@@ -562,7 +570,7 @@ namespace TumblThree.Applications.ViewModels
                 CheckClipboard = true;
                 ShowPicturePreview = true;
                 DeleteOnlyIndex = true;
-                CheckOnlineStatusAtStartup = true;
+                CheckOnlineStatusAtStartup = false;
                 SkipGif = false;
                 EnablePreview = true;
                 RemoveIndexAfterCrawl = false;
@@ -570,6 +578,7 @@ namespace TumblThree.Applications.ViewModels
                 DownloadVideos = true;
                 DownloadAudios = true;
                 DownloadTexts = true;
+                DownloadAnswers = true;
                 DownloadConversations = true;
                 DownloadQuotes = true;
                 DownloadLinks = true;
@@ -616,6 +625,7 @@ namespace TumblThree.Applications.ViewModels
             settings.DownloadImages = DownloadImages;
             settings.DownloadVideos = DownloadVideos;
             settings.DownloadTexts = DownloadTexts;
+            settings.DownloadAnswers = DownloadAnswers;
             settings.DownloadAudios = DownloadAudios;
             settings.DownloadConversations = DownloadConversations;
             settings.DownloadQuotes = DownloadQuotes;

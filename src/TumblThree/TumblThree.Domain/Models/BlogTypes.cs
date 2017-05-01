@@ -4,6 +4,7 @@
     {
         tumblr,
         instagram,
-        twitter
+        twitter,
+        tlb
     }
 }

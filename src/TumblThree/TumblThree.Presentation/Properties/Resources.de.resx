@@ -516,4 +516,7 @@
   <data name="ToolTipDownloadUrlListDescription" xml:space="preserve">
     <value>Läd eine Urlliste der Binärendateien anstatt der Dateien selbst.</value>
   </data>
+  <data name="DownloadAnswers" xml:space="preserve">
+    <value>Lade Antwortbeiträge</value>
+  </data>
 </root>

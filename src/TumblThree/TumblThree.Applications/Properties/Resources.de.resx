@@ -196,7 +196,7 @@
     <value>Herunterladen von {0}.</value>
   </data>
   <data name="ProgressGetUrl" xml:space="preserve">
-    <value>{0} Blogseiten ausgewertet.</value>
+    <value>{0} Tumblrbeiträge von {1} Gesamtbeiträgen ausgewertet.</value>
   </data>
   <data name="ProgressUniqueDownloads" xml:space="preserve">
     <value>Berechne neue Downloads, bestimme Duplikate ...</value>
@@ -281,5 +281,8 @@
   </data>
   <data name="FileNameVideos" xml:space="preserve">
     <value>videos_url.txt</value>
+  </data>
+  <data name="FileNameAnswers" xml:space="preserve">
+    <value>antworten.txt</value>
   </data>
 </root>

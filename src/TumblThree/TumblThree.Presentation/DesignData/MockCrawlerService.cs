@@ -65,6 +65,7 @@ namespace TumblThree.Presentation.DesignData
 
         public bool IsTimerSet { get; set; }
 
+
         public string NewBlogUrl { get; set; }
 
         public Timer Timer { get; set; }

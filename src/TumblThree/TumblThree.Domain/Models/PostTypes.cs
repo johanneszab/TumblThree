@@ -9,6 +9,7 @@
         Quote,
         Conversation,
         Link,
+        Answer,
         PhotoMeta,
         VideoMeta,
         AudioMeta
