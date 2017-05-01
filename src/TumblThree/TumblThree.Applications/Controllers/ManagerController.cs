@@ -336,7 +336,7 @@ namespace TumblThree.Applications.Controllers
                 blogUrl = crawlerService.NewBlogUrl;
             }
             IBlog blog;
-            // FIXME: Dependency
+            // FIXME: Dependency, SOLID.
             if (Validator.IsValidTumblrUrl(blogUrl))
                 blog = new Blog(blogUrl, Path.Combine(shellService.Settings.DownloadLocation, "Index"), BlogTypes.tumblr);
             else 
