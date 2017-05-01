@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -77,7 +76,7 @@ namespace TumblThree.Domain.Models
         {
             Url = url;
             Url = ExtractUrl();
-            Name = ExtractSubDomain();
+            Name = ExtractName();
             BlogType = blogType;
             ChildId = Path.Combine(location, Name + "_files." + blogType);
             Location = location;
@@ -608,7 +607,7 @@ namespace TumblThree.Domain.Models
                     var serializer = new DataContractJsonSerializer(GetType());
                     var blog = (Blog)serializer.ReadObject(stream);
                     blog.Location = Path.Combine((Directory.GetParent(fileLocation).FullName));
-                    blog.ChildId = Path.Combine(blog.Location, blog.Name + "_files.tumblr");
+                    blog.ChildId = Path.Combine(blog.Location, blog.Name + "_files." + blog.BlogType);
                     return blog;
                 }
             }
@@ -684,9 +683,27 @@ namespace TumblThree.Domain.Models
             return null;
         }
 
+        protected virtual string ExtractName()
+        {
+            if (Validator.IsValidTumblrUrl(Url))
+                return ExtractSubDomain();
+            if (Validator.IsValidTumblrLikedByUrl(Url))
+                return Url.Split('/')[5];
+            return string.Empty;
+        }
+
         protected virtual string ExtractUrl()
         {
-            return ("https://" + ExtractSubDomain() + ".tumblr.com/");
+            if (!Url.Contains("www.tumblr.com"))
+            {
+                return ("https://" + ExtractSubDomain() + ".tumblr.com/");
+            }
+            else
+            {
+                int index = Url.Split('/')[5].Length;
+                var lengthOfUrl = 32;
+                return Url.Substring(0,index + lengthOfUrl);
+            }
         }
 
         [OnDeserialized]

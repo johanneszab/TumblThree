@@ -65,6 +65,7 @@ namespace TumblThree.Applications.Downloader
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
             request.ReadWriteTimeout = shellService.Settings.TimeOut * 1000;
             request.Timeout = -1;
+            request.CookieContainer = SharedCookieService.GetUriCookieContainer(new Uri("https://www.tumblr.com/"));
             ServicePointManager.DefaultConnectionLimit = 400;
             if (!string.IsNullOrEmpty(shellService.Settings.ProxyHost))
             {
@@ -211,7 +212,8 @@ namespace TumblThree.Applications.Downloader
         {
             try
             {
-                return await ThrottledStream.DownloadFileWithResumeAsync(url, fileLocation,
+                var fileDownloader = new FileDownloader();
+                return await fileDownloader.DownloadFileWithResumeAsync(url, fileLocation,
                     shellService.Settings, ct);
             }
             catch (IOException ex) when ((ex.HResult & 0xFFFF) == 0x27 || (ex.HResult & 0xFFFF) == 0x70)

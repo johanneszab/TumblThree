@@ -76,6 +76,8 @@
     <Compile Include="Downloader\Downloader.cs" />
     <Compile Include="Downloader\DownloaderFactory.cs" />
     <Compile Include="Downloader\IDownloaderFactory.cs" />
+    <Compile Include="Downloader\TumblrLikedByDownloader.cs" />
+    <Compile Include="FileDownloader.cs" />
     <Compile Include="QueueOnDispatcher.cs" />
     <Compile Include="Downloader\IDownloader.cs" />
     <Compile Include="Downloader\InstagramDownloader.cs" />
@@ -105,9 +107,9 @@
     <Compile Include="Services\ManagerService.cs" />
     <Compile Include="Services\SelectionService.cs" />
     <Compile Include="Services\SettingsProvider.cs" />
+    <Compile Include="Services\SharedCookieService.cs" />
     <Compile Include="Services\ShellService.cs" />
     <Compile Include="Services\ShellServiceExtensions.cs" />
-    <Compile Include="Services\Validator.cs" />
     <Compile Include="ThrottledStream.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\CrawlerViewModel.cs" />

@@ -306,7 +306,7 @@ namespace TumblThree.Applications.Downloader
                     }
 
                     numberOfPostsCrawled += 50;
-                    UpdateProgressQueueInformation(progress, Resources.ProgressGetUrl, numberOfPostsCrawled, totalPosts);
+                    UpdateProgressQueueInformation(progress, Resources.ProgressGetUrlLong, numberOfPostsCrawled, totalPosts);
                 })());
             }
             await Task.WhenAll(trackedTasks);

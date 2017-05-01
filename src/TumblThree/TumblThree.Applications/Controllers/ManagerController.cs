@@ -335,9 +335,12 @@ namespace TumblThree.Applications.Controllers
             {
                 blogUrl = crawlerService.NewBlogUrl;
             }
-
+            IBlog blog;
             // FIXME: Dependency
-            var blog = new Blog(blogUrl, Path.Combine(shellService.Settings.DownloadLocation, "Index"), BlogTypes.tumblr);
+            if (Validator.IsValidTumblrUrl(blogUrl))
+                blog = new Blog(blogUrl, Path.Combine(shellService.Settings.DownloadLocation, "Index"), BlogTypes.tumblr);
+            else 
+                blog = new Blog(blogUrl, Path.Combine(shellService.Settings.DownloadLocation, "Index"), BlogTypes.tlb);
             TransferGlobalSettingsToBlog(blog);
             IDownloader downloader = DownloaderFactory.GetDownloader(blog.BlogType, shellService, crawlerService, blog);
             await downloader.IsBlogOnlineAsync();
@@ -391,7 +394,7 @@ namespace TumblThree.Applications.Controllers
         private async Task AddBlogBatchedAsync(string[] urls)
         {
             var semaphoreSlim = new SemaphoreSlim(15);
-            foreach (string url in urls.Where(Validator.IsValidTumblrUrl))
+            foreach (string url in urls.Where(url => Validator.IsValidTumblrUrl(url) || Validator.IsValidTumblrLikedByUrl(url)))
             {
                 await semaphoreSlim.WaitAsync();
                 await AddBlogAsync(url);

@@ -261,8 +261,11 @@
   <data name="ProgressDownloadImage" xml:space="preserve">
     <value>Downloading {0}.</value>
   </data>
-  <data name="ProgressGetUrl" xml:space="preserve">
+  <data name="ProgressGetUrlLong" xml:space="preserve">
     <value>Evaluated {0} tumblr post urls out of {1} total posts.</value>
+  </data>
+  <data name="ProgressGetUrlShort" xml:space="preserve">
+    <value>Evaluated {0} tumblr blog sites.</value>
   </data>
   <data name="ProgressUniqueDownloads" xml:space="preserve">
     <value>Calculating unique downloads, removing duplicates ...</value>

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Waf.Applications;
 using System.Windows.Input;
@@ -442,38 +441,57 @@ namespace TumblThree.Applications.ViewModels
         {
             try
             {
-                ShellService.OAuthManager["consumer_key"] = ApiKey;
-                ShellService.OAuthManager["consumer_secret"] = SecretKey;
-                OAuthResponse requestToken =
-                    ShellService.OAuthManager.AcquireRequestToken(settings.RequestTokenUrl, "POST");
-                string url = settings.AuthorizeUrl + @"?oauth_token=" + ShellService.OAuthManager["token"];
+                var url = @"https://www.tumblr.com/login";
+                ShellService.Settings.OAuthCallbackUrl = "https://www.tumblr.com/dashboard";
 
                 AuthenticateViewModel authenticateViewModel = authenticateViewModelFactory.CreateExport().Value;
                 authenticateViewModel.AddUrl(url);
                 authenticateViewModel.ShowDialog(ShellService.ShellView);
-                string oauthTokenUrl = authenticateViewModel.GetUrl();
-
-                var regex = new Regex("oauth_verifier=(.*)");
-                string oauthVerifer = regex.Match(oauthTokenUrl).Groups[1].ToString();
-
-                //FIXME: 401 (Unauthorized): "oauth_signature does not match expected value"
-                OAuthResponse accessToken =
-                    ShellService.OAuthManager.AcquireAccessToken(settings.AccessTokenUrl, "POST", oauthVerifer);
-
-                regex = new Regex("oauth_token=(.*)&oauth_token_secret");
-                OAuthToken = regex.Match(accessToken.AllText).Groups[1].ToString();
-
-                regex = new Regex("oauth_token_secret=(.*)");
-                OAuthTokenSecret = regex.Match(accessToken.AllText).Groups[1].ToString();
-
-                ShellService.OAuthManager["token"] = OAuthToken;
-                ShellService.OAuthManager["token_secret"] = OAuthTokenSecret;
             }
             catch (System.Net.WebException ex)
             {
                 Logger.Error("SettingsViewModel:Authenticate: {0}", ex);
                 ShellService.ShowError(ex, Resources.AuthenticationFailure, ex.Message);
+                return;
             }
+
+            // OAuth1.0a authentication implementation for the Tumblr Api v2
+            // 
+            //try
+            //{
+            //    ShellService.OAuthManager["consumer_key"] = ApiKey;
+            //    ShellService.OAuthManager["consumer_secret"] = SecretKey;
+            //    OAuthResponse requestToken =
+            //        ShellService.OAuthManager.AcquireRequestToken(settings.RequestTokenUrl, "POST");
+            //    var url = settings.AuthorizeUrl + @"?oauth_token=" + ShellService.OAuthManager["token"];
+
+            //    var authenticateViewModel = authenticateViewModelFactory.CreateExport().Value;
+            //    authenticateViewModel.AddUrl(url);
+            //    authenticateViewModel.ShowDialog(ShellService.ShellView);
+            //    string oauthTokenUrl = authenticateViewModel.GetUrl();
+
+            //    Regex regex = new Regex("oauth_verifier=(.*)");
+            //    string oauthVerifer = regex.Match(oauthTokenUrl).Groups[1].ToString();
+
+            //    //FIXME: Sometimes works, sometimes not: 401 (Unauthorized): "oauth_signature does not match expected value"
+            //    OAuthResponse accessToken =
+            //        ShellService.OAuthManager.AcquireAccessToken(settings.AccessTokenUrl, "POST", oauthVerifer);
+
+            //    regex = new Regex("oauth_token=(.*)&oauth_token_secret");
+            //    OAuthToken = regex.Match(accessToken.AllText).Groups[1].ToString();
+
+            //    regex = new Regex("oauth_token_secret=(.*)");
+            //    OAuthTokenSecret = regex.Match(accessToken.AllText).Groups[1].ToString();
+
+            //    ShellService.OAuthManager["token"] = OAuthToken;
+            //    ShellService.OAuthManager["token_secret"] = OAuthTokenSecret;
+            //}
+            //catch (System.Net.WebException ex)
+            //{
+            //    Logger.Error("SettingsViewModel:Authenticate: {0}", ex);
+            //    ShellService.ShowError(ex, Resources.AuthenticationFailure, ex.Message);
+            //    return;
+            //}
         }
 
         public void Load()

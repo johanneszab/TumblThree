@@ -37,6 +37,8 @@ namespace TumblThree.Applications.Downloader
             {
                 case BlogTypes.tumblr:
                     return new TumblrDownloader(shellService, crawlerService, blog);
+                case BlogTypes.tlb:
+                    return new TumblrLikedByDownloader(shellService, crawlerService, blog);
                 default:
                     throw new ArgumentException("Website is not supported!", "blogType");
             }
