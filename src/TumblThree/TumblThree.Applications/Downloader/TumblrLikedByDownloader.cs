@@ -20,12 +20,11 @@ using TumblThree.Domain.Models;
 namespace TumblThree.Applications.Downloader
 {
     [Export(typeof(IDownloader))]
-    [ExportMetadata("BlogType", BlogTypes.tumblr)]
+    [ExportMetadata("BlogType", BlogTypes.tlb)]
     public class TumblrLikedByDownloader : Downloader, IDownloader
     {
         private readonly IBlog blog;
         private readonly ICrawlerService crawlerService;
-
         private readonly IShellService shellService;
         private int numberOfPagesCrawled = 0;
 
@@ -182,7 +181,7 @@ namespace TumblThree.Applications.Downloader
             UpdateProgressQueueInformation(progress, Resources.ProgressGetUrlShort, numberOfPagesCrawled);
             crawlerNumber += shellService.Settings.ParallelScans;
             document = await RequestDataAsync(blog.Url + "/page/" + crawlerNumber);
-            if (document.Contains("No posts to display."))
+            if (document.Contains("<div class=\"no_posts_found\">"))
                 return;
             await AddUrlsToDownloadList(document, progress, crawlerNumber, ct, pt);
         }
@@ -248,7 +247,7 @@ namespace TumblThree.Applications.Downloader
 
         private void AddToDownloadList(Tuple<PostTypes, string, string> addToList)
         {
-            if (statisticsBag.All(download => download.Item3 != addToList.Item3))
+            if (statisticsBag.All(download => download.Item2 != addToList.Item2))
             {
                 statisticsBag.Add(addToList);
                 producerConsumerCollection.Add(addToList);

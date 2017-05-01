@@ -25,7 +25,6 @@ namespace TumblThree.Applications.Downloader
     {
         private readonly IBlog blog;
         private readonly ICrawlerService crawlerService;
-
         private readonly IShellService shellService;
 
         public TumblrDownloader(IShellService shellService, ICrawlerService crawlerService, IBlog blog)

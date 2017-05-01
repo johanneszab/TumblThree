@@ -685,6 +685,7 @@ namespace TumblThree.Domain.Models
 
         protected virtual string ExtractName()
         {
+            // FIXME
             if (Validator.IsValidTumblrUrl(Url))
                 return ExtractSubDomain();
             if (Validator.IsValidTumblrLikedByUrl(Url))
@@ -694,6 +695,7 @@ namespace TumblThree.Domain.Models
 
         protected virtual string ExtractUrl()
         {
+            // FIXME
             if (!Url.Contains("www.tumblr.com"))
             {
                 return ("https://" + ExtractSubDomain() + ".tumblr.com/");
