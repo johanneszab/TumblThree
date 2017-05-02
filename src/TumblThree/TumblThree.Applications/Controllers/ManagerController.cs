@@ -336,11 +336,15 @@ namespace TumblThree.Applications.Controllers
                 blogUrl = crawlerService.NewBlogUrl;
             }
             IBlog blog;
-            // FIXME: Dependency, SOLID, loop!
+
+            // FIXME: Dependency, SOLID!
             if (Validator.IsValidTumblrUrl(blogUrl))
                 blog = new Blog(blogUrl, Path.Combine(shellService.Settings.DownloadLocation, "Index"), BlogTypes.tumblr);
-            else 
-                blog = new Blog(blogUrl, Path.Combine(shellService.Settings.DownloadLocation, "Index"), BlogTypes.tlb);
+            if (Validator.IsValidTumblrLikedByUrl(blogUrl)) 
+                blog = new TumblrLikeByBlog(blogUrl, Path.Combine(shellService.Settings.DownloadLocation, "Index"), BlogTypes.tlb);
+            else
+                return;
+
             TransferGlobalSettingsToBlog(blog);
             IDownloader downloader = DownloaderFactory.GetDownloader(blog.BlogType, shellService, crawlerService, blog);
             await downloader.IsBlogOnlineAsync();

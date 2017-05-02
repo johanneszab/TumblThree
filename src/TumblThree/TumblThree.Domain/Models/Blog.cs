@@ -685,27 +685,12 @@ namespace TumblThree.Domain.Models
 
         protected virtual string ExtractName()
         {
-            // FIXME
-            if (Validator.IsValidTumblrUrl(Url))
-                return ExtractSubDomain();
-            if (Validator.IsValidTumblrLikedByUrl(Url))
-                return Url.Split('/')[5];
-            return string.Empty;
+            return ExtractSubDomain();
         }
 
         protected virtual string ExtractUrl()
         {
-            // FIXME
-            if (!Url.Contains("www.tumblr.com"))
-            {
-                return ("https://" + ExtractSubDomain() + ".tumblr.com/");
-            }
-            else
-            {
-                int index = Url.Split('/')[5].Length;
-                var lengthOfUrl = 32;
-                return Url.Substring(0,index + lengthOfUrl);
-            }
+            return ("https://" + ExtractSubDomain() + ".tumblr.com/");
         }
 
         [OnDeserialized]
