@@ -107,7 +107,12 @@ namespace TumblThree.Applications.Downloader
         /// </returns>
         protected override string GetCoreImageUrl(string url)
         {
-            return url.Split('_')[0] + "_" + url.Split('_')[1];
+            //FIXME: IndexOutOfRangeException
+            //if (!url.Contains("inline"))
+            //    return url.Split('_')[0] + "_" + url.Split('_')[1];
+            //else
+            //    return url;
+            return url;
         }
 
         protected override bool CheckIfFileExistsInDirectory(string url)
@@ -325,7 +330,7 @@ namespace TumblThree.Applications.Downloader
 
         private void AddToDownloadList(Tuple<PostTypes, string, string> addToList)
         {
-            if (statisticsBag.All(download => download.Item3 != addToList.Item3))
+            if (statisticsBag.All(download => download.Item2 != addToList.Item2))
             {
                 statisticsBag.Add(addToList);
                 producerConsumerCollection.Add(addToList);
