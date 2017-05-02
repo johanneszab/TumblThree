@@ -38,25 +38,26 @@ namespace TumblThree.Presentation.Views
             get { return viewModel.Value; }
         }
 
-        public Dictionary<object, Tuple<int, double>> DataGridColumnRestore
+        public Dictionary<object, Tuple<int, double, Visibility>> DataGridColumnRestore
         {
             get
             {
-                var columnWidths = new Dictionary<object, Tuple<int, double>>();
+                var columnSettings = new Dictionary<object, Tuple<int, double, Visibility>>();
                 foreach (DataGridColumn column in blogFilesGrid.Columns)
                 {
-                    columnWidths.Add(column.Header, Tuple.Create(column.DisplayIndex, column.Width.Value));
+                    columnSettings.Add(column.Header, Tuple.Create(column.DisplayIndex, column.Width.Value, column.Visibility));
                 }
-                return columnWidths;
+                return columnSettings;
             }
             set
             {
                 foreach (DataGridColumn column in blogFilesGrid.Columns)
                 {
-                    Tuple<int, double> entry;
+                    Tuple<int, double, Visibility> entry;
                     value.TryGetValue(column.Header, out entry);
                     column.DisplayIndex = entry.Item1;
                     column.Width = new DataGridLength(entry.Item2, DataGridLengthUnitType.Pixel);
+                    column.Visibility = entry.Item3;
                 }
             }
         }

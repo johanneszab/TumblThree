@@ -36,9 +36,9 @@ namespace TumblThree.Applications.ViewModels
 
             try
             {
-                if (shellService.Settings.ColumnWidths.Count != 0)
+                if (shellService.Settings.ColumnSettings.Count != 0)
                 {
-                    view.DataGridColumnRestore = ShellService.Settings.ColumnWidths;
+                    view.DataGridColumnRestore = ShellService.Settings.ColumnSettings;
                 }
             }
             catch (Exception ex)
@@ -96,7 +96,7 @@ namespace TumblThree.Applications.ViewModels
 
         public void ViewClosed(object sender, EventArgs e)
         {
-            ShellService.Settings.ColumnWidths = ViewCore.DataGridColumnRestore;
+            ShellService.Settings.ColumnSettings = ViewCore.DataGridColumnRestore;
         }
 
         public void QueueItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
