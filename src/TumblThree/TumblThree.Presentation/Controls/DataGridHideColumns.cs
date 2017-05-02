@@ -10,13 +10,13 @@ using System.Windows.Media;
 
 namespace TumblThree.Presentation.Controls
 {
-    public static class DataGridAPs
+    public static class DataGridHideColumns
     {
         #region HideColumns
         #region HideColumnsHeader
         public static readonly DependencyProperty HideColumnsHeaderProperty =
             DependencyProperty.RegisterAttached("HideColumnsHeader",
-            typeof(object), typeof(DataGridAPs));
+            typeof(object), typeof(DataGridHideColumns));
 
         public static object GetHideColumnsHeader(DataGrid obj)
         {
@@ -32,7 +32,7 @@ namespace TumblThree.Presentation.Controls
         #region HideColumnsHeaderTemplate
         public static readonly DependencyProperty HideColumnsHeaderTemplateProperty =
             DependencyProperty.RegisterAttached("HideColumnsHeaderTemplate",
-            typeof(DataTemplate), typeof(DataGridAPs));
+            typeof(DataTemplate), typeof(DataGridHideColumns));
 
         public static DataTemplate GetHideColumnsHeaderTemplate(DataGrid obj)
         {
@@ -48,7 +48,7 @@ namespace TumblThree.Presentation.Controls
         #region HideColumnsIcon
         public static readonly DependencyProperty HideColumnsIconProperty =
             DependencyProperty.RegisterAttached("HideColumnsIcon",
-            typeof(object), typeof(DataGridAPs));
+            typeof(object), typeof(DataGridHideColumns));
 
         public static object GetHideColumnsIcon(DataGrid obj)
         {
@@ -64,7 +64,7 @@ namespace TumblThree.Presentation.Controls
         #region CanUserHideColumns
         public static readonly DependencyProperty CanUserHideColumnsProperty =
             DependencyProperty.RegisterAttached("CanUserHideColumns",
-            typeof(bool), typeof(DataGridAPs),
+            typeof(bool), typeof(DataGridHideColumns),
             new UIPropertyMetadata(false, OnCanUserHideColumnsChanged));
 
         public static bool GetCanUserHideColumns(DataGrid obj)
