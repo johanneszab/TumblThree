@@ -176,7 +176,12 @@ namespace TumblThree.Applications.Downloader
         /// </returns>
         protected override string GetCoreImageUrl(string url)
         {
-            return url.Split('_')[0] + "_" + url.Split('_')[1];
+            //FIXME: IndexOutOfRangeException
+            //if (!url.Contains("inline"))
+            //    return url.Split('_')[0] + "_" + url.Split('_')[1];
+            //else
+            //    return url;
+            return url;
         }
 
         protected override bool CheckIfFileExistsInDirectory(string url)
@@ -562,15 +567,18 @@ namespace TumblThree.Applications.Downloader
 
         private void AddToDownloadList(Tuple<PostTypes, string, string> addToList)
         {
-            statisticsBag.Add(addToList);
-            producerConsumerCollection.Add(addToList);
+            if (statisticsBag.All(download => download.Item2 != addToList.Item2))
+            {
+                statisticsBag.Add(addToList);
+                producerConsumerCollection.Add(addToList);
+            }
         }
 
         private string ParseImageUrl(XContainer post)
         {
             string imageUrl = post.Elements("photo-url")
                                   .FirstOrDefault(photo_url => photo_url.Attribute("max-width")
-                                                                        .Value == shellService.Settings.ImageSize.ToString()).Value;
+                                  .Value == shellService.Settings.ImageSize.ToString()).Value;
 
             if (blog.ForceSize)
             {
