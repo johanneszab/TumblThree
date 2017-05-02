@@ -16,7 +16,7 @@ namespace TumblThree.Presentation.Converters
             var crawlingQueuelistItem = (ReadOnlyObservableList<QueueListItem>)values[0];
             var currentQueuelistItem = (IBlog)values[1];
 
-            if (crawlingQueuelistItem.Any(item => item.Blog.Name.Equals(currentQueuelistItem.Name)))
+            if (crawlingQueuelistItem.Any(item => item.Blog.Name.Equals(currentQueuelistItem.Name) && item.Blog.BlogType.Equals(currentQueuelistItem.BlogType)))
             {
                 return true;
             }
