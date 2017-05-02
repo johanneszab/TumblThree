@@ -258,9 +258,9 @@ namespace TumblThree.Applications.Downloader
         {
             if (statisticsBag.All(download => download.Item2 != addToList.Item2))
             {
-                statisticsBag.Add(addToList);
                 producerConsumerCollection.Add(addToList);
             }
+            statisticsBag.Add(addToList);
         }
     }
 }
