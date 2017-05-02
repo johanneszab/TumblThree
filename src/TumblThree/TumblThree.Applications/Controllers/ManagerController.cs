@@ -340,7 +340,7 @@ namespace TumblThree.Applications.Controllers
             // FIXME: Dependency, SOLID!
             if (Validator.IsValidTumblrUrl(blogUrl))
                 blog = new Blog(blogUrl, Path.Combine(shellService.Settings.DownloadLocation, "Index"), BlogTypes.tumblr);
-            if (Validator.IsValidTumblrLikedByUrl(blogUrl))
+            else if (Validator.IsValidTumblrLikedByUrl(blogUrl))
                 blog = new TumblrLikeByBlog(blogUrl, Path.Combine(shellService.Settings.DownloadLocation, "Index"), BlogTypes.tlb);
             else
                 return;
@@ -352,7 +352,7 @@ namespace TumblThree.Applications.Controllers
 
             lock (lockObject)
             {
-                if (managerService.BlogFiles.Select(blogs => blogs.Name).ToList().Contains(blog.Name))
+                if (managerService.BlogFiles.Any(blogs => blogs.Name.Equals(blog.Name) && blogs.BlogType.Equals(blog.BlogType)))
                 {
                     shellService.ShowError(null, Resources.BlogAlreadyExist, blog.Name);
                     return;

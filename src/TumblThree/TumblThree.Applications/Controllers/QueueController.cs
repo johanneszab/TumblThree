@@ -162,7 +162,7 @@ namespace TumblThree.Applications.Controllers
         {
             try
             {
-                InsertBlogFiles(index, fileNames.Select(x => managerService.BlogFiles.First(blogs => blogs.Name.Contains(x))));
+                InsertBlogFiles(index, fileNames.Select(x => managerService.BlogFiles.First(blogs => blogs.Name.Equals(x))));
             }
             catch (Exception ex)
             {

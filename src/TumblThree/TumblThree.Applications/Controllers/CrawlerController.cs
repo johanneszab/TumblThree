@@ -183,7 +183,7 @@ namespace TumblThree.Applications.Controllers
                     IDownloader downloader = DownloaderFactory.GetDownloader(blog.BlogType, shellService, crawlerService, blog);
                     downloader.IsBlogOnlineAsync().Wait(4000);
 
-                    if (crawlerService.ActiveItems.Any(item => item.Blog.Name.Contains(nextQueueItem.Blog.Name)))
+                    if (crawlerService.ActiveItems.Any(item => item.Blog.Name.Equals(nextQueueItem.Blog.Name)))
                     {
                         QueueOnDispatcher.CheckBeginInvokeOnUI(() => QueueManager.RemoveItem(nextQueueItem));
                         Monitor.Exit(lockObject);
