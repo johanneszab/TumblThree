@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
+using System.Windows;
 
 namespace TumblThree.Applications.Properties
 {
@@ -190,7 +191,7 @@ namespace TumblThree.Applications.Properties
         public string ProxyPort { get; set; }
 
         [DataMember]
-        public Dictionary<object, Tuple<int, double>> ColumnWidths { get; set; }
+        public Dictionary<object, Tuple<int, double, Visibility>> ColumnSettings { get; set; }
 
         public ObservableCollection<string> ImageSizes
         {
@@ -263,7 +264,7 @@ namespace TumblThree.Applications.Properties
             DownloadUrlList = false;
             ProxyHost = string.Empty;
             ProxyPort = string.Empty;
-            ColumnWidths = new Dictionary<object, Tuple<int, double>>();
+            ColumnSettings = new Dictionary<object, Tuple<int, double, Visibility>>();
         }
 
         [OnDeserializing]

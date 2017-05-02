@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 
 using TumblThree.Applications.Services;
 using TumblThree.Applications.ViewModels;
@@ -52,7 +53,7 @@ namespace TumblThree.Presentation.DesignData
 
         private class MockManagerView : MockView, IManagerView
         {
-            public Dictionary<object, Tuple<int, double>> DataGridColumnRestore { get; set; }
+            public Dictionary<object, Tuple<int, double, Visibility>> DataGridColumnRestore { get; set; }
         }
     }
 }
