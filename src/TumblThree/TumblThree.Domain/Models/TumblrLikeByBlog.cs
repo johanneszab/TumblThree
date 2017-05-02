@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.Serialization;
 
 namespace TumblThree.Domain.Models
 {
@@ -21,9 +16,11 @@ namespace TumblThree.Domain.Models
 
         protected override string ExtractUrl()
         {
-            int index = Url.Split('/')[5].Length;
-            var lengthOfUrl = 32;
-            return Url.Substring(0, index + lengthOfUrl);
+            if (Url.StartsWith("http://"))
+                Url = Url.Insert(4, "s");
+            int blogNameLength = Url.Split('/')[5].Length;
+            var urlLength = 32;
+            return Url.Substring(0, blogNameLength + urlLength);
         }
     }
 }
