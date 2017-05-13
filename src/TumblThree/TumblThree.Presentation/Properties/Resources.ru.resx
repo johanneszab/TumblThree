@@ -451,7 +451,7 @@
     <value>Throttles the bandwidth of the downloader</value>
   </data>
   <data name="ToolTipLimitBandwidthDescription" xml:space="preserve">
-    <value>Sets the maximum bandwidth available for the downloader in kbyes/s.</value>
+    <value>Sets the maximum bandwidth available for the downloader in kbyes/s. 0 disables throttling.</value>
   </data>
   <data name="LimitScan" xml:space="preserve">
     <value>Limit the scan bandwidth</value>
@@ -471,19 +471,16 @@
   <data name="ToolTipScanDescription" xml:space="preserve">
     <value>Sets the number connections used for scanning. Since the data is usually small, you should leave this high.</value>
   </data>
-  <data name="IntegerRangeError" xml:space="preserve">
-    <value>The value must be between 1 and 2000000.</value>
-  </data>
-  <data name="IntegerTypeError" xml:space="preserve">
-    <value>The value must be of type integer.</value>
+  <data name="BandwidthRangeError" xml:space="preserve">
+    <value>The value must be between 0 and 9,000,000,000,000,000.</value>
   </data>
   <data name="TimeSpanTypeError" xml:space="preserve">
     <value>The value must have the form hh:mm:ss.</value>
   </data>
-  <data name="UIntRangeError" xml:space="preserve">
-    <value>The value must be between 0 and 4294967295.</value>
+  <data name="IntRangeError" xml:space="preserve">
+    <value>The value must be between 0 and 2,147,483,647.</value>
   </data>
-  <data name="UIntTypeError" xml:space="preserve">
+  <data name="IntTypeError" xml:space="preserve">
     <value>The value must be of type integer.</value>
   </data>
 </root>

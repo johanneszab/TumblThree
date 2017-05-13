@@ -41,7 +41,7 @@ namespace TumblThree.Applications
             return request;
         }
 
-        public async Task<ThrottledStream> ReadFromURLIntoStream(string url, AppSettings settings)
+        public async Task<Stream> ReadFromURLIntoStream(string url, AppSettings settings)
         {
             HttpWebRequest request = CreateWebReqeust(url, settings);
 
@@ -49,7 +49,7 @@ namespace TumblThree.Applications
             if (HttpStatusCode.OK == response.StatusCode)
             {
                 Stream responseStream = response.GetResponseStream();
-                return new ThrottledStream(responseStream, settings.Bandwidth * 1024);
+                return GetStreamForDownload(responseStream, settings);
             }
             else
             {
@@ -66,6 +66,13 @@ namespace TumblThree.Applications
             {
                 return response.ContentLength;
             }
+        }
+
+        protected Stream GetStreamForDownload(Stream stream, AppSettings settings)
+        {
+            if (settings.Bandwidth == 0)
+                return stream;
+            return new ThrottledStream(stream, (settings.Bandwidth / settings.ParallelImages) * 1024);
         }
 
         // FIXME: Needs a complete rewrite. Also a append/cache function for resuming incomplete files on the disk.
@@ -109,7 +116,7 @@ namespace TumblThree.Applications
 
                             using (Stream responseStream = response.GetResponseStream())
                             {
-                                using (var throttledStream = new ThrottledStream(responseStream, settings.Bandwidth * 1024))
+                                using (var throttledStream = GetStreamForDownload(responseStream, settings))
                                 {
                                     var buffer = new byte[4096];
                                     int bytesRead = throttledStream.Read(buffer, 0, buffer.Length);

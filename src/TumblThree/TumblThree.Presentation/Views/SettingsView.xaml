@@ -109,7 +109,7 @@
                     <TextBox.Text>
                         <Binding Path="TimeOut" UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
-                                <vr:UIntRangeRule />
+                                <vr:IntRangeRule />
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
@@ -188,7 +188,7 @@
                     <TextBox.Text>
                         <Binding Path="ParallelScans" UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
-                                <vr:UIntRangeRule />
+                                <vr:IntRangeRule />
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
@@ -233,7 +233,7 @@
                     <TextBox.Text>
                         <Binding Path="MaxConnections" UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
-                                <vr:UIntRangeRule />
+                                <vr:IntRangeRule />
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>
@@ -256,7 +256,7 @@
                     <TextBox.Text>
                         <Binding Path="ConnectionTimeInterval" UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
-                                <vr:UIntRangeRule />
+                                <vr:IntRangeRule />
                             </Binding.ValidationRules>
                         </Binding>
                     </TextBox.Text>

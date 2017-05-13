@@ -99,17 +99,9 @@ namespace TumblThree.Applications.Downloader
         {
             HttpWebRequest request = CreateWebReqeust(url);
 
-            var bandwidth = 2000000;
-            if (shellService.Settings.LimitScanBandwidth)
-            {
-                bandwidth = shellService.Settings.Bandwidth;
-            }
-
             using (var response = await request.GetResponseAsync() as HttpWebResponse)
             {
-                using (
-                    var stream = new ThrottledStream(response.GetResponseStream(),
-                        (bandwidth / shellService.Settings.ParallelImages) * 1024))
+                using (var stream = GetStreamForApiRequest(response.GetResponseStream()))
                 {
                     using (var buffer = new BufferedStream(stream))
                     {

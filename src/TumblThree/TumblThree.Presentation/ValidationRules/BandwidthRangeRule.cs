@@ -11,18 +11,18 @@ namespace TumblThree.Presentation.ValidationRules
         {
             try
             {
-                int temp = int.Parse((string)value);
+                long temp = long.Parse((string)value);
 
-                if (temp > 0 && temp <= 2000000)
+                if (temp >= 0 && temp <= (long.MaxValue / 1024))
                 {
                     return new ValidationResult(true, null);
                 }
             }
             catch
             {
-                return new ValidationResult(false, string.Format(CultureInfo.CurrentCulture, Resources.IntegerTypeError));
+                return new ValidationResult(false, string.Format(CultureInfo.CurrentCulture, Resources.IntTypeError));
             }
-            return new ValidationResult(false, string.Format(CultureInfo.CurrentCulture, Resources.IntegerRangeError));
+            return new ValidationResult(false, string.Format(CultureInfo.CurrentCulture, Resources.BandwidthRangeError));
         }
     }
 }

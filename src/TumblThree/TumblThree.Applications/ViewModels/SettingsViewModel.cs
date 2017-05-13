@@ -26,7 +26,7 @@ namespace TumblThree.Applications.ViewModels
         private readonly AppSettings settings;
         private string apiKey;
         private bool autoDownload;
-        private int bandwidth;
+        private long bandwidth;
         private string blogType;
         private bool checkClipboard;
         private bool checkDirectoryForFiles;
@@ -196,7 +196,7 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref connectionTimeInterval, value); }
         }
 
-        public int Bandwidth
+        public long Bandwidth
         {
             get { return bandwidth; }
             set { SetProperty(ref bandwidth, value); }
@@ -563,7 +563,7 @@ namespace TumblThree.Applications.ViewModels
                 LimitConnections = true;
                 MaxConnections = 95;
                 ConnectionTimeInterval = 60;
-                Bandwidth = 102400;
+                Bandwidth = 0;
                 ImageSize = 1280;
                 VideoSize = 1080;
                 BlogType = "None";
