@@ -173,7 +173,7 @@ namespace TumblThree.Applications.Controllers
         {
             try
             {
-                settingsProvider.SaveSettings(Path.Combine(environmentService.AppSettingsPath, fileName), settings);
+                settingsProvider.SaveSettings(fileName, settings);
             }
             catch (Exception ex)
             {
