@@ -534,4 +534,22 @@
   <data name="DownloadAnswers" xml:space="preserve">
     <value>Download answer posts</value>
   </data>
+  <data name="Blog" xml:space="preserve">
+    <value>Blog</value>
+  </data>
+  <data name="Connection" xml:space="preserve">
+    <value>Connection</value>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="PortableMode" xml:space="preserve">
+    <value>Activate portable mode.</value>
+  </data>
+  <data name="ToolTipPortableMode" xml:space="preserve">
+    <value>Activates the portable mode.</value>
+  </data>
+  <data name="ToolTipPortableModeDescription" xml:space="preserve">
+    <value>Saves the settings in the folder of the executable instead of AppData.</value>
+  </data>
 </root>

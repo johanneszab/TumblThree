@@ -185,10 +185,19 @@ namespace TumblThree.Applications.Properties
         public bool DownloadUrlList { get; set; }
 
         [DataMember]
+        public bool PortableMode { get; set; }
+
+        [DataMember]
         public string ProxyHost { get; set; }
 
         [DataMember]
         public string ProxyPort { get; set; }
+
+        [DataMember]
+        public string ProxyUsername { get; set; }
+
+        [DataMember]
+        public string ProxyPassword { get; set; }
 
         [DataMember]
         public Dictionary<object, Tuple<int, double, Visibility>> ColumnSettings { get; set; }
@@ -262,8 +271,11 @@ namespace TumblThree.Applications.Properties
             ForceSize = false;
             CheckDirectoryForFiles = false;
             DownloadUrlList = false;
+            PortableMode = false;
             ProxyHost = string.Empty;
             ProxyPort = string.Empty;
+            ProxyUsername = string.Empty;
+            ProxyPassword = string.Empty;
             ColumnSettings = new Dictionary<object, Tuple<int, double, Visibility>>();
         }
 

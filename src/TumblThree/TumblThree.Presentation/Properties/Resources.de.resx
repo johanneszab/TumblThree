@@ -516,4 +516,22 @@
   <data name="DownloadAnswers" xml:space="preserve">
     <value>Lade Antwortbeiträge</value>
   </data>
+  <data name="Blog" xml:space="preserve">
+    <value>Blog</value>
+  </data>
+  <data name="Connection" xml:space="preserve">
+    <value>Verbindung</value>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>Allgemein</value>
+  </data>
+  <data name="PortableMode" xml:space="preserve">
+    <value>Aktiviert portablen Modus.</value>
+  </data>
+  <data name="ToolTipPortableMode" xml:space="preserve">
+    <value>Aktiviert den portablen Modus.</value>
+  </data>
+  <data name="ToolTipPortableModeDescription" xml:space="preserve">
+    <value>Speichert die Einstellungen in den Ordner der ausführbaren Datei und nicht in AppData.</value>
+  </data>
 </root>

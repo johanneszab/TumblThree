@@ -58,6 +58,7 @@ namespace TumblThree.Applications.ViewModels
         private int parallelBlogs;
         private int parallelImages;
         private int parallelScans;
+        private bool portableMode;
         private string proxyHost;
         private string proxyPort;
         private bool removeIndexAfterCrawl;
@@ -292,6 +293,12 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref downloadUrlList, value); }
         }
 
+        public bool PortableMode
+        {
+            get { return portableMode; }
+            set { SetProperty(ref portableMode, value); }
+        }
+
         public string ProxyHost
         {
             get { return proxyHost; }
@@ -454,44 +461,6 @@ namespace TumblThree.Applications.ViewModels
                 ShellService.ShowError(ex, Resources.AuthenticationFailure, ex.Message);
                 return;
             }
-
-            // OAuth1.0a authentication implementation for the Tumblr Api v2
-            // 
-            //try
-            //{
-            //    ShellService.OAuthManager["consumer_key"] = ApiKey;
-            //    ShellService.OAuthManager["consumer_secret"] = SecretKey;
-            //    OAuthResponse requestToken =
-            //        ShellService.OAuthManager.AcquireRequestToken(settings.RequestTokenUrl, "POST");
-            //    var url = settings.AuthorizeUrl + @"?oauth_token=" + ShellService.OAuthManager["token"];
-
-            //    var authenticateViewModel = authenticateViewModelFactory.CreateExport().Value;
-            //    authenticateViewModel.AddUrl(url);
-            //    authenticateViewModel.ShowDialog(ShellService.ShellView);
-            //    string oauthTokenUrl = authenticateViewModel.GetUrl();
-
-            //    Regex regex = new Regex("oauth_verifier=(.*)");
-            //    string oauthVerifer = regex.Match(oauthTokenUrl).Groups[1].ToString();
-
-            //    //FIXME: Sometimes works, sometimes not: 401 (Unauthorized): "oauth_signature does not match expected value"
-            //    OAuthResponse accessToken =
-            //        ShellService.OAuthManager.AcquireAccessToken(settings.AccessTokenUrl, "POST", oauthVerifer);
-
-            //    regex = new Regex("oauth_token=(.*)&oauth_token_secret");
-            //    OAuthToken = regex.Match(accessToken.AllText).Groups[1].ToString();
-
-            //    regex = new Regex("oauth_token_secret=(.*)");
-            //    OAuthTokenSecret = regex.Match(accessToken.AllText).Groups[1].ToString();
-
-            //    ShellService.OAuthManager["token"] = OAuthToken;
-            //    ShellService.OAuthManager["token_secret"] = OAuthTokenSecret;
-            //}
-            //catch (System.Net.WebException ex)
-            //{
-            //    Logger.Error("SettingsViewModel:Authenticate: {0}", ex);
-            //    ShellService.ShowError(ex, Resources.AuthenticationFailure, ex.Message);
-            //    return;
-            //}
         }
 
         public void Load()
@@ -543,6 +512,7 @@ namespace TumblThree.Applications.ViewModels
                 ForceSize = settings.ForceSize;
                 CheckDirectoryForFiles = settings.CheckDirectoryForFiles;
                 DownloadUrlList = settings.DownloadUrlList;
+                PortableMode = settings.PortableMode;
                 ProxyHost = settings.ProxyHost;
                 ProxyPort = settings.ProxyPort;
                 TimerInterval = settings.TimerInterval;
@@ -589,6 +559,7 @@ namespace TumblThree.Applications.ViewModels
                 ForceSize = false;
                 CheckDirectoryForFiles = false;
                 DownloadUrlList = false;
+                PortableMode = false;
                 ProxyHost = string.Empty;
                 ProxyPort = string.Empty;
                 TimerInterval = "22:40:00";
@@ -642,6 +613,7 @@ namespace TumblThree.Applications.ViewModels
             settings.ForceSize = ForceSize;
             settings.CheckDirectoryForFiles = CheckDirectoryForFiles;
             settings.DownloadUrlList = DownloadUrlList;
+            settings.PortableMode = PortableMode;
             settings.ProxyHost = ProxyHost;
             settings.ProxyPort = ProxyPort;
             settings.TimerInterval = TimerInterval;

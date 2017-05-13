@@ -115,6 +115,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Blog.
+        /// </summary>
+        public static string Blog {
+            get {
+                return ResourceManager.GetString("Blog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Blog settings:.
         /// </summary>
         public static string BlogSettings {
@@ -192,6 +201,15 @@ namespace TumblThree.Presentation.Properties {
         public static string ClipboardMonitor {
             get {
                 return ResourceManager.GetString("ClipboardMonitor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connection.
+        /// </summary>
+        public static string Connection {
+            get {
+                return ResourceManager.GetString("Connection", resourceCulture);
             }
         }
         
@@ -502,6 +520,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to General.
+        /// </summary>
+        public static string General {
+            get {
+                return ResourceManager.GetString("General", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Global settings:.
         /// </summary>
         public static string GlobalSettings {
@@ -741,6 +768,15 @@ namespace TumblThree.Presentation.Properties {
         public static string Pause {
             get {
                 return ResourceManager.GetString("Pause", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Activate portable mode..
+        /// </summary>
+        public static string PortableMode {
+            get {
+                return ResourceManager.GetString("PortableMode", resourceCulture);
             }
         }
         
@@ -1236,6 +1272,24 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipLimitScanDescription {
             get {
                 return ResourceManager.GetString("ToolTipLimitScanDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Activates the portable mode..
+        /// </summary>
+        public static string ToolTipPortableMode {
+            get {
+                return ResourceManager.GetString("ToolTipPortableMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saves the settings in the folder of the executable instead of AppData..
+        /// </summary>
+        public static string ToolTipPortableModeDescription {
+            get {
+                return ResourceManager.GetString("ToolTipPortableModeDescription", resourceCulture);
             }
         }
         

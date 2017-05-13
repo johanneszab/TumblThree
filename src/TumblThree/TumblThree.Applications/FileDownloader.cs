@@ -30,18 +30,23 @@ namespace TumblThree.Applications
             request.Timeout = -1;
             request.CookieContainer = SharedCookieService.GetUriCookieContainer(new Uri("https://www.tumblr.com/"));
             ServicePointManager.DefaultConnectionLimit = 400;
-            if (!string.IsNullOrEmpty(settings.ProxyHost))
-            {
-                request.Proxy = new WebProxy(settings.ProxyHost, int.Parse(settings.ProxyPort));
-            }
-            else
-            {
-                request.Proxy = null;
-            }
+            request = SetWebRequestProxy(request, settings);
             return request;
         }
 
-        public async Task<Stream> ReadFromURLIntoStream(string url, AppSettings settings)
+        private static HttpWebRequest SetWebRequestProxy(HttpWebRequest request, AppSettings settings)
+        {
+            if (!string.IsNullOrEmpty(settings.ProxyHost) && !string.IsNullOrEmpty(settings.ProxyPort))
+                request.Proxy = new WebProxy(settings.ProxyHost, int.Parse(settings.ProxyPort));
+            else
+                request.Proxy = null;
+
+            if (!string.IsNullOrEmpty(settings.ProxyUsername) && !string.IsNullOrEmpty(settings.ProxyPassword))
+                request.Proxy.Credentials = new NetworkCredential(settings.ProxyUsername, settings.ProxyPassword);
+            return request;
+        }
+
+        public async Task<Stream> ReadFromUrlIntoStream(string url, AppSettings settings)
         {
             HttpWebRequest request = CreateWebReqeust(url, settings);
 

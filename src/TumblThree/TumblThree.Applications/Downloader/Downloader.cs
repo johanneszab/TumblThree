@@ -67,14 +67,19 @@ namespace TumblThree.Applications.Downloader
             request.Timeout = -1;
             request.CookieContainer = SharedCookieService.GetUriCookieContainer(new Uri("https://www.tumblr.com/"));
             ServicePointManager.DefaultConnectionLimit = 400;
-            if (!string.IsNullOrEmpty(shellService.Settings.ProxyHost))
-            {
-                request.Proxy = new WebProxy(shellService.Settings.ProxyHost, int.Parse(shellService.Settings.ProxyPort));
-            }
+            request = SetWebRequestProxy(request, shellService.Settings);
+            return request;
+        }
+
+        private static HttpWebRequest SetWebRequestProxy(HttpWebRequest request, AppSettings settings)
+        {
+            if (!string.IsNullOrEmpty(settings.ProxyHost) && !string.IsNullOrEmpty(settings.ProxyPort))
+                request.Proxy = new WebProxy(settings.ProxyHost, int.Parse(settings.ProxyPort));
             else
-            {
                 request.Proxy = null;
-            }
+
+            if (!string.IsNullOrEmpty(settings.ProxyUsername) && !string.IsNullOrEmpty(settings.ProxyPassword))
+                request.Proxy.Credentials = new NetworkCredential(settings.ProxyUsername, settings.ProxyPassword);
             return request;
         }
 
