@@ -82,9 +82,18 @@ namespace TumblThree.Applications.Controllers
 
         public void Initialize()
         {
-            appSettings = LoadSettings<AppSettings>(appSettingsFileName);
-            queueSettings = LoadSettings<QueueSettings>(queueSettingsFileName);
-            managerSettings = LoadSettings<ManagerSettings>(managerSettingsFileName);
+            if (CheckIfPortableMode(appSettingsFileName))
+            {
+                appSettings = LoadSettings<AppSettings>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, appSettingsFileName));
+                queueSettings = LoadSettings<QueueSettings>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, queueSettingsFileName));
+                managerSettings = LoadSettings<ManagerSettings>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, managerSettingsFileName));
+            }
+            else
+            {
+                appSettings = LoadSettings<AppSettings>(Path.Combine(environmentService.AppSettingsPath, appSettingsFileName));
+                queueSettings = LoadSettings<QueueSettings>(Path.Combine(environmentService.AppSettingsPath, queueSettingsFileName));
+                managerSettings = LoadSettings<ManagerSettings>(Path.Combine(environmentService.AppSettingsPath, managerSettingsFileName));
+            }
 
             ShellService.Settings = appSettings;
             ShellService.ShowErrorAction = ShellViewModel.ShowError;
@@ -121,9 +130,18 @@ namespace TumblThree.Applications.Controllers
             ManagerController.Shutdown();
             CrawlerController.Shutdown();
 
-            SaveSettings(appSettingsFileName, appSettings);
-            SaveSettings(queueSettingsFileName, queueSettings);
-            SaveSettings(managerSettingsFileName, managerSettings);
+            if (appSettings.PortableMode)
+            {
+                SaveSettings(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, appSettingsFileName), appSettings);
+                SaveSettings(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, queueSettingsFileName), queueSettings);
+                SaveSettings(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, managerSettingsFileName), managerSettings);
+            }
+            else
+            {
+                SaveSettings(Path.Combine(environmentService.AppSettingsPath, appSettingsFileName), appSettings);
+                SaveSettings(Path.Combine(environmentService.AppSettingsPath, queueSettingsFileName), queueSettings);
+                SaveSettings(Path.Combine(environmentService.AppSettingsPath, managerSettingsFileName), managerSettings);
+            }
         }
 
         private void OnBlogManagerFinishedLoading(object sender, EventArgs e)
@@ -131,11 +149,16 @@ namespace TumblThree.Applications.Controllers
             QueueController.LoadQueue();
         }
 
+        private bool CheckIfPortableMode(string fileName)
+        {
+            return File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName));
+        }
+
         private T LoadSettings<T>(string fileName) where T : class, new()
         {
             try
             {
-                return settingsProvider.LoadSettings<T>(Path.Combine(environmentService.AppSettingsPath, fileName));
+                return settingsProvider.LoadSettings<T>(fileName);
             }
             catch (Exception ex)
             {
@@ -148,7 +171,7 @@ namespace TumblThree.Applications.Controllers
         {
             try
             {
-                settingsProvider.SaveSettings(Path.Combine(environmentService.AppSettingsPath, fileName), settings);
+                settingsProvider.SaveSettings(fileName, settings);
             }
             catch (Exception ex)
             {

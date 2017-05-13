@@ -58,6 +58,7 @@ namespace TumblThree.Applications.ViewModels
         private int parallelBlogs;
         private int parallelImages;
         private int parallelScans;
+        private bool portableMode;
         private string proxyHost;
         private string proxyPort;
         private bool removeIndexAfterCrawl;
@@ -292,6 +293,12 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref downloadUrlList, value); }
         }
 
+        public bool PortableMode
+        {
+            get { return portableMode; }
+            set { SetProperty(ref portableMode, value); }
+        }
+
         public string ProxyHost
         {
             get { return proxyHost; }
@@ -505,6 +512,7 @@ namespace TumblThree.Applications.ViewModels
                 ForceSize = settings.ForceSize;
                 CheckDirectoryForFiles = settings.CheckDirectoryForFiles;
                 DownloadUrlList = settings.DownloadUrlList;
+                PortableMode = settings.PortableMode;
                 ProxyHost = settings.ProxyHost;
                 ProxyPort = settings.ProxyPort;
                 TimerInterval = settings.TimerInterval;
@@ -551,6 +559,7 @@ namespace TumblThree.Applications.ViewModels
                 ForceSize = false;
                 CheckDirectoryForFiles = false;
                 DownloadUrlList = false;
+                PortableMode = false;
                 ProxyHost = string.Empty;
                 ProxyPort = string.Empty;
                 TimerInterval = "22:40:00";
@@ -604,6 +613,7 @@ namespace TumblThree.Applications.ViewModels
             settings.ForceSize = ForceSize;
             settings.CheckDirectoryForFiles = CheckDirectoryForFiles;
             settings.DownloadUrlList = DownloadUrlList;
+            settings.PortableMode = PortableMode;
             settings.ProxyHost = ProxyHost;
             settings.ProxyPort = ProxyPort;
             settings.TimerInterval = TimerInterval;

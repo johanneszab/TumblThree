@@ -185,6 +185,9 @@ namespace TumblThree.Applications.Properties
         public bool DownloadUrlList { get; set; }
 
         [DataMember]
+        public bool PortableMode { get; set; }
+
+        [DataMember]
         public string ProxyUsername { get; set; }
 
         [DataMember]
@@ -268,6 +271,7 @@ namespace TumblThree.Applications.Properties
             ForceSize = false;
             CheckDirectoryForFiles = false;
             DownloadUrlList = false;
+            PortableMode = false;
             ProxyHost = string.Empty;
             ProxyPort = string.Empty;
             ProxyUsername = string.Empty;
