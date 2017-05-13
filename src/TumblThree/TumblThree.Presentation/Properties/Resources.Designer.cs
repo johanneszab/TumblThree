@@ -97,11 +97,20 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Limit Bandwidth (kb/s).
+        ///   Looks up a localized string similar to Limit Bandwidth (KB/s).
         /// </summary>
         public static string Bandwidth {
             get {
                 return ResourceManager.GetString("Bandwidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value must be between 0 and 9,000,000,000,000,000..
+        /// </summary>
+        public static string BandwidthRangeError {
+            get {
+                return ResourceManager.GetString("BandwidthRangeError", resourceCulture);
             }
         }
         
@@ -529,29 +538,29 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The value must be between 1 and 2000000..
+        ///   Looks up a localized string similar to Internal error description.
         /// </summary>
-        public static string IntegerRangeError {
+        public static string InternalErrorDescription {
             get {
-                return ResourceManager.GetString("IntegerRangeError", resourceCulture);
+                return ResourceManager.GetString("InternalErrorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value must be between 0 and 2,147,483,647..
+        /// </summary>
+        public static string IntRangeError {
+            get {
+                return ResourceManager.GetString("IntRangeError", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to The value must be of type integer..
         /// </summary>
-        public static string IntegerTypeError {
+        public static string IntTypeError {
             get {
-                return ResourceManager.GetString("IntegerTypeError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Internal error description.
-        /// </summary>
-        public static string InternalErrorDescription {
-            get {
-                return ResourceManager.GetString("InternalErrorDescription", resourceCulture);
+                return ResourceManager.GetString("IntTypeError", resourceCulture);
             }
         }
         
@@ -1186,7 +1195,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sets the maximum bandwidth available for the downloader in kbytes/s..
+        ///   Looks up a localized string similar to Sets the maximum bandwidth available for the downloader in kbytes/s. 0 disables throttling..
         /// </summary>
         public static string ToolTipLimitBandwidthDescription {
             get {
@@ -1245,24 +1254,6 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipScanDescription {
             get {
                 return ResourceManager.GetString("ToolTipScanDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The value must be between 0 and 4294967295..
-        /// </summary>
-        public static string UIntRangeError {
-            get {
-                return ResourceManager.GetString("UIntRangeError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The value must be of type integer..
-        /// </summary>
-        public static string UIntTypeError {
-            get {
-                return ResourceManager.GetString("UIntTypeError", resourceCulture);
             }
         }
         

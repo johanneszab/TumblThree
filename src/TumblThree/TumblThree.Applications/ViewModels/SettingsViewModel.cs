@@ -26,7 +26,7 @@ namespace TumblThree.Applications.ViewModels
         private readonly AppSettings settings;
         private string apiKey;
         private bool autoDownload;
-        private int bandwidth;
+        private long bandwidth;
         private string blogType;
         private bool checkClipboard;
         private bool checkDirectoryForFiles;
@@ -196,7 +196,7 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref connectionTimeInterval, value); }
         }
 
-        public int Bandwidth
+        public long Bandwidth
         {
             get { return bandwidth; }
             set { SetProperty(ref bandwidth, value); }
@@ -454,44 +454,6 @@ namespace TumblThree.Applications.ViewModels
                 ShellService.ShowError(ex, Resources.AuthenticationFailure, ex.Message);
                 return;
             }
-
-            // OAuth1.0a authentication implementation for the Tumblr Api v2
-            // 
-            //try
-            //{
-            //    ShellService.OAuthManager["consumer_key"] = ApiKey;
-            //    ShellService.OAuthManager["consumer_secret"] = SecretKey;
-            //    OAuthResponse requestToken =
-            //        ShellService.OAuthManager.AcquireRequestToken(settings.RequestTokenUrl, "POST");
-            //    var url = settings.AuthorizeUrl + @"?oauth_token=" + ShellService.OAuthManager["token"];
-
-            //    var authenticateViewModel = authenticateViewModelFactory.CreateExport().Value;
-            //    authenticateViewModel.AddUrl(url);
-            //    authenticateViewModel.ShowDialog(ShellService.ShellView);
-            //    string oauthTokenUrl = authenticateViewModel.GetUrl();
-
-            //    Regex regex = new Regex("oauth_verifier=(.*)");
-            //    string oauthVerifer = regex.Match(oauthTokenUrl).Groups[1].ToString();
-
-            //    //FIXME: Sometimes works, sometimes not: 401 (Unauthorized): "oauth_signature does not match expected value"
-            //    OAuthResponse accessToken =
-            //        ShellService.OAuthManager.AcquireAccessToken(settings.AccessTokenUrl, "POST", oauthVerifer);
-
-            //    regex = new Regex("oauth_token=(.*)&oauth_token_secret");
-            //    OAuthToken = regex.Match(accessToken.AllText).Groups[1].ToString();
-
-            //    regex = new Regex("oauth_token_secret=(.*)");
-            //    OAuthTokenSecret = regex.Match(accessToken.AllText).Groups[1].ToString();
-
-            //    ShellService.OAuthManager["token"] = OAuthToken;
-            //    ShellService.OAuthManager["token_secret"] = OAuthTokenSecret;
-            //}
-            //catch (System.Net.WebException ex)
-            //{
-            //    Logger.Error("SettingsViewModel:Authenticate: {0}", ex);
-            //    ShellService.ShowError(ex, Resources.AuthenticationFailure, ex.Message);
-            //    return;
-            //}
         }
 
         public void Load()
@@ -563,7 +525,7 @@ namespace TumblThree.Applications.ViewModels
                 LimitConnections = true;
                 MaxConnections = 95;
                 ConnectionTimeInterval = 60;
-                Bandwidth = 102400;
+                Bandwidth = 0;
                 ImageSize = 1280;
                 VideoSize = 1080;
                 BlogType = "None";

@@ -15,15 +15,15 @@ namespace TumblThree.Applications
         private readonly Stream parent;
         readonly System.Timers.Timer resettimer;
         readonly AutoResetEvent wh = new AutoResetEvent(true);
-        private int maxBytesPerSecond;
-        private int processed;
+        private long maxBytesPerSecond;
+        private static long processed;
 
         /// <summary>
         ///     Creates a new Stream with Databandwith cap
         /// </summary>
         /// <param name="parentStream"></param>
         /// <param name="maxBytesPerSecond"></param>
-        public ThrottledStream(Stream parentStream, int maxBytesPerSecond = int.MaxValue)
+        public ThrottledStream(Stream parentStream, long maxBytesPerSecond = long.MaxValue)
         {
             MaxBytesPerSecond = maxBytesPerSecond;
             parent = parentStream;
@@ -37,7 +37,7 @@ namespace TumblThree.Applications
         /// <summary>
         ///     Number of Bytes that are allowed per second
         /// </summary>
-        private int MaxBytesPerSecond
+        private long MaxBytesPerSecond
         {
             get { return maxBytesPerSecond; }
             set
@@ -77,7 +77,7 @@ namespace TumblThree.Applications
             set { parent.Position = value; }
         }
 
-        private void Throttle(int bytes)
+        private void Throttle(long bytes)
         {
             try
             {

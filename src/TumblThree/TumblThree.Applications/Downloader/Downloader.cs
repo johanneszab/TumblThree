@@ -67,32 +67,37 @@ namespace TumblThree.Applications.Downloader
             request.Timeout = -1;
             request.CookieContainer = SharedCookieService.GetUriCookieContainer(new Uri("https://www.tumblr.com/"));
             ServicePointManager.DefaultConnectionLimit = 400;
-            if (!string.IsNullOrEmpty(shellService.Settings.ProxyHost))
-            {
-                request.Proxy = new WebProxy(shellService.Settings.ProxyHost, int.Parse(shellService.Settings.ProxyPort));
-            }
-            else
-            {
-                request.Proxy = null;
-            }
+            request = SetWebRequestProxy(request, shellService.Settings);
             return request;
+        }
+
+        private static HttpWebRequest SetWebRequestProxy(HttpWebRequest request, AppSettings settings)
+        {
+            if (!string.IsNullOrEmpty(settings.ProxyHost) && !string.IsNullOrEmpty(settings.ProxyPort))
+                request.Proxy = new WebProxy(settings.ProxyHost, int.Parse(settings.ProxyPort));
+            else
+                request.Proxy = null;
+
+            if (!string.IsNullOrEmpty(settings.ProxyUsername) && !string.IsNullOrEmpty(settings.ProxyPassword))
+                request.Proxy.Credentials = new NetworkCredential(settings.ProxyUsername, settings.ProxyPassword);
+            return request;
+        }
+
+        protected Stream GetStreamForApiRequest(Stream stream)
+        {
+            if (!shellService.Settings.LimitScanBandwidth)
+                return stream;
+            return new ThrottledStream(stream, (shellService.Settings.Bandwidth / shellService.Settings.ParallelImages) * 1024);
+
         }
 
         protected virtual async Task<string> RequestDataAsync(string url)
         {
             HttpWebRequest request = CreateWebReqeust(url);
 
-            var bandwidth = 2000000;
-            if (shellService.Settings.LimitScanBandwidth)
-            {
-                bandwidth = shellService.Settings.Bandwidth;
-            }
-
             using (var response = await request.GetResponseAsync() as HttpWebResponse)
             {
-                using (
-                    var stream = new ThrottledStream(response.GetResponseStream(),
-                        (bandwidth / shellService.Settings.ParallelImages) * 1024))
+                using (var stream = GetStreamForApiRequest(response.GetResponseStream()))
                 {
                     using (var buffer = new BufferedStream(stream))
                     {

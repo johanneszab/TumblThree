@@ -104,7 +104,7 @@ namespace TumblThree.Applications.Properties
         public int MaxNumberOfRetries { get; set; }
 
         [DataMember]
-        public int Bandwidth { get; set; }
+        public long Bandwidth { get; set; }
 
         [DataMember]
         public int ImageSize { get; set; }
@@ -185,6 +185,12 @@ namespace TumblThree.Applications.Properties
         public bool DownloadUrlList { get; set; }
 
         [DataMember]
+        public string ProxyUsername { get; set; }
+
+        [DataMember]
+        public string ProxyPassword { get; set; }
+
+        [DataMember]
         public string ProxyHost { get; set; }
 
         [DataMember]
@@ -236,7 +242,7 @@ namespace TumblThree.Applications.Properties
             MaxConnections = 95;
             ConnectionTimeInterval = 60;
             MaxNumberOfRetries = 10;
-            Bandwidth = 102400;
+            Bandwidth = 0;
             ImageSize = 1280;
             VideoSize = 1080;
             BlogType = "None";
@@ -264,6 +270,8 @@ namespace TumblThree.Applications.Properties
             DownloadUrlList = false;
             ProxyHost = string.Empty;
             ProxyPort = string.Empty;
+            ProxyUsername = string.Empty;
+            ProxyPassword = string.Empty;
             ColumnSettings = new Dictionary<object, Tuple<int, double, Visibility>>();
         }
 
