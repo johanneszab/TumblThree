@@ -364,8 +364,8 @@ namespace TumblThree.Applications.Downloader
             {
                 foreach (XElement post in document.Descendants("post"))
                 {
-                    if (post.Attribute("type").Value == "photo" && (!tags.Any()) ||
-                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
+                    if (post.Attribute("type").Value == "photo" && (!tags.Any() ||
+                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase))))
                     {
                         AddPhotoUrl(post);
                         AddPhotoSetUrl(post);
@@ -389,8 +389,8 @@ namespace TumblThree.Applications.Downloader
             {
                 foreach (XElement post in document.Descendants("post"))
                 {
-                    if (post.Attribute("type").Value == "video" && (!tags.Any()) ||
-                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
+                    if (post.Attribute("type").Value == "video" && (!tags.Any() ||
+                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase))))
                     {
                         AddVideoUrl(post);
                     }
@@ -404,8 +404,8 @@ namespace TumblThree.Applications.Downloader
             {
                 foreach (XElement post in document.Descendants("post"))
                 {
-                    if (post.Attribute("type").Value == "audio" && (!tags.Any()) ||
-                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
+                    if (post.Attribute("type").Value == "audio" && (!tags.Any() ||
+                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase))))
                     {
                         AddAudioUrl(post);
                     }
@@ -419,8 +419,8 @@ namespace TumblThree.Applications.Downloader
             {
                 foreach (XElement post in document.Descendants("post"))
                 {
-                    if (post.Attribute("type").Value == "regular" && (!tags.Any()) ||
-                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
+                    if (post.Attribute("type").Value == "regular" && (!tags.Any() ||
+                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase))))
                     {
                         string textBody = ParseText(post);
                         AddToDownloadList(Tuple.Create(PostTypes.Text, textBody, post.Attribute("id").Value));
@@ -435,8 +435,8 @@ namespace TumblThree.Applications.Downloader
             {
                 foreach (XElement post in document.Descendants("post"))
                 {
-                    if (post.Attribute("type").Value == "quote" && (!tags.Any()) ||
-                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
+                    if (post.Attribute("type").Value == "quote" && (!tags.Any() ||
+                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase))))
                     {
                         string textBody = ParseQuote(post);
                         AddToDownloadList(Tuple.Create(PostTypes.Quote, textBody, post.Attribute("id").Value));
@@ -451,8 +451,8 @@ namespace TumblThree.Applications.Downloader
             {
                 foreach (XElement post in document.Descendants("post"))
                 {
-                    if (post.Attribute("type").Value == "link" && (!tags.Any()) ||
-                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
+                    if (post.Attribute("type").Value == "link" && (!tags.Any() ||
+                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase))))
                     {
                         string textBody = ParseLink(post);
                         AddToDownloadList(Tuple.Create(PostTypes.Link, textBody, post.Attribute("id").Value));
@@ -467,8 +467,8 @@ namespace TumblThree.Applications.Downloader
             {
                 foreach (XElement post in document.Descendants("post"))
                 {
-                    if (post.Attribute("type").Value == "conversation" && (!tags.Any()) ||
-                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
+                    if (post.Attribute("type").Value == "conversation" && (!tags.Any() ||
+                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase))))
                     {
                         string textBody = ParseConversation(post);
                         AddToDownloadList(Tuple.Create(PostTypes.Conversation, textBody, post.Attribute("id").Value));
@@ -483,8 +483,8 @@ namespace TumblThree.Applications.Downloader
             {
                 foreach (XElement post in document.Descendants("post"))
                 {
-                    if (post.Attribute("type").Value == "answer" && (!tags.Any()) ||
-                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
+                    if (post.Attribute("type").Value == "answer" && (!tags.Any() ||
+                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase))))
                     {
                         string textBody = ParseAnswer(post);
                         AddToDownloadList(Tuple.Create(PostTypes.Answer, textBody, post.Attribute("id").Value));
@@ -499,8 +499,8 @@ namespace TumblThree.Applications.Downloader
             {
                 foreach (XElement post in document.Descendants("post"))
                 {
-                    if (post.Attribute("type").Value == "photo" && (!tags.Any()) ||
-                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
+                    if (post.Attribute("type").Value == "photo" && (!tags.Any() ||
+                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase))))
                     {
                         string textBody = ParsePhotoMeta(post);
                         AddToDownloadList(Tuple.Create(PostTypes.PhotoMeta, textBody, post.Attribute("id").Value));
@@ -515,8 +515,8 @@ namespace TumblThree.Applications.Downloader
             {
                 foreach (XElement post in document.Descendants("post"))
                 {
-                    if (post.Attribute("type").Value == "video" && (!tags.Any()) ||
-                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
+                    if (post.Attribute("type").Value == "video" && (!tags.Any() ||
+                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase))))
                     {
                         string textBody = ParseVideoMeta(post);
                         AddToDownloadList(Tuple.Create(PostTypes.VideoMeta, textBody, post.Attribute("id").Value));
@@ -531,8 +531,8 @@ namespace TumblThree.Applications.Downloader
             {
                 foreach (XElement post in document.Descendants("post"))
                 {
-                    if (post.Attribute("type").Value == "audio" && (!tags.Any()) ||
-                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
+                    if (post.Attribute("type").Value == "audio" && (!tags.Any() ||
+                        post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase))))
                     {
                         string textBody = ParseAudioMeta(post);
                         AddToDownloadList(Tuple.Create(PostTypes.AudioMeta, textBody, post.Attribute("id").Value));
