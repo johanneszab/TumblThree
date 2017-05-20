@@ -228,6 +228,15 @@ namespace TumblThree.Applications.Downloader
                 crawlerService.StopCommand.Execute(null);
                 return false;
             }
+            catch (WebException webException) when ((webException.Response != null))
+            {
+                var webRespStatusCode = (int)((HttpWebResponse)webException?.Response).StatusCode;
+                if (webRespStatusCode >= 400 && webRespStatusCode < 600) // removes inaccessible files: status code 400 -- 599
+                {
+                    File.Delete(fileLocation);
+                }
+                return false;
+            }
             catch
             {
                 return false;

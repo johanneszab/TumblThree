@@ -835,11 +835,29 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Proxy Password:.
+        /// </summary>
+        public static string ProxyPassword {
+            get {
+                return ResourceManager.GetString("ProxyPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Port:.
         /// </summary>
         public static string ProxyPort {
             get {
                 return ResourceManager.GetString("ProxyPort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Proxy Username:.
+        /// </summary>
+        public static string ProxyUsername {
+            get {
+                return ResourceManager.GetString("ProxyUsername", resourceCulture);
             }
         }
         
@@ -1299,6 +1317,24 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipPortableModeDescription {
             get {
                 return ResourceManager.GetString("ToolTipPortableModeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Credentials for non-anonymous proxy server.
+        /// </summary>
+        public static string ToolTipProxyPassword {
+            get {
+                return ResourceManager.GetString("ToolTipProxyPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Credentials are saved in clear text in the settings file.
+        /// </summary>
+        public static string ToolTipProxyPasswordDescription {
+            get {
+                return ResourceManager.GetString("ToolTipProxyPasswordDescription", resourceCulture);
             }
         }
         

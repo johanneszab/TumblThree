@@ -28,6 +28,7 @@ namespace TumblThree.Applications
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
             request.ReadWriteTimeout = settings.TimeOut * 1000;
             request.Timeout = -1;
+            //FIXME: cookies site specific!
             request.CookieContainer = SharedCookieService.GetUriCookieContainer(new Uri("https://www.tumblr.com/"));
             ServicePointManager.DefaultConnectionLimit = 400;
             request = SetWebRequestProxy(request, settings);

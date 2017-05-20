@@ -555,4 +555,16 @@
   <data name="DownloadRebloggedPosts" xml:space="preserve">
     <value>Download reblogged posts</value>
   </data>
+  <data name="ProxyPassword" xml:space="preserve">
+    <value>Proxy Password:</value>
+  </data>
+  <data name="ProxyUsername" xml:space="preserve">
+    <value>Proxy Username:</value>
+  </data>
+  <data name="ToolTipProxyPassword" xml:space="preserve">
+    <value>Credentials for non-anonymous proxy server</value>
+  </data>
+  <data name="ToolTipProxyPasswordDescription" xml:space="preserve">
+    <value>Credentials are saved in clear text in the settings file</value>
+  </data>
 </root>

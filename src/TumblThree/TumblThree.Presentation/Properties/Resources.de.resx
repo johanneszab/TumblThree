@@ -537,4 +537,16 @@
   <data name="DownloadRebloggedPosts" xml:space="preserve">
     <value>Lade reblogged Einträge</value>
   </data>
+  <data name="ProxyPassword" xml:space="preserve">
+    <value>Proxy Password:</value>
+  </data>
+  <data name="ProxyUsername" xml:space="preserve">
+    <value>Proxy Benutzername:</value>
+  </data>
+  <data name="ToolTipProxyPassword" xml:space="preserve">
+    <value>Anmeldeinformationen für nicht anonyme Proxyserver.</value>
+  </data>
+  <data name="ToolTipProxyPasswordDescription" xml:space="preserve">
+    <value>Daten werden in Klartext in den Einstellungen gespeichert.</value>
+  </data>
 </root>

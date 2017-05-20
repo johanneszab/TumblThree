@@ -8,7 +8,7 @@
         xmlns:vr="clr-namespace:TumblThree.Presentation.ValidationRules"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:TumblThree.Applications.ViewModels;assembly=TumblThree.Applications"
-        mc:Ignorable="d" Title="Settings" Height="530" Width="700"
+        mc:Ignorable="d" Title="Settings" Height="570" Width="700"
         d:DataContext="{d:DesignInstance vm:SettingsViewModel}">
 
     <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
@@ -24,7 +24,6 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>                        
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -281,7 +280,7 @@
                             </Grid.ColumnDefinitions>
                             <Label x:Name="proxyHostLabel" Grid.Column="0" Content="{x:Static p:Resources.ProxyHost}"
                        HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10" />
-                            <TextBox x:Name="proxyHosttextBox"
+                            <TextBox x:Name="proxyHostTextBox"
                          Text="{Binding ProxyHost, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                          Grid.Column="1" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center" />
                             <Label x:Name="proxyPortLabel" Grid.Column="2" Content="{x:Static p:Resources.ProxyPort}"
@@ -292,6 +291,45 @@
                          Margin="00,0,10,0" />
                         </Grid>
                         <Grid MinHeight="46" Height="Auto" Grid.Row="8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Label x:Name="proxyUsernameLabel" Grid.Column="0" Content="{x:Static p:Resources.ProxyUsername}"
+                       HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10">
+                                <Label.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipProxyPassword}" />
+                                            <TextBlock xml:space="preserve"
+                                           Text="{x:Static p:Resources.ToolTipProxyPasswordDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </Label.ToolTip>
+                            </Label>
+                            <TextBox x:Name="proxyUsernameTextBox"
+                         Text="{Binding ProxyUsername, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                         Grid.Column="1" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center" />
+                            <Label x:Name="proxyPasswordLabel" Grid.Column="2" Content="{x:Static p:Resources.ProxyPassword}"
+                       HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10">
+                                <Label.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipProxyPassword}" />
+                                            <TextBlock xml:space="preserve"
+                                           Text="{x:Static p:Resources.ToolTipProxyPasswordDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </Label.ToolTip>
+                            </Label>
+                            <TextBox x:Name="proxyPasswordBox"
+                         Text="{Binding ProxyPassword, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                         Grid.Column="3" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center"
+                         Margin="00,0,10,0" />
+                        </Grid>
+                        <Grid MinHeight="46" Height="Auto" Grid.Row="9">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />

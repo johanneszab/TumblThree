@@ -62,6 +62,8 @@ namespace TumblThree.Applications.ViewModels
         private bool portableMode;
         private string proxyHost;
         private string proxyPort;
+        private string proxyUsername;
+        private string proxyPassword;
         private bool removeIndexAfterCrawl;
         private string secretKey;
         private bool showPicturePreview;
@@ -312,6 +314,18 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref proxyPort, value); }
         }
 
+        public string ProxyUsername
+        {
+            get { return proxyUsername; }
+            set { SetProperty(ref proxyUsername, value); }
+        }
+
+        public string ProxyPassword
+        {
+            get { return proxyPassword; }
+            set { SetProperty(ref proxyPassword, value); }
+        }
+
         public bool DownloadImages
         {
             get { return downloadImages; }
@@ -523,6 +537,8 @@ namespace TumblThree.Applications.ViewModels
                 PortableMode = settings.PortableMode;
                 ProxyHost = settings.ProxyHost;
                 ProxyPort = settings.ProxyPort;
+                ProxyHost = settings.ProxyUsername;
+                ProxyPort = settings.ProxyPassword;
                 TimerInterval = settings.TimerInterval;
             }
             else
@@ -569,6 +585,8 @@ namespace TumblThree.Applications.ViewModels
                 CheckDirectoryForFiles = false;
                 DownloadUrlList = false;
                 PortableMode = false;
+                ProxyHost = string.Empty;
+                ProxyPort = string.Empty;
                 ProxyHost = string.Empty;
                 ProxyPort = string.Empty;
                 TimerInterval = "22:40:00";
@@ -626,6 +644,8 @@ namespace TumblThree.Applications.ViewModels
             settings.PortableMode = PortableMode;
             settings.ProxyHost = ProxyHost;
             settings.ProxyPort = ProxyPort;
+            settings.ProxyUsername = ProxyUsername;
+            settings.ProxyPassword = ProxyPassword;
             settings.TimerInterval = TimerInterval;
         }
 
