@@ -388,7 +388,7 @@ namespace TumblThree.Applications.Downloader
                 }
 
                 // check for inline images
-                foreach (XElement post in document.Descendants("post"))
+                foreach (XElement post in document.Descendants("post").Where(p => p.Attribute("type").Value != "photo"))
                 {
                     if (!tags.Any() || post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
                     {
@@ -410,6 +410,16 @@ namespace TumblThree.Applications.Downloader
                     {
                         if(CheckIfDownloadRebloggedPosts(post))
                             AddVideoUrl(post);
+                    }
+                }
+
+                // check for inline images
+                foreach (XElement post in document.Descendants("post").Where(p => p.Attribute("type").Value != "video"))
+                {
+                    if (!tags.Any() || post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
+                    {
+                        if (CheckIfDownloadRebloggedPosts(post))
+                            AddInlineVideoUrl(post);
                     }
                 }
             }
@@ -624,19 +634,37 @@ namespace TumblThree.Applications.Downloader
 
         private void AddInlinePhotoUrl(XElement post)
         {
-            if (!string.Concat(post.Nodes()).Contains("tumblr_inline"))
-            {
-                return;
-            }
-            var regex = new Regex("<img src=\"(.*?)\"");
+            var regex = new Regex("\"(http[\\S]*media.tumblr.com[\\S]*(jpg|png|gif))\"");
             foreach (Match match in regex.Matches(post.Value))
             {
                 string imageUrl = match.Groups[1].Value;
-                if (blog.ForceSize)
+                if (imageUrl.Contains("avatar") || imageUrl.Contains("previews"))
+                    continue;
+                if (blog.SkipGif && imageUrl.EndsWith(".gif"))
                 {
-                    imageUrl = ResizeTumblrImageUrl(imageUrl);
+                    continue;
                 }
+                imageUrl = ResizeTumblrImageUrl(imageUrl);
                 AddToDownloadList(Tuple.Create(PostTypes.Photo, imageUrl, post.Attribute("id").Value));
+            }
+        }
+
+        private void AddInlineVideoUrl(XElement post)
+        {
+            var regex = new Regex("\"(http[\\S]*.com/video_file/[\\S]*)\"");
+            foreach (Match match in regex.Matches(post.Value))
+            {
+                string videoUrl = match.Groups[1].Value;
+                if (shellService.Settings.VideoSize == 1080)
+                {
+                    AddToDownloadList(Tuple.Create(PostTypes.Video, videoUrl.Replace("/480", "") + ".mp4", post.Attribute("id").Value));
+                }
+                else if (shellService.Settings.VideoSize == 480)
+                {
+                    AddToDownloadList(Tuple.Create(PostTypes.Video,
+                        "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + "_480.mp4",
+                        post.Attribute("id").Value));
+                }
             }
         }
 
@@ -668,8 +696,7 @@ namespace TumblThree.Applications.Downloader
         private void AddVideoUrl(XElement post)
         {
             string videoUrl = post.Descendants("video-player")
-                                  .Where(x => x.Value.Contains("<source src="))
-                                  .Select(result => Regex.Match(result.Value, "<source src=\"(.*)\" type=\"video/mp4\">")
+                                  .Select(result => Regex.Match(result.Value, "<source src=\"([\\S]*)\"")
                                                          .Groups[1].Value)
                                   .FirstOrDefault();
 
@@ -689,9 +716,8 @@ namespace TumblThree.Applications.Downloader
 
         private void AddAudioUrl(XElement post)
         {
-            string audioUrl = post.Descendants("audio-player")
-                                  .Where(x => x.Value.Contains("src="))
-                                  .Select(result => Regex.Match(result.Value, "src=\"(.*)\" height")
+            string audioUrl = post.Descendants("audio-embed")
+                                  .Select(result => Regex.Match(result.Value, "src=\"([\\S]*)\"")
                                                          .Groups[1].Value)
                                   .FirstOrDefault();
 

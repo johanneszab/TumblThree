@@ -379,6 +379,7 @@ namespace TumblThree.Applications.Controllers
             blog.CreateVideoMeta = shellService.Settings.CreateVideoMeta;
             blog.CreateAudioMeta = shellService.Settings.CreateAudioMeta;
             blog.SkipGif = shellService.Settings.SkipGif;
+            blog.DownloadRebloggedPosts = shellService.Settings.DownloadRebloggedPosts;
             blog.ForceSize = shellService.Settings.ForceSize;
             blog.CheckDirectoryForFiles = shellService.Settings.CheckDirectoryForFiles;
             blog.DownloadUrlList = shellService.Settings.DownloadUrlList;
