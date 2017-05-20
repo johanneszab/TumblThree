@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -284,7 +285,13 @@ namespace TumblThree.Applications.Downloader
 
                         completeGrab = CheckPostAge(document, lastId);
 
-                        AddUrlsToDownloadList(document);
+                        var tags = new List<string>();
+                        if (!string.IsNullOrWhiteSpace(blog.Tags))
+                        {
+                            tags = blog.Tags.Split(',').Select(x => x.Trim()).ToList();
+                        }
+
+                        AddUrlsToDownloadList(document, tags);
                     }
                     catch (WebException webException)
                     {
@@ -330,14 +337,8 @@ namespace TumblThree.Applications.Downloader
             return true;
         }
 
-        private void AddUrlsToDownloadList(XDocument document)
+        private void AddUrlsToDownloadList(XDocument document, IList<string> tags)
         {
-            var tags = new List<string>();
-            if (!string.IsNullOrWhiteSpace(blog.Tags))
-            {
-                tags = blog.Tags.Split(',').Select(x => x.Trim()).ToList();
-            }
-
             try
             {
                 AddPhotoUrlToDownloadList(document, tags);
@@ -358,6 +359,17 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
+        private bool CheckIfDownloadRebloggedPosts(XElement post)
+        {
+            if (!blog.DownloadRebloggedPosts)
+            {
+                if (!post.Attributes("reblogged-from-url").Any())
+                    return true;
+                return false;
+            }
+            return true;
+        }
+
         private void AddPhotoUrlToDownloadList(XDocument document, IList<string> tags)
         {
             if (blog.DownloadPhoto)
@@ -367,8 +379,11 @@ namespace TumblThree.Applications.Downloader
                     if (post.Attribute("type").Value == "photo" && (!tags.Any() ||
                         post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase))))
                     {
-                        AddPhotoUrl(post);
-                        AddPhotoSetUrl(post);
+                        if (CheckIfDownloadRebloggedPosts(post))
+                        {
+                            AddPhotoUrl(post);
+                            AddPhotoSetUrl(post);
+                        }
                     }
                 }
 
@@ -377,7 +392,8 @@ namespace TumblThree.Applications.Downloader
                 {
                     if (!tags.Any() || post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
                     {
-                        AddInlinePhotoUrl(post);
+                        if (CheckIfDownloadRebloggedPosts(post))
+                            AddInlinePhotoUrl(post);
                     }
                 }
             }
@@ -392,7 +408,8 @@ namespace TumblThree.Applications.Downloader
                     if (post.Attribute("type").Value == "video" && (!tags.Any() ||
                         post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase))))
                     {
-                        AddVideoUrl(post);
+                        if(CheckIfDownloadRebloggedPosts(post))
+                            AddVideoUrl(post);
                     }
                 }
             }
@@ -407,7 +424,8 @@ namespace TumblThree.Applications.Downloader
                     if (post.Attribute("type").Value == "audio" && (!tags.Any() ||
                         post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase))))
                     {
-                        AddAudioUrl(post);
+                        if (CheckIfDownloadRebloggedPosts(post))
+                            AddAudioUrl(post);
                     }
                 }
             }
@@ -422,8 +440,11 @@ namespace TumblThree.Applications.Downloader
                     if (post.Attribute("type").Value == "regular" && (!tags.Any() ||
                         post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase))))
                     {
-                        string textBody = ParseText(post);
-                        AddToDownloadList(Tuple.Create(PostTypes.Text, textBody, post.Attribute("id").Value));
+                        if (CheckIfDownloadRebloggedPosts(post))
+                        {
+                            string textBody = ParseText(post);
+                            AddToDownloadList(Tuple.Create(PostTypes.Text, textBody, post.Attribute("id").Value));
+                        }
                     }
                 }
             }
@@ -438,8 +459,11 @@ namespace TumblThree.Applications.Downloader
                     if (post.Attribute("type").Value == "quote" && (!tags.Any() ||
                         post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase))))
                     {
-                        string textBody = ParseQuote(post);
-                        AddToDownloadList(Tuple.Create(PostTypes.Quote, textBody, post.Attribute("id").Value));
+                        if (CheckIfDownloadRebloggedPosts(post))
+                        {
+                            string textBody = ParseQuote(post);
+                            AddToDownloadList(Tuple.Create(PostTypes.Quote, textBody, post.Attribute("id").Value));
+                        }
                     }
                 }
             }
@@ -454,8 +478,11 @@ namespace TumblThree.Applications.Downloader
                     if (post.Attribute("type").Value == "link" && (!tags.Any() ||
                         post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase))))
                     {
-                        string textBody = ParseLink(post);
-                        AddToDownloadList(Tuple.Create(PostTypes.Link, textBody, post.Attribute("id").Value));
+                        if (CheckIfDownloadRebloggedPosts(post))
+                        {
+                            string textBody = ParseLink(post);
+                            AddToDownloadList(Tuple.Create(PostTypes.Link, textBody, post.Attribute("id").Value));
+                        }
                     }
                 }
             }
@@ -470,8 +497,11 @@ namespace TumblThree.Applications.Downloader
                     if (post.Attribute("type").Value == "conversation" && (!tags.Any() ||
                         post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase))))
                     {
-                        string textBody = ParseConversation(post);
-                        AddToDownloadList(Tuple.Create(PostTypes.Conversation, textBody, post.Attribute("id").Value));
+                        if (CheckIfDownloadRebloggedPosts(post))
+                        {
+                            string textBody = ParseConversation(post);
+                            AddToDownloadList(Tuple.Create(PostTypes.Conversation, textBody, post.Attribute("id").Value));
+                        }
                     }
                 }
             }
@@ -486,8 +516,11 @@ namespace TumblThree.Applications.Downloader
                     if (post.Attribute("type").Value == "answer" && (!tags.Any() ||
                         post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase))))
                     {
-                        string textBody = ParseAnswer(post);
-                        AddToDownloadList(Tuple.Create(PostTypes.Answer, textBody, post.Attribute("id").Value));
+                        if (CheckIfDownloadRebloggedPosts(post))
+                        {
+                            string textBody = ParseAnswer(post);
+                            AddToDownloadList(Tuple.Create(PostTypes.Answer, textBody, post.Attribute("id").Value));
+                        }
                     }
                 }
             }
@@ -502,8 +535,11 @@ namespace TumblThree.Applications.Downloader
                     if (post.Attribute("type").Value == "photo" && (!tags.Any() ||
                         post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase))))
                     {
-                        string textBody = ParsePhotoMeta(post);
-                        AddToDownloadList(Tuple.Create(PostTypes.PhotoMeta, textBody, post.Attribute("id").Value));
+                        if (CheckIfDownloadRebloggedPosts(post))
+                        {
+                            string textBody = ParsePhotoMeta(post);
+                            AddToDownloadList(Tuple.Create(PostTypes.PhotoMeta, textBody, post.Attribute("id").Value));
+                        }
                     }
                 }
             }
@@ -518,8 +554,11 @@ namespace TumblThree.Applications.Downloader
                     if (post.Attribute("type").Value == "video" && (!tags.Any() ||
                         post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase))))
                     {
-                        string textBody = ParseVideoMeta(post);
-                        AddToDownloadList(Tuple.Create(PostTypes.VideoMeta, textBody, post.Attribute("id").Value));
+                        if (CheckIfDownloadRebloggedPosts(post))
+                        {
+                            string textBody = ParseVideoMeta(post);
+                            AddToDownloadList(Tuple.Create(PostTypes.VideoMeta, textBody, post.Attribute("id").Value));
+                        }
                     }
                 }
             }
@@ -534,8 +573,11 @@ namespace TumblThree.Applications.Downloader
                     if (post.Attribute("type").Value == "audio" && (!tags.Any() ||
                         post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase))))
                     {
-                        string textBody = ParseAudioMeta(post);
-                        AddToDownloadList(Tuple.Create(PostTypes.AudioMeta, textBody, post.Attribute("id").Value));
+                        if (CheckIfDownloadRebloggedPosts(post))
+                        {
+                            string textBody = ParseAudioMeta(post);
+                            AddToDownloadList(Tuple.Create(PostTypes.AudioMeta, textBody, post.Attribute("id").Value));
+                        }
                     }
                 }
             }

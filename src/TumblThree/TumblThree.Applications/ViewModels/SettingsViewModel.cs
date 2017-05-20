@@ -35,6 +35,7 @@ namespace TumblThree.Applications.ViewModels
         private bool createAudioMeta;
         private bool createImageMeta;
         private bool createVideoMeta;
+        private bool downloadRebloggedPosts;
         private bool deleteOnlyIndex;
         private bool downloadAudios;
         private bool downloadConversations;
@@ -377,6 +378,12 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref createAudioMeta, value); }
         }
 
+        public bool DownloadRebloggedPosts
+        {
+            get { return downloadRebloggedPosts; }
+            set { SetProperty(ref downloadRebloggedPosts, value); }
+        }
+
         public string TimerInterval
         {
             get { return timerInterval; }
@@ -508,6 +515,7 @@ namespace TumblThree.Applications.ViewModels
                 CreateImageMeta = settings.CreateImageMeta;
                 CreateVideoMeta = settings.CreateVideoMeta;
                 CreateAudioMeta = settings.CreateAudioMeta;
+                DownloadRebloggedPosts = settings.DownloadRebloggedPosts;
                 AutoDownload = settings.AutoDownload;
                 ForceSize = settings.ForceSize;
                 CheckDirectoryForFiles = settings.CheckDirectoryForFiles;
@@ -555,6 +563,7 @@ namespace TumblThree.Applications.ViewModels
                 CreateImageMeta = false;
                 CreateVideoMeta = false;
                 CreateAudioMeta = false;
+                DownloadRebloggedPosts = true;
                 AutoDownload = false;
                 ForceSize = false;
                 CheckDirectoryForFiles = false;
@@ -604,6 +613,7 @@ namespace TumblThree.Applications.ViewModels
             settings.CreateImageMeta = CreateImageMeta;
             settings.CreateVideoMeta = CreateVideoMeta;
             settings.CreateAudioMeta = CreateAudioMeta;
+            settings.DownloadRebloggedPosts = DownloadRebloggedPosts;
             settings.ApiKey = ApiKey;
             settings.SecretKey = SecretKey;
             settings.OAuthToken = OAuthToken;

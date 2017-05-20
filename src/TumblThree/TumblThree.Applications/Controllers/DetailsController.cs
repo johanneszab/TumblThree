@@ -120,6 +120,7 @@ namespace TumblThree.Applications.Controllers
                 CreatePhotoMeta = false,
                 CreateVideoMeta = false,
                 CreateAudioMeta = false,
+                DownloadRebloggedPosts = false,
                 SkipGif = false,
                 ForceSize = false,
                 ForceRescan = false,
@@ -165,6 +166,7 @@ namespace TumblThree.Applications.Controllers
                     blog.CreatePhotoMeta = blogFile.CreatePhotoMeta;
                     blog.CreateVideoMeta = blogFile.CreateVideoMeta;
                     blog.CreateAudioMeta = blogFile.CreateAudioMeta;
+                    blog.DownloadRebloggedPosts = blogFile.DownloadRebloggedPosts;
                     blog.SkipGif = blogFile.SkipGif;
                     blog.ForceSize = blogFile.ForceSize;
                     blog.ForceRescan = blogFile.ForceRescan;

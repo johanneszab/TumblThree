@@ -170,6 +170,9 @@ namespace TumblThree.Applications.Properties
         public bool CreateAudioMeta { get; set; }
 
         [DataMember]
+        public bool DownloadRebloggedPosts { get; set; }
+
+        [DataMember]
         public bool AutoDownload { get; set; }
 
         [DataMember]
@@ -266,6 +269,7 @@ namespace TumblThree.Applications.Properties
             CreateImageMeta = false;
             CreateVideoMeta = false;
             CreateAudioMeta = false;
+            DownloadRebloggedPosts = true;
             AutoDownload = false;
             TimerInterval = "22:40:00";
             ForceSize = false;

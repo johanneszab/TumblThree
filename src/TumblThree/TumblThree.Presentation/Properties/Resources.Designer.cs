@@ -412,6 +412,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download reblogged posts.
+        /// </summary>
+        public static string DownloadRebloggedPosts {
+            get {
+                return ResourceManager.GetString("DownloadRebloggedPosts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Download text posts.
         /// </summary>
         public static string DownloadTexts {

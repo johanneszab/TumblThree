@@ -534,4 +534,7 @@
   <data name="ToolTipPortableModeDescription" xml:space="preserve">
     <value>Speichert die Einstellungen in den Ordner der ausführbaren Datei und nicht in AppData.</value>
   </data>
+  <data name="DownloadRebloggedPosts" xml:space="preserve">
+    <value>Lade reblogged Einträge</value>
+  </data>
 </root>

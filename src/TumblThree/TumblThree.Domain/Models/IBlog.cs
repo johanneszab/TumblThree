@@ -98,6 +98,8 @@ namespace TumblThree.Domain.Models
 
         bool CreateAudioMeta { get; set; }
 
+        bool DownloadRebloggedPosts { get; set; }
+
         bool SkipGif { get; set; }
 
         bool ForceSize { get; set; }

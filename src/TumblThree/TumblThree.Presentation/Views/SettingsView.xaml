@@ -339,6 +339,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Label x:Name="perBlogLabel" Grid.Column="0" Grid.Row="0" Margin="5"
                        Content="{x:Static p:Resources.DefaultSettingsForBlogs}">
@@ -379,9 +380,11 @@
                           IsChecked="{Binding DownloadLinks, Mode=TwoWay}" Grid.Column="0" Grid.Row="7" Margin="10" />
                         <CheckBox x:Name="checkBoxDownloadAnswers" Content="{x:Static p:Resources.DownloadAnswers}"
                           IsChecked="{Binding DownloadAnswers, Mode=TwoWay}" Grid.Column="0" Grid.Row="8" Margin="10" />
+                        <CheckBox x:Name="checkBoxDownloadRebloggedPosts" Content="{x:Static p:Resources.DownloadRebloggedPosts}"
+                          IsChecked="{Binding DownloadRebloggedPosts, Mode=TwoWay}" Grid.Column="0" Grid.Row="9" Margin="10" />
                         <CheckBox x:Name="checkBoxCheckDirectoryForFiles"
                           Content="{x:Static p:Resources.CheckDirectoryForFiles}"
-                          IsChecked="{Binding CheckDirectoryForFiles, Mode=TwoWay}" Grid.Column="0" Grid.Row="9"
+                          IsChecked="{Binding CheckDirectoryForFiles, Mode=TwoWay}" Grid.Column="0" Grid.Row="10"
                           Margin="10">
                             <CheckBox.ToolTip>
                                 <ToolTip>
@@ -395,7 +398,7 @@
                             </CheckBox.ToolTip>
                         </CheckBox>
                         <CheckBox x:Name="checkBoxDownloadUrlList" Content="{x:Static p:Resources.DownloadUrlList}"
-                          IsChecked="{Binding DownloadUrlList, Mode=TwoWay}" Grid.Column="1" Grid.Row="9" Margin="10">
+                          IsChecked="{Binding DownloadUrlList, Mode=TwoWay}" Grid.Column="1" Grid.Row="10" Margin="10">
                             <CheckBox.ToolTip>
                                 <ToolTip>
                                     <StackPanel>
@@ -407,9 +410,9 @@
                             </CheckBox.ToolTip>
                         </CheckBox>
                         <CheckBox x:Name="checkBoxSkipGif" Content="{x:Static p:Resources.SkipGif}"
-                          IsChecked="{Binding SkipGif, Mode=TwoWay}" Grid.Column="0" Grid.Row="10" Margin="10" />
+                          IsChecked="{Binding SkipGif, Mode=TwoWay}" Grid.Column="0" Grid.Row="11" Margin="10" />
                         <CheckBox x:Name="checkBoxForceSize" Content="{x:Static p:Resources.ForceSize}"
-                          IsChecked="{Binding ForceSize, Mode=TwoWay}" Grid.Column="1" Grid.Row="10" Margin="10">
+                          IsChecked="{Binding ForceSize, Mode=TwoWay}" Grid.Column="1" Grid.Row="11" Margin="10">
                             <CheckBox.ToolTip>
                                 <ToolTip>
                                     <StackPanel>
@@ -423,7 +426,7 @@
                     </Grid>
                 </TabItem>
                 <TabItem Header="{x:Static p:Resources.General}">
-                    <Grid MinHeight="46" Height="Auto" Grid.Row="9">
+                    <Grid MinHeight="46" Height="Auto">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
