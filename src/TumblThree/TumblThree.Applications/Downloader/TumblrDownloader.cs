@@ -703,7 +703,9 @@ namespace TumblThree.Applications.Downloader
             if (shellService.Settings.VideoSize == 1080)
             {
 
-                AddToDownloadList(Tuple.Create(PostTypes.Video, videoUrl.Replace("/480", "") + ".mp4", post.Attribute("id").Value));
+                AddToDownloadList(Tuple.Create(PostTypes.Video,
+                    "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + ".mp4", 
+                    post.Attribute("id").Value));
             }
             else if (shellService.Settings.VideoSize == 480)
             {

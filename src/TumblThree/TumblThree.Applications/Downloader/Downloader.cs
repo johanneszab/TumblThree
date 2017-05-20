@@ -138,7 +138,7 @@ namespace TumblThree.Applications.Downloader
             return true;
         }
 
-        public async Task IsBlogOnlineAsync()
+        public virtual async Task IsBlogOnlineAsync()
         {
             try
             {
