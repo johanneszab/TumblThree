@@ -8,14 +8,14 @@ TumblThree is the code rewrite of [TumblTwo](https://github.com/johanneszab/Tumb
 * Save, clear and restore the queuelist.
 * Download of text, audio, quote, conversation, link and question posts.
 * Download meta information for photo, video and audio posts.
-* An option to download an url list instead of the actual files.
-* Set a time interval for a automatic download (e.g. during nights).
-* Allows to set a proxy.
 * Downloads inlined photos and videos (e.g. photos embedded in question&answer posts).
-* Allows to download only original content of the blog and skip reblogged posts.
-* A bandwidth throttler.
 * A downloader for downloading "liked by" photos and videos instead of a tumblr blog.
-* Uses SSL instead of https connections.
+* An option to download an url list instead of the actual files.
+* Allows to download only original content of the blog and skip reblogged posts.
+* Set a time interval for a automatic download (e.g. during nights).
+* Uses SSL instead of unsecure http connections.
+* Allows to set a proxy.
+* A bandwidth throttler.
 * Preview of photos & videos.
 * Taskbar buttons and key bindings.
 
@@ -48,7 +48,6 @@ TumblThree is the code rewrite of [TumblTwo](https://github.com/johanneszab/Tumb
     1. Go to Settings, click the Authenticate button. Logon to tumblr using an account. The window/browser should automatically close after the login indicating a successful authentication. TumblThree will use the Internet Explorer cookies for authentication.
     2. Add the blog url including the liked/by string in the url (e.g. https://www.tumblr.com/liked/by/wallpapferfx/).
 
-  
 * Tags
 
   * You can also download only tagged images by adding tags in a comma separated list in the tag column of the blog list in the top. For example: _great big car,bears_ would search for images that are tagged for either a _great big car_ or _bears_ or both.
