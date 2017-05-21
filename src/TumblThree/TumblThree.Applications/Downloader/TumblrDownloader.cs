@@ -123,10 +123,16 @@ namespace TumblThree.Applications.Downloader
 
                 trackedTasks.Add(new Func<Task>(async () =>
                 {
+                    var tags = new List<string>();
+                    if (!string.IsNullOrWhiteSpace(blog.Tags))
+                    {
+                        tags = blog.Tags.Split(',').Select(x => x.Trim()).ToList();
+                    }
+
                     try
                     {
                         string document = await RequestDataAsync(blog.Url + "page/" + crawlerNumber);
-                        await AddUrlsToDownloadList(document, progress, crawlerNumber, ct, pt);
+                        await AddUrlsToDownloadList(document, tags, progress, crawlerNumber, ct, pt);
                     }
                     catch (WebException)
                     {
@@ -147,7 +153,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        private async Task AddUrlsToDownloadList(string document, IProgress<DownloadProgress> progress,
+        private async Task AddUrlsToDownloadList(string document, IList<string> tags, IProgress<DownloadProgress> progress,
             int crawlerNumber, CancellationToken ct, PauseToken pt)
         {
             if (ct.IsCancellationRequested)
@@ -159,12 +165,6 @@ namespace TumblThree.Applications.Downloader
                 pt.WaitWhilePausedWithResponseAsyc().Wait();
             }
 
-            var tags = new List<string>();
-            if (!string.IsNullOrWhiteSpace(blog.Tags))
-            {
-                tags = blog.Tags.Split(',').Select(x => x.Trim()).ToList();
-            }
-
             AddPhotoUrlToDownloadList(document, tags);
             AddVideoUrlToDownloadList(document, tags);
 
@@ -174,20 +174,19 @@ namespace TumblThree.Applications.Downloader
             if (!document.Contains((crawlerNumber + 1).ToString()))
                 return;
             crawlerNumber += shellService.Settings.ParallelScans;
-            await AddUrlsToDownloadList(document, progress, crawlerNumber, ct, pt);
+            await AddUrlsToDownloadList(document, tags, progress, crawlerNumber, ct, pt);
         }
 
         private void AddPhotoUrlToDownloadList(string document, IList<string> tags)
         {
             if (blog.DownloadPhoto)
             {
-                var regex = new Regex("\"http[\\S]*media.tumblr.com[\\S]*(jpg|png|gif)\"");
+                var regex = new Regex("\"(http[\\S]*media.tumblr.com[\\S]*(jpg|png|gif))\"");
                 foreach (Match match in regex.Matches(document))
                 {
-                    string imageUrl = match.Groups[0].Value;
+                    string imageUrl = match.Groups[1].Value;
                     if (imageUrl.Contains("avatar") || imageUrl.Contains("previews"))
                         continue;
-                    imageUrl = imageUrl.Substring(1, imageUrl.Length - 2);
                     if (blog.SkipGif && imageUrl.EndsWith(".gif"))
                     {
                         continue;
@@ -203,16 +202,16 @@ namespace TumblThree.Applications.Downloader
         {
             if (blog.DownloadVideo)
             {
-                var regex = new Regex("\"http[\\S]*.com/video_file/[\\S]*\"");
+                var regex = new Regex("\"(http[\\S]*.com/video_file/[\\S]*)\"");
                 foreach (Match match in regex.Matches(document))
                 {
                     string videoUrl = match.Groups[0].Value;
-                    videoUrl = videoUrl.Substring(1, videoUrl.Length - 2);
-                    // FIXME: postId
                     if (shellService.Settings.VideoSize == 1080)
                     {
                         // FIXME: postID
-                        AddToDownloadList(Tuple.Create(PostTypes.Video, videoUrl.Replace("/480", "") + ".mp4", Guid.NewGuid().ToString("N")));
+                        AddToDownloadList(Tuple.Create(PostTypes.Video,
+                            "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + ".mp4",
+                            Guid.NewGuid().ToString("N")));
                     }
                     else if (shellService.Settings.VideoSize == 480)
                     {

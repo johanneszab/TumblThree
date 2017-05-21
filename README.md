@@ -6,9 +6,16 @@ TumblThree is the code rewrite of [TumblTwo](https://github.com/johanneszab/Tumb
 * Internationalization support.
 * Autosave of the queuelist.
 * Save, clear and restore the queuelist.
-* Download of text, audio, quote, conversation and link posts.
+* Download of text, audio, quote, conversation, link and question posts.
 * Download meta information for photo, video and audio posts.
+* Downloads inlined photos and videos (e.g. photos embedded in question&answer posts).
+* A downloader for downloading "liked by" photos and videos instead of a tumblr blog.
+* An option to download an url list instead of the actual files.
+* Allows to download only original content of the blog and skip reblogged posts.
 * Set a time interval for a automatic download (e.g. during nights).
+* Uses SSL instead of unsecure http connections.
+* Allows to set a proxy.
+* A bandwidth throttler.
 * Preview of photos & videos.
 * Taskbar buttons and key bindings.
 
@@ -37,15 +44,13 @@ TumblThree is the code rewrite of [TumblTwo](https://github.com/johanneszab/Tumb
   * The blog manager on the left side also indicates the state of each blog. A red background shows an offline blog, a green background an actively crawled blog and a purple background an enqueue blog.
   * You can set up more than one parallel download in the 'Settings'. Also, it is possible to change the download location and the sizes of the picture and video files to download. It is possible to setup a timer for automatic start of the download. 
   * In the Details window you can view statistics of your blog and set blog specific options. You can choose here what kind of post type (photo, video, audio, text, conversation, quote, link) to download.
-  
+  * For downloads liked photos and videos, you have to do some steps:
+    1. Go to Settings, click the Authenticate button. Logon to tumblr using an account. The window/browser should automatically close after the login indicating a successful authentication. TumblThree will use the Internet Explorer cookies for authentication.
+    2. Add the blog url including the liked/by string in the url (e.g. https://www.tumblr.com/liked/by/wallpaperfx/).
+
 * Tags
 
   * You can also download only tagged images by adding tags in a comma separated list in the tag column of the blog list in the top. For example: _great big car,bears_ would search for images that are tagged for either a _great big car_ or _bears_ or both.
-
-* Speed
-
-  * If the download stalls after a period of time and just finishes incompletely, you might have to lower the Number of parallel connections in the settings panel. Most likely the application has opened too many connections to the tumblr network which were timed out and got closed by the servers. Try to redownload with lower values. The applications restarts where it left off.
-  * Otherwise, if the download speeds are not satisfied, you may increase the value.
 
 * Key Mappings
 
@@ -60,6 +65,7 @@ TumblThree is the code rewrite of [TumblTwo](https://github.com/johanneszab/Tumb
 * Saved Settings
 
   * Application settings are stored in _C:\\Users\\Username\\AppData\\Local\\TumblThree\\_. 
+  * You can use the _portable mode_ (settings->general) to stores the application settings in the same folder as the executable.
   * For each blog there is also an index file in the download location (default: in the _.\\Blogs\\_ folder relative to the executable) named after the _blogname_.tumblr. Here are blog relative information stored like what files have been downloaded, the url of the blog and when it was added. This allows you to move your downloaded files (photos, videos, audio files) to a different location without interfering with the backup process.
 
 ### Current Limitations: ###

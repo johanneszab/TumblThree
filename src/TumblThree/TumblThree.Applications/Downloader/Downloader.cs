@@ -138,7 +138,7 @@ namespace TumblThree.Applications.Downloader
             return true;
         }
 
-        public async Task IsBlogOnlineAsync()
+        public virtual async Task IsBlogOnlineAsync()
         {
             try
             {
@@ -226,6 +226,15 @@ namespace TumblThree.Applications.Downloader
                 Logger.Error("ManagerController:Download: {0}", ex);
                 shellService.ShowError(ex, Resources.DiskFull);
                 crawlerService.StopCommand.Execute(null);
+                return false;
+            }
+            catch (WebException webException) when ((webException.Response != null))
+            {
+                var webRespStatusCode = (int)((HttpWebResponse)webException?.Response).StatusCode;
+                if (webRespStatusCode >= 400 && webRespStatusCode < 600) // removes inaccessible files: status code 400 -- 599
+                {
+                    File.Delete(fileLocation);
+                }
                 return false;
             }
             catch
