@@ -174,6 +174,8 @@ namespace TumblThree.Applications.Controllers
                     blog.ForceRescan = blogFile.ForceRescan;
                     blog.CheckDirectoryForFiles = blogFile.CheckDirectoryForFiles;
                     blog.DownloadUrlList = blogFile.DownloadUrlList;
+                    blog.DownloadPages = blogFile.DownloadPages;
+                    blog.PageSize = blogFile.PageSize;
                     blog.Dirty = true;
                 }
             }

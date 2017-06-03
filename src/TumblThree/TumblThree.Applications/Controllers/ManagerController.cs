@@ -383,6 +383,8 @@ namespace TumblThree.Applications.Controllers
             blog.ForceSize = shellService.Settings.ForceSize;
             blog.CheckDirectoryForFiles = shellService.Settings.CheckDirectoryForFiles;
             blog.DownloadUrlList = shellService.Settings.DownloadUrlList;
+            blog.DownloadPages = shellService.Settings.DownloadPages;
+            blog.PageSize = shellService.Settings.PageSize;
         }
 
         private void OnClipboardContentChanged(object sender, EventArgs e)
