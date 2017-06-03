@@ -168,11 +168,7 @@ namespace TumblThree.Applications.Downloader
         /// </returns>
         protected override string GetCoreImageUrl(string url)
         {
-            //FIXME: IndexOutOfRangeException
-            //if (!url.Contains("inline"))
-            //    return url.Split('_')[0] + "_" + url.Split('_')[1];
-            //else
-            //    return url;
+            // return url.Split('_')[0] + "_" + url.Split('_')[1];
             return url;
         }
 
@@ -192,8 +188,8 @@ namespace TumblThree.Applications.Downloader
 
         private int DetermineDuplicates(PostTypes type)
         {
-            return statisticsBag.Where(url => url.Item1.Equals(type))
-                                .GroupBy(url => url.Item2)
+            return statisticsBag.Where(url => url.PostType.Equals(type))
+                                .GroupBy(url => url.Url)
                                 .Where(g => g.Count() > 1)
                                 .Sum(g => g.Count() - 1);
         }
@@ -320,7 +316,7 @@ namespace TumblThree.Applications.Downloader
                 UpdateBlogStats();
             }
 
-            return Tuple.Create(highestId, apiLimitHit);
+            return new Tuple<ulong, bool>(highestId, apiLimitHit);
         }
 
         private static bool CheckPostAge(XDocument document, ulong lastId)
@@ -452,7 +448,7 @@ namespace TumblThree.Applications.Downloader
                         if (CheckIfDownloadRebloggedPosts(post))
                         {
                             string textBody = ParseText(post);
-                            AddToDownloadList(Tuple.Create(PostTypes.Text, textBody, post.Attribute("id").Value));
+                            AddToDownloadList(new TumblrPost(PostTypes.Text, textBody, post.Attribute("id").Value));
                         }
                     }
                 }
@@ -471,7 +467,7 @@ namespace TumblThree.Applications.Downloader
                         if (CheckIfDownloadRebloggedPosts(post))
                         {
                             string textBody = ParseQuote(post);
-                            AddToDownloadList(Tuple.Create(PostTypes.Quote, textBody, post.Attribute("id").Value));
+                            AddToDownloadList(new TumblrPost(PostTypes.Quote, textBody, post.Attribute("id").Value));
                         }
                     }
                 }
@@ -490,7 +486,7 @@ namespace TumblThree.Applications.Downloader
                         if (CheckIfDownloadRebloggedPosts(post))
                         {
                             string textBody = ParseLink(post);
-                            AddToDownloadList(Tuple.Create(PostTypes.Link, textBody, post.Attribute("id").Value));
+                            AddToDownloadList(new TumblrPost(PostTypes.Link, textBody, post.Attribute("id").Value));
                         }
                     }
                 }
@@ -509,7 +505,7 @@ namespace TumblThree.Applications.Downloader
                         if (CheckIfDownloadRebloggedPosts(post))
                         {
                             string textBody = ParseConversation(post);
-                            AddToDownloadList(Tuple.Create(PostTypes.Conversation, textBody, post.Attribute("id").Value));
+                            AddToDownloadList(new TumblrPost(PostTypes.Conversation, textBody, post.Attribute("id").Value));
                         }
                     }
                 }
@@ -528,7 +524,7 @@ namespace TumblThree.Applications.Downloader
                         if (CheckIfDownloadRebloggedPosts(post))
                         {
                             string textBody = ParseAnswer(post);
-                            AddToDownloadList(Tuple.Create(PostTypes.Answer, textBody, post.Attribute("id").Value));
+                            AddToDownloadList(new TumblrPost(PostTypes.Answer, textBody, post.Attribute("id").Value));
                         }
                     }
                 }
@@ -547,7 +543,7 @@ namespace TumblThree.Applications.Downloader
                         if (CheckIfDownloadRebloggedPosts(post))
                         {
                             string textBody = ParsePhotoMeta(post);
-                            AddToDownloadList(Tuple.Create(PostTypes.PhotoMeta, textBody, post.Attribute("id").Value));
+                            AddToDownloadList(new TumblrPost(PostTypes.PhotoMeta, textBody, post.Attribute("id").Value));
                         }
                     }
                 }
@@ -566,7 +562,7 @@ namespace TumblThree.Applications.Downloader
                         if (CheckIfDownloadRebloggedPosts(post))
                         {
                             string textBody = ParseVideoMeta(post);
-                            AddToDownloadList(Tuple.Create(PostTypes.VideoMeta, textBody, post.Attribute("id").Value));
+                            AddToDownloadList(new TumblrPost(PostTypes.VideoMeta, textBody, post.Attribute("id").Value));
                         }
                     }
                 }
@@ -585,7 +581,7 @@ namespace TumblThree.Applications.Downloader
                         if (CheckIfDownloadRebloggedPosts(post))
                         {
                             string textBody = ParseAudioMeta(post);
-                            AddToDownloadList(Tuple.Create(PostTypes.AudioMeta, textBody, post.Attribute("id").Value));
+                            AddToDownloadList(new TumblrPost(PostTypes.AudioMeta, textBody, post.Attribute("id").Value));
                         }
                     }
                 }
@@ -595,22 +591,22 @@ namespace TumblThree.Applications.Downloader
         private void UpdateBlogStats()
         {
             blog.TotalCount = statisticsBag.Count;
-            blog.Photos = statisticsBag.Count(url => url.Item1.Equals(PostTypes.Photo));
-            blog.Videos = statisticsBag.Count(url => url.Item1.Equals(PostTypes.Video));
-            blog.Audios = statisticsBag.Count(url => url.Item1.Equals(PostTypes.Audio));
-            blog.Texts = statisticsBag.Count(url => url.Item1.Equals(PostTypes.Text));
-            blog.Answers = statisticsBag.Count(url => url.Item1.Equals(PostTypes.Answer));
-            blog.Conversations = statisticsBag.Count(url => url.Item1.Equals(PostTypes.Conversation));
-            blog.Quotes = statisticsBag.Count(url => url.Item1.Equals(PostTypes.Quote));
-            blog.NumberOfLinks = statisticsBag.Count(url => url.Item1.Equals(PostTypes.Link));
-            blog.PhotoMetas = statisticsBag.Count(url => url.Item1.Equals(PostTypes.PhotoMeta));
-            blog.VideoMetas = statisticsBag.Count(url => url.Item1.Equals(PostTypes.VideoMeta));
-            blog.AudioMetas = statisticsBag.Count(url => url.Item1.Equals(PostTypes.AudioMeta));
+            blog.Photos = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Photo));
+            blog.Videos = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Video));
+            blog.Audios = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Audio));
+            blog.Texts = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Text));
+            blog.Answers = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Answer));
+            blog.Conversations = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Conversation));
+            blog.Quotes = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Quote));
+            blog.NumberOfLinks = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Link));
+            blog.PhotoMetas = statisticsBag.Count(url => url.PostType.Equals(PostTypes.PhotoMeta));
+            blog.VideoMetas = statisticsBag.Count(url => url.PostType.Equals(PostTypes.VideoMeta));
+            blog.AudioMetas = statisticsBag.Count(url => url.PostType.Equals(PostTypes.AudioMeta));
         }
 
-        private void AddToDownloadList(Tuple<PostTypes, string, string> addToList)
+        private void AddToDownloadList(TumblrPost addToList)
         {
-            if (statisticsBag.All(download => download.Item2 != addToList.Item2))
+            if (statisticsBag.All(download => download.Url != addToList.Url))
             {
                 producerConsumerCollection.Add(addToList);
             }
@@ -644,7 +640,7 @@ namespace TumblThree.Applications.Downloader
                     continue;
                 }
                 imageUrl = ResizeTumblrImageUrl(imageUrl);
-                AddToDownloadList(Tuple.Create(PostTypes.Photo, imageUrl, post.Attribute("id").Value));
+                AddToDownloadList(new TumblrPost(PostTypes.Photo, imageUrl, post.Attribute("id").Value, post.Attribute("unix-timestamp").Value));
             }
         }
 
@@ -656,13 +652,13 @@ namespace TumblThree.Applications.Downloader
                 string videoUrl = match.Groups[1].Value;
                 if (shellService.Settings.VideoSize == 1080)
                 {
-                    AddToDownloadList(Tuple.Create(PostTypes.Video, videoUrl.Replace("/480", "") + ".mp4", post.Attribute("id").Value));
+                    AddToDownloadList(new TumblrPost(PostTypes.Video, videoUrl.Replace("/480", "") + ".mp4", post.Attribute("id").Value, post.Attribute("unix-timestamp").Value));
                 }
                 else if (shellService.Settings.VideoSize == 480)
                 {
-                    AddToDownloadList(Tuple.Create(PostTypes.Video,
+                    AddToDownloadList(new TumblrPost(PostTypes.Video,
                         "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + "_480.mp4",
-                        post.Attribute("id").Value));
+                        post.Attribute("id").Value, post.Attribute("unix-timestamp").Value));
                 }
             }
         }
@@ -674,7 +670,7 @@ namespace TumblThree.Applications.Downloader
             {
                 return;
             }
-            AddToDownloadList(Tuple.Create(PostTypes.Photo, imageUrl, post.Attribute("id").Value));
+            AddToDownloadList(new TumblrPost(PostTypes.Photo, imageUrl, post.Attribute("id").Value, post.Attribute("unix-timestamp").Value));
         }
 
         private void AddPhotoSetUrl(XElement post)
@@ -688,7 +684,7 @@ namespace TumblThree.Applications.Downloader
                                             .Select(ParseImageUrl)
                                             .Where(imageUrl => !blog.SkipGif || !imageUrl.EndsWith(".gif")))
             {
-                AddToDownloadList(Tuple.Create(PostTypes.Photo, imageUrl, post.Attribute("id").Value));
+                AddToDownloadList(new TumblrPost(PostTypes.Photo, imageUrl, post.Attribute("id").Value, post.Attribute("unix-timestamp").Value));
             }
         }
 
@@ -702,16 +698,16 @@ namespace TumblThree.Applications.Downloader
             if (shellService.Settings.VideoSize == 1080)
             {
 
-                AddToDownloadList(Tuple.Create(PostTypes.Video,
+                AddToDownloadList(new TumblrPost(PostTypes.Video,
                     "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + ".mp4", 
-                    post.Attribute("id").Value));
+                    post.Attribute("id").Value, post.Attribute("unix-timestamp").Value));
             }
             else if (shellService.Settings.VideoSize == 480)
             {
 
-                AddToDownloadList(Tuple.Create(PostTypes.Video,
+                AddToDownloadList(new TumblrPost(PostTypes.Video,
                     "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + "_480.mp4",
-                    post.Attribute("id").Value));
+                    post.Attribute("id").Value, post.Attribute("unix-timestamp").Value));
             }
         }
 
@@ -722,7 +718,7 @@ namespace TumblThree.Applications.Downloader
                                                          .Groups[1].Value)
                                   .FirstOrDefault();
 
-            AddToDownloadList(Tuple.Create(PostTypes.Audio, WebUtility.UrlDecode(audioUrl), post.Attribute("id").Value));
+            AddToDownloadList(new TumblrPost(PostTypes.Audio, WebUtility.UrlDecode(audioUrl), post.Attribute("id").Value, post.Attribute("unix-timestamp").Value));
         }
 
         private static string ParsePhotoMeta(XElement post)

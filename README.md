@@ -46,7 +46,7 @@ TumblThree is the code rewrite of [TumblTwo](https://github.com/johanneszab/Tumb
   * In the Details window you can view statistics of your blog and set blog specific options. You can choose here what kind of post type (photo, video, audio, text, conversation, quote, link) to download.
   * For downloads liked photos and videos, you have to do some steps:
     1. Go to Settings, click the Authenticate button. Logon to tumblr using an account. The window/browser should automatically close after the login indicating a successful authentication. TumblThree will use the Internet Explorer cookies for authentication.
-    2. Add the blog url including the liked/by string in the url (e.g. https://www.tumblr.com/liked/by/wallpapferfx/).
+    2. Add the blog url including the liked/by string in the url (e.g. https://www.tumblr.com/liked/by/wallpaperfx/).
 
 * Tags
 
