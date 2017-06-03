@@ -403,6 +403,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download pages: .
+        /// </summary>
+        public static string DownloadPages {
+            get {
+                return ResourceManager.GetString("DownloadPages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Download quote posts.
         /// </summary>
         public static string DownloadQuotes {
@@ -750,6 +759,15 @@ namespace TumblThree.Presentation.Properties {
         public static string OperatingSystem {
             get {
                 return ResourceManager.GetString("OperatingSystem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Posts per page:.
+        /// </summary>
+        public static string PageSize {
+            get {
+                return ResourceManager.GetString("PageSize", resourceCulture);
             }
         }
         
@@ -1195,6 +1213,24 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download only specific pages.
+        /// </summary>
+        public static string ToolTipDownloadPages {
+            get {
+                return ResourceManager.GetString("ToolTipDownloadPages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Possible notations are: 1 or 1-3 or 1,2,3.
+        /// </summary>
+        public static string ToolTipDownloadPagesDescription {
+            get {
+                return ResourceManager.GetString("ToolTipDownloadPagesDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Download a url list..
         /// </summary>
         public static string ToolTipDownloadUrlList {
@@ -1299,6 +1335,24 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipLimitScanDescription {
             get {
                 return ResourceManager.GetString("ToolTipLimitScanDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Page size.
+        /// </summary>
+        public static string ToolTipPageSize {
+            get {
+                return ResourceManager.GetString("ToolTipPageSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sets the page size (should be between 1-50, default 50).
+        /// </summary>
+        public static string ToolTipPageSizeDescription {
+            get {
+                return ResourceManager.GetString("ToolTipPageSizeDescription", resourceCulture);
             }
         }
         

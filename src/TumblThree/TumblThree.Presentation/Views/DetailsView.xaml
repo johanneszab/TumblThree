@@ -101,12 +101,16 @@
                 </Grid.Resources>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="{StaticResource Layout.ColumnSpace}" />
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="{StaticResource Layout.ColumnSpace}" />
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="{StaticResource Layout.ColumnSpace}" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="{StaticResource Layout.RowSpace}" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="{StaticResource Layout.RowSpace}" />
                     <RowDefinition Height="Auto" />
@@ -160,36 +164,36 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <Label Content="{x:Static p:Resources.Name}" Grid.Column="0" Grid.Row="0" />
-                <Label Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="0">
+                <Label Content="{x:Static p:Resources.Name}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" />
+                <Label Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="0">
                     <TextBlock Text="{Binding BlogFile.Name}" TextTrimming="CharacterEllipsis" />
                 </Label>
 
-                <Label Content="{x:Static p:Resources.Url}" Grid.Column="0" Grid.Row="2" />
-                <Label Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="2">
+                <Label Content="{x:Static p:Resources.Url}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" />
+                <Label Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="2">
                     <TextBlock Text="{Binding BlogFile.Url}" TextTrimming="CharacterEllipsis" />
                 </Label>
-                <Label Content="{x:Static p:Resources.Progress}" Grid.Column="0" Grid.Row="4" />
+                <Label Content="{x:Static p:Resources.Progress}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4" />
                 <ProgressBar Value="{Binding BlogFile.Progress, Mode=OneWay}" Height="15" Minimum="0" Maximum="100"
-                             Foreground="{StaticResource ActiveForeground}" Grid.Column="2" Grid.ColumnSpan="3"
+                             Foreground="{StaticResource ActiveForeground}" Grid.Column="3" Grid.ColumnSpan="5"
                              Grid.Row="4" />
 
-                <Label Content="{x:Static p:Resources.Rating}" Grid.Column="0" Grid.Row="6" />
+                <Label Content="{x:Static p:Resources.Rating}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="6" />
                 <ctrl:Rating Value="{Binding BlogFile.Rating, Converter={StaticResource RatingToStarsConverter}}"
-                             Padding="2,0" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="6" TickPlacement="TopLeft" />
+                             Padding="2,0" Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="6" TickPlacement="TopLeft" />
 
-                <Separator Grid.ColumnSpan="5" Grid.Row="8" Margin="0" />
-                <Label Grid.Column="0" Grid.Row="10" Content="{x:Static p:Resources.BlogSettings}" />
-                <Label Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="10"
+                <Separator Grid.ColumnSpan="7" Grid.Row="8" Margin="0" />
+                <Label Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="10" Content="{x:Static p:Resources.BlogSettings}" />
+                <Label Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="10"
                        Content="{x:Static p:Resources.BlogStatistics}" />
 
-                <Label Content="{x:Static p:Resources.Posts}" Margin="0,0,0,0" Padding="0,0,0,0" Grid.Column="2"
+                <Label Content="{x:Static p:Resources.Posts}" Grid.Column="3" Grid.ColumnSpan="2"
                        Grid.Row="12" />
                 <Label Content="{Binding BlogFile.Posts, Converter={StaticResource IntToDisplayValueConverter}}"
                        Padding="0" Grid.Column="4" Grid.Row="12" />
 
                 <CheckBox Content="{x:Static p:Resources.DownloadTexts}"
-                          IsChecked="{Binding BlogFile.DownloadText, Mode=TwoWay}" Grid.Column="0" Margin="3,0,0,0"
+                          IsChecked="{Binding BlogFile.DownloadText, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Margin="3,0,0,0"
                           Padding="3,0,0,0" Grid.Row="14">
                     <CheckBox.ToolTip>
                         <ToolTip>
@@ -202,7 +206,7 @@
                     </CheckBox.ToolTip>
                 </CheckBox>
 
-                <Label Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="14" Padding="0">
+                <Label Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="14" Padding="0">
                     <Label.Content>
                         <MultiBinding Converter="{StaticResource DetailsProgressConverter}">
                             <Binding Path="BlogFile.DownloadedTexts" />
@@ -222,7 +226,7 @@
                 </Label>
 
                 <CheckBox Content="{x:Static p:Resources.DownloadImages}"
-                          IsChecked="{Binding BlogFile.DownloadPhoto, Mode=TwoWay}" Grid.Column="0" Grid.Row="16"
+                          IsChecked="{Binding BlogFile.DownloadPhoto, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="16"
                           Margin="3,0,0,0" Padding="3,0,0,0">
                     <CheckBox.ToolTip>
                         <ToolTip>
@@ -235,7 +239,7 @@
                     </CheckBox.ToolTip>
                 </CheckBox>
 
-                <Label Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="16" Padding="0">
+                <Label Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="16" Padding="0">
                     <Label.Content>
                         <MultiBinding Converter="{StaticResource DetailsProgressConverter}">
                             <Binding Path="BlogFile.DownloadedPhotos" />
@@ -255,7 +259,7 @@
                 </Label>
 
                 <CheckBox Content="{x:Static p:Resources.DownloadAudios}"
-                          IsChecked="{Binding BlogFile.DownloadAudio, Mode=TwoWay}" Grid.Column="0" Grid.Row="18"
+                          IsChecked="{Binding BlogFile.DownloadAudio, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="18"
                           Margin="3,0,0,0" Padding="3,0,0,0">
                     <CheckBox.ToolTip>
                         <ToolTip>
@@ -268,7 +272,7 @@
                     </CheckBox.ToolTip>
                 </CheckBox>
 
-                <Label Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="18" Padding="0">
+                <Label Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="18" Padding="0">
                     <Label.Content>
                         <MultiBinding Converter="{StaticResource DetailsProgressConverter}">
                             <Binding Path="BlogFile.DownloadedAudios" />
@@ -288,7 +292,7 @@
                 </Label>
 
                 <CheckBox Content="{x:Static p:Resources.DownloadVideosShort}"
-                          IsChecked="{Binding BlogFile.DownloadVideo, Mode=TwoWay}" Grid.Column="0" Grid.Row="20"
+                          IsChecked="{Binding BlogFile.DownloadVideo, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="20"
                           Margin="3,0,0,0" Padding="3,0,0,0">
                     <CheckBox.ToolTip>
                         <ToolTip>
@@ -301,7 +305,7 @@
                     </CheckBox.ToolTip>
                 </CheckBox>
 
-                <Label Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="20" Padding="0">
+                <Label Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="20" Padding="0">
                     <Label.Content>
                         <MultiBinding Converter="{StaticResource DetailsProgressConverter}">
                             <Binding Path="BlogFile.DownloadedVideos" />
@@ -321,7 +325,7 @@
                 </Label>
 
                 <CheckBox Content="{x:Static p:Resources.DownloadConversations}"
-                          IsChecked="{Binding BlogFile.DownloadConversation, Mode=TwoWay}" Grid.Column="0"
+                          IsChecked="{Binding BlogFile.DownloadConversation, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2"
                           Grid.Row="22" Margin="3,0,0,0" Padding="3,0,0,0">
                     <CheckBox.ToolTip>
                         <ToolTip>
@@ -334,7 +338,7 @@
                     </CheckBox.ToolTip>
                 </CheckBox>
 
-                <Label Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="22" Padding="0">
+                <Label Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="22" Padding="0">
                     <Label.Content>
                         <MultiBinding Converter="{StaticResource DetailsProgressConverter}">
                             <Binding Path="BlogFile.DownloadedConversations" />
@@ -354,7 +358,7 @@
                 </Label>
 
                 <CheckBox Content="{x:Static p:Resources.DownloadQuotes}"
-                          IsChecked="{Binding BlogFile.DownloadQuote, Mode=TwoWay}" Grid.Column="0" Grid.Row="24"
+                          IsChecked="{Binding BlogFile.DownloadQuote, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="24"
                           Margin="3,0,0,0" Padding="3,0,0,0">
                     <CheckBox.ToolTip>
                         <ToolTip>
@@ -367,7 +371,7 @@
                     </CheckBox.ToolTip>
                 </CheckBox>
 
-                <Label Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="24" Padding="0">
+                <Label Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="24" Padding="0">
                     <Label.Content>
                         <MultiBinding Converter="{StaticResource DetailsProgressConverter}">
                             <Binding Path="BlogFile.DownloadedQuotes" />
@@ -387,7 +391,7 @@
                 </Label>
 
                 <CheckBox Content="{x:Static p:Resources.DownloadLinks}"
-                          IsChecked="{Binding BlogFile.DownloadLink, Mode=TwoWay}" Grid.Column="0" Grid.Row="26"
+                          IsChecked="{Binding BlogFile.DownloadLink, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="26"
                           Margin="3,0,0,0" Padding="3,0,0,0">
                     <CheckBox.ToolTip>
                         <ToolTip>
@@ -400,7 +404,7 @@
                     </CheckBox.ToolTip>
                 </CheckBox>
 
-                <Label Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="26" Padding="0">
+                <Label Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="26" Padding="0">
                     <Label.Content>
                         <MultiBinding Converter="{StaticResource DetailsProgressConverter}">
                             <Binding Path="BlogFile.DownloadedLinks" />
@@ -420,7 +424,7 @@
                 </Label>
 
                 <CheckBox Content="{x:Static p:Resources.DownloadAnswers}"
-                          IsChecked="{Binding BlogFile.DownloadAnswer, Mode=TwoWay}" Grid.Column="0" Grid.Row="28"
+                          IsChecked="{Binding BlogFile.DownloadAnswer, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="28"
                           Margin="3,0,0,0" Padding="3,0,0,0">
                     <CheckBox.ToolTip>
                         <ToolTip>
@@ -433,7 +437,7 @@
                     </CheckBox.ToolTip>
                 </CheckBox>
 
-                <Label Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="28" Padding="0">
+                <Label Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="28" Padding="0">
                     <Label.Content>
                         <MultiBinding Converter="{StaticResource DetailsProgressConverter}">
                             <Binding Path="BlogFile.DownloadedAnswers" />
@@ -453,7 +457,7 @@
                 </Label>
 
                 <CheckBox Content="{x:Static p:Resources.DownloadImageMeta}"
-                          IsChecked="{Binding BlogFile.CreatePhotoMeta, Mode=TwoWay}" Grid.Column="0" Grid.Row="30"
+                          IsChecked="{Binding BlogFile.CreatePhotoMeta, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="30"
                           Margin="3,0,0,0" Padding="3,0,0,0">
                     <CheckBox.ToolTip>
                         <ToolTip>
@@ -466,7 +470,7 @@
                     </CheckBox.ToolTip>
                 </CheckBox>
 
-                <Label Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="30" Padding="0">
+                <Label Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="30" Padding="0">
                     <Label.Content>
                         <MultiBinding Converter="{StaticResource DetailsProgressConverter}">
                             <Binding Path="BlogFile.DownloadedPhotoMetas" />
@@ -486,7 +490,7 @@
                 </Label>
 
                 <CheckBox Content="{x:Static p:Resources.DownloadVideoMeta}"
-                          IsChecked="{Binding BlogFile.CreateVideoMeta, Mode=TwoWay}" Grid.Column="0" Grid.Row="32"
+                          IsChecked="{Binding BlogFile.CreateVideoMeta, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="32"
                           Margin="3,0,0,0" Padding="3,0,0,0">
                     <CheckBox.ToolTip>
                         <ToolTip>
@@ -499,7 +503,7 @@
                     </CheckBox.ToolTip>
                 </CheckBox>
 
-                <Label Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="32" Padding="0">
+                <Label Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="32" Padding="0">
                     <Label.Content>
                         <MultiBinding Converter="{StaticResource DetailsProgressConverter}">
                             <Binding Path="BlogFile.DownloadedVideoMetas" />
@@ -519,7 +523,7 @@
                 </Label>
 
                 <CheckBox Content="{x:Static p:Resources.DownloadAudioMeta}"
-                          IsChecked="{Binding BlogFile.CreateAudioMeta, Mode=TwoWay}" Grid.Column="0" Grid.Row="34"
+                          IsChecked="{Binding BlogFile.CreateAudioMeta, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="34"
                           Margin="3,0,0,0" Padding="3,0,0,0">
                     <CheckBox.ToolTip>
                         <ToolTip>
@@ -532,7 +536,7 @@
                     </CheckBox.ToolTip>
                 </CheckBox>
 
-                <Label Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="34" Padding="0">
+                <Label Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="34" Padding="0">
                     <Label.Content>
                         <MultiBinding Converter="{StaticResource DetailsProgressConverter}">
                             <Binding Path="BlogFile.DownloadedAudioMetas" />
@@ -551,17 +555,65 @@
                     </Label.ToolTip>
                 </Label>
 
+                <Label Content="{x:Static p:Resources.DownloadPages}" Grid.Column="0" Grid.Row="36" Margin="3,0,0,0" Padding="3,0,0,0">
+                    <Label.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadPages}" />
+                                <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipDownloadPagesDescription}" />
+                            </StackPanel>
+                        </ToolTip>
+                    </Label.ToolTip>
+                </Label>
+
+                <TextBox Grid.Column="1" Grid.Row="36" Padding="0" 
+                         Text="{Binding BlogFile.DownloadPages, Mode=TwoWay, ValidatesOnDataErrors=True}">
+                    <TextBox.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadPages}" />
+                                <TextBlock xml:space="preserve"
+                                           Text="{x:Static p:Resources.ToolTipDownloadPagesDescription}" />
+                            </StackPanel>
+                        </ToolTip>
+                    </TextBox.ToolTip>
+                </TextBox>
+
+                <Label Content="{x:Static p:Resources.PageSize}" Grid.Column="3" Grid.Row="36" Margin="3,0,3,0" Padding="3,0,3,0">
+                    <Label.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipPageSize}" />
+                                <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipPageSizeDescription}" />
+                            </StackPanel>
+                        </ToolTip>
+                    </Label.ToolTip>
+                </Label>
+
+                <TextBox Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="36" Padding="0" 
+                         Text="{Binding BlogFile.PageSize, Mode=TwoWay, ValidatesOnDataErrors=True}">
+                    <TextBox.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipPageSize}" />
+                                <TextBlock xml:space="preserve"
+                                           Text="{x:Static p:Resources.ToolTipPageSizeDescription}" />
+                            </StackPanel>
+                        </ToolTip>
+                    </TextBox.ToolTip>
+                </TextBox>
+
                 <CheckBox Content="{x:Static p:Resources.SkipGif}" IsChecked="{Binding BlogFile.SkipGif, Mode=TwoWay}"
-                          Grid.Column="0" Grid.Row="36" Margin="3,0,0,0" Padding="3,0,0,0" />
+                          Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="38" Margin="3,0,0,0" Padding="3,0,0,0" />
 
                 <CheckBox Content="{x:Static p:Resources.DownloadRebloggedPosts}"
-                          IsChecked="{Binding BlogFile.DownloadRebloggedPosts, Mode=TwoWay}" Grid.Column="0" Grid.Row="38"
+                          IsChecked="{Binding BlogFile.DownloadRebloggedPosts, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="40"
                           Margin="3,0,0,0" Padding="3,0,0,0">
                 </CheckBox>
 
                 <CheckBox Content="{x:Static p:Resources.CheckDirectoryForFiles}"
-                          IsChecked="{Binding BlogFile.CheckDirectoryForFiles, Mode=TwoWay}" Grid.Column="0"
-                          Grid.Row="40" Margin="3,0,0,0" Padding="3,0,0,0">
+                          IsChecked="{Binding BlogFile.CheckDirectoryForFiles, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2"
+                          Grid.Row="42" Margin="3,0,0,0" Padding="3,0,0,0">
                     <CheckBox.ToolTip>
                         <ToolTip>
                             <StackPanel>
@@ -574,7 +626,7 @@
                     </CheckBox.ToolTip>
                 </CheckBox>
                 <CheckBox Content="{x:Static p:Resources.DownloadUrlList}"
-                          IsChecked="{Binding BlogFile.DownloadUrlList, Mode=TwoWay}" Grid.Column="0" Grid.Row="42"
+                          IsChecked="{Binding BlogFile.DownloadUrlList, Mode=TwoWay}" Grid.Column="0" Grid.Row="44" Grid.ColumnSpan="2"
                           Margin="3,0,0,0" Padding="3,0,0,0">
                     <CheckBox.ToolTip>
                         <ToolTip>
@@ -588,7 +640,7 @@
                 </CheckBox>
                 <CheckBox Content="{x:Static p:Resources.ForceSize}"
                           IsChecked="{Binding BlogFile.ForceSize, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="5"
-                          Grid.Row="44" Margin="3,0,0,0" Padding="3,0,0,0">
+                          Grid.Row="46" Margin="3,0,0,0" Padding="3,0,0,0">
                     <CheckBox.ToolTip>
                         <ToolTip>
                             <StackPanel>
@@ -601,7 +653,7 @@
                 </CheckBox>
                 <CheckBox Content="{x:Static p:Resources.ForceRescan}"
                           IsChecked="{Binding BlogFile.ForceRescan, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="5"
-                          Grid.Row="46" Margin="3,0,0,0" Padding="3,0,0,0">
+                          Grid.Row="48" Margin="3,0,0,0" Padding="3,0,0,0">
                     <CheckBox.ToolTip>
                         <ToolTip>
                             <StackPanel>
@@ -613,10 +665,10 @@
                     </CheckBox.ToolTip>
                 </CheckBox>
 
-                <Label Content="{x:Static p:Resources.Preview}" Grid.Column="0" Grid.Row="48" />
-                <Label Content="" Grid.Column="2" Grid.ColumnSpan="3" Grid.Row="48" />
+                <Label Content="{x:Static p:Resources.Preview}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="50" />
+                <Label Content="" Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="50" />
 
-                <UserControl x:Name="Preview" Width="Auto" Height="Auto" Grid.ColumnSpan="5" Grid.Row="50">
+                <UserControl x:Name="Preview" Width="Auto" Height="Auto" Grid.ColumnSpan="5" Grid.Row="52">
                     <Grid>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="SwitchableStates">

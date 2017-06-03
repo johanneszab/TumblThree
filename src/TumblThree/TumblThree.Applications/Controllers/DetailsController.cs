@@ -109,6 +109,8 @@ namespace TumblThree.Applications.Controllers
                 DownloadedPhotoMetas = sharedBlogFiles.Sum(blogs => blogs.DownloadedPhotoMetas),
                 DownloadedVideoMetas = sharedBlogFiles.Sum(blogs => blogs.DownloadedVideoMetas),
                 DownloadedAudioMetas = sharedBlogFiles.Sum(blogs => blogs.DownloadedAudioMetas),
+                DownloadPages = String.Empty,
+                PageSize = 50,
                 DownloadAudio = false,
                 DownloadConversation = false,
                 DownloadLink = false,

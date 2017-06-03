@@ -35,6 +35,8 @@ namespace TumblThree.Applications.ViewModels
         private bool createAudioMeta;
         private bool createImageMeta;
         private bool createVideoMeta;
+        private string downloadPages;
+        private int pageSize;
         private bool downloadRebloggedPosts;
         private bool deleteOnlyIndex;
         private bool downloadAudios;
@@ -392,6 +394,18 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref createAudioMeta, value); }
         }
 
+        public string DownloadPages
+        {
+            get { return downloadPages; }
+            set { SetProperty(ref downloadPages, value); }
+        }
+
+        public int PageSize
+        {
+            get { return pageSize; }
+            set { SetProperty(ref pageSize, value); }
+        }
+
         public bool DownloadRebloggedPosts
         {
             get { return downloadRebloggedPosts; }
@@ -529,6 +543,8 @@ namespace TumblThree.Applications.ViewModels
                 CreateImageMeta = settings.CreateImageMeta;
                 CreateVideoMeta = settings.CreateVideoMeta;
                 CreateAudioMeta = settings.CreateAudioMeta;
+                DownloadPages = settings.DownloadPages;
+                PageSize = settings.PageSize;
                 DownloadRebloggedPosts = settings.DownloadRebloggedPosts;
                 AutoDownload = settings.AutoDownload;
                 ForceSize = settings.ForceSize;
@@ -579,6 +595,8 @@ namespace TumblThree.Applications.ViewModels
                 CreateImageMeta = false;
                 CreateVideoMeta = false;
                 CreateAudioMeta = false;
+                DownloadPages = String.Empty;
+                PageSize = 50;
                 DownloadRebloggedPosts = true;
                 AutoDownload = false;
                 ForceSize = false;
@@ -631,6 +649,8 @@ namespace TumblThree.Applications.ViewModels
             settings.CreateImageMeta = CreateImageMeta;
             settings.CreateVideoMeta = CreateVideoMeta;
             settings.CreateAudioMeta = CreateAudioMeta;
+            settings.DownloadPages = DownloadPages;
+            settings.PageSize = PageSize;
             settings.DownloadRebloggedPosts = DownloadRebloggedPosts;
             settings.ApiKey = ApiKey;
             settings.SecretKey = SecretKey;

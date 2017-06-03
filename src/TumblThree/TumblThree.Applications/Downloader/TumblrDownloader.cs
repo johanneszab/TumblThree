@@ -138,7 +138,7 @@ namespace TumblThree.Applications.Downloader
 
         private async Task<XDocument> GetApiPageAsync(int pageId)
         {
-            string url = GetApiUrl(blog.Url, 50, pageId * 50);
+            string url = GetApiUrl(blog.Url, blog.PageSize, pageId * blog.PageSize);
 
             if (shellService.Settings.LimitConnections)
             {
@@ -212,6 +212,40 @@ namespace TumblThree.Applications.Downloader
             return highestId;
         }
 
+        private IEnumerable<int> GetPageNumbers()
+        {
+            if (string.IsNullOrEmpty(blog.DownloadPages))
+            {
+                int totalPosts = blog.Posts;
+                int totalPages = (totalPosts / 50) + 1;
+
+                return Enumerable.Range(0, totalPages);
+            }
+            return RangeToSequence(blog.DownloadPages);
+        }
+
+        static IEnumerable<int> RangeToSequence(string input)
+        {
+            string[] parts = input.Split(',');
+            foreach (string part in parts)
+            {
+                if (!part.Contains('-'))
+                {
+                    yield return int.Parse(part);
+                    continue;
+                }
+                string[] rangeParts = part.Split('-');
+                int start = int.Parse(rangeParts[0]);
+                int end = int.Parse(rangeParts[1]);
+
+                while (start <= end)
+                {
+                    yield return start;
+                    start++;
+                }
+            }
+        }
+
         protected override bool CheckIfFileExistsInDB(string url)
         {
             string fileName = url.Split('/').Last();
@@ -251,10 +285,7 @@ namespace TumblThree.Applications.Downloader
 
             ulong highestId = await GetHighestPostId();
 
-            // The Tumblr api v1 shows 50 posts at max, determine the number of pages to crawl
-            int totalPages = (totalPosts / 50) + 1;
-
-            foreach (int pageNumber in Enumerable.Range(0, totalPages))
+            foreach (int pageNumber in GetPageNumbers())
             {
                 await semaphoreSlim.WaitAsync();
 
@@ -303,7 +334,7 @@ namespace TumblThree.Applications.Downloader
                         semaphoreSlim.Release();
                     }
 
-                    numberOfPostsCrawled += 50;
+                    numberOfPostsCrawled += blog.PageSize;
                     UpdateProgressQueueInformation(progress, Resources.ProgressGetUrlLong, numberOfPostsCrawled, totalPosts);
                 })());
             }
@@ -350,7 +381,7 @@ namespace TumblThree.Applications.Downloader
             }
             catch (NullReferenceException)
             {
-                
+
             }
         }
 
@@ -403,7 +434,7 @@ namespace TumblThree.Applications.Downloader
                     if (post.Attribute("type").Value == "video" && (!tags.Any() ||
                         post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase))))
                     {
-                        if(CheckIfDownloadRebloggedPosts(post))
+                        if (CheckIfDownloadRebloggedPosts(post))
                             AddVideoUrl(post);
                     }
                 }
@@ -699,7 +730,7 @@ namespace TumblThree.Applications.Downloader
             {
 
                 AddToDownloadList(new TumblrPost(PostTypes.Video,
-                    "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + ".mp4", 
+                    "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + ".mp4",
                     post.Attribute("id").Value, post.Attribute("unix-timestamp").Value));
             }
             else if (shellService.Settings.VideoSize == 480)
