@@ -112,6 +112,7 @@
     <Compile Include="Services\ShellService.cs" />
     <Compile Include="Services\ShellServiceExtensions.cs" />
     <Compile Include="ThrottledStream.cs" />
+    <Compile Include="ViewModels\FullScreenMediaViewModel.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\CrawlerViewModel.cs" />
     <Compile Include="ViewModels\DetailsViewModel.cs" />
@@ -120,6 +121,7 @@
     <Compile Include="ViewModels\AuthenticateViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
+    <Compile Include="Views\IFullScreenMediaView.cs" />
     <Compile Include="Views\IAboutView.cs" />
     <Compile Include="Views\ICrawlerView.cs" />
     <Compile Include="Views\IDetailsView.cs" />

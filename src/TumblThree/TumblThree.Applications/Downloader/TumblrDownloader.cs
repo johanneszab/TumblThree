@@ -217,7 +217,7 @@ namespace TumblThree.Applications.Downloader
             if (string.IsNullOrEmpty(blog.DownloadPages))
             {
                 int totalPosts = blog.Posts;
-                int totalPages = (totalPosts / 50) + 1;
+                int totalPages = (totalPosts / blog.PageSize) + 1;
 
                 return Enumerable.Range(0, totalPages);
             }
@@ -265,7 +265,12 @@ namespace TumblThree.Applications.Downloader
             if (blog.ForceRescan)
             {
                 blog.ForceRescan = false;
-                lastId = 0;
+                return 0;
+            }
+            if (!string.IsNullOrEmpty(blog.DownloadPages))
+            {
+                blog.ForceRescan = false;
+                return 0;
             }
             return lastId;
         }
@@ -761,6 +766,10 @@ namespace TumblThree.Applications.Downloader
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
                    Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.Attribute("reblogged-from-url")?.Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.Attribute("reblogged-from-name")?.Value) +
+                   Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.PhotoUrl, post.Element("photo-url").Value) +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.PhotoCaption, post.Element("photo-caption")?.Value) +
@@ -779,6 +788,10 @@ namespace TumblThree.Applications.Downloader
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
                    Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.Attribute("reblogged-from-url")?.Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.Attribute("reblogged-from-name")?.Value) +
+                   Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.VideoPlayer, post.Element("video-player")?.Value) +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Tags,
@@ -794,6 +807,10 @@ namespace TumblThree.Applications.Downloader
                    string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.Attribute("reblogged-from-url")?.Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.Attribute("reblogged-from-name")?.Value) +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.AudioCaption, post.Element("audio-caption")?.Value) +
                    Environment.NewLine +
@@ -821,6 +838,10 @@ namespace TumblThree.Applications.Downloader
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
                    Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.Attribute("reblogged-from-url")?.Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.Attribute("reblogged-from-name")?.Value) +
+                   Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Conversation, post.Element("conversation-text")?.Value) +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Tags,
@@ -836,6 +857,10 @@ namespace TumblThree.Applications.Downloader
                    string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.Attribute("reblogged-from-url")?.Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.Attribute("reblogged-from-name")?.Value) +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Link, post.Element("link-text")?.Value) +
                    Environment.NewLine + post.Element("link-url")?.Value +
@@ -855,6 +880,10 @@ namespace TumblThree.Applications.Downloader
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
                    Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.Attribute("reblogged-from-url")?.Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.Attribute("reblogged-from-name")?.Value) +
+                   Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Quote, post.Element("quote-text")?.Value) +
                    Environment.NewLine + post.Element("quote-source")?.Value +
                    Environment.NewLine +
@@ -872,6 +901,10 @@ namespace TumblThree.Applications.Downloader
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
                    Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.Attribute("reblogged-from-url")?.Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.Attribute("reblogged-from-name")?.Value) +
+                   Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Title, post.Element("regular-title")?.Value) +
                    Environment.NewLine + post.Element("regular-body")?.Value +
                    Environment.NewLine +
@@ -888,6 +921,10 @@ namespace TumblThree.Applications.Downloader
                    string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.Attribute("reblogged-from-url")?.Value) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.Attribute("reblogged-from-name")?.Value) +
                    Environment.NewLine +
                    post.Element("question")?.Value +
                    Environment.NewLine +

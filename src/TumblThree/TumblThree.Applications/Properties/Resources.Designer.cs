@@ -556,6 +556,24 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reblog Name: {0}.
+        /// </summary>
+        public static string ReblogName {
+            get {
+                return ResourceManager.GetString("ReblogName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reblog Url: {0}.
+        /// </summary>
+        public static string ReblogUrl {
+            get {
+                return ResourceManager.GetString("ReblogUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tags: {0}.
         /// </summary>
         public static string Tags {

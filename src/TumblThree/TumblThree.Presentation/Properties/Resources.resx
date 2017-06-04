@@ -585,4 +585,7 @@
   <data name="ToolTipPageSizeDescription" xml:space="preserve">
     <value>Sets the page size (should be between 1-50, default 50)</value>
   </data>
+  <data name="FullScreenMedia" xml:space="preserve">
+    <value>FullScreenView</value>
+  </data>
 </root>

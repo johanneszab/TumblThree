@@ -668,7 +668,7 @@
                 <Label Content="{x:Static p:Resources.Preview}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="50" />
                 <Label Content="" Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="50" />
 
-                <UserControl x:Name="Preview" Width="Auto" Height="Auto" Grid.ColumnSpan="5" Grid.Row="52">
+                <UserControl x:Name="Preview" Width="Auto" Height="Auto" Grid.ColumnSpan="5" Grid.Row="52" MouseDown="Preview_OnMouseDown">
                     <Grid>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="SwitchableStates">
