@@ -176,8 +176,6 @@ namespace TumblThree.Applications.Controllers
                     blog.DownloadUrlList = blogFile.DownloadUrlList;
                     blog.DownloadPages = blogFile.DownloadPages;
                     blog.PageSize = blogFile.PageSize;
-                    blog.DownloadPages = blogFile.DownloadPages;
-                    blog.PageSize = blogFile.PageSize;
                     blog.Dirty = true;
                 }
             }
