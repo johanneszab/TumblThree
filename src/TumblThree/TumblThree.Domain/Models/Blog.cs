@@ -460,14 +460,22 @@ namespace TumblThree.Domain.Models
         public string DownloadPages
         {
             get { return downloadPages; }
-            set { SetProperty(ref downloadPages, value); }
+            set
+            {
+                SetProperty(ref downloadPages, value);
+                Dirty = true;
+            }
         }
 
         [DataMember]
         public int PageSize
         {
             get { return pageSize; }
-            set { SetProperty(ref pageSize, value); }
+            set
+            {
+                SetProperty(ref pageSize, value);
+                Dirty = true;
+            }
         }
 
         [DataMember]

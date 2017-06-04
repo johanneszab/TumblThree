@@ -109,6 +109,8 @@ namespace TumblThree.Applications.Controllers
                 DownloadedPhotoMetas = sharedBlogFiles.Sum(blogs => blogs.DownloadedPhotoMetas),
                 DownloadedVideoMetas = sharedBlogFiles.Sum(blogs => blogs.DownloadedVideoMetas),
                 DownloadedAudioMetas = sharedBlogFiles.Sum(blogs => blogs.DownloadedAudioMetas),
+                DownloadPages = string.Empty,
+                PageSize = 0,
                 DownloadAudio = false,
                 DownloadConversation = false,
                 DownloadLink = false,
@@ -170,7 +172,10 @@ namespace TumblThree.Applications.Controllers
                     blog.ForceRescan = blogFile.ForceRescan;
                     blog.CheckDirectoryForFiles = blogFile.CheckDirectoryForFiles;
                     blog.DownloadUrlList = blogFile.DownloadUrlList;
+                    blog.DownloadPages = blogFile.DownloadPages;
+                    blog.PageSize = blogFile.PageSize;
                     blog.Dirty = true;
+
                 }
             }
 
