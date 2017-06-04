@@ -567,4 +567,22 @@
   <data name="FullScreenMedia" xml:space="preserve">
     <value>TumblThree Fullscreen Media View</value>
   </data>
+  <data name="DownloadPages" xml:space="preserve">
+    <value>Download pages: </value>
+  </data>
+  <data name="PageSize" xml:space="preserve">
+    <value>Posts per page:</value>
+  </data>
+  <data name="ToolTipDownloadPages" xml:space="preserve">
+    <value>Download only specific pages</value>
+  </data>
+  <data name="ToolTipDownloadPagesDescription" xml:space="preserve">
+    <value>Possible notations are: 1 or 1-3 or 1,2,3</value>
+  </data>
+  <data name="ToolTipPageSize" xml:space="preserve">
+    <value>Page size</value>
+  </data>
+  <data name="ToolTipPageSizeDescription" xml:space="preserve">
+    <value>Sets the page size (should be between 1-50, default 50)</value>
+  </data>
 </root>

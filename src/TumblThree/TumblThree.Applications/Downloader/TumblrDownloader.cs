@@ -99,6 +99,40 @@ namespace TumblThree.Applications.Downloader
                                 .Sum(g => g.Count() - 1);
         }
 
+        private IEnumerable<int> GetPageNumbers()
+        {
+            if (string.IsNullOrEmpty(blog.DownloadPages))
+            {
+                int totalPosts = blog.Posts;
+                int totalPages = (totalPosts / blog.PageSize) + 1;
+
+                return Enumerable.Range(0, totalPages);
+            }
+            return RangeToSequence(blog.DownloadPages);
+        }
+
+        static IEnumerable<int> RangeToSequence(string input)
+        {
+            string[] parts = input.Split(',');
+            foreach (string part in parts)
+            {
+                if (!part.Contains('-'))
+                {
+                    yield return int.Parse(part);
+                    continue;
+                }
+                string[] rangeParts = part.Split('-');
+                int start = int.Parse(rangeParts[0]);
+                int end = int.Parse(rangeParts[1]);
+
+                while (start <= end)
+                {
+                    yield return start;
+                    start++;
+                }
+            }
+        }
+
         protected override bool CheckIfFileExistsInDB(string url)
         {
             string fileName = url.Split('/').Last();

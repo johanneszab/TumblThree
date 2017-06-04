@@ -3,8 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:p="clr-namespace:TumblThree.Presentation.Properties"
-        xmlns:dd="clr-namespace:TumblThree.Presentation.DesignData"
-        xmlns:ctrl="clr-namespace:TumblThree.Presentation.Controls"
         xmlns:vr="clr-namespace:TumblThree.Presentation.ValidationRules"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:TumblThree.Applications.ViewModels;assembly=TumblThree.Applications"
@@ -364,8 +362,12 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -392,34 +394,84 @@
                             </Label.ToolTip>
                         </Label>
                         <CheckBox x:Name="checkBoxDownloadImages" Content="{x:Static p:Resources.DownloadImages}"
-                          IsChecked="{Binding DownloadImages, Mode=TwoWay}" Grid.Column="0" Grid.Row="1" Margin="10" />
+                          IsChecked="{Binding DownloadImages, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Margin="10" />
                         <CheckBox x:Name="checkBoxDownloadImagesText" Content="{x:Static p:Resources.DownloadImageMeta}"
-                          IsChecked="{Binding CreateImageMeta, Mode=TwoWay}" Grid.Column="1" Grid.Row="1" Margin="10"
+                          IsChecked="{Binding CreateImageMeta, Mode=TwoWay}" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="1" Margin="10"
                           HorizontalAlignment="Left" />
                         <CheckBox x:Name="checkBoxDownloadVideos" Content="{x:Static p:Resources.DownloadVideos}"
-                          IsChecked="{Binding DownloadVideos, Mode=TwoWay}" Grid.Column="0" Grid.Row="2" Margin="10" />
+                          IsChecked="{Binding DownloadVideos, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Margin="10" />
                         <CheckBox x:Name="checkBoxDownloadVideosText" Content="{x:Static p:Resources.DownloadVideoMeta}"
-                          IsChecked="{Binding CreateVideoMeta, Mode=TwoWay}" Grid.Column="1" Grid.Row="2" Margin="10"
+                          IsChecked="{Binding CreateVideoMeta, Mode=TwoWay}" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="2" Margin="10"
                           HorizontalAlignment="Left" />
                         <CheckBox x:Name="checkBoxDownloadAudios" Content="{x:Static p:Resources.DownloadAudios}"
-                          IsChecked="{Binding DownloadAudios, Mode=TwoWay}" Grid.Column="0" Grid.Row="3" Margin="10" />
+                          IsChecked="{Binding DownloadAudios, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="3" Margin="10" />
                         <CheckBox x:Name="checkBoxDownloadAudiosText" Content="{x:Static p:Resources.DownloadAudioMeta}"
-                          IsChecked="{Binding CreateAudioMeta, Mode=TwoWay}" Grid.Column="1" Grid.Row="3" Margin="10"
+                          IsChecked="{Binding CreateAudioMeta, Mode=TwoWay}" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="3" Margin="10"
                           HorizontalAlignment="Left" />
                         <CheckBox x:Name="checkBoxDownloadTexts" Content="{x:Static p:Resources.DownloadTexts}"
-                          IsChecked="{Binding DownloadTexts, Mode=TwoWay}" Grid.Column="0" Grid.Row="4" Margin="10" />
+                          IsChecked="{Binding DownloadTexts, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="4" Margin="10" />
                         <CheckBox x:Name="checkBoxDownloadQuotes" Content="{x:Static p:Resources.DownloadQuotes}"
-                          IsChecked="{Binding DownloadQuotes, Mode=TwoWay}" Grid.Column="0" Grid.Row="5" Margin="10" />
+                          IsChecked="{Binding DownloadQuotes, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" Margin="10" />
                         <CheckBox x:Name="checkBoxDownloadConversations" Content="{x:Static p:Resources.DownloadConversations}"
-                          IsChecked="{Binding DownloadConversations, Mode=TwoWay}" Grid.Column="0" Grid.Row="6"
+                          IsChecked="{Binding DownloadConversations, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="6"
                           Margin="10" />
                         <CheckBox x:Name="checkBoxDownloadLinks" Content="{x:Static p:Resources.DownloadLinks}"
-                          IsChecked="{Binding DownloadLinks, Mode=TwoWay}" Grid.Column="0" Grid.Row="7" Margin="10" />
+                          IsChecked="{Binding DownloadLinks, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="7" Margin="10" />
                         <CheckBox x:Name="checkBoxDownloadAnswers" Content="{x:Static p:Resources.DownloadAnswers}"
                           IsChecked="{Binding DownloadAnswers, Mode=TwoWay}" Grid.Column="0" Grid.Row="8" Margin="10" />
+                        <Label Grid.Column="0" Grid.Row="10" Content="{x:Static p:Resources.DownloadPages}"
+                       HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10" >
+                            <Label.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadPages}" />
+                                        <TextBlock xml:space="preserve"
+                                           Text="{x:Static p:Resources.ToolTipDownloadPagesDescription}" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </Label.ToolTip>
+                        </Label>
+                        <TextBox 
+                         Text="{Binding DownloadPages, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                         Grid.Column="1" Grid.Row="10" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center" >
+                            <TextBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadPages}" />
+                                        <TextBlock xml:space="preserve"
+                                           Text="{x:Static p:Resources.ToolTipDownloadPagesDescription}" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </TextBox.ToolTip>
+                        </TextBox>
+                        <Label Grid.Column="2" Grid.Row="10" Content="{x:Static p:Resources.PageSize}"
+                       HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10" >
+                            <Label.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipPageSize}" />
+                                        <TextBlock xml:space="preserve"
+                                           Text="{x:Static p:Resources.ToolTipPageSizeDescription}" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </Label.ToolTip>
+                        </Label>
+                        <TextBox Text="{Binding PageSize, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                         Grid.Column="3" Grid.Row="10" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center"
+                         Margin="00,0,10,0" >
+                            <TextBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipPageSize}" />
+                                        <TextBlock xml:space="preserve"
+                                           Text="{x:Static p:Resources.ToolTipPageSizeDescription}" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </TextBox.ToolTip>
+                        </TextBox>
                         <CheckBox x:Name="checkBoxCheckDirectoryForFiles"
                           Content="{x:Static p:Resources.CheckDirectoryForFiles}"
-                          IsChecked="{Binding CheckDirectoryForFiles, Mode=TwoWay}" Grid.Column="0" Grid.Row="9"
+                          IsChecked="{Binding CheckDirectoryForFiles, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="11"
                           Margin="10">
                             <CheckBox.ToolTip>
                                 <ToolTip>
@@ -433,7 +485,7 @@
                             </CheckBox.ToolTip>
                         </CheckBox>
                         <CheckBox x:Name="checkBoxDownloadUrlList" Content="{x:Static p:Resources.DownloadUrlList}"
-                          IsChecked="{Binding DownloadUrlList, Mode=TwoWay}" Grid.Column="1" Grid.Row="9" Margin="10">
+                          IsChecked="{Binding DownloadUrlList, Mode=TwoWay}" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="11" Margin="10">
                             <CheckBox.ToolTip>
                                 <ToolTip>
                                     <StackPanel>
@@ -445,9 +497,9 @@
                             </CheckBox.ToolTip>
                         </CheckBox>
                         <CheckBox x:Name="checkBoxSkipGif" Content="{x:Static p:Resources.SkipGif}"
-                          IsChecked="{Binding SkipGif, Mode=TwoWay}" Grid.Column="0" Grid.Row="10" Margin="10" />
+                          IsChecked="{Binding SkipGif, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="12" Margin="10" />
                         <CheckBox x:Name="checkBoxForceSize" Content="{x:Static p:Resources.ForceSize}"
-                          IsChecked="{Binding ForceSize, Mode=TwoWay}" Grid.Column="1" Grid.Row="10" Margin="10">
+                          IsChecked="{Binding ForceSize, Mode=TwoWay}" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="12" Margin="10">
                             <CheckBox.ToolTip>
                                 <ToolTip>
                                     <StackPanel>

@@ -8,7 +8,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         mc:Ignorable="d" Title="{x:Static p:Resources.FullScreenMedia}" Icon="{StaticResource TumblThreeIcon}" 
-        WindowState="Maximized" WindowStyle="None" ShowInTaskbar="True" 
+        WindowState="Maximized" WindowStyle="None" ShowInTaskbar="True" ResizeMode="NoResize"
         d:DataContext="{d:DesignInstance dd:SampleFullScreenMediaModel, IsDesignTimeCreatable=True}">
 
     <Grid Background="Black" MouseDown="UIElement_OnMouseDown">

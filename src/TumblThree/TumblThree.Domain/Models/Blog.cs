@@ -60,6 +60,8 @@ namespace TumblThree.Domain.Models
         private int downloadedPhotoMetas;
         private int downloadedVideoMetas;
         private int downloadedAudioMetas;
+        private string downloadPages;
+        private int pageSize;
         private DateTime dateAdded;
         private DateTime lastCompleteCrawl;
         private bool online;
@@ -452,6 +454,20 @@ namespace TumblThree.Domain.Models
         {
             get { return downloadedAudioMetas; }
             set { SetProperty(ref downloadedAudioMetas, value); }
+        }
+
+        [DataMember]
+        public string DownloadPages
+        {
+            get { return downloadPages; }
+            set { SetProperty(ref downloadPages, value); }
+        }
+
+        [DataMember]
+        public int PageSize
+        {
+            get { return pageSize; }
+            set { SetProperty(ref pageSize, value); }
         }
 
         [DataMember]

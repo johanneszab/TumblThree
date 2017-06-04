@@ -35,6 +35,8 @@ namespace TumblThree.Applications.ViewModels
         private bool createAudioMeta;
         private bool createImageMeta;
         private bool createVideoMeta;
+        private string downloadPages;
+        private int pageSize;
         private bool deleteOnlyIndex;
         private bool downloadAudios;
         private bool downloadConversations;
@@ -391,6 +393,18 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref createAudioMeta, value); }
         }
 
+        public string DownloadPages
+        {
+            get { return downloadPages; }
+            set { SetProperty(ref downloadPages, value); }
+        }
+
+        public int PageSize
+        {
+            get { return pageSize; }
+            set { SetProperty(ref pageSize, value); }
+        }
+
         public string TimerInterval
         {
             get { return timerInterval; }
@@ -522,6 +536,8 @@ namespace TumblThree.Applications.ViewModels
                 CreateImageMeta = settings.CreateImageMeta;
                 CreateVideoMeta = settings.CreateVideoMeta;
                 CreateAudioMeta = settings.CreateAudioMeta;
+                DownloadPages = settings.DownloadPages;
+                PageSize = settings.PageSize;
                 AutoDownload = settings.AutoDownload;
                 ForceSize = settings.ForceSize;
                 CheckDirectoryForFiles = settings.CheckDirectoryForFiles;
@@ -571,6 +587,8 @@ namespace TumblThree.Applications.ViewModels
                 CreateImageMeta = false;
                 CreateVideoMeta = false;
                 CreateAudioMeta = false;
+                DownloadPages = string.Empty;
+                PageSize = 50;
                 AutoDownload = false;
                 ForceSize = false;
                 CheckDirectoryForFiles = false;
@@ -622,6 +640,8 @@ namespace TumblThree.Applications.ViewModels
             settings.CreateImageMeta = CreateImageMeta;
             settings.CreateVideoMeta = CreateVideoMeta;
             settings.CreateAudioMeta = CreateAudioMeta;
+            settings.DownloadPages = DownloadPages;
+            settings.PageSize = PageSize;
             settings.ApiKey = ApiKey;
             settings.SecretKey = SecretKey;
             settings.OAuthToken = OAuthToken;

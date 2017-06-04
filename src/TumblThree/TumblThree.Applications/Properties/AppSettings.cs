@@ -161,6 +161,12 @@ namespace TumblThree.Applications.Properties
         public bool DownloadLinks { get; set; }
 
         [DataMember]
+        public string DownloadPages { get; set; }
+
+        [DataMember]
+        public int PageSize { get; set; }
+
+        [DataMember]
         public bool CreateImageMeta { get; set; }
 
         [DataMember]
@@ -262,6 +268,7 @@ namespace TumblThree.Applications.Properties
             DownloadAudios = true;
             DownloadQuotes = true;
             DownloadConversations = true;
+            PageSize = 50;
             DownloadLinks = true;
             CreateImageMeta = false;
             CreateVideoMeta = false;
