@@ -70,6 +70,7 @@
     <Compile Include="Controllers\QueueController.cs" />
     <Compile Include="DataModels\DownloadProgress.cs" />
     <Compile Include="DataModels\TumblrJson.cs" />
+    <Compile Include="DataModels\TumblrPost.cs" />
     <Compile Include="DataModels\TumblrXml.cs" />
     <Compile Include="Data\StringListConverter.cs" />
     <Compile Include="Data\SupportedFileTypes.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\CrawlerViewModel.cs" />
     <Compile Include="ViewModels\DetailsViewModel.cs" />
+    <Compile Include="ViewModels\FullScreenMediaViewModel.cs" />
     <Compile Include="ViewModels\ManagerViewModel.cs" />
     <Compile Include="ViewModels\QueueViewModel.cs" />
     <Compile Include="ViewModels\AuthenticateViewModel.cs" />
@@ -122,6 +124,7 @@
     <Compile Include="Views\IAboutView.cs" />
     <Compile Include="Views\ICrawlerView.cs" />
     <Compile Include="Views\IDetailsView.cs" />
+    <Compile Include="Views\IFullScreenMediaView.cs" />
     <Compile Include="Views\IManagerView.cs" />
     <Compile Include="Views\IQueueView.cs" />
     <Compile Include="Views\IAuthenticateView.cs" />

@@ -108,6 +108,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\FullScreenMediaView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\AboutView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -192,6 +196,9 @@
     <Compile Include="ValidationRules\TimeSpanRule.cs" />
     <Compile Include="ValidationRules\BandwidthRangeRule.cs" />
     <Compile Include="ValidationRules\IntRangeRule.cs" />
+    <Compile Include="Views\FullScreenMediaView.xaml.cs">
+      <DependentUpon>FullScreenMediaView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>

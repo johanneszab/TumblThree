@@ -91,8 +91,8 @@ namespace TumblThree.Applications.Downloader
 
         private int DetermineDuplicates(PostTypes type)
         {
-            return statisticsBag.Where(url => url.Item1.Equals(type))
-                                .GroupBy(url => url.Item2)
+            return statisticsBag.Where(url => url.PostType.Equals(type))
+                                .GroupBy(url => url.Url)
                                 .Where(g => g.Count() > 1)
                                 .Sum(g => g.Count() - 1);
         }
@@ -203,7 +203,7 @@ namespace TumblThree.Applications.Downloader
                     }
                     imageUrl = ResizeTumblrImageUrl(imageUrl);
                     // FIXME: postID
-                    AddToDownloadList(Tuple.Create(PostTypes.Photo, imageUrl, Guid.NewGuid().ToString("N")));
+                    AddToDownloadList(new TumblrPost(PostTypes.Photo, imageUrl, Guid.NewGuid().ToString("N")));
                 }
             }
         }
@@ -221,12 +221,12 @@ namespace TumblThree.Applications.Downloader
                     if (shellService.Settings.VideoSize == 1080)
                     {
                         // FIXME: postID
-                        AddToDownloadList(Tuple.Create(PostTypes.Video, videoUrl.Replace("/480", "") + ".mp4", Guid.NewGuid().ToString("N")));
+                        AddToDownloadList(new TumblrPost(PostTypes.Video, videoUrl.Replace("/480", "") + ".mp4", Guid.NewGuid().ToString("N")));
                     }
                     else if (shellService.Settings.VideoSize == 480)
                     {
                         // FIXME: postID
-                        AddToDownloadList(Tuple.Create(PostTypes.Video, 
+                        AddToDownloadList(new TumblrPost(PostTypes.Video, 
                             "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + "_480.mp4",
                             Guid.NewGuid().ToString("N")));
                     }
@@ -237,21 +237,21 @@ namespace TumblThree.Applications.Downloader
         private void UpdateBlogStats()
         {
             blog.TotalCount = statisticsBag.Count;
-            blog.Photos = statisticsBag.Count(url => url.Item1.Equals(PostTypes.Photo));
-            blog.Videos = statisticsBag.Count(url => url.Item1.Equals(PostTypes.Video));
-            blog.Audios = statisticsBag.Count(url => url.Item1.Equals(PostTypes.Audio));
-            blog.Texts = statisticsBag.Count(url => url.Item1.Equals(PostTypes.Text));
-            blog.Conversations = statisticsBag.Count(url => url.Item1.Equals(PostTypes.Conversation));
-            blog.Quotes = statisticsBag.Count(url => url.Item1.Equals(PostTypes.Quote));
-            blog.NumberOfLinks = statisticsBag.Count(url => url.Item1.Equals(PostTypes.Link));
-            blog.PhotoMetas = statisticsBag.Count(url => url.Item1.Equals(PostTypes.PhotoMeta));
-            blog.VideoMetas = statisticsBag.Count(url => url.Item1.Equals(PostTypes.VideoMeta));
-            blog.AudioMetas = statisticsBag.Count(url => url.Item1.Equals(PostTypes.AudioMeta));
+            blog.Photos = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Photo));
+            blog.Videos = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Video));
+            blog.Audios = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Audio));
+            blog.Texts = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Text));
+            blog.Conversations = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Conversation));
+            blog.Quotes = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Quote));
+            blog.NumberOfLinks = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Link));
+            blog.PhotoMetas = statisticsBag.Count(url => url.PostType.Equals(PostTypes.PhotoMeta));
+            blog.VideoMetas = statisticsBag.Count(url => url.PostType.Equals(PostTypes.VideoMeta));
+            blog.AudioMetas = statisticsBag.Count(url => url.PostType.Equals(PostTypes.AudioMeta));
         }
 
-        private void AddToDownloadList(Tuple<PostTypes, string, string> addToList)
+        private void AddToDownloadList(TumblrPost addToList)
         {
-            if (statisticsBag.All(download => download.Item2 != addToList.Item2))
+            if (statisticsBag.All(download => download.Url != addToList.Url))
             {
                 producerConsumerCollection.Add(addToList);
             }

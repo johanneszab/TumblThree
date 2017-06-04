@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 
+using TumblThree.Applications.DataModels;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain;
@@ -27,9 +28,9 @@ namespace TumblThree.Applications.Downloader
         protected readonly object lockObjectDirectory;
         protected readonly object lockObjectDownload;
         protected readonly object lockObjectProgress;
-        protected readonly BlockingCollection<Tuple<PostTypes, string, string>> producerConsumerCollection;
+        protected readonly BlockingCollection<TumblrPost> producerConsumerCollection;
         private readonly IShellService shellService;
-        protected readonly ConcurrentBag<Tuple<PostTypes, string, string>> statisticsBag;
+        protected readonly ConcurrentBag<TumblrPost> statisticsBag;
 
         protected Downloader(IShellService shellService, ICrawlerService crawlerService = null, IBlog blog = null)
         {
@@ -42,8 +43,8 @@ namespace TumblThree.Applications.Downloader
             lockObjectDirectory = new object();
             lockObjectDownload = new object();
             lockObjectProgress = new object();
-            statisticsBag = new ConcurrentBag<Tuple<PostTypes, string, string>>();
-            producerConsumerCollection = new BlockingCollection<Tuple<PostTypes, string, string>>();
+            statisticsBag = new ConcurrentBag<TumblrPost>();
+            producerConsumerCollection = new BlockingCollection<TumblrPost>();
             SetUp();
         }
 
@@ -310,7 +311,7 @@ namespace TumblThree.Applications.Downloader
 
             CreateDataFolder();
 
-            foreach (Tuple<PostTypes, string, string> downloadItem in producerConsumerCollection.GetConsumingEnumerable())
+            foreach (TumblrPost downloadItem in producerConsumerCollection.GetConsumingEnumerable())
             {
                 await semaphoreSlim.WaitAsync();
 
@@ -326,7 +327,7 @@ namespace TumblThree.Applications.Downloader
 
                 trackedTasks.Add(new Func<Task>(async () =>
                 {
-                    switch (downloadItem.Item1)
+                    switch (downloadItem.PostType)
                     {
                         case PostTypes.Photo:
                             await DownloadPhotoAsync(progress, downloadItem, ct);
@@ -378,7 +379,7 @@ namespace TumblThree.Applications.Downloader
         }
 
         private async Task DownloadPhotoAsync(IProgress<DataModels.DownloadProgress> progress,
-            Tuple<PostTypes, string, string> downloadItem, CancellationToken ct)
+            TumblrPost downloadItem, CancellationToken ct)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string fileName = FileName(downloadItem);
@@ -410,7 +411,7 @@ namespace TumblThree.Applications.Downloader
         }
 
         private async Task DownloadVideoAsync(IProgress<DataModels.DownloadProgress> progress,
-            Tuple<PostTypes, string, string> downloadItem, CancellationToken ct)
+            TumblrPost downloadItem, CancellationToken ct)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string fileName = FileName(downloadItem);
@@ -435,12 +436,12 @@ namespace TumblThree.Applications.Downloader
         }
 
         private async Task DownloadAudioAsync(IProgress<DataModels.DownloadProgress> progress,
-            Tuple<PostTypes, string, string> downloadItem, CancellationToken ct)
+            TumblrPost downloadItem, CancellationToken ct)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string fileName = FileName(downloadItem);
             string url = Url(downloadItem);
-            string fileLocation = FileLocation(blogDownloadLocation, downloadItem.Item3 + ".swf");
+            string fileLocation = FileLocation(blogDownloadLocation, downloadItem.Id + ".swf");
             string fileLocationUrlList = FileLocationLocalized(blogDownloadLocation, Resources.FileNameAudios);
 
             if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(url)))
@@ -455,7 +456,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        private void DownloadText(IProgress<DataModels.DownloadProgress> progress, Tuple<PostTypes, string, string> downloadItem)
+        private void DownloadText(IProgress<DataModels.DownloadProgress> progress, TumblrPost downloadItem)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string url = Url(downloadItem);
@@ -474,7 +475,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        private void DownloadQuote(IProgress<DataModels.DownloadProgress> progress, Tuple<PostTypes, string, string> downloadItem)
+        private void DownloadQuote(IProgress<DataModels.DownloadProgress> progress, TumblrPost downloadItem)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string url = Url(downloadItem);
@@ -493,7 +494,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        private void DownloadLink(IProgress<DataModels.DownloadProgress> progress, Tuple<PostTypes, string, string> downloadItem)
+        private void DownloadLink(IProgress<DataModels.DownloadProgress> progress, TumblrPost downloadItem)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string url = Url(downloadItem);
@@ -513,7 +514,7 @@ namespace TumblThree.Applications.Downloader
         }
 
         private void DownloadConversation(IProgress<DataModels.DownloadProgress> progress,
-            Tuple<PostTypes, string, string> downloadItem)
+            TumblrPost downloadItem)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string url = Url(downloadItem);
@@ -533,7 +534,7 @@ namespace TumblThree.Applications.Downloader
         }
 
         private void DownloadAnswer(IProgress<DataModels.DownloadProgress> progress,
-            Tuple<PostTypes, string, string> downloadItem)
+            TumblrPost downloadItem)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string url = Url(downloadItem);
@@ -553,7 +554,7 @@ namespace TumblThree.Applications.Downloader
         }
 
         private void DownloadPhotoMeta(IProgress<DataModels.DownloadProgress> progress,
-            Tuple<PostTypes, string, string> downloadItem)
+            TumblrPost downloadItem)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string url = Url(downloadItem);
@@ -573,7 +574,7 @@ namespace TumblThree.Applications.Downloader
         }
 
         private void DownloadVideoMeta(IProgress<DataModels.DownloadProgress> progress,
-            Tuple<PostTypes, string, string> downloadItem)
+            TumblrPost downloadItem)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string url = Url(downloadItem);
@@ -593,7 +594,7 @@ namespace TumblThree.Applications.Downloader
         }
 
         private void DownloadAudioMeta(IProgress<DataModels.DownloadProgress> progress,
-            Tuple<PostTypes, string, string> downloadItem)
+            TumblrPost downloadItem)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string url = Url(downloadItem);
@@ -612,14 +613,14 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        private static string Url(Tuple<PostTypes, string, string> downloadItem)
+        private static string Url(TumblrPost downloadItem)
         {
-            return downloadItem.Item2;
+            return downloadItem.Url;
         }
 
-        private static string FileName(Tuple<PostTypes, string, string> downloadItem)
+        private static string FileName(TumblrPost downloadItem)
         {
-            return downloadItem.Item2.Split('/').Last();
+            return downloadItem.Url.Split('/').Last();
         }
 
         private static string FileLocation(string blogDownloadLocation, string fileName)
@@ -632,9 +633,9 @@ namespace TumblThree.Applications.Downloader
             return Path.Combine(blogDownloadLocation, string.Format(CultureInfo.CurrentCulture, fileName));
         }
 
-        private static string PostId(Tuple<PostTypes, string, string> downloadItem)
+        private static string PostId(TumblrPost downloadItem)
         {
-            return downloadItem.Item3;
+            return downloadItem.Id;
         }
     }
 }

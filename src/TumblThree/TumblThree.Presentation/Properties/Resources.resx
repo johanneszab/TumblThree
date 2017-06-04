@@ -564,4 +564,7 @@
   <data name="ToolTipProxyPasswordDescription" xml:space="preserve">
     <value>Credentials are saved in clear text in the settings file</value>
   </data>
+  <data name="FullScreenMedia" xml:space="preserve">
+    <value>TumblThree Fullscreen Media View</value>
+  </data>
 </root>

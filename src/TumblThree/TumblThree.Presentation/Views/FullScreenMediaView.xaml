@@ -1,0 +1,58 @@
+﻿<Window x:Class="TumblThree.Presentation.Views.FullScreenMediaView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="clr-namespace:TumblThree.Presentation.Properties"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:dd="clr-namespace:TumblThree.Presentation.DesignData"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+        mc:Ignorable="d" Title="{x:Static p:Resources.FullScreenMedia}" Icon="{StaticResource TumblThreeIcon}" 
+        WindowState="Maximized" WindowStyle="None" ShowInTaskbar="True" 
+        d:DataContext="{d:DesignInstance dd:SampleFullScreenMediaModel, IsDesignTimeCreatable=True}">
+
+    <Grid Background="Black" MouseDown="UIElement_OnMouseDown">
+        <UserControl Grid.Column="0" Grid.Row="0" x:Name="Preview" Width="Auto" Height="Auto" Foreground="Black" Background="Black">
+            <Grid>
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="SwitchableStates">
+                        <VisualState x:Name="Photo" />
+                        <VisualState x:Name="Video">
+                            <Storyboard>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="SwitchableImage"
+                                                                       Storyboard.TargetProperty="Visibility"
+                                                                       Duration="0">
+                                    <DiscreteObjectKeyFrame KeyTime="0">
+                                        <DiscreteObjectKeyFrame.Value>
+                                            <Visibility>Collapsed</Visibility>
+                                        </DiscreteObjectKeyFrame.Value>
+                                    </DiscreteObjectKeyFrame>
+                                </ObjectAnimationUsingKeyFrames>
+                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="SwitchableMediaElement"
+                                                                       Storyboard.TargetProperty="Visibility"
+                                                                       Duration="0">
+                                    <DiscreteObjectKeyFrame KeyTime="0">
+                                        <DiscreteObjectKeyFrame.Value>
+                                            <Visibility>Visible</Visibility>
+                                        </DiscreteObjectKeyFrame.Value>
+                                    </DiscreteObjectKeyFrame>
+                                </ObjectAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+                <MediaElement Visibility="Collapsed" x:Name="SwitchableMediaElement"
+                                      Source="{Binding LastDownloadedVideo, Converter={StaticResource NullImageConverter}, IsAsync=True}"
+                                      Stretch="Uniform" IsMuted="True" LoadedBehavior="Play" UnloadedBehavior="Close" />
+                <Image Visibility="Visible" x:Name="SwitchableImage"
+                               Source="{Binding LastDownloadedPhoto, Converter={StaticResource NullImageConverter}, IsAsync=True}"
+                               Stretch="Uniform" />
+                <i:Interaction.Triggers>
+                    <ei:DataTrigger Binding="{Binding States}" Value="{Binding States}">
+                        <ei:GoToStateAction StateName="{Binding States}" />
+                    </ei:DataTrigger>
+                </i:Interaction.Triggers>
+            </Grid>
+        </UserControl>
+    </Grid>
+</Window>

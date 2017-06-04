@@ -520,6 +520,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to TumblThree Fullscreen Media View.
+        /// </summary>
+        public static string FullScreenMedia {
+            get {
+                return ResourceManager.GetString("FullScreenMedia", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to General.
         /// </summary>
         public static string General {
