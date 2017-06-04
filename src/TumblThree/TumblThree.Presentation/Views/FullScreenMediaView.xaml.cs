@@ -15,16 +15,16 @@ namespace TumblThree.Presentation.Views
     [Export(typeof(IFullScreenMediaView)), PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class FullScreenMediaView : Window, IFullScreenMediaView
     {
-        private readonly Lazy<AboutViewModel> viewModel;
+        private readonly Lazy<FullScreenMediaViewModel> viewModel;
 
         public FullScreenMediaView()
         {
             InitializeComponent();
-            viewModel = new Lazy<AboutViewModel>(() => ViewHelper.GetViewModel<AboutViewModel>(this));
+            viewModel = new Lazy<FullScreenMediaViewModel>(() => ViewHelper.GetViewModel<FullScreenMediaViewModel>(this));
             this.PreviewKeyDown += new KeyEventHandler(HandleEsc);
         }
 
-        private AboutViewModel ViewModel
+        private FullScreenMediaViewModel ViewModel
         {
             get { return viewModel.Value; }
         }
