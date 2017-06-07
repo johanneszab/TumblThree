@@ -272,6 +272,7 @@ namespace TumblThree.Applications.Properties
             DownloadQuotes = true;
             DownloadConversations = true;
             DownloadLinks = true;
+            DownloadAnswers = true;
             CreateImageMeta = false;
             CreateVideoMeta = false;
             CreateAudioMeta = false;
