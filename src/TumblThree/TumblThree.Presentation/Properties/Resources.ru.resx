@@ -232,7 +232,7 @@
     <value>URL-адрес</value>
   </data>
   <data name="ImageSize" xml:space="preserve">
-    <value>Размер изображения (pel)</value>
+    <value>Размер изображения (пикс)</value>
   </data>
   <data name="ParallelBlogs" xml:space="preserve">
     <value>Одновременно скачивающихся блогов</value>
@@ -310,7 +310,7 @@
     <value>Скачивать видео (кроме внешних ресурсов)</value>
   </data>
   <data name="VideoSize" xml:space="preserve">
-    <value>Размер видео (pel)</value>
+    <value>Размер видео (пикс)</value>
   </data>
   <data name="Authenticate" xml:space="preserve">
     <value>Авторизироваться</value>
@@ -346,7 +346,7 @@
     <value>Включить автоматическую закачку и добавить</value>
   </data>
   <data name="Timer" xml:space="preserve">
-    <value> по расписанию (час:мин:сек)</value>
+    <value>по расписанию (час:мин:сек)</value>
   </data>
   <data name="SelectABlog" xml:space="preserve">
     <value>Пожалуйста, укажите блог</value>
@@ -442,16 +442,16 @@
     <value>Порт:</value>
   </data>
   <data name="ThirdPartySoftware" xml:space="preserve">
-    <value>Third-party Software</value>
+    <value>Стороннее ПО</value>
   </data>
   <data name="ThirdPartySoftwareDescription" xml:space="preserve">
-    <value>Third-party Software and Licenses</value>
+    <value>Стороннее ПО и лицензии</value>
   </data>
   <data name="ToolTipLimitBandwidth" xml:space="preserve">
-    <value>Throttles the bandwidth of the downloader</value>
+    <value>Уменьшение пропускной способности загрузчика</value>
   </data>
   <data name="ToolTipLimitBandwidthDescription" xml:space="preserve">
-    <value>Sets the maximum bandwidth available for the downloader in kbyes/s. 0 disables throttling.</value>
+    <value>Устанавливает максимальную пропускную способность доступную для загрузчика в кбит/с. 0 отключает ограничение.</value>
   </data>
   <data name="LimitScan" xml:space="preserve">
     <value>Limit the scan bandwidth</value>
@@ -466,21 +466,126 @@
     <value>Since the data used for scanning is usually small, you should leave this off since the throttling algorithm is too slow to adjust and will negatively impact the performance.</value>
   </data>
   <data name="ToolTipScan" xml:space="preserve">
-    <value>Number of connections used for each scan</value>
+    <value>Количество соединений используемых для каждого сканирования</value>
   </data>
   <data name="ToolTipScanDescription" xml:space="preserve">
     <value>Sets the number connections used for scanning. Since the data is usually small, you should leave this high.</value>
   </data>
-  <data name="IntegerRangeError" xml:space="preserve">
-    <value>The value must be between 0 and 9,000,000,000,000,000.</value>
+  <data name="BandwidthRangeError" xml:space="preserve">
+    <value>Значение должно быть между 0 и 9,000,000,000,000,000.</value>
   </data>
   <data name="TimeSpanTypeError" xml:space="preserve">
-    <value>The value must have the form hh:mm:ss.</value>
+    <value>Значение должно иметь формат час:мин:сек.</value>
   </data>
   <data name="IntRangeError" xml:space="preserve">
-    <value>The value must be between 0 and 2,147,483,647.</value>
+    <value>Значение должно быть между 0 и 2,147,483,647.</value>
   </data>
   <data name="IntTypeError" xml:space="preserve">
-    <value>The value must be of type integer.</value>
+    <value>Значение должно быть целым.</value>
+  </data>
+  <data name="ConnectionTimeInterval" xml:space="preserve">
+    <value>Временной интервал (сек):</value>
+  </data>
+  <data name="LimitConnections" xml:space="preserve">
+    <value>Limit Tumblr Api Connections</value>
+  </data>
+  <data name="MaxConnections" xml:space="preserve">
+    <value>Количество соединений:</value>
+  </data>
+  <data name="ToolTipLimitConnections" xml:space="preserve">
+    <value>Limit connections to the tumblr api.</value>
+  </data>
+  <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
+    <value>A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr api. A too small value will decrease the download speed.</value>
+  </data>
+  <data name="ForceRescan" xml:space="preserve">
+    <value>Повторное сканирование</value>
+  </data>
+  <data name="ToolTipForceRescan" xml:space="preserve">
+    <value>Повторное сканирование всего блога, а не только новых сообщений.</value>
+  </data>
+  <data name="ToolTipForceRescanDescription" xml:space="preserve">
+    <value>Принудительное полное сканирование с помощью Tumblr API.</value>
+  </data>
+  <data name="CheckForUpdates" xml:space="preserve">
+    <value>Проверить обновления</value>
+  </data>
+  <data name="DownloadNow" xml:space="preserve">
+    <value>Скачать сейчас</value>
+  </data>
+  <data name="CheckDirectoryForFiles" xml:space="preserve">
+    <value>Check directory for files</value>
+  </data>
+  <data name="ToolTipCheckDirectoryForFiles" xml:space="preserve">
+    <value>Проверяет каталог для уже загруженных файлов.</value>
+  </data>
+  <data name="ToolTipCheckDirectoryForFilesDescription" xml:space="preserve">
+    <value>Checks the directory and the database for already downloaded files. Might negatively impact the download speed for large directories.</value>
+  </data>
+  <data name="DownloadUrlList" xml:space="preserve">
+    <value>Скачивать список URL</value>
+  </data>
+  <data name="ToolTipDownloadUrlList" xml:space="preserve">
+    <value>Скачать список URL.</value>
+  </data>
+  <data name="ToolTipDownloadUrlListDescription" xml:space="preserve">
+    <value>Downloads a url list of the binary files instead of the actual files</value>
+  </data>
+  <data name="DownloadAnswers" xml:space="preserve">
+    <value>Скачивать посты с ответами</value>
+  </data>
+  <data name="Blog" xml:space="preserve">
+    <value>Блоги</value>
+  </data>
+  <data name="Connection" xml:space="preserve">
+    <value>Соединение</value>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>Общее</value>
+  </data>
+  <data name="PortableMode" xml:space="preserve">
+    <value>Активировать портативный режим.</value>
+  </data>
+  <data name="ToolTipPortableMode" xml:space="preserve">
+    <value>Активирует портативный режим</value>
+  </data>
+  <data name="ToolTipPortableModeDescription" xml:space="preserve">
+    <value>Сохраняет настройки в папке исполняемого файла вместо AppData.</value>
+  </data>
+  <data name="DownloadRebloggedPosts" xml:space="preserve">
+    <value>Скачивать посты-реблоги</value>
+  </data>
+  <data name="ProxyPassword" xml:space="preserve">
+    <value>Пароль прокси:</value>
+  </data>
+  <data name="ProxyUsername" xml:space="preserve">
+    <value>Имя пользователя прокси:</value>
+  </data>
+  <data name="ToolTipProxyPassword" xml:space="preserve">
+    <value>Учетные данные для неанонимного прокси-сервера</value>
+  </data>
+  <data name="ToolTipProxyPasswordDescription" xml:space="preserve">
+    <value>Учетные данные сохраняются в текстовом файле настроек</value>
+  </data>
+  <data name="DownloadPages" xml:space="preserve">
+    <value>Скачать страницы: </value>
+  </data>
+  <data name="PageSize" xml:space="preserve">
+    <value>Сообщений на страницу:</value>
+  </data>
+  <data name="ToolTipDownloadPages" xml:space="preserve">
+    <value>Загрузка только определенных страниц</value>
+  </data>
+  <data name="ToolTipDownloadPagesDescription" xml:space="preserve">
+    <value>Возможные обозначения: 1 или 1-3 или 1,2,3</value>
+  </data>
+  <data name="ToolTipPageSize" xml:space="preserve">
+    <value>Page size</value>
+  </data>
+  <data name="ToolTipPageSizeDescription" xml:space="preserve">
+    <value>Sets the page size (should be between 1-50, default 50)</value>
+  </data>
+  <data name="FullScreenMedia" xml:space="preserve">
+    <value>FullScreenView</value>
   </data>
 </root>

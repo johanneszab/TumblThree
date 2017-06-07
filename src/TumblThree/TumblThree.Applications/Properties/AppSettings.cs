@@ -268,11 +268,12 @@ namespace TumblThree.Applications.Properties
             DownloadAudios = true;
             DownloadQuotes = true;
             DownloadConversations = true;
-            PageSize = 50;
+			DownloadAnswers = true;
             DownloadLinks = true;
             CreateImageMeta = false;
             CreateVideoMeta = false;
             CreateAudioMeta = false;
+			PageSize = 50;
             AutoDownload = false;
             TimerInterval = "22:40:00";
             ForceSize = false;
