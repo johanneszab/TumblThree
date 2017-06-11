@@ -189,6 +189,12 @@
   <data name="DiskFull" xml:space="preserve">
     <value>There is not enough space on the disk.</value>
   </data>
+  <data name="ExportFileFilter" xml:space="preserve">
+    <value>Text Files (*.txt)|*.txt</value>
+  </data>
+  <data name="ExportFileFilterExtension" xml:space="preserve">
+    <value>.txt</value>
+  </data>
   <data name="FileNameAnswers" xml:space="preserve">
     <value>answers.txt</value>
   </data>

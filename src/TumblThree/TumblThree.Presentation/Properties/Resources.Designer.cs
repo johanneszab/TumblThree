@@ -520,6 +520,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export Blogs.
+        /// </summary>
+        public static string Export {
+            get {
+                return ResourceManager.GetString("Export", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Force rescan.
         /// </summary>
         public static string ForceRescan {
@@ -1231,7 +1240,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Possible notations are: 1 or 1-3 or 1,2,3.
+        ///   Looks up a localized string similar to Possible notations are: 1 or 1-3 or 1,2,3. Empty means the whole blog..
         /// </summary>
         public static string ToolTipDownloadPagesDescription {
             get {
@@ -1254,6 +1263,24 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipDownloadUrlListDescription {
             get {
                 return ResourceManager.GetString("ToolTipDownloadUrlListDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export all blog urls as text file.
+        /// </summary>
+        public static string ToolTipExportBlogs {
+            get {
+                return ResourceManager.GetString("ToolTipExportBlogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saves all urls as a text file for exchange..
+        /// </summary>
+        public static string ToolTipExportBlogsDescription {
+            get {
+                return ResourceManager.GetString("ToolTipExportBlogsDescription", resourceCulture);
             }
         }
         
@@ -1348,7 +1375,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Page size.
+        ///   Looks up a localized string similar to Posts per Page.
         /// </summary>
         public static string ToolTipPageSize {
             get {
@@ -1357,7 +1384,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sets the page size (should be between 1-50, default 50).
+        ///   Looks up a localized string similar to Sets the post per page (should be between 1-50, default 50). E.g. 50 means to scan 50 posts per page..
         /// </summary>
         public static string ToolTipPageSizeDescription {
             get {

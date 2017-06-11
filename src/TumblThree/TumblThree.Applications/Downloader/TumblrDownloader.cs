@@ -217,11 +217,18 @@ namespace TumblThree.Applications.Downloader
             if (string.IsNullOrEmpty(blog.DownloadPages))
             {
                 int totalPosts = blog.Posts;
+                if (!TestRange(blog.PageSize, 1, 50))
+                    blog.PageSize = 50;
                 int totalPages = (totalPosts / blog.PageSize) + 1;
 
                 return Enumerable.Range(0, totalPages);
             }
             return RangeToSequence(blog.DownloadPages);
+        }
+
+        private static bool TestRange(int numberToCheck, int bottom, int top)
+        {
+            return (numberToCheck >= bottom && numberToCheck <= top);
         }
 
         static IEnumerable<int> RangeToSequence(string input)

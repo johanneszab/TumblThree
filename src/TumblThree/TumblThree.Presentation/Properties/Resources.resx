@@ -577,15 +577,24 @@
     <value>Download only specific pages</value>
   </data>
   <data name="ToolTipDownloadPagesDescription" xml:space="preserve">
-    <value>Possible notations are: 1 or 1-3 or 1,2,3</value>
+    <value>Possible notations are: 1 or 1-3 or 1,2,3. Empty means the whole blog.</value>
   </data>
   <data name="ToolTipPageSize" xml:space="preserve">
-    <value>Page size</value>
+    <value>Posts per Page</value>
   </data>
   <data name="ToolTipPageSizeDescription" xml:space="preserve">
-    <value>Sets the page size (should be between 1-50, default 50)</value>
+    <value>Sets the post per page (should be between 1-50, default 50). E.g. 50 means to scan 50 posts per page.</value>
   </data>
   <data name="FullScreenMedia" xml:space="preserve">
     <value>FullScreenView</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Export Blogs</value>
+  </data>
+  <data name="ToolTipExportBlogs" xml:space="preserve">
+    <value>Export all blog urls as text file</value>
+  </data>
+  <data name="ToolTipExportBlogsDescription" xml:space="preserve">
+    <value>Saves all urls as a text file for exchange.</value>
   </data>
 </root>
