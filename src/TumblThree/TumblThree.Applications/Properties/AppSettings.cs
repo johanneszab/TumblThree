@@ -77,6 +77,9 @@ namespace TumblThree.Applications.Properties
         public string DownloadLocation { get; set; }
 
         [DataMember]
+        public string ExportLocation { get; set; }
+
+        [DataMember]
         public int ParallelImages { get; set; }
 
         [DataMember]
@@ -244,7 +247,8 @@ namespace TumblThree.Applications.Properties
             Width = 1200;
             IsMaximized = false;
             GridSplitterPosition = 250;
-            DownloadLocation = @".\Blogs\";
+            DownloadLocation = @"Blogs";
+            ExportLocation = @"blogs.txt";
             ParallelImages = 25;
             ParallelBlogs = 2;
             ParallelScans = 4;
@@ -272,6 +276,7 @@ namespace TumblThree.Applications.Properties
             DownloadQuotes = true;
             DownloadConversations = true;
             DownloadLinks = true;
+            DownloadAnswers = true;
             CreateImageMeta = false;
             CreateVideoMeta = false;
             CreateAudioMeta = false;

@@ -277,6 +277,24 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Text Files (*.txt)|*.txt.
+        /// </summary>
+        public static string ExportFileFilter {
+            get {
+                return ResourceManager.GetString("ExportFileFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .txt.
+        /// </summary>
+        public static string ExportFileFilterExtension {
+            get {
+                return ResourceManager.GetString("ExportFileFilterExtension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to answers.txt.
         /// </summary>
         public static string FileNameAnswers {

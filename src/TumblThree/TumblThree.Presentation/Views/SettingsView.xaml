@@ -6,7 +6,7 @@
         xmlns:vr="clr-namespace:TumblThree.Presentation.ValidationRules"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:TumblThree.Applications.ViewModels;assembly=TumblThree.Applications"
-        mc:Ignorable="d" Title="Settings" Height="570" Width="700"
+        mc:Ignorable="d" Title="Settings" Height="580" Width="700"
         d:DataContext="{d:DesignInstance vm:SettingsViewModel}">
 
     <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
@@ -45,7 +45,7 @@
                          Text="{Binding DownloadLocation, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                          Grid.Column="1" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center" />
                             <Button x:Name="browseDownloadLocationButton" Content="{x:Static p:Resources.Browse}"
-                        Command="{Binding DisplayFolderBrowserCommand}" Grid.Column="2" HorizontalAlignment="Right"
+                        Command="{Binding BrowseDownloadLocationCommand}" Grid.Column="2" HorizontalAlignment="Right"
                         VerticalAlignment="Center" Margin="10" Height="26" MinWidth="75" />
                         </Grid>
                         <Grid MinHeight="46" Height="Auto" Grid.Row="1">
@@ -527,6 +527,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Label x:Name="globalLabel" Grid.Column="0" Grid.Row="0" Margin="5"
                             Content="{x:Static p:Resources.GlobalSettings}" />
@@ -552,6 +553,32 @@
                                 </ToolTip>
                             </CheckBox.ToolTip>
                         </CheckBox>
+                        <Grid Grid.Row="6" Grid.ColumnSpan="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="buttonExportBlogs" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Margin="10"
+                        VerticalAlignment="Center" Content="{x:Static p:Resources.Export}"
+                        Command="{Binding ExportCommand}" IsEnabled="True" MinWidth="90">
+                                <Button.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipExportBlogs}" />
+                                            <TextBlock xml:space="preserve"
+                                           Text="{x:Static p:Resources.ToolTipExportBlogsDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </Button.ToolTip>
+                            </Button>
+                            <TextBox x:Name="exportLocationtextBox"
+                         Text="{Binding ExportLocation, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                         Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center" />
+                            <Button x:Name="browseExportLocationButton" Content="{x:Static p:Resources.Browse}"
+                        Command="{Binding BrowseExportLocationCommand}" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Right"
+                        VerticalAlignment="Center" Margin="10" Height="26" MinWidth="75" />
+                        </Grid>
                     </Grid>
                 </TabItem>
             </TabControl>
