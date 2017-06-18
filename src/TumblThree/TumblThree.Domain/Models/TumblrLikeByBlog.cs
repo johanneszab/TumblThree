@@ -6,7 +6,7 @@ namespace TumblThree.Domain.Models
     public class TumblrLikeByBlog : Blog
     {
         public TumblrLikeByBlog(string url, string location, BlogTypes blogType) : base(url, location, blogType)
-        {
+        {            
         }
 
         protected override string ExtractName()

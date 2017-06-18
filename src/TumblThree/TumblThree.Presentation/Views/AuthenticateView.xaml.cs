@@ -54,7 +54,7 @@ namespace TumblThree.Presentation.Views
             try
             {
                 var wb = (WebBrowser)sender;
-                if (wb.Source.ToString().Contains(ViewModel.OAuthCallbackUrl))
+                if (wb.Source.ToString().Equals(ViewModel.OAuthCallbackUrl))
                 {
                     Close();
                 }

@@ -18,6 +18,7 @@ namespace TumblThree.Applications.Services
         private ICommand autoDownloadCommand;
         private ICommand crawlCommand;
         private ICommand enqueueSelectedCommand;
+        private ICommand loadLibraryCommand;
         private bool isCrawl;
         private bool isPaused;
         private bool isTimerSet;
@@ -35,6 +36,7 @@ namespace TumblThree.Applications.Services
         public CrawlerService(IShellService shellService)
         {
             this.shellService = shellService;
+
             activeItems = new ObservableCollection<QueueListItem>();
             readonlyActiveItems = new ReadOnlyObservableList<QueueListItem>(activeItems);
             activeItems.CollectionChanged += ActiveItemsCollectionChanged;
@@ -79,6 +81,12 @@ namespace TumblThree.Applications.Services
         {
             get { return enqueueSelectedCommand; }
             set { SetProperty(ref enqueueSelectedCommand, value); }
+        }
+
+        public ICommand LoadLibraryCommand
+        {
+            get { return loadLibraryCommand; }
+            set { SetProperty(ref loadLibraryCommand, value); }
         }
 
         public ICommand RemoveBlogFromQueueCommand

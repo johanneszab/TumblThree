@@ -195,7 +195,7 @@
   <data name="ProgressDownloadImage" xml:space="preserve">
     <value>Herunterladen von {0}.</value>
   </data>
-  <data name="ProgressGetUrl" xml:space="preserve">
+  <data name="ProgressGetUrlLong" xml:space="preserve">
     <value>{0} Tumblrbeiträge von {1} Gesamtbeiträgen ausgewertet.</value>
   </data>
   <data name="ProgressUniqueDownloads" xml:space="preserve">
@@ -284,5 +284,26 @@
   </data>
   <data name="FileNameAnswers" xml:space="preserve">
     <value>antworten.txt</value>
+  </data>
+  <data name="ExportFileFilter" xml:space="preserve">
+    <value>Text Dateien (*.txt)|*.txt</value>
+  </data>
+  <data name="ExportFileFilterExtension" xml:space="preserve">
+    <value>.txt</value>
+  </data>
+  <data name="ReblogName" xml:space="preserve">
+    <value>Reblog Name: {0}</value>
+  </data>
+  <data name="ReblogUrl" xml:space="preserve">
+    <value>Reblog Url: {0}</value>
+  </data>
+  <data name="ProgressGetUrlShort" xml:space="preserve">
+    <value>{0} Tumblrblogseiten ausgewertet.</value>
+  </data>
+  <data name="NotLoggedIn" xml:space="preserve">
+    <value>Sie müssen sich bei tumblr.com anmelden zum Laden von {0}. Dazu in den Einstellungen-&gt;Authentifizieren klicken.</value>
+  </data>
+  <data name="MaxBytePerSecond" xml:space="preserve">
+    <value>MaxBytesPerSecond muss nicht negativ sein.</value>
   </data>
 </root>

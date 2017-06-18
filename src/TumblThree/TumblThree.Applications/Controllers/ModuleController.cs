@@ -149,7 +149,7 @@ namespace TumblThree.Applications.Controllers
             QueueController.LoadQueue();
         }
 
-        private bool CheckIfPortableMode(string fileName)
+        private static bool CheckIfPortableMode(string fileName)
         {
             return File.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName));
         }

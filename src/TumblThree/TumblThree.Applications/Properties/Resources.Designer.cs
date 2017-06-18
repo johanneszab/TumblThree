@@ -277,6 +277,24 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Text Files (*.txt)|*.txt.
+        /// </summary>
+        public static string ExportFileFilter {
+            get {
+                return ResourceManager.GetString("ExportFileFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .txt.
+        /// </summary>
+        public static string ExportFileFilterExtension {
+            get {
+                return ResourceManager.GetString("ExportFileFilterExtension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to answers.txt.
         /// </summary>
         public static string FileNameAnswers {
@@ -439,7 +457,7 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MaxBytesPerSecond has to be &gt;0.
+        ///   Looks up a localized string similar to MaxBytesPerSecond has to be non-negative.
         /// </summary>
         public static string MaxBytePerSecond {
             get {
@@ -552,6 +570,24 @@ namespace TumblThree.Applications.Properties {
         public static string ReblogKey {
             get {
                 return ResourceManager.GetString("ReblogKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reblog Name: {0}.
+        /// </summary>
+        public static string ReblogName {
+            get {
+                return ResourceManager.GetString("ReblogName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reblog Url: {0}.
+        /// </summary>
+        public static string ReblogUrl {
+            get {
+                return ResourceManager.GetString("ReblogUrl", resourceCulture);
             }
         }
         

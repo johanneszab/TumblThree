@@ -386,12 +386,14 @@ namespace TumblThree.Applications.Downloader
             string url = Url(downloadItem);
             string fileLocation = FileLocation(blogDownloadLocation, fileName);
             string fileLocationUrlList = FileLocationLocalized(blogDownloadLocation, Resources.FileNamePhotos);
+            DateTime postDate = PostDate(downloadItem);
 
             if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(GetCoreImageUrl(url))))
             {
                 UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, fileName);
                 if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url, ct))
                 {
+                    File.SetLastWriteTime(fileLocation, postDate);
                     UpdateBlogPostCount(ref counter.Photos, value => blog.DownloadedPhotos = value);
                     UpdateBlogProgress(ref counter.TotalDownloads);
                     UpdateBlogDB(fileName);
@@ -418,12 +420,14 @@ namespace TumblThree.Applications.Downloader
             string url = Url(downloadItem);
             string fileLocation = FileLocation(blogDownloadLocation, fileName);
             string fileLocationUrlList = FileLocationLocalized(blogDownloadLocation, Resources.FileNameVideos);
+            DateTime postDate = PostDate(downloadItem);
 
             if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(url)))
             {
                 UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, fileName);
                 if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url, ct))
                 {
+                    File.SetLastWriteTime(fileLocation, postDate);
                     UpdateBlogPostCount(ref counter.Videos, value => blog.DownloadedVideos = value);
                     UpdateBlogProgress(ref counter.TotalDownloads);
                     UpdateBlogDB(fileName);
@@ -443,12 +447,14 @@ namespace TumblThree.Applications.Downloader
             string url = Url(downloadItem);
             string fileLocation = FileLocation(blogDownloadLocation, downloadItem.Id + ".swf");
             string fileLocationUrlList = FileLocationLocalized(blogDownloadLocation, Resources.FileNameAudios);
+            DateTime postDate = PostDate(downloadItem);
 
             if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(url)))
             {
                 UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, fileName);
                 if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url, ct))
                 {
+                    File.SetLastWriteTime(fileLocation, postDate);
                     UpdateBlogPostCount(ref counter.Audios, value => blog.DownloadedAudios = value);
                     UpdateBlogProgress(ref counter.TotalDownloads);
                     UpdateBlogDB(fileName);
@@ -636,6 +642,13 @@ namespace TumblThree.Applications.Downloader
         private static string PostId(TumblrPost downloadItem)
         {
             return downloadItem.Id;
+        }
+
+        private static DateTime PostDate(TumblrPost downloadItem)
+        {
+            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+            DateTime postDate = epoch.AddSeconds(Convert.ToDouble(downloadItem.Date)).ToLocalTime();
+            return postDate;
         }
     }
 }

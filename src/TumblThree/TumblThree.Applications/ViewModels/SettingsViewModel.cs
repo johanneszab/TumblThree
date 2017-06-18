@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
+using System.Globalization;
+using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Waf.Applications;
 using System.Windows.Input;
@@ -18,9 +22,11 @@ namespace TumblThree.Applications.ViewModels
     {
         private readonly DelegateCommand authenticateCommand;
         private readonly ExportFactory<AuthenticateViewModel> authenticateViewModelFactory;
-        private readonly DelegateCommand displayFolderBrowserCommand;
+        private readonly DelegateCommand browseDownloadLocationCommand;
         private readonly DelegateCommand enableAutoDownloadCommand;
         private readonly FolderBrowserDataModel folderBrowser;
+        private readonly DelegateCommand exportCommand;
+        private readonly DelegateCommand browseExportLocationCommand;
         private readonly DelegateCommand saveCommand;
 
         private readonly AppSettings settings;
@@ -37,12 +43,14 @@ namespace TumblThree.Applications.ViewModels
         private bool createVideoMeta;
         private string downloadPages;
         private int pageSize;
+        private bool downloadRebloggedPosts;
         private bool deleteOnlyIndex;
         private bool downloadAudios;
         private bool downloadConversations;
         private bool downloadImages;
         private bool downloadLinks;
         private string downloadLocation;
+        private string exportLocation;
         private bool downloadQuotes;
         private bool downloadTexts;
         private bool downloadAnswers;
@@ -75,18 +83,21 @@ namespace TumblThree.Applications.ViewModels
 
         [ImportingConstructor]
         public SettingsViewModel(ISettingsView view, IShellService shellService, ICrawlerService crawlerService,
-            ExportFactory<AuthenticateViewModel> authenticateViewModelFactory)
+            IManagerService managerService, ExportFactory<AuthenticateViewModel> authenticateViewModelFactory)
             : base(view)
         {
             ShellService = shellService;
             settings = ShellService.Settings;
             CrawlerService = crawlerService;
+            ManagerService = managerService;
             this.authenticateViewModelFactory = authenticateViewModelFactory;
             folderBrowser = new FolderBrowserDataModel();
-            displayFolderBrowserCommand = new DelegateCommand(DisplayFolderBrowser);
+            browseDownloadLocationCommand = new DelegateCommand(BrowseDownloadLocation);
+            browseExportLocationCommand = new DelegateCommand(BrowseExportLocation);
             authenticateCommand = new DelegateCommand(Authenticate);
             saveCommand = new DelegateCommand(Save);
             enableAutoDownloadCommand = new DelegateCommand(EnableAutoDownload);
+            exportCommand = new DelegateCommand(ExportBlogs);
 
             Load();
             view.Closed += ViewClosed;
@@ -98,14 +109,16 @@ namespace TumblThree.Applications.ViewModels
 
         public ICrawlerService CrawlerService { get; }
 
+        public IManagerService ManagerService { get; }
+
         public FolderBrowserDataModel FolderBrowser
         {
             get { return folderBrowser; }
         }
 
-        public ICommand DisplayFolderBrowserCommand
+        public ICommand BrowseDownloadLocationCommand
         {
-            get { return displayFolderBrowserCommand; }
+            get { return browseDownloadLocationCommand; }
         }
 
         public ICommand AuthenticateCommand
@@ -121,6 +134,16 @@ namespace TumblThree.Applications.ViewModels
         public ICommand EnableAutoDownloadCommand
         {
             get { return enableAutoDownloadCommand; }
+        }
+
+        public ICommand ExportCommand
+        {
+            get { return exportCommand; }
+        }
+
+        public ICommand BrowseExportLocationCommand
+        {
+            get { return browseExportLocationCommand; }
         }
 
         public string OAuthToken
@@ -157,6 +180,12 @@ namespace TumblThree.Applications.ViewModels
         {
             get { return downloadLocation; }
             set { SetProperty(ref downloadLocation, value); }
+        }
+
+        public string ExportLocation
+        {
+            get { return exportLocation; }
+            set { SetProperty(ref exportLocation, value); }
         }
 
         public int ParallelImages
@@ -405,6 +434,12 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref pageSize, value); }
         }
 
+        public bool DownloadRebloggedPosts
+        {
+            get { return downloadRebloggedPosts; }
+            set { SetProperty(ref downloadRebloggedPosts, value); }
+        }
+
         public string TimerInterval
         {
             get { return timerInterval; }
@@ -454,6 +489,13 @@ namespace TumblThree.Applications.ViewModels
             }
         }
 
+        private void ExportBlogs()
+        {
+            List<string> blogList = ManagerService.BlogFiles.Select(blog => blog.Url).ToList();
+            blogList.Sort();
+            File.WriteAllLines(ExportLocation, blogList);
+        }
+
         private void OnTimedEvent()
         {
             if (CrawlerService.AutoDownloadCommand.CanExecute(null))
@@ -463,12 +505,24 @@ namespace TumblThree.Applications.ViewModels
             CrawlerService.Timer.Change(new TimeSpan(24, 00, 00), Timeout.InfiniteTimeSpan);
         }
 
-        private void DisplayFolderBrowser()
+        private void BrowseDownloadLocation()
         {
             var dialog = new System.Windows.Forms.FolderBrowserDialog { SelectedPath = DownloadLocation };
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 DownloadLocation = dialog.SelectedPath;
+            }
+        }
+
+        private void BrowseExportLocation()
+        {
+            var dialog = new System.Windows.Forms.SaveFileDialog { FileName = exportLocation,
+                Filter = string.Format(CultureInfo.CurrentCulture, Resources.ExportFileFilter),
+                DefaultExt = string.Format(CultureInfo.CurrentCulture, Resources.ExportFileFilterExtension),
+                AddExtension = true };
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                ExportLocation = dialog.FileName;
             }
         }
 
@@ -506,6 +560,7 @@ namespace TumblThree.Applications.ViewModels
                 OAuthTokenSecret = settings.OAuthTokenSecret;
                 OAuthCallbackUrl = settings.OAuthCallbackUrl;
                 DownloadLocation = settings.DownloadLocation;
+                ExportLocation = settings.ExportLocation;
                 ParallelImages = settings.ParallelImages;
                 ParallelBlogs = settings.ParallelBlogs;
                 ParallelScans = settings.ParallelScans;
@@ -538,6 +593,7 @@ namespace TumblThree.Applications.ViewModels
                 CreateAudioMeta = settings.CreateAudioMeta;
                 DownloadPages = settings.DownloadPages;
                 PageSize = settings.PageSize;
+                DownloadRebloggedPosts = settings.DownloadRebloggedPosts;
                 AutoDownload = settings.AutoDownload;
                 ForceSize = settings.ForceSize;
                 CheckDirectoryForFiles = settings.CheckDirectoryForFiles;
@@ -545,8 +601,8 @@ namespace TumblThree.Applications.ViewModels
                 PortableMode = settings.PortableMode;
                 ProxyHost = settings.ProxyHost;
                 ProxyPort = settings.ProxyPort;
-                ProxyUsername = settings.ProxyUsername;
-                ProxyPassword = settings.ProxyPassword;
+                ProxyHost = settings.ProxyUsername;
+                ProxyPort = settings.ProxyPassword;
                 TimerInterval = settings.TimerInterval;
             }
             else
@@ -556,7 +612,8 @@ namespace TumblThree.Applications.ViewModels
                 OAuthCallbackUrl = @"https://github.com/johanneszab/TumblThree";
                 OAuthToken = string.Empty;
                 OAuthTokenSecret = string.Empty;
-                DownloadLocation = ".\\Blogs";
+                DownloadLocation = "Blogs";
+                ExportLocation = "blogs.txt";
                 ParallelImages = 25;
                 ParallelBlogs = 2;
                 ParallelScans = 4;
@@ -587,8 +644,9 @@ namespace TumblThree.Applications.ViewModels
                 CreateImageMeta = false;
                 CreateVideoMeta = false;
                 CreateAudioMeta = false;
-                DownloadPages = string.Empty;
+                DownloadPages = String.Empty;
                 PageSize = 50;
+                DownloadRebloggedPosts = true;
                 AutoDownload = false;
                 ForceSize = false;
                 CheckDirectoryForFiles = false;
@@ -596,8 +654,8 @@ namespace TumblThree.Applications.ViewModels
                 PortableMode = false;
                 ProxyHost = string.Empty;
                 ProxyPort = string.Empty;
-                ProxyUsername = string.Empty;
-                ProxyPassword = string.Empty;
+                ProxyHost = string.Empty;
+                ProxyPort = string.Empty;
                 TimerInterval = "22:40:00";
             }
         }
@@ -605,11 +663,22 @@ namespace TumblThree.Applications.ViewModels
         private void Save()
         {
             SaveSettings();
+            ApplySettings();
+        }
+
+        private void ApplySettings()
+        {
+            // Reload Library
+            if (!CrawlerService.IsCrawl)
+            {
+                CrawlerService.LoadLibraryCommand.Execute(null);
+            }
         }
 
         private void SaveSettings()
         {
             settings.DownloadLocation = DownloadLocation;
+            settings.ExportLocation = ExportLocation;
             settings.ParallelImages = ParallelImages;
             settings.ParallelBlogs = ParallelBlogs;
             settings.ParallelScans = ParallelScans;
@@ -642,6 +711,7 @@ namespace TumblThree.Applications.ViewModels
             settings.CreateAudioMeta = CreateAudioMeta;
             settings.DownloadPages = DownloadPages;
             settings.PageSize = PageSize;
+            settings.DownloadRebloggedPosts = DownloadRebloggedPosts;
             settings.ApiKey = ApiKey;
             settings.SecretKey = SecretKey;
             settings.OAuthToken = OAuthToken;
@@ -654,6 +724,8 @@ namespace TumblThree.Applications.ViewModels
             settings.PortableMode = PortableMode;
             settings.ProxyHost = ProxyHost;
             settings.ProxyPort = ProxyPort;
+            settings.ProxyUsername = ProxyUsername;
+            settings.ProxyPassword = ProxyPassword;
             settings.TimerInterval = TimerInterval;
         }
 

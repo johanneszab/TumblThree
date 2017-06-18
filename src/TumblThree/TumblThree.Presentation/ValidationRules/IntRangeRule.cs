@@ -11,7 +11,7 @@ namespace TumblThree.Presentation.ValidationRules
         {
             try
             {
-                int temp = 0;
+                var temp = 0;
                 if (int.TryParse((string)value, out temp))
                 {
                     return new ValidationResult(true, null);

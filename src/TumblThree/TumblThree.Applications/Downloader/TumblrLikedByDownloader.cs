@@ -190,13 +190,12 @@ namespace TumblThree.Applications.Downloader
         {
             if (blog.DownloadPhoto)
             {
-                var regex = new Regex("\"http[\\S]*media.tumblr.com[\\S]*(jpg|png|gif)\"");
+                var regex = new Regex("\"(http[\\S]*media.tumblr.com[\\S]*(jpg|png|gif))\"");
                 foreach (Match match in regex.Matches(document))
                 {
-                    string imageUrl = match.Groups[0].Value;
+                    string imageUrl = match.Groups[1].Value;
                     if (imageUrl.Contains("avatar") || imageUrl.Contains("previews"))
-                        continue;
-                    imageUrl = imageUrl.Substring(1, imageUrl.Length - 2);
+                        continue;                    
                     if (blog.SkipGif && imageUrl.EndsWith(".gif"))
                     {
                         continue;
@@ -212,11 +211,10 @@ namespace TumblThree.Applications.Downloader
         {
             if (blog.DownloadVideo)
             {
-                var regex = new Regex("\"http[\\S]*.com/video_file/[\\S]*\"");
+                var regex = new Regex("\"(http[\\S]*.com/video_file/[\\S]*)\"");
                 foreach (Match match in regex.Matches(document))
                 {
-                    string videoUrl = match.Groups[0].Value;
-                    videoUrl = videoUrl.Substring(1, videoUrl.Length - 2);
+                    string videoUrl = match.Groups[1].Value;
                     // FIXME: postId
                     if (shellService.Settings.VideoSize == 1080)
                     {

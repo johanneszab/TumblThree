@@ -9,7 +9,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 using TumblThree.Applications.DataModels;
 using TumblThree.Applications.Properties;
@@ -109,6 +108,11 @@ namespace TumblThree.Applications.Downloader
                 return Enumerable.Range(0, totalPages);
             }
             return RangeToSequence(blog.DownloadPages);
+        }
+
+        private static bool TestRange(int numberToCheck, int bottom, int top)
+        {
+            return (numberToCheck >= bottom && numberToCheck <= top);
         }
 
         static IEnumerable<int> RangeToSequence(string input)

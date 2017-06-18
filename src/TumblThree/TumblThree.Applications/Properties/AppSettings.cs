@@ -77,6 +77,9 @@ namespace TumblThree.Applications.Properties
         public string DownloadLocation { get; set; }
 
         [DataMember]
+        public string ExportLocation { get; set; }
+
+        [DataMember]
         public int ParallelImages { get; set; }
 
         [DataMember]
@@ -176,6 +179,9 @@ namespace TumblThree.Applications.Properties
         public bool CreateAudioMeta { get; set; }
 
         [DataMember]
+        public bool DownloadRebloggedPosts { get; set; }
+
+        [DataMember]
         public bool AutoDownload { get; set; }
 
         [DataMember]
@@ -194,16 +200,16 @@ namespace TumblThree.Applications.Properties
         public bool PortableMode { get; set; }
 
         [DataMember]
-        public string ProxyUsername { get; set; }
-
-        [DataMember]
-        public string ProxyPassword { get; set; }
-
-        [DataMember]
         public string ProxyHost { get; set; }
 
         [DataMember]
         public string ProxyPort { get; set; }
+
+        [DataMember]
+        public string ProxyUsername { get; set; }
+
+        [DataMember]
+        public string ProxyPassword { get; set; }
 
         [DataMember]
         public Dictionary<object, Tuple<int, double, Visibility>> ColumnSettings { get; set; }
@@ -241,7 +247,8 @@ namespace TumblThree.Applications.Properties
             Width = 1200;
             IsMaximized = false;
             GridSplitterPosition = 250;
-            DownloadLocation = @".\Blogs\";
+            DownloadLocation = @"Blogs";
+            ExportLocation = @"blogs.txt";
             ParallelImages = 25;
             ParallelBlogs = 2;
             ParallelScans = 4;
@@ -268,12 +275,13 @@ namespace TumblThree.Applications.Properties
             DownloadAudios = true;
             DownloadQuotes = true;
             DownloadConversations = true;
-			DownloadAnswers = true;
             DownloadLinks = true;
+            DownloadAnswers = true;
             CreateImageMeta = false;
             CreateVideoMeta = false;
             CreateAudioMeta = false;
-			PageSize = 50;
+            PageSize = 50;
+            DownloadRebloggedPosts = true;
             AutoDownload = false;
             TimerInterval = "22:40:00";
             ForceSize = false;
