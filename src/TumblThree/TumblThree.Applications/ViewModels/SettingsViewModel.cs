@@ -662,17 +662,24 @@ namespace TumblThree.Applications.ViewModels
 
         private void Save()
         {
+            bool downloadLocationChanged = DownloadLocationChanged();
             SaveSettings();
-            ApplySettings();
+            ApplySettings(downloadLocationChanged);
         }
 
-        private void ApplySettings()
+        private void ApplySettings(bool downloadLocationChanged)
         {
-            // Reload Library
-            if (!CrawlerService.IsCrawl)
+            CrawlerService.Timeconstraint.SetRate(((double)MaxConnections / (double)ConnectionTimeInterval));
+            
+            if (!CrawlerService.IsCrawl && !downloadLocationChanged)
             {
                 CrawlerService.LoadLibraryCommand.Execute(null);
             }
+        }
+
+        private bool DownloadLocationChanged()
+        {
+            return settings.DownloadLocation.Equals(DownloadLocation);
         }
 
         private void SaveSettings()
