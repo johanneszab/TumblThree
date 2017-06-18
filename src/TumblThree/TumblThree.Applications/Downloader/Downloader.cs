@@ -646,9 +646,13 @@ namespace TumblThree.Applications.Downloader
 
         private static DateTime PostDate(TumblrPost downloadItem)
         {
-            var epoch = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-            DateTime postDate = epoch.AddSeconds(Convert.ToDouble(downloadItem.Date)).ToLocalTime();
-            return postDate;
+            if (!string.IsNullOrEmpty(downloadItem.Date))
+            {
+                var epoch = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+                DateTime postDate = epoch.AddSeconds(Convert.ToDouble(downloadItem.Date)).ToLocalTime();
+                return postDate;
+            }
+            return DateTime.Now;
         }
     }
 }
