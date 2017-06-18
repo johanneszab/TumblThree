@@ -51,16 +51,18 @@ namespace TumblThree.Applications
         {
             HttpWebRequest request = CreateWebReqeust(url, settings);
 
-            var response = await request.GetResponseAsync() as HttpWebResponse;
-            if (HttpStatusCode.OK == response.StatusCode)
+            using (var response = await request.GetResponseAsync() as HttpWebResponse)
             {
-                Stream responseStream = response.GetResponseStream();
-                return GetStreamForDownload(responseStream, settings);
-            }
-            else
-            {
-                return null;
-            }
+                if (HttpStatusCode.OK == response.StatusCode)
+                {
+                    Stream responseStream = response.GetResponseStream();
+                    return GetStreamForDownload(responseStream, settings);
+                }
+                else
+                {
+                    return null;
+                }
+            } 
         }
 
         private async Task<long> CheckDownloadSizeAsync(string url, AppSettings settings, CancellationToken ct)
@@ -122,7 +124,7 @@ namespace TumblThree.Applications
 
                             using (Stream responseStream = response.GetResponseStream())
                             {
-                                using (var throttledStream = GetStreamForDownload(responseStream, settings))
+                                using (Stream throttledStream = GetStreamForDownload(responseStream, settings))
                                 {
                                     var buffer = new byte[4096];
                                     int bytesRead = throttledStream.Read(buffer, 0, buffer.Length);

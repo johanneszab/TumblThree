@@ -61,6 +61,7 @@ TumblThree is the code rewrite of [TumblTwo](https://github.com/johanneszab/Tumb
     * shift-space -- stop crawl
     * del -- remove blog from queuelist
     * shift-del -- remove blog from blogmanager.
+	* ctrl-shift-g -- trigger garbage collection
 	
 * Saved Settings
 
