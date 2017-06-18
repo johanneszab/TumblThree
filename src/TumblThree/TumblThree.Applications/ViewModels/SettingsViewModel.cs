@@ -668,9 +668,7 @@ namespace TumblThree.Applications.ViewModels
         }
 
         private void ApplySettings(bool downloadLocationChanged)
-        {
-            CrawlerService.Timeconstraint.SetRate(((double)MaxConnections / (double)ConnectionTimeInterval));
-            
+        {      
             if (!CrawlerService.IsCrawl && !downloadLocationChanged)
             {
                 CrawlerService.LoadLibraryCommand.Execute(null);
