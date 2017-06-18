@@ -47,6 +47,8 @@ namespace TumblThree.Presentation.DesignData
 
         public ICommand EnqueueSelectedCommand { get; set; }
 
+        public ICommand LoadLibraryCommand { get; set; }
+
         public ICommand ListenClipboardCommand { get; set; }
 
         public ICommand CrawlCommand { get; set; }

@@ -175,7 +175,7 @@
     <value>Не удаётся сохранить блог: {0}</value>
   </data>
   <data name="CouldNotSaveQueueList" xml:space="preserve">
-    <value>Невозможно сохранить очередь закачек./value>
+    <value>Невозможно сохранить очередь закачек.</value>
   </data>
   <data name="CouldNotStartOAuthManager" xml:space="preserve">
     <value>Не удаётся запустить менеджер OAuth</value>

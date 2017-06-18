@@ -36,6 +36,8 @@ namespace TumblThree.Applications.Controllers
         private readonly ICrawlerService crawlerService;
         private readonly DelegateCommand enqueueSelectedCommand;
         private readonly DelegateCommand listenClipboardCommand;
+        private readonly AsyncDelegateCommand loadLibraryCommand;
+
 
         private readonly object lockObject = new object();
         private readonly IManagerService managerService;
@@ -63,6 +65,7 @@ namespace TumblThree.Applications.Controllers
             showFilesCommand = new DelegateCommand(ShowFiles, CanShowFiles);
             visitBlogCommand = new DelegateCommand(VisitBlog, CanVisitBlog);
             enqueueSelectedCommand = new DelegateCommand(EnqueueSelected, CanEnqueueSelected);
+            loadLibraryCommand = new AsyncDelegateCommand(LoadLibrary, CanLoadLibrary);
             listenClipboardCommand = new DelegateCommand(ListenClipboard);
             autoDownloadCommand = new DelegateCommand(EnqueueAutoDownload, CanEnqueueAutoDownload);
             showDetailsCommand = new DelegateCommand(ShowDetailsCommand);
@@ -86,7 +89,7 @@ namespace TumblThree.Applications.Controllers
             crawlerService.RemoveBlogCommand = removeBlogCommand;
             crawlerService.ShowFilesCommand = showFilesCommand;
             crawlerService.EnqueueSelectedCommand = enqueueSelectedCommand;
-
+            crawlerService.LoadLibraryCommand = loadLibraryCommand;
             crawlerService.AutoDownloadCommand = autoDownloadCommand;
             crawlerService.ListenClipboardCommand = listenClipboardCommand;
             crawlerService.PropertyChanged += CrawlerServicePropertyChanged;
@@ -188,6 +191,11 @@ namespace TumblThree.Applications.Controllers
             Logger.Verbose("ManagerController.GetFilesCore End");
 
             return blogs;
+        }
+
+        private bool CanLoadLibrary()
+        {
+            return !crawlerService.IsCrawl;
         }
 
         private bool CanEnqueueSelected()

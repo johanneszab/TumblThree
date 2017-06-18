@@ -457,7 +457,7 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MaxBytesPerSecond has to be &gt;0.
+        ///   Looks up a localized string similar to MaxBytesPerSecond has to be non-negative.
         /// </summary>
         public static string MaxBytePerSecond {
             get {

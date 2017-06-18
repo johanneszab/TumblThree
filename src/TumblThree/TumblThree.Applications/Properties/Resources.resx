@@ -250,7 +250,7 @@
     <value>Link: {0}</value>
   </data>
   <data name="MaxBytePerSecond" xml:space="preserve">
-    <value>MaxBytesPerSecond has to be &gt;0</value>
+    <value>MaxBytesPerSecond has to be non-negative</value>
   </data>
   <data name="NewVersionAvailable" xml:space="preserve">
     <value>New version available for download : {0}</value>

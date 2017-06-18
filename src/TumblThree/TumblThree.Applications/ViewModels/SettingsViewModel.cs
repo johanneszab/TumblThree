@@ -663,6 +663,18 @@ namespace TumblThree.Applications.ViewModels
         private void Save()
         {
             SaveSettings();
+            ApplySettings();
+        }
+
+        private void ApplySettings()
+        {
+            CrawlerService.Timeconstraint.SetRate(((double)MaxConnections / (double)ConnectionTimeInterval));
+
+            // Reload Library
+            if (!CrawlerService.IsCrawl)
+            {
+                CrawlerService.LoadLibraryCommand.Execute(null);
+            }
         }
 
         private void SaveSettings()
