@@ -58,7 +58,7 @@ namespace TumblThree.Applications.ViewModels
         private bool downloadVideos;
         private bool enablePreview;
         private bool forceSize;
-        private int imageSize;
+        private string imageSize;
         private bool limitConnections;
         private bool limitScanBandwidth;
         private int maxConnections;
@@ -242,7 +242,7 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref limitScanBandwidth, value); }
         }
 
-        public int ImageSize
+        public string ImageSize
         {
             get { return imageSize; }
             set { SetProperty(ref imageSize, value); }
@@ -620,10 +620,10 @@ namespace TumblThree.Applications.ViewModels
                 LimitScanBandwidth = false;
                 TimeOut = 120;
                 LimitConnections = true;
-                MaxConnections = 95;
+                MaxConnections = 90;
                 ConnectionTimeInterval = 60;
                 Bandwidth = 0;
-                ImageSize = 1280;
+                ImageSize = "raw";
                 VideoSize = 1080;
                 BlogType = "None";
                 CheckClipboard = true;
@@ -648,7 +648,7 @@ namespace TumblThree.Applications.ViewModels
                 PageSize = 50;
                 DownloadRebloggedPosts = true;
                 AutoDownload = false;
-                ForceSize = false;
+                ForceSize = true;
                 CheckDirectoryForFiles = false;
                 DownloadUrlList = false;
                 PortableMode = false;

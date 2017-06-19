@@ -152,13 +152,14 @@ namespace TumblThree.Applications.Downloader
         {
             var sb = new StringBuilder(imageUrl);
             return sb
-                .Replace("_1280", "_" + shellService.Settings.ImageSize.ToString())
-                .Replace("_540", "_" + shellService.Settings.ImageSize.ToString())
-                .Replace("_500", "_" + shellService.Settings.ImageSize.ToString())
-                .Replace("_400", "_" + shellService.Settings.ImageSize.ToString())
-                .Replace("_250", "_" + shellService.Settings.ImageSize.ToString())
-                .Replace("_100", "_" + shellService.Settings.ImageSize.ToString())
-                .Replace("_75sq", "_" + shellService.Settings.ImageSize.ToString())
+                .Replace("_raw", "_" + shellService.Settings.ImageSize)
+                .Replace("_1280", "_" + shellService.Settings.ImageSize)
+                .Replace("_540", "_" + shellService.Settings.ImageSize)
+                .Replace("_500", "_" + shellService.Settings.ImageSize)
+                .Replace("_400", "_" + shellService.Settings.ImageSize)
+                .Replace("_250", "_" + shellService.Settings.ImageSize)
+                .Replace("_100", "_" + shellService.Settings.ImageSize)
+                .Replace("_75sq", "_" + shellService.Settings.ImageSize)
                 .ToString();
         }
 
@@ -658,15 +659,8 @@ namespace TumblThree.Applications.Downloader
 
         private string ParseImageUrl(XContainer post)
         {
-            string imageUrl = post.Elements("photo-url")
-                                  .FirstOrDefault(photo_url => photo_url.Attribute("max-width")
-                                  .Value == shellService.Settings.ImageSize.ToString()).Value;
-
-            if (blog.ForceSize)
-            {
-                imageUrl = ResizeTumblrImageUrl(imageUrl);
-            }
-
+            string imageUrl = post.Element("photo-url").Value;
+            imageUrl = ResizeTumblrImageUrl(imageUrl);
             return imageUrl;
         }
 

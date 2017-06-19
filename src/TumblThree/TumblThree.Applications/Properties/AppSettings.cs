@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
+using System.Security.AccessControl;
 using System.Windows;
 
 namespace TumblThree.Applications.Properties
@@ -17,7 +18,7 @@ namespace TumblThree.Applications.Properties
         private static readonly string[] imageSizes =
             new string[]
             {
-                "1280", "500", "400", "250", "100", "75"
+                "raw", "1280", "500", "400", "250", "100", "75"
             };
 
         private static readonly string[] videoSizes =
@@ -110,7 +111,7 @@ namespace TumblThree.Applications.Properties
         public long Bandwidth { get; set; }
 
         [DataMember]
-        public int ImageSize { get; set; }
+        public string ImageSize { get; set; }
 
         [DataMember]
         public int VideoSize { get; set; }
@@ -255,11 +256,11 @@ namespace TumblThree.Applications.Properties
             LimitScanBandwidth = false;
             TimeOut = 120;
             LimitConnections = true;
-            MaxConnections = 95;
+            MaxConnections = 90;
             ConnectionTimeInterval = 60;
             MaxNumberOfRetries = 10;
             Bandwidth = 0;
-            ImageSize = 1280;
+            ImageSize = "raw";
             VideoSize = 1080;
             BlogType = "None";
             CheckClipboard = true;
@@ -284,7 +285,7 @@ namespace TumblThree.Applications.Properties
             DownloadRebloggedPosts = true;
             AutoDownload = false;
             TimerInterval = "22:40:00";
-            ForceSize = false;
+            ForceSize = true;
             CheckDirectoryForFiles = false;
             DownloadUrlList = false;
             PortableMode = false;
