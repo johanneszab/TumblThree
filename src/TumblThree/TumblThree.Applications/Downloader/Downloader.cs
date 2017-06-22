@@ -86,7 +86,7 @@ namespace TumblThree.Applications.Downloader
 
         protected Stream GetStreamForApiRequest(Stream stream)
         {
-            if (!shellService.Settings.LimitScanBandwidth)
+            if (!shellService.Settings.LimitScanBandwidth || shellService.Settings.Bandwidth == 0)
                 return stream;
             return new ThrottledStream(stream, (shellService.Settings.Bandwidth / shellService.Settings.ParallelImages) * 1024);
 

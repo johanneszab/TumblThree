@@ -159,7 +159,7 @@ namespace TumblThree.Applications.Controllers
 
             try { await Task.WhenAll(runningTasks.ToArray()); }
             catch {}
-            finally { runningTasks.Clear(); }
+            finally { crawlBlogsCancellation.Dispose(); runningTasks.Clear(); }
         }
 
         private async Task RunCrawlerTasks(CancellationToken ct, PauseToken pt)
