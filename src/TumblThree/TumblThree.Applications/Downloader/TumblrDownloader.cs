@@ -280,10 +280,7 @@ namespace TumblThree.Applications.Downloader
 
         private void AddToDownloadList(TumblrPost addToList)
         {
-            if (statisticsBag.All(download => download.Url != addToList.Url))
-            {
-                producerConsumerCollection.Add(addToList);
-            }
+            producerConsumerCollection.Add(addToList);
             statisticsBag.Add(addToList);
         }
     }
