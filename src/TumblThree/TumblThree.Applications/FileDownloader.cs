@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Threading;
@@ -12,6 +11,7 @@ namespace TumblThree.Applications
 {
     class FileDownloader
     {
+        public static readonly int BufferSize = 4096;
         public event EventHandler Completed;
         public event EventHandler<DownloadProgressChangedEventArgs> ProgressChanged;
 
@@ -100,7 +100,7 @@ namespace TumblThree.Applications
             }
             FileMode fileMode = totalBytesReceived > 0 ? FileMode.Append : FileMode.Create;
 
-            using (FileStream fileStream = File.Open(destinationPath, fileMode, FileAccess.Write, FileShare.Read))
+            using (var fileStream = new FileStream(destinationPath, fileMode, FileAccess.Write, FileShare.Read, bufferSize: BufferSize, useAsync: true))
             {
                 while (true)
                 {
@@ -128,17 +128,16 @@ namespace TumblThree.Applications
                             {
                                 using (Stream throttledStream = GetStreamForDownload(responseStream, settings))
                                 {
-                                    var buffer = new byte[4096];
-                                    int bytesRead = await throttledStream.ReadAsync(buffer, 0, buffer.Length, ct);
+                                    var buffer = new byte[BufferSize];
+                                    var bytesRead = 0;
                                     //Stopwatch sw = Stopwatch.StartNew();
 
-                                    while (bytesRead > 0)
+                                    while ((bytesRead = await throttledStream.ReadAsync(buffer, 0, buffer.Length, ct)) > 0)
                                     {
                                         await fileStream.WriteAsync(buffer, 0, bytesRead, ct);
                                         totalBytesReceived += bytesRead;
-                                        bytesRead = await throttledStream.ReadAsync(buffer, 0, buffer.Length, ct);
-                                        //float currentSpeed = totalBytesReceived / (float)sw.Elapsed.TotalSeconds;
 
+                                        //float currentSpeed = totalBytesReceived / (float)sw.Elapsed.TotalSeconds;
                                         //OnProgressChanged(new DownloadProgressChangedEventArgs(totalBytesReceived,
                                         //    totalBytesToReceive, (long)currentSpeed));
                                     }
@@ -186,7 +185,7 @@ namespace TumblThree.Applications
             using (var stream = new FileStream(destinationFileName, FileMode.OpenOrCreate, FileAccess.Write))
             {
                 // Create a 4K buffer to chunk the file
-                var buf = new byte[4096];
+                var buf = new byte[BufferSize];
                 int bytesRead;
                 // Read the chunk of the web response into the buffer
                 while (0 < (bytesRead = await input.ReadAsync(buf, 0, buf.Length, ct)))
