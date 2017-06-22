@@ -315,17 +315,11 @@ namespace TumblThree.Applications.Downloader
             {
                 await semaphoreSlim.WaitAsync();
 
-                var cancellation = new CancellationTokenSource();
-                CancellationToken token = cancellation.Token;
-
                 if (ct.IsCancellationRequested)
                 {
                     completeDownload = false;
-                    cancellation.Cancel();
-                    cancellation.Dispose();
                     break;
                 }
-
                 if (pt.IsPaused)
                 {
                     pt.WaitWhilePausedWithResponseAsyc().Wait();
@@ -336,13 +330,13 @@ namespace TumblThree.Applications.Downloader
                     switch (downloadItem.PostType)
                     {
                         case PostTypes.Photo:
-                            await DownloadPhotoAsync(progress, downloadItem, token);
+                            await DownloadPhotoAsync(progress, downloadItem, ct);
                             break;
                         case PostTypes.Video:
-                            await DownloadVideoAsync(progress, downloadItem, token);
+                            await DownloadVideoAsync(progress, downloadItem, ct);
                             break;
                         case PostTypes.Audio:
-                            await DownloadAudioAsync(progress, downloadItem, token);
+                            await DownloadAudioAsync(progress, downloadItem, ct);
                             break;
                         case PostTypes.Text:
                             DownloadText(progress, downloadItem);
@@ -373,8 +367,6 @@ namespace TumblThree.Applications.Downloader
                     }
                     semaphoreSlim.Release();
                 })());
-
-                cancellation.Dispose();
             }
             await Task.WhenAll(trackedTasks);
 
