@@ -28,8 +28,8 @@ namespace TumblThree.Applications.Controllers
         private readonly List<Task> runningTasks;
         private readonly IShellService shellService;
         private readonly DelegateCommand stopCommand;
-        private CancellationTokenSource crawlBlogsCancellation;
-        private PauseTokenSource crawlBlogsPause;
+        private readonly List<CancellationTokenSource> crawlerCancellationToken;
+        private PauseTokenSource crawlerPauseToken;
 
         [ImportingConstructor]
         public CrawlerController(IShellService shellService, IManagerService managerService, ICrawlerService crawlerService,
@@ -45,6 +45,7 @@ namespace TumblThree.Applications.Controllers
             resumeCommand = new DelegateCommand(Resume, CanResume);
             stopCommand = new DelegateCommand(Stop, CanStop);
             runningTasks = new List<Task>();
+            crawlerCancellationToken = new List<CancellationTokenSource>();
             lockObject = new object();
         }
 
@@ -100,7 +101,13 @@ namespace TumblThree.Applications.Controllers
                 resumeCommand.Execute(null);
             }
 
-            crawlBlogsCancellation.Cancel();
+            foreach (CancellationTokenSource token in crawlerCancellationToken)
+            {
+                token.Cancel();
+                token.Dispose();
+            }
+            crawlerCancellationToken.Clear();
+
             crawlerService.IsCrawl = false;
             crawlCommand.RaiseCanExecuteChanged();
             pauseCommand.RaiseCanExecuteChanged();
@@ -115,7 +122,7 @@ namespace TumblThree.Applications.Controllers
 
         private void Pause()
         {
-            crawlBlogsPause.PauseWithResponseAsync().Wait();
+            crawlerPauseToken.PauseWithResponseAsync().Wait();
             crawlerService.IsPaused = true;
             pauseCommand.RaiseCanExecuteChanged();
             resumeCommand.RaiseCanExecuteChanged();
@@ -128,7 +135,7 @@ namespace TumblThree.Applications.Controllers
 
         private void Resume()
         {
-            crawlBlogsPause.Resume();
+            crawlerPauseToken.Resume();
             crawlerService.IsPaused = false;
             pauseCommand.RaiseCanExecuteChanged();
             resumeCommand.RaiseCanExecuteChanged();
@@ -141,10 +148,8 @@ namespace TumblThree.Applications.Controllers
 
         private async Task Crawl()
         {
-            var cancellation = new CancellationTokenSource();
             var pause = new PauseTokenSource();
-            crawlBlogsCancellation = cancellation;
-            crawlBlogsPause = pause;
+            crawlerPauseToken = pause;
 
             crawlerService.IsCrawl = true;
 
@@ -154,19 +159,21 @@ namespace TumblThree.Applications.Controllers
 
             for (var i = 0; i < shellService.Settings.ParallelBlogs; i++)
             {
-                runningTasks.Add(Task.Run(() => RunCrawlerTasks(cancellation.Token, pause.Token)));
+                runningTasks.Add(Task.Run(() => RunCrawlerTasks(pause.Token)));
             }
 
             try { await Task.WhenAll(runningTasks.ToArray()); }
-            catch {}
-            finally { crawlBlogsCancellation.Dispose(); runningTasks.Clear(); }
+            catch { }
+            finally { runningTasks.Clear(); }
         }
 
-        private async Task RunCrawlerTasks(CancellationToken ct, PauseToken pt)
+        private async Task RunCrawlerTasks(PauseToken pt)
         {
             while (true)
             {
-                ct.ThrowIfCancellationRequested();
+                var cancellation = new CancellationTokenSource();
+                CancellationToken ct = cancellation.Token;
+                crawlerCancellationToken.Add(cancellation);
 
                 if (pt.IsPaused)
                 {
@@ -206,6 +213,10 @@ namespace TumblThree.Applications.Controllers
                     Monitor.Exit(lockObject);
                     await Task.Delay(4000, ct);
                 }
+
+                ct.ThrowIfCancellationRequested();
+                crawlerCancellationToken.Remove(cancellation);
+                cancellation.Dispose();
             }
         }
 
