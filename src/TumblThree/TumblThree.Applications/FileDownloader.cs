@@ -111,10 +111,12 @@ namespace TumblThree.Applications
                         return false;
                     }
 
+                    var requestRegistration = new CancellationTokenRegistration();
+
                     try
                     {
                         HttpWebRequest request = CreateWebReqeust(url, settings);
-                        ct.Register(() => request.Abort());
+                        requestRegistration = ct.Register(() => request.Abort());
                         request.AddRange(totalBytesReceived);
 
                         long totalBytesToReceive = 0;
@@ -127,17 +129,18 @@ namespace TumblThree.Applications
                                 using (Stream throttledStream = GetStreamForDownload(responseStream, settings))
                                 {
                                     var buffer = new byte[4096];
-                                    int bytesRead = throttledStream.Read(buffer, 0, buffer.Length);
-                                    Stopwatch sw = Stopwatch.StartNew();
+                                    int bytesRead = await throttledStream.ReadAsync(buffer, 0, buffer.Length, ct);
+                                    //Stopwatch sw = Stopwatch.StartNew();
 
                                     while (bytesRead > 0)
                                     {
-                                        fileStream.Write(buffer, 0, bytesRead);
+                                        await fileStream.WriteAsync(buffer, 0, bytesRead, ct);
                                         totalBytesReceived += bytesRead;
-                                        bytesRead = throttledStream.Read(buffer, 0, buffer.Length);
-                                        float currentSpeed = totalBytesReceived / (float)sw.Elapsed.TotalSeconds;
+                                        bytesRead = await throttledStream.ReadAsync(buffer, 0, buffer.Length, ct);
+                                        //float currentSpeed = totalBytesReceived / (float)sw.Elapsed.TotalSeconds;
 
-                                        OnProgressChanged(new DownloadProgressChangedEventArgs(totalBytesReceived, totalBytesToReceive, (long)currentSpeed));
+                                        //OnProgressChanged(new DownloadProgressChangedEventArgs(totalBytesReceived,
+                                        //    totalBytesToReceive, (long)currentSpeed));
                                     }
                                 }
                             }
@@ -168,24 +171,28 @@ namespace TumblThree.Applications
                             throw;
                         }
                     }
+                    finally
+                    {
+                        requestRegistration.Dispose();
+                    }
                 }
                 return true;
             }
         }
 
-        public static bool SaveStreamToDisk(Stream input, string destinationFileName)
+        public static async Task<bool> SaveStreamToDisk(Stream input, string destinationFileName, CancellationToken ct)
         {
             // Open the destination file
             using (var stream = new FileStream(destinationFileName, FileMode.OpenOrCreate, FileAccess.Write))
             {
                 // Create a 4K buffer to chunk the file
                 var buf = new byte[4096];
-                int BytesRead;
+                int bytesRead;
                 // Read the chunk of the web response into the buffer
-                while (0 < (BytesRead = input.Read(buf, 0, buf.Length)))
+                while (0 < (bytesRead = await input.ReadAsync(buf, 0, buf.Length, ct)))
                 {
                     // Write the chunk from the buffer to the file   
-                    stream.Write(buf, 0, BytesRead);
+                    await stream.WriteAsync(buf, 0, bytesRead, ct);
                 }
             }
             return true;
@@ -202,7 +209,7 @@ namespace TumblThree.Applications
 
         protected void OnCompleted(EventArgs e)
         {
-            var handler = Completed;
+            EventHandler handler = Completed;
             if (handler != null)
             {
                 handler(this, e);
@@ -233,7 +240,7 @@ namespace TumblThree.Applications
         {
             get
             {
-                var bytesRemainingtoBeReceived = TotalBytesToReceive - BytesReceived;
+                long bytesRemainingtoBeReceived = TotalBytesToReceive - BytesReceived;
                 return TimeSpan.FromSeconds(bytesRemainingtoBeReceived / CurrentSpeed);
             }
         }

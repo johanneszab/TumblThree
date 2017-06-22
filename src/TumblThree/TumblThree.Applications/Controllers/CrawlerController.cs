@@ -28,7 +28,7 @@ namespace TumblThree.Applications.Controllers
         private readonly List<Task> runningTasks;
         private readonly IShellService shellService;
         private readonly DelegateCommand stopCommand;
-        private readonly List<CancellationTokenSource> crawlerCancellationToken;
+        private CancellationTokenSource crawlerCancellationToken;
         private PauseTokenSource crawlerPauseToken;
 
         [ImportingConstructor]
@@ -45,7 +45,6 @@ namespace TumblThree.Applications.Controllers
             resumeCommand = new DelegateCommand(Resume, CanResume);
             stopCommand = new DelegateCommand(Stop, CanStop);
             runningTasks = new List<Task>();
-            crawlerCancellationToken = new List<CancellationTokenSource>();
             lockObject = new object();
         }
 
@@ -101,13 +100,7 @@ namespace TumblThree.Applications.Controllers
                 resumeCommand.Execute(null);
             }
 
-            foreach (CancellationTokenSource token in crawlerCancellationToken)
-            {
-                token.Cancel();
-                token.Dispose();
-            }
-            crawlerCancellationToken.Clear();
-
+            crawlerCancellationToken.Cancel();
             crawlerService.IsCrawl = false;
             crawlCommand.RaiseCanExecuteChanged();
             pauseCommand.RaiseCanExecuteChanged();
@@ -148,7 +141,9 @@ namespace TumblThree.Applications.Controllers
 
         private async Task Crawl()
         {
+            var cancellation = new CancellationTokenSource();
             var pause = new PauseTokenSource();
+            crawlerCancellationToken = cancellation;
             crawlerPauseToken = pause;
 
             crawlerService.IsCrawl = true;
@@ -159,21 +154,19 @@ namespace TumblThree.Applications.Controllers
 
             for (var i = 0; i < shellService.Settings.ParallelBlogs; i++)
             {
-                runningTasks.Add(Task.Run(() => RunCrawlerTasks(pause.Token)));
+                runningTasks.Add(Task.Run(() => RunCrawlerTasks(cancellation.Token, pause.Token)));
             }
 
             try { await Task.WhenAll(runningTasks.ToArray()); }
-            catch {}
-            finally { runningTasks.Clear(); }
+            catch { }
+            finally { crawlerCancellationToken.Dispose(); runningTasks.Clear(); }
         }
 
-        private async Task RunCrawlerTasks(PauseToken pt)
+        private async Task RunCrawlerTasks(CancellationToken ct, PauseToken pt)
         {
             while (true)
             {
-                var cancellation = new CancellationTokenSource();
-                CancellationToken ct = cancellation.Token;
-                crawlerCancellationToken.Add(cancellation);
+                ct.ThrowIfCancellationRequested();
 
                 if (pt.IsPaused)
                 {
@@ -213,10 +206,6 @@ namespace TumblThree.Applications.Controllers
                     Monitor.Exit(lockObject);
                     await Task.Delay(4000, ct);
                 }
-
-                ct.ThrowIfCancellationRequested();
-                crawlerCancellationToken.Remove(cancellation);
-                cancellation.Dispose();
             }
         }
 
