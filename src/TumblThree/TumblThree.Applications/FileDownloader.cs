@@ -100,7 +100,7 @@ namespace TumblThree.Applications
             }
             FileMode fileMode = totalBytesReceived > 0 ? FileMode.Append : FileMode.Create;
 
-            using (var fileStream = new FileStream(destinationPath, fileMode, FileAccess.Write, FileShare.Read, bufferSize: BufferSize, useAsync: true))
+            using (var fileStream = new FileStream(destinationPath, fileMode, FileAccess.Write, FileShare.Read, bufferSize: BufferSize, useAsync: false))
             {
                 while (true)
                 {
