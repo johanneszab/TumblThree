@@ -170,7 +170,7 @@ namespace TumblThree.Applications.Controllers
 
                 if (pt.IsPaused)
                 {
-                    pt.WaitWhilePausedWithResponseAsyc().Wait(ct);
+                    pt.WaitWhilePausedWithResponseAsyc().Wait();
                 }
 
                 Monitor.Enter(lockObject);

@@ -28,7 +28,7 @@ namespace TumblThree.Applications
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
             request.ReadWriteTimeout = settings.TimeOut * 1000;
             request.Timeout = -1;
-            //FIXME: cookies site specific!
+            //TODO: cookies site specific!
             request.CookieContainer = SharedCookieService.GetUriCookieContainer(new Uri("https://www.tumblr.com/"));
             ServicePointManager.DefaultConnectionLimit = 400;
             request = SetWebRequestProxy(request, settings);
@@ -83,7 +83,7 @@ namespace TumblThree.Applications
             return new ThrottledStream(stream, (settings.Bandwidth / settings.ParallelImages) * 1024);
         }
 
-        // FIXME: Needs a complete rewrite. Also a append/cache function for resuming incomplete files on the disk.
+        // TODO: Needs a complete rewrite. Also a append/cache function for resuming incomplete files on the disk.
         // Should be in separated class with support for events for downloadspeed, is resumable file?, etc.
         // Should check if file is complete, else it will trigger an WebException -- 416 requested range not satisfiable at every request 
         public async Task<bool> DownloadFileWithResumeAsync(string url, string destinationPath, AppSettings settings, CancellationToken ct)
@@ -100,7 +100,7 @@ namespace TumblThree.Applications
             }
             FileMode fileMode = totalBytesReceived > 0 ? FileMode.Append : FileMode.Create;
 
-            using (var fileStream = new FileStream(destinationPath, fileMode, FileAccess.Write, FileShare.Read, bufferSize: BufferSize, useAsync: false))
+            using (var fileStream = new FileStream(destinationPath, fileMode, FileAccess.Write, FileShare.Read, BufferSize, true))
             {
                 while (true)
                 {
@@ -132,9 +132,9 @@ namespace TumblThree.Applications
                                     var bytesRead = 0;
                                     //Stopwatch sw = Stopwatch.StartNew();
 
-                                    while ((bytesRead = await throttledStream.ReadAsync(buffer, 0, buffer.Length, ct)) > 0)
+                                    while ((bytesRead = await throttledStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
                                     {
-                                        await fileStream.WriteAsync(buffer, 0, bytesRead, ct);
+                                        await fileStream.WriteAsync(buffer, 0, bytesRead);
                                         totalBytesReceived += bytesRead;
 
                                         //float currentSpeed = totalBytesReceived / (float)sw.Elapsed.TotalSeconds;
@@ -199,7 +199,7 @@ namespace TumblThree.Applications
 
         protected void OnProgressChanged(DownloadProgressChangedEventArgs e)
         {
-            var handler = ProgressChanged;
+            EventHandler<DownloadProgressChangedEventArgs> handler = ProgressChanged;
             if (handler != null)
             {
                 handler(this, e);
