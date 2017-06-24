@@ -68,7 +68,6 @@ namespace TumblThree.Applications
         private async Task<long> CheckDownloadSizeAsync(string url, AppSettings settings, CancellationToken ct)
         {
             HttpWebRequest request = CreateWebReqeust(url, settings);
-            ct.Register(() => request.Abort());
 
             using (WebResponse response = await request.GetResponseAsync())
             {
@@ -98,6 +97,9 @@ namespace TumblThree.Applications
                 if (totalBytesReceived >= await CheckDownloadSizeAsync(url, settings, ct))
                     return true;
             }
+            if (ct.IsCancellationRequested)
+                return false;
+
             FileMode fileMode = totalBytesReceived > 0 ? FileMode.Append : FileMode.Create;
 
             using (var fileStream = new FileStream(destinationPath, fileMode, FileAccess.Write, FileShare.Read, BufferSize, true))
@@ -111,12 +113,9 @@ namespace TumblThree.Applications
                         return false;
                     }
 
-                    var requestRegistration = new CancellationTokenRegistration();
-
                     try
                     {
                         HttpWebRequest request = CreateWebReqeust(url, settings);
-                        requestRegistration = ct.Register(() => request.Abort());
                         request.AddRange(totalBytesReceived);
 
                         long totalBytesToReceive = 0;
@@ -132,7 +131,7 @@ namespace TumblThree.Applications
                                     var bytesRead = 0;
                                     //Stopwatch sw = Stopwatch.StartNew();
 
-                                    while ((bytesRead = await throttledStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                                    while ((bytesRead = await throttledStream.ReadAsync(buffer, 0, buffer.Length, ct)) > 0)
                                     {
                                         await fileStream.WriteAsync(buffer, 0, bytesRead);
                                         totalBytesReceived += bytesRead;
@@ -170,10 +169,6 @@ namespace TumblThree.Applications
                             throw;
                         }
                     }
-                    finally
-                    {
-                        requestRegistration.Dispose();
-                    }
                 }
                 return true;
             }
@@ -181,16 +176,12 @@ namespace TumblThree.Applications
 
         public static async Task<bool> SaveStreamToDisk(Stream input, string destinationFileName, CancellationToken ct)
         {
-            // Open the destination file
             using (var stream = new FileStream(destinationFileName, FileMode.OpenOrCreate, FileAccess.Write))
             {
-                // Create a 4K buffer to chunk the file
                 var buf = new byte[BufferSize];
                 int bytesRead;
-                // Read the chunk of the web response into the buffer
                 while (0 < (bytesRead = await input.ReadAsync(buf, 0, buf.Length, ct)))
                 {
-                    // Write the chunk from the buffer to the file   
                     await stream.WriteAsync(buf, 0, bytesRead, ct);
                 }
             }

@@ -243,10 +243,10 @@ namespace TumblThree.Applications.Downloader
                 }
                 return false;
             }
-            catch (OperationCanceledException)
-            {
-                throw;
-            }
+            //catch (Exception ex) when (ex is OperationCanceledException || ex is WebException)
+            //{
+            //    return false;
+            //}
             catch
             {
                 return false;
@@ -340,7 +340,13 @@ namespace TumblThree.Applications.Downloader
                     semaphoreSlim.Release();
                 })());
             }
-            await Task.WhenAll(trackedTasks);
+            try
+            {
+                await Task.WhenAll(trackedTasks);
+            }
+            catch (InvalidOperationException)
+            {
+            }
 
             blog.LastDownloadedPhoto = null;
             blog.LastDownloadedVideo = null;

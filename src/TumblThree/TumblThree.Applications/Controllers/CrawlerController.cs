@@ -166,6 +166,11 @@ namespace TumblThree.Applications.Controllers
         {
             while (true)
             {
+                if (ct.IsCancellationRequested)
+                {
+                    break;
+                }
+
                 if (pt.IsPaused)
                 {
                     pt.WaitWhilePausedWithResponseAsyc().Wait();
