@@ -49,6 +49,8 @@ namespace TumblThree.Applications.Downloader
             blog.DuplicateAudios = DetermineDuplicates(PostTypes.Audio);
             blog.TotalCount = (blog.TotalCount - blog.DuplicatePhotos - blog.DuplicateAudios - blog.DuplicateVideos);
 
+            CleanCollectedBlogStatistics();
+
             await downloader;
 
             if (!ct.IsCancellationRequested)
