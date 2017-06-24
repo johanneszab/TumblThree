@@ -243,10 +243,6 @@ namespace TumblThree.Applications.Downloader
                 }
                 return false;
             }
-            catch (OperationCanceledException)
-            {
-                throw;
-            }
             catch
             {
                 return false;
@@ -326,7 +322,6 @@ namespace TumblThree.Applications.Downloader
 
                 if (ct.IsCancellationRequested)
                 {
-                    completeDownload = false;
                     break;
                 }
                 if (pt.IsPaused)
@@ -340,7 +335,8 @@ namespace TumblThree.Applications.Downloader
                     semaphoreSlim.Release();
                 })());
             }
-            await Task.WhenAll(trackedTasks);
+            try { await Task.WhenAll(trackedTasks); }
+            catch { completeDownload = false; }
 
             blog.LastDownloadedPhoto = null;
             blog.LastDownloadedVideo = null;
