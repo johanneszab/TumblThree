@@ -345,7 +345,7 @@ namespace TumblThree.Applications.Controllers
             }
             IBlog blog;
 
-            // FIXME: Dependency, SOLID!
+            // TODO: Dependency, not SOLID!
             if (Validator.IsValidTumblrUrl(blogUrl))
                 blog = new Blog(blogUrl, Path.Combine(shellService.Settings.DownloadLocation, "Index"), BlogTypes.tumblr);
             else if (Validator.IsValidTumblrLikedByUrl(blogUrl)) 
@@ -406,7 +406,7 @@ namespace TumblThree.Applications.Controllers
             }
         }
 
-        private async Task AddBlogBatchedAsync(string[] urls)
+        private async Task AddBlogBatchedAsync(IEnumerable<string> urls)
         {
             var semaphoreSlim = new SemaphoreSlim(15);
             foreach (string url in urls.Where(url => Validator.IsValidTumblrUrl(url) || Validator.IsValidTumblrLikedByUrl(url)))

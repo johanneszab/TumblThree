@@ -79,6 +79,8 @@ namespace TumblThree.Applications.Downloader
             blog.DuplicateAudios = DetermineDuplicates(PostTypes.Audio);
             blog.TotalCount = (blog.TotalCount - blog.DuplicatePhotos - blog.DuplicateAudios - blog.DuplicateVideos);
 
+            CleanCollectedBlogStatistics();
+
             bool finishedDownloading = await downloader;
 
             if (!ct.IsCancellationRequested)
@@ -336,7 +338,7 @@ namespace TumblThree.Applications.Downloader
                     {
                         if (webException.Message.Contains("429"))
                         {
-                            // add retry logic?
+                            // TODO: add retry logic?
                             apiLimitHit = true;
                             Logger.Error("TumblrDownloader:GetUrls:WebException {0}", webException);
                             shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);

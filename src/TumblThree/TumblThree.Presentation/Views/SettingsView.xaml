@@ -70,7 +70,7 @@
                            VerticalAlignment="Center" Text="{Binding Value, ElementName=parallelImagesSlider}" />
                             <Slider x:Name="parallelImagesSlider" Grid.Column="2" SmallChange="1"
                         Value="{Binding ParallelImages, UpdateSourceTrigger=PropertyChanged}"
-                        HorizontalAlignment="Stretch" VerticalAlignment="Center" Maximum="100" MinWidth="250" />
+                        HorizontalAlignment="Stretch" VerticalAlignment="Center" Maximum="100" MinWidth="250" Minimum="1" />
                         </Grid>
                         <Grid MinHeight="46" Height="Auto" Grid.Row="2">
                             <Grid.ColumnDefinitions>
@@ -93,7 +93,7 @@
                            VerticalAlignment="Center" Text="{Binding Value, ElementName=parallelBlogsSlider}" />
                             <Slider x:Name="parallelBlogsSlider" Grid.Column="2" SmallChange="1"
                         Value="{Binding ParallelBlogs, UpdateSourceTrigger=PropertyChanged}"
-                        HorizontalAlignment="Stretch" VerticalAlignment="Center" Maximum="40" MinWidth="250" />
+                        HorizontalAlignment="Stretch" VerticalAlignment="Center" Maximum="40" MinWidth="250" Minimum="1" />
                         </Grid>
                         <Grid MinHeight="46" Height="Auto" Grid.Row="3">
                             <Grid.ColumnDefinitions>

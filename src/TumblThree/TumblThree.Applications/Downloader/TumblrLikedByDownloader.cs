@@ -202,7 +202,7 @@ namespace TumblThree.Applications.Downloader
                         continue;
                     }
                     imageUrl = ResizeTumblrImageUrl(imageUrl);
-                    // FIXME: postID
+                    // TODO: add valid postID
                     AddToDownloadList(new TumblrPost(PostTypes.Photo, imageUrl, Guid.NewGuid().ToString("N")));
                 }
             }
@@ -216,15 +216,15 @@ namespace TumblThree.Applications.Downloader
                 foreach (Match match in regex.Matches(document))
                 {
                     string videoUrl = match.Groups[1].Value;
-                    // FIXME: postId
+                    // TODO: add valid postID
                     if (shellService.Settings.VideoSize == 1080)
                     {
-                        // FIXME: postID
+                        // TODO: add valid postID
                         AddToDownloadList(new TumblrPost(PostTypes.Video, videoUrl.Replace("/480", "") + ".mp4", Guid.NewGuid().ToString("N")));
                     }
                     else if (shellService.Settings.VideoSize == 480)
                     {
-                        // FIXME: postID
+                        // TODO: add valid postID
                         AddToDownloadList(new TumblrPost(PostTypes.Video, 
                             "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + "_480.mp4",
                             Guid.NewGuid().ToString("N")));

@@ -30,7 +30,7 @@ namespace TumblThree.Applications.Downloader
         protected readonly object lockObjectProgress;
         protected readonly BlockingCollection<TumblrPost> producerConsumerCollection;
         private readonly IShellService shellService;
-        protected readonly ConcurrentBag<TumblrPost> statisticsBag;
+        protected ConcurrentBag<TumblrPost> statisticsBag;
 
         protected Downloader(IShellService shellService, ICrawlerService crawlerService = null, IBlog blog = null)
         {
@@ -163,6 +163,11 @@ namespace TumblThree.Applications.Downloader
             await IsBlogOnlineAsync();
         }
 
+        protected void CleanCollectedBlogStatistics()
+        {
+            statisticsBag = null;
+        }
+
         protected virtual bool CheckIfFileExistsInDB(string url)
         {
             string fileName = url.Split('/').Last();
@@ -237,6 +242,10 @@ namespace TumblThree.Applications.Downloader
                     File.Delete(fileLocation);
                 }
                 return false;
+            }
+            catch (OperationCanceledException)
+            {
+                throw;
             }
             catch
             {
@@ -327,44 +336,7 @@ namespace TumblThree.Applications.Downloader
 
                 trackedTasks.Add(new Func<Task>(async () =>
                 {
-                    switch (downloadItem.PostType)
-                    {
-                        case PostTypes.Photo:
-                            await DownloadPhotoAsync(progress, downloadItem, ct);
-                            break;
-                        case PostTypes.Video:
-                            await DownloadVideoAsync(progress, downloadItem, ct);
-                            break;
-                        case PostTypes.Audio:
-                            await DownloadAudioAsync(progress, downloadItem, ct);
-                            break;
-                        case PostTypes.Text:
-                            DownloadText(progress, downloadItem);
-                            break;
-                        case PostTypes.Quote:
-                            DownloadQuote(progress, downloadItem);
-                            break;
-                        case PostTypes.Link:
-                            DownloadLink(progress, downloadItem);
-                            break;
-                        case PostTypes.Conversation:
-                            DownloadConversation(progress, downloadItem);
-                            break;
-                        case PostTypes.Answer:
-                            DownloadAnswer(progress, downloadItem);
-                            break;
-                        case PostTypes.PhotoMeta:
-                            DownloadPhotoMeta(progress, downloadItem);
-                            break;
-                        case PostTypes.VideoMeta:
-                            DownloadVideoMeta(progress, downloadItem);
-                            break;
-                        case PostTypes.AudioMeta:
-                            DownloadAudioMeta(progress, downloadItem);
-                            break;
-                        default:
-                            break;
-                    }
+                    await DownloadPostAsync(progress, ct, downloadItem);
                     semaphoreSlim.Release();
                 })());
             }
@@ -376,6 +348,48 @@ namespace TumblThree.Applications.Downloader
             files.Save();
 
             return completeDownload;
+        }
+
+        private async Task DownloadPostAsync(IProgress<DownloadProgress> progress, CancellationToken ct, TumblrPost downloadItem)
+        {
+            switch (downloadItem.PostType)
+            {
+                case PostTypes.Photo:
+                    await DownloadPhotoAsync(progress, downloadItem, ct);
+                    break;
+                case PostTypes.Video:
+                    await DownloadVideoAsync(progress, downloadItem, ct);
+                    break;
+                case PostTypes.Audio:
+                    await DownloadAudioAsync(progress, downloadItem, ct);
+                    break;
+                case PostTypes.Text:
+                    DownloadText(progress, downloadItem);
+                    break;
+                case PostTypes.Quote:
+                    DownloadQuote(progress, downloadItem);
+                    break;
+                case PostTypes.Link:
+                    DownloadLink(progress, downloadItem);
+                    break;
+                case PostTypes.Conversation:
+                    DownloadConversation(progress, downloadItem);
+                    break;
+                case PostTypes.Answer:
+                    DownloadAnswer(progress, downloadItem);
+                    break;
+                case PostTypes.PhotoMeta:
+                    DownloadPhotoMeta(progress, downloadItem);
+                    break;
+                case PostTypes.VideoMeta:
+                    DownloadVideoMeta(progress, downloadItem);
+                    break;
+                case PostTypes.AudioMeta:
+                    DownloadAudioMeta(progress, downloadItem);
+                    break;
+                default:
+                    break;
+            }
         }
 
         private async Task DownloadPhotoAsync(IProgress<DataModels.DownloadProgress> progress,

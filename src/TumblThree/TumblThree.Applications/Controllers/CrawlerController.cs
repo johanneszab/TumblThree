@@ -166,11 +166,9 @@ namespace TumblThree.Applications.Controllers
         {
             while (true)
             {
-                ct.ThrowIfCancellationRequested();
-
                 if (pt.IsPaused)
                 {
-                    pt.WaitWhilePausedWithResponseAsyc().Wait(ct);
+                    pt.WaitWhilePausedWithResponseAsyc().Wait();
                 }
 
                 Monitor.Enter(lockObject);
