@@ -166,7 +166,18 @@ namespace TumblThree.Applications
                         }
                         else
                         {
-                            throw;
+                            // TODO: Ugly hack: Many "_raw" requests seem to fail with '403 -- access denied' whereas usually
+                            // the file just contained a lower resolution if it didn't had the specified size.
+                            // We just replace the "_raw" with "_1280" and try again since "_1280" images are around for longer.
+                            // Else, we finally give up.
+                            if (url.Contains("_raw"))
+                            {
+                                url = url.Replace("_raw", "_1280");
+                            }
+                            else
+                            {
+                                throw;
+                            }
                         }
                     }
                 }
