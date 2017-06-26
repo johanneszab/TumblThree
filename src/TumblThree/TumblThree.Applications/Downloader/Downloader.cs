@@ -403,7 +403,7 @@ namespace TumblThree.Applications.Downloader
                 UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, fileName);
                 if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url, ct))
                 {
-                    File.SetLastWriteTime(fileLocation, postDate);
+                    SetFileDate(fileLocation, postDate);
                     UpdateBlogPostCount(ref counter.Photos, value => blog.DownloadedPhotos = value);
                     UpdateBlogProgress(ref counter.TotalDownloads);
                     UpdateBlogDB(fileName);
@@ -437,7 +437,7 @@ namespace TumblThree.Applications.Downloader
                 UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, fileName);
                 if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url, ct))
                 {
-                    File.SetLastWriteTime(fileLocation, postDate);
+                    SetFileDate(fileLocation, postDate);
                     UpdateBlogPostCount(ref counter.Videos, value => blog.DownloadedVideos = value);
                     UpdateBlogProgress(ref counter.TotalDownloads);
                     UpdateBlogDB(fileName);
@@ -464,7 +464,7 @@ namespace TumblThree.Applications.Downloader
                 UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, fileName);
                 if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url, ct))
                 {
-                    File.SetLastWriteTime(fileLocation, postDate);
+                    SetFileDate(fileLocation, postDate);
                     UpdateBlogPostCount(ref counter.Audios, value => blog.DownloadedAudios = value);
                     UpdateBlogProgress(ref counter.TotalDownloads);
                     UpdateBlogDB(fileName);
@@ -626,6 +626,14 @@ namespace TumblThree.Applications.Downloader
                     UpdateBlogProgress(ref counter.TotalDownloads);
                     UpdateBlogDB(postId);
                 }
+            }
+        }
+
+        private void SetFileDate(string fileLocation, DateTime postDate)
+        {
+            if (!blog.DownloadUrlList)
+            {
+                File.SetLastWriteTime(fileLocation, postDate);
             }
         }
 

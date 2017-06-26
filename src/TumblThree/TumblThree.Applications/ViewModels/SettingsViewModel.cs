@@ -601,8 +601,8 @@ namespace TumblThree.Applications.ViewModels
                 PortableMode = settings.PortableMode;
                 ProxyHost = settings.ProxyHost;
                 ProxyPort = settings.ProxyPort;
-                ProxyHost = settings.ProxyUsername;
-                ProxyPort = settings.ProxyPassword;
+                ProxyUsername = settings.ProxyUsername;
+                ProxyPassword = settings.ProxyPassword;
                 TimerInterval = settings.TimerInterval;
             }
             else
