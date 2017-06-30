@@ -239,7 +239,8 @@ namespace TumblThree.Applications.Downloader
                 var webRespStatusCode = (int)((HttpWebResponse)webException?.Response).StatusCode;
                 if (webRespStatusCode >= 400 && webRespStatusCode < 600) // removes inaccessible files: status code 400 -- 599
                 {
-                    File.Delete(fileLocation);
+                    try { File.Delete(fileLocation); }
+                    catch { }
                 }
                 return false;
             }
