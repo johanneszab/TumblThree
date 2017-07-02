@@ -247,36 +247,39 @@ namespace TumblThree.Applications.Downloader
             return request;
         }
 
-        private async Task AddUrlsToDownloadList(TumblrJson response, IList<string> tags, IProgress<DownloadProgress> progress,
-            int crawlerNumber, CancellationToken ct, PauseToken pt)
+        private async Task AddUrlsToDownloadList(TumblrJson response, IList<string> tags, IProgress<DownloadProgress> progress, int crawlerNumber, CancellationToken ct, PauseToken pt)
         {
-            if (ct.IsCancellationRequested)
+            while (true)
             {
-                return;
+                if (ct.IsCancellationRequested)
+                {
+                    return;
+                }
+                if (pt.IsPaused)
+                {
+                    pt.WaitWhilePausedWithResponseAsyc().Wait();
+                }
+
+                AddPhotoUrlToDownloadList(response, tags);
+                AddVideoUrlToDownloadList(response, tags);
+                AddAudioUrlToDownloadList(response, tags);
+                AddTextUrlToDownloadList(response, tags);
+                AddQuoteUrlToDownloadList(response, tags);
+
+                AddPhotoMetaUrlToDownloadList(response, tags);
+
+                Interlocked.Increment(ref numberOfPagesCrawled);
+                UpdateProgressQueueInformation(progress, Resources.ProgressGetUrlShort, numberOfPagesCrawled);
+
+                string document = await RequestDataAsync(blog.PageSize.ToString(), (blog.PageSize * crawlerNumber).ToString());
+                response = ConvertJsonToClass<TumblrJson>(document);
+                if (!response.response.posts.Any())
+                {
+                    return;
+                }
+
+                crawlerNumber += shellService.Settings.ParallelScans;
             }
-            if (pt.IsPaused)
-            {
-                pt.WaitWhilePausedWithResponseAsyc().Wait();
-            }
-
-            AddPhotoUrlToDownloadList(response, tags);
-            AddVideoUrlToDownloadList(response, tags);
-            AddAudioUrlToDownloadList(response, tags);
-            AddTextUrlToDownloadList(response, tags);
-            AddQuoteUrlToDownloadList(response, tags);
-
-            AddPhotoMetaUrlToDownloadList(response, tags);
-
-            Interlocked.Increment(ref numberOfPagesCrawled);
-            UpdateProgressQueueInformation(progress, Resources.ProgressGetUrlShort, numberOfPagesCrawled);
-
-            string document = await RequestDataAsync(blog.PageSize.ToString(), (blog.PageSize * crawlerNumber).ToString());
-            response = ConvertJsonToClass<TumblrJson>(document);
-            if (!response.response.posts.Any())
-                return;
-
-            crawlerNumber += shellService.Settings.ParallelScans;
-            await AddUrlsToDownloadList(response, tags, progress, crawlerNumber, ct, pt);
         }
 
         public static T ConvertJsonToClass<T>(string json)
@@ -400,7 +403,7 @@ namespace TumblThree.Applications.Downloader
                         {
                             string postId = post.id;
                             string textBody = ParseQuote(post);
-                            AddToDownloadList(new TumblrPost(PostTypes.Text, textBody, postId));
+                            AddToDownloadList(new TumblrPost(PostTypes.Quote, textBody, postId));
                         }
                     }
                 }
