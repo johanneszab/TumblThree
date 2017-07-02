@@ -645,7 +645,7 @@ namespace TumblThree.Applications.ViewModels
                 CreateVideoMeta = false;
                 CreateAudioMeta = false;
                 DownloadPages = String.Empty;
-                PageSize = 50;
+                PageSize = 100;
                 DownloadRebloggedPosts = true;
                 AutoDownload = false;
                 ForceSize = true;

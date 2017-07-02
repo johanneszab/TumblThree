@@ -11,10 +11,13 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using TumblThree.Applications.DataModels;
+using TumblThree.Applications.DataModels.Xml;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain;
 using TumblThree.Domain.Models;
+
+using Post = TumblThree.Applications.DataModels.Post;
 
 namespace TumblThree.Applications.Downloader
 {
@@ -172,11 +175,18 @@ namespace TumblThree.Applications.Downloader
 
                     try
                     {
-                        string document = await RequestDataAsync(blog.Url + "page/" + crawlerNumber);
-                        await AddUrlsToDownloadList(document, tags, progress, crawlerNumber, ct, pt);
+                        string document = await RequestDataAsync(blog.PageSize.ToString(), (blog.PageSize * crawlerNumber).ToString());
+                        var response = ConvertJsonToClass<TumblrJson>(document);
+                        await AddUrlsToDownloadList(response, tags, progress, crawlerNumber, ct, pt);
                     }
-                    catch (WebException)
+                    catch (WebException webException)
                     {
+                        if (webException.Message.Contains("503"))
+                        {
+                            Logger.Error("TumblrDownloader:GetUrlsAsync: {0}", "User not logged in");
+                            shellService.ShowError(new Exception("User not logged in"), Resources.NotLoggedIn, blog.Name);
+                            return;
+                        }
                     }
                     finally
                     {
@@ -194,7 +204,50 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        private async Task AddUrlsToDownloadList(string document, IList<string> tags, IProgress<DownloadProgress> progress,
+        protected virtual async Task<string> RequestDataAsync(string limit, string offset)
+        {
+            HttpWebRequest request = CreateWebReqeust(limit, offset);
+
+            using (var response = await request.GetResponseAsync() as HttpWebResponse)
+            {
+                using (var stream = GetStreamForApiRequest(response.GetResponseStream()))
+                {
+                    using (var buffer = new BufferedStream(stream))
+                    {
+                        using (var reader = new StreamReader(buffer))
+                        {
+                            return reader.ReadToEnd();
+                        }
+                    }
+                }
+            }
+        }
+
+        protected HttpWebRequest CreateWebReqeust(string limit, string offset)
+        {
+            string url = @"https://www.tumblr.com/svc/indash_blog?tumblelog_name_or_id=" + blog.Name +
+                  @"&post_id=&limit=" + limit + "&offset=" + offset + "&should_bypass_safemode=true";
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "GET";
+            request.ContentType = "application/json";
+            request.ProtocolVersion = HttpVersion.Version11;
+            request.UserAgent =
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
+            request.AllowAutoRedirect = true;
+            request.KeepAlive = true;
+            request.Pipelined = true;
+            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+            request.ReadWriteTimeout = shellService.Settings.TimeOut * 1000;
+            request.Timeout = -1;
+            request.CookieContainer = SharedCookieService.GetUriCookieContainer(new Uri("https://www.tumblr.com/"));
+            ServicePointManager.DefaultConnectionLimit = 400;
+            request = SetWebRequestProxy(request, shellService.Settings);
+            request.Referer = @"https://www.tumblr.com/dashboard/blog/" + blog.Name;
+            request.Headers["X-Requested-With"] = "XMLHttpRequest";
+            return request;
+        }
+
+        private async Task AddUrlsToDownloadList(TumblrJson response, IList<string> tags, IProgress<DownloadProgress> progress,
             int crawlerNumber, CancellationToken ct, PauseToken pt)
         {
             if (ct.IsCancellationRequested)
@@ -206,63 +259,235 @@ namespace TumblThree.Applications.Downloader
                 pt.WaitWhilePausedWithResponseAsyc().Wait();
             }
 
-            AddPhotoUrlToDownloadList(document, tags);
-            AddVideoUrlToDownloadList(document, tags);
+            AddPhotoUrlToDownloadList(response, tags);
+            AddVideoUrlToDownloadList(response, tags);
+            AddAudioUrlToDownloadList(response, tags);
+            AddTextUrlToDownloadList(response, tags);
+            AddQuoteUrlToDownloadList(response, tags);
+
+            AddPhotoMetaUrlToDownloadList(response, tags);
 
             Interlocked.Increment(ref numberOfPagesCrawled);
             UpdateProgressQueueInformation(progress, Resources.ProgressGetUrlShort, numberOfPagesCrawled);
-            document = await RequestDataAsync(blog.Url + "page/" + crawlerNumber);
-            if (!document.Contains((crawlerNumber + 1).ToString()))
+
+            string document = await RequestDataAsync(blog.PageSize.ToString(), (blog.PageSize * crawlerNumber).ToString());
+            response = ConvertJsonToClass<TumblrJson>(document);
+            if (!response.response.posts.Any())
                 return;
+
             crawlerNumber += shellService.Settings.ParallelScans;
-            await AddUrlsToDownloadList(document, tags, progress, crawlerNumber, ct, pt);
+            await AddUrlsToDownloadList(response, tags, progress, crawlerNumber, ct, pt);
         }
 
-        private void AddPhotoUrlToDownloadList(string document, IList<string> tags)
+        public static T ConvertJsonToClass<T>(string json)
+        {
+            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            return serializer.Deserialize<T>(json);
+        }
+
+        private bool CheckIfDownloadRebloggedPosts(Post post)
+        {
+            if (!blog.DownloadRebloggedPosts)
+            {
+                if (!post.reblogged_from_url.Any())
+                    return true;
+                return false;
+            }
+            return true;
+        }
+
+        private void AddPhotoUrlToDownloadList(TumblrJson document, IList<string> tags)
         {
             if (blog.DownloadPhoto)
             {
-                var regex = new Regex("\"(http[\\S]*media.tumblr.com[\\S]*(jpg|png|gif))\"");
-                foreach (Match match in regex.Matches(document))
+                foreach (Post post in document.response.posts)
                 {
-                    string imageUrl = match.Groups[1].Value;
-                    if (imageUrl.Contains("avatar") || imageUrl.Contains("previews"))
-                        continue;
-                    if (blog.SkipGif && imageUrl.EndsWith(".gif"))
+                    if (post.type == "photo" && (!tags.Any() || post.tags.Intersect(tags, StringComparer.OrdinalIgnoreCase).Any()))
                     {
-                        continue;
+                        if (CheckIfDownloadRebloggedPosts(post))
+                        {                            
+                            string postId = post.id;
+                            foreach (Photo photo in post.photos)
+                            {
+                                string imageUrl = photo.original_size.url;
+
+                                if (blog.SkipGif && imageUrl.EndsWith(".gif"))
+                                {
+                                    continue;
+                                }
+                                imageUrl = ResizeTumblrImageUrl(imageUrl);
+
+                                AddToDownloadList(new TumblrPost(PostTypes.Photo, imageUrl, postId));
+                            }
+                        }
                     }
-                    imageUrl = ResizeTumblrImageUrl(imageUrl);
-                    // TODO: postID
-                    AddToDownloadList(new TumblrPost(PostTypes.Photo, imageUrl, Guid.NewGuid().ToString("N")));
                 }
             }
         }
 
-        private void AddVideoUrlToDownloadList(string document, IList<string> tags)
+        private void AddVideoUrlToDownloadList(TumblrJson document, IList<string> tags)
         {
             if (blog.DownloadVideo)
             {
-                var regex = new Regex("\"(http[\\S]*.com/video_file/[\\S]*)\"");
-                foreach (Match match in regex.Matches(document))
+                foreach (Post post in document.response.posts)
                 {
-                    string videoUrl = match.Groups[0].Value;
-                    if (shellService.Settings.VideoSize == 1080)
+                    if (post.type == "video" && (!tags.Any() || post.tags.Intersect(tags, StringComparer.OrdinalIgnoreCase).Any()))
                     {
-                        // TODO: postID
-                        AddToDownloadList(new TumblrPost(PostTypes.Video,
-                            "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + ".mp4",
-                            Guid.NewGuid().ToString("N")));
-                    }
-                    else if (shellService.Settings.VideoSize == 480)
-                    {
-                        // TODO: postID
-                        AddToDownloadList(new TumblrPost(PostTypes.Video,
-                            "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + "_480.mp4",
-                            Guid.NewGuid().ToString("N")));
+                        if (CheckIfDownloadRebloggedPosts(post))
+                        {
+                            string postId = post.id;
+                            string videoUrl = post.video_url;
+
+                            if (shellService.Settings.VideoSize == 480)
+                            {
+                                if (!videoUrl.Contains("_480"))
+                                    videoUrl.Replace(".mp4", "_480.mp4");
+                            }
+                            AddToDownloadList(new TumblrPost(PostTypes.Video, videoUrl, postId));
+                        }
                     }
                 }
             }
+        }
+
+        private void AddAudioUrlToDownloadList(TumblrJson document, IList<string> tags)
+        {
+            if (blog.DownloadAudio)
+            {
+                foreach (Post post in document.response.posts)
+                {
+                    if (post.type == "audio" && (!tags.Any() || post.tags.Intersect(tags, StringComparer.OrdinalIgnoreCase).Any()))
+                    {
+                        if (CheckIfDownloadRebloggedPosts(post))
+                        {
+                            string postId = post.id;
+                            string audioUrl = post.audio_url;
+                            AddToDownloadList(new TumblrPost(PostTypes.Audio, audioUrl, postId));
+                        }
+                    }
+                }
+            }
+        }
+
+        private void AddTextUrlToDownloadList(TumblrJson document, IList<string> tags)
+        {
+            if (blog.DownloadText)
+            {
+                foreach (Post post in document.response.posts)
+                {
+                    if (post.type == "text" && (!tags.Any() || post.tags.Intersect(tags, StringComparer.OrdinalIgnoreCase).Any()))
+                    {
+                        if (CheckIfDownloadRebloggedPosts(post))
+                        {
+                            string postId = post.id;
+                            string textBody = ParseText(post);
+                            AddToDownloadList(new TumblrPost(PostTypes.Text, textBody, postId));
+                        }
+                    }
+                }
+            }
+        }
+
+        private void AddQuoteUrlToDownloadList(TumblrJson document, IList<string> tags)
+        {
+            if (blog.DownloadQuote)
+            {
+                foreach (Post post in document.response.posts)
+                {
+                    if (post.type == "quote" && (!tags.Any() || post.tags.Intersect(tags, StringComparer.OrdinalIgnoreCase).Any()))
+                    {
+                        if (CheckIfDownloadRebloggedPosts(post))
+                        {
+                            string postId = post.id;
+                            string textBody = ParseQuote(post);
+                            AddToDownloadList(new TumblrPost(PostTypes.Text, textBody, postId));
+                        }
+                    }
+                }
+            }
+        }
+
+        private void AddPhotoMetaUrlToDownloadList(TumblrJson document, IList<string> tags)
+        {
+            if (blog.CreatePhotoMeta)
+            {
+                foreach (Post post in document.response.posts)
+                {
+                    if (post.type == "photo" && (!tags.Any() || post.tags.Intersect(tags, StringComparer.OrdinalIgnoreCase).Any()))
+                    {
+                        if (CheckIfDownloadRebloggedPosts(post))
+                        {
+                            string postId = post.id;
+                            string textBody = ParsePhotoMeta(post);
+                            AddToDownloadList(new TumblrPost(PostTypes.PhotoMeta, textBody, postId));
+                        }
+                    }
+                }
+            }
+        }
+
+        private static string ParseText(Post post)
+        {
+            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) + ", " +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.slug) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.reblog_key) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.reblogged_from_url) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Title, post.title) +
+                   Environment.NewLine + post.body +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Tags,
+                       string.Join(", ", post.tags.ToArray())) +
+                   Environment.NewLine;
+        }
+
+        private static string ParseQuote(Post post)
+        {
+            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) + ", " +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.slug) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.reblog_key) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.reblogged_from_url) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Quote, string.Join(", ", post.dialogue.SelectMany(dialogue => dialogue.phrase.ToArray()))) +
+                   Environment.NewLine + post.body +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Tags,
+                       string.Join(", ", post.tags.ToArray())) +
+                   Environment.NewLine;
+        }
+
+        private static string ParsePhotoMeta(Post post)
+        {
+            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) + ", " +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.slug) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.reblog_key) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.reblogged_from_url) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.PhotoUrl, string.Join(", ", post.photos.SelectMany(photo => photo.original_size.url.ToArray()))) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.PhotoCaption, string.Join(", ", post.photos.SelectMany(photo => photo.caption.ToArray()))) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Tags,
+                       string.Join(", ", post.tags.ToArray())) +
+                   Environment.NewLine;
         }
 
         private void UpdateBlogStats()
