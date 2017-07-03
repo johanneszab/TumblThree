@@ -162,31 +162,35 @@ namespace TumblThree.Applications.Downloader
 
         private async Task AddUrlsToDownloadList(string document, IProgress<DownloadProgress> progress, int crawlerNumber, CancellationToken ct, PauseToken pt)
         {
-            if (ct.IsCancellationRequested)
+            while (true)
             {
-                return;
-            }
-            if (pt.IsPaused)
-            {
-                pt.WaitWhilePausedWithResponseAsyc().Wait();
-            }
+                if (ct.IsCancellationRequested)
+                {
+                    return;
+                }
+                if (pt.IsPaused)
+                {
+                    pt.WaitWhilePausedWithResponseAsyc().Wait();
+                }
 
-            var tags = new List<string>();
-            if (!string.IsNullOrWhiteSpace(blog.Tags))
-            {
-                tags = blog.Tags.Split(',').Select(x => x.Trim()).ToList();
+                var tags = new List<string>();
+                if (!string.IsNullOrWhiteSpace(blog.Tags))
+                {
+                    tags = blog.Tags.Split(',').Select(x => x.Trim()).ToList();
+                }
+
+                AddPhotoUrlToDownloadList(document, tags);
+                AddVideoUrlToDownloadList(document, tags);
+
+                Interlocked.Increment(ref numberOfPagesCrawled);
+                UpdateProgressQueueInformation(progress, Resources.ProgressGetUrlShort, numberOfPagesCrawled);
+                crawlerNumber += shellService.Settings.ParallelScans;
+                document = await RequestDataAsync(blog.Url + "/page/" + crawlerNumber);
+                if (document.Contains("<div class=\"no_posts_found\">"))
+                {
+                    return;
+                }
             }
-
-            AddPhotoUrlToDownloadList(document, tags);
-            AddVideoUrlToDownloadList(document, tags);
-
-            Interlocked.Increment(ref numberOfPagesCrawled);
-            UpdateProgressQueueInformation(progress, Resources.ProgressGetUrlShort, numberOfPagesCrawled);
-            crawlerNumber += shellService.Settings.ParallelScans;
-            document = await RequestDataAsync(blog.Url + "/page/" + crawlerNumber);
-            if (document.Contains("<div class=\"no_posts_found\">"))
-                return;
-            await AddUrlsToDownloadList(document, progress, crawlerNumber, ct, pt);
         }
 
         private void AddPhotoUrlToDownloadList(string document, IList<string> tags)
