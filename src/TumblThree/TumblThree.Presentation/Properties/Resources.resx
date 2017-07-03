@@ -487,16 +487,16 @@
     <value>Time interval (s):</value>
   </data>
   <data name="LimitConnections" xml:space="preserve">
-    <value>Limit Tumblr Api Connections</value>
+    <value>Limit Svc Connections</value>
   </data>
   <data name="MaxConnections" xml:space="preserve">
     <value>Number of connections:</value>
   </data>
   <data name="ToolTipLimitConnections" xml:space="preserve">
-    <value>Limit connections to the tumblr api.</value>
+    <value>Limit connections to the tumblr svc.</value>
   </data>
   <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
-    <value>A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr api. A too small value will decrease the download speed.</value>
+    <value>A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr svc. A too small value might decrease the download speed.</value>
   </data>
   <data name="ForceRescan" xml:space="preserve">
     <value>Force rescan</value>
@@ -505,7 +505,7 @@
     <value>Rescans the whole blog, not just new posts.</value>
   </data>
   <data name="ToolTipForceRescanDescription" xml:space="preserve">
-    <value>Forces a complete scan using the Tumblr api.</value>
+    <value>Forces a complete scan using the Tumblr svc.</value>
   </data>
   <data name="CheckForUpdates" xml:space="preserve">
     <value>Check for Updates</value>
@@ -583,7 +583,7 @@
     <value>Posts per Page</value>
   </data>
   <data name="ToolTipPageSizeDescription" xml:space="preserve">
-    <value>Sets the post per page (should be between 1-50, default 50). E.g. 50 means to scan 50 posts per page.</value>
+    <value>Sets the post per page (should be between 1-100, default 100). E.g. 100 means to scan 100 posts per page.</value>
   </data>
   <data name="FullScreenMedia" xml:space="preserve">
     <value>FullScreenView</value>

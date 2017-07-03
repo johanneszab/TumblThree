@@ -20,8 +20,9 @@
                     <Grid MinHeight="46" Height="Auto">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>                        
+                        </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -202,6 +203,74 @@
                         </Grid>
                         <Grid MinHeight="46" Height="Auto" Grid.Row="6">
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox x:Name="checkBoxLimitConnections" Content="{x:Static p:Resources.LimitConnections}"
+                          IsChecked="{Binding LimitConnections, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2"
+                          VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10">
+                                <CheckBox.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipLimitConnections}" />
+                                            <TextBlock xml:space="preserve"
+                                           Text="{x:Static p:Resources.ToolTipLimitConnectionsDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                            <Label x:Name="maxConnectionsLabel" Grid.Column="2" Content="{x:Static p:Resources.MaxConnections}"
+                       VerticalAlignment="Center" HorizontalAlignment="Left">
+                                <Label.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipLimitConnections}" />
+                                            <TextBlock xml:space="preserve"
+                                           Text="{x:Static p:Resources.ToolTipLimitConnectionsDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </Label.ToolTip>
+                            </Label>
+                            <TextBox x:Name="maxConnectionsComboBox" Grid.Column="3" HorizontalAlignment="Left"
+                         VerticalAlignment="Center" MinWidth="40">
+                                <TextBox.Text>
+                                    <Binding Path="MaxConnections" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <vr:IntRangeRule />
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
+                            <Label x:Name="ConnectionTimeIntervalLabel" Grid.Column="4"
+                       Content="{x:Static p:Resources.ConnectionTimeInterval}" VerticalAlignment="Center"
+                       HorizontalAlignment="Left">
+                                <Label.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipLimitConnections}" />
+                                            <TextBlock xml:space="preserve"
+                                           Text="{x:Static p:Resources.ToolTipLimitConnectionsDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </Label.ToolTip>
+                            </Label>
+                            <TextBox x:Name="ConnectionTimeIntervalComboBox" Grid.Column="5" HorizontalAlignment="Left"
+                         VerticalAlignment="Center" MinWidth="40">
+                                <TextBox.Text>
+                                    <Binding Path="ConnectionTimeInterval" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <vr:IntRangeRule />
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
+                        </Grid>
+                        <Grid MinHeight="46" Height="Auto" Grid.Row="7">
+                            <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
@@ -219,7 +288,7 @@
                          Grid.Column="3" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center"
                          Margin="00,0,10,0" />
                         </Grid>
-                        <Grid MinHeight="46" Height="Auto" Grid.Row="7">
+                        <Grid MinHeight="46" Height="Auto" Grid.Row="8">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
@@ -258,7 +327,7 @@
                          Grid.Column="3" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center"
                          Margin="00,0,10,0" />
                         </Grid>
-                        <Grid MinHeight="46" Height="Auto" Grid.Row="8">
+                        <Grid MinHeight="46" Height="Auto" Grid.Row="9">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />

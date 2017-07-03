@@ -332,8 +332,9 @@ namespace TumblThree.Applications.Downloader
 
                 trackedTasks.Add(new Func<Task>(async () =>
                 {
-                    await DownloadPostAsync(progress, ct, downloadItem);
-                    semaphoreSlim.Release();
+                    try { await DownloadPostAsync(progress, ct, downloadItem); }
+                    catch { }
+                    finally { semaphoreSlim.Release(); }
                 })());
             }
             try { await Task.WhenAll(trackedTasks); }

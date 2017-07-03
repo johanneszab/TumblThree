@@ -163,6 +163,10 @@
     <CodeAnalysisDictionary Include="Properties\CodeAnalysisDictionary.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\lib\RateLimiter\RateLimiter\RateLimiter.csproj">
+      <Project>{5B56EEEB-9107-4FC5-BD73-10FE96C9BDED}</Project>
+      <Name>RateLimiter</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\lib\WpfApplicationFramework\WpfApplicationFramework\WpfApplicationFramework.csproj">
       <Project>{27b67dfe-0bf1-4435-b036-e4c083eaea03}</Project>
       <Name>WpfApplicationFramework</Name>

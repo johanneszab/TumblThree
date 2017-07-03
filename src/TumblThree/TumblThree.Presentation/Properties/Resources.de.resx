@@ -487,13 +487,13 @@
     <value>Auf neue Version prüfen</value>
   </data>
   <data name="LimitConnections" xml:space="preserve">
-    <value>Limitiere Tumblr Api Verbindungen</value>
+    <value>Limitiere Tumblr SVC Verbindungen</value>
   </data>
   <data name="ToolTipLimitConnections" xml:space="preserve">
-    <value>Begrenzt Verbindungen zur Tumblr API.</value>
+    <value>Begrenzt Verbindungen zur Tumblr svc.</value>
   </data>
   <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
-    <value>Ein zu hoher Wert führt zu abgelehnten Verbindungen (429 -- Limit Exceeded) zur der Tumblr API. Ein zu kleiner Wert verringert die Downloadgeschwindigkeit.</value>
+    <value>Ein zu hoher Wert führt zu abgelehnten Verbindungen (429 -- Limit Exceeded) zur der Tumblr svc. Ein zu kleiner Wert kann die Downloadgeschwindigkeit verringern.</value>
   </data>
   <data name="CheckDirectoryForFiles" xml:space="preserve">
     <value>Prüfe Ordner auf Dateien</value>
@@ -565,7 +565,7 @@
     <value>Beiträge pro Seite</value>
   </data>
   <data name="ToolTipPageSizeDescription" xml:space="preserve">
-    <value>Setzt die Anzahl der Beiträge pro Seite (Zahl zwischen 1-50, standard 50).</value>
+    <value>Setzt die Anzahl der Beiträge pro Seite (Zahl zwischen 1-100, standard 100).</value>
   </data>
   <data name="Export" xml:space="preserve">
     <value>Exportiere Blogs</value>

@@ -38,6 +38,21 @@ namespace TumblThree.Applications.Downloader
             this.blog = blog;
         }
 
+        public override async Task UpdateMetaInformationAsync()
+        {
+            if (blog.Online)
+            {
+                string document = await GetSvcPageAsync("1", "0");
+                var response = ConvertJsonToClass<TumblrJson>(document);
+
+                if (response.meta.status == 200)
+                {
+                    blog.Title = response.response.posts.FirstOrDefault().blog.title;
+                    blog.Description = response.response.posts.FirstOrDefault().blog.description;
+                }
+            }
+        }
+
         public async Task Crawl(IProgress<DownloadProgress> progress, CancellationToken ct, PauseToken pt)
         {
             Logger.Verbose("TumblrDownloader.Crawl:Start");
@@ -106,12 +121,12 @@ namespace TumblThree.Applications.Downloader
 
         private IEnumerable<int> GetPageNumbers()
         {
+            if (!TestRange(blog.PageSize, 1, 100))
+                blog.PageSize = 100;
+
             if (string.IsNullOrEmpty(blog.DownloadPages))
             {
-                int totalPosts = blog.Posts;
-                int totalPages = (totalPosts / blog.PageSize) + 1;
-
-                return Enumerable.Range(0, totalPages);
+                return Enumerable.Range(0, shellService.Settings.ParallelScans);
             }
             return RangeToSequence(blog.DownloadPages);
         }
@@ -141,6 +156,45 @@ namespace TumblThree.Applications.Downloader
                     start++;
                 }
             }
+        }
+
+        private async Task<ulong> GetHighestPostId()
+        {
+            string document = await GetSvcPageAsync("1", "0");
+            var response = ConvertJsonToClass<TumblrJson>(document);
+
+            ulong highestId;
+            ulong.TryParse(blog.Title = response.response.posts.FirstOrDefault().id, out highestId);
+            return highestId;
+        }
+
+        private ulong GetLastPostId()
+        {
+            ulong lastId = blog.LastId;
+            if (blog.ForceRescan)
+            {
+                blog.ForceRescan = false;
+                return 0;
+            }
+            if (!string.IsNullOrEmpty(blog.DownloadPages))
+            {
+                blog.ForceRescan = false;
+                return 0;
+            }
+            return lastId;
+        }
+
+        private static bool CheckPostAge(TumblrJson document, ulong lastId)
+        {
+            ulong highestPostId = 0;
+            ulong.TryParse(document.response.posts.FirstOrDefault().id,
+                out highestPostId);
+
+            if (highestPostId < lastId)
+            {
+                return false;
+            }
+            return true;
         }
 
         protected override bool CheckIfFileExistsInDB(string url)
@@ -175,7 +229,7 @@ namespace TumblThree.Applications.Downloader
 
                     try
                     {
-                        string document = await RequestDataAsync(blog.PageSize.ToString(), (blog.PageSize * crawlerNumber).ToString());
+                        string document = await GetSvcPageAsync(blog.PageSize.ToString(), (blog.PageSize * crawlerNumber).ToString());
                         var response = ConvertJsonToClass<TumblrJson>(document);
                         await AddUrlsToDownloadList(response, tags, progress, crawlerNumber, ct, pt);
                     }
@@ -186,6 +240,12 @@ namespace TumblThree.Applications.Downloader
                             Logger.Error("TumblrDownloader:GetUrlsAsync: {0}", "User not logged in");
                             shellService.ShowError(new Exception("User not logged in"), Resources.NotLoggedIn, blog.Name);
                             return;
+                        }
+                        if (webException.Message.Contains("429"))
+                        {
+                            // TODO: add retry logic?
+                            Logger.Error("TumblrDownloader:GetUrls:WebException {0}", webException);
+                            shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
                         }
                     }
                     finally
@@ -202,6 +262,16 @@ namespace TumblThree.Applications.Downloader
             {
                 UpdateBlogStats();
             }
+        }
+
+        private async Task<string> GetSvcPageAsync(string limit, string offset)
+        {
+            if (shellService.Settings.LimitConnections)
+            {
+                crawlerService.Timeconstraint.Acquire();
+                return await RequestDataAsync(limit, offset);
+            }
+            return await RequestDataAsync(limit, offset);
         }
 
         protected virtual async Task<string> RequestDataAsync(string limit, string offset)
@@ -260,18 +330,28 @@ namespace TumblThree.Applications.Downloader
                     pt.WaitWhilePausedWithResponseAsyc().Wait();
                 }
 
-                AddPhotoUrlToDownloadList(response, tags);
-                AddVideoUrlToDownloadList(response, tags);
-                AddAudioUrlToDownloadList(response, tags);
-                AddTextUrlToDownloadList(response, tags);
-                AddQuoteUrlToDownloadList(response, tags);
-
-                AddPhotoMetaUrlToDownloadList(response, tags);
+                try
+                {
+                    AddPhotoUrlToDownloadList(response, tags);
+                    AddVideoUrlToDownloadList(response, tags);
+                    AddAudioUrlToDownloadList(response, tags);
+                    AddTextUrlToDownloadList(response, tags);
+                    AddQuoteUrlToDownloadList(response, tags);
+                    AddLinkUrlToDownloadList(response, tags);
+                    AddConversationUrlToDownloadList(response, tags);
+                    AddAnswerUrlToDownloadList(response, tags);
+                    AddPhotoMetaUrlToDownloadList(response, tags);
+                    AddVideoMetaUrlToDownloadList(response, tags);
+                    AddAudioMetaUrlToDownloadList(response, tags);
+                }
+                catch (NullReferenceException)
+                {
+                }
 
                 Interlocked.Increment(ref numberOfPagesCrawled);
                 UpdateProgressQueueInformation(progress, Resources.ProgressGetUrlShort, numberOfPagesCrawled);
 
-                string document = await RequestDataAsync(blog.PageSize.ToString(), (blog.PageSize * crawlerNumber).ToString());
+                string document = await GetSvcPageAsync(blog.PageSize.ToString(), (blog.PageSize * crawlerNumber).ToString());
                 response = ConvertJsonToClass<TumblrJson>(document);
                 if (!response.response.posts.Any())
                 {
@@ -308,25 +388,57 @@ namespace TumblThree.Applications.Downloader
                     if (post.type == "photo" && (!tags.Any() || post.tags.Intersect(tags, StringComparer.OrdinalIgnoreCase).Any()))
                     {
                         if (CheckIfDownloadRebloggedPosts(post))
-                        {                            
-                            string postId = post.id;
-                            foreach (Photo photo in post.photos)
-                            {
-                                string imageUrl = photo.original_size.url;
-
-                                if (blog.SkipGif && imageUrl.EndsWith(".gif"))
-                                {
-                                    continue;
-                                }
-                                imageUrl = ResizeTumblrImageUrl(imageUrl);
-
-                                AddToDownloadList(new TumblrPost(PostTypes.Photo, imageUrl, postId));
-                            }
+                        {
+                            AddPhotoUrl(post);
                         }
                     }
+                    // check for inline images
+                    //if (post.type != "photo" && !tags.Any() || post.tags.Intersect(tags, StringComparer.OrdinalIgnoreCase).Any())
+                    //{
+                    //    if (CheckIfDownloadRebloggedPosts(post))
+                    //        try { AddInlinePhotoUrl(post); }
+                    //        catch { }
+                    //}
                 }
             }
         }
+
+        private void AddPhotoUrl(Post post)
+        {
+            string postId = post.id;
+            foreach (Photo photo in post.photos)
+            {
+                string imageUrl = photo.original_size.url;
+
+                if (blog.SkipGif && imageUrl.EndsWith(".gif"))
+                {
+                    continue;
+                }
+                imageUrl = ResizeTumblrImageUrl(imageUrl);
+
+                AddToDownloadList(new TumblrPost(PostTypes.Photo, imageUrl, postId, post.timestamp.ToString()));
+            }
+        }
+
+        private void AddInlinePhotoUrl(Post post)
+        {
+            var regex = new Regex("\"(http[\\S]*media.tumblr.com[\\S]*(jpg|png|gif))\"");
+            foreach (Match match in regex.Matches(post.body))
+            {
+                string postId = post.id;
+
+                string imageUrl = match.Groups[1].Value;
+                if (imageUrl.Contains("avatar") || imageUrl.Contains("previews"))
+                    continue;
+                if (blog.SkipGif && imageUrl.EndsWith(".gif"))
+                {
+                    continue;
+                }
+                imageUrl = ResizeTumblrImageUrl(imageUrl);
+                AddToDownloadList(new TumblrPost(PostTypes.Photo, imageUrl, postId, post.timestamp.ToString()));
+            }
+        }
+
 
         private void AddVideoUrlToDownloadList(TumblrJson document, IList<string> tags)
         {
@@ -338,17 +450,50 @@ namespace TumblThree.Applications.Downloader
                     {
                         if (CheckIfDownloadRebloggedPosts(post))
                         {
-                            string postId = post.id;
-                            string videoUrl = post.video_url;
-
-                            if (shellService.Settings.VideoSize == 480)
-                            {
-                                if (!videoUrl.Contains("_480"))
-                                    videoUrl.Replace(".mp4", "_480.mp4");
-                            }
-                            AddToDownloadList(new TumblrPost(PostTypes.Video, videoUrl, postId));
+                            AddVideoUrl(post);
                         }
                     }
+                    // check for inline videos
+                    //if (post.type != "video" && !tags.Any() || post.tags.Intersect(tags, StringComparer.OrdinalIgnoreCase).Any())
+                    //{
+                    //    if (CheckIfDownloadRebloggedPosts(post))
+                    //        try { AddInlineVideoUrl(post); }
+                    //        catch { }
+                    //}
+                }
+            }
+        }
+
+        private void AddVideoUrl(Post post)
+        {
+            string postId = post.id;
+            string videoUrl = post.video_url;
+
+            if (shellService.Settings.VideoSize == 480)
+            {
+                if (!videoUrl.Contains("_480"))
+                {
+                    videoUrl.Replace(".mp4", "_480.mp4");
+                }
+            }
+            AddToDownloadList(new TumblrPost(PostTypes.Video, videoUrl, postId, post.timestamp.ToString()));
+        }
+
+        private void AddInlineVideoUrl(Post post)
+        {
+            var regex = new Regex("\"(http[\\S]*.com/video_file/[\\S]*)\"");
+            foreach (Match match in regex.Matches(post.body))
+            {
+                string videoUrl = match.Groups[1].Value;
+                if (shellService.Settings.VideoSize == 1080)
+                {
+                    AddToDownloadList(new TumblrPost(PostTypes.Video, videoUrl.Replace("/480", "") + ".mp4", post.id, post.timestamp.ToString()));
+                }
+                else if (shellService.Settings.VideoSize == 480)
+                {
+                    AddToDownloadList(new TumblrPost(PostTypes.Video,
+                        "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + "_480.mp4",
+                        post.id, post.timestamp.ToString()));
                 }
             }
         }
@@ -365,7 +510,7 @@ namespace TumblThree.Applications.Downloader
                         {
                             string postId = post.id;
                             string audioUrl = post.audio_url;
-                            AddToDownloadList(new TumblrPost(PostTypes.Audio, audioUrl, postId));
+                            AddToDownloadList(new TumblrPost(PostTypes.Audio, audioUrl, postId, post.timestamp.ToString()));
                         }
                     }
                 }
@@ -384,7 +529,7 @@ namespace TumblThree.Applications.Downloader
                         {
                             string postId = post.id;
                             string textBody = ParseText(post);
-                            AddToDownloadList(new TumblrPost(PostTypes.Text, textBody, postId));
+                            AddToDownloadList(new TumblrPost(PostTypes.Text, textBody, postId, post.timestamp.ToString()));
                         }
                     }
                 }
@@ -403,7 +548,64 @@ namespace TumblThree.Applications.Downloader
                         {
                             string postId = post.id;
                             string textBody = ParseQuote(post);
-                            AddToDownloadList(new TumblrPost(PostTypes.Quote, textBody, postId));
+                            AddToDownloadList(new TumblrPost(PostTypes.Quote, textBody, postId, post.timestamp.ToString()));
+                        }
+                    }
+                }
+            }
+        }
+
+        private void AddLinkUrlToDownloadList(TumblrJson document, IList<string> tags)
+        {
+            if (blog.DownloadLink)
+            {
+                foreach (Post post in document.response.posts)
+                {
+                    if (post.type == "link" && (!tags.Any() || post.tags.Intersect(tags, StringComparer.OrdinalIgnoreCase).Any()))
+                    {
+                        if (CheckIfDownloadRebloggedPosts(post))
+                        {
+                            string postId = post.id;
+                            string textBody = ParseLink(post);
+                            AddToDownloadList(new TumblrPost(PostTypes.Link, textBody, postId, post.timestamp.ToString()));
+                        }
+                    }
+                }
+            }
+        }
+
+        private void AddConversationUrlToDownloadList(TumblrJson document, IList<string> tags)
+        {
+            if (blog.DownloadConversation)
+            {
+                foreach (Post post in document.response.posts)
+                {
+                    if (post.type == "chat" && (!tags.Any() || post.tags.Intersect(tags, StringComparer.OrdinalIgnoreCase).Any()))
+                    {
+                        if (CheckIfDownloadRebloggedPosts(post))
+                        {
+                            string postId = post.id;
+                            string textBody = ParseConversation(post);
+                            AddToDownloadList(new TumblrPost(PostTypes.Conversation, textBody, postId, post.timestamp.ToString()));
+                        }
+                    }
+                }
+            }
+        }
+
+        private void AddAnswerUrlToDownloadList(TumblrJson document, IList<string> tags)
+        {
+            if (blog.DownloadAnswer)
+            {
+                foreach (Post post in document.response.posts)
+                {
+                    if (post.type == "answer" && (!tags.Any() || post.tags.Intersect(tags, StringComparer.OrdinalIgnoreCase).Any()))
+                    {
+                        if (CheckIfDownloadRebloggedPosts(post))
+                        {
+                            string postId = post.id;
+                            string textBody = ParseAnswer(post);
+                            AddToDownloadList(new TumblrPost(PostTypes.Answer, textBody, postId, post.timestamp.ToString()));
                         }
                     }
                 }
@@ -423,6 +625,44 @@ namespace TumblThree.Applications.Downloader
                             string postId = post.id;
                             string textBody = ParsePhotoMeta(post);
                             AddToDownloadList(new TumblrPost(PostTypes.PhotoMeta, textBody, postId));
+                        }
+                    }
+                }
+            }
+        }
+
+        private void AddVideoMetaUrlToDownloadList(TumblrJson document, IList<string> tags)
+        {
+            if (blog.CreateVideoMeta)
+            {
+                foreach (Post post in document.response.posts)
+                {
+                    if (post.type == "video" && (!tags.Any() || post.tags.Intersect(tags, StringComparer.OrdinalIgnoreCase).Any()))
+                    {
+                        if (CheckIfDownloadRebloggedPosts(post))
+                        {
+                            string postId = post.id;
+                            string textBody = ParseVideoMeta(post);
+                            AddToDownloadList(new TumblrPost(PostTypes.VideoMeta, textBody, postId));
+                        }
+                    }
+                }
+            }
+        }
+
+        private void AddAudioMetaUrlToDownloadList(TumblrJson document, IList<string> tags)
+        {
+            if (blog.CreateAudioMeta)
+            {
+                foreach (Post post in document.response.posts)
+                {
+                    if (post.type == "audio" && (!tags.Any() || post.tags.Intersect(tags, StringComparer.OrdinalIgnoreCase).Any()))
+                    {
+                        if (CheckIfDownloadRebloggedPosts(post))
+                        {
+                            string postId = post.id;
+                            string textBody = ParseAudioMeta(post);
+                            AddToDownloadList(new TumblrPost(PostTypes.AudioMeta, textBody, postId));
                         }
                     }
                 }
@@ -471,6 +711,70 @@ namespace TumblThree.Applications.Downloader
                    Environment.NewLine;
         }
 
+        private static string ParseLink(Post post)
+        {
+            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) + ", " +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.slug) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.reblog_key) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.reblogged_from_url) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Link, post.link_url) +
+                   Environment.NewLine + post.body +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Tags,
+                       string.Join(", ", post.tags.ToArray())) +
+                   Environment.NewLine;
+        }
+
+        private static string ParseConversation(Post post)
+        {
+            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) + ", " +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.slug) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.reblog_key) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.reblogged_from_url) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Quote, string.Join(", ", post.dialogue.SelectMany(dialogue => dialogue.phrase.ToArray()))) +
+                   Environment.NewLine + post.body +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Tags,
+                       string.Join(", ", post.tags.ToArray())) +
+                   Environment.NewLine;
+        }
+
+        private static string ParseAnswer(Post post)
+        {
+            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) + ", " +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.slug) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.reblog_key) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.reblogged_from_url) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
+                   Environment.NewLine +
+                   post.question +
+                   Environment.NewLine +
+                   post.answer +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Tags,
+                       string.Join(", ", post.tags.ToArray())) +
+                   Environment.NewLine;
+        }
+
         private static string ParsePhotoMeta(Post post)
         {
             return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) + ", " +
@@ -487,6 +791,55 @@ namespace TumblThree.Applications.Downloader
                    string.Format(CultureInfo.CurrentCulture, Resources.PhotoUrl, string.Join(", ", post.photos.SelectMany(photo => photo.original_size.url.ToArray()))) +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.PhotoCaption, string.Join(", ", post.photos.SelectMany(photo => photo.caption.ToArray()))) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Tags,
+                       string.Join(", ", post.tags.ToArray())) +
+                   Environment.NewLine;
+        }
+
+        private static string ParseVideoMeta(Post post)
+        {
+            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) + ", " +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.slug) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.reblog_key) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.reblogged_from_url) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.VideoPlayer, post.caption) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Tags,
+                       string.Join(", ", post.tags.ToArray())) +
+                   Environment.NewLine;
+        }
+
+        private static string ParseAudioMeta(Post post)
+        {
+            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) + ", " +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.slug) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.reblog_key) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.reblogged_from_url) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.AudioCaption, post.caption) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Id3Artist, post.artist) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Id3Title, post.title) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Id3Track, post.track) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Id3Album, post.album) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Id3Track, post.year) +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Tags,
                        string.Join(", ", post.tags.ToArray())) +

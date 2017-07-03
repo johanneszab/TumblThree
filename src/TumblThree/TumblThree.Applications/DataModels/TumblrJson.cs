@@ -298,7 +298,6 @@ namespace TumblThree.Applications.DataModels
         public List<Dialogue> dialogue { get; set; }
         public bool? is_anonymous { get; set; }
         public bool? is_submission { get; set; }
-
     }
 
     public class PixelbugUrl

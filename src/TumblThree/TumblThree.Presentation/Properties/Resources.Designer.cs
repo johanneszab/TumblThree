@@ -646,7 +646,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Limit Tumblr Api Connections.
+        ///   Looks up a localized string similar to Limit Svc Connections.
         /// </summary>
         public static string LimitConnections {
             get {
@@ -1294,7 +1294,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Forces a complete scan using the Tumblr api..
+        ///   Looks up a localized string similar to Forces a complete scan using the Tumblr svc..
         /// </summary>
         public static string ToolTipForceRescanDescription {
             get {
@@ -1339,7 +1339,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Limit connections to the tumblr api..
+        ///   Looks up a localized string similar to Limit connections to the tumblr svc..
         /// </summary>
         public static string ToolTipLimitConnections {
             get {
@@ -1348,7 +1348,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr api. A too small value will decrease the download speed..
+        ///   Looks up a localized string similar to A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr svc. A too small value might decrease the download speed..
         /// </summary>
         public static string ToolTipLimitConnectionsDescription {
             get {
@@ -1384,7 +1384,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sets the post per page (should be between 1-50, default 50). E.g. 50 means to scan 50 posts per page..
+        ///   Looks up a localized string similar to Sets the post per page (should be between 1-100, default 100). E.g. 100 means to scan 100 posts per page..
         /// </summary>
         public static string ToolTipPageSizeDescription {
             get {

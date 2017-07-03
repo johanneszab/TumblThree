@@ -3,6 +3,8 @@ using System.Threading;
 using System.Waf.Foundation;
 using System.Windows.Input;
 
+using Guava.RateLimiter;
+
 using TumblThree.Domain.Queue;
 
 namespace TumblThree.Applications.Services
@@ -42,6 +44,8 @@ namespace TumblThree.Applications.Services
         string NewBlogUrl { get; set; }
 
         IReadOnlyObservableList<QueueListItem> ActiveItems { get; }
+
+        RateLimiter Timeconstraint { get; set; }
 
         Timer Timer { get; set; }
 
