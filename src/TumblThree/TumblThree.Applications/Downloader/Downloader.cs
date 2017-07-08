@@ -394,8 +394,10 @@ namespace TumblThree.Applications.Downloader
             TumblrPost downloadItem, CancellationToken ct)
         {
             string blogDownloadLocation = blog.DownloadLocation();
-            string fileName = FileName(downloadItem);
             string url = Url(downloadItem);
+            var fileDownloader = new FileDownloader();
+            url = await fileDownloader.TestImageRawUrl(url, shellService.Settings);
+            string fileName = url.Split('/').Last();
             string fileLocation = FileLocation(blogDownloadLocation, fileName);
             string fileLocationUrlList = FileLocationLocalized(blogDownloadLocation, Resources.FileNamePhotos);
             DateTime postDate = PostDate(downloadItem);
