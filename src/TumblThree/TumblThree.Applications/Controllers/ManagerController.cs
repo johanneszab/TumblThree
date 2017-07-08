@@ -356,6 +356,13 @@ namespace TumblThree.Applications.Controllers
             TransferGlobalSettingsToBlog(blog);
             IDownloader downloader = DownloaderFactory.GetDownloader(blog.BlogType, shellService, crawlerService, blog);
             await downloader.IsBlogOnlineAsync();
+
+            if (CheckIfTumblrPrivateBlog(blog))
+            {
+                blog = PromoteTumblrBlogToPrivateBlog(blogUrl);
+                downloader = DownloaderFactory.GetDownloader(blog.BlogType, shellService, crawlerService, blog);
+            }
+
             await downloader.UpdateMetaInformationAsync();
 
             lock (lockObject)
@@ -371,6 +378,25 @@ namespace TumblThree.Applications.Controllers
                     QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => managerService.BlogFiles.Add(blog)));
                 }
             }
+        }
+
+        private bool CheckIfTumblrPrivateBlog(IBlog blog)
+        {
+            if (blog.BlogType == BlogTypes.tumblr && !blog.Online)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private IBlog PromoteTumblrBlogToPrivateBlog(string blogUrl)
+        {
+            IBlog blog;
+            blog = new Blog(blogUrl, Path.Combine(shellService.Settings.DownloadLocation, "Index"), BlogTypes.tmblrpriv);
+            TransferGlobalSettingsToBlog(blog);
+            blog.BlogType = BlogTypes.tmblrpriv;
+            blog.Online = true;
+            return blog;
         }
 
         private void TransferGlobalSettingsToBlog(IBlog blog)

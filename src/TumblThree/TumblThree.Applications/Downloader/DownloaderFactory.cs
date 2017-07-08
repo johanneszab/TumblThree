@@ -37,6 +37,8 @@ namespace TumblThree.Applications.Downloader
             {
                 case BlogTypes.tumblr:
                     return new TumblrDownloader(shellService, crawlerService, blog);
+                case BlogTypes.tmblrpriv:
+                    return new TumblrPrivateDownloader(shellService, crawlerService, blog);
                 case BlogTypes.tlb:
                     return new TumblrLikedByDownloader(shellService, crawlerService, blog);
                 default:

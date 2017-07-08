@@ -72,7 +72,7 @@ namespace TumblThree.Applications.Downloader
             return request;
         }
 
-        private static HttpWebRequest SetWebRequestProxy(HttpWebRequest request, AppSettings settings)
+        protected static HttpWebRequest SetWebRequestProxy(HttpWebRequest request, AppSettings settings)
         {
             if (!string.IsNullOrEmpty(settings.ProxyHost) && !string.IsNullOrEmpty(settings.ProxyPort))
                 request.Proxy = new WebProxy(settings.ProxyHost, int.Parse(settings.ProxyPort));
