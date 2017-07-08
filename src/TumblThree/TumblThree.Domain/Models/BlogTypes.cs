@@ -5,6 +5,7 @@
         tumblr,
         instagram,
         twitter,
-        tlb
+        tlb,
+        ts
     }
 }

@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Waf.Applications;
@@ -350,13 +351,28 @@ namespace TumblThree.Applications.Controllers
                 blog = new Blog(blogUrl, Path.Combine(shellService.Settings.DownloadLocation, "Index"), BlogTypes.tumblr);
             else if (Validator.IsValidTumblrLikedByUrl(blogUrl)) 
                 blog = new TumblrLikeByBlog(blogUrl, Path.Combine(shellService.Settings.DownloadLocation, "Index"), BlogTypes.tlb);
+            else if (Validator.IsValidTumblrSearchUrl(blogUrl))
+                blog = new TumblrSearchBlog(blogUrl, Path.Combine(shellService.Settings.DownloadLocation, "Index"), BlogTypes.ts);
             else
                 return;
 
             TransferGlobalSettingsToBlog(blog);
-            IDownloader downloader = DownloaderFactory.GetDownloader(blog.BlogType, shellService, crawlerService, blog);
-            await downloader.IsBlogOnlineAsync();
-            await downloader.UpdateMetaInformationAsync();
+
+            try
+            {
+                IDownloader downloader = DownloaderFactory.GetDownloader(blog.BlogType, shellService, crawlerService, blog);
+                await downloader.IsBlogOnlineAsync();
+                await downloader.UpdateMetaInformationAsync();
+            }
+            catch (WebException webException)
+            {
+                if (webException.Message.Contains("503"))
+                {
+                    Logger.Error("TumblrDownloader:GetUrlsAsync: {0}", "User not logged in");
+                    shellService.ShowError(new Exception("User not logged in"), Resources.NotLoggedIn, blog.Name);
+                    return;
+                }
+            }
 
             lock (lockObject)
             {
@@ -409,7 +425,7 @@ namespace TumblThree.Applications.Controllers
         private async Task AddBlogBatchedAsync(IEnumerable<string> urls)
         {
             var semaphoreSlim = new SemaphoreSlim(15);
-            foreach (string url in urls.Where(url => Validator.IsValidTumblrUrl(url) || Validator.IsValidTumblrLikedByUrl(url)))
+            foreach (string url in urls.Where(url => Validator.IsValidTumblrUrl(url) || Validator.IsValidTumblrLikedByUrl(url) || Validator.IsValidTumblrSearchUrl(url)))
             {
                 await semaphoreSlim.WaitAsync();
                 await AddBlogAsync(url);
