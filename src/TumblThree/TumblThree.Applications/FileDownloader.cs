@@ -166,22 +166,62 @@ namespace TumblThree.Applications
                         }
                         else
                         {
-                            // TODO: Ugly hack: Many "_raw" requests seem to fail with '403 -- access denied' whereas usually
-                            // the file just contained a lower resolution if it didn't had the specified size.
-                            // We just replace the "_raw" with "_1280" and try again since "_1280" images are around for longer.
-                            // Else, we finally give up.
-                            if (url.Contains("_raw"))
-                            {
-                                url = url.Replace("_raw", "_1280");
-                            }
-                            else
-                            {
-                                throw;
-                            }
+                            throw;
                         }
                     }
                 }
                 return true;
+            }
+        }
+
+        public async Task<string> TestImageRawUrl(string url, AppSettings settings)
+        {
+            if (settings.ImageSize == "raw")
+            {
+                return await TestRawUrl(url, settings);
+            }
+            return url;
+        }
+
+        public async Task<string> TestRawUrl(string url, AppSettings settings)
+        {
+            if (!url.Contains("_raw"))
+                return url;
+            string path = new Uri(url).LocalPath.TrimStart('/');
+
+            foreach (string host in settings.TumblrHosts)
+            {
+                string rawUrl = "https://" + host + "/" + path;
+                if (await UrlExists(rawUrl, settings))
+                    return rawUrl;
+            }
+
+            foreach (string size in settings.ImageSizes)
+            {
+                string rawUrl = url.Replace(settings.ImageSize, size);
+                if (await UrlExists(rawUrl, settings))
+                    return rawUrl;
+            }
+
+            return url;
+        }
+
+        private async Task<bool> UrlExists(string url, AppSettings settings)
+        {
+            HttpWebRequest request = CreateWebReqeust(url, settings);
+            request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
+            request.Method = "HEAD";
+
+            try
+            {
+                using (var response = (HttpWebResponse)await request.GetResponseAsync())
+                {
+                    return response.StatusCode == HttpStatusCode.OK;
+                }
+            }
+            catch
+            {
+                return false;
             }
         }
 
