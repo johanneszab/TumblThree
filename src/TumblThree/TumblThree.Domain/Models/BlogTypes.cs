@@ -6,6 +6,7 @@
         tmblrpriv,
         instagram,
         twitter,
-        tlb
+        tlb,
+        ts
     }
 }

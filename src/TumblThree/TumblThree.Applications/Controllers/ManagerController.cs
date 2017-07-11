@@ -350,6 +350,8 @@ namespace TumblThree.Applications.Controllers
                 blog = new Blog(blogUrl, Path.Combine(shellService.Settings.DownloadLocation, "Index"), BlogTypes.tumblr);
             else if (Validator.IsValidTumblrLikedByUrl(blogUrl)) 
                 blog = new TumblrLikeByBlog(blogUrl, Path.Combine(shellService.Settings.DownloadLocation, "Index"), BlogTypes.tlb);
+            //else if (Validator.IsValidTumblrSearchUrl(blogUrl))
+            //    blog = new TumblrSearchBlog(blogUrl, Path.Combine(shellService.Settings.DownloadLocation, "Index"), BlogTypes.ts);
             else
                 return;
 
@@ -435,6 +437,7 @@ namespace TumblThree.Applications.Controllers
         private async Task AddBlogBatchedAsync(IEnumerable<string> urls)
         {
             var semaphoreSlim = new SemaphoreSlim(15);
+            //foreach (string url in urls.Where(url => Validator.IsValidTumblrUrl(url) || Validator.IsValidTumblrLikedByUrl(url) || Validator.IsValidTumblrSearchUrl(url)))
             foreach (string url in urls.Where(url => Validator.IsValidTumblrUrl(url) || Validator.IsValidTumblrLikedByUrl(url)))
             {
                 await semaphoreSlim.WaitAsync();
