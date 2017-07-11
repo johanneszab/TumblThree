@@ -21,8 +21,8 @@ namespace TumblThree.Applications.Downloader
     public abstract class Downloader
     {
         private readonly IBlog blog;
-        private readonly PostCounter counter;
         private readonly ICrawlerService crawlerService;
+        protected readonly PostCounter counter;
         protected readonly IFiles files;
         protected readonly object lockObjectDb;
         protected readonly object lockObjectDirectory;
@@ -390,13 +390,11 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        private async Task DownloadPhotoAsync(IProgress<DataModels.DownloadProgress> progress,
+        protected virtual async Task DownloadPhotoAsync(IProgress<DataModels.DownloadProgress> progress,
             TumblrPost downloadItem, CancellationToken ct)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string url = Url(downloadItem);
-            var fileDownloader = new FileDownloader();
-            url = await fileDownloader.TestImageRawUrl(url, shellService.Settings);
             string fileName = url.Split('/').Last();
             string fileLocation = FileLocation(blogDownloadLocation, fileName);
             string fileLocationUrlList = FileLocationLocalized(blogDownloadLocation, Resources.FileNamePhotos);
@@ -633,7 +631,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        private void SetFileDate(string fileLocation, DateTime postDate)
+        protected void SetFileDate(string fileLocation, DateTime postDate)
         {
             if (!blog.DownloadUrlList)
             {
@@ -641,7 +639,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        private static string Url(TumblrPost downloadItem)
+        protected static string Url(TumblrPost downloadItem)
         {
             return downloadItem.Url;
         }
@@ -651,12 +649,12 @@ namespace TumblThree.Applications.Downloader
             return downloadItem.Url.Split('/').Last();
         }
 
-        private static string FileLocation(string blogDownloadLocation, string fileName)
+        protected static string FileLocation(string blogDownloadLocation, string fileName)
         {
             return Path.Combine(blogDownloadLocation, fileName);
         }
 
-        private static string FileLocationLocalized(string blogDownloadLocation, string fileName)
+        protected static string FileLocationLocalized(string blogDownloadLocation, string fileName)
         {
             return Path.Combine(blogDownloadLocation, string.Format(CultureInfo.CurrentCulture, fileName));
         }
@@ -666,7 +664,7 @@ namespace TumblThree.Applications.Downloader
             return downloadItem.Id;
         }
 
-        private static DateTime PostDate(TumblrPost downloadItem)
+        protected static DateTime PostDate(TumblrPost downloadItem)
         {
             if (!string.IsNullOrEmpty(downloadItem.Date))
             {
