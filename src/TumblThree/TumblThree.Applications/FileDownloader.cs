@@ -28,7 +28,7 @@ namespace TumblThree.Applications
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
             request.ReadWriteTimeout = settings.TimeOut * 1000;
             request.Timeout = -1;
-            //TODO: cookies site specific!
+            //TODO: Fix site specific cookies!
             request.CookieContainer = SharedCookieService.GetUriCookieContainer(new Uri("https://www.tumblr.com/"));
             ServicePointManager.DefaultConnectionLimit = 400;
             request = SetWebRequestProxy(request, settings);
@@ -171,57 +171,6 @@ namespace TumblThree.Applications
                     }
                 }
                 return true;
-            }
-        }
-
-        public async Task<string> TestImageRawUrl(string url, AppSettings settings)
-        {
-            if (settings.ImageSize == "raw")
-            {
-                return await TestRawUrl(url, settings);
-            }
-            return url;
-        }
-
-        public async Task<string> TestRawUrl(string url, AppSettings settings)
-        {
-            if (!url.Contains("_raw"))
-                return url;
-            string path = new Uri(url).LocalPath.TrimStart('/');
-
-            foreach (string host in settings.TumblrHosts)
-            {
-                string rawUrl = "https://" + host + "/" + path;
-                if (await UrlExists(rawUrl, settings))
-                    return rawUrl;
-            }
-
-            foreach (string size in settings.ImageSizes)
-            {
-                string rawUrl = url.Replace(settings.ImageSize, size);
-                if (await UrlExists(rawUrl, settings))
-                    return rawUrl;
-            }
-
-            return url;
-        }
-
-        private async Task<bool> UrlExists(string url, AppSettings settings)
-        {
-            HttpWebRequest request = CreateWebReqeust(url, settings);
-            request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
-            request.Method = "HEAD";
-
-            try
-            {
-                using (var response = (HttpWebResponse)await request.GetResponseAsync())
-                {
-                    return response.StatusCode == HttpStatusCode.OK;
-                }
-            }
-            catch
-            {
-                return false;
             }
         }
 
