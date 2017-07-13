@@ -409,24 +409,29 @@ namespace TumblThree.Applications.Downloader
                         }
                     }
                 }
-
-                //TODO: Refactoring code! Same as above, just with different url. Note: What Url to store in the files DB?
-                url = TestImageRawUrl(url, shellService.Settings);
-                if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url, ct))
+                else
                 {
-                    SetFileDate(fileLocation, postDate);
-                    UpdateBlogPostCount(ref counter.Photos, value => blog.DownloadedPhotos = value);
-                    UpdateBlogProgress(ref counter.TotalDownloads);
-                    UpdateBlogDB(fileName);
-                    if (shellService.Settings.EnablePreview)
+                    //TODO: Refactoring code! Same as above, just with different url. Note: What Url to store in the files DB?
+                    url = TestImageRawUrl(url, shellService.Settings);
+                    fileName = url.Split('/').Last();
+                    fileLocation = FileLocation(blogDownloadLocation, fileName);
+                    UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, fileName);
+                    if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url, ct))
                     {
-                        if (!fileName.EndsWith(".gif"))
+                        SetFileDate(fileLocation, postDate);
+                        UpdateBlogPostCount(ref counter.Photos, value => blog.DownloadedPhotos = value);
+                        UpdateBlogProgress(ref counter.TotalDownloads);
+                        UpdateBlogDB(fileName);
+                        if (shellService.Settings.EnablePreview)
                         {
-                            blog.LastDownloadedPhoto = Path.GetFullPath(fileLocation);
-                        }
-                        else
-                        {
-                            blog.LastDownloadedVideo = Path.GetFullPath(fileLocation);
+                            if (!fileName.EndsWith(".gif"))
+                            {
+                                blog.LastDownloadedPhoto = Path.GetFullPath(fileLocation);
+                            }
+                            else
+                            {
+                                blog.LastDownloadedVideo = Path.GetFullPath(fileLocation);
+                            }
                         }
                     }
                 }
