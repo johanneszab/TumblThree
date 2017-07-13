@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
-using System.Security.AccessControl;
 using System.Windows;
 
 namespace TumblThree.Applications.Properties
