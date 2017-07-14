@@ -651,7 +651,7 @@ namespace TumblThree.Applications.ViewModels
                 PageSize = 50;
                 DownloadRebloggedPosts = true;
                 AutoDownload = false;
-                ForceSize = true;
+                ForceSize = false;
                 CheckDirectoryForFiles = false;
                 DownloadUrlList = false;
                 PortableMode = false;

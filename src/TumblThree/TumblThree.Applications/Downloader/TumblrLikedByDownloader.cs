@@ -196,14 +196,23 @@ namespace TumblThree.Applications.Downloader
         protected override async Task DownloadPhotoAsync(IProgress<DataModels.DownloadProgress> progress, TumblrPost downloadItem, CancellationToken ct)
         {
             string url = Url(downloadItem);
-            url = TestImageRawUrl(url, shellService.Settings);
+            foreach (string host in shellService.Settings.TumblrHosts)
+            {
+                url = BuildRawImageUrl(url, host);
+                if (await DownloadDetectedImageUrl(progress, url, PostDate(downloadItem), ct))
+                    return;
+            }
+            await DownloadDetectedImageUrl(progress, Url(downloadItem), PostDate(downloadItem), ct);
+        }
+
+        private async Task<bool> DownloadDetectedImageUrl(IProgress<DownloadProgress> progress, string url, DateTime postDate, CancellationToken ct)
+        {
             if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(GetCoreImageUrl(url))))
             {
                 string blogDownloadLocation = blog.DownloadLocation();
                 string fileName = url.Split('/').Last();
                 string fileLocation = FileLocation(blogDownloadLocation, fileName);
                 string fileLocationUrlList = FileLocationLocalized(blogDownloadLocation, Resources.FileNamePhotos);
-                DateTime postDate = PostDate(downloadItem);
                 UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, fileName);
                 if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url, ct))
                 {
@@ -222,108 +231,29 @@ namespace TumblThree.Applications.Downloader
                             blog.LastDownloadedVideo = Path.GetFullPath(fileLocation);
                         }
                     }
-                }
-                else
-                {
-                    //TODO: Refactoring code! Same as above, just with different url. Note: What Url to store in the files DB?
-                    url = TestImageRawUrl(url, shellService.Settings);
-                    fileName = url.Split('/').Last();
-                    fileLocation = FileLocation(blogDownloadLocation, fileName);
-                    UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, fileName);
-                    if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url, ct))
-                    {
-                        SetFileDate(fileLocation, postDate);
-                        UpdateBlogPostCount(ref counter.Photos, value => blog.DownloadedPhotos = value);
-                        UpdateBlogProgress(ref counter.TotalDownloads);
-                        UpdateBlogDB(fileName);
-                        if (shellService.Settings.EnablePreview)
-                        {
-                            if (!fileName.EndsWith(".gif"))
-                            {
-                                blog.LastDownloadedPhoto = Path.GetFullPath(fileLocation);
-                            }
-                            else
-                            {
-                                blog.LastDownloadedVideo = Path.GetFullPath(fileLocation);
-                            }
-                        }
-                    }
+                    return true;
                 }
             }
-        }
-
-        public string TestImageRawUrl(string url, AppSettings settings)
-        {
-            if (settings.ImageSize == "raw")
-            {
-                return TestTumblrRawUrl(url, settings);
-            }
-            return url;
+            return false;
         }
 
         /// <summary>
-        /// Instead of testing for valid urls, we just assume they are valid (skips valuable request since the cause high latency).
-        /// The https://media.tumblr.com/ is the most likely host to deliver _raw images followed by the 
-        /// https://68.media.tumblr.com/ host. We only test the media.tumblr.com now and then immediately fallback to the detected
-        /// host and use the _1280 file dimension which should be valid in most cases.
+        /// Builds a tumblr raw image url from any sized tumblr image url if the ImageSize is set to "raw".
         /// </summary>
-        /// <param name="url"></param>
-        /// <param name="settings"></param>
+        /// <param name="url">The url detected from the crawler.</param>
+        /// <param name="host">Hostname to insert in the original url.</param>
         /// <returns></returns>
-        public string TestTumblrRawUrl(string url, AppSettings settings)
+        public string BuildRawImageUrl(string url, string host)
         {
-            if (url.Contains("68.media.tumblr.com") && url.Contains("_raw"))
+            if (shellService.Settings.ImageSize == "raw")
             {
-                return url.Replace("68.media.tumblr.com", "media.tumblr.com");
-            }
-            if (url.Contains("_raw"))
-            {
-                return url.Replace("_raw", "_1280");
+                string path = new Uri(url).LocalPath.TrimStart('/');
+                var imageDimension = new Regex("_\\d+");
+                path = imageDimension.Replace(path, "_raw");
+                return "https://" + host + "/" + path;
             }
             return url;
         }
-
-        //public async Task<string> TestRawUrl(string url, AppSettings settings)
-        //{
-        //    if (!url.Contains("_raw"))
-        //        return url;
-        //    string path = new Uri(url).LocalPath.TrimStart('/');
-
-        //    foreach (string host in settings.TumblrHosts)
-        //    {
-        //        string rawUrl = "https://" + host + "/" + path;
-        //        if (await UrlExists(rawUrl, settings))
-        //            return rawUrl;
-        //    }
-
-        //    foreach (string size in settings.ImageSizes)
-        //    {
-        //        string rawUrl = url.Replace(settings.ImageSize, size);
-        //        if (await UrlExists(rawUrl, settings))
-        //            return rawUrl;
-        //    }
-
-        //    return url;
-        //}
-
-        //private async Task<bool> UrlExists(string url, AppSettings settings)
-        //{
-        //    HttpWebRequest request = CreateWebReqeust(url, settings);
-        //    request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
-        //    request.Method = "HEAD";
-
-        //    try
-        //    {
-        //        using (var response = (HttpWebResponse)await request.GetResponseAsync())
-        //        {
-        //            return response.StatusCode == HttpStatusCode.OK;
-        //        }
-        //    }
-        //    catch
-        //    {
-        //        return false;
-        //    }
-        //}
 
         private void AddPhotoUrlToDownloadList(string document, IList<string> tags)
         {
