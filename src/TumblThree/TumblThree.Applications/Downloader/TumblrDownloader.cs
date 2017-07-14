@@ -511,7 +511,6 @@ namespace TumblThree.Applications.Downloader
         //    }
         //}
 
-
         private void AddPhotoUrlToDownloadList(TumblrJson document, IList<string> tags)
         {
             if (blog.DownloadPhoto)
