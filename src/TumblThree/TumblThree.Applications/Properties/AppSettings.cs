@@ -29,7 +29,7 @@ namespace TumblThree.Applications.Properties
         private static readonly string[] tumblrHosts =
             new string[]
             {
-                        "media.tumblr.com", "68.media.tumblr.com", "66.media.tumblr.com"
+                        "media.tumblr.com"
             };
 
         public AppSettings()
@@ -295,7 +295,7 @@ namespace TumblThree.Applications.Properties
             DownloadRebloggedPosts = true;
             AutoDownload = false;
             TimerInterval = "22:40:00";
-            ForceSize = true;
+            ForceSize = false;
             CheckDirectoryForFiles = false;
             DownloadUrlList = false;
             PortableMode = false;
