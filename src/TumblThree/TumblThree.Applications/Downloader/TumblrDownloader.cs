@@ -426,8 +426,9 @@ namespace TumblThree.Applications.Downloader
                     }
                     return true;
                 }
+                return false;
             }
-            return false;
+            return true;
         }
 
         /// <summary>
