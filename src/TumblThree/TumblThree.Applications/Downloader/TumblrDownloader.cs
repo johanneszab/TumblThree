@@ -415,12 +415,19 @@ namespace TumblThree.Applications.Downloader
         protected override async Task DownloadPhotoAsync(IProgress<DataModels.DownloadProgress> progress, TumblrPost downloadItem, CancellationToken ct)
         {
             string url = Url(downloadItem);
+
+            if (blog.ForceSize)
+            {
+                url = ResizeTumblrImageUrl(url);
+            }
+
             foreach (string host in shellService.Settings.TumblrHosts)
             {
                 url = BuildRawImageUrl(url, host);
                 if (await DownloadDetectedImageUrl(progress, url, PostDate(downloadItem), ct))
                     return;
             }
+
             await DownloadDetectedImageUrl(progress, Url(downloadItem), PostDate(downloadItem), ct);
         }
 
@@ -731,11 +738,6 @@ namespace TumblThree.Applications.Downloader
             string imageUrl = post.Elements("photo-url")
                       .FirstOrDefault(photo_url => photo_url.Attribute("max-width")
                       .Value == ImageSize()).Value;
-
-            if (blog.ForceSize)
-            {
-                imageUrl = ResizeTumblrImageUrl(imageUrl);
-            }
 
             return imageUrl;
         }
