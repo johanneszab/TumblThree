@@ -229,17 +229,23 @@ namespace TumblThree.Applications.Downloader
             }
             catch (IOException ex) when ((ex.HResult & 0xFFFF) == 0x27 || (ex.HResult & 0xFFFF) == 0x70)
             {
+                // Disk Full, HRESULT: ‭-2147024784‬ == 0xFFFFFFFF80070070
                 Logger.Error("ManagerController:Download: {0}", ex);
                 shellService.ShowError(ex, Resources.DiskFull);
                 crawlerService.StopCommand.Execute(null);
                 return false;
             }
+            catch (IOException ex) when ((ex.HResult & 0xFFFF) == 0x20)
+            {
+                // The process cannot access the file because it is being used by another process.", HRESULT: -2147024864 == 0xFFFFFFFF80070020
+                return true;
+            }
             catch (WebException webException) when ((webException.Response != null))
             {
                 var webRespStatusCode = (int)((HttpWebResponse)webException?.Response).StatusCode;
-                if (webRespStatusCode >= 400 && webRespStatusCode < 600) // removes inaccessible files: status code 400 -- 599
+                if (webRespStatusCode >= 400 && webRespStatusCode < 600) // removes inaccessible files: http status codes 400 to 599
                 {
-                    try { File.Delete(fileLocation); }
+                    try { File.Delete(fileLocation); } // could be open again in a different thread
                     catch { }
                 }
                 return false;
