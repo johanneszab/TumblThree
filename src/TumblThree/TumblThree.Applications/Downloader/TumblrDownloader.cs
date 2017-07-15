@@ -82,18 +82,25 @@ namespace TumblThree.Applications.Downloader
             UpdateProgressQueueInformation(progress, "");
         }
 
+        private string ImageSize()
+        {
+            if (shellService.Settings.ImageSize == "raw")
+                return "1280";
+            return shellService.Settings.ImageSize;
+        }
+
         private string ResizeTumblrImageUrl(string imageUrl)
         {
             var sb = new StringBuilder(imageUrl);
             return sb
-                .Replace("_raw", "_" + shellService.Settings.ImageSize)
-                .Replace("_1280", "_" + shellService.Settings.ImageSize)
-                .Replace("_540", "_" + shellService.Settings.ImageSize)
-                .Replace("_500", "_" + shellService.Settings.ImageSize)
-                .Replace("_400", "_" + shellService.Settings.ImageSize)
-                .Replace("_250", "_" + shellService.Settings.ImageSize)
-                .Replace("_100", "_" + shellService.Settings.ImageSize)
-                .Replace("_75sq", "_" + shellService.Settings.ImageSize)
+                .Replace("_raw", "_" + ImageSize())
+                .Replace("_1280", "_" + ImageSize())
+                .Replace("_540", "_" + ImageSize())
+                .Replace("_500", "_" + ImageSize())
+                .Replace("_400", "_" + ImageSize())
+                .Replace("_250", "_" + ImageSize())
+                .Replace("_100", "_" + ImageSize())
+                .Replace("_75sq", "_" + ImageSize())
                 .ToString();
         }
 
@@ -478,13 +485,12 @@ namespace TumblThree.Applications.Downloader
             string postId = post.id;
             foreach (Photo photo in post.photos)
             {
-                string imageUrl = photo.original_size.url;
+                string imageUrl = photo.alt_sizes.Where(url => url.width == int.Parse(ImageSize())).Select(url => url.url).FirstOrDefault();
 
                 if (blog.SkipGif && imageUrl.EndsWith(".gif"))
                 {
                     continue;
                 }
-                imageUrl = ResizeTumblrImageUrl(imageUrl);
 
                 AddToDownloadList(new TumblrPost(PostTypes.Photo, imageUrl, postId, post.timestamp.ToString()));
             }
