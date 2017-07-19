@@ -497,6 +497,8 @@ namespace TumblThree.Applications.Downloader
             foreach (Photo photo in post.photos)
             {
                 string imageUrl = photo.alt_sizes.Where(url => url.width == int.Parse(ImageSize())).Select(url => url.url).FirstOrDefault();
+                if (imageUrl == null)
+                    imageUrl = photo.alt_sizes.FirstOrDefault().url;
 
                 if (blog.SkipGif && imageUrl.EndsWith(".gif"))
                 {

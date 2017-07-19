@@ -116,6 +116,9 @@ namespace TumblThree.Applications.Properties
         public long Bandwidth { get; set; }
 
         [DataMember]
+        public int BufferSize { get; set; }
+
+        [DataMember]
         public string ImageSize { get; set; }
 
         [DataMember]
@@ -270,6 +273,7 @@ namespace TumblThree.Applications.Properties
             ConnectionTimeInterval = 60;
             MaxNumberOfRetries = 10;
             Bandwidth = 0;
+            BufferSize = 512;
             ImageSize = "raw";
             VideoSize = 1080;
             BlogType = "None";

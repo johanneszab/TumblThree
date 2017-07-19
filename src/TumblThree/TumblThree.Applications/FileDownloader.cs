@@ -11,7 +11,7 @@ namespace TumblThree.Applications
 {
     class FileDownloader
     {
-        public static readonly int BufferSize = 4096;
+        public static readonly int BufferSize = 512 * 4096;
         public event EventHandler Completed;
         public event EventHandler<DownloadProgressChangedEventArgs> ProgressChanged;
 
@@ -89,6 +89,7 @@ namespace TumblThree.Applications
         {
             long totalBytesReceived = 0;
             var attemptCount = 0;
+            int bufferSize = settings.BufferSize * 4096;
 
             if (File.Exists(destinationPath))
             {
@@ -102,7 +103,7 @@ namespace TumblThree.Applications
 
             FileMode fileMode = totalBytesReceived > 0 ? FileMode.Append : FileMode.Create;
 
-            using (var fileStream = new FileStream(destinationPath, fileMode, FileAccess.Write, FileShare.Read, BufferSize, true))
+            using (var fileStream = new FileStream(destinationPath, fileMode, FileAccess.Write, FileShare.Read, bufferSize, true))
             {
                 while (true)
                 {
@@ -127,7 +128,7 @@ namespace TumblThree.Applications
                             {
                                 using (Stream throttledStream = GetStreamForDownload(responseStream, settings))
                                 {
-                                    var buffer = new byte[BufferSize];
+                                    var buffer = new byte[bufferSize];
                                     var bytesRead = 0;
                                     //Stopwatch sw = Stopwatch.StartNew();
 
