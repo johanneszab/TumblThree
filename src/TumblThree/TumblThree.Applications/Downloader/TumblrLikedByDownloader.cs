@@ -143,7 +143,7 @@ namespace TumblThree.Applications.Downloader
 
                         await AddUrlsToDownloadList(document, progress, crawlerNumber, ct, pt);
                     }
-                    catch (WebException)
+                    catch
                     {
                     }
                     finally
