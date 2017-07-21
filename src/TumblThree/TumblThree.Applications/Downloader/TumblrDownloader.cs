@@ -255,6 +255,9 @@ namespace TumblThree.Applications.Downloader
                             shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
                         }
                     }
+                    catch
+                    {
+                    }
                     finally
                     {
                         semaphoreSlim.Release();
