@@ -165,7 +165,6 @@ namespace TumblThree.Applications.Downloader
         private async void SetUp()
         {
             CreateDataFolder();
-            await IsBlogOnlineAsync();
         }
 
         protected virtual bool CheckIfFileExistsInDB(string url)
