@@ -160,7 +160,6 @@ namespace TumblThree.Applications.Downloader
         private async void SetUp()
         {
             CreateDataFolder();
-            await IsBlogOnlineAsync();
         }
 
         protected void CleanCollectedBlogStatistics()

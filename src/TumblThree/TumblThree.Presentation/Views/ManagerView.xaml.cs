@@ -92,7 +92,8 @@ namespace TumblThree.Presentation.Views
 
         private void DataGridRowMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            ViewModel.CrawlerService.EnqueueSelectedCommand.Execute(null);
+            if (ViewModel.CrawlerService.EnqueueSelectedCommand.CanExecute(null))
+                ViewModel.CrawlerService.EnqueueSelectedCommand.Execute(null);
         }
 
         private void DataGridRowMouseMove(object sender, MouseEventArgs e)

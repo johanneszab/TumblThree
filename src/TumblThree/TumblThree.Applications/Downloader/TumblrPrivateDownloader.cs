@@ -55,11 +55,15 @@ namespace TumblThree.Applications.Downloader
             }
             catch (WebException webException)
             {
-                if (webException.Message.Contains("503"))
+                var webRespStatusCode = (int)((HttpWebResponse)webException?.Response).StatusCode;
+                if (webRespStatusCode == 503)
                 {
                     Logger.Error("TumblrDownloader:GetUrlsAsync: {0}", "User not logged in");
                     shellService.ShowError(new Exception("User not logged in"), Resources.NotLoggedIn, blog.Name);
-                    return;
+                }
+                else
+                {
+                    blog.Online = false;
                 }
             }
         }
