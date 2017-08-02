@@ -38,6 +38,20 @@ namespace TumblThree.Applications.Downloader
             this.blog = blog;
         }
 
+
+        public new async Task IsBlogOnlineAsync()
+        {
+            try
+            {
+                string document = await GetSvcPageAsync("1", "0");
+                blog.Online = true;
+            }
+            catch (WebException)
+            {
+                blog.Online = false;
+            }
+        }
+
         public override async Task UpdateMetaInformationAsync()
         {
             if (blog.Online)
