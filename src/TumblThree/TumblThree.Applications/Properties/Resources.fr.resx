@@ -1,0 +1,309 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ApplicationUpToDate" xml:space="preserve">
+    <value>Votre application est à jour.</value>
+  </data>
+  <data name="AudioCaption" xml:space="preserve">
+    <value>Légende audio: {0}</value>
+  </data>
+  <data name="AuthenticationFailure" xml:space="preserve">
+    <value>Échec d'authentification: {0}</value>
+  </data>
+  <data name="BlogAlreadyExist" xml:space="preserve">
+    <value>Le blog existe déjà: {0}</value>
+  </data>
+  <data name="BlogIsOffline" xml:space="preserve">
+    <value>Le blog est hors ligne: {0}</value>
+  </data>
+  <data name="BlogTypesAll" xml:space="preserve">
+    <value>Tout</value>
+  </data>
+  <data name="BlogTypesNeverFinished" xml:space="preserve">
+    <value>Jamais fini</value>
+  </data>
+  <data name="BlogTypesNone" xml:space="preserve">
+    <value>Aucun</value>
+  </data>
+  <data name="BlogTypesOnceFinished" xml:space="preserve">
+    <value>Une fois terminé</value>
+  </data>
+  <data name="Body" xml:space="preserve">
+    <value>Corps: {0]</value>
+  </data>
+  <data name="Conversation" xml:space="preserve">
+    <value>Conversation: {0}</value>
+  </data>
+  <data name="CouldNotAddBlog" xml:space="preserve">
+    <value>Impossible d'ajouter le blog:  {0}</value>
+  </data>
+  <data name="CouldNotLoadLibrary" xml:space="preserve">
+    <value>Impossible de charger le fichier dans la bibliothèque: {0}</value>
+  </data>
+  <data name="CouldNotLoadQueuelist" xml:space="preserve">
+    <value>Le noeliste ne pouvait pas être chargé. Peut-être que certains blogs référencés n'existent plus.</value>
+  </data>
+  <data name="CouldNotOpenFiles" xml:space="preserve">
+    <value>Un fichier n'a pas pu être ouvert.</value>
+  </data>
+  <data name="CouldNotRemoveBlog" xml:space="preserve">
+    <value>Impossible de supprimer le blog: {0}</value>
+  </data>
+  <data name="CouldNotRemoveBlogIndex" xml:space="preserve">
+    <value>Impossible de supprimer le blog: {0}</value>
+  </data>
+  <data name="CouldNotRestoreUISettings" xml:space="preserve">
+    <value>Impossible de restaurer les paramètres de l'interface utilisateur.</value>
+  </data>
+  <data name="CouldNotSaveBlog" xml:space="preserve">
+    <value>Impossible de sauvegarder le blog: {0}</value>
+  </data>
+  <data name="CouldNotSaveQueueList" xml:space="preserve">
+    <value>Le noeliste ne pouvait pas être sauvé.</value>
+  </data>
+  <data name="CouldNotStartOAuthManager" xml:space="preserve">
+    <value>Impossible d'initialiser le gestionnaire OAuth</value>
+  </data>
+  <data name="CrawlerError" xml:space="preserve">
+    <value>Le fil de la chaîne a rencontré une erreur.</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date: {0}</value>
+  </data>
+  <data name="DiskFull" xml:space="preserve">
+    <value>Il n'y a pas assez d'espace sur le disque.</value>
+  </data>
+  <data name="ExportFileFilter" xml:space="preserve">
+    <value>Fichiers texte (* .txt) | * .txt</value>
+  </data>
+  <data name="ExportFileFilterExtension" xml:space="preserve">
+    <value>.txt</value>
+  </data>
+  <data name="FileNameAnswers" xml:space="preserve">
+    <value>réponses.txt</value>
+  </data>
+  <data name="FileNameAudios" xml:space="preserve">
+    <value>audios_url.txt</value>
+  </data>
+  <data name="FileNameConversations" xml:space="preserve">
+    <value>conversations.txt</value>
+  </data>
+  <data name="FileNameLinks" xml:space="preserve">
+    <value>links.txt</value>
+  </data>
+  <data name="FileNameMetaAudio" xml:space="preserve">
+    <value>audios.txt</value>
+  </data>
+  <data name="FileNameMetaPhoto" xml:space="preserve">
+    <value>images.txt</value>
+  </data>
+  <data name="FileNameMetaVideo" xml:space="preserve">
+    <value>videos.txt</value>
+  </data>
+  <data name="FileNamePhotos" xml:space="preserve">
+    <value>images_url.txt</value>
+  </data>
+  <data name="FileNameQuotes" xml:space="preserve">
+    <value>Citations.txt</value>
+  </data>
+  <data name="FileNameTexts" xml:space="preserve">
+    <value>textes.txt</value>
+  </data>
+  <data name="FileNameVideos" xml:space="preserve">
+    <value>videos_url.txt</value>
+  </data>
+  <data name="Id3Album" xml:space="preserve">
+    <value>Id3: Album: {0}</value>
+  </data>
+  <data name="Id3Artist" xml:space="preserve">
+    <value>Id3: Artist: {0}</value>
+  </data>
+  <data name="Id3Title" xml:space="preserve">
+    <value>Id3: Title: {0}</value>
+  </data>
+  <data name="Id3Track" xml:space="preserve">
+    <value>Id3: Track: {0}</value>
+  </data>
+  <data name="Id3Year" xml:space="preserve">
+    <value>Id3: Year: {0}</value>
+  </data>
+  <data name="LimitExceeded" xml:space="preserve">
+    <value>Limite dépassée: {0}. Vous devez réduire les connexions au tumblr api.</value>
+  </data>
+  <data name="Link" xml:space="preserve">
+    <value>Link: {0}</value>
+  </data>
+  <data name="MaxBytePerSecond" xml:space="preserve">
+    <value>MaxBytesPerSecond doit être non négatif.</value>
+  </data>
+  <data name="NewVersionAvailable" xml:space="preserve">
+    <value>Nouvelle version disponible pour téléchargement: {0}</value>
+  </data>
+  <data name="NotLoggedIn" xml:space="preserve">
+    <value>Vous devez vous connecter à tumblr.com pour télécharger {0}. Accédez aux Paramètres-> Authentification.</value>
+  </data>
+  <data name="PhotoCaption" xml:space="preserve">
+    <value>Photo Caption: {0}</value>
+  </data>
+  <data name="PhotoUrl" xml:space="preserve">
+    <value>Photo Url: {0}</value>
+  </data>
+  <data name="PostId" xml:space="preserve">
+    <value>Post ID: {0}</value>
+  </data>
+  <data name="ProgressDownloadImage" xml:space="preserve">
+    <value>Téléchargement de {0}.</value>
+  </data>
+  <data name="ProgressGetUrlLong" xml:space="preserve">
+    <value>Evalué {0} tumblr post urls out of {1} total des publications.</value>
+  </data>
+  <data name="ProgressGetUrlShort" xml:space="preserve">
+    <value>Evalué {0} sites de tumblr blog.</value>
+  </data>
+  <data name="ProgressUniqueDownloads" xml:space="preserve">
+    <value>Calcul des téléchargements uniques, suppression des doublons ...</value>
+  </data>
+  <data name="Queuelist" xml:space="preserve">
+    <value>Liste des files d'attente</value>
+  </data>
+  <data name="Quote" xml:space="preserve">
+    <value>Quote: {0}</value>
+  </data>
+  <data name="ReblogKey" xml:space="preserve">
+    <value>Reblog key: {0}</value>
+  </data>
+  <data name="ReblogName" xml:space="preserve">
+    <value>Reblog Name: {0}</value>
+  </data>
+  <data name="ReblogUrl" xml:space="preserve">
+    <value>Reblog Url: {0}</value>
+  </data>
+  <data name="Tags" xml:space="preserve">
+    <value>Mots clés: {0}</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Titre: {0}</value>
+  </data>
+  <data name="UrlWithSlug" xml:space="preserve">
+    <value>Url with slug: {0}</value>
+  </data>
+  <data name="VideoPlayer" xml:space="preserve">
+    <value>Video Player: {0}</value>
+  </data>
+</root>
