@@ -47,7 +47,7 @@ namespace TumblThree.Applications.Downloader
             {
                 XDocument document = await GetApiPageAsync(1);
 
-                if (document.Root.Descendants().Any())
+                if (document.Root != null)
                 {
                     blog.Title = document.Element("tumblr").Element("tumblelog").Attribute("title")?.Value;
                     blog.Description = document.Element("tumblr").Element("tumblelog")?.Value;
@@ -111,10 +111,6 @@ namespace TumblThree.Applications.Downloader
                         }
                     }
                 }
-            }
-            catch
-            {
-                return new XDocument();
             }
             finally
             {
