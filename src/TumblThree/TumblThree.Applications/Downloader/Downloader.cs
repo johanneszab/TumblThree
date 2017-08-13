@@ -20,40 +20,36 @@ namespace TumblThree.Applications.Downloader
 {
     public abstract class Downloader
     {
-        private readonly IBlog blog;
-        private readonly ICrawlerService crawlerService;
+        protected readonly IBlog blog;
+        protected readonly ICrawlerService crawlerService;
         protected readonly PostCounter counter;
         protected readonly IFiles files;
-        protected readonly object lockObjectDb;
-        protected readonly object lockObjectDirectory;
-        protected readonly object lockObjectDownload;
-        protected readonly object lockObjectProgress;
-        protected readonly BlockingCollection<TumblrPost> producerConsumerCollection;
-        private readonly IShellService shellService;
-        protected ConcurrentBag<TumblrPost> statisticsBag;
+        protected readonly IProgress<DownloadProgress> progress;
+        protected readonly object lockObjectDb = new object();
+        protected readonly object lockObjectDirectory = new object();
+        protected readonly object lockObjectDownload = new object();
+        protected readonly object lockObjectProgress = new object();
+        protected readonly BlockingCollection<TumblrPost> producerConsumerCollection = new BlockingCollection<TumblrPost>();
+        protected readonly IShellService shellService;
+        protected readonly CancellationToken ct;
+        protected readonly PauseToken pt;
+        protected readonly FileDownloader fileDownloader;
+        protected ConcurrentBag<TumblrPost> statisticsBag = new ConcurrentBag<TumblrPost>();
 
-        protected Downloader(IShellService shellService, ICrawlerService crawlerService = null, IBlog blog = null)
+        protected Downloader(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, PostCounter counter, FileDownloader fileDownloader, ICrawlerService crawlerService = null, IBlog blog = null, IFiles files = null)
         {
             this.shellService = shellService;
             this.crawlerService = crawlerService;
             this.blog = blog;
-            counter = new PostCounter(blog);
-            files = LoadFiles();
-            lockObjectDb = new object();
-            lockObjectDirectory = new object();
-            lockObjectDownload = new object();
-            lockObjectProgress = new object();
-            statisticsBag = new ConcurrentBag<TumblrPost>();
-            producerConsumerCollection = new BlockingCollection<TumblrPost>();
-            SetUp();
+            this.ct = ct;
+            this.pt = pt;
+            this.progress = progress;
+            this.files = files;
+            this.counter = counter;
+            this.fileDownloader = fileDownloader;
         }
 
-        private IFiles LoadFiles()
-        {
-            return new Files().Load(blog.ChildId);
-        }
-
-        protected virtual HttpWebRequest CreateWebReqeust(string url)
+        protected HttpWebRequest CreateWebReqeust(string url)
         {
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "GET";
@@ -64,6 +60,10 @@ namespace TumblThree.Applications.Downloader
             request.KeepAlive = true;
             request.Pipelined = true;
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+            // Timeouts don't work with GetResponseAsync() as it internally uses BeginGetResponse.
+            // See docs: https://msdn.microsoft.com/en-us/library/system.net.httpwebrequest.timeout(v=vs.110).aspx
+            // Quote: The Timeout property has no effect on asynchronous requests made with the BeginGetResponse or BeginGetRequestStream method.
+            // TODO: Use HttpClient instead?
             request.ReadWriteTimeout = shellService.Settings.TimeOut * 1000;
             request.Timeout = -1;
             request.CookieContainer = SharedCookieService.GetUriCookieContainer(new Uri("https://www.tumblr.com/"));
@@ -152,19 +152,14 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        protected void CleanCollectedBlogStatistics()
-        {
-            statisticsBag = null;
-        }
-
         public virtual async Task UpdateMetaInformationAsync()
         {
             await Task.FromResult<object>(null);
         }
 
-        private async void SetUp()
+        protected void CleanCollectedBlogStatistics()
         {
-            CreateDataFolder();
+            statisticsBag = null;
         }
 
         protected virtual bool CheckIfFileExistsInDB(string url)
@@ -203,8 +198,7 @@ namespace TumblThree.Applications.Downloader
             return false;
         }
 
-        protected virtual void UpdateProgressQueueInformation(IProgress<DataModels.DownloadProgress> progress, string format,
-            params object[] args)
+        protected virtual void UpdateProgressQueueInformation(string format, params object[] args)
         {
             var newProgress = new DataModels.DownloadProgress
             {
@@ -218,13 +212,11 @@ namespace TumblThree.Applications.Downloader
             return url;
         }
 
-        protected virtual async Task<bool> DownloadBinaryFile(string fileLocation, string url, CancellationToken ct)
+        protected virtual async Task<bool> DownloadBinaryFile(string fileLocation, string url)
         {
             try
             {
-                var fileDownloader = new FileDownloader();
-                return await fileDownloader.DownloadFileWithResumeAsync(url, fileLocation,
-                    shellService.Settings, ct);
+                return await fileDownloader.DownloadFileWithResumeAsync(url, fileLocation);
             }
             catch (IOException ex) when ((ex.HResult & 0xFFFF) == 0x27 || (ex.HResult & 0xFFFF) == 0x70)
             {
@@ -255,11 +247,11 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        protected virtual async Task<bool> DownloadBinaryFile(string fileLocation, string fileLocationUrlList, string url, CancellationToken ct)
+        protected virtual async Task<bool> DownloadBinaryFile(string fileLocation, string fileLocationUrlList, string url)
         {
             if (!blog.DownloadUrlList)
             {
-                return await DownloadBinaryFile(fileLocation, url, ct);
+                return await DownloadBinaryFile(fileLocation, url);
             }
             else
             {
@@ -313,8 +305,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        protected virtual async Task<bool> DownloadBlogAsync(IProgress<DataModels.DownloadProgress> progress, CancellationToken ct,
-            PauseToken pt)
+        protected virtual async Task<bool> DownloadBlogAsync()
         {
             var semaphoreSlim = new SemaphoreSlim(shellService.Settings.ParallelImages / crawlerService.ActiveItems.Count);
             var trackedTasks = new List<Task>();
@@ -337,7 +328,7 @@ namespace TumblThree.Applications.Downloader
 
                 trackedTasks.Add(new Func<Task>(async () =>
                 {
-                    try { await DownloadPostAsync(progress, ct, downloadItem); }
+                    try { await DownloadPostAsync(downloadItem); }
                     catch { }
                     finally { semaphoreSlim.Release(); }
                 })());
@@ -353,50 +344,49 @@ namespace TumblThree.Applications.Downloader
             return completeDownload;
         }
 
-        private async Task DownloadPostAsync(IProgress<DownloadProgress> progress, CancellationToken ct, TumblrPost downloadItem)
+        private async Task DownloadPostAsync(TumblrPost downloadItem)
         {
             switch (downloadItem.PostType)
             {
                 case PostTypes.Photo:
-                    await DownloadPhotoAsync(progress, downloadItem, ct);
+                    await DownloadPhotoAsync(downloadItem);
                     break;
                 case PostTypes.Video:
-                    await DownloadVideoAsync(progress, downloadItem, ct);
+                    await DownloadVideoAsync(downloadItem);
                     break;
                 case PostTypes.Audio:
-                    await DownloadAudioAsync(progress, downloadItem, ct);
+                    await DownloadAudioAsync(downloadItem);
                     break;
                 case PostTypes.Text:
-                    DownloadText(progress, downloadItem);
+                    DownloadText(downloadItem);
                     break;
                 case PostTypes.Quote:
-                    DownloadQuote(progress, downloadItem);
+                    DownloadQuote(downloadItem);
                     break;
                 case PostTypes.Link:
-                    DownloadLink(progress, downloadItem);
+                    DownloadLink(downloadItem);
                     break;
                 case PostTypes.Conversation:
-                    DownloadConversation(progress, downloadItem);
+                    DownloadConversation(downloadItem);
                     break;
                 case PostTypes.Answer:
-                    DownloadAnswer(progress, downloadItem);
+                    DownloadAnswer(downloadItem);
                     break;
                 case PostTypes.PhotoMeta:
-                    DownloadPhotoMeta(progress, downloadItem);
+                    DownloadPhotoMeta(downloadItem);
                     break;
                 case PostTypes.VideoMeta:
-                    DownloadVideoMeta(progress, downloadItem);
+                    DownloadVideoMeta(downloadItem);
                     break;
                 case PostTypes.AudioMeta:
-                    DownloadAudioMeta(progress, downloadItem);
+                    DownloadAudioMeta(downloadItem);
                     break;
                 default:
                     break;
             }
         }
 
-        protected virtual async Task DownloadPhotoAsync(IProgress<DataModels.DownloadProgress> progress,
-            TumblrPost downloadItem, CancellationToken ct)
+        protected virtual async Task DownloadPhotoAsync(TumblrPost downloadItem)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string url = Url(downloadItem);
@@ -407,8 +397,8 @@ namespace TumblThree.Applications.Downloader
 
             if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(GetCoreImageUrl(url))))
             {
-                UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, fileName);
-                if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url, ct))
+                UpdateProgressQueueInformation(Resources.ProgressDownloadImage, fileName);
+                if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url))
                 {
                     SetFileDate(fileLocation, postDate);
                     UpdateBlogPostCount(ref counter.Photos, value => blog.DownloadedPhotos = value);
@@ -429,8 +419,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        private async Task DownloadVideoAsync(IProgress<DataModels.DownloadProgress> progress,
-            TumblrPost downloadItem, CancellationToken ct)
+        private async Task DownloadVideoAsync(TumblrPost downloadItem)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string fileName = FileName(downloadItem);
@@ -441,8 +430,8 @@ namespace TumblThree.Applications.Downloader
 
             if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(url)))
             {
-                UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, fileName);
-                if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url, ct))
+                UpdateProgressQueueInformation(Resources.ProgressDownloadImage, fileName);
+                if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url))
                 {
                     SetFileDate(fileLocation, postDate);
                     UpdateBlogPostCount(ref counter.Videos, value => blog.DownloadedVideos = value);
@@ -456,8 +445,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        private async Task DownloadAudioAsync(IProgress<DataModels.DownloadProgress> progress,
-            TumblrPost downloadItem, CancellationToken ct)
+        private async Task DownloadAudioAsync(TumblrPost downloadItem)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string fileName = FileName(downloadItem);
@@ -468,8 +456,8 @@ namespace TumblThree.Applications.Downloader
 
             if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(url)))
             {
-                UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, fileName);
-                if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url, ct))
+                UpdateProgressQueueInformation(Resources.ProgressDownloadImage, fileName);
+                if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url))
                 {
                     SetFileDate(fileLocation, postDate);
                     UpdateBlogPostCount(ref counter.Audios, value => blog.DownloadedAudios = value);
@@ -479,7 +467,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        private void DownloadText(IProgress<DataModels.DownloadProgress> progress, TumblrPost downloadItem)
+        private void DownloadText(TumblrPost downloadItem)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string url = Url(downloadItem);
@@ -488,7 +476,7 @@ namespace TumblThree.Applications.Downloader
 
             if (!CheckIfFileExistsInDB(postId))
             {
-                UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, postId);
+                UpdateProgressQueueInformation(Resources.ProgressDownloadImage, postId);
                 if (AppendToTextFile(fileLocation, url))
                 {
                     UpdateBlogPostCount(ref counter.Audios, value => blog.DownloadedTexts = value);
@@ -498,7 +486,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        private void DownloadQuote(IProgress<DataModels.DownloadProgress> progress, TumblrPost downloadItem)
+        private void DownloadQuote(TumblrPost downloadItem)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string url = Url(downloadItem);
@@ -507,7 +495,7 @@ namespace TumblThree.Applications.Downloader
 
             if (!CheckIfFileExistsInDB(postId))
             {
-                UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, postId);
+                UpdateProgressQueueInformation(Resources.ProgressDownloadImage, postId);
                 if (AppendToTextFile(fileLocation, url))
                 {
                     UpdateBlogPostCount(ref counter.Quotes, value => blog.DownloadedQuotes = value);
@@ -517,7 +505,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        private void DownloadLink(IProgress<DataModels.DownloadProgress> progress, TumblrPost downloadItem)
+        private void DownloadLink(TumblrPost downloadItem)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string url = Url(downloadItem);
@@ -526,7 +514,7 @@ namespace TumblThree.Applications.Downloader
 
             if (!CheckIfFileExistsInDB(postId))
             {
-                UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, postId);
+                UpdateProgressQueueInformation(Resources.ProgressDownloadImage, postId);
                 if (AppendToTextFile(fileLocation, url))
                 {
                     UpdateBlogPostCount(ref counter.Links, value => blog.DownloadedLinks = value);
@@ -536,8 +524,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        private void DownloadConversation(IProgress<DataModels.DownloadProgress> progress,
-            TumblrPost downloadItem)
+        private void DownloadConversation(TumblrPost downloadItem)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string url = Url(downloadItem);
@@ -546,7 +533,7 @@ namespace TumblThree.Applications.Downloader
 
             if (!CheckIfFileExistsInDB(postId))
             {
-                UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, postId);
+                UpdateProgressQueueInformation(Resources.ProgressDownloadImage, postId);
                 if (AppendToTextFile(fileLocation, url))
                 {
                     UpdateBlogPostCount(ref counter.Conversations, value => blog.DownloadedConversations = value);
@@ -556,8 +543,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        private void DownloadAnswer(IProgress<DataModels.DownloadProgress> progress,
-            TumblrPost downloadItem)
+        private void DownloadAnswer(TumblrPost downloadItem)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string url = Url(downloadItem);
@@ -566,7 +552,7 @@ namespace TumblThree.Applications.Downloader
 
             if (!CheckIfFileExistsInDB(postId))
             {
-                UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, postId);
+                UpdateProgressQueueInformation(Resources.ProgressDownloadImage, postId);
                 if (AppendToTextFile(fileLocation, url))
                 {
                     UpdateBlogPostCount(ref counter.Answers, value => blog.DownloadedAnswers = value);
@@ -576,8 +562,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        private void DownloadPhotoMeta(IProgress<DataModels.DownloadProgress> progress,
-            TumblrPost downloadItem)
+        private void DownloadPhotoMeta(TumblrPost downloadItem)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string url = Url(downloadItem);
@@ -586,7 +571,7 @@ namespace TumblThree.Applications.Downloader
 
             if (!CheckIfFileExistsInDB(postId))
             {
-                UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, postId);
+                UpdateProgressQueueInformation(Resources.ProgressDownloadImage, postId);
                 if (AppendToTextFile(fileLocation, url))
                 {
                     UpdateBlogPostCount(ref counter.PhotoMetas, value => blog.DownloadedPhotoMetas = value);
@@ -596,8 +581,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        private void DownloadVideoMeta(IProgress<DataModels.DownloadProgress> progress,
-            TumblrPost downloadItem)
+        private void DownloadVideoMeta(TumblrPost downloadItem)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string url = Url(downloadItem);
@@ -606,7 +590,7 @@ namespace TumblThree.Applications.Downloader
 
             if (!CheckIfFileExistsInDB(postId))
             {
-                UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, postId);
+                UpdateProgressQueueInformation(Resources.ProgressDownloadImage, postId);
                 if (AppendToTextFile(fileLocation, url))
                 {
                     UpdateBlogPostCount(ref counter.VideoMetas, value => blog.DownloadedVideoMetas = value);
@@ -616,8 +600,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        private void DownloadAudioMeta(IProgress<DataModels.DownloadProgress> progress,
-            TumblrPost downloadItem)
+        private void DownloadAudioMeta(TumblrPost downloadItem)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string url = Url(downloadItem);
@@ -626,7 +609,7 @@ namespace TumblThree.Applications.Downloader
 
             if (!CheckIfFileExistsInDB(postId))
             {
-                UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, postId);
+                UpdateProgressQueueInformation(Resources.ProgressDownloadImage, postId);
                 if (AppendToTextFile(fileLocation, url))
                 {
                     UpdateBlogPostCount(ref counter.AudioMetas, value => blog.DownloadedAudioMetas = value);

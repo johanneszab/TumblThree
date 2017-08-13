@@ -1,4 +1,8 @@
-﻿using TumblThree.Applications.Services;
+﻿using System;
+using System.Threading;
+
+using TumblThree.Applications.DataModels;
+using TumblThree.Applications.Services;
 using TumblThree.Domain.Models;
 
 namespace TumblThree.Applications.Downloader
@@ -7,6 +11,6 @@ namespace TumblThree.Applications.Downloader
     {
         IDownloader GetDownloader(BlogTypes blogTypes);
 
-        IDownloader GetDownloader(BlogTypes blogTypes, IShellService shellService, ICrawlerService crawlerService, IBlog blog);
+        IDownloader GetDownloader(BlogTypes blogTypes, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, IShellService shellService, ICrawlerService crawlerService, IBlog blog);
     }
 }

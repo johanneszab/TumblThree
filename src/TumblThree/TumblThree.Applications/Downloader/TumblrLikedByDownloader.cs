@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -21,29 +20,24 @@ namespace TumblThree.Applications.Downloader
     [ExportMetadata("BlogType", BlogTypes.tlb)]
     public class TumblrLikedByDownloader : Downloader, IDownloader
     {
-        private readonly IBlog blog;
-        private readonly ICrawlerService crawlerService;
-        private readonly IShellService shellService;
+
         private int numberOfPagesCrawled = 0;
 
-        public TumblrLikedByDownloader(IShellService shellService, ICrawlerService crawlerService, IBlog blog)
-            : base(shellService, crawlerService, blog)
+        public TumblrLikedByDownloader(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, PostCounter counter, FileDownloader fileDownloader, ICrawlerService crawlerService, IBlog blog, IFiles files)
+            : base(shellService, ct, pt, progress, counter, fileDownloader, crawlerService, blog, files)
         {
-            this.shellService = shellService;
-            this.crawlerService = crawlerService;
-            this.blog = blog;
         }
 
-        public async Task Crawl(IProgress<DownloadProgress> progress, CancellationToken ct, PauseToken pt)
+        public async Task Crawl()
         {
             Logger.Verbose("TumblrLikedByDownloader.Crawl:Start");
 
-            Task grabber = GetUrlsAsync(progress, ct, pt);
-            Task<bool> downloader = DownloadBlogAsync(progress, ct, pt);
+            Task grabber = GetUrlsAsync();
+            Task<bool> downloader = DownloadBlogAsync();
 
             await grabber;
 
-            UpdateProgressQueueInformation(progress, Resources.ProgressUniqueDownloads);
+            UpdateProgressQueueInformation(Resources.ProgressUniqueDownloads);
             blog.DuplicatePhotos = DetermineDuplicates(PostTypes.Photo);
             blog.DuplicateVideos = DetermineDuplicates(PostTypes.Video);
             blog.DuplicateAudios = DetermineDuplicates(PostTypes.Audio);
@@ -60,7 +54,7 @@ namespace TumblThree.Applications.Downloader
 
             blog.Save();
 
-            UpdateProgressQueueInformation(progress, "");
+            UpdateProgressQueueInformation("");
         }
 
         private string ImageSize()
@@ -120,7 +114,7 @@ namespace TumblThree.Applications.Downloader
             return false;
         }
 
-        private async Task GetUrlsAsync(IProgress<DownloadProgress> progress, CancellationToken ct, PauseToken pt)
+        private async Task GetUrlsAsync()
         {
             var semaphoreSlim = new SemaphoreSlim(shellService.Settings.ParallelScans);
             var trackedTasks = new List<Task>();
@@ -141,7 +135,7 @@ namespace TumblThree.Applications.Downloader
                             return;
                         }
 
-                        await AddUrlsToDownloadList(document, progress, crawlerNumber, ct, pt);
+                        await AddUrlsToDownloadList(document, crawlerNumber);
                     }
                     catch
                     {
@@ -167,7 +161,7 @@ namespace TumblThree.Applications.Downloader
             return !document.Contains("<div class=\"signup_view account login\"");
         }
 
-        private async Task AddUrlsToDownloadList(string document, IProgress<DownloadProgress> progress, int crawlerNumber, CancellationToken ct, PauseToken pt)
+        private async Task AddUrlsToDownloadList(string document, int crawlerNumber)
         {
             while (true)
             {
@@ -190,7 +184,7 @@ namespace TumblThree.Applications.Downloader
                 AddVideoUrlToDownloadList(document, tags);
 
                 Interlocked.Increment(ref numberOfPagesCrawled);
-                UpdateProgressQueueInformation(progress, Resources.ProgressGetUrlShort, numberOfPagesCrawled);
+                UpdateProgressQueueInformation(Resources.ProgressGetUrlShort, numberOfPagesCrawled);
                 crawlerNumber += shellService.Settings.ParallelScans;
                 document = await RequestDataAsync(blog.Url + "/page/" + crawlerNumber);
                 if (document.Contains("<div class=\"no_posts_found\">"))
@@ -200,7 +194,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        protected override async Task DownloadPhotoAsync(IProgress<DataModels.DownloadProgress> progress, TumblrPost downloadItem, CancellationToken ct)
+        protected override async Task DownloadPhotoAsync(TumblrPost downloadItem)
         {
             string url = Url(downloadItem);
 
@@ -212,14 +206,14 @@ namespace TumblThree.Applications.Downloader
             foreach (string host in shellService.Settings.TumblrHosts)
             {
                 url = BuildRawImageUrl(url, host);
-                if (await DownloadDetectedImageUrl(progress, url, PostDate(downloadItem), ct))
+                if (await DownloadDetectedImageUrl(url, PostDate(downloadItem)))
                     return;
             }
 
-            await DownloadDetectedImageUrl(progress, Url(downloadItem), PostDate(downloadItem), ct);
+            await DownloadDetectedImageUrl(Url(downloadItem), PostDate(downloadItem));
         }
 
-        private async Task<bool> DownloadDetectedImageUrl(IProgress<DownloadProgress> progress, string url, DateTime postDate, CancellationToken ct)
+        private async Task<bool> DownloadDetectedImageUrl(string url, DateTime postDate)
         {
             if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(GetCoreImageUrl(url))))
             {
@@ -227,8 +221,8 @@ namespace TumblThree.Applications.Downloader
                 string fileName = url.Split('/').Last();
                 string fileLocation = FileLocation(blogDownloadLocation, fileName);
                 string fileLocationUrlList = FileLocationLocalized(blogDownloadLocation, Resources.FileNamePhotos);
-                UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, fileName);
-                if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url, ct))
+                UpdateProgressQueueInformation(Resources.ProgressDownloadImage, fileName);
+                if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url))
                 {
                     SetFileDate(fileLocation, postDate);
                     UpdateBlogPostCount(ref counter.Photos, value => blog.DownloadedPhotos = value);
@@ -279,13 +273,13 @@ namespace TumblThree.Applications.Downloader
                 {
                     string imageUrl = match.Groups[1].Value;
                     if (imageUrl.Contains("avatar") || imageUrl.Contains("previews"))
-                        continue;                    
+                        continue;
                     if (blog.SkipGif && imageUrl.EndsWith(".gif"))
                     {
                         continue;
                     }
                     imageUrl = ResizeTumblrImageUrl(imageUrl);
-                    // TODO: postID
+                    // TODO: add valid postID
                     AddToDownloadList(new TumblrPost(PostTypes.Photo, imageUrl, Guid.NewGuid().ToString("N")));
                 }
             }
@@ -299,16 +293,16 @@ namespace TumblThree.Applications.Downloader
                 foreach (Match match in regex.Matches(document))
                 {
                     string videoUrl = match.Groups[1].Value;
-                    // TODO: postId
+                    // TODO: add valid postID
                     if (shellService.Settings.VideoSize == 1080)
                     {
-                        // TODO: postID
+                        // TODO: add valid postID
                         AddToDownloadList(new TumblrPost(PostTypes.Video, videoUrl.Replace("/480", "") + ".mp4", Guid.NewGuid().ToString("N")));
                     }
                     else if (shellService.Settings.VideoSize == 480)
                     {
-                        // TODO: postID
-                        AddToDownloadList(new TumblrPost(PostTypes.Video, 
+                        // TODO: add valid postID
+                        AddToDownloadList(new TumblrPost(PostTypes.Video,
                             "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + "_480.mp4",
                             Guid.NewGuid().ToString("N")));
                     }

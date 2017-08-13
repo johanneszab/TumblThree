@@ -171,8 +171,6 @@ namespace TumblThree.Applications.Controllers
                     break;
                 }
 
-                ct.ThrowIfCancellationRequested();
-
                 if (pt.IsPaused)
                 {
                     pt.WaitWhilePausedWithResponseAsyc().Wait();
@@ -185,7 +183,7 @@ namespace TumblThree.Applications.Controllers
                     QueueListItem nextQueueItem = queueList.First();
                     IBlog blog = nextQueueItem.Blog;
 
-                    IDownloader downloader = DownloaderFactory.GetDownloader(blog.BlogType, shellService, crawlerService, blog);
+                    IDownloader downloader = DownloaderFactory.GetDownloader(blog.BlogType, ct, pt, new Progress<DownloadProgress>(), shellService, crawlerService, blog);
                     downloader.IsBlogOnlineAsync().Wait(4000);
 
                     if (crawlerService.ActiveItems.Any(item => item.Blog.Name.Equals(nextQueueItem.Blog.Name)))
@@ -220,8 +218,8 @@ namespace TumblThree.Applications.Controllers
             blog.Dirty = true;
             ProgressThrottler<DownloadProgress> progress = SetupThrottledQueueListProgress(queueListItem);
 
-            IDownloader downloader = DownloaderFactory.GetDownloader(blog.BlogType, shellService, crawlerService, blog);
-            await downloader.Crawl(progress, ct, pt);
+            IDownloader downloader = DownloaderFactory.GetDownloader(blog.BlogType, ct, pt, progress, shellService, crawlerService, blog);
+            await downloader.Crawl();
 
             if (ct.IsCancellationRequested)
             {

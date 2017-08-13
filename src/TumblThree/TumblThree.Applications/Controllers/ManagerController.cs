@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
@@ -12,6 +11,7 @@ using System.Threading.Tasks;
 using System.Waf.Applications;
 using System.Windows;
 
+using TumblThree.Applications.DataModels;
 using TumblThree.Applications.Downloader;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
@@ -19,6 +19,8 @@ using TumblThree.Applications.ViewModels;
 using TumblThree.Domain;
 using TumblThree.Domain.Models;
 using TumblThree.Domain.Queue;
+
+using Blog = TumblThree.Domain.Models.Blog;
 
 namespace TumblThree.Applications.Controllers
 {
@@ -33,13 +35,10 @@ namespace TumblThree.Applications.Controllers
 
         private readonly AsyncDelegateCommand addBlogCommand;
         private readonly DelegateCommand autoDownloadCommand;
-        private readonly ObservableCollection<Blog> blogFiles;
         private readonly ICrawlerService crawlerService;
         private readonly DelegateCommand enqueueSelectedCommand;
         private readonly DelegateCommand listenClipboardCommand;
         private readonly AsyncDelegateCommand loadLibraryCommand;
-
-
         private readonly object lockObject = new object();
         private readonly IManagerService managerService;
         private readonly Lazy<ManagerViewModel> managerViewModel;
@@ -60,7 +59,6 @@ namespace TumblThree.Applications.Controllers
             this.managerService = managerService;
             this.managerViewModel = managerViewModel;
             DownloaderFactory = downloaderFactory;
-            blogFiles = new ObservableCollection<Blog>();
             addBlogCommand = new AsyncDelegateCommand(AddBlog, CanAddBlog);
             removeBlogCommand = new DelegateCommand(RemoveBlog, CanRemoveBlog);
             showFilesCommand = new DelegateCommand(ShowFiles, CanShowFiles);
@@ -154,8 +152,7 @@ namespace TumblThree.Applications.Controllers
                         {
                             foreach (IBlog blog in files)
                             {
-                                IDownloader downloader = DownloaderFactory.GetDownloader(blog.BlogType, shellService,
-                                    crawlerService, blog);
+                                IDownloader downloader = DownloaderFactory.GetDownloader(blog.BlogType, new CancellationToken(), new PauseToken(), new Progress<DownloadProgress>(), shellService, crawlerService, blog);
                                 await downloader.IsBlogOnlineAsync();
                             }
                         }
@@ -360,7 +357,7 @@ namespace TumblThree.Applications.Controllers
 
             try
             {
-                IDownloader downloader = DownloaderFactory.GetDownloader(blog.BlogType, shellService, crawlerService, blog);
+                IDownloader downloader = DownloaderFactory.GetDownloader(blog.BlogType, new CancellationToken(), new PauseToken(), new Progress<DownloadProgress>(), shellService, crawlerService, blog);
                 await downloader.IsBlogOnlineAsync();
                 await downloader.UpdateMetaInformationAsync();
             }

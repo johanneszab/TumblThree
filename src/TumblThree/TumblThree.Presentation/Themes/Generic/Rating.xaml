@@ -18,7 +18,7 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="RatingItemState" Value="Filled">
-                            <Setter Property="Fill" TargetName="item" Value="Yellow" />
+                            <Setter Property="Fill" TargetName="item" Value="Black" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

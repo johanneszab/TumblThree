@@ -11,7 +11,6 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using TumblThree.Applications.DataModels;
-using TumblThree.Applications.DataModels.Xml;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain;
@@ -25,19 +24,12 @@ namespace TumblThree.Applications.Downloader
     [ExportMetadata("BlogType", BlogTypes.tumblr)]
     public class TumblrDownloader : Downloader, IDownloader
     {
-        private readonly IBlog blog;
-        private readonly ICrawlerService crawlerService;
-        private readonly IShellService shellService;
         private int numberOfPagesCrawled = 0;
 
-        public TumblrDownloader(IShellService shellService, ICrawlerService crawlerService, IBlog blog)
-            : base(shellService, crawlerService, blog)
+        public TumblrDownloader(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, PostCounter counter, FileDownloader fileDownloader, ICrawlerService crawlerService, IBlog blog, IFiles files)
+            : base(shellService, ct, pt, progress, counter, fileDownloader, crawlerService, blog, files)
         {
-            this.shellService = shellService;
-            this.crawlerService = crawlerService;
-            this.blog = blog;
         }
-
 
         public new async Task IsBlogOnlineAsync()
         {
@@ -54,29 +46,45 @@ namespace TumblThree.Applications.Downloader
 
         public override async Task UpdateMetaInformationAsync()
         {
-            if (blog.Online)
+            try
             {
-                string document = await GetSvcPageAsync("1", "0");
-                var response = ConvertJsonToClass<TumblrJson>(document);
-
-                if (response.meta.status == 200)
+                if (blog.Online)
                 {
-                    blog.Title = response.response.posts.FirstOrDefault().blog.title;
-                    blog.Description = response.response.posts.FirstOrDefault().blog.description;
+                    string document = await GetSvcPageAsync("1", "0");
+                    var response = ConvertJsonToClass<TumblrJson>(document);
+
+                    if (response.meta.status == 200)
+                    {
+                        blog.Title = response.response.posts.FirstOrDefault().blog.title;
+                        blog.Description = response.response.posts.FirstOrDefault().blog.description;
+                    }
+                }
+            }
+            catch (WebException webException)
+            {
+                var webRespStatusCode = (int)((HttpWebResponse)webException?.Response).StatusCode;
+                if (webRespStatusCode == 503)
+                {
+                    Logger.Error("TumblrDownloader:GetUrlsAsync: {0}", "User not logged in");
+                    shellService.ShowError(new Exception("User not logged in"), Resources.NotLoggedIn, blog.Name);
+                }
+                else
+                {
+                    blog.Online = false;
                 }
             }
         }
 
-        public async Task Crawl(IProgress<DownloadProgress> progress, CancellationToken ct, PauseToken pt)
+        public async Task Crawl()
         {
             Logger.Verbose("TumblrDownloader.Crawl:Start");
 
-            Task grabber = GetUrlsAsync(progress, ct, pt);
-            Task<bool> downloader = DownloadBlogAsync(progress, ct, pt);
+            Task grabber = GetUrlsAsync();
+            Task<bool> downloader = DownloadBlogAsync();
 
             await grabber;
 
-            UpdateProgressQueueInformation(progress, Resources.ProgressUniqueDownloads);
+            UpdateProgressQueueInformation(Resources.ProgressUniqueDownloads);
             blog.DuplicatePhotos = DetermineDuplicates(PostTypes.Photo);
             blog.DuplicateVideos = DetermineDuplicates(PostTypes.Video);
             blog.DuplicateAudios = DetermineDuplicates(PostTypes.Audio);
@@ -93,7 +101,7 @@ namespace TumblThree.Applications.Downloader
 
             blog.Save();
 
-            UpdateProgressQueueInformation(progress, "");
+            UpdateProgressQueueInformation("");
         }
 
         private string ImageSize()
@@ -231,7 +239,7 @@ namespace TumblThree.Applications.Downloader
             return false;
         }
 
-        private async Task GetUrlsAsync(IProgress<DownloadProgress> progress, CancellationToken ct, PauseToken pt)
+        private async Task GetUrlsAsync()
         {
             var semaphoreSlim = new SemaphoreSlim(shellService.Settings.ParallelScans);
             var trackedTasks = new List<Task>();
@@ -252,7 +260,7 @@ namespace TumblThree.Applications.Downloader
                     {
                         string document = await GetSvcPageAsync(blog.PageSize.ToString(), (blog.PageSize * crawlerNumber).ToString());
                         var response = ConvertJsonToClass<TumblrJson>(document);
-                        await AddUrlsToDownloadList(response, tags, progress, crawlerNumber, ct, pt);
+                        await AddUrlsToDownloadList(response, tags, crawlerNumber);
                     }
                     catch (WebException webException)
                     {
@@ -300,20 +308,32 @@ namespace TumblThree.Applications.Downloader
 
         protected virtual async Task<string> RequestDataAsync(string limit, string offset)
         {
-            HttpWebRequest request = CreateWebReqeust(limit, offset);
-
-            using (var response = await request.GetResponseAsync() as HttpWebResponse)
+            var requestRegistration = new CancellationTokenRegistration();
+            try
             {
-                using (var stream = GetStreamForApiRequest(response.GetResponseStream()))
+                HttpWebRequest request = CreateWebReqeust(limit, offset);
+                requestRegistration = ct.Register(() => request.Abort());
+                using (var response = await request.GetResponseAsync() as HttpWebResponse)
                 {
-                    using (var buffer = new BufferedStream(stream))
+                    using (var stream = GetStreamForApiRequest(response.GetResponseStream()))
                     {
-                        using (var reader = new StreamReader(buffer))
+                        using (var buffer = new BufferedStream(stream))
                         {
-                            return reader.ReadToEnd();
+                            using (var reader = new StreamReader(buffer))
+                            {
+                                return reader.ReadToEnd();
+                            }
                         }
                     }
                 }
+            }
+            catch
+            {
+                return string.Empty;
+            }
+            finally
+            {
+                requestRegistration.Dispose();
             }
         }
 
@@ -331,6 +351,10 @@ namespace TumblThree.Applications.Downloader
             request.KeepAlive = true;
             request.Pipelined = true;
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+            // Timeouts don't work with GetResponseAsync() as it internally uses BeginGetResponse.
+            // See docs: https://msdn.microsoft.com/en-us/library/system.net.httpwebrequest.timeout(v=vs.110).aspx
+            // Quote: The Timeout property has no effect on asynchronous requests made with the BeginGetResponse or BeginGetRequestStream method.
+            // TODO: Use HttpClient instead?
             request.ReadWriteTimeout = shellService.Settings.TimeOut * 1000;
             request.Timeout = -1;
             request.CookieContainer = SharedCookieService.GetUriCookieContainer(new Uri("https://www.tumblr.com/"));
@@ -341,7 +365,7 @@ namespace TumblThree.Applications.Downloader
             return request;
         }
 
-        private async Task AddUrlsToDownloadList(TumblrJson response, IList<string> tags, IProgress<DownloadProgress> progress, int crawlerNumber, CancellationToken ct, PauseToken pt)
+        private async Task AddUrlsToDownloadList(TumblrJson response, IList<string> tags, int crawlerNumber)
         {
             while (true)
             {
@@ -373,7 +397,7 @@ namespace TumblThree.Applications.Downloader
                 }
 
                 Interlocked.Increment(ref numberOfPagesCrawled);
-                UpdateProgressQueueInformation(progress, Resources.ProgressGetUrlShort, numberOfPagesCrawled);
+                UpdateProgressQueueInformation(Resources.ProgressGetUrlShort, numberOfPagesCrawled);
 
                 string document = await GetSvcPageAsync(blog.PageSize.ToString(), (blog.PageSize * crawlerNumber).ToString());
                 response = ConvertJsonToClass<TumblrJson>(document);
@@ -403,7 +427,7 @@ namespace TumblThree.Applications.Downloader
             return true;
         }
 
-        protected override async Task DownloadPhotoAsync(IProgress<DataModels.DownloadProgress> progress, TumblrPost downloadItem, CancellationToken ct)
+        protected override async Task DownloadPhotoAsync(TumblrPost downloadItem)
         {
             string url = Url(downloadItem);
 
@@ -415,14 +439,14 @@ namespace TumblThree.Applications.Downloader
             foreach (string host in shellService.Settings.TumblrHosts)
             {
                 url = BuildRawImageUrl(url, host);
-                if (await DownloadDetectedImageUrl(progress, url, PostDate(downloadItem), ct))
+                if (await DownloadDetectedImageUrl(url, PostDate(downloadItem)))
                     return;
             }
 
-            await DownloadDetectedImageUrl(progress, Url(downloadItem), PostDate(downloadItem), ct);
+            await DownloadDetectedImageUrl(Url(downloadItem), PostDate(downloadItem));
         }
 
-        private async Task<bool> DownloadDetectedImageUrl(IProgress<DownloadProgress> progress, string url, DateTime postDate, CancellationToken ct)
+        private async Task<bool> DownloadDetectedImageUrl(string url, DateTime postDate)
         {
             if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(GetCoreImageUrl(url))))
             {
@@ -430,8 +454,8 @@ namespace TumblThree.Applications.Downloader
                 string fileName = url.Split('/').Last();
                 string fileLocation = FileLocation(blogDownloadLocation, fileName);
                 string fileLocationUrlList = FileLocationLocalized(blogDownloadLocation, Resources.FileNamePhotos);
-                UpdateProgressQueueInformation(progress, Resources.ProgressDownloadImage, fileName);
-                if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url, ct))
+                UpdateProgressQueueInformation(Resources.ProgressDownloadImage, fileName);
+                if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url))
                 {
                     SetFileDate(fileLocation, postDate);
                     UpdateBlogPostCount(ref counter.Photos, value => blog.DownloadedPhotos = value);
@@ -529,7 +553,6 @@ namespace TumblThree.Applications.Downloader
                 {
                     continue;
                 }
-                imageUrl = ResizeTumblrImageUrl(imageUrl);
                 AddToDownloadList(new TumblrPost(PostTypes.Photo, imageUrl, postId, post.timestamp.ToString()));
             }
         }
