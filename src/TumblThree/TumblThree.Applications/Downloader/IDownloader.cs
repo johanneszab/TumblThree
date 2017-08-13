@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Threading.Tasks;
 
 using TumblThree.Applications.DataModels;
@@ -8,7 +7,7 @@ namespace TumblThree.Applications.Downloader
 {
     public interface IDownloader
     {
-        Task Crawl(IProgress<DownloadProgress> progress, CancellationToken ct, PauseToken pt);
+        Task Crawl();
 
         Task IsBlogOnlineAsync();
 

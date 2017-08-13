@@ -9,13 +9,21 @@ using TumblThree.Applications.Services;
 
 namespace TumblThree.Applications
 {
-    class FileDownloader
+    public class FileDownloader
     {
+        private readonly AppSettings settings;
+        private readonly CancellationToken ct;
         public static readonly int BufferSize = 512 * 4096;
         public event EventHandler Completed;
         public event EventHandler<DownloadProgressChangedEventArgs> ProgressChanged;
 
-        private HttpWebRequest CreateWebReqeust(string url, AppSettings settings)
+        public FileDownloader(AppSettings settings, CancellationToken ct)
+        {
+            this.settings = settings;
+            this.ct = ct;
+        }
+
+        private HttpWebRequest CreateWebReqeust(string url)
         {
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "GET";
@@ -26,6 +34,11 @@ namespace TumblThree.Applications
             request.KeepAlive = true;
             request.Pipelined = true;
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+
+            // Timeouts don't work with GetResponseAsync() as it internally uses BeginGetResponse.
+            // See docs: https://msdn.microsoft.com/en-us/library/system.net.httpwebrequest.timeout(v=vs.110).aspx
+            // Quote: The Timeout property has no effect on asynchronous requests made with the BeginGetResponse or BeginGetRequestStream method.
+            // TODO: Use HttpClient instead?
             request.ReadWriteTimeout = settings.TimeOut * 1000;
             request.Timeout = -1;
             //TODO: Fix site specific cookies!
@@ -47,16 +60,16 @@ namespace TumblThree.Applications
             return request;
         }
 
-        public async Task<Stream> ReadFromUrlIntoStream(string url, AppSettings settings)
+        public async Task<Stream> ReadFromUrlIntoStream(string url)
         {
-            HttpWebRequest request = CreateWebReqeust(url, settings);
+            HttpWebRequest request = CreateWebReqeust(url);
 
             using (var response = await request.GetResponseAsync() as HttpWebResponse)
             {
                 if (HttpStatusCode.OK == response.StatusCode)
                 {
                     Stream responseStream = response.GetResponseStream();
-                    return GetStreamForDownload(responseStream, settings);
+                    return GetStreamForDownload(responseStream);
                 }
                 else
                 {
@@ -65,17 +78,27 @@ namespace TumblThree.Applications
             } 
         }
 
-        private async Task<long> CheckDownloadSizeAsync(string url, AppSettings settings, CancellationToken ct)
+        private async Task<long> CheckDownloadSizeAsync(string url)
         {
-            HttpWebRequest request = CreateWebReqeust(url, settings);
-
-            using (WebResponse response = await request.GetResponseAsync())
+            var requestRegistration = new CancellationTokenRegistration();
+            try
             {
-                return response.ContentLength;
+                HttpWebRequest request = CreateWebReqeust(url);
+                requestRegistration = ct.Register(() => request.Abort());
+
+                using (WebResponse response = await request.GetResponseAsync())
+                {
+                    return response.ContentLength;
+                }
             }
+            finally
+            {
+                requestRegistration.Dispose();
+            }
+
         }
 
-        protected Stream GetStreamForDownload(Stream stream, AppSettings settings)
+        protected Stream GetStreamForDownload(Stream stream)
         {
             if (settings.Bandwidth == 0)
                 return stream;
@@ -85,7 +108,7 @@ namespace TumblThree.Applications
         // TODO: Needs a complete rewrite. Also a append/cache function for resuming incomplete files on the disk.
         // Should be in separated class with support for events for downloadspeed, is resumable file?, etc.
         // Should check if file is complete, else it will trigger an WebException -- 416 requested range not satisfiable at every request 
-        public async Task<bool> DownloadFileWithResumeAsync(string url, string destinationPath, AppSettings settings, CancellationToken ct)
+        public async Task<bool> DownloadFileWithResumeAsync(string url, string destinationPath)
         {
             long totalBytesReceived = 0;
             var attemptCount = 0;
@@ -95,7 +118,7 @@ namespace TumblThree.Applications
             {
                 var fileInfo = new FileInfo(destinationPath);
                 totalBytesReceived = fileInfo.Length;
-                if (totalBytesReceived >= await CheckDownloadSizeAsync(url, settings, ct))
+                if (totalBytesReceived >= await CheckDownloadSizeAsync(url))
                     return true;
             }
             if (ct.IsCancellationRequested)
@@ -114,9 +137,12 @@ namespace TumblThree.Applications
                         return false;
                     }
 
+                    var requestRegistration = new CancellationTokenRegistration();
+
                     try
                     {
-                        HttpWebRequest request = CreateWebReqeust(url, settings);
+                        HttpWebRequest request = CreateWebReqeust(url);
+                        requestRegistration = ct.Register(() => request.Abort());
                         request.AddRange(totalBytesReceived);
 
                         long totalBytesToReceive = 0;
@@ -126,7 +152,7 @@ namespace TumblThree.Applications
 
                             using (Stream responseStream = response.GetResponseStream())
                             {
-                                using (Stream throttledStream = GetStreamForDownload(responseStream, settings))
+                                using (Stream throttledStream = GetStreamForDownload(responseStream))
                                 {
                                     var buffer = new byte[bufferSize];
                                     var bytesRead = 0;
@@ -169,6 +195,10 @@ namespace TumblThree.Applications
                         {
                             throw;
                         }
+                    }
+                    finally
+                    {
+                        requestRegistration.Dispose();
                     }
                 }
                 return true;

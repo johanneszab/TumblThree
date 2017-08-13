@@ -71,7 +71,6 @@
     <Compile Include="DataModels\DownloadProgress.cs" />
     <Compile Include="DataModels\TumblrJson.cs" />
     <Compile Include="DataModels\TumblrPost.cs" />
-    <Compile Include="DataModels\TumblrXml.cs" />
     <Compile Include="Data\StringListConverter.cs" />
     <Compile Include="Data\SupportedFileTypes.cs" />
     <Compile Include="Downloader\Downloader.cs" />
