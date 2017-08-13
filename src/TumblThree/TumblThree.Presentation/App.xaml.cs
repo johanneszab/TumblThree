@@ -13,6 +13,7 @@ using System.Windows.Threading;
 using TumblThree.Applications.Services;
 using TumblThree.Applications.ViewModels;
 using TumblThree.Domain;
+using TumblThree.Domain.Models;
 using TumblThree.Presentation.Properties;
 
 namespace TumblThree.Presentation
@@ -35,7 +36,9 @@ namespace TumblThree.Presentation
             catalog.Catalogs.Add(new AssemblyCatalog(typeof(WafConfiguration).Assembly));
             // Add the TumblThree.Applications assembly
             catalog.Catalogs.Add(new AssemblyCatalog(typeof(ShellViewModel).Assembly));
-            // Add this assembly
+            // Add the TumblThree.Domain assembly
+            catalog.Catalogs.Add(new AssemblyCatalog(typeof(IBlog).Assembly));
+            // Add the TumblThree.Presentation assembly
             catalog.Catalogs.Add(new AssemblyCatalog(typeof(App).Assembly));
 
             container = new CompositionContainer(catalog, CompositionOptions.DisableSilentRejection);

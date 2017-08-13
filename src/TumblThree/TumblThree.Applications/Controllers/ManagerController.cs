@@ -51,7 +51,7 @@ namespace TumblThree.Applications.Controllers
 
         [ImportingConstructor]
         public ManagerController(IShellService shellService, ISelectionService selectionService, ICrawlerService crawlerService,
-            IManagerService managerService, IDownloaderFactory downloaderFactory, Lazy<ManagerViewModel> managerViewModel)
+            IManagerService managerService, IDownloaderFactory downloaderFactory, IBlogFactory blogFactory, Lazy<ManagerViewModel> managerViewModel)
         {
             this.shellService = shellService;
             this.selectionService = selectionService;
@@ -59,6 +59,7 @@ namespace TumblThree.Applications.Controllers
             this.managerService = managerService;
             this.managerViewModel = managerViewModel;
             DownloaderFactory = downloaderFactory;
+            BlogFactory = blogFactory;
             addBlogCommand = new AsyncDelegateCommand(AddBlog, CanAddBlog);
             removeBlogCommand = new DelegateCommand(RemoveBlog, CanRemoveBlog);
             showFilesCommand = new DelegateCommand(ShowFiles, CanShowFiles);
@@ -80,6 +81,9 @@ namespace TumblThree.Applications.Controllers
         public QueueManager QueueManager { get; set; }
 
         public IDownloaderFactory DownloaderFactory { get; set; }
+
+        public IBlogFactory BlogFactory { get; set; }
+
         public event BlogManagerFinishedLoadingHandler BlogManagerFinishedLoading;
 
         public async Task Initialize()
@@ -266,7 +270,11 @@ namespace TumblThree.Applications.Controllers
         private void RemoveBlog()
         {
             IBlog[] blogs = selectionService.SelectedBlogFiles.ToArray();
+            RemoveBlog(blogs);
+        }
 
+        private void RemoveBlog(IEnumerable<IBlog> blogs)
+        {
             foreach (IBlog blog in blogs)
             {
                 if (!shellService.Settings.DeleteOnlyIndex)
@@ -341,17 +349,17 @@ namespace TumblThree.Applications.Controllers
             {
                 blogUrl = crawlerService.NewBlogUrl;
             }
-            IBlog blog;
 
-            // TODO: Dependency, SOLID!
-            if (Validator.IsValidTumblrUrl(blogUrl))
-                blog = new Blog(blogUrl, Path.Combine(shellService.Settings.DownloadLocation, "Index"), BlogTypes.tumblr);
-            else if (Validator.IsValidTumblrLikedByUrl(blogUrl)) 
-                blog = new TumblrLikeByBlog(blogUrl, Path.Combine(shellService.Settings.DownloadLocation, "Index"), BlogTypes.tlb);
-            //else if (Validator.IsValidTumblrSearchUrl(blogUrl))
-            //    blog = new TumblrSearchBlog(blogUrl, Path.Combine(shellService.Settings.DownloadLocation, "Index"), BlogTypes.ts);
-            else
+            // TODO: Dependency, not SOLID!
+            IBlog blog;
+            try
+            {
+                blog = BlogFactory.GetBlog(blogUrl, Path.Combine(shellService.Settings.DownloadLocation, "Index"));
+            }
+            catch (ArgumentException)
+            {
                 return;
+            }
 
             TransferGlobalSettingsToBlog(blog);
 
@@ -419,20 +427,20 @@ namespace TumblThree.Applications.Controllers
                 // Count each whitespace as new url
                 string[] urls = Clipboard.GetText().Split();
 
-                Task addBlogBatchedTask = AddBlogBatchedAsync(urls);
+                Task.Run(() => { Task addBlogBatchedTask = AddBlogBatchedAsync(urls); });
             }
         }
 
         private async Task AddBlogBatchedAsync(IEnumerable<string> urls)
         {
-            var semaphoreSlim = new SemaphoreSlim(15);
-            //foreach (string url in urls.Where(url => Validator.IsValidTumblrUrl(url) || Validator.IsValidTumblrLikedByUrl(url) || Validator.IsValidTumblrSearchUrl(url)))
-            foreach (string url in urls.Where(url => Validator.IsValidTumblrUrl(url) || Validator.IsValidTumblrLikedByUrl(url)))
+            var semaphoreSlim = new SemaphoreSlim(25);
+            IEnumerable<Task> tasks = urls.Select(async url =>
             {
                 await semaphoreSlim.WaitAsync();
                 await AddBlogAsync(url);
                 semaphoreSlim.Release();
-            }
+            });
+            await Task.WhenAll(tasks);
         }
 
         private void ListenClipboard()
