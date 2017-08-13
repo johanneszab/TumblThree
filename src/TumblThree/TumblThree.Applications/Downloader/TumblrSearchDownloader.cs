@@ -252,29 +252,42 @@ namespace TumblThree.Applications.Downloader
 
         protected virtual async Task<string> RequestDataAsync(int pageNumber)
         {
-            HttpWebRequest request = CreateWebReqeust(pageNumber);
-
-            //TODO: generate proper requestBody
-            string requestBody = "q=" + blog.Name + "&sort=top&post_view=masonry&blogs_before=1&num_blogs_shown=1&num_posts_shown=1&before=1&blog_page=" + pageNumber + "&safe_mode=true&post_page=3&filter_nsfw=true&filter_post_type=&next_ad_offset=0&ad_placement_id=0&more_posts=true";
-            using (Stream postStream = await request.GetRequestStreamAsync())
+            var requestRegistration = new CancellationTokenRegistration();
+            try
             {
-                byte[] postBytes = Encoding.ASCII.GetBytes(requestBody);
-                await postStream.WriteAsync(postBytes, 0, postBytes.Length);
-                await postStream.FlushAsync();
-            }
+                HttpWebRequest request = CreateWebReqeust(pageNumber);
 
-            using (var response = await request.GetResponseAsync() as HttpWebResponse)
-            {
-                using (var stream = GetStreamForApiRequest(response.GetResponseStream()))
+                //TODO: generate proper requestBody
+                string requestBody = "q=" + blog.Name + "&sort=top&post_view=masonry&blogs_before=1&num_blogs_shown=1&num_posts_shown=1&before=1&blog_page=" + pageNumber + "&safe_mode=true&post_page=3&filter_nsfw=true&filter_post_type=&next_ad_offset=0&ad_placement_id=0&more_posts=true";
+                using (Stream postStream = await request.GetRequestStreamAsync())
                 {
-                    using (var buffer = new BufferedStream(stream))
+                    byte[] postBytes = Encoding.ASCII.GetBytes(requestBody);
+                    await postStream.WriteAsync(postBytes, 0, postBytes.Length);
+                    await postStream.FlushAsync();
+                }
+
+                requestRegistration = ct.Register(() => request.Abort());
+                using (var response = await request.GetResponseAsync() as HttpWebResponse)
+                {
+                    using (var stream = GetStreamForApiRequest(response.GetResponseStream()))
                     {
-                        using (var reader = new StreamReader(buffer))
+                        using (var buffer = new BufferedStream(stream))
                         {
-                            return reader.ReadToEnd();
+                            using (var reader = new StreamReader(buffer))
+                            {
+                                return reader.ReadToEnd();
+                            }
                         }
                     }
                 }
+            }
+            catch
+            {
+                return string.Empty;
+            }
+            finally
+            {
+                requestRegistration.Dispose();
             }
         }
 
