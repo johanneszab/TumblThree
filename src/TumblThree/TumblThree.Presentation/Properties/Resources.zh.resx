@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -136,7 +136,7 @@
     <value>清除队列</value>
   </data>
   <data name="ClipboardMonitor" xml:space="preserve">
-    <value>控制剪贴板</value>
+    <value>监视剪贴板</value>
   </data>
   <data name="Crawl" xml:space="preserve">
     <value>下载</value>
@@ -151,10 +151,10 @@
     <value>删除</value>
   </data>
   <data name="Details" xml:space="preserve">
-    <value>细节</value>
+    <value>详细</value>
   </data>
   <data name="DownloadedFiles" xml:space="preserve">
-    <value>下载的文件</value>
+    <value>下载的文件数</value>
   </data>
   <data name="DownloadLocation" xml:space="preserve">
     <value>下载位置</value>
@@ -175,10 +175,10 @@
     <value>名称</value>
   </data>
   <data name="NumberOfDownloads" xml:space="preserve">
-    <value>下载次数</value>
+    <value>下载数</value>
   </data>
   <data name="OpenQueue" xml:space="preserve">
-    <value>打开队列</value>
+    <value>查看队列</value>
   </data>
   <data name="Pause" xml:space="preserve">
     <value>暂停</value>
@@ -199,7 +199,7 @@
     <value>删除所选</value>
   </data>
   <data name="Resume" xml:space="preserve">
-    <value>总结</value>
+    <value>恢复</value>
   </data>
   <data name="Return" xml:space="preserve">
     <value>返回</value>
@@ -211,13 +211,13 @@
     <value>设置</value>
   </data>
   <data name="ShiftReturn" xml:space="preserve">
-    <value>Shift +回车</value>
+    <value>Shift+回车</value>
   </data>
   <data name="ShowDetails" xml:space="preserve">
-    <value>显示详细资料</value>
+    <value>显示详细</value>
   </data>
   <data name="ShowFiles" xml:space="preserve">
-    <value>显示文件</value>
+    <value>查看文件</value>
   </data>
   <data name="Stop" xml:space="preserve">
     <value>停止</value>
@@ -226,13 +226,13 @@
     <value>标签</value>
   </data>
   <data name="UnknownError" xml:space="preserve">
-    <value>未知应用程序错误</value>
+    <value>应用程序未知错误</value>
   </data>
   <data name="Url" xml:space="preserve">
     <value>网址</value>
   </data>
   <data name="ImageSize" xml:space="preserve">
-    <value>图像大小（px）</value>
+    <value>图像分辨率 (px)</value>
   </data>
   <data name="ParallelBlogs" xml:space="preserve">
     <value>并行博客数</value>
@@ -241,10 +241,10 @@
     <value>并行连接数</value>
   </data>
   <data name="Online" xml:space="preserve">
-    <value>线上</value>
+    <value>在线</value>
   </data>
   <data name="Progress" xml:space="preserve">
-    <value>进展</value>
+    <value>进度</value>
   </data>
   <data name="NumberOfItems" xml:space="preserve">
     <value>{0}项目</value>
@@ -253,31 +253,31 @@
     <value>1 Item</value>
   </data>
   <data name="CheckStatus" xml:space="preserve">
-    <value>Check blog online status on startup</value>
+    <value>启动时检查博客在线状态</value>
   </data>
   <data name="DeleteIndex" xml:space="preserve">
-    <value>Delete only the index files (no downloaded files)</value>
+    <value>仅删除索引文件(保留下载的文件)</value>
   </data>
   <data name="RemoveIndex" xml:space="preserve">
-    <value>Remove blog index after crawl</value>
+    <value>下载完成后移除索引文件</value>
   </data>
   <data name="SkipGif" xml:space="preserve">
     <value>跳过.gif文件</value>
   </data>
   <data name="Info32Bit" xml:space="preserve">
-    <value>32 Bit</value>
+    <value>32位</value>
   </data>
   <data name="Info64Bit" xml:space="preserve">
     <value>64位</value>
   </data>
   <data name="License" xml:space="preserve">
-    <value>执照</value>
+    <value>许可</value>
   </data>
   <data name="NetFramework" xml:space="preserve">
     <value>.NET Framework</value>
   </data>
   <data name="Ok" xml:space="preserve">
-    <value>好</value>
+    <value>好的</value>
   </data>
   <data name="OperatingSystem" xml:space="preserve">
     <value>操作系统</value>
@@ -286,34 +286,34 @@
     <value>产品</value>
   </data>
   <data name="Version" xml:space="preserve">
-    <value>版</value>
+    <value>版本</value>
   </data>
   <data name="Website" xml:space="preserve">
     <value>网站</value>
   </data>
   <data name="LastCompleteCrawl" xml:space="preserve">
-    <value>上次完成下载</value>
+    <value>上次完成时间</value>
   </data>
   <data name="VisitBlog" xml:space="preserve">
-    <value>在网络浏览器中打开网站</value>
+    <value>在浏览器中打开</value>
   </data>
   <data name="NumberOfImages" xml:space="preserve">
-    <value>{0} Images</value>
+    <value>{0} 图片</value>
   </data>
   <data name="DownloadedFilesOf" xml:space="preserve">
-    <value>{1}的下载档案{0}</value>
+    <value>下载{1}的{0}</value>
   </data>
   <data name="DownloadImages" xml:space="preserve">
-    <value>下载图片</value>
+    <value>下载图片帖子</value>
   </data>
   <data name="DownloadVideos" xml:space="preserve">
-    <value>下载视频（tumblr.com）</value>
+    <value>下载视频帖子 (仅限tumblr的)</value>
   </data>
   <data name="VideoSize" xml:space="preserve">
-    <value>视频大小（px）</value>
+    <value>视频分辨率 (px)</value>
   </data>
   <data name="Authenticate" xml:space="preserve">
-    <value>认证</value>
+    <value>授权</value>
   </data>
   <data name="ToolTipAuthenticate" xml:space="preserve">
     <value>Authenticate to the tumblr.com network</value>
@@ -334,19 +334,19 @@
     <value>Sets the Number of total simultaneous connections. The number is divided by the number of Parallel Blogs settings. 25/2 would open 12 connections per blog download.</value>
   </data>
   <data name="Notes" xml:space="preserve">
-    <value>个人笔记</value>
+    <value>备注</value>
   </data>
   <data name="TimeOut" xml:space="preserve">
-    <value>时间到 (s)</value>
+    <value>超时 (s)</value>
   </data>
   <data name="Bandwidth" xml:space="preserve">
-    <value>限制带宽（KB/s）</value>
+    <value>限制带宽 (KB/s)</value>
   </data>
   <data name="EnableAutoDownload" xml:space="preserve">
     <value>启用自动下载博客并添加</value>
   </data>
   <data name="Timer" xml:space="preserve">
-    <value>在时间（hh：mm：ss）</value>
+    <value>于时间 (时:分:秒)</value>
   </data>
   <data name="SelectABlog" xml:space="preserve">
     <value>请选择一个博客</value>
@@ -358,13 +358,13 @@
     <value>复制网址</value>
   </data>
   <data name="Posts" xml:space="preserve">
-    <value>员额数：</value>
+    <value>帖子数：</value>
   </data>
   <data name="Preview" xml:space="preserve">
-    <value>预习：</value>
+    <value>预览：</value>
   </data>
   <data name="DownloadAudios" xml:space="preserve">
-    <value>下载音频文件</value>
+    <value>下载音频帖子</value>
   </data>
   <data name="DownloadConversations" xml:space="preserve">
     <value>下载对话帖子</value>
@@ -373,16 +373,16 @@
     <value>下载链接帖子</value>
   </data>
   <data name="DownloadQuotes" xml:space="preserve">
-    <value>下载报价帖子</value>
+    <value>下载引用帖子</value>
   </data>
   <data name="DownloadTexts" xml:space="preserve">
     <value>下载文字帖子</value>
   </data>
   <data name="DetailsProgress" xml:space="preserve">
-    <value>{1} {0}，重复发现：{2}</value>
+    <value>{1} {0}，重复:{2}</value>
   </data>
   <data name="EnablePreview" xml:space="preserve">
-    <value>预览开/关</value>
+    <value>预览(开/关)</value>
   </data>
   <data name="BlogSettings" xml:space="preserve">
     <value>博客设置：</value>
@@ -394,7 +394,7 @@
     <value>博客统计：</value>
   </data>
   <data name="ToolTipDetailsStats" xml:space="preserve">
-    <value>下载的帖子类型/总帖子类型的数量</value>
+    <value>下载的帖子类型/总帖子类型</value>
   </data>
   <data name="ToolTipDetailsStatsDescription" xml:space="preserve">
     <value>Check to download post type or skip during the backup</value>
@@ -409,7 +409,7 @@
     <value>下载视频元数据</value>
   </data>
   <data name="DefaultSettingsForBlogs" xml:space="preserve">
-    <value>添加后应用于每个博客的设置：</value>
+    <value>设置对所有博客有效：</value>
   </data>
   <data name="DownloadVideosShort" xml:space="preserve">
     <value>下载视频</value>
@@ -427,7 +427,7 @@
     <value>离线</value>
   </data>
   <data name="ForceSize" xml:space="preserve">
-    <value>下载指定的大小即使没有提供</value>
+    <value>强制下载指定分辨率(即使未提供)</value>
   </data>
   <data name="ToolTipForceSize" xml:space="preserve">
     <value>Download the specified resolution of images even if the size is not offered.</value>
@@ -439,13 +439,13 @@
     <value>HTTP代理：</value>
   </data>
   <data name="ProxyPort" xml:space="preserve">
-    <value>接口:</value>
+    <value>端口：</value>
   </data>
   <data name="ThirdPartySoftware" xml:space="preserve">
     <value>第三方软件</value>
   </data>
   <data name="ThirdPartySoftwareDescription" xml:space="preserve">
-    <value>第三方软件和许可证</value>
+    <value>第三方软件和许可</value>
   </data>
   <data name="ToolTipLimitBandwidth" xml:space="preserve">
     <value>Throttles the bandwidth of the downloader</value>
@@ -454,10 +454,10 @@
     <value>Sets the maximum bandwidth available for the downloader in kbytes/s. 0 disables throttling.</value>
   </data>
   <data name="LimitScan" xml:space="preserve">
-    <value>限制扫描带宽</value>
+    <value>限制扫描速度</value>
   </data>
   <data name="ScanConnections" xml:space="preserve">
-    <value>扫描连接</value>
+    <value>扫描连接数</value>
   </data>
   <data name="ToolTipLimitScan" xml:space="preserve">
     <value>Includes the scan bandwidth in the throttling</value>
@@ -475,7 +475,7 @@
     <value>价值必须介于0至9,000,000,000,000,000之间。</value>
   </data>
   <data name="TimeSpanTypeError" xml:space="preserve">
-    <value>该值必须形成hh：mm：ss。</value>
+    <value>该值必须以hh：mm：ss的形式。</value>
   </data>
   <data name="IntRangeError" xml:space="preserve">
     <value>该值必须介于0和2,147,483,647之间。</value>
@@ -487,13 +487,13 @@
     <value>时间间隔 (s):</value>
   </data>
   <data name="LimitConnections" xml:space="preserve">
-    <value>限制连接到tumblr api。</value>
+    <value>限制tumblr-api连接数</value>
   </data>
   <data name="MaxConnections" xml:space="preserve">
-    <value>连接数量：</value>
+    <value>连接数：</value>
   </data>
   <data name="ToolTipLimitConnections" xml:space="preserve">
-    <value>限制连接到tumblr api。</value>
+    <value>限制tumblr-api连接数</value>
   </data>
   <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
     <value>A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr api. A too small value will decrease the download speed.</value>
@@ -514,7 +514,7 @@
     <value>Download Now</value>
   </data>
   <data name="CheckDirectoryForFiles" xml:space="preserve">
-    <value>检查文件目录</value>
+    <value>检查目录已存在文件</value>
   </data>
   <data name="ToolTipCheckDirectoryForFiles" xml:space="preserve">
     <value>Checks the directory for already downloaded files.</value>
@@ -523,7 +523,7 @@
     <value>Checks the directory and the database for already downloaded files. Might negatively impact the download speed for large directories.</value>
   </data>
   <data name="DownloadUrlList" xml:space="preserve">
-    <value>下载一个网址列表</value>
+    <value>生成下载地址列表</value>
   </data>
   <data name="ToolTipDownloadUrlList" xml:space="preserve">
     <value>Download a url list.</value>
@@ -541,10 +541,10 @@
     <value>连接</value>
   </data>
   <data name="General" xml:space="preserve">
-    <value>一般</value>
+    <value>全局</value>
   </data>
   <data name="PortableMode" xml:space="preserve">
-    <value>激活便携模式。</value>
+    <value>激活便携模式</value>
   </data>
   <data name="ToolTipPortableMode" xml:space="preserve">
     <value>Activates the portable mode.</value>
@@ -568,10 +568,10 @@
     <value>Credentials are saved in clear text in the settings file</value>
   </data>
   <data name="DownloadPages" xml:space="preserve">
-    <value>下载页面： </value>
+    <value>下载页数：</value>
   </data>
   <data name="PageSize" xml:space="preserve">
-    <value>每页帖子：</value>
+    <value>每页帖数：</value>
   </data>
   <data name="ToolTipDownloadPages" xml:space="preserve">
     <value>Download only specific pages</value>
@@ -580,7 +580,7 @@
     <value>Possible notations are: 1 or 1-3 or 1,2,3. Empty means the whole blog.</value>
   </data>
   <data name="ToolTipPageSize" xml:space="preserve">
-    <value>每页帖子</value>
+    <value>每页帖数</value>
   </data>
   <data name="ToolTipPageSizeDescription" xml:space="preserve">
     <value>Sets the post per page (should be between 1-50, default 50). E.g. 50 means to scan 50 posts per page.</value>
