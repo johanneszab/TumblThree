@@ -118,25 +118,25 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="About" xml:space="preserve">
-    <value>Sur</value>
+    <value>A propos de</value>
   </data>
   <data name="AddBlog" xml:space="preserve">
-    <value>Ajouter blog</value>
+    <value>Ajouter le blog</value>
   </data>
   <data name="AddToQueue" xml:space="preserve">
-    <value>Ajouter à liste</value>
+    <value>Ajouter à la liste</value>
   </data>
   <data name="BlogUrl" xml:space="preserve">
     <value>Entrer l'URL:</value>
   </data>
   <data name="Browse" xml:space="preserve">
-    <value>Feuilleter</value>
+    <value>Consulter</value>
   </data>
   <data name="ClearQueue" xml:space="preserve">
     <value>Effacer la file d'attente</value>
   </data>
   <data name="ClipboardMonitor" xml:space="preserve">
-    <value>contrôler le presse-papier</value>
+    <value>Vérifier le presse-papier</value>
   </data>
   <data name="Crawl" xml:space="preserve">
     <value>Télécharger</value>
@@ -145,7 +145,7 @@
     <value>Télécharger la sélection</value>
   </data>
   <data name="DateAdded" xml:space="preserve">
-    <value>date ajoutée</value>
+    <value>Date ajoutée</value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Effacer</value>
@@ -157,10 +157,10 @@
     <value>Fichiers téléchargés</value>
   </data>
   <data name="DownloadLocation" xml:space="preserve">
-    <value>Télécharger l'emplacement</value>
+    <value>Emplacement de téléchargement</value>
   </data>
   <data name="EnqueueSelection" xml:space="preserve">
-    <value>Enquérir la sélection</value>
+    <value>Ajouter à la queue</value>
   </data>
   <data name="Error" xml:space="preserve">
     <value>Erreur</value>
@@ -169,7 +169,7 @@
     <value>Erreur {0}: {1}</value>
   </data>
   <data name="InternalErrorDescription" xml:space="preserve">
-    <value>La description de l'erreur interne</value>
+    <value>Description de l'erreur interne</value>
   </data>
   <data name="Name" xml:space="preserve">
     <value>nom</value>
@@ -220,7 +220,7 @@
     <value>Afficher les fichiers</value>
   </data>
   <data name="Stop" xml:space="preserve">
-    <value>Arrêtez</value>
+    <value>Arrêt</value>
   </data>
   <data name="Tags" xml:space="preserve">
     <value>Mots clés</value>
@@ -235,7 +235,7 @@
     <value>Taille de l'image (px)</value>
   </data>
   <data name="ParallelBlogs" xml:space="preserve">
-    <value>Nombre de blogs parallèles</value>
+    <value>Nombre de blogs parallèls</value>
   </data>
   <data name="ParallelConnections" xml:space="preserve">
     <value>Nombre de connexions parallèles</value>
@@ -244,7 +244,7 @@
     <value>En ligne</value>
   </data>
   <data name="Progress" xml:space="preserve">
-    <value>Le progrès</value>
+    <value>Progression</value>
   </data>
   <data name="NumberOfItems" xml:space="preserve">
     <value>{0} Articles</value>
@@ -253,16 +253,16 @@
     <value>1 Item</value>
   </data>
   <data name="CheckStatus" xml:space="preserve">
-    <value>Check blog online status on startup</value>
+    <value>Vérifier l'état online du blog au démaarage</value>
   </data>
   <data name="DeleteIndex" xml:space="preserve">
-    <value>Delete only the index files (no downloaded files)</value>
+    <value>Effacer seulement les fichiers index (no downloaded files)</value>
   </data>
   <data name="RemoveIndex" xml:space="preserve">
-    <value>Remove blog index after crawl</value>
+    <value>Effacer l'index après le téléchargement</value>
   </data>
   <data name="SkipGif" xml:space="preserve">
-    <value>Ignorer les .gif fichiers</value>
+    <value>Ignorer les fichiers .gif</value>
   </data>
   <data name="Info32Bit" xml:space="preserve">
     <value>32 Bits</value>
@@ -277,10 +277,10 @@
     <value>.NET Framework</value>
   </data>
   <data name="Ok" xml:space="preserve">
-    <value>D'accord</value>
+    <value>Ok</value>
   </data>
   <data name="OperatingSystem" xml:space="preserve">
-    <value>Système opérateur</value>
+    <value>Système d'exploitation</value>
   </data>
   <data name="Product" xml:space="preserve">
     <value>Produit</value>
@@ -304,31 +304,31 @@
     <value>Fichier téléchargé {0} de {1}</value>
   </data>
   <data name="DownloadImages" xml:space="preserve">
-    <value>Télécharger des images</value>
+    <value>Télécharger les images</value>
   </data>
   <data name="DownloadVideos" xml:space="preserve">
-    <value>Télécharger des vidéos (tumblr.com)</value>
+    <value>Télécharger les vidéos (tumblr.com)</value>
   </data>
   <data name="VideoSize" xml:space="preserve">
-    <value>Taille vidéo (px)</value>
+    <value>Taille de la vidéo (px)</value>
   </data>
   <data name="Authenticate" xml:space="preserve">
-    <value>Authentifier</value>
+    <value>Authentification</value>
   </data>
   <data name="ToolTipAuthenticate" xml:space="preserve">
-    <value>Authenticate to the tumblr.com network</value>
+    <value>Authentication au réseau tumblr.com</value>
   </data>
   <data name="ToolTipAuthenticateDescription" xml:space="preserve">
-    <value>Opens a browser window to authenticate yourself to the tumblr.com site. Allows the download of private blogs with your account. The access token to your account is saved and the authentication process needs to be done only once.</value>
+    <value>Ouvre le navigateur pour vous authentifier vous-même au site tumblr.com . Autorise le téléchargement des blogs privés. Le jeton d'accès est sauvaegardé une bonne fois pour toute.</value>
   </data>
   <data name="ToolTipBlogs" xml:space="preserve">
-    <value>Number of simultaneous processed blogs</value>
+    <value>Nombre de blogs téléchargés simultanés</value>
   </data>
   <data name="ToolTipBlogsDescription" xml:space="preserve">
-    <value>Sets the Number of simultaneous processed blogs. Setting this to 2 would download data from two blogs at a time.</value>
+    <value>Réglez le nombre de téléchargements simultanés de blogs en même temps.</value>
   </data>
   <data name="ToolTipConnections" xml:space="preserve">
-    <value>Number of total simultaneous connections</value>
+    <value>Nombre de connexions totales simultanés</value>
   </data>
   <data name="ToolTipConnectionsDescription" xml:space="preserve">
     <value>Sets the Number of total simultaneous connections. The number is divided by the number of Parallel Blogs settings. 25/2 would open 12 connections per blog download.</value>
@@ -337,16 +337,16 @@
     <value>Notes personnelles</value>
   </data>
   <data name="TimeOut" xml:space="preserve">
-    <value>Temps libre (s)</value>
+    <value>Timeout (s)</value>
   </data>
   <data name="Bandwidth" xml:space="preserve">
     <value>Limite de bande passante (KB/s)</value>
   </data>
   <data name="EnableAutoDownload" xml:space="preserve">
-    <value>Activer les blogs de téléchargement automatique et ajouter</value>
+    <value>Activer le téléchargement automatique des blogs et ajouter</value>
   </data>
   <data name="Timer" xml:space="preserve">
-    <value>À l'heure (hh:mm:ss)</value>
+    <value>Heure (hh:mm:ss)</value>
   </data>
   <data name="SelectABlog" xml:space="preserve">
     <value>Sélectionnez un blog</value>
@@ -358,10 +358,10 @@
     <value>Copier le lien</value>
   </data>
   <data name="Posts" xml:space="preserve">
-    <value>nombre de postes：</value>
+    <value>nombre de posts：</value>
   </data>
   <data name="Preview" xml:space="preserve">
-    <value>Preview:</value>
+    <value>Prévisualiser:</value>
   </data>
   <data name="DownloadAudios" xml:space="preserve">
     <value>Télécharger des fichiers audio</value>
@@ -370,19 +370,19 @@
     <value>Télécharger les messages de conversation</value>
   </data>
   <data name="DownloadLinks" xml:space="preserve">
-    <value>Télécharger les publications du lien</value>
+    <value>Télécharger les liens</value>
   </data>
   <data name="DownloadQuotes" xml:space="preserve">
-    <value>Télécharger les messages de devis</value>
+    <value>Télécharger les quotes</value>
   </data>
   <data name="DownloadTexts" xml:space="preserve">
-    <value>Télécharger les publications textuelles</value>
+    <value>Télécharger les textes</value>
   </data>
   <data name="DetailsProgress" xml:space="preserve">
-    <value>{0} de {1}, des doublons trouvés: {2}</value>
+    <value>{0} de {1}, doublons trouvés: {2}</value>
   </data>
   <data name="EnablePreview" xml:space="preserve">
-    <value>Vue d'ensemble on/off</value>
+    <value>Activer la prévisualisation</value>
   </data>
   <data name="BlogSettings" xml:space="preserve">
     <value>Paramètres du blog:</value>
@@ -421,13 +421,13 @@
     <value>The backup uses indivual settings for each blog. To change them, select a blog in the main interface and select the Details window on the right hand side.</value>
   </data>
   <data name="Save" xml:space="preserve">
-    <value>sauvegarder</value>
+    <value>Sauvegarder</value>
   </data>
   <data name="Offline" xml:space="preserve">
     <value>Hors ligne</value>
   </data>
   <data name="ForceSize" xml:space="preserve">
-    <value>Télécharger la taille spécifiée même si elle n'est pas offerte</value>
+    <value>Télécharger la taille spécifiée même si elle n'est pas proposée</value>
   </data>
   <data name="ToolTipForceSize" xml:space="preserve">
     <value>Download the specified resolution of images even if the size is not offered.</value>
@@ -436,7 +436,7 @@
     <value>If the crawler only finds lower sized images than specified, enabling this option will rename the url to the specified files size. Those files generally exist and sometimes offer a larger resolution or are just renamed smaller resolution files. It's safe to turn this on.</value>
   </data>
   <data name="ProxyHost" xml:space="preserve">
-    <value>HTTP Proxy:</value>
+    <value>Proxy HTTP:</value>
   </data>
   <data name="ProxyPort" xml:space="preserve">
     <value>Port:</value>
@@ -448,7 +448,7 @@
     <value>Logiciel et licences tiers</value>
   </data>
   <data name="ToolTipLimitBandwidth" xml:space="preserve">
-    <value>Throttles the bandwidth of the downloader</value>
+    <value>Limiter la bande passante des téléchargements</value>
   </data>
   <data name="ToolTipLimitBandwidthDescription" xml:space="preserve">
     <value>Sets the maximum bandwidth available for the downloader in kbytes/s. 0 disables throttling.</value>
@@ -457,7 +457,7 @@
     <value>Limiter la bande passante de l'analyse</value>
   </data>
   <data name="ScanConnections" xml:space="preserve">
-    <value>Connexion de numérisation</value>
+    <value>Scanner les connexions</value>
   </data>
   <data name="ToolTipLimitScan" xml:space="preserve">
     <value>Includes the scan bandwidth in the throttling</value>
@@ -475,7 +475,7 @@
     <value>La valeur doit être comprise entre 0 et 9 000 000 000 000 000.</value>
   </data>
   <data name="TimeSpanTypeError" xml:space="preserve">
-    <value>La valeur doit avoir pour former hh: mm: ss.</value>
+    <value>La valeur doit avoir pour forme hh: mm: ss.</value>
   </data>
   <data name="IntRangeError" xml:space="preserve">
     <value>La valeur doit être comprise entre 0 et 2 147 483 647.</value>
@@ -511,10 +511,10 @@
     <value>Vérifier les mises à jour</value>
   </data>
   <data name="DownloadNow" xml:space="preserve">
-    <value>Download Now</value>
+    <value>Télécharger maintenant</value>
   </data>
   <data name="CheckDirectoryForFiles" xml:space="preserve">
-    <value>Vérifiez répertoire des fichiers</value>
+    <value>Vérifiez le répertoire des fichiers</value>
   </data>
   <data name="ToolTipCheckDirectoryForFiles" xml:space="preserve">
     <value>Checks the directory for already downloaded files.</value>
@@ -538,7 +538,7 @@
     <value>Blog</value>
   </data>
   <data name="Connection" xml:space="preserve">
-    <value>lien</value>
+    <value>Connexion</value>
   </data>
   <data name="General" xml:space="preserve">
     <value>Général</value>
@@ -550,13 +550,13 @@
     <value>Activates the portable mode.</value>
   </data>
   <data name="ToolTipPortableModeDescription" xml:space="preserve">
-    <value>Saves the settings in the folder of the executable instead of AppData.</value>
+    <value>Sauvegarder les réglages dans le répertoire du fichier exécutable au lieu de AppData.</value>
   </data>
   <data name="DownloadRebloggedPosts" xml:space="preserve">
     <value>Download reblogged posts</value>
   </data>
   <data name="ProxyPassword" xml:space="preserve">
-    <value>Mot de passe de proxy:</value>
+    <value>Mot de passe du proxy:</value>
   </data>
   <data name="ProxyUsername" xml:space="preserve">
     <value>Nom d'utilisateur proxy:</value>
