@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Reflection;
+using System.Security.Policy;
 using System.Threading.Tasks;
 
 using TumblThree.Applications.Services;
@@ -41,8 +44,7 @@ namespace TumblThree.Applications.Controllers
 
         public void SelectBlogFiles(IReadOnlyList<IBlog> blogFiles)
         {
-            // Save changes to previous selected files
-            SaveCurrentSelectedFile();
+            ClearBlogSelection();
 
             if (blogFiles.Count() <= 1)
             {
@@ -53,6 +55,16 @@ namespace TumblThree.Applications.Controllers
             {
                 DetailsViewModel.Count = blogFiles.Count();
                 DetailsViewModel.BlogFile = CreateFromMultiple(blogFiles.ToArray());
+                DetailsViewModel.BlogFile.PropertyChanged += ChangeBlogSettings;
+            }
+        }
+
+        private void ChangeBlogSettings(object sender, PropertyChangedEventArgs e)
+        {
+            foreach (IBlog blog in blogsToSave)
+            {
+                PropertyInfo property = typeof(IBlog).GetProperty(e.PropertyName);
+                property.SetValue(blog, property.GetValue(DetailsViewModel.BlogFile), null);
             }
         }
 
@@ -64,8 +76,6 @@ namespace TumblThree.Applications.Controllers
 
         public void Shutdown()
         {
-            Task task = Task.Run(() => SaveCurrentSelectedFile());
-            shellService.AddTaskToCompleteBeforeShutdown(task);
         }
 
         public IBlog CreateFromMultiple(IEnumerable<IBlog> blogFiles)
@@ -111,88 +121,54 @@ namespace TumblThree.Applications.Controllers
                 DownloadedAudioMetas = sharedBlogFiles.Sum(blogs => blogs.DownloadedAudioMetas),
                 DownloadPages = string.Empty,
                 PageSize = 0,
-                DownloadAudio = false,
-                DownloadConversation = false,
-                DownloadLink = false,
-                DownloadPhoto = false,
-                DownloadQuote = false,
-                DownloadText = false,
-                DownloadAnswer = false,
-                DownloadVideo = false,
-                CreatePhotoMeta = false,
-                CreateVideoMeta = false,
-                CreateAudioMeta = false,
-                DownloadRebloggedPosts = false,
-                SkipGif = false,
-                ForceSize = false,
-                ForceRescan = false,
-                CheckDirectoryForFiles = false,
-                DownloadUrlList = false,
+                DownloadAudio = SetCheckBox(sharedBlogFiles, "DownloadAudio"),
+                DownloadConversation = SetCheckBox(sharedBlogFiles, "DownloadConversation"),
+                DownloadLink = SetCheckBox(sharedBlogFiles, "DownloadLink"),
+                DownloadPhoto = SetCheckBox(sharedBlogFiles, "DownloadPhoto"),
+                DownloadQuote = SetCheckBox(sharedBlogFiles, "DownloadQuote"),
+                DownloadText = SetCheckBox(sharedBlogFiles, "DownloadText"),
+                DownloadAnswer = SetCheckBox(sharedBlogFiles, "DownloadAnswer"),
+                DownloadVideo = SetCheckBox(sharedBlogFiles, "DownloadVideo"),
+                CreatePhotoMeta = SetCheckBox(sharedBlogFiles, "CreatePhotoMeta"),
+                CreateVideoMeta = SetCheckBox(sharedBlogFiles, "CreateVideoMeta"),
+                CreateAudioMeta = SetCheckBox(sharedBlogFiles, "CreateAudioMeta"),
+                DownloadRebloggedPosts = SetCheckBox(sharedBlogFiles, "DownloadRebloggedPosts"),
+                SkipGif = SetCheckBox(sharedBlogFiles, "SkipGif"),
+                ForceSize = SetCheckBox(sharedBlogFiles, "ForceSize"),
+                ForceRescan = SetCheckBox(sharedBlogFiles, "ForceRescan"),
+                CheckDirectoryForFiles = SetCheckBox(sharedBlogFiles, "CheckDirectoryForFiles"),
+                DownloadUrlList = SetCheckBox(sharedBlogFiles, "DownloadUrlList"),
                 Dirty = false
             };
         }
 
-        private void SaveCurrentSelectedFile()
+        private static bool SetCheckBox(IBlog[] blogs, string propertyName)
         {
-            SaveChanges(DetailsViewModel.BlogFile);
+            PropertyInfo property = typeof(IBlog).GetProperty(propertyName);
+            int numberOfBlogs = blogs.Length;
+            int checkedBlogs = blogs.Select(blog => (bool)property.GetValue(blog)).Count(state => state);
+            if (checkedBlogs == numberOfBlogs)
+                return true;
+            if (checkedBlogs == 0)
+                return false;
+            //return null;
+            return false;
         }
 
-        private void SaveChanges(IBlog blogFile)
+        private void ClearBlogSelection()
         {
-            if (blogFile == null)
-            {
-                return;
-            }
-            IReadOnlyCollection<IBlog> filesToSave;
             if (blogsToSave.Any())
             {
-                filesToSave = managerService.BlogFiles.Where(blogs => blogsToSave.Contains(blogs)).ToArray();
-            }
-            else
-            {
-                filesToSave = new[] { blogFile };
-            }
-
-            if (blogFile.Dirty)
-            {
-                foreach (IBlog blog in filesToSave)
-                {
-                    blog.DownloadAudio = blogFile.DownloadAudio;
-                    blog.DownloadConversation = blogFile.DownloadConversation;
-                    blog.DownloadLink = blogFile.DownloadLink;
-                    blog.DownloadPhoto = blogFile.DownloadPhoto;
-                    blog.DownloadQuote = blogFile.DownloadQuote;
-                    blog.DownloadText = blogFile.DownloadText;
-                    blog.DownloadAnswer = blogFile.DownloadAnswer;
-                    blog.DownloadVideo = blogFile.DownloadVideo;
-                    blog.CreatePhotoMeta = blogFile.CreatePhotoMeta;
-                    blog.CreateVideoMeta = blogFile.CreateVideoMeta;
-                    blog.CreateAudioMeta = blogFile.CreateAudioMeta;
-                    blog.DownloadRebloggedPosts = blogFile.DownloadRebloggedPosts;
-                    blog.SkipGif = blogFile.SkipGif;
-                    blog.ForceSize = blogFile.ForceSize;
-                    blog.ForceRescan = blogFile.ForceRescan;
-                    blog.CheckDirectoryForFiles = blogFile.CheckDirectoryForFiles;
-                    blog.DownloadUrlList = blogFile.DownloadUrlList;
-                    blog.DownloadPages = blogFile.DownloadPages;
-                    blog.PageSize = blogFile.PageSize;
-                    blog.Dirty = true;
-                }
-            }
-
-            RemoveBlogFilesToSave(filesToSave);
-        }
-
-        private void RemoveBlogFilesToSave(IEnumerable<IBlog> blogFiles)
-        {
-            foreach (IBlog x in blogFiles)
-            {
-                blogsToSave.Remove(x);
+                blogsToSave.Clear();
             }
         }
 
         private void SelectedBlogFilesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+            if (DetailsViewModel.BlogFile != null)
+            {
+                DetailsViewModel.BlogFile.PropertyChanged -= ChangeBlogSettings;
+            }
             SelectBlogFiles(selectionService.SelectedBlogFiles.Cast<Blog>().ToArray());
         }
     }

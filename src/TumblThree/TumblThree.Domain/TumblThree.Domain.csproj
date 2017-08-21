@@ -60,6 +60,7 @@
     </Compile>
     <Compile Include="JsonFormatter.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="Models\DetailsBlog.cs" />
     <Compile Include="Models\Blog.cs" />
     <Compile Include="Models\BlogFactory.cs" />
     <Compile Include="Models\BlogTypes.cs" />

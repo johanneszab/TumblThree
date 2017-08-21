@@ -28,7 +28,7 @@ namespace TumblThree.Applications.Downloader
         {
         }
 
-        public new async Task IsBlogOnlineAsync()
+        public override async Task IsBlogOnlineAsync()
         {
             try
             {
