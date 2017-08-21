@@ -63,6 +63,7 @@
     <Compile Include="Models\Blog.cs" />
     <Compile Include="Models\BlogFactory.cs" />
     <Compile Include="Models\BlogTypes.cs" />
+    <Compile Include="Models\DetailsBlog.cs" />
     <Compile Include="Models\Files.cs" />
     <Compile Include="Models\IBlog.cs" />
     <Compile Include="Models\IBlogFactory.cs" />
