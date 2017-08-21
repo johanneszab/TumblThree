@@ -505,7 +505,7 @@
     <value>Rescans the whole blog, not just new posts.</value>
   </data>
   <data name="ToolTipForceRescanDescription" xml:space="preserve">
-    <value>Forces a complete scan using the Tumblr api.</value>
+    <value>Forces a complete scan using the Tumblr api. Enabling this also updates the blog statistics.</value>
   </data>
   <data name="CheckForUpdates" xml:space="preserve">
     <value>Check for Updates</value>

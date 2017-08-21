@@ -106,10 +106,12 @@
     <Compile Include="Services\IPresentationService.cs" />
     <Compile Include="Services\ISelectionService.cs" />
     <Compile Include="Services\ISettingsProvider.cs" />
+    <Compile Include="Services\ISettingsService.cs" />
     <Compile Include="Services\IShellService.cs" />
     <Compile Include="Services\ManagerService.cs" />
     <Compile Include="Services\SelectionService.cs" />
     <Compile Include="Services\SettingsProvider.cs" />
+    <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Services\SharedCookieService.cs" />
     <Compile Include="Services\ShellService.cs" />
     <Compile Include="Services\ShellServiceExtensions.cs" />

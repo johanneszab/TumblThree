@@ -45,12 +45,13 @@ namespace TumblThree.Applications.Controllers
         private readonly DelegateCommand removeBlogCommand;
         private readonly ISelectionService selectionService;
         private readonly IShellService shellService;
+        private readonly ISettingsService settingsService;
         private readonly DelegateCommand showDetailsCommand;
         private readonly DelegateCommand showFilesCommand;
         private readonly DelegateCommand visitBlogCommand;
 
         [ImportingConstructor]
-        public ManagerController(IShellService shellService, ISelectionService selectionService, ICrawlerService crawlerService,
+        public ManagerController(IShellService shellService, ISelectionService selectionService, ICrawlerService crawlerService, ISettingsService settingsService,
             IManagerService managerService, IDownloaderFactory downloaderFactory, IBlogFactory blogFactory, Lazy<ManagerViewModel> managerViewModel)
         {
             this.shellService = shellService;
@@ -58,6 +59,7 @@ namespace TumblThree.Applications.Controllers
             this.crawlerService = crawlerService;
             this.managerService = managerService;
             this.managerViewModel = managerViewModel;
+            this.settingsService = settingsService;
             DownloaderFactory = downloaderFactory;
             BlogFactory = blogFactory;
             addBlogCommand = new AsyncDelegateCommand(AddBlog, CanAddBlog);
@@ -361,7 +363,7 @@ namespace TumblThree.Applications.Controllers
                 return;
             }
 
-            TransferGlobalSettingsToBlog(blog);
+            blog = settingsService.TransferGlobalSettingsToBlog(blog);
             IDownloader downloader = DownloaderFactory.GetDownloader(blog.BlogType, new CancellationToken(), new PauseToken(), new Progress<DownloadProgress>(), shellService, crawlerService, blog);
             await downloader.IsBlogOnlineAsync();
 
@@ -401,32 +403,10 @@ namespace TumblThree.Applications.Controllers
         {
             RemoveBlog(new[] { blog } );
             blog = new Blog(blog.Url, Path.Combine(shellService.Settings.DownloadLocation, "Index"), BlogTypes.tmblrpriv);
-            TransferGlobalSettingsToBlog(blog);
+            blog = settingsService.TransferGlobalSettingsToBlog(blog);
             blog.BlogType = BlogTypes.tmblrpriv;
             blog.Online = true;
             return blog;
-        }
-
-        private void TransferGlobalSettingsToBlog(IBlog blog)
-        {
-            blog.DownloadAudio = shellService.Settings.DownloadAudios;
-            blog.DownloadPhoto = shellService.Settings.DownloadImages;
-            blog.DownloadVideo = shellService.Settings.DownloadVideos;
-            blog.DownloadText = shellService.Settings.DownloadTexts;
-            blog.DownloadAnswer = shellService.Settings.DownloadAnswers;
-            blog.DownloadQuote = shellService.Settings.DownloadQuotes;
-            blog.DownloadConversation = shellService.Settings.DownloadConversations;
-            blog.DownloadLink = shellService.Settings.DownloadLinks;
-            blog.CreatePhotoMeta = shellService.Settings.CreateImageMeta;
-            blog.CreateVideoMeta = shellService.Settings.CreateVideoMeta;
-            blog.CreateAudioMeta = shellService.Settings.CreateAudioMeta;
-            blog.SkipGif = shellService.Settings.SkipGif;
-            blog.DownloadRebloggedPosts = shellService.Settings.DownloadRebloggedPosts;
-            blog.ForceSize = shellService.Settings.ForceSize;
-            blog.CheckDirectoryForFiles = shellService.Settings.CheckDirectoryForFiles;
-            blog.DownloadUrlList = shellService.Settings.DownloadUrlList;
-            blog.DownloadPages = shellService.Settings.DownloadPages;
-            blog.PageSize = shellService.Settings.PageSize;
         }
 
         private void OnClipboardContentChanged(object sender, EventArgs e)

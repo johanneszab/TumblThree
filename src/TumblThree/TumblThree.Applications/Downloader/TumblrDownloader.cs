@@ -283,12 +283,10 @@ namespace TumblThree.Applications.Downloader
             ulong lastId = blog.LastId;
             if (blog.ForceRescan)
             {
-                blog.ForceRescan = false;
                 return 0;
             }
             if (!string.IsNullOrEmpty(blog.DownloadPages))
             {
-                blog.ForceRescan = false;
                 return 0;
             }
             return lastId;
@@ -301,8 +299,6 @@ namespace TumblThree.Applications.Downloader
             var numberOfPostsCrawled = 0;
             var apiLimitHit = false;
             var completeGrab = true;
-
-            ulong lastId = GetLastPostId();
 
             await UpdateTotalPostCount();
             int totalPosts = blog.Posts;
@@ -333,7 +329,7 @@ namespace TumblThree.Applications.Downloader
                     {
                         XDocument document = await GetApiPageAsync(pageNumber);
 
-                        completeGrab = CheckPostAge(document, lastId);
+                        completeGrab = CheckPostAge(document);
 
                         var tags = new List<string>();
                         if (!string.IsNullOrWhiteSpace(blog.Tags))
@@ -377,13 +373,13 @@ namespace TumblThree.Applications.Downloader
             return new Tuple<ulong, bool>(highestId, apiLimitHit);
         }
 
-        private static bool CheckPostAge(XDocument document, ulong lastId)
+        private bool CheckPostAge(XDocument document)
         {
             ulong highestPostId = 0;
             ulong.TryParse(document.Element("tumblr").Element("posts").Element("post")?.Attribute("id").Value,
                 out highestPostId);
 
-            if (highestPostId < lastId)
+            if (highestPostId < GetLastPostId())
             {
                 return false;
             }

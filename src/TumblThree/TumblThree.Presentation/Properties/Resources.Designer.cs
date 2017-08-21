@@ -1294,7 +1294,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Forces a complete scan using the Tumblr api..
+        ///   Looks up a localized string similar to Forces a complete scan using the Tumblr api. Enabling this also updates the blog statistics..
         /// </summary>
         public static string ToolTipForceRescanDescription {
             get {
