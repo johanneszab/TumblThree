@@ -622,6 +622,8 @@ namespace TumblThree.Applications.Downloader
                         {
                             string postId = post.id;
                             string audioUrl = post.audio_url;
+                            if (!audioUrl.EndsWith(".mp3"))
+                                audioUrl = audioUrl + ".mp3";
                             AddToDownloadList(new TumblrPost(PostTypes.Audio, audioUrl, postId, post.timestamp.ToString()));
                         }
                     }

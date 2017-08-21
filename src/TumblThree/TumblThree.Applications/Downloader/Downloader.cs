@@ -448,9 +448,9 @@ namespace TumblThree.Applications.Downloader
         private async Task DownloadAudioAsync(TumblrPost downloadItem)
         {
             string blogDownloadLocation = blog.DownloadLocation();
-            string fileName = FileName(downloadItem);
             string url = Url(downloadItem);
-            string fileLocation = FileLocation(blogDownloadLocation, downloadItem.Id + ".swf");
+            string fileName = FileName(downloadItem);
+            string fileLocation = FileLocation(blogDownloadLocation, fileName);
             string fileLocationUrlList = FileLocationLocalized(blogDownloadLocation, Resources.FileNameAudios);
             DateTime postDate = PostDate(downloadItem);
 

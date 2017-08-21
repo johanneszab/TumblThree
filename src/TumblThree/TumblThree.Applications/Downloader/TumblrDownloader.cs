@@ -829,10 +829,21 @@ namespace TumblThree.Applications.Downloader
 
         private void AddAudioUrl(XElement post)
         {
+            //string audioUrl = post.Descendants("audio-embed")
+            //    .Select(result => Regex.Match(result.Value, "2F(tumblr_[\\S]*)\"")
+            //    .Groups[1].Value)
+            //    .FirstOrDefault();
+            //audioUrl = "https://a.tumblr.com/" + audioUrl;
+            //if (!audioUrl.EndsWith(".mp3"))
+            //    audioUrl = audioUrl + "o1.mp3";
+
             string audioUrl = post.Descendants("audio-embed")
-                                  .Select(result => Regex.Match(result.Value, "src=\"([\\S]*)\"")
-                                                         .Groups[1].Value)
-                                  .FirstOrDefault();
+                .Select(result => Regex.Match(result.Value, "audio_file=([\\S]*)\"")
+                .Groups[1].Value)
+                .FirstOrDefault();
+            audioUrl = System.Web.HttpUtility.UrlDecode(audioUrl);
+            if (!audioUrl.EndsWith(".mp3"))
+                audioUrl = audioUrl + ".mp3";
 
             AddToDownloadList(new TumblrPost(PostTypes.Audio, WebUtility.UrlDecode(audioUrl), post.Attribute("id").Value, post.Attribute("unix-timestamp").Value));
         }
