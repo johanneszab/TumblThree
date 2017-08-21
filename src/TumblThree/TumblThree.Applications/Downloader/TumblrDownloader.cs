@@ -202,12 +202,10 @@ namespace TumblThree.Applications.Downloader
             ulong lastId = blog.LastId;
             if (blog.ForceRescan)
             {
-                blog.ForceRescan = false;
                 return 0;
             }
             if (!string.IsNullOrEmpty(blog.DownloadPages))
             {
-                blog.ForceRescan = false;
                 return 0;
             }
             return lastId;

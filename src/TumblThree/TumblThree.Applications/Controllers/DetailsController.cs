@@ -119,8 +119,8 @@ namespace TumblThree.Applications.Controllers
                 DownloadedPhotoMetas = sharedBlogFiles.Sum(blogs => blogs.DownloadedPhotoMetas),
                 DownloadedVideoMetas = sharedBlogFiles.Sum(blogs => blogs.DownloadedVideoMetas),
                 DownloadedAudioMetas = sharedBlogFiles.Sum(blogs => blogs.DownloadedAudioMetas),
-                DownloadPages = string.Empty,
-                PageSize = 0,
+                DownloadPages = SetDownloadPages(sharedBlogFiles),
+                PageSize = SetProperty<int>(sharedBlogFiles, "PageSize"),
                 DownloadAudio = SetCheckBox(sharedBlogFiles, "DownloadAudio"),
                 DownloadConversation = SetCheckBox(sharedBlogFiles, "DownloadConversation"),
                 DownloadLink = SetCheckBox(sharedBlogFiles, "DownloadLink"),
@@ -142,10 +142,29 @@ namespace TumblThree.Applications.Controllers
             };
         }
 
-        private static bool SetCheckBox(IBlog[] blogs, string propertyName)
+        private static T SetProperty<T>(IReadOnlyCollection<IBlog> blogs, string propertyName) where T : IConvertible
         {
             PropertyInfo property = typeof(IBlog).GetProperty(propertyName);
-            int numberOfBlogs = blogs.Length;
+            var value = (T)property.GetValue(blogs.FirstOrDefault());
+            bool equal = blogs.All(blog => property.GetValue(blog).Equals(value));
+            if (equal)
+                return value;
+            return default(T);
+        }
+
+        private static string SetDownloadPages(IReadOnlyCollection<IBlog> blogs)
+        {
+            string downloadPages = blogs.FirstOrDefault().DownloadPages;
+            bool equal = blogs.All(blog => blog.DownloadPages == downloadPages);
+            if (equal)
+                return downloadPages;
+            return String.Empty;
+        }
+
+        private static bool SetCheckBox(IReadOnlyCollection<IBlog> blogs, string propertyName)
+        {
+            PropertyInfo property = typeof(IBlog).GetProperty(propertyName);
+            int numberOfBlogs = blogs.Count;
             int checkedBlogs = blogs.Select(blog => (bool)property.GetValue(blog)).Count(state => state);
             if (checkedBlogs == numberOfBlogs)
                 return true;
