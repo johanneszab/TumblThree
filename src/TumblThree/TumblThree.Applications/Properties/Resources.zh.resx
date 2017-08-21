@@ -121,16 +121,16 @@
     <value>您的应用程序已是最新。</value>
   </data>
   <data name="AudioCaption" xml:space="preserve">
-    <value>音频字幕： {0}</value>
+    <value>Audio Caption: {0}</value>
   </data>
   <data name="AuthenticationFailure" xml:space="preserve">
-    <value>授权失败： {0}</value>
+    <value>授权失败：{0}</value>
   </data>
   <data name="BlogAlreadyExist" xml:space="preserve">
-    <value>博客已存在： {0}</value>
+    <value>博客已添加：{0}</value>
   </data>
   <data name="BlogIsOffline" xml:space="preserve">
-    <value>博客已离线： {0}</value>
+    <value>博客已离线：{0}</value>
   </data>
   <data name="BlogTypesAll" xml:space="preserve">
     <value>全部</value>
@@ -145,52 +145,52 @@
     <value>一旦完成</value>
   </data>
   <data name="Body" xml:space="preserve">
-    <value>主体： {0]</value>
+    <value>Body: {0]</value>
   </data>
   <data name="Conversation" xml:space="preserve">
-    <value>会话： {0}</value>
+    <value>Conversation: {0}</value>
   </data>
   <data name="CouldNotAddBlog" xml:space="preserve">
-    <value>无法添加该博客： {0}</value>
+    <value>无法添加博客：{0}</value>
   </data>
   <data name="CouldNotLoadLibrary" xml:space="preserve">
-    <value>无法在库中加载文件： {0}</value>
+    <value>无法在库中加载文件：{0}</value>
   </data>
   <data name="CouldNotLoadQueuelist" xml:space="preserve">
-    <value>无法加载队列 也许其中某些博客已不存在。</value>
+    <value>无法加载队列，也许其中某些博客已不存在。</value>
   </data>
   <data name="CouldNotOpenFiles" xml:space="preserve">
     <value>无法打开文件。</value>
   </data>
   <data name="CouldNotRemoveBlog" xml:space="preserve">
-    <value>无法删除博客： {0}</value>
+    <value>无法删除博客：{0}</value>
   </data>
   <data name="CouldNotRemoveBlogIndex" xml:space="preserve">
-    <value>无法删除博客： {0}</value>
+    <value>无法删除博客：{0}</value>
   </data>
   <data name="CouldNotRestoreUISettings" xml:space="preserve">
     <value>无法恢复用户界面设置。</value>
   </data>
   <data name="CouldNotSaveBlog" xml:space="preserve">
-    <value>无法保存博客： {0}</value>
+    <value>无法保存博客：{0}</value>
   </data>
   <data name="CouldNotSaveQueueList" xml:space="preserve">
     <value>队列保存失败。</value>
   </data>
   <data name="CouldNotStartOAuthManager" xml:space="preserve">
-    <value>无法初始化OAuth</value>
+    <value>无法初始化OAuth。</value>
   </data>
   <data name="CrawlerError" xml:space="preserve">
     <value>抓取工具线程遇到错误。</value>
   </data>
   <data name="Date" xml:space="preserve">
-    <value>日期： {0}</value>
+    <value>Date: {0}</value>
   </data>
   <data name="DiskFull" xml:space="preserve">
     <value>磁盘空间不足。</value>
   </data>
   <data name="ExportFileFilter" xml:space="preserve">
-    <value>文本文件 (* .txt)| * .txt</value>
+    <value>文本文档 (* .txt)| * .txt</value>
   </data>
   <data name="ExportFileFilterExtension" xml:space="preserve">
     <value>.txt</value>
@@ -253,10 +253,10 @@
     <value>MaxBytesPerSecond必须为非负数</value>
   </data>
   <data name="NewVersionAvailable" xml:space="preserve">
-    <value>新版本可供下载： {0}</value>
+    <value>新版本可供下载：{0}</value>
   </data>
   <data name="NotLoggedIn" xml:space="preserve">
-    <value>您需要登录tumblr才能下载{0}。 转到设置->授权。</value>
+    <value>您需要登录tumblr才能下载{0}。转到设置->授权。</value>
   </data>
   <data name="PhotoCaption" xml:space="preserve">
     <value>Photo Caption: {0}</value>
@@ -295,10 +295,10 @@
     <value>Reblog Url: {0}</value>
   </data>
   <data name="Tags" xml:space="preserve">
-    <value>标签: {0}</value>
+    <value>Tags: {0}</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>标题: {0}</value>
+    <value>Title: {0}</value>
   </data>
   <data name="UrlWithSlug" xml:space="preserve">
     <value>Url with slug: {0}</value>

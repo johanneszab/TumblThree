@@ -127,7 +127,7 @@
     <value>添加到队列</value>
   </data>
   <data name="BlogUrl" xml:space="preserve">
-    <value>输入网址：</value>
+    <value>博客网址：</value>
   </data>
   <data name="Browse" xml:space="preserve">
     <value>浏览</value>
@@ -145,7 +145,7 @@
     <value>下载选择</value>
   </data>
   <data name="DateAdded" xml:space="preserve">
-    <value>添加日期</value>
+    <value>添加时间</value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>删除</value>
@@ -154,7 +154,7 @@
     <value>详细</value>
   </data>
   <data name="DownloadedFiles" xml:space="preserve">
-    <value>下载的文件数</value>
+    <value>已下载数</value>
   </data>
   <data name="DownloadLocation" xml:space="preserve">
     <value>下载位置</value>
@@ -175,10 +175,10 @@
     <value>名称</value>
   </data>
   <data name="NumberOfDownloads" xml:space="preserve">
-    <value>下载数</value>
+    <value>总下载数</value>
   </data>
   <data name="OpenQueue" xml:space="preserve">
-    <value>查看队列</value>
+    <value>打开队列</value>
   </data>
   <data name="Pause" xml:space="preserve">
     <value>暂停</value>
@@ -292,7 +292,7 @@
     <value>网站</value>
   </data>
   <data name="LastCompleteCrawl" xml:space="preserve">
-    <value>上次完成时间</value>
+    <value>最近完成时间</value>
   </data>
   <data name="VisitBlog" xml:space="preserve">
     <value>在浏览器中打开</value>
@@ -343,7 +343,7 @@
     <value>限制带宽 (KB/s)</value>
   </data>
   <data name="EnableAutoDownload" xml:space="preserve">
-    <value>启用自动下载博客并添加</value>
+    <value>自动下载博客并添加</value>
   </data>
   <data name="Timer" xml:space="preserve">
     <value>于时间 (时:分:秒)</value>
@@ -412,10 +412,10 @@
     <value>设置对所有新加入的博客有效：</value>
   </data>
   <data name="DownloadVideosShort" xml:space="preserve">
-    <value>下载视频</value>
+    <value>下载视频帖子</value>
   </data>
   <data name="ToolTipDefaultSettingsForBlogs" xml:space="preserve">
-    <value>为新加入的博客设置默认设置</value>
+    <value>为新添加的博客设置默认设置</value>
   </data>
   <data name="ToolTipDefaultSettingsForBlogsDescription" xml:space="preserve">
     <value>每个博客的设置都各自独立，若想修改已存在的博客设置，在主界面选中该博客后在右侧"详细"标签页修改。</value>
@@ -427,7 +427,7 @@
     <value>离线</value>
   </data>
   <data name="ForceSize" xml:space="preserve">
-    <value>强制下载指定分辨率(即使未提供)</value>
+    <value>强制下载指定分辨率</value>
   </data>
   <data name="ToolTipForceSize" xml:space="preserve">
     <value>即使tumblr未提供也强制下载指定分辨率的图片。</value>
@@ -538,7 +538,7 @@
     <value>博客</value>
   </data>
   <data name="Connection" xml:space="preserve">
-    <value>连接</value>
+    <value>下载</value>
   </data>
   <data name="General" xml:space="preserve">
     <value>全局</value>
@@ -568,7 +568,7 @@
     <value>凭证在设置文件中以明文保存</value>
   </data>
   <data name="DownloadPages" xml:space="preserve">
-    <value>下载页数：</value>
+    <value>下载页码：</value>
   </data>
   <data name="PageSize" xml:space="preserve">
     <value>每页帖数：</value>
