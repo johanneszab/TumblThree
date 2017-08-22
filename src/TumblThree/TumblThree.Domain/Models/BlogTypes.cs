@@ -3,9 +3,11 @@
     public enum BlogTypes
     {
         tumblr,
+        tmblrpriv,
         instagram,
         twitter,
         tlb,
-        ts
+        tumblrsearch,
+        tumblrtagged
     }
 }

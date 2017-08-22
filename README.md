@@ -3,7 +3,7 @@
 TumblThree is the code rewrite of [TumblTwo](https://github.com/johanneszab/TumblTwo), a free and open source Tumblr blog backup application, using C# with WPF and the MVVM pattern. It uses the [Win Application Framework (WAF)](https://github.com/jbe2277/waf). It downloads photo, video, audio and text posts from a given tumblr blog.
 
 ### New Features (over TumblTwo):
-* Internationalization support.
+* Internationalization support (currently available: zh, ru, de, fr, es).
 * Autosave of the queuelist.
 * Save, clear and restore the queuelist.
 * Download of text, audio, quote, conversation, link and question posts.
@@ -12,6 +12,8 @@ TumblThree is the code rewrite of [TumblTwo](https://github.com/johanneszab/Tumb
 * Download of \_raw image files (original/higher resolution pictures). 
 * A downloader for private blogs (login required blogs).
 * A downloader for downloading "liked by" photos and videos instead of a tumblr blog.
+* A downloader for downloading photos and videos from the tumblr tag search (e.g. http://www.tumblr.com/tagged/keyword) (login required).
+* A downloader for downloading photos and videos from the tumblr search (e.g. http://www.tumblr.com/search/keywords).
 * An option to download an url list instead of the actual files.
 * Allows to download only original content of the blog and skip reblogged posts.
 * Set a time interval for a automatic download (e.g. during nights).
@@ -75,6 +77,22 @@ TumblThree is the code rewrite of [TumblTwo](https://github.com/johanneszab/Tumb
   * Application settings are stored in _C:\\Users\\Username\\AppData\\Local\\TumblThree\\_. 
   * You can use the _portable mode_ (settings->general) to stores the application settings in the same folder as the executable.
   * For each blog there is also an index file in the download location (default: in the _.\\Blogs\\_ folder relative to the executable) named after the _blogname_.tumblr. Here are blog relative information stored like what files have been downloaded, the url of the blog and when it was added. This allows you to move your downloaded files (photos, videos, audio files) to a different location without interfering with the backup process.
+
+### Getting Started: ###
+
+The default settings should cover most users. You should only have to change the download location and the kind of posts you want to download. For this, in the Settings (click on the Settings button in the lower panel of the main user interface) you might want to change:
+* General -> Download location: Specifies where to download the files. The default is in a folder _Blogs_ relative to the TumblThree.exe
+* Blog -> Settings applied to each blog upon addition:
+  * Here you can set what posts newly added blogs will download per default. To change what each blog downloads, click on a blog in the main interface, select the Details Tab on the right and change the settings. This separation allows to download different kind of post for different blogs. You can change the download settings for multiple existing blogs by selecting them with shift+left click for a range or ctrl-a for all of them.
+  * Note: You might want to always select:
+    *  _Download Reblogged posts_: Downloads reblogs, not just original content of the blog author.
+    *  _Force Rescan_: Force Rescan always crawls the whole blog and not just new posts which were added after the last successful crawl. The statistics of a blog (total posts, number of post, number of duplicates) currently can only be updated if the whole blog is crawled. Thus, disabling this might result in downloading "more" posts than displayed in TumblThree. If you don't matter if about the displayed blog statistics, turning Force Rescan off will decrease the scanning time since already downloaded posts are skipped in the scanning.
+
+Settings you might want to change if the download speed is not satisfactory:
+* General -> Parallel connections: Specifies the number of connections used for downloading posts. The number is shared between all actively downloading blogs.
+* General -> Parallel Blogs: Number of blogs to download in parallel.
+
+Most likely you don't have to change any of the other connection settings.
 
 ### Current Limitations: ###
 

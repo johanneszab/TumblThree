@@ -19,7 +19,7 @@ using TumblThree.Domain.Models;
 namespace TumblThree.Applications.Downloader
 {
     [Export(typeof(IDownloader))]
-    [ExportMetadata("BlogType", BlogTypes.ts)]
+    [ExportMetadata("BlogType", BlogTypes.tumblrsearch)]
     public class TumblrSearchDownloader : Downloader, IDownloader
     {
         private int numberOfPagesCrawled = 0;
@@ -387,7 +387,7 @@ namespace TumblThree.Applications.Downloader
 
                 var jsonDeserializer = new System.Web.Script.Serialization.JavaScriptSerializer { MaxJsonLength = 2147483644 };
                 var result = jsonDeserializer.Deserialize<TumblrSearchJson>(response);
-                if (result.response.posts_html == null)
+                if (string.IsNullOrEmpty(result.response.posts_html))
                 {
                     return;
                 }

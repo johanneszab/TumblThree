@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -17,20 +18,19 @@ using TumblThree.Domain.Models;
 namespace TumblThree.Applications.Downloader
 {
     [Export(typeof(IDownloader))]
-    [ExportMetadata("BlogType", BlogTypes.tlb)]
-    public class TumblrLikedByDownloader : Downloader, IDownloader
+    [ExportMetadata("BlogType", BlogTypes.tumblrtagged)]
+    public class TumblrTaggedDownloader : Downloader, IDownloader
     {
-
         private int numberOfPagesCrawled = 0;
 
-        public TumblrLikedByDownloader(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, PostCounter counter, FileDownloader fileDownloader, ICrawlerService crawlerService, IBlog blog, IFiles files)
+        public TumblrTaggedDownloader(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, PostCounter counter, FileDownloader fileDownloader, ICrawlerService crawlerService, IBlog blog, IFiles files)
             : base(shellService, ct, pt, progress, counter, fileDownloader, crawlerService, blog, files)
         {
         }
 
         public async Task Crawl()
         {
-            Logger.Verbose("TumblrLikedByDownloader.Crawl:Start");
+            Logger.Verbose("TumblrTaggedDownloader.Crawl:Start");
 
             Task grabber = GetUrlsAsync();
             Task<bool> downloader = DownloadBlogAsync();
@@ -101,6 +101,75 @@ namespace TumblThree.Applications.Downloader
                                 .Sum(g => g.Count() - 1);
         }
 
+        private IEnumerable<int> GetPageNumbers()
+        {
+            if (!TestRange(blog.PageSize, 1, 100))
+                blog.PageSize = 100;
+
+            if (string.IsNullOrEmpty(blog.DownloadPages))
+            {
+                return Enumerable.Range(0, shellService.Settings.ParallelScans);
+            }
+            return RangeToSequence(blog.DownloadPages);
+        }
+
+        private static bool TestRange(int numberToCheck, int bottom, int top)
+        {
+            return (numberToCheck >= bottom && numberToCheck <= top);
+        }
+
+        static IEnumerable<int> RangeToSequence(string input)
+        {
+            string[] parts = input.Split(',');
+            foreach (string part in parts)
+            {
+                if (!part.Contains('-'))
+                {
+                    yield return int.Parse(part);
+                    continue;
+                }
+                string[] rangeParts = part.Split('-');
+                int start = int.Parse(rangeParts[0]);
+                int end = int.Parse(rangeParts[1]);
+
+                while (start <= end)
+                {
+                    yield return start;
+                    start++;
+                }
+            }
+        }
+
+
+        private ulong GetLastPostId()
+        {
+            ulong lastId = blog.LastId;
+            if (blog.ForceRescan)
+            {
+                blog.ForceRescan = false;
+                return 0;
+            }
+            if (!string.IsNullOrEmpty(blog.DownloadPages))
+            {
+                blog.ForceRescan = false;
+                return 0;
+            }
+            return lastId;
+        }
+
+        private static bool CheckPostAge(TumblrJson document, ulong lastId)
+        {
+            ulong highestPostId = 0;
+            ulong.TryParse(document.response.posts.FirstOrDefault().id,
+                out highestPostId);
+
+            if (highestPostId < lastId)
+            {
+                return false;
+            }
+            return true;
+        }
+
         protected override bool CheckIfFileExistsInDB(string url)
         {
             string fileName = url.Split('/').Last();
@@ -126,16 +195,24 @@ namespace TumblThree.Applications.Downloader
                 return;
             }
 
+            long crawlerTimeOffset = GenerateCrawlerTimeOffsets();
+
             foreach (int crawlerNumber in Enumerable.Range(0, shellService.Settings.ParallelScans))
             {
                 await semaphoreSlim.WaitAsync();
 
                 trackedTasks.Add(new Func<Task>(async () =>
                 {
+                    var tags = new List<string>();
+                    if (!string.IsNullOrWhiteSpace(blog.Tags))
+                    {
+                        tags = blog.Tags.Split(',').Select(x => x.Trim()).ToList();
+                    }
+
                     try
                     {
-                        string document = await RequestDataAsync(blog.Url + "/page/" + crawlerNumber);
-                        await AddUrlsToDownloadList(document, crawlerNumber);
+                        long crawlerTime = DateTimeOffset.Now.ToUnixTimeSeconds() - (crawlerNumber * crawlerTimeOffset);
+                        await AddUrlsToDownloadList(tags, crawlerTime);
                     }
                     catch
                     {
@@ -156,13 +233,92 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        private async Task<bool> CheckIfLoggedIn()
+        private long GenerateCrawlerTimeOffsets()
         {
-            string document = await RequestDataAsync(blog.Url + "/page/1");
-            return !document.Contains("<div class=\"signup_view account login\"");
+            long tagsIntroduced = 1173570824; // Unix time of 03/10/2007 @ 11:53pm (UTC)
+            long unixTimeNow = DateTimeOffset.Now.ToUnixTimeSeconds();
+            long tagsLifeTime = unixTimeNow - tagsIntroduced;
+            return tagsLifeTime / shellService.Settings.ParallelScans;
         }
 
-        private async Task AddUrlsToDownloadList(string document, int crawlerNumber)
+        private async Task<bool> CheckIfLoggedIn()
+        {
+            string document = await GetTaggedSearchPageAsync(DateTimeOffset.Now.ToUnixTimeSeconds());
+            return !document.Contains("SearchResultsModel");
+        }
+
+        private long ExtractNextPageLink(string document)
+        {
+            long unixTime = 0;
+            string pagination = "id=\"next_page_link\" href=\"/tagged/" + blog.Name + "\\?before=";
+            long.TryParse(Regex.Match(document, pagination + "([\\d]*)\"").Groups[1].Value, out unixTime);
+            return unixTime;
+        }
+
+        private async Task<string> GetTaggedSearchPageAsync(long time)
+        {
+            if (shellService.Settings.LimitConnections)
+            {
+                return await RequestGetAsync(time);
+            }
+            return await RequestGetAsync(time);
+        }
+
+        protected virtual async Task<string> RequestGetAsync(long time)
+        {
+            var requestRegistration = new CancellationTokenRegistration();
+            try
+            {
+                HttpWebRequest request = CreateGetReqeust(time);
+
+                requestRegistration = ct.Register(() => request.Abort());
+                using (var response = await request.GetResponseAsync() as HttpWebResponse)
+                {
+                    using (var stream = GetStreamForApiRequest(response.GetResponseStream()))
+                    {
+                        using (var buffer = new BufferedStream(stream))
+                        {
+                            using (var reader = new StreamReader(buffer))
+                            {
+                                return reader.ReadToEnd();
+                            }
+                        }
+                    }
+                }
+            }
+            finally
+            {
+                requestRegistration.Dispose();
+            }
+        }
+
+        protected HttpWebRequest CreateGetReqeust(long pagination)
+        {
+            string url = "https://www.tumblr.com/tagged/" + blog.Name + "?before=" + pagination;
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "GET";
+            request.ProtocolVersion = HttpVersion.Version11;
+            request.UserAgent =
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
+            request.AllowAutoRedirect = true;
+            request.KeepAlive = true;
+            request.Pipelined = true;
+            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+            // Timeouts don't work with GetResponseAsync() as it internally uses BeginGetResponse.
+            // See docs: https://msdn.microsoft.com/en-us/library/system.net.httpwebrequest.timeout(v=vs.110).aspx
+            // Quote: The Timeout property has no effect on asynchronous requests made with the BeginGetResponse or BeginGetRequestStream method.
+            // TODO: Use HttpClient instead?
+            request.ReadWriteTimeout = shellService.Settings.TimeOut * 1000;
+            request.Timeout = -1;
+            request.CookieContainer = SharedCookieService.GetUriCookieContainer(new Uri("https://www.tumblr.com/"));
+            ServicePointManager.DefaultConnectionLimit = 400;
+            request = SetWebRequestProxy(request, shellService.Settings);
+            //request.Referer = @"https://www.tumblr.com/tagged/" + blog.Name + "?before=" oldPagination;
+            request.Headers["DNT"] = "1";
+            return request;
+        }
+
+        private async Task AddUrlsToDownloadList(IList<string> tags, long time)
         {
             while (true)
             {
@@ -175,23 +331,24 @@ namespace TumblThree.Applications.Downloader
                     pt.WaitWhilePausedWithResponseAsyc().Wait();
                 }
 
-                var tags = new List<string>();
-                if (!string.IsNullOrWhiteSpace(blog.Tags))
-                {
-                    tags = blog.Tags.Split(',').Select(x => x.Trim()).ToList();
-                }
-
-                AddPhotoUrlToDownloadList(document, tags);
-                AddVideoUrlToDownloadList(document, tags);
-
-                Interlocked.Increment(ref numberOfPagesCrawled);
-                UpdateProgressQueueInformation(Resources.ProgressGetUrlShort, numberOfPagesCrawled);
-                crawlerNumber += shellService.Settings.ParallelScans;
-                document = await RequestDataAsync(blog.Url + "/page/" + crawlerNumber);
-                if (document.Contains("<div class=\"no_posts_found\">"))
+                string document = await GetTaggedSearchPageAsync(time);
+                if (document.Contains("No posts found.")) // <div class="no_posts_found">
                 {
                     return;
                 }
+
+                try
+                {
+                    AddPhotoUrlToDownloadList(document, tags);
+                    AddVideoUrlToDownloadList(document, tags);
+                }
+                catch (NullReferenceException)
+                {
+                }
+
+                Interlocked.Increment(ref numberOfPagesCrawled);
+                UpdateProgressQueueInformation(Resources.ProgressGetUrlShort, numberOfPagesCrawled);
+                time = ExtractNextPageLink(document);
             }
         }
 
@@ -269,7 +426,7 @@ namespace TumblThree.Applications.Downloader
         {
             if (blog.DownloadPhoto)
             {
-                var regex = new Regex("\"(http[\\S]*media.tumblr.com[\\S]*(jpg|png|gif))\"");
+                var regex = new Regex("\"(http[A-Za-z0-9_/:.]*media.tumblr.com[A-Za-z0-9_/:.]*(jpg|png|gif))\"");
                 foreach (Match match in regex.Matches(document))
                 {
                     string imageUrl = match.Groups[1].Value;
@@ -280,7 +437,7 @@ namespace TumblThree.Applications.Downloader
                         continue;
                     }
                     imageUrl = ResizeTumblrImageUrl(imageUrl);
-                    // TODO: add valid postID
+                    // TODO: postID
                     AddToDownloadList(new TumblrPost(PostTypes.Photo, imageUrl, Guid.NewGuid().ToString("N")));
                 }
             }
@@ -290,19 +447,19 @@ namespace TumblThree.Applications.Downloader
         {
             if (blog.DownloadVideo)
             {
-                var regex = new Regex("\"(http[\\S]*.com/video_file/[\\S]*)\"");
+                var regex = new Regex("\"(http[A-Za-z0-9_/:.]*.com/video_file/[A-Za-z0-9_/:.]*)\"");
                 foreach (Match match in regex.Matches(document))
                 {
                     string videoUrl = match.Groups[1].Value;
-                    // TODO: add valid postID
+                    // TODO: postId
                     if (shellService.Settings.VideoSize == 1080)
                     {
-                        // TODO: add valid postID
+                        // TODO: postID
                         AddToDownloadList(new TumblrPost(PostTypes.Video, videoUrl.Replace("/480", "") + ".mp4", Guid.NewGuid().ToString("N")));
                     }
                     else if (shellService.Settings.VideoSize == 480)
                     {
-                        // TODO: add valid postID
+                        // TODO: postID
                         AddToDownloadList(new TumblrPost(PostTypes.Video,
                             "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + "_480.mp4",
                             Guid.NewGuid().ToString("N")));
