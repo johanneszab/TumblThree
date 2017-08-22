@@ -22,6 +22,7 @@ namespace TumblThree.Applications.Downloader
     public class TumblrSearchDownloader : Downloader, IDownloader
     {
         private int numberOfPagesCrawled = 0;
+        private string tumblrKey = String.Empty;
 
         public TumblrSearchDownloader(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, PostCounter counter, FileDownloader fileDownloader, ICrawlerService crawlerService, IBlog blog, IFiles files)
             : base(shellService, ct, pt, progress, counter, fileDownloader, crawlerService, blog, files)
@@ -187,6 +188,7 @@ namespace TumblThree.Applications.Downloader
         {
             var semaphoreSlim = new SemaphoreSlim(shellService.Settings.ParallelScans);
             var trackedTasks = new List<Task>();
+            await UpdateTumblrKey();
 
             foreach (int crawlerNumber in Enumerable.Range(1, shellService.Settings.ParallelScans))
             {
@@ -202,23 +204,8 @@ namespace TumblThree.Applications.Downloader
 
                     try
                     {
-                        string document = await RequestDataAsync(crawlerNumber);
+                        string document = await RequestPostAsync(crawlerNumber);
                         await AddUrlsToDownloadList(document, tags, crawlerNumber);
-                    }
-                    catch (WebException webException)
-                    {
-                        if (webException.Message.Contains("503"))
-                        {
-                            Logger.Error("TumblrDownloader:GetUrlsAsync: {0}", "User not logged in");
-                            shellService.ShowError(new Exception("User not logged in"), Resources.NotLoggedIn, blog.Name);
-                            return;
-                        }
-                        if (webException.Message.Contains("429"))
-                        {
-                            // TODO: add retry logic?
-                            Logger.Error("TumblrDownloader:GetUrls:WebException {0}", webException);
-                            shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
-                        }
                     }
                     catch
                     {
@@ -239,26 +226,39 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
+        private async Task UpdateTumblrKey()
+        {
+            string document = await RequestGetAsync();
+            tumblrKey = ExtractTumblrKey(document);
+        }
+
+        private static string ExtractTumblrKey(string document)
+        {
+            return Regex.Match(document, "id=\"tumblr_form_key\" content=\"([\\S]*)\">").Groups[1].Value;
+        }
 
         private async Task<string> GetSvcPageAsync(int pageNumber)
         {
             if (shellService.Settings.LimitConnections)
             {
-                crawlerService.Timeconstraint.Acquire();
-                return await RequestDataAsync(pageNumber);
+                return await RequestPostAsync(pageNumber);
             }
-            return await RequestDataAsync(pageNumber);
+            return await RequestPostAsync(pageNumber);
         }
 
-        protected virtual async Task<string> RequestDataAsync(int pageNumber)
+        protected virtual async Task<string> RequestPostAsync(int pageNumber)
         {
             var requestRegistration = new CancellationTokenRegistration();
             try
             {
-                HttpWebRequest request = CreateWebReqeust(pageNumber);
+                HttpWebRequest request = CreatePostReqeust(pageNumber);
 
                 //TODO: generate proper requestBody
-                string requestBody = "q=" + blog.Name + "&sort=top&post_view=masonry&blogs_before=1&num_blogs_shown=1&num_posts_shown=1&before=1&blog_page=" + pageNumber + "&safe_mode=true&post_page=3&filter_nsfw=true&filter_post_type=&next_ad_offset=0&ad_placement_id=0&more_posts=true";
+                //The X-tumblr-form-key returned from the WebRequests looks fundamentally different compared to the one within the browser:
+                //Browser:    !1231503394478|SLLZxzv45JeaTGkehnhwRdmKPM
+                //WebRequest: OItaFl37iapADdJGnTzbMFAkrXI 
+                //string requestBody = "q=" + blog.Name + "&sort=top&post_view=masonry&blogs_before=0&num_blogs_shown=0&num_posts_shown=" + ((pageNumber - 1) * 20) + "&before=0&blog_page=" + pageNumber + "&safe_mode=true&post_page=" + pageNumber + "&filter_nsfw=true&filter_post_type=&next_ad_offset=0&ad_placement_id=0&more_posts=true";
+                string requestBody = "q=" + blog.Name + "&num_posts_shown=" + ((pageNumber - 1) * 20) + "&blog_page=" + pageNumber + "&safe_mode=false&post_page=" + pageNumber + "&filter_nsfw=false&filter_post_type=&next_ad_offset=0&ad_placement_id=0&more_posts=true";
                 using (Stream postStream = await request.GetRequestStreamAsync())
                 {
                     byte[] postBytes = Encoding.ASCII.GetBytes(requestBody);
@@ -281,9 +281,33 @@ namespace TumblThree.Applications.Downloader
                     }
                 }
             }
-            catch
+            finally
             {
-                return string.Empty;
+                requestRegistration.Dispose();
+            }
+        }
+
+        protected virtual async Task<string> RequestGetAsync()
+        {
+            var requestRegistration = new CancellationTokenRegistration();
+            try
+            {
+                HttpWebRequest request = CreateGetReqeust();
+
+                requestRegistration = ct.Register(() => request.Abort());
+                using (var response = await request.GetResponseAsync() as HttpWebResponse)
+                {
+                    using (var stream = GetStreamForApiRequest(response.GetResponseStream()))
+                    {
+                        using (var buffer = new BufferedStream(stream))
+                        {
+                            using (var reader = new StreamReader(buffer))
+                            {
+                                return reader.ReadToEnd();
+                            }
+                        }
+                    }
+                }
             }
             finally
             {
@@ -291,13 +315,13 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        protected HttpWebRequest CreateWebReqeust(int pageNumber)
+        protected HttpWebRequest CreatePostReqeust(int pageNumber)
         {
-            string url = "https://www.tumblr.com/search/" + blog.Name + "/post_page/" + pageNumber.ToString();
+            string url = "https://www.tumblr.com/search/" + blog.Name + "/post_page/" + pageNumber;
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "POST";
             request.Accept = "application/json, text/javascript, */*; q=0.01";
-            request.ContentType = "application/x-www-form-urlencoded";
+            //request.ContentType = "application/x-www-form-urlencoded";
             request.ProtocolVersion = HttpVersion.Version11;
             request.UserAgent =
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
@@ -316,6 +340,37 @@ namespace TumblThree.Applications.Downloader
             request = SetWebRequestProxy(request, shellService.Settings);
             request.Referer = @"https://www.tumblr.com/search/" + blog.Name;
             request.Headers["X-Requested-With"] = "XMLHttpRequest";
+            request.Headers["DNT"] = "1";
+            request.Headers["X-tumblr-form-key"] = tumblrKey;
+            return request;
+        }
+
+        protected HttpWebRequest CreateGetReqeust()
+        {
+            string url = "https://www.tumblr.com/search/" + blog.Name;
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "GET";
+            request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
+            //request.ContentType = "application/x-www-form-urlencoded";
+            request.ProtocolVersion = HttpVersion.Version11;
+            request.UserAgent =
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
+            request.AllowAutoRedirect = true;
+            request.KeepAlive = true;
+            request.Pipelined = true;
+            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+            // Timeouts don't work with GetResponseAsync() as it internally uses BeginGetResponse.
+            // See docs: https://msdn.microsoft.com/en-us/library/system.net.httpwebrequest.timeout(v=vs.110).aspx
+            // Quote: The Timeout property has no effect on asynchronous requests made with the BeginGetResponse or BeginGetRequestStream method.
+            // TODO: Use HttpClient instead?
+            request.ReadWriteTimeout = shellService.Settings.TimeOut * 1000;
+            request.Timeout = -1;
+            request.CookieContainer = SharedCookieService.GetUriCookieContainer(new Uri("https://www.tumblr.com/"));
+            ServicePointManager.DefaultConnectionLimit = 400;
+            request = SetWebRequestProxy(request, shellService.Settings);
+            //request.Referer = @"https://www.tumblr.com/search/" + blog.Name;
+            request.Headers["DNT"] = "1";
+            request.Headers["Upgrade-Insecure-Requests"] = "1";
             return request;
         }
 
@@ -349,8 +404,8 @@ namespace TumblThree.Applications.Downloader
                 Interlocked.Increment(ref numberOfPagesCrawled);
                 UpdateProgressQueueInformation(Resources.ProgressGetUrlShort, numberOfPagesCrawled);
 
-                string document = await GetSvcPageAsync((crawlerNumber + shellService.Settings.ParallelScans));
-                //if (!document.response.posts.Any())
+                response = await GetSvcPageAsync((crawlerNumber + shellService.Settings.ParallelScans));
+                //if (!response.Contains())
                 //{
                 //    return;
                 //}

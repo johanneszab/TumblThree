@@ -94,20 +94,28 @@ namespace TumblThree.Applications.Downloader
 
         protected virtual async Task<string> RequestDataAsync(string url)
         {
-            HttpWebRequest request = CreateWebReqeust(url);
-
-            using (var response = await request.GetResponseAsync() as HttpWebResponse)
+            var requestRegistration = new CancellationTokenRegistration();
+            try
             {
-                using (var stream = GetStreamForApiRequest(response.GetResponseStream()))
+                HttpWebRequest request = CreateWebReqeust(url);
+                requestRegistration = ct.Register(() => request.Abort());
+                using (var response = await request.GetResponseAsync() as HttpWebResponse)
                 {
-                    using (var buffer = new BufferedStream(stream))
+                    using (var stream = GetStreamForApiRequest(response.GetResponseStream()))
                     {
-                        using (var reader = new StreamReader(buffer))
+                        using (var buffer = new BufferedStream(stream))
                         {
-                            return reader.ReadToEnd();
+                            using (var reader = new StreamReader(buffer))
+                            {
+                                return reader.ReadToEnd();
+                            }
                         }
                     }
                 }
+            }
+            finally
+            {
+                requestRegistration.Dispose();
             }
         }
 
