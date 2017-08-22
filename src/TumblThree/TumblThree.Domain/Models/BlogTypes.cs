@@ -7,6 +7,7 @@
         instagram,
         twitter,
         tlb,
-        ts
+        tumblrsearch,
+        tumblrtagged
     }
 }

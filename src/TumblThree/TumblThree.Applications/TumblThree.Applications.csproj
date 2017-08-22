@@ -80,6 +80,7 @@
     <Compile Include="Downloader\IDownloaderFactory.cs" />
     <Compile Include="Downloader\TumblrLikedByDownloader.cs" />
     <Compile Include="Downloader\TumblrPrivateDownloader.cs" />
+    <Compile Include="Downloader\TumblrTaggedDownloader.cs" />
     <Compile Include="Downloader\TumblrSearchDownloader.cs" />
     <Compile Include="FileDownloader.cs" />
     <Compile Include="QueueOnDispatcher.cs" />
