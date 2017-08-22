@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using TumblThree.Applications.DataModels;
+using TumblThree.Applications.DataModels.TumblrSearchJson;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain;
@@ -204,7 +205,7 @@ namespace TumblThree.Applications.Downloader
 
                     try
                     {
-                        string document = await RequestPostAsync(crawlerNumber);
+                        string document = await GetSearchPageAsync(crawlerNumber);
                         await AddUrlsToDownloadList(document, tags, crawlerNumber);
                     }
                     catch
@@ -237,7 +238,7 @@ namespace TumblThree.Applications.Downloader
             return Regex.Match(document, "id=\"tumblr_form_key\" content=\"([\\S]*)\">").Groups[1].Value;
         }
 
-        private async Task<string> GetSvcPageAsync(int pageNumber)
+        private async Task<string> GetSearchPageAsync(int pageNumber)
         {
             if (shellService.Settings.LimitConnections)
             {
@@ -254,11 +255,9 @@ namespace TumblThree.Applications.Downloader
                 HttpWebRequest request = CreatePostReqeust(pageNumber);
 
                 //TODO: generate proper requestBody
-                //The X-tumblr-form-key returned from the WebRequests looks fundamentally different compared to the one within the browser:
-                //Browser:    !1231503394478|SLLZxzv45JeaTGkehnhwRdmKPM
-                //WebRequest: OItaFl37iapADdJGnTzbMFAkrXI 
+                //Complete requestBody from webbrowser:
                 //string requestBody = "q=" + blog.Name + "&sort=top&post_view=masonry&blogs_before=0&num_blogs_shown=0&num_posts_shown=" + ((pageNumber - 1) * 20) + "&before=0&blog_page=" + pageNumber + "&safe_mode=true&post_page=" + pageNumber + "&filter_nsfw=true&filter_post_type=&next_ad_offset=0&ad_placement_id=0&more_posts=true";
-                string requestBody = "q=" + blog.Name + "&num_posts_shown=" + ((pageNumber - 1) * 20) + "&blog_page=" + pageNumber + "&safe_mode=false&post_page=" + pageNumber + "&filter_nsfw=false&filter_post_type=&next_ad_offset=0&ad_placement_id=0&more_posts=true";
+                string requestBody = "q=" + blog.Name + "&sort=top&post_view=masonry&num_posts_shown=" + ((pageNumber - 1) * 20) + "&before=" + ((pageNumber - 1) * 20) + "&safe_mode=false&post_page=" + pageNumber + "&filter_nsfw=false&filter_post_type=&next_ad_offset=0&ad_placement_id=0&more_posts=true";
                 using (Stream postStream = await request.GetRequestStreamAsync())
                 {
                     byte[] postBytes = Encoding.ASCII.GetBytes(requestBody);
@@ -321,7 +320,7 @@ namespace TumblThree.Applications.Downloader
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "POST";
             request.Accept = "application/json, text/javascript, */*; q=0.01";
-            //request.ContentType = "application/x-www-form-urlencoded";
+            request.ContentType = "application/x-www-form-urlencoded";
             request.ProtocolVersion = HttpVersion.Version11;
             request.UserAgent =
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
@@ -351,7 +350,7 @@ namespace TumblThree.Applications.Downloader
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "GET";
             request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
-            //request.ContentType = "application/x-www-form-urlencoded";
+            request.ContentType = "application/x-www-form-urlencoded";
             request.ProtocolVersion = HttpVersion.Version11;
             request.UserAgent =
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
@@ -368,15 +367,9 @@ namespace TumblThree.Applications.Downloader
             request.CookieContainer = SharedCookieService.GetUriCookieContainer(new Uri("https://www.tumblr.com/"));
             ServicePointManager.DefaultConnectionLimit = 400;
             request = SetWebRequestProxy(request, shellService.Settings);
-            //request.Referer = @"https://www.tumblr.com/search/" + blog.Name;
             request.Headers["DNT"] = "1";
             request.Headers["Upgrade-Insecure-Requests"] = "1";
             return request;
-        }
-
-        private bool CheckIfLoggedIn(string document)
-        {
-            return !document.Contains("<div class=\"signup_view account login\"");
         }
 
         private async Task AddUrlsToDownloadList(string response, IList<string> tags, int crawlerNumber)
@@ -392,10 +385,19 @@ namespace TumblThree.Applications.Downloader
                     pt.WaitWhilePausedWithResponseAsyc().Wait();
                 }
 
+                var jsonDeserializer = new System.Web.Script.Serialization.JavaScriptSerializer { MaxJsonLength = 2147483644 };
+                var result = jsonDeserializer.Deserialize<TumblrSearchJson>(response);
+                if (result.response.posts_html == null)
+                {
+                    return;
+                }
+
                 try
                 {
-                    AddPhotoUrlToDownloadList(response, tags);
-                    AddVideoUrlToDownloadList(response, tags);
+                    string html = result.response.posts_html;
+                    html = Regex.Unescape(html);
+                    AddPhotoUrlToDownloadList(html, tags);
+                    AddVideoUrlToDownloadList(html, tags);
                 }
                 catch (NullReferenceException)
                 {
@@ -403,13 +405,7 @@ namespace TumblThree.Applications.Downloader
 
                 Interlocked.Increment(ref numberOfPagesCrawled);
                 UpdateProgressQueueInformation(Resources.ProgressGetUrlShort, numberOfPagesCrawled);
-
-                response = await GetSvcPageAsync((crawlerNumber + shellService.Settings.ParallelScans));
-                //if (!response.Contains())
-                //{
-                //    return;
-                //}
-
+                response = await GetSearchPageAsync((crawlerNumber + shellService.Settings.ParallelScans));
                 crawlerNumber += shellService.Settings.ParallelScans;
             }
         }
@@ -488,7 +484,7 @@ namespace TumblThree.Applications.Downloader
         {
             if (blog.DownloadPhoto)
             {
-                var regex = new Regex("\"(http[\\S]*media.tumblr.com[\\S]*(jpg|png|gif))\"");
+                var regex = new Regex("\"(http[A-Za-z0-9_/:.]*media.tumblr.com[A-Za-z0-9_/:.]*(jpg|png|gif))\"");
                 foreach (Match match in regex.Matches(document))
                 {
                     string imageUrl = match.Groups[1].Value;
@@ -509,7 +505,7 @@ namespace TumblThree.Applications.Downloader
         {
             if (blog.DownloadVideo)
             {
-                var regex = new Regex("\"(http[\\S]*.com/video_file/[\\S]*)\"");
+                var regex = new Regex("\"(http[A-Za-z0-9_/:.]*.com/video_file/[A-Za-z0-9_/:.]*)\"");
                 foreach (Match match in regex.Matches(document))
                 {
                     string videoUrl = match.Groups[1].Value;

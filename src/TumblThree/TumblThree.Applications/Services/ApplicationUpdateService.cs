@@ -66,8 +66,6 @@ namespace TumblThree.Applications.Services
                         new StreamReader(resp.GetResponseStream());
                     result = reader.ReadToEnd();
                 }
-                var jsonDeserializer =
-                    new System.Web.Script.Serialization.JavaScriptSerializer { MaxJsonLength = 2147483644 };
                 XmlDictionaryReader jsonReader = JsonReaderWriterFactory.CreateJsonReader(Encoding.UTF8.GetBytes(result),
                     new System.Xml.XmlDictionaryReaderQuotas());
                 XElement root = XElement.Load(jsonReader);

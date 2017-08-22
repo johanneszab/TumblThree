@@ -16,10 +16,10 @@ namespace TumblThree.Domain.Models
                    (url.StartsWith("http://", true, null) || url.StartsWith("https://", true, null));
         }
 
-        //public static bool IsValidTumblrSearchUrl(string url)
-        //{
-        //    return url != null && url.Length > 29 && url.Contains("www.tumblr.com/search/") && !url.Any(char.IsWhiteSpace) &&
-        //           (url.StartsWith("http://", true, null) || url.StartsWith("https://", true, null));
-        //}
+        public static bool IsValidTumblrSearchUrl(string url)
+        {
+            return url != null && url.Length > 29 && url.Contains("www.tumblr.com/search/") && !url.Any(char.IsWhiteSpace) &&
+                   (url.StartsWith("http://", true, null) || url.StartsWith("https://", true, null));
+        }
     }
 }
