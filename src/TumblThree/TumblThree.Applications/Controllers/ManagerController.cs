@@ -257,7 +257,7 @@ namespace TumblThree.Applications.Controllers
 
         private bool CanAddBlog()
         {
-            return Validator.IsValidTumblrUrl(crawlerService.NewBlogUrl) || Validator.IsValidTumblrLikedByUrl(crawlerService.NewBlogUrl);
+            return Validator.IsValidTumblrUrl(crawlerService.NewBlogUrl) || Validator.IsValidTumblrLikedByUrl(crawlerService.NewBlogUrl) || Validator.IsValidTumblrSearchUrl(crawlerService.NewBlogUrl);
         }
 
         private async Task AddBlog()
