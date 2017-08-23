@@ -43,7 +43,7 @@ namespace TumblThree.Applications.ViewModels
             }
             catch (Exception ex)
             {
-                Logger.Error("ManagerController: {0}", ex);
+                Logger.Error("ManagerViewModel:ManagerViewModel {0}", ex);
                 shellService.ShowError(ex, Resources.CouldNotRestoreUISettings);
                 return;
             }

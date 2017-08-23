@@ -20,9 +20,8 @@ namespace TumblThree.Applications.Downloader
 {
     [Export(typeof(IDownloader))]
     [ExportMetadata("BlogType", BlogTypes.tumblrsearch)]
-    public class TumblrSearchDownloader : Downloader, IDownloader
+    public class TumblrSearchDownloader : TumblrDownloader, IDownloader
     {
-        private int numberOfPagesCrawled = 0;
         private string tumblrKey = String.Empty;
 
         public TumblrSearchDownloader(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, PostCounter counter, FileDownloader fileDownloader, ICrawlerService crawlerService, IBlog blog, IFiles files)
@@ -59,132 +58,6 @@ namespace TumblThree.Applications.Downloader
             UpdateProgressQueueInformation("");
         }
 
-        private string ImageSize()
-        {
-            if (shellService.Settings.ImageSize == "raw")
-                return "1280";
-            return shellService.Settings.ImageSize;
-        }
-
-        private string ResizeTumblrImageUrl(string imageUrl)
-        {
-            var sb = new StringBuilder(imageUrl);
-            return sb
-                .Replace("_raw", "_" + ImageSize())
-                .Replace("_1280", "_" + ImageSize())
-                .Replace("_540", "_" + ImageSize())
-                .Replace("_500", "_" + ImageSize())
-                .Replace("_400", "_" + ImageSize())
-                .Replace("_250", "_" + ImageSize())
-                .Replace("_100", "_" + ImageSize())
-                .Replace("_75sq", "_" + ImageSize())
-                .ToString();
-        }
-
-        protected override bool CheckIfFileExistsInDirectory(string url)
-        {
-            string fileName = url.Split('/').Last();
-            Monitor.Enter(lockObjectDirectory);
-            string blogPath = blog.DownloadLocation();
-            if (Directory.EnumerateFiles(blogPath).Any(file => file.Contains(fileName)))
-            {
-                Monitor.Exit(lockObjectDirectory);
-                return true;
-            }
-            Monitor.Exit(lockObjectDirectory);
-            return false;
-        }
-
-        private int DetermineDuplicates(PostTypes type)
-        {
-            return statisticsBag.Where(url => url.PostType.Equals(type))
-                                .GroupBy(url => url.Url)
-                                .Where(g => g.Count() > 1)
-                                .Sum(g => g.Count() - 1);
-        }
-
-        private IEnumerable<int> GetPageNumbers()
-        {
-            if (!TestRange(blog.PageSize, 1, 100))
-                blog.PageSize = 100;
-
-            if (string.IsNullOrEmpty(blog.DownloadPages))
-            {
-                return Enumerable.Range(0, shellService.Settings.ParallelScans);
-            }
-            return RangeToSequence(blog.DownloadPages);
-        }
-
-        private static bool TestRange(int numberToCheck, int bottom, int top)
-        {
-            return (numberToCheck >= bottom && numberToCheck <= top);
-        }
-
-        static IEnumerable<int> RangeToSequence(string input)
-        {
-            string[] parts = input.Split(',');
-            foreach (string part in parts)
-            {
-                if (!part.Contains('-'))
-                {
-                    yield return int.Parse(part);
-                    continue;
-                }
-                string[] rangeParts = part.Split('-');
-                int start = int.Parse(rangeParts[0]);
-                int end = int.Parse(rangeParts[1]);
-
-                while (start <= end)
-                {
-                    yield return start;
-                    start++;
-                }
-            }
-        }
-
-
-        private ulong GetLastPostId()
-        {
-            ulong lastId = blog.LastId;
-            if (blog.ForceRescan)
-            {
-                blog.ForceRescan = false;
-                return 0;
-            }
-            if (!string.IsNullOrEmpty(blog.DownloadPages))
-            {
-                blog.ForceRescan = false;
-                return 0;
-            }
-            return lastId;
-        }
-
-        private static bool CheckPostAge(TumblrJson document, ulong lastId)
-        {
-            ulong highestPostId = 0;
-            ulong.TryParse(document.response.posts.FirstOrDefault().id,
-                out highestPostId);
-
-            if (highestPostId < lastId)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        protected override bool CheckIfFileExistsInDB(string url)
-        {
-            string fileName = url.Split('/').Last();
-            Monitor.Enter(lockObjectDb);
-            if (files.Links.Contains(fileName))
-            {
-                Monitor.Exit(lockObjectDb);
-                return true;
-            }
-            Monitor.Exit(lockObjectDb);
-            return false;
-        }
-
         private async Task GetUrlsAsync()
         {
             var semaphoreSlim = new SemaphoreSlim(shellService.Settings.ParallelScans);
@@ -197,7 +70,6 @@ namespace TumblThree.Applications.Downloader
 
                 trackedTasks.Add(new Func<Task>(async () =>
                 {
-                    var tags = new List<string>();
                     if (!string.IsNullOrWhiteSpace(blog.Tags))
                     {
                         tags = blog.Tags.Split(',').Select(x => x.Trim()).ToList();
@@ -206,7 +78,7 @@ namespace TumblThree.Applications.Downloader
                     try
                     {
                         string document = await GetSearchPageAsync(crawlerNumber);
-                        await AddUrlsToDownloadList(document, tags, crawlerNumber);
+                        await AddUrlsToDownloadList(document, crawlerNumber);
                     }
                     catch
                     {
@@ -252,11 +124,15 @@ namespace TumblThree.Applications.Downloader
             var requestRegistration = new CancellationTokenRegistration();
             try
             {
-                HttpWebRequest request = CreatePostReqeust(pageNumber);
+                string url = "https://www.tumblr.com/search/" + blog.Name + "/post_page/" + pageNumber;
+                string referer = @"https://www.tumblr.com/search/" + blog.Name;
+                var headers = new Dictionary<string, string>();
+                headers.Add("X-tumblr-form-key", tumblrKey);
+                headers.Add("DNT", "1");
+                HttpWebRequest request = CreatePostReqeust(url, referer, headers);
 
-                //TODO: generate proper requestBody
-                //Complete requestBody from webbrowser:
-                //string requestBody = "q=" + blog.Name + "&sort=top&post_view=masonry&blogs_before=0&num_blogs_shown=0&num_posts_shown=" + ((pageNumber - 1) * 20) + "&before=0&blog_page=" + pageNumber + "&safe_mode=true&post_page=" + pageNumber + "&filter_nsfw=true&filter_post_type=&next_ad_offset=0&ad_placement_id=0&more_posts=true";
+                //Complete requestBody from webbrowser, searching for cars:
+                //q=cars&sort=top&post_view=masonry&blogs_before=8&num_blogs_shown=8&num_posts_shown=20&before=24&blog_page=2&safe_mode=true&post_page=2&filter_nsfw=true&filter_post_type=&next_ad_offset=0&ad_placement_id=0&more_posts=true
                 string requestBody = "q=" + blog.Name + "&sort=top&post_view=masonry&num_posts_shown=" + ((pageNumber - 1) * 20) + "&before=" + ((pageNumber - 1) * 20) + "&safe_mode=false&post_page=" + pageNumber + "&filter_nsfw=false&filter_post_type=&next_ad_offset=0&ad_placement_id=0&more_posts=true";
                 using (Stream postStream = await request.GetRequestStreamAsync())
                 {
@@ -291,7 +167,8 @@ namespace TumblThree.Applications.Downloader
             var requestRegistration = new CancellationTokenRegistration();
             try
             {
-                HttpWebRequest request = CreateGetReqeust();
+                string url = "https://www.tumblr.com/search/" + blog.Name;
+                HttpWebRequest request = CreateGetReqeust(url);
 
                 requestRegistration = ct.Register(() => request.Abort());
                 using (var response = await request.GetResponseAsync() as HttpWebResponse)
@@ -314,65 +191,9 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        protected HttpWebRequest CreatePostReqeust(int pageNumber)
-        {
-            string url = "https://www.tumblr.com/search/" + blog.Name + "/post_page/" + pageNumber;
-            var request = (HttpWebRequest)WebRequest.Create(url);
-            request.Method = "POST";
-            request.Accept = "application/json, text/javascript, */*; q=0.01";
-            request.ContentType = "application/x-www-form-urlencoded";
-            request.ProtocolVersion = HttpVersion.Version11;
-            request.UserAgent =
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
-            request.AllowAutoRedirect = true;
-            request.KeepAlive = true;
-            request.Pipelined = true;
-            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-            // Timeouts don't work with GetResponseAsync() as it internally uses BeginGetResponse.
-            // See docs: https://msdn.microsoft.com/en-us/library/system.net.httpwebrequest.timeout(v=vs.110).aspx
-            // Quote: The Timeout property has no effect on asynchronous requests made with the BeginGetResponse or BeginGetRequestStream method.
-            // TODO: Use HttpClient instead?
-            request.ReadWriteTimeout = shellService.Settings.TimeOut * 1000;
-            request.Timeout = -1;
-            request.CookieContainer = SharedCookieService.GetUriCookieContainer(new Uri("https://www.tumblr.com/"));
-            ServicePointManager.DefaultConnectionLimit = 400;
-            request = SetWebRequestProxy(request, shellService.Settings);
-            request.Referer = @"https://www.tumblr.com/search/" + blog.Name;
-            request.Headers["X-Requested-With"] = "XMLHttpRequest";
-            request.Headers["DNT"] = "1";
-            request.Headers["X-tumblr-form-key"] = tumblrKey;
-            return request;
-        }
 
-        protected HttpWebRequest CreateGetReqeust()
-        {
-            string url = "https://www.tumblr.com/search/" + blog.Name;
-            var request = (HttpWebRequest)WebRequest.Create(url);
-            request.Method = "GET";
-            request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
-            request.ContentType = "application/x-www-form-urlencoded";
-            request.ProtocolVersion = HttpVersion.Version11;
-            request.UserAgent =
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
-            request.AllowAutoRedirect = true;
-            request.KeepAlive = true;
-            request.Pipelined = true;
-            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-            // Timeouts don't work with GetResponseAsync() as it internally uses BeginGetResponse.
-            // See docs: https://msdn.microsoft.com/en-us/library/system.net.httpwebrequest.timeout(v=vs.110).aspx
-            // Quote: The Timeout property has no effect on asynchronous requests made with the BeginGetResponse or BeginGetRequestStream method.
-            // TODO: Use HttpClient instead?
-            request.ReadWriteTimeout = shellService.Settings.TimeOut * 1000;
-            request.Timeout = -1;
-            request.CookieContainer = SharedCookieService.GetUriCookieContainer(new Uri("https://www.tumblr.com/"));
-            ServicePointManager.DefaultConnectionLimit = 400;
-            request = SetWebRequestProxy(request, shellService.Settings);
-            request.Headers["DNT"] = "1";
-            request.Headers["Upgrade-Insecure-Requests"] = "1";
-            return request;
-        }
 
-        private async Task AddUrlsToDownloadList(string response, IList<string> tags, int crawlerNumber)
+        private async Task AddUrlsToDownloadList(string response, int crawlerNumber)
         {
             while (true)
             {
@@ -385,8 +206,7 @@ namespace TumblThree.Applications.Downloader
                     pt.WaitWhilePausedWithResponseAsyc().Wait();
                 }
 
-                var jsonDeserializer = new System.Web.Script.Serialization.JavaScriptSerializer { MaxJsonLength = 2147483644 };
-                var result = jsonDeserializer.Deserialize<TumblrSearchJson>(response);
+                var result = ConvertJsonToClass<TumblrSearchJson>(response);
                 if (string.IsNullOrEmpty(result.response.posts_html))
                 {
                     return;
@@ -396,8 +216,8 @@ namespace TumblThree.Applications.Downloader
                 {
                     string html = result.response.posts_html;
                     html = Regex.Unescape(html);
-                    AddPhotoUrlToDownloadList(html, tags);
-                    AddVideoUrlToDownloadList(html, tags);
+                    AddPhotoUrlToDownloadList(html);
+                    AddVideoUrlToDownloadList(html);
                 }
                 catch (NullReferenceException)
                 {
@@ -410,77 +230,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        protected override async Task DownloadPhotoAsync(TumblrPost downloadItem)
-        {
-            string url = Url(downloadItem);
-
-            if (blog.ForceSize)
-            {
-                url = ResizeTumblrImageUrl(url);
-            }
-
-            foreach (string host in shellService.Settings.TumblrHosts)
-            {
-                url = BuildRawImageUrl(url, host);
-                if (await DownloadDetectedImageUrl(url, PostDate(downloadItem)))
-                    return;
-            }
-
-            await DownloadDetectedImageUrl(Url(downloadItem), PostDate(downloadItem));
-        }
-
-        private async Task<bool> DownloadDetectedImageUrl(string url, DateTime postDate)
-        {
-            if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(GetCoreImageUrl(url))))
-            {
-                string blogDownloadLocation = blog.DownloadLocation();
-                string fileName = url.Split('/').Last();
-                string fileLocation = FileLocation(blogDownloadLocation, fileName);
-                string fileLocationUrlList = FileLocationLocalized(blogDownloadLocation, Resources.FileNamePhotos);
-                UpdateProgressQueueInformation(Resources.ProgressDownloadImage, fileName);
-                if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url))
-                {
-                    SetFileDate(fileLocation, postDate);
-                    UpdateBlogPostCount(ref counter.Photos, value => blog.DownloadedPhotos = value);
-                    UpdateBlogProgress(ref counter.TotalDownloads);
-                    UpdateBlogDB(fileName);
-                    if (shellService.Settings.EnablePreview)
-                    {
-                        if (!fileName.EndsWith(".gif"))
-                        {
-                            blog.LastDownloadedPhoto = Path.GetFullPath(fileLocation);
-                        }
-                        else
-                        {
-                            blog.LastDownloadedVideo = Path.GetFullPath(fileLocation);
-                        }
-                    }
-                    return true;
-                }
-                return false;
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// Builds a tumblr raw image url from any sized tumblr image url if the ImageSize is set to "raw".
-        /// </summary>
-        /// <param name="url">The url detected from the crawler.</param>
-        /// <param name="host">Hostname to insert in the original url.</param>
-        /// <returns></returns>
-        public string BuildRawImageUrl(string url, string host)
-        {
-            if (shellService.Settings.ImageSize == "raw")
-            {
-                string path = new Uri(url).LocalPath.TrimStart('/');
-                var imageDimension = new Regex("_\\d+");
-                path = imageDimension.Replace(path, "_raw");
-                return "https://" + host + "/" + path;
-            }
-            return url;
-        }
-
-        private void AddPhotoUrlToDownloadList(string document, IList<string> tags)
+        private void AddPhotoUrlToDownloadList(string document)
         {
             if (blog.DownloadPhoto)
             {
@@ -501,7 +251,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        private void AddVideoUrlToDownloadList(string document, IList<string> tags)
+        private void AddVideoUrlToDownloadList(string document)
         {
             if (blog.DownloadVideo)
             {
@@ -524,27 +274,6 @@ namespace TumblThree.Applications.Downloader
                     }
                 }
             }
-        }
-
-        private void UpdateBlogStats()
-        {
-            blog.TotalCount = statisticsBag.Count;
-            blog.Photos = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Photo));
-            blog.Videos = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Video));
-            blog.Audios = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Audio));
-            blog.Texts = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Text));
-            blog.Conversations = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Conversation));
-            blog.Quotes = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Quote));
-            blog.NumberOfLinks = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Link));
-            blog.PhotoMetas = statisticsBag.Count(url => url.PostType.Equals(PostTypes.PhotoMeta));
-            blog.VideoMetas = statisticsBag.Count(url => url.PostType.Equals(PostTypes.VideoMeta));
-            blog.AudioMetas = statisticsBag.Count(url => url.PostType.Equals(PostTypes.AudioMeta));
-        }
-
-        private void AddToDownloadList(TumblrPost addToList)
-        {
-            producerConsumerCollection.Add(addToList);
-            statisticsBag.Add(addToList);
         }
     }
 }

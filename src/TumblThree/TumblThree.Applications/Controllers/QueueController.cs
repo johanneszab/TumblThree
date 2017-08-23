@@ -150,7 +150,7 @@ namespace TumblThree.Applications.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error("OpenListCore: {0}", ex);
+                Logger.Error("QueueController:OpenListCore: {0}", ex);
                 shellService.ShowError(ex, Resources.CouldNotLoadQueuelist);
                 return;
             }
@@ -196,7 +196,7 @@ namespace TumblThree.Applications.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error("SaveList SaveAs: {0}", ex);
+                Logger.Error("QueueController:SaveList: {0}", ex);
                 shellService.ShowError(ex, Resources.CouldNotSaveQueueList);
             }
         }

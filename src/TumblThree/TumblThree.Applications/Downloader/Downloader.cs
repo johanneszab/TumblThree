@@ -49,7 +49,7 @@ namespace TumblThree.Applications.Downloader
             this.fileDownloader = fileDownloader;
         }
 
-        protected HttpWebRequest CreateWebReqeust(string url)
+        protected HttpWebRequest CreateGetReqeust(string url)
         {
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "GET";
@@ -69,6 +69,34 @@ namespace TumblThree.Applications.Downloader
             request.CookieContainer = SharedCookieService.GetUriCookieContainer(new Uri("https://www.tumblr.com/"));
             ServicePointManager.DefaultConnectionLimit = 400;
             request = SetWebRequestProxy(request, shellService.Settings);
+            return request;
+        }
+
+        protected HttpWebRequest CreateGetXhrReqeust(string url, string referer = "")
+        {
+            HttpWebRequest request = CreateGetReqeust(url);
+            request.ContentType = "application/json";
+            request.Headers["X-Requested-With"] = "XMLHttpRequest";
+            request.Referer = referer;
+            return request;
+        }
+
+        protected HttpWebRequest CreatePostReqeust(string url, string referer = "", Dictionary<string, string> headers = null)
+        {
+            var request = CreateGetReqeust(url);
+            request.Method = "POST";
+            request.Accept = "application/json, text/javascript, */*; q=0.01";
+            request.ContentType = "application/x-www-form-urlencoded";
+            request.Referer = @"https://www.tumblr.com/search/" + blog.Name;
+            request.Headers["X-Requested-With"] = "XMLHttpRequest";
+            if (headers == null)
+            {
+                return request;
+            }
+            foreach (KeyValuePair<string, string> header in headers)
+            {
+                request.Headers[header.Key] = header.Value;
+            }
             return request;
         }
 
@@ -97,7 +125,7 @@ namespace TumblThree.Applications.Downloader
             var requestRegistration = new CancellationTokenRegistration();
             try
             {
-                HttpWebRequest request = CreateWebReqeust(url);
+                HttpWebRequest request = CreateGetReqeust(url);
                 requestRegistration = ct.Register(() => request.Abort());
                 using (var response = await request.GetResponseAsync() as HttpWebResponse)
                 {
@@ -174,7 +202,7 @@ namespace TumblThree.Applications.Downloader
         {
             string fileName = url.Split('/').Last();
             Monitor.Enter(lockObjectDb);
-            if (blog.Links.Contains(fileName))
+            if (files.Links.Contains(fileName))
             {
                 Monitor.Exit(lockObjectDb);
                 return true;
@@ -182,6 +210,19 @@ namespace TumblThree.Applications.Downloader
             Monitor.Exit(lockObjectDb);
             return false;
         }
+
+        //protected virtual bool CheckIfFileExistsInDB(string url)
+        //{
+        //    string fileName = url.Split('/').Last();
+        //    Monitor.Enter(lockObjectDb);
+        //    if (blog.Links.Contains(fileName))
+        //    {
+        //        Monitor.Exit(lockObjectDb);
+        //        return true;
+        //    }
+        //    Monitor.Exit(lockObjectDb);
+        //    return false;
+        //}
 
         protected virtual bool CheckIfBlogShouldCheckDirectory(string url)
         {
@@ -204,6 +245,81 @@ namespace TumblThree.Applications.Downloader
             }
             Monitor.Exit(lockObjectDirectory);
             return false;
+        }
+
+        //protected virtual bool CheckIfFileExistsInDirectory(string url)
+        //{
+        //    string fileName = url.Split('/').Last();
+        //    Monitor.Enter(lockObjectDirectory);
+        //    string blogPath = blog.DownloadLocation();
+        //    if (Directory.EnumerateFiles(blogPath).Any(file => file.Contains(fileName)))
+        //    {
+        //        Monitor.Exit(lockObjectDirectory);
+        //        return true;
+        //    }
+        //    Monitor.Exit(lockObjectDirectory);
+        //    return false;
+        //}
+
+        protected int DetermineDuplicates(PostTypes type)
+        {
+            return statisticsBag.Where(url => url.PostType.Equals(type))
+                                .GroupBy(url => url.Url)
+                                .Where(g => g.Count() > 1)
+                                .Sum(g => g.Count() - 1);
+        }
+
+        protected virtual IEnumerable<int> GetPageNumbers()
+        {
+            if (string.IsNullOrEmpty(blog.DownloadPages))
+            {
+                int totalPosts = blog.Posts;
+                if (!TestRange(blog.PageSize, 1, 50))
+                    blog.PageSize = 50;
+                int totalPages = (totalPosts / blog.PageSize) + 1;
+
+                return Enumerable.Range(0, totalPages);
+            }
+            return RangeToSequence(blog.DownloadPages);
+        }
+
+        protected static bool TestRange(int numberToCheck, int bottom, int top)
+        {
+            return (numberToCheck >= bottom && numberToCheck <= top);
+        }
+
+        protected static IEnumerable<int> RangeToSequence(string input)
+        {
+            string[] parts = input.Split(',');
+            foreach (string part in parts)
+            {
+                if (!part.Contains('-'))
+                {
+                    yield return int.Parse(part);
+                    continue;
+                }
+                string[] rangeParts = part.Split('-');
+                int start = int.Parse(rangeParts[0]);
+                int end = int.Parse(rangeParts[1]);
+
+                while (start <= end)
+                {
+                    yield return start;
+                    start++;
+                }
+            }
+        }
+
+        protected void AddToDownloadList(TumblrPost addToList)
+        {
+            producerConsumerCollection.Add(addToList);
+            statisticsBag.Add(addToList);
+        }
+
+        public static T ConvertJsonToClass<T>(string json)
+        {
+            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            return serializer.Deserialize<T>(json);
         }
 
         protected virtual void UpdateProgressQueueInformation(string format, params object[] args)
@@ -229,7 +345,7 @@ namespace TumblThree.Applications.Downloader
             catch (IOException ex) when ((ex.HResult & 0xFFFF) == 0x27 || (ex.HResult & 0xFFFF) == 0x70)
             {
                 // Disk Full, HRESULT: ‭-2147024784‬ == 0xFFFFFFFF80070070
-                Logger.Error("ManagerController:Download: {0}", ex);
+                Logger.Error("Downloader:DownloadBinaryFile: {0}", ex);
                 shellService.ShowError(ex, Resources.DiskFull);
                 crawlerService.StopCommand.Execute(null);
                 return false;
@@ -283,7 +399,7 @@ namespace TumblThree.Applications.Downloader
             }
             catch (IOException ex) when ((ex.HResult & 0xFFFF) == 0x27 || (ex.HResult & 0xFFFF) == 0x70)
             {
-                Logger.Error("ManagerController:Download: {0}", ex);
+                Logger.Error("Downloader:AppendToTextFile: {0}", ex);
                 shellService.ShowError(ex, Resources.DiskFull);
                 crawlerService.StopCommand.Execute(null);
                 return false;

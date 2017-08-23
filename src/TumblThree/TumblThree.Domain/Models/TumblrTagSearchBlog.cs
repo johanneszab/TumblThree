@@ -3,9 +3,9 @@
 namespace TumblThree.Domain.Models
 {
     [DataContract]
-    public class TumblrTaggedBlog : Blog
+    public class TumblrTagSearchBlog : Blog
     {
-        public TumblrTaggedBlog(string url, string location, BlogTypes blogType) : base(url, location, blogType)
+        public TumblrTagSearchBlog(string url, string location, BlogTypes blogType) : base(url, location, blogType)
         {
         }
 
