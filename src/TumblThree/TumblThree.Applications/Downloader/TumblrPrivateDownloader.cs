@@ -5,7 +5,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,10 +21,8 @@ namespace TumblThree.Applications.Downloader
 {
     [Export(typeof(IDownloader))]
     [ExportMetadata("BlogType", BlogTypes.tmblrpriv)]
-    public class TumblrPrivateDownloader : Downloader, IDownloader
+    public class TumblrPrivateDownloader : TumblrDownloader, IDownloader
     {
-        private int numberOfPagesCrawled = 0;
-
         public TumblrPrivateDownloader(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, PostCounter counter, FileDownloader fileDownloader, ICrawlerService crawlerService, IBlog blog, IFiles files)
             : base(shellService, ct, pt, progress, counter, fileDownloader, crawlerService, blog, files)
         {
@@ -65,7 +62,7 @@ namespace TumblThree.Applications.Downloader
                 var webRespStatusCode = (int)((HttpWebResponse)webException?.Response).StatusCode;
                 if (webRespStatusCode == 503)
                 {
-                    Logger.Error("TumblrDownloader:GetUrlsAsync: {0}", "User not logged in");
+                    Logger.Error("TumblrPrivateDownloader:GetUrlsAsync: {0}", "User not logged in");
                     shellService.ShowError(new Exception("User not logged in"), Resources.NotLoggedIn, blog.Name);
                 }
                 else
@@ -77,7 +74,7 @@ namespace TumblThree.Applications.Downloader
 
         public async Task Crawl()
         {
-            Logger.Verbose("TumblrDownloader.Crawl:Start");
+            Logger.Verbose("TumblrPrivateDownloader.Crawl:Start");
 
             Task grabber = GetUrlsAsync();
             Task<bool> downloader = DownloadBlogAsync();
@@ -104,51 +101,7 @@ namespace TumblThree.Applications.Downloader
             UpdateProgressQueueInformation("");
         }
 
-        private string ImageSize()
-        {
-            if (shellService.Settings.ImageSize == "raw")
-                return "1280";
-            return shellService.Settings.ImageSize;
-        }
-
-        private string ResizeTumblrImageUrl(string imageUrl)
-        {
-            var sb = new StringBuilder(imageUrl);
-            return sb
-                .Replace("_raw", "_" + ImageSize())
-                .Replace("_1280", "_" + ImageSize())
-                .Replace("_540", "_" + ImageSize())
-                .Replace("_500", "_" + ImageSize())
-                .Replace("_400", "_" + ImageSize())
-                .Replace("_250", "_" + ImageSize())
-                .Replace("_100", "_" + ImageSize())
-                .Replace("_75sq", "_" + ImageSize())
-                .ToString();
-        }
-
-        protected override bool CheckIfFileExistsInDirectory(string url)
-        {
-            string fileName = url.Split('/').Last();
-            Monitor.Enter(lockObjectDirectory);
-            string blogPath = blog.DownloadLocation();
-            if (Directory.EnumerateFiles(blogPath).Any(file => file.Contains(fileName)))
-            {
-                Monitor.Exit(lockObjectDirectory);
-                return true;
-            }
-            Monitor.Exit(lockObjectDirectory);
-            return false;
-        }
-
-        private int DetermineDuplicates(PostTypes type)
-        {
-            return statisticsBag.Where(url => url.PostType.Equals(type))
-                                .GroupBy(url => url.Url)
-                                .Where(g => g.Count() > 1)
-                                .Sum(g => g.Count() - 1);
-        }
-
-        private IEnumerable<int> GetPageNumbers()
+        protected override IEnumerable<int> GetPageNumbers()
         {
             if (!TestRange(blog.PageSize, 1, 100))
                 blog.PageSize = 100;
@@ -160,33 +113,6 @@ namespace TumblThree.Applications.Downloader
             return RangeToSequence(blog.DownloadPages);
         }
 
-        private static bool TestRange(int numberToCheck, int bottom, int top)
-        {
-            return (numberToCheck >= bottom && numberToCheck <= top);
-        }
-
-        static IEnumerable<int> RangeToSequence(string input)
-        {
-            string[] parts = input.Split(',');
-            foreach (string part in parts)
-            {
-                if (!part.Contains('-'))
-                {
-                    yield return int.Parse(part);
-                    continue;
-                }
-                string[] rangeParts = part.Split('-');
-                int start = int.Parse(rangeParts[0]);
-                int end = int.Parse(rangeParts[1]);
-
-                while (start <= end)
-                {
-                    yield return start;
-                    start++;
-                }
-            }
-        }
-
         private async Task<ulong> GetHighestPostId()
         {
             string document = await GetSvcPageAsync("1", "0");
@@ -195,20 +121,6 @@ namespace TumblThree.Applications.Downloader
             ulong highestId;
             ulong.TryParse(blog.Title = response.response.posts.FirstOrDefault().id, out highestId);
             return highestId;
-        }
-
-        private ulong GetLastPostId()
-        {
-            ulong lastId = blog.LastId;
-            if (blog.ForceRescan)
-            {
-                return 0;
-            }
-            if (!string.IsNullOrEmpty(blog.DownloadPages))
-            {
-                return 0;
-            }
-            return lastId;
         }
 
         private static bool CheckPostAge(TumblrJson document, ulong lastId)
@@ -224,23 +136,18 @@ namespace TumblThree.Applications.Downloader
             return true;
         }
 
-        protected override bool CheckIfFileExistsInDB(string url)
-        {
-            string fileName = url.Split('/').Last();
-            Monitor.Enter(lockObjectDb);
-            if (files.Links.Contains(fileName))
-            {
-                Monitor.Exit(lockObjectDb);
-                return true;
-            }
-            Monitor.Exit(lockObjectDb);
-            return false;
-        }
-
         private async Task GetUrlsAsync()
         {
             var semaphoreSlim = new SemaphoreSlim(shellService.Settings.ParallelScans);
             var trackedTasks = new List<Task>();
+
+            if (!await CheckIfLoggedIn())
+            {
+                Logger.Error("TumblrPrivateDownloader:GetUrlsAsync: {0}", "User not logged in");
+                shellService.ShowError(new Exception("User not logged in"), Resources.NotLoggedIn, blog.Name);
+                producerConsumerCollection.CompleteAdding();
+                return;
+            }
 
             foreach (int crawlerNumber in Enumerable.Range(0, shellService.Settings.ParallelScans))
             {
@@ -248,7 +155,6 @@ namespace TumblThree.Applications.Downloader
 
                 trackedTasks.Add(new Func<Task>(async () =>
                 {
-                    var tags = new List<string>();
                     if (!string.IsNullOrWhiteSpace(blog.Tags))
                     {
                         tags = blog.Tags.Split(',').Select(x => x.Trim()).ToList();
@@ -258,20 +164,14 @@ namespace TumblThree.Applications.Downloader
                     {
                         string document = await GetSvcPageAsync(blog.PageSize.ToString(), (blog.PageSize * crawlerNumber).ToString());
                         var response = ConvertJsonToClass<TumblrJson>(document);
-                        await AddUrlsToDownloadList(response, tags, crawlerNumber);
+                        await AddUrlsToDownloadList(response, crawlerNumber);
                     }
                     catch (WebException webException)
                     {
-                        if (webException.Message.Contains("503"))
-                        {
-                            Logger.Error("TumblrDownloader:GetUrlsAsync: {0}", "User not logged in");
-                            shellService.ShowError(new Exception("User not logged in"), Resources.NotLoggedIn, blog.Name);
-                            return;
-                        }
                         if (webException.Message.Contains("429"))
                         {
                             // TODO: add retry logic?
-                            Logger.Error("TumblrDownloader:GetUrls:WebException {0}", webException);
+                            Logger.Error("TumblrPrivateDownloader:GetUrls:WebException {0}", webException);
                             shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
                         }
                     }
@@ -294,6 +194,22 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
+        private async Task<bool> CheckIfLoggedIn()
+        {
+            try
+            {
+                string document = await GetSvcPageAsync(blog.PageSize.ToString(), (blog.PageSize * 1).ToString());
+            }
+            catch (WebException webException)
+            {
+                if (webException.Message.Contains("503"))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         private async Task<string> GetSvcPageAsync(string limit, string offset)
         {
             if (shellService.Settings.LimitConnections)
@@ -309,7 +225,10 @@ namespace TumblThree.Applications.Downloader
             var requestRegistration = new CancellationTokenRegistration();
             try
             {
-                HttpWebRequest request = CreateWebReqeust(limit, offset);
+                string url = @"https://www.tumblr.com/svc/indash_blog?tumblelog_name_or_id=" + blog.Name +
+                    @"&post_id=&limit=" + limit + "&offset=" + offset + "&should_bypass_safemode=true";
+                string referer = @"https://www.tumblr.com/dashboard/blog/" + blog.Name;
+                HttpWebRequest request = CreateGetXhrReqeust(url, referer);
                 requestRegistration = ct.Register(() => request.Abort());
                 using (var response = await request.GetResponseAsync() as HttpWebResponse)
                 {
@@ -331,35 +250,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        protected HttpWebRequest CreateWebReqeust(string limit, string offset)
-        {
-            string url = @"https://www.tumblr.com/svc/indash_blog?tumblelog_name_or_id=" + blog.Name +
-                  @"&post_id=&limit=" + limit + "&offset=" + offset + "&should_bypass_safemode=true";
-            var request = (HttpWebRequest)WebRequest.Create(url);
-            request.Method = "GET";
-            request.ContentType = "application/json";
-            request.ProtocolVersion = HttpVersion.Version11;
-            request.UserAgent =
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
-            request.AllowAutoRedirect = true;
-            request.KeepAlive = true;
-            request.Pipelined = true;
-            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-            // Timeouts don't work with GetResponseAsync() as it internally uses BeginGetResponse.
-            // See docs: https://msdn.microsoft.com/en-us/library/system.net.httpwebrequest.timeout(v=vs.110).aspx
-            // Quote: The Timeout property has no effect on asynchronous requests made with the BeginGetResponse or BeginGetRequestStream method.
-            // TODO: Use HttpClient instead?
-            request.ReadWriteTimeout = shellService.Settings.TimeOut * 1000;
-            request.Timeout = -1;
-            request.CookieContainer = SharedCookieService.GetUriCookieContainer(new Uri("https://www.tumblr.com/"));
-            ServicePointManager.DefaultConnectionLimit = 400;
-            request = SetWebRequestProxy(request, shellService.Settings);
-            request.Referer = @"https://www.tumblr.com/dashboard/blog/" + blog.Name;
-            request.Headers["X-Requested-With"] = "XMLHttpRequest";
-            return request;
-        }
-
-        private async Task AddUrlsToDownloadList(TumblrJson response, IList<string> tags, int crawlerNumber)
+        private async Task AddUrlsToDownloadList(TumblrJson response, int crawlerNumber)
         {
             while (true)
             {
@@ -374,17 +265,17 @@ namespace TumblThree.Applications.Downloader
 
                 try
                 {
-                    AddPhotoUrlToDownloadList(response, tags);
-                    AddVideoUrlToDownloadList(response, tags);
-                    AddAudioUrlToDownloadList(response, tags);
-                    AddTextUrlToDownloadList(response, tags);
-                    AddQuoteUrlToDownloadList(response, tags);
-                    AddLinkUrlToDownloadList(response, tags);
-                    AddConversationUrlToDownloadList(response, tags);
-                    AddAnswerUrlToDownloadList(response, tags);
-                    AddPhotoMetaUrlToDownloadList(response, tags);
-                    AddVideoMetaUrlToDownloadList(response, tags);
-                    AddAudioMetaUrlToDownloadList(response, tags);
+                    AddPhotoUrlToDownloadList(response);
+                    AddVideoUrlToDownloadList(response);
+                    AddAudioUrlToDownloadList(response);
+                    AddTextUrlToDownloadList(response);
+                    AddQuoteUrlToDownloadList(response);
+                    AddLinkUrlToDownloadList(response);
+                    AddConversationUrlToDownloadList(response);
+                    AddAnswerUrlToDownloadList(response);
+                    AddPhotoMetaUrlToDownloadList(response);
+                    AddVideoMetaUrlToDownloadList(response);
+                    AddAudioMetaUrlToDownloadList(response);
                 }
                 catch (NullReferenceException)
                 {
@@ -404,12 +295,6 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        public static T ConvertJsonToClass<T>(string json)
-        {
-            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-            return serializer.Deserialize<T>(json);
-        }
-
         private bool CheckIfDownloadRebloggedPosts(Post post)
         {
             if (!blog.DownloadRebloggedPosts)
@@ -421,77 +306,7 @@ namespace TumblThree.Applications.Downloader
             return true;
         }
 
-        protected override async Task DownloadPhotoAsync(TumblrPost downloadItem)
-        {
-            string url = Url(downloadItem);
-
-            if (blog.ForceSize)
-            {
-                url = ResizeTumblrImageUrl(url);
-            }
-
-            foreach (string host in shellService.Settings.TumblrHosts)
-            {
-                url = BuildRawImageUrl(url, host);
-                if (await DownloadDetectedImageUrl(url, PostDate(downloadItem)))
-                    return;
-            }
-
-            await DownloadDetectedImageUrl(Url(downloadItem), PostDate(downloadItem));
-        }
-
-        private async Task<bool> DownloadDetectedImageUrl(string url, DateTime postDate)
-        {
-            if (!(CheckIfFileExistsInDB(url) || CheckIfBlogShouldCheckDirectory(GetCoreImageUrl(url))))
-            {
-                string blogDownloadLocation = blog.DownloadLocation();
-                string fileName = url.Split('/').Last();
-                string fileLocation = FileLocation(blogDownloadLocation, fileName);
-                string fileLocationUrlList = FileLocationLocalized(blogDownloadLocation, Resources.FileNamePhotos);
-                UpdateProgressQueueInformation(Resources.ProgressDownloadImage, fileName);
-                if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url))
-                {
-                    SetFileDate(fileLocation, postDate);
-                    UpdateBlogPostCount(ref counter.Photos, value => blog.DownloadedPhotos = value);
-                    UpdateBlogProgress(ref counter.TotalDownloads);
-                    UpdateBlogDB(fileName);
-                    if (shellService.Settings.EnablePreview)
-                    {
-                        if (!fileName.EndsWith(".gif"))
-                        {
-                            blog.LastDownloadedPhoto = Path.GetFullPath(fileLocation);
-                        }
-                        else
-                        {
-                            blog.LastDownloadedVideo = Path.GetFullPath(fileLocation);
-                        }
-                    }
-                    return true;
-                }
-                return false;
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// Builds a tumblr raw image url from any sized tumblr image url if the ImageSize is set to "raw".
-        /// </summary>
-        /// <param name="url">The url detected from the crawler.</param>
-        /// <param name="host">Hostname to insert in the original url.</param>
-        /// <returns></returns>
-        public string BuildRawImageUrl(string url, string host)
-        {
-            if (shellService.Settings.ImageSize == "raw")
-            {
-                string path = new Uri(url).LocalPath.TrimStart('/');
-                var imageDimension = new Regex("_\\d+");
-                path = imageDimension.Replace(path, "_raw");
-                return "https://" + host + "/" + path;
-            }
-            return url;
-        }
-
-        private void AddPhotoUrlToDownloadList(TumblrJson document, IList<string> tags)
+        private void AddPhotoUrlToDownloadList(TumblrJson document)
         {
             if (blog.DownloadPhoto)
             {
@@ -505,12 +320,12 @@ namespace TumblThree.Applications.Downloader
                         }
                     }
                     // check for inline images
-                    //if (post.type != "photo" && !tags.Any() || post.tags.Intersect(tags, StringComparer.OrdinalIgnoreCase).Any())
-                    //{
-                    //    if (CheckIfDownloadRebloggedPosts(post))
-                    //        try { AddInlinePhotoUrl(post); }
-                    //        catch { }
-                    //}
+                    if (post.type != "photo" && !tags.Any() || post.tags.Intersect(tags, StringComparer.OrdinalIgnoreCase).Any())
+                    {
+                        if (CheckIfDownloadRebloggedPosts(post))
+                            try { AddInlinePhotoUrl(post); }
+                            catch { }
+                    }
                 }
             }
         }
@@ -535,7 +350,7 @@ namespace TumblThree.Applications.Downloader
 
         private void AddInlinePhotoUrl(Post post)
         {
-            var regex = new Regex("\"(http[\\S]*media.tumblr.com[\\S]*(jpg|png|gif))\"");
+            var regex = new Regex("\"(http[A-Za-z0-9_/:.]*media.tumblr.com[A-Za-z0-9_/:.]*(jpg|png|gif))\"");
             foreach (Match match in regex.Matches(post.body))
             {
                 string postId = post.id;
@@ -552,7 +367,7 @@ namespace TumblThree.Applications.Downloader
         }
 
 
-        private void AddVideoUrlToDownloadList(TumblrJson document, IList<string> tags)
+        private void AddVideoUrlToDownloadList(TumblrJson document)
         {
             if (blog.DownloadVideo)
             {
@@ -566,12 +381,12 @@ namespace TumblThree.Applications.Downloader
                         }
                     }
                     // check for inline videos
-                    //if (post.type != "video" && !tags.Any() || post.tags.Intersect(tags, StringComparer.OrdinalIgnoreCase).Any())
-                    //{
-                    //    if (CheckIfDownloadRebloggedPosts(post))
-                    //        try { AddInlineVideoUrl(post); }
-                    //        catch { }
-                    //}
+                    if (post.type != "video" && !tags.Any() || post.tags.Intersect(tags, StringComparer.OrdinalIgnoreCase).Any())
+                    {
+                        if (CheckIfDownloadRebloggedPosts(post))
+                            try { AddInlineVideoUrl(post); }
+                            catch { }
+                    }
                 }
             }
         }
@@ -593,7 +408,7 @@ namespace TumblThree.Applications.Downloader
 
         private void AddInlineVideoUrl(Post post)
         {
-            var regex = new Regex("\"(http[\\S]*.com/video_file/[\\S]*)\"");
+            var regex = new Regex("\"(http[A-Za-z0-9_/:.]*.com/video_file/[A-Za-z0-9_/:.]*)\"");
             foreach (Match match in regex.Matches(post.body))
             {
                 string videoUrl = match.Groups[1].Value;
@@ -610,7 +425,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        private void AddAudioUrlToDownloadList(TumblrJson document, IList<string> tags)
+        private void AddAudioUrlToDownloadList(TumblrJson document)
         {
             if (blog.DownloadAudio)
             {
@@ -631,7 +446,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        private void AddTextUrlToDownloadList(TumblrJson document, IList<string> tags)
+        private void AddTextUrlToDownloadList(TumblrJson document)
         {
             if (blog.DownloadText)
             {
@@ -650,7 +465,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        private void AddQuoteUrlToDownloadList(TumblrJson document, IList<string> tags)
+        private void AddQuoteUrlToDownloadList(TumblrJson document)
         {
             if (blog.DownloadQuote)
             {
@@ -669,7 +484,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        private void AddLinkUrlToDownloadList(TumblrJson document, IList<string> tags)
+        private void AddLinkUrlToDownloadList(TumblrJson document)
         {
             if (blog.DownloadLink)
             {
@@ -688,7 +503,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        private void AddConversationUrlToDownloadList(TumblrJson document, IList<string> tags)
+        private void AddConversationUrlToDownloadList(TumblrJson document)
         {
             if (blog.DownloadConversation)
             {
@@ -707,7 +522,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        private void AddAnswerUrlToDownloadList(TumblrJson document, IList<string> tags)
+        private void AddAnswerUrlToDownloadList(TumblrJson document)
         {
             if (blog.DownloadAnswer)
             {
@@ -726,7 +541,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        private void AddPhotoMetaUrlToDownloadList(TumblrJson document, IList<string> tags)
+        private void AddPhotoMetaUrlToDownloadList(TumblrJson document)
         {
             if (blog.CreatePhotoMeta)
             {
@@ -745,7 +560,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        private void AddVideoMetaUrlToDownloadList(TumblrJson document, IList<string> tags)
+        private void AddVideoMetaUrlToDownloadList(TumblrJson document)
         {
             if (blog.CreateVideoMeta)
             {
@@ -764,7 +579,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        private void AddAudioMetaUrlToDownloadList(TumblrJson document, IList<string> tags)
+        private void AddAudioMetaUrlToDownloadList(TumblrJson document)
         {
             if (blog.CreateAudioMeta)
             {
@@ -958,27 +773,6 @@ namespace TumblThree.Applications.Downloader
                    string.Format(CultureInfo.CurrentCulture, Resources.Tags,
                        string.Join(", ", post.tags.ToArray())) +
                    Environment.NewLine;
-        }
-
-        private void UpdateBlogStats()
-        {
-            blog.TotalCount = statisticsBag.Count;
-            blog.Photos = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Photo));
-            blog.Videos = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Video));
-            blog.Audios = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Audio));
-            blog.Texts = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Text));
-            blog.Conversations = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Conversation));
-            blog.Quotes = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Quote));
-            blog.NumberOfLinks = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Link));
-            blog.PhotoMetas = statisticsBag.Count(url => url.PostType.Equals(PostTypes.PhotoMeta));
-            blog.VideoMetas = statisticsBag.Count(url => url.PostType.Equals(PostTypes.VideoMeta));
-            blog.AudioMetas = statisticsBag.Count(url => url.PostType.Equals(PostTypes.AudioMeta));
-        }
-
-        private void AddToDownloadList(TumblrPost addToList)
-        {
-            producerConsumerCollection.Add(addToList);
-            statisticsBag.Add(addToList);
         }
     }
 }

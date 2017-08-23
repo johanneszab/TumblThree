@@ -42,15 +42,15 @@ namespace TumblThree.Applications.Downloader
             switch (blogtype)
             {
                 case BlogTypes.tumblr:
-                    return new TumblrDownloader(shellService, ct, pt, progress, new PostCounter(blog), GetFileDownloader(ct), crawlerService, blog, LoadFiles(blog));
+                    return new TumblrBlogDownloader(shellService, ct, pt, progress, new PostCounter(blog), GetFileDownloader(ct), crawlerService, blog, LoadFiles(blog));
                 case BlogTypes.tmblrpriv:
                     return new TumblrPrivateDownloader(shellService, ct, pt, progress, new PostCounter(blog), GetFileDownloader(ct), crawlerService, blog, LoadFiles(blog));
                 case BlogTypes.tlb:
                     return new TumblrLikedByDownloader(shellService, ct, pt, progress, new PostCounter(blog), GetFileDownloader(ct), crawlerService, blog, LoadFiles(blog));
                 case BlogTypes.tumblrsearch:
                     return new TumblrSearchDownloader(shellService, ct, pt, progress, new PostCounter(blog), GetFileDownloader(ct), crawlerService, blog, LoadFiles(blog));
-                case BlogTypes.tumblrtagged:
-                    return new TumblrTaggedDownloader(shellService, ct, pt, progress, new PostCounter(blog), GetFileDownloader(ct), crawlerService, blog, LoadFiles(blog));
+                case BlogTypes.tumblrtagsearch:
+                    return new TumblrTagSearchDownloader(shellService, ct, pt, progress, new PostCounter(blog), GetFileDownloader(ct), crawlerService, blog, LoadFiles(blog));
                 default:
                     throw new ArgumentException("Website is not supported!", "blogType");
             }

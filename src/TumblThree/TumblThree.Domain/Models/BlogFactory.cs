@@ -19,8 +19,8 @@ namespace TumblThree.Domain.Models
                 return new TumblrLikeByBlog(blogUrl, path, BlogTypes.tlb);
             if (Validator.IsValidTumblrSearchUrl(blogUrl))
                 return new TumblrSearchBlog(blogUrl, path, BlogTypes.tumblrsearch);
-            if (Validator.IsValidTumblrTaggedUrl(blogUrl))
-                return new TumblrSearchBlog(blogUrl, path, BlogTypes.tumblrtagged);
+            if (Validator.IsValidTumblrTagSearchUrl(blogUrl))
+                return new TumblrTagSearchBlog(blogUrl, path, BlogTypes.tumblrtagsearch);
             throw new ArgumentException("Website is not supported!", nameof(blogUrl));
         }
     }
