@@ -11,8 +11,8 @@ using System.Threading.Tasks;
 using System.Waf.Applications;
 using System.Windows;
 
+using TumblThree.Applications.Crawler;
 using TumblThree.Applications.DataModels;
-using TumblThree.Applications.Downloader;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Applications.ViewModels;
@@ -51,14 +51,14 @@ namespace TumblThree.Applications.Controllers
 
         [ImportingConstructor]
         public ManagerController(IShellService shellService, ISelectionService selectionService, ICrawlerService crawlerService,
-            IManagerService managerService, IDownloaderFactory downloaderFactory, IBlogFactory blogFactory, Lazy<ManagerViewModel> managerViewModel)
+            IManagerService managerService, ICrawlerFactory crawlerFactory, IBlogFactory blogFactory, Lazy<ManagerViewModel> managerViewModel)
         {
             this.shellService = shellService;
             this.selectionService = selectionService;
             this.crawlerService = crawlerService;
             this.managerService = managerService;
             this.managerViewModel = managerViewModel;
-            DownloaderFactory = downloaderFactory;
+            CrawlerFactory = crawlerFactory;
             BlogFactory = blogFactory;
             addBlogCommand = new AsyncDelegateCommand(AddBlog, CanAddBlog);
             removeBlogCommand = new DelegateCommand(RemoveBlog, CanRemoveBlog);
@@ -80,7 +80,7 @@ namespace TumblThree.Applications.Controllers
 
         public QueueManager QueueManager { get; set; }
 
-        public IDownloaderFactory DownloaderFactory { get; set; }
+        public ICrawlerFactory CrawlerFactory { get; set; }
 
         public IBlogFactory BlogFactory { get; set; }
 
@@ -156,8 +156,8 @@ namespace TumblThree.Applications.Controllers
                         {
                             foreach (IBlog blog in files)
                             {
-                                IDownloader downloader = DownloaderFactory.GetDownloader(blog.BlogType, new CancellationToken(), new PauseToken(), new Progress<DownloadProgress>(), shellService, crawlerService, blog);
-                                await downloader.IsBlogOnlineAsync();
+                                ICrawler crawler = CrawlerFactory.GetCrawler(blog.BlogType, new CancellationToken(), new PauseToken(), new Progress<DownloadProgress>(), shellService, crawlerService, blog);
+                                await crawler.IsBlogOnlineAsync();
                             }
                         }
                     }
@@ -368,9 +368,9 @@ namespace TumblThree.Applications.Controllers
 
             try
             {
-                IDownloader downloader = DownloaderFactory.GetDownloader(blog.BlogType, new CancellationToken(), new PauseToken(), new Progress<DownloadProgress>(), shellService, crawlerService, blog);
-                await downloader.IsBlogOnlineAsync();
-                await downloader.UpdateMetaInformationAsync();
+                ICrawler crawler = CrawlerFactory.GetCrawler(blog.BlogType, new CancellationToken(), new PauseToken(), new Progress<DownloadProgress>(), shellService, crawlerService, blog);
+                await crawler.IsBlogOnlineAsync();
+                await crawler.UpdateMetaInformationAsync();
             }
             catch (WebException webException)
             {

@@ -2,10 +2,10 @@
 
 using TumblThree.Domain.Models;
 
-namespace TumblThree.Applications.Downloader
+namespace TumblThree.Applications.Crawler
 {
     [ExportMetadata("BlogType", BlogTypes.instagram)]
-    class InstagramDownloader
+    class InstagramCrawler
     {
     }
 }

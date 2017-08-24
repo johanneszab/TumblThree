@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,13 +15,13 @@ using TumblThree.Domain.Models;
 
 namespace TumblThree.Applications.Downloader
 {
-    public abstract class TumblrDownloader : Downloader
+    public class TumblrDownloader : AbstractDownloader
     {
         protected List<string> tags = new List<string>();
         protected int numberOfPagesCrawled = 0;
 
-        protected TumblrDownloader(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, PostCounter counter, FileDownloader fileDownloader, ICrawlerService crawlerService, IBlog blog, IFiles files)
-            : base(shellService, ct, pt, progress, counter, fileDownloader, crawlerService, blog, files)
+        public TumblrDownloader(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, PostCounter counter, BlockingCollection<TumblrPost> producerConsumerCollection, FileDownloader fileDownloader, ICrawlerService crawlerService, IBlog blog, IFiles files)
+            : base(shellService, ct, pt, progress, counter, producerConsumerCollection, fileDownloader, crawlerService, blog, files)
         {
         }
 
@@ -138,22 +139,6 @@ namespace TumblThree.Applications.Downloader
                 return false;
             }
             return true;
-        }
-
-        protected void UpdateBlogStats()
-        {
-            blog.TotalCount = statisticsBag.Count;
-            blog.Photos = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Photo));
-            blog.Videos = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Video));
-            blog.Audios = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Audio));
-            blog.Texts = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Text));
-            blog.Answers = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Answer));
-            blog.Conversations = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Conversation));
-            blog.Quotes = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Quote));
-            blog.NumberOfLinks = statisticsBag.Count(url => url.PostType.Equals(PostTypes.Link));
-            blog.PhotoMetas = statisticsBag.Count(url => url.PostType.Equals(PostTypes.PhotoMeta));
-            blog.VideoMetas = statisticsBag.Count(url => url.PostType.Equals(PostTypes.VideoMeta));
-            blog.AudioMetas = statisticsBag.Count(url => url.PostType.Equals(PostTypes.AudioMeta));
         }
     }
 }
