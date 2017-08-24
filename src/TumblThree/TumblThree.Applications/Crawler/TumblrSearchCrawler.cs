@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
@@ -11,30 +12,32 @@ using System.Threading.Tasks;
 
 using TumblThree.Applications.DataModels;
 using TumblThree.Applications.DataModels.TumblrSearchJson;
+using TumblThree.Applications.Downloader;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain;
 using TumblThree.Domain.Models;
 
-namespace TumblThree.Applications.Downloader
+namespace TumblThree.Applications.Crawler
 {
-    [Export(typeof(IDownloader))]
+    [Export(typeof(ICrawler))]
     [ExportMetadata("BlogType", BlogTypes.tumblrsearch)]
-    public class TumblrSearchDownloader : TumblrDownloader, IDownloader
+    public class TumblrSearchCrawler : AbstractCrawler, ICrawler
     {
         private string tumblrKey = String.Empty;
 
-        public TumblrSearchDownloader(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, PostCounter counter, FileDownloader fileDownloader, ICrawlerService crawlerService, IBlog blog, IFiles files)
-            : base(shellService, ct, pt, progress, counter, fileDownloader, crawlerService, blog, files)
+        public TumblrSearchCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
+            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IDownloader downloader, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog, IFiles files)
+            : base(shellService, ct, pt, progress, crawlerService, downloader, producerConsumerCollection, blog, files)
         {
         }
 
         public async Task Crawl()
         {
-            Logger.Verbose("TumblrSearchDownloader.Crawl:Start");
+            Logger.Verbose("TumblrSearchCrawler.Crawl:Start");
 
             Task grabber = GetUrlsAsync();
-            Task<bool> downloader = DownloadBlogAsync();
+            Task<bool> download = downloader.DownloadBlogAsync();
 
             await grabber;
 
@@ -46,7 +49,7 @@ namespace TumblThree.Applications.Downloader
 
             CleanCollectedBlogStatistics();
 
-            await downloader;
+            await download;
 
             if (!ct.IsCancellationRequested)
             {

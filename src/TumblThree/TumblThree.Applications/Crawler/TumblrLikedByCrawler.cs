@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
@@ -7,28 +8,30 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using TumblThree.Applications.DataModels;
+using TumblThree.Applications.Downloader;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain;
 using TumblThree.Domain.Models;
 
-namespace TumblThree.Applications.Downloader
+namespace TumblThree.Applications.Crawler
 {
-    [Export(typeof(IDownloader))]
+    [Export(typeof(ICrawler))]
     [ExportMetadata("BlogType", BlogTypes.tlb)]
-    public class TumblrLikedByDownloader : TumblrDownloader, IDownloader
+    public class TumblrLikedByCrawler : AbstractCrawler, ICrawler
     {
-        public TumblrLikedByDownloader(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, PostCounter counter, FileDownloader fileDownloader, ICrawlerService crawlerService, IBlog blog, IFiles files)
-            : base(shellService, ct, pt, progress, counter, fileDownloader, crawlerService, blog, files)
+        public TumblrLikedByCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
+            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IDownloader downloader, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog, IFiles files)
+            : base(shellService, ct, pt, progress, crawlerService, downloader, producerConsumerCollection, blog, files)
         {
         }
 
         public async Task Crawl()
         {
-            Logger.Verbose("TumblrLikedByDownloader.Crawl:Start");
+            Logger.Verbose("TumblrLikedByCrawler.Crawl:Start");
 
             Task grabber = GetUrlsAsync();
-            Task<bool> downloader = DownloadBlogAsync();
+            Task<bool> download = downloader.DownloadBlogAsync();
 
             await grabber;
 
@@ -40,7 +43,7 @@ namespace TumblThree.Applications.Downloader
 
             CleanCollectedBlogStatistics();
 
-            await downloader;
+            await download;
 
             if (!ct.IsCancellationRequested)
             {
@@ -59,7 +62,7 @@ namespace TumblThree.Applications.Downloader
 
             if (!await CheckIfLoggedIn())
             {
-                Logger.Error("TumblrLikedByDownloader:GetUrlsAsync: {0}", "User not logged in");
+                Logger.Error("TumblrLikedByCrawler:GetUrlsAsync: {0}", "User not logged in");
                 shellService.ShowError(new Exception("User not logged in"), Resources.NotLoggedIn, blog.Name);
                 producerConsumerCollection.CompleteAdding();
                 return;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Globalization;
@@ -10,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using TumblThree.Applications.DataModels;
+using TumblThree.Applications.Downloader;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain;
@@ -17,14 +19,15 @@ using TumblThree.Domain.Models;
 
 using Post = TumblThree.Applications.DataModels.Post;
 
-namespace TumblThree.Applications.Downloader
+namespace TumblThree.Applications.Crawler
 {
-    [Export(typeof(IDownloader))]
+    [Export(typeof(ICrawler))]
     [ExportMetadata("BlogType", BlogTypes.tmblrpriv)]
-    public class TumblrPrivateDownloader : TumblrDownloader, IDownloader
+    public class TumblrPrivateCrawler : AbstractCrawler, ICrawler
     {
-        public TumblrPrivateDownloader(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, PostCounter counter, FileDownloader fileDownloader, ICrawlerService crawlerService, IBlog blog, IFiles files)
-            : base(shellService, ct, pt, progress, counter, fileDownloader, crawlerService, blog, files)
+        public TumblrPrivateCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
+            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IDownloader downloader, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog, IFiles files)
+            : base(shellService, ct, pt, progress, crawlerService, downloader, producerConsumerCollection, blog, files)
         {
         }
 
@@ -62,7 +65,7 @@ namespace TumblThree.Applications.Downloader
                 var webRespStatusCode = (int)((HttpWebResponse)webException?.Response).StatusCode;
                 if (webRespStatusCode == 503)
                 {
-                    Logger.Error("TumblrPrivateDownloader:GetUrlsAsync: {0}", "User not logged in");
+                    Logger.Error("TumblrPrivateCrawler:GetUrlsAsync: {0}", "User not logged in");
                     shellService.ShowError(new Exception("User not logged in"), Resources.NotLoggedIn, blog.Name);
                 }
                 else
@@ -74,10 +77,10 @@ namespace TumblThree.Applications.Downloader
 
         public async Task Crawl()
         {
-            Logger.Verbose("TumblrPrivateDownloader.Crawl:Start");
+            Logger.Verbose("TumblrPrivateCrawler.Crawl:Start");
 
             Task grabber = GetUrlsAsync();
-            Task<bool> downloader = DownloadBlogAsync();
+            Task<bool> download = downloader.DownloadBlogAsync();
 
             await grabber;
 
@@ -89,7 +92,7 @@ namespace TumblThree.Applications.Downloader
 
             CleanCollectedBlogStatistics();
 
-            await downloader;
+            await download;
 
             if (!ct.IsCancellationRequested)
             {
@@ -143,7 +146,7 @@ namespace TumblThree.Applications.Downloader
 
             if (!await CheckIfLoggedIn())
             {
-                Logger.Error("TumblrPrivateDownloader:GetUrlsAsync: {0}", "User not logged in");
+                Logger.Error("TumblrPrivateCrawler:GetUrlsAsync: {0}", "User not logged in");
                 shellService.ShowError(new Exception("User not logged in"), Resources.NotLoggedIn, blog.Name);
                 producerConsumerCollection.CompleteAdding();
                 return;
@@ -171,7 +174,7 @@ namespace TumblThree.Applications.Downloader
                         if (webException.Message.Contains("429"))
                         {
                             // TODO: add retry logic?
-                            Logger.Error("TumblrPrivateDownloader:GetUrls:WebException {0}", webException);
+                            Logger.Error("TumblrPrivateCrawler:GetUrls:WebException {0}", webException);
                             shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
                         }
                     }

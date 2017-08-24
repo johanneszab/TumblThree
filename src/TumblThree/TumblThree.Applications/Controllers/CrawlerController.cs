@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Waf.Applications;
 
 using TumblThree.Applications.DataModels;
-using TumblThree.Applications.Downloader;
+using TumblThree.Applications.Crawler;
 using TumblThree.Applications.Services;
 using TumblThree.Applications.ViewModels;
 using TumblThree.Domain.Models;
@@ -33,13 +33,13 @@ namespace TumblThree.Applications.Controllers
 
         [ImportingConstructor]
         public CrawlerController(IShellService shellService, IManagerService managerService, ICrawlerService crawlerService,
-            IDownloaderFactory downloaderFactory, Lazy<CrawlerViewModel> crawlerViewModel)
+            ICrawlerFactory crawlerFactory, Lazy<CrawlerViewModel> crawlerViewModel)
         {
             this.shellService = shellService;
             this.managerService = managerService;
             this.crawlerService = crawlerService;
             this.crawlerViewModel = crawlerViewModel;
-            DownloaderFactory = downloaderFactory;
+            CrawlerFactory = crawlerFactory;
             crawlCommand = new AsyncDelegateCommand(Crawl, CanCrawl);
             pauseCommand = new DelegateCommand(Pause, CanPause);
             resumeCommand = new DelegateCommand(Resume, CanResume);
@@ -55,7 +55,7 @@ namespace TumblThree.Applications.Controllers
 
         public QueueManager QueueManager { get; set; }
 
-        public IDownloaderFactory DownloaderFactory { get; set; }
+        public ICrawlerFactory CrawlerFactory { get; set; }
 
         public void Initialize()
         {
@@ -183,8 +183,8 @@ namespace TumblThree.Applications.Controllers
                     QueueListItem nextQueueItem = queueList.First();
                     IBlog blog = nextQueueItem.Blog;
 
-                    IDownloader downloader = DownloaderFactory.GetDownloader(blog.BlogType, ct, pt, new Progress<DownloadProgress>(), shellService, crawlerService, blog);
-                    downloader.IsBlogOnlineAsync().Wait(4000);
+                    ICrawler crawler = CrawlerFactory.GetCrawler(blog.BlogType, ct, pt, new Progress<DownloadProgress>(), shellService, crawlerService, blog);
+                    crawler.IsBlogOnlineAsync().Wait(4000);
 
                     if (crawlerService.ActiveItems.Any(item => item.Blog.Name.Equals(nextQueueItem.Blog.Name)))
                     {
@@ -218,8 +218,8 @@ namespace TumblThree.Applications.Controllers
             blog.Dirty = true;
             ProgressThrottler<DownloadProgress> progress = SetupThrottledQueueListProgress(queueListItem);
 
-            IDownloader downloader = DownloaderFactory.GetDownloader(blog.BlogType, ct, pt, progress, shellService, crawlerService, blog);
-            await downloader.Crawl();
+            ICrawler crawler = CrawlerFactory.GetCrawler(blog.BlogType, ct, pt, progress, shellService, crawlerService, blog);
+            await crawler.Crawl();
 
             if (ct.IsCancellationRequested)
             {

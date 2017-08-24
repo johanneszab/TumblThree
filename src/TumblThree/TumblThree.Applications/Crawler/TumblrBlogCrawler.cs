@@ -1,30 +1,32 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using TumblThree.Applications.DataModels;
+using TumblThree.Applications.Downloader;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain;
 using TumblThree.Domain.Models;
 
-namespace TumblThree.Applications.Downloader
+namespace TumblThree.Applications.Crawler
 {
-    [Export(typeof(IDownloader))]
+    [Export(typeof(ICrawler))]
     [ExportMetadata("BlogType", BlogTypes.tumblr)]
-    public class TumblrBlogDownloader : TumblrDownloader, IDownloader
+    public class TumblrBlogCrawler : AbstractCrawler, ICrawler
     {
-        public TumblrBlogDownloader(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, PostCounter counter, FileDownloader fileDownloader, ICrawlerService crawlerService, IBlog blog, IFiles files)
-            : base(shellService, ct, pt, progress, counter, fileDownloader, crawlerService, blog, files)
+        public TumblrBlogCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
+            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IDownloader downloader, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog, IFiles files)
+            : base(shellService, ct, pt, progress, crawlerService, downloader, producerConsumerCollection, blog, files)
         {
         }
 
@@ -58,10 +60,10 @@ namespace TumblThree.Applications.Downloader
 
         public async Task Crawl()
         {
-            Logger.Verbose("TumblrBlogDownloader.Crawl:Start");
+            Logger.Verbose("TumblrBlogCrawler.Crawl:Start");
 
             Task<Tuple<ulong, bool>> grabber = GetUrlsAsync();
-            Task<bool> downloader = DownloadBlogAsync();
+            Task<bool> download = downloader.DownloadBlogAsync();
             Tuple<ulong, bool> grabberResult = await grabber;
             bool apiLimitHit = grabberResult.Item2;
 
@@ -74,7 +76,7 @@ namespace TumblThree.Applications.Downloader
 
             CleanCollectedBlogStatistics();
 
-            bool finishedDownloading = await downloader;
+            bool finishedDownloading = await download;
 
             if (!ct.IsCancellationRequested)
             {
@@ -221,7 +223,7 @@ namespace TumblThree.Applications.Downloader
                         {
                             // TODO: add retry logic?
                             apiLimitHit = true;
-                            Logger.Error("TumblrBlogDownloader:GetUrls:WebException {0}", webException);
+                            Logger.Error("TumblrBlogCrawler:GetUrls:WebException {0}", webException);
                             shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
                         }
                     }
