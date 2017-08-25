@@ -14,15 +14,15 @@ namespace TumblThree.Presentation.Views
     [Export("TumblrSearchView", typeof(IDetailsView))]
     public partial class DetailsTumblrSearchView : IDetailsView
     {
-        private readonly Lazy<DetailsAllViewModel> viewModel;
+        private readonly Lazy<DetailsTumblrSearchViewModel> viewModel;
 
         public DetailsTumblrSearchView()
         {
             InitializeComponent();
-            viewModel = new Lazy<DetailsAllViewModel>(() => ViewHelper.GetViewModel<DetailsAllViewModel>(this));
+            viewModel = new Lazy<DetailsTumblrSearchViewModel>(() => ViewHelper.GetViewModel<DetailsTumblrSearchViewModel>(this));
         }
 
-        private DetailsAllViewModel ViewModel
+        private DetailsTumblrSearchViewModel ViewModel
         {
             get { return viewModel.Value; }
         }
