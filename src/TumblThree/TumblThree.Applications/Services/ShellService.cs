@@ -56,6 +56,8 @@ namespace TumblThree.Applications.Services
 
         public Action ShowQueueViewAction { get; set; }
 
+        public Action UpdateDetailsViewAction { get; set; }
+
         public AppSettings Settings { get; set; }
 
         public object ShellView
@@ -116,6 +118,11 @@ namespace TumblThree.Applications.Services
         public void ShowDetailsView()
         {
             ShowDetailsViewAction();
+        }
+
+        public void UpdateDetailsView()
+        {
+            UpdateDetailsViewAction();
         }
 
         public void ShowQueueView()

@@ -6,7 +6,7 @@ using TumblThree.Domain.Models;
 
 namespace TumblThree.Presentation.DesignData
 {
-    public class SampleDetailsViewModel : DetailsViewModel
+    public class SampleDetailsViewModel : DetailsAllViewModel
     {
         public SampleDetailsViewModel() : base(new MockDetailsView(), null)
         {

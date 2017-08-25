@@ -597,4 +597,22 @@
   <data name="ToolTipExportBlogsDescription" xml:space="preserve">
     <value>Saves all urls as a text file for exchange.</value>
   </data>
+  <data name="DownloadFrom" xml:space="preserve">
+    <value>Download From:</value>
+  </data>
+  <data name="DownloadTo" xml:space="preserve">
+    <value>To:</value>
+  </data>
+  <data name="ToolTipDownloadFrom" xml:space="preserve">
+    <value>Crawl posts from this date</value>
+  </data>
+  <data name="ToolTipDownloadFromDescription" xml:space="preserve">
+    <value>Must be in YYYYMMDD format. Empty means from May 2007.</value>
+  </data>
+  <data name="ToolTipDownloadTo" xml:space="preserve">
+    <value>Crawl posts to this date</value>
+  </data>
+  <data name="ToolTipDownloadToDescription" xml:space="preserve">
+    <value>Must be in YYYYMMDD format. Empty means to now.</value>
+  </data>
 </root>

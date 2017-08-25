@@ -121,10 +121,16 @@
     <Compile Include="Services\ShellService.cs" />
     <Compile Include="Services\ShellServiceExtensions.cs" />
     <Compile Include="ThrottledStream.cs" />
+    <Compile Include="ViewModels\DetailsViewModels\DetailsTumblrPrivateBlogViewModel.cs" />
+    <Compile Include="ViewModels\DetailsViewModels\DetailsTumblrBlogViewModel.cs" />
+    <Compile Include="ViewModels\DetailsViewModels\DetailsTumblrLikedByViewModel.cs" />
+    <Compile Include="ViewModels\DetailsViewModels\DetailsTumblrSearchViewModel.cs" />
+    <Compile Include="ViewModels\DetailsViewModels\DetailsTumblrTagSearchViewModel.cs" />
     <Compile Include="ViewModels\FullScreenMediaViewModel.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\CrawlerViewModel.cs" />
-    <Compile Include="ViewModels\DetailsViewModel.cs" />
+    <Compile Include="ViewModels\DetailsAllViewModel.cs" />
+    <Compile Include="ViewModels\IDetailsViewModel.cs" />
     <Compile Include="ViewModels\ManagerViewModel.cs" />
     <Compile Include="ViewModels\QueueViewModel.cs" />
     <Compile Include="ViewModels\AuthenticateViewModel.cs" />

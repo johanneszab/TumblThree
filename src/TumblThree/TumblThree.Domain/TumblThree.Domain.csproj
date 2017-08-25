@@ -67,7 +67,7 @@
     <Compile Include="Models\Files.cs" />
     <Compile Include="Models\IBlog.cs" />
     <Compile Include="Models\IBlogFactory.cs" />
-    <Compile Include="Models\IBlogTypeMetaData.cs" />
+    <Compile Include="Models\ICrawlerData.cs" />
     <Compile Include="Models\IFiles.cs" />
     <Compile Include="Models\PostCounter.cs" />
     <Compile Include="Models\PostTypes.cs" />

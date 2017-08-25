@@ -99,6 +99,7 @@ namespace TumblThree.Applications.Controllers
             ShellService.ShowErrorAction = ShellViewModel.ShowError;
             ShellService.ShowDetailsViewAction = ShowDetailsView;
             ShellService.ShowQueueViewAction = ShowQueueView;
+            ShellService.UpdateDetailsViewAction = UpdateDetailsView;
             ShellService.InitializeOAuthManager();
 
             ManagerController.QueueManager = queueManager;
@@ -187,6 +188,12 @@ namespace TumblThree.Applications.Controllers
         private void ShowQueueView()
         {
             ShellViewModel.IsQueueViewVisible = true;
+        }
+
+        private void UpdateDetailsView()
+        {
+            if (!ShellViewModel.IsQueueViewVisible)
+                ShellViewModel.IsDetailsViewVisible = true;
         }
     }
 }

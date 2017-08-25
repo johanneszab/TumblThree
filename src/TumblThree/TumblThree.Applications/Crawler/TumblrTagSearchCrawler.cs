@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -109,8 +110,22 @@ namespace TumblThree.Applications.Crawler
 
         private long GenerateCrawlerTimeOffsets()
         {
-            long tagsIntroduced = 1173570824; // Unix time of 03/10/2007 @ 11:53pm (UTC)
+            long tagsIntroduced = 1178470824; // Unix time of 05/06/2007 @ 5:00pm (UTC)
+            if (!string.IsNullOrEmpty(blog.DownloadFrom))
+            {
+                var downloadFrom = DateTime.ParseExact(blog.DownloadFrom, "yyyyMMdd", CultureInfo.InvariantCulture,
+                    DateTimeStyles.None);
+                var dateTimeOffset = new DateTimeOffset(downloadFrom);
+                tagsIntroduced = dateTimeOffset.ToUnixTimeSeconds();
+            }                           
             long unixTimeNow = DateTimeOffset.Now.ToUnixTimeSeconds();
+            if (!string.IsNullOrEmpty(blog.DownloadTo))
+            {
+                var downloadTo = DateTime.ParseExact(blog.DownloadTo, "yyyyMMdd", CultureInfo.InvariantCulture,
+                    DateTimeStyles.None);
+                var dateTimeOffset = new DateTimeOffset(downloadTo);
+                unixTimeNow = dateTimeOffset.ToUnixTimeSeconds();
+            }
             long tagsLifeTime = unixTimeNow - tagsIntroduced;
             return tagsLifeTime / shellService.Settings.ParallelScans;
         }
@@ -124,7 +139,7 @@ namespace TumblThree.Applications.Crawler
         private long ExtractNextPageLink(string document)
         {
             long unixTime = 0;
-            string pagination = "id=\"next_page_link\" href=\"/tagged/" + blog.Name + "\\?before=";
+            string pagination = "id=\"next_page_link\" href=\"/tagged/" + Regex.Escape(blog.Name) + "\\?before=";
             long.TryParse(Regex.Match(document, pagination + "([\\d]*)\"").Groups[1].Value, out unixTime);
             return unixTime;
         }

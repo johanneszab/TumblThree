@@ -358,6 +358,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download From:.
+        /// </summary>
+        public static string DownloadFrom {
+            get {
+                return ResourceManager.GetString("DownloadFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Download image meta.
         /// </summary>
         public static string DownloadImageMeta {
@@ -435,6 +444,15 @@ namespace TumblThree.Presentation.Properties {
         public static string DownloadTexts {
             get {
                 return ResourceManager.GetString("DownloadTexts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To:.
+        /// </summary>
+        public static string DownloadTo {
+            get {
+                return ResourceManager.GetString("DownloadTo", resourceCulture);
             }
         }
         
@@ -1231,6 +1249,24 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Crawl posts from this date.
+        /// </summary>
+        public static string ToolTipDownloadFrom {
+            get {
+                return ResourceManager.GetString("ToolTipDownloadFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Must be in YYYYMMDD format. Empty means from May 2007..
+        /// </summary>
+        public static string ToolTipDownloadFromDescription {
+            get {
+                return ResourceManager.GetString("ToolTipDownloadFromDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Download only specific pages.
         /// </summary>
         public static string ToolTipDownloadPages {
@@ -1245,6 +1281,24 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipDownloadPagesDescription {
             get {
                 return ResourceManager.GetString("ToolTipDownloadPagesDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Crawl posts to this date.
+        /// </summary>
+        public static string ToolTipDownloadTo {
+            get {
+                return ResourceManager.GetString("ToolTipDownloadTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Must be in YYYYMMDD format. Empty means to now..
+        /// </summary>
+        public static string ToolTipDownloadToDescription {
+            get {
+                return ResourceManager.GetString("ToolTipDownloadToDescription", resourceCulture);
             }
         }
         

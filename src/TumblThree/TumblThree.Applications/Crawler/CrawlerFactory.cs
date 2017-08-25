@@ -25,16 +25,16 @@ namespace TumblThree.Applications.Crawler
         }
 
         [ImportMany(typeof(ICrawler))]
-        private IEnumerable<Lazy<ICrawler, IBlogTypeMetaData>> DownloaderFactoryLazy { get; set; }
+        private IEnumerable<Lazy<ICrawler, ICrawlerData>> DownloaderFactoryLazy { get; set; }
 
         public ICrawler GetCrawler(BlogTypes blogtype)
         {
-            Lazy<ICrawler, IBlogTypeMetaData> downloaderInstance =
+            Lazy<ICrawler, ICrawlerData> downloader =
                 DownloaderFactoryLazy.FirstOrDefault(list => list.Metadata.BlogType == blogtype);
 
-            if (downloaderInstance != null)
+            if (downloader != null)
             {
-                return downloaderInstance.Value;
+                return downloader.Value;
             }
             throw new ArgumentException("Website is not supported!", "blogType");
         }

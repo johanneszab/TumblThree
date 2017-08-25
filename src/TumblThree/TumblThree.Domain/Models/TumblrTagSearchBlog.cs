@@ -11,7 +11,7 @@ namespace TumblThree.Domain.Models
 
         protected override string ExtractName()
         {
-            return Url.Split('/')[4];
+            return Url.Split('/')[4].Replace("-", "+");
         }
 
         protected override string ExtractUrl()

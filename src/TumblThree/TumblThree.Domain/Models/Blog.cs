@@ -62,6 +62,8 @@ namespace TumblThree.Domain.Models
         private int downloadedAudioMetas;
         private string downloadPages;
         private int pageSize;
+        private string downloadFrom;
+        private string downloadTo;
         private bool downloadRebloggedPosts;
         private DateTime dateAdded;
         private DateTime lastCompleteCrawl;
@@ -486,6 +488,28 @@ namespace TumblThree.Domain.Models
             set
             {
                 SetProperty(ref pageSize, value);
+                Dirty = true;
+            }
+        }
+
+        [DataMember]
+        public string DownloadFrom
+        {
+            get { return downloadFrom; }
+            set
+            {
+                SetProperty(ref downloadFrom, value);
+                Dirty = true;
+            }
+        }
+
+        [DataMember]
+        public string DownloadTo
+        {
+            get { return downloadTo; }
+            set
+            {
+                SetProperty(ref downloadTo, value);
                 Dirty = true;
             }
         }
