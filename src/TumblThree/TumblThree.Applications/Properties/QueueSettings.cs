@@ -10,27 +10,41 @@ namespace TumblThree.Applications.Properties
     public sealed class QueueSettings : IExtensibleDataObject
     {
         [DataMember(Name = "Names")]
-        private readonly List<Tuple<string, BlogTypes>> names;
+        private readonly List<string> names;
+
+        [DataMember(Name = "Types")]
+        private readonly List<BlogTypes> types;
 
         public QueueSettings()
         {
-            names = new List<Tuple<string, BlogTypes>>();
+            names = new List<string>();
+            types = new List<BlogTypes>();
         }
 
         [DataMember]
         public string LastCrawledBlogName { get; set; }
 
-        public IReadOnlyList<Tuple<string, BlogTypes>> Names
+        [DataMember]
+        public BlogTypes LastCrawledBlogType { get; set; }
+
+        public IReadOnlyList<string> Names
         {
             get { return names; }
         }
 
+        public IReadOnlyList<BlogTypes> Types
+        {
+            get { return types; }
+        }
+
         ExtensionDataObject IExtensibleDataObject.ExtensionData { get; set; }
 
-        public void ReplaceAll(IEnumerable<Tuple<string, BlogTypes>> newBlogNames)
+        public void ReplaceAll(IEnumerable<string> newBlogNames, IEnumerable<BlogTypes> newBlogTypes)
         {
             names.Clear();
             names.AddRange(newBlogNames);
+            types.Clear();
+            types.AddRange(newBlogTypes);
         }
     }
 }
