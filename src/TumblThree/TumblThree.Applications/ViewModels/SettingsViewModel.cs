@@ -516,13 +516,10 @@ namespace TumblThree.Applications.ViewModels
 
         private void BrowseExportLocation()
         {
-            var dialog = new System.Windows.Forms.SaveFileDialog
-            {
-                FileName = exportLocation,
+            var dialog = new System.Windows.Forms.SaveFileDialog { FileName = exportLocation,
                 Filter = string.Format(CultureInfo.CurrentCulture, Resources.ExportFileFilter),
                 DefaultExt = string.Format(CultureInfo.CurrentCulture, Resources.ExportFileFilterExtension),
-                AddExtension = true
-            };
+                AddExtension = true };
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 ExportLocation = dialog.FileName;
@@ -673,7 +670,7 @@ namespace TumblThree.Applications.ViewModels
         private void ApplySettings(bool downloadLocationChanged)
         {
             CrawlerService.Timeconstraint.SetRate(((double)MaxConnections / (double)ConnectionTimeInterval));
-
+            
             if (!CrawlerService.IsCrawl && !downloadLocationChanged)
             {
                 CrawlerService.LoadLibraryCommand.Execute(null);

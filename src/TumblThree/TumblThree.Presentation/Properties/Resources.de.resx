@@ -487,13 +487,13 @@
     <value>Auf neue Version prüfen</value>
   </data>
   <data name="LimitConnections" xml:space="preserve">
-    <value>Limitiere Tumblr SVC Verbindungen</value>
+    <value>Limitiere Tumblr Api Verbindungen</value>
   </data>
   <data name="ToolTipLimitConnections" xml:space="preserve">
-    <value>Begrenzt Verbindungen zur Tumblr svc.</value>
+    <value>Begrenzt Verbindungen zur Tumblr API.</value>
   </data>
   <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
-    <value>Ein zu hoher Wert führt zu abgelehnten Verbindungen (429 -- Limit Exceeded) zur der Tumblr svc. Ein zu kleiner Wert kann die Downloadgeschwindigkeit verringern.</value>
+    <value>Ein zu hoher Wert führt zu abgelehnten Verbindungen (429 -- Limit Exceeded) zur der Tumblr API. Ein zu kleiner Wert verringert die Downloadgeschwindigkeit.</value>
   </data>
   <data name="CheckDirectoryForFiles" xml:space="preserve">
     <value>Prüfe Ordner auf Dateien</value>
@@ -565,7 +565,7 @@
     <value>Beiträge pro Seite</value>
   </data>
   <data name="ToolTipPageSizeDescription" xml:space="preserve">
-    <value>Setzt die Anzahl der Beiträge pro Seite (Zahl zwischen 1-100, standard 100).</value>
+    <value>Setzt die Anzahl der Beiträge pro Seite (Zahl zwischen 1-50, standard 50).</value>
   </data>
   <data name="Export" xml:space="preserve">
     <value>Exportiere Blogs</value>
@@ -593,5 +593,23 @@
   </data>
   <data name="MaxConnections" xml:space="preserve">
     <value>Verbinungsanzahl:</value>
+  </data>
+  <data name="DownloadFrom" xml:space="preserve">
+    <value>Lade von:</value>
+  </data>
+  <data name="DownloadTo" xml:space="preserve">
+    <value>bis:</value>
+  </data>
+  <data name="ToolTipDownloadFrom" xml:space="preserve">
+    <value>Lade Beiträge von diesem Datum</value>
+  </data>
+  <data name="ToolTipDownloadFromDescription" xml:space="preserve">
+    <value>Angabe in JJJJMMTT. Leer bedeutet von Mai 2007.</value>
+  </data>
+  <data name="ToolTipDownloadTo" xml:space="preserve">
+    <value>Lade Beiträge bis zu diesem Datum</value>
+  </data>
+  <data name="ToolTipDownloadToDescription" xml:space="preserve">
+    <value>Angabe in JJJJMMTT. Leer bedeutet bis jetzt.</value>
   </data>
 </root>

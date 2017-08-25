@@ -8,6 +8,7 @@
         twitter,
         tlb,
         tumblrsearch,
-        tumblrtagsearch
+        tumblrtagsearch,
+        all
     }
 }

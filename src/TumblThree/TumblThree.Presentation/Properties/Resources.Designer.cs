@@ -358,6 +358,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download From:.
+        /// </summary>
+        public static string DownloadFrom {
+            get {
+                return ResourceManager.GetString("DownloadFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Download image meta.
         /// </summary>
         public static string DownloadImageMeta {
@@ -435,6 +444,15 @@ namespace TumblThree.Presentation.Properties {
         public static string DownloadTexts {
             get {
                 return ResourceManager.GetString("DownloadTexts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To:.
+        /// </summary>
+        public static string DownloadTo {
+            get {
+                return ResourceManager.GetString("DownloadTo", resourceCulture);
             }
         }
         
@@ -646,7 +664,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Limit Svc Connections.
+        ///   Looks up a localized string similar to Limit Tumblr Api Connections.
         /// </summary>
         public static string LimitConnections {
             get {
@@ -1231,6 +1249,24 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Crawl posts from this date.
+        /// </summary>
+        public static string ToolTipDownloadFrom {
+            get {
+                return ResourceManager.GetString("ToolTipDownloadFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Must be in YYYYMMDD format. Empty means from May 2007..
+        /// </summary>
+        public static string ToolTipDownloadFromDescription {
+            get {
+                return ResourceManager.GetString("ToolTipDownloadFromDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Download only specific pages.
         /// </summary>
         public static string ToolTipDownloadPages {
@@ -1245,6 +1281,24 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipDownloadPagesDescription {
             get {
                 return ResourceManager.GetString("ToolTipDownloadPagesDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Crawl posts to this date.
+        /// </summary>
+        public static string ToolTipDownloadTo {
+            get {
+                return ResourceManager.GetString("ToolTipDownloadTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Must be in YYYYMMDD format. Empty means to now..
+        /// </summary>
+        public static string ToolTipDownloadToDescription {
+            get {
+                return ResourceManager.GetString("ToolTipDownloadToDescription", resourceCulture);
             }
         }
         
@@ -1294,7 +1348,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Forces a complete scan using the Tumblr svc. Enabling this also updates the blog statistics..
+        ///   Looks up a localized string similar to Forces a complete scan using the Tumblr api. Enabling this also updates the blog statistics..
         /// </summary>
         public static string ToolTipForceRescanDescription {
             get {
@@ -1339,7 +1393,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Limit connections to the tumblr svc..
+        ///   Looks up a localized string similar to Limit connections to the tumblr api..
         /// </summary>
         public static string ToolTipLimitConnections {
             get {
@@ -1348,7 +1402,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr svc. A too small value might decrease the download speed..
+        ///   Looks up a localized string similar to A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr api. A too small value will decrease the download speed..
         /// </summary>
         public static string ToolTipLimitConnectionsDescription {
             get {
@@ -1384,7 +1438,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sets the post per page (should be between 1-100, default 100). E.g. 100 means to scan 100 posts per page..
+        ///   Looks up a localized string similar to Sets the post per page (should be between 1-50, default 50). E.g. 50 means to scan 50 posts per page..
         /// </summary>
         public static string ToolTipPageSizeDescription {
             get {

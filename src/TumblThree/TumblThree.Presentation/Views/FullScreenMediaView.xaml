@@ -44,7 +44,7 @@
                                       Stretch="None" IsMuted="True" LoadedBehavior="Play" UnloadedBehavior="Close" />
                 <Image Visibility="Visible" x:Name="SwitchableImage" 
                                Source="{Binding LastDownloadedPhoto, Converter={StaticResource NullImageConverter}, IsAsync=True}"
-                               Stretch="Uniform" StretchDirection="DownOnly"/>
+                               Stretch="Uniform" StretchDirection="DownOnly" />
                 <i:Interaction.Triggers>
                     <ei:DataTrigger Binding="{Binding States}" Value="{Binding States}">
                         <ei:GoToStateAction StateName="{Binding States}" />

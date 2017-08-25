@@ -47,6 +47,10 @@ namespace TumblThree.Presentation.DesignData
         {
         }
 
+        public void UpdateDetailsView()
+        {
+        }
+
         public void AddTaskToCompleteBeforeShutdown(Task task)
         {
         }

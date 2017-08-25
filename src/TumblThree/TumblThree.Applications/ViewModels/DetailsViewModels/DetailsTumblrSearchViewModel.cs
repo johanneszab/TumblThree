@@ -8,8 +8,9 @@ using TumblThree.Domain.Models;
 
 namespace TumblThree.Applications.ViewModels
 {
-    [Export]
-    public class DetailsViewModel : ViewModel<IDetailsView>
+    [Export(typeof(IDetailsViewModel))]
+    [ExportMetadata("BlogType", BlogTypes.tumblrsearch)]
+    public class DetailsTumblrSearchViewModel : ViewModel<IDetailsView>, IDetailsViewModel
     {
         private readonly IClipboardService clipboardService;
         private readonly DelegateCommand copyUrlCommand;
@@ -17,7 +18,7 @@ namespace TumblThree.Applications.ViewModels
         private int count = 0;
 
         [ImportingConstructor]
-        public DetailsViewModel(IDetailsView view, IClipboardService clipboardService) : base(view)
+        public DetailsTumblrSearchViewModel([Import("TumblrSearchView", typeof(IDetailsView))]IDetailsView view, IClipboardService clipboardService) : base(view)
         {
             this.clipboardService = clipboardService;
             copyUrlCommand = new DelegateCommand(CopyUrlToClipboard);

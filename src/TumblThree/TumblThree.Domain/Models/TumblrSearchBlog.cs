@@ -6,12 +6,12 @@ namespace TumblThree.Domain.Models
     public class TumblrSearchBlog : Blog
     {
         public TumblrSearchBlog(string url, string location, BlogTypes blogType) : base(url, location, blogType)
-        {            
+        {
         }
 
         protected override string ExtractName()
         {
-            return Url.Split('/')[4];
+            return Url.Split('/')[4].Replace("-", "+");
         }
 
         protected override string ExtractUrl()

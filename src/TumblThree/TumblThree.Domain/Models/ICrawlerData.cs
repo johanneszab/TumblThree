@@ -1,6 +1,6 @@
 ﻿namespace TumblThree.Domain.Models
 {
-    public interface IBlogTypeMetaData
+    public interface ICrawlerData
     {
         BlogTypes BlogType { get; }
     }

@@ -5,11 +5,8 @@ using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Reflection;
-using System.Security.Policy;
-using System.Threading.Tasks;
-
 using TumblThree.Applications.Services;
-using TumblThree.Applications.ViewModels;
+using TumblThree.Applications.Views;
 using TumblThree.Domain.Models;
 using TumblThree.Domain.Queue;
 
@@ -19,31 +16,48 @@ namespace TumblThree.Applications.Controllers
     internal class DetailsController : IDetailsService
     {
         private readonly HashSet<IBlog> blogsToSave;
-        private readonly Lazy<DetailsViewModel> detailsViewModel;
-        private readonly IManagerService managerService;
+        private Lazy<IDetailsViewModel> detailsViewModel;
         private readonly ISelectionService selectionService;
         private readonly IShellService shellService;
 
         [ImportingConstructor]
-        public DetailsController(IShellService shellService, ISelectionService selectionService, IManagerService managerService,
-            Lazy<DetailsViewModel> detailsViewModel)
+        public DetailsController(IShellService shellService, ISelectionService selectionService, IManagerService managerService
+            )
         {
             this.shellService = shellService;
             this.selectionService = selectionService;
-            this.managerService = managerService;
-            this.detailsViewModel = detailsViewModel;
             blogsToSave = new HashSet<IBlog>();
+        }
+
+        [ImportMany(typeof(IDetailsViewModel))]
+        private IEnumerable<Lazy<IDetailsViewModel, ICrawlerData>> ViewModelFactoryLazy { get; set; }
+
+        public Lazy<IDetailsViewModel> GetViewModel(BlogTypes blogtype)
+        {
+            Lazy<IDetailsViewModel, ICrawlerData> viewModel =
+                ViewModelFactoryLazy.FirstOrDefault(list => list.Metadata.BlogType == blogtype);
+
+            if (viewModel != null)
+            {
+                return viewModel;
+            }
+            throw new ArgumentException("Website is not supported!", "blogType");
         }
 
         public QueueManager QueueManager { get; set; }
 
-        private DetailsViewModel DetailsViewModel
+        private IDetailsViewModel DetailsViewModel
         {
-            get { return detailsViewModel.Value; }
+            get
+            {
+                return detailsViewModel.Value;
+            }
         }
 
         public void SelectBlogFiles(IReadOnlyList<IBlog> blogFiles)
         {
+            UpdateViewModelBasedOnSelection(blogFiles);
+
             ClearBlogSelection();
 
             if (blogFiles.Count() <= 1)
@@ -59,6 +73,22 @@ namespace TumblThree.Applications.Controllers
             }
         }
 
+        private void UpdateViewModelBasedOnSelection(IReadOnlyList<IBlog> blogFiles)
+        {
+            if (blogFiles.Count == 0)
+                return;
+            if (blogFiles.Select(blog => blog.BlogType).Distinct().Count() < 2)
+            {
+                detailsViewModel = GetViewModel(blogFiles.FirstOrDefault().BlogType);
+            }
+            else
+            {
+                detailsViewModel = GetViewModel(BlogTypes.all);
+            }
+            shellService.DetailsView = DetailsViewModel.View;
+            shellService.UpdateDetailsView();
+        }
+
         private void ChangeBlogSettings(object sender, PropertyChangedEventArgs e)
         {
             foreach (IBlog blog in blogsToSave)
@@ -71,6 +101,7 @@ namespace TumblThree.Applications.Controllers
         public void Initialize()
         {
             ((INotifyCollectionChanged)selectionService.SelectedBlogFiles).CollectionChanged += SelectedBlogFilesCollectionChanged;
+            detailsViewModel = GetViewModel(BlogTypes.all);
             shellService.DetailsView = DetailsViewModel.View;
         }
 
@@ -119,8 +150,10 @@ namespace TumblThree.Applications.Controllers
                 DownloadedPhotoMetas = sharedBlogFiles.Sum(blogs => blogs.DownloadedPhotoMetas),
                 DownloadedVideoMetas = sharedBlogFiles.Sum(blogs => blogs.DownloadedVideoMetas),
                 DownloadedAudioMetas = sharedBlogFiles.Sum(blogs => blogs.DownloadedAudioMetas),
-                DownloadPages = SetDownloadPages(sharedBlogFiles),
+                DownloadPages = SetProperty<string>(sharedBlogFiles, "DownloadPages"),
                 PageSize = SetProperty<int>(sharedBlogFiles, "PageSize"),
+                DownloadFrom = SetProperty<string>(sharedBlogFiles, "DownloadFrom"),
+                DownloadTo = SetProperty<string>(sharedBlogFiles, "DownloadTo"),
                 DownloadAudio = SetCheckBox(sharedBlogFiles, "DownloadAudio"),
                 DownloadConversation = SetCheckBox(sharedBlogFiles, "DownloadConversation"),
                 DownloadLink = SetCheckBox(sharedBlogFiles, "DownloadLink"),
@@ -142,23 +175,21 @@ namespace TumblThree.Applications.Controllers
             };
         }
 
-        private static T SetProperty<T>(IReadOnlyCollection<IBlog> blogs, string propertyName) where T : IConvertible
+        private static T SetProperty<T>(IReadOnlyCollection<IBlog> blogs, string propertyName) where T: IConvertible
         {
-            PropertyInfo property = typeof(IBlog).GetProperty(propertyName);
-            var value = (T)property.GetValue(blogs.FirstOrDefault());
-            bool equal = blogs.All(blog => property.GetValue(blog).Equals(value));
-            if (equal)
-                return value;
-            return default(T);
-        }
-
-        private static string SetDownloadPages(IReadOnlyCollection<IBlog> blogs)
-        {
-            string downloadPages = blogs.FirstOrDefault().DownloadPages;
-            bool equal = blogs.All(blog => blog.DownloadPages == downloadPages);
-            if (equal)
-                return downloadPages;
-            return String.Empty;
+            try
+            {
+                PropertyInfo property = typeof(IBlog).GetProperty(propertyName);
+                var value = (T)property.GetValue(blogs.FirstOrDefault());
+                bool equal = blogs.All(blog => property.GetValue(blog).Equals(value));
+                if (equal)
+                    return value;
+                return default(T);
+            }
+            catch (NullReferenceException)
+            {
+                return default(T);
+            }
         }
 
         private static bool SetCheckBox(IReadOnlyCollection<IBlog> blogs, string propertyName)
@@ -188,7 +219,7 @@ namespace TumblThree.Applications.Controllers
             {
                 DetailsViewModel.BlogFile.PropertyChanged -= ChangeBlogSettings;
             }
-            SelectBlogFiles(selectionService.SelectedBlogFiles.Cast<Blog>().ToArray());
+            SelectBlogFiles(selectionService.SelectedBlogFiles.ToArray());
         }
     }
 }

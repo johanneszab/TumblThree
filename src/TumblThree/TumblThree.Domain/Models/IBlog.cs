@@ -102,6 +102,10 @@ namespace TumblThree.Domain.Models
 
         int PageSize { get; set; }
 
+        string DownloadFrom { get; set; }
+
+        string DownloadTo { get; set; }
+
         bool DownloadRebloggedPosts { get; set; }
 
         bool SkipGif { get; set; }

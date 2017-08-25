@@ -35,6 +35,8 @@ namespace TumblThree.Applications.Services
 
         void ShowDetailsView();
 
+        void UpdateDetailsView();
+
         void ShowQueueView();
 
         void AddTaskToCompleteBeforeShutdown(Task task);

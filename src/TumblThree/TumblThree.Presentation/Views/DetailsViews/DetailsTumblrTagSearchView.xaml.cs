@@ -11,18 +11,18 @@ namespace TumblThree.Presentation.Views
     /// <summary>
     ///     Interaction logic for QueueView.xaml
     /// </summary>
-    [Export(typeof(IDetailsView))]
-    public partial class DetailsView : IDetailsView
+    [Export("TumblrTagSearchView", typeof(IDetailsView))]
+    public partial class DetailsTumblrTagSearchView : IDetailsView
     {
-        private readonly Lazy<DetailsViewModel> viewModel;
+        private readonly Lazy<DetailsAllViewModel> viewModel;
 
-        public DetailsView()
+        public DetailsTumblrTagSearchView()
         {
             InitializeComponent();
-            viewModel = new Lazy<DetailsViewModel>(() => ViewHelper.GetViewModel<DetailsViewModel>(this));
+            viewModel = new Lazy<DetailsAllViewModel>(() => ViewHelper.GetViewModel<DetailsAllViewModel>(this));
         }
 
-        private DetailsViewModel ViewModel
+        private DetailsAllViewModel ViewModel
         {
             get { return viewModel.Value; }
         }
