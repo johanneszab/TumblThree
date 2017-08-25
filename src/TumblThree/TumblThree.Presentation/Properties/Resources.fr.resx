@@ -597,4 +597,22 @@
   <data name="ToolTipExportBlogsDescription" xml:space="preserve">
     <value>Saves all urls as a text file for exchange.</value>
   </data>
+  <data name="DownloadFrom" xml:space="preserve">
+    <value>Télécharger à partir de:</value>
+  </data>
+  <data name="DownloadTo" xml:space="preserve">
+    <value>À:</value>
+  </data>
+  <data name="ToolTipDownloadFrom" xml:space="preserve">
+    <value>Ranger les messages à partir de cette date</value>
+  </data>
+  <data name="ToolTipDownloadFromDescription" xml:space="preserve">
+    <value>Doit être au format YYYYMMDD. Moyens vide à partir de mai 2007.</value>
+  </data>
+  <data name="ToolTipDownloadTo" xml:space="preserve">
+    <value>Ranger les messages à cette date</value>
+  </data>
+  <data name="ToolTipDownloadToDescription" xml:space="preserve">
+    <value>Doit être au format YYYYMMDD. Des moyens vides pour l'instant.</value>
+  </data>
 </root>

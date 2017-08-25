@@ -243,10 +243,10 @@ namespace TumblThree.Applications.Crawler
 
             producerConsumerCollection.CompleteAdding();
 
-            if (!ct.IsCancellationRequested && completeGrab)
-            {
+            //if (!ct.IsCancellationRequested && completeGrab)
+            //{
                 UpdateBlogStats();
-            }
+            //}
 
             return new Tuple<ulong, bool>(highestId, apiLimitHit);
         }

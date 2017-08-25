@@ -588,4 +588,22 @@
   <data name="FullScreenMedia" xml:space="preserve">
     <value>FullScreenView</value>
   </data>
+  <data name="DownloadFrom" xml:space="preserve">
+    <value>Загрузить с:</value>
+  </data>
+  <data name="DownloadTo" xml:space="preserve">
+    <value>до</value>
+  </data>
+  <data name="ToolTipDownloadFrom" xml:space="preserve">
+    <value>Заполнять сообщения с этой даты</value>
+  </data>
+  <data name="ToolTipDownloadFromDescription" xml:space="preserve">
+    <value>Должно быть в формате YYYYMMDD. Пустые средства - с мая 2007 года.</value>
+  </data>
+  <data name="ToolTipDownloadTo" xml:space="preserve">
+    <value>Заполнять сообщения на эту дату</value>
+  </data>
+  <data name="ToolTipDownloadToDescription" xml:space="preserve">
+    <value>Должно быть в формате YYYYMMDD. Пустое означает сейчас.</value>
+  </data>
 </root>
