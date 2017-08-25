@@ -14,15 +14,15 @@ namespace TumblThree.Presentation.Views
     [Export("TumblrLikedByView", typeof(IDetailsView))]
     public partial class DetailsTumblrLikedByView : IDetailsView
     {
-        private readonly Lazy<DetailsAllViewModel> viewModel;
+        private readonly Lazy<DetailsTumblrLikedByViewModel> viewModel;
 
         public DetailsTumblrLikedByView()
         {
             InitializeComponent();
-            viewModel = new Lazy<DetailsAllViewModel>(() => ViewHelper.GetViewModel<DetailsAllViewModel>(this));
+            viewModel = new Lazy<DetailsTumblrLikedByViewModel>(() => ViewHelper.GetViewModel<DetailsTumblrLikedByViewModel>(this));
         }
 
-        private DetailsAllViewModel ViewModel
+        private DetailsTumblrLikedByViewModel ViewModel
         {
             get { return viewModel.Value; }
         }

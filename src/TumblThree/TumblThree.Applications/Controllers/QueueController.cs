@@ -89,13 +89,13 @@ namespace TumblThree.Applications.Controllers
 
         public void LoadQueue()
         {
-            IReadOnlyList<string> blogFilesToLoad = QueueSettings.Names;
+            IReadOnlyList<Tuple<string, BlogTypes>> blogFilesToLoad = QueueSettings.Names;
             InsertFilesCore(0, blogFilesToLoad);
         }
 
         public void Shutdown()
         {
-            QueueSettings.ReplaceAll(QueueManager.Items.Select(x => x.Blog.Name));
+            QueueSettings.ReplaceAll(QueueManager.Items.Select(x => Tuple.Create(x.Blog.Name, x.Blog.BlogType)));
         }
 
         private bool CanRemoveSelected()
@@ -138,14 +138,14 @@ namespace TumblThree.Applications.Controllers
 
         private void OpenListCore(string queuelistFileName)
         {
-            List<string> queueList;
+            List<Tuple<string, BlogTypes>> queueList;
             try
             {
                 using (var stream = new FileStream(queuelistFileName,
                     FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
                     IFormatter formatter = new BinaryFormatter();
-                    queueList = (List<string>)formatter.Deserialize(stream);
+                    queueList = (List<Tuple<string, BlogTypes>>)formatter.Deserialize(stream);
                 }
             }
             catch (Exception ex)
@@ -158,11 +158,11 @@ namespace TumblThree.Applications.Controllers
             InsertFilesCore(QueueManager.Items.Count(), queueList.ToArray());
         }
 
-        private void InsertFilesCore(int index, IEnumerable<string> fileNames)
+        private void InsertFilesCore(int index, IEnumerable<Tuple<string, BlogTypes>> names)
         {
             try
             {
-                InsertBlogFiles(index, fileNames.Select(x => managerService.BlogFiles.First(blogs => blogs.Name.Equals(x))));
+                InsertBlogFiles(index, names.Select(x => managerService.BlogFiles.First(blogs => blogs.Name.Equals(x.Item1) && blogs.BlogType.Equals(x.Item2))));
             }
             catch (Exception ex)
             {
