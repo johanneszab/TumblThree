@@ -4,8 +4,8 @@ using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization.Json;
+using System.Text;
 using System.Waf.Applications;
 using System.Waf.Applications.Services;
 using System.Waf.Foundation;
@@ -89,13 +89,14 @@ namespace TumblThree.Applications.Controllers
 
         public void LoadQueue()
         {
-            IReadOnlyList<Tuple<string, BlogTypes>> blogFilesToLoad = QueueSettings.Names;
-            InsertFilesCore(0, blogFilesToLoad);
+            IReadOnlyList<string> blogNamesToLoad = QueueSettings.Names;
+            IReadOnlyList<BlogTypes> blogTypesToLoad = QueueSettings.Types;
+            InsertFilesCore(0, blogNamesToLoad, blogTypesToLoad);
         }
 
         public void Shutdown()
         {
-            QueueSettings.ReplaceAll(QueueManager.Items.Select(x => Tuple.Create(x.Blog.Name, x.Blog.BlogType)));
+            QueueSettings.ReplaceAll(QueueManager.Items.Select(x => x.Blog.Name), QueueManager.Items.Select(x => x.Blog.BlogType));
         }
 
         private bool CanRemoveSelected()
@@ -138,14 +139,14 @@ namespace TumblThree.Applications.Controllers
 
         private void OpenListCore(string queuelistFileName)
         {
-            List<Tuple<string, BlogTypes>> queueList;
+            QueueSettings queueList;
+
             try
             {
-                using (var stream = new FileStream(queuelistFileName,
-                    FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (var stream = new FileStream(queuelistFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    IFormatter formatter = new BinaryFormatter();
-                    queueList = (List<Tuple<string, BlogTypes>>)formatter.Deserialize(stream);
+                    var serializer = new DataContractJsonSerializer(typeof(QueueSettings));
+                    queueList = (QueueSettings)serializer.ReadObject(stream);
                 }
             }
             catch (Exception ex)
@@ -155,14 +156,14 @@ namespace TumblThree.Applications.Controllers
                 return;
             }
 
-            InsertFilesCore(QueueManager.Items.Count(), queueList.ToArray());
+            InsertFilesCore(QueueManager.Items.Count(), queueList.Names.ToArray(), queueList.Types.ToArray());
         }
 
-        private void InsertFilesCore(int index, IEnumerable<Tuple<string, BlogTypes>> names)
+        private void InsertFilesCore(int index, IEnumerable<string> names, IEnumerable<BlogTypes> blogTypes)
         {
             try
             {
-                InsertBlogFiles(index, names.Select(x => managerService.BlogFiles.First(blogs => blogs.Name.Equals(x.Item1) && blogs.BlogType.Equals(x.Item2))));
+                InsertBlogFiles(index, names.Zip(blogTypes, Tuple.Create).Select(x => managerService.BlogFiles.First(blogs => blogs.Name.Equals(x.Item1) && blogs.BlogType.Equals(x.Item2))));
             }
             catch (Exception ex)
             {
@@ -179,7 +180,9 @@ namespace TumblThree.Applications.Controllers
                 return;
             }
 
-            List<string> queueList = QueueManager.Items.Select(item => item.Blog.Name).ToList();
+            var queueList = new QueueSettings();
+            queueList.ReplaceAll(QueueManager.Items.Select(item => item.Blog.Name).ToList(),
+                QueueManager.Items.Select(item => item.Blog.BlogType).ToList());
 
             try
             {
@@ -190,8 +193,13 @@ namespace TumblThree.Applications.Controllers
                     var stream = new FileStream(Path.Combine(targetFolder, name) + ".que", FileMode.Create, FileAccess.Write,
                         FileShare.None))
                 {
-                    IFormatter formatter = new BinaryFormatter();
-                    formatter.Serialize(stream, queueList);
+                    using (var writer = JsonReaderWriterFactory.CreateJsonWriter(
+                        stream, Encoding.UTF8, true, true, "  "))
+                    {
+                        var serializer = new DataContractJsonSerializer(typeof(QueueSettings));
+                        serializer.WriteObject(writer, queueList);
+                        writer.Flush();
+                    }
                 }
             }
             catch (Exception ex)
