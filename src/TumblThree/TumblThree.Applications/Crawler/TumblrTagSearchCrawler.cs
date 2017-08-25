@@ -102,10 +102,10 @@ namespace TumblThree.Applications.Crawler
 
             producerConsumerCollection.CompleteAdding();
 
-            if (!ct.IsCancellationRequested)
-            {
-                UpdateBlogStats();
-            }
+            //if (!ct.IsCancellationRequested)
+            //{
+            UpdateBlogStats();
+            //}
         }
 
         private long GenerateCrawlerTimeOffsets()
@@ -117,7 +117,7 @@ namespace TumblThree.Applications.Crawler
                     DateTimeStyles.None);
                 var dateTimeOffset = new DateTimeOffset(downloadFrom);
                 tagsIntroduced = dateTimeOffset.ToUnixTimeSeconds();
-            }                           
+            }
             long unixTimeNow = DateTimeOffset.Now.ToUnixTimeSeconds();
             if (!string.IsNullOrEmpty(blog.DownloadTo))
             {
@@ -213,7 +213,22 @@ namespace TumblThree.Applications.Crawler
                 Interlocked.Increment(ref numberOfPagesCrawled);
                 UpdateProgressQueueInformation(Resources.ProgressGetUrlShort, numberOfPagesCrawled);
                 pagination = ExtractNextPageLink(document);
+                if (!CheckIfWithinTimespan(pagination))
+                    return;
             }
+        }
+
+        private bool CheckIfWithinTimespan(long pagination)
+        {
+            if (!string.IsNullOrEmpty(blog.DownloadFrom))
+            {
+                var downloadFrom = DateTime.ParseExact(blog.DownloadFrom, "yyyyMMdd", CultureInfo.InvariantCulture,
+                    DateTimeStyles.None);
+                var dateTimeOffset = new DateTimeOffset(downloadFrom);
+                if (pagination < dateTimeOffset.ToUnixTimeSeconds())
+                    return false;
+            }
+            return true;
         }
 
         private void AddPhotoUrlToDownloadList(string document)

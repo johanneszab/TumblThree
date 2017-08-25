@@ -92,10 +92,10 @@ namespace TumblThree.Applications.Crawler
 
             producerConsumerCollection.CompleteAdding();
 
-            if (!ct.IsCancellationRequested)
-            {
-                UpdateBlogStats();
-            }
+            //if (!ct.IsCancellationRequested)
+            //{
+            UpdateBlogStats();
+            //}
         }
 
         private async Task<bool> CheckIfLoggedIn()
