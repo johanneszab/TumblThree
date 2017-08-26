@@ -37,13 +37,36 @@ namespace TumblThree.Applications.Crawler
                 await GetApiPageAsync(1);
                 blog.Online = true;
             }
-            catch (WebException)
+            catch (WebException webException)
             {
+                if (webException.Message.Contains("429"))
+                {
+                    Logger.Error("TumblrPrivateBlogCrawler:IsBlogOnlineAsync:WebException {0}", webException);
+                    shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
+                    blog.Online = true;
+                    return;
+                }
                 blog.Online = false;
             }
         }
 
         public override async Task UpdateMetaInformationAsync()
+        {
+            try
+            {
+                await UpdateMetaInformation();
+            }
+            catch (WebException webException)
+            {
+                if (webException.Message.Contains("429"))
+                {
+                    Logger.Error("TumblrPrivateBlogCrawler:UpdateTotalPostCountAsync:WebException {0}", webException);
+                    shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
+                }
+            }
+        }
+
+        private async Task UpdateMetaInformation()
         {
             if (blog.Online)
             {
@@ -154,6 +177,23 @@ namespace TumblThree.Applications.Crawler
             return await RequestDataAsync(url);
         }
 
+        private async Task UpdateTotalPostCountAsync()
+        {
+            try
+            {
+                await UpdateTotalPostCount();
+            }
+            catch (WebException webException)
+            {
+                if (webException.Message.Contains("429"))
+                {
+                    Logger.Error("TumblrPrivateBlogCrawler:UpdateTotalPostCountAsync:WebException {0}", webException);
+                    shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
+                }
+                blog.Posts = 0;
+            }
+        }
+
         private async Task UpdateTotalPostCount()
         {
             XDocument document = await GetApiPageAsync(1);
@@ -161,6 +201,23 @@ namespace TumblThree.Applications.Crawler
             int totalPosts;
             int.TryParse(document?.Element("tumblr").Element("posts").Attribute("total").Value, out totalPosts);
             blog.Posts = totalPosts;
+        }
+
+        private async Task<ulong> GetHighestPostIdAsync()
+        {
+            try
+            {
+                return await GetHighestPostId();
+            }
+            catch (WebException webException)
+            {
+                if (webException.Message.Contains("429"))
+                {
+                    Logger.Error("TumblrPrivateBlogCrawler:GetHighestPostIdAsync:WebException {0}", webException);
+                    shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
+                }
+                return 0;
+            }
         }
 
         private async Task<ulong> GetHighestPostId()
@@ -179,10 +236,10 @@ namespace TumblThree.Applications.Crawler
             var apiLimitHit = false;
             var completeGrab = true;
 
-            await UpdateTotalPostCount();
+            await UpdateTotalPostCountAsync();
             int totalPosts = blog.Posts;
 
-            ulong highestId = await GetHighestPostId();
+            ulong highestId = await GetHighestPostIdAsync();
 
             foreach (int pageNumber in GetPageNumbers())
             {

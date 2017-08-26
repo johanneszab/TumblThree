@@ -12,8 +12,8 @@ TumblThree is the code rewrite of [TumblTwo](https://github.com/johanneszab/Tumb
 * Download of \_raw image files (original/higher resolution pictures). 
 * A downloader for private blogs (login required blogs).
 * A downloader for downloading "liked by" photos and videos instead of a tumblr blog.
-* A downloader for downloading photos and videos from the tumblr tag search (e.g. http://www.tumblr.com/tagged/keyword) (login required).
-* A downloader for downloading photos and videos from the tumblr search (e.g. http://www.tumblr.com/search/keywords).
+* A downloader for downloading photos and videos from the tumblr tag search (e.g. http://www.tumblr.com/tagged/my+keywords) (login required).
+* A downloader for downloading photos and videos from the tumblr search (e.g. http://www.tumblr.com/search/my+keywords).
 * An option to download an url list instead of the actual files.
 * Allows to download only original content of the blog and skip reblogged posts.
 * Set a time interval for a automatic download (e.g. during nights).
@@ -56,6 +56,9 @@ TumblThree is the code rewrite of [TumblTwo](https://github.com/johanneszab/Tumb
   * For downloading liked photos and videos, you have to do some steps:
     1. Go to Settings, click the Authenticate button. Logon to tumblr using an account. The window/browser should automatically close after the login indicating a successful authentication. TumblThree will use the Internet Explorer cookies for authentication. Alternatively, you can also use the Internet Explorer directly for logging in to the Tumblr.com network.
     2. Add the blog url including the liked/by string in the url (e.g. https://www.tumblr.com/liked/by/wallpaperfx/).
+  * For downloading photos and videos from the tumblr tag search, you have to do some steps:
+    1. Go to Settings, click the Authenticate button. Logon to tumblr using an account. The window/browser should automatically close after the login indicating a successful authentication. TumblThree will use the Internet Explorer cookies for authentication. Alternatively, you can also use the Internet Explorer directly for logging in to the Tumblr.com network.
+    2. Add the search url including your tags separated by plus signs (+) in the url (e.g. https://www.tumblr.com/tagged/my+special+tags).
 
 * Tags
 
@@ -92,7 +95,8 @@ Settings you might want to change if the download speed is not satisfactory:
 * General -> Parallel connections: Specifies the number of connections used for downloading posts. The number is shared between all actively downloading blogs.
 * General -> Parallel Blogs: Number of blogs to download in parallel.
 
-Most likely you don't have to change any of the other connection settings.
+Most likely you don't have to change any of the other connection settings. In particular, settings you should never change, unless you're sure you know what you are doing:
+* General -> Limit Tumblr Api Connections: Leave this checkbox checked and do not change the corresponding values of 90 connections per 60 seconds. If you still change them, you might end up with offline blogs or missing downloads.
 
 ### Current Limitations: ###
 
