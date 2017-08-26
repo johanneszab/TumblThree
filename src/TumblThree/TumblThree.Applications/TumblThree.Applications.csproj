@@ -85,6 +85,7 @@
     <Compile Include="Crawler\TumblrSearchCrawler.cs" />
     <Compile Include="Downloader\TumblrDownloader.cs" />
     <Compile Include="FileDownloader.cs" />
+    <Compile Include="ObjectModel\ObservableRangeCollection.cs" />
     <Compile Include="QueueOnDispatcher.cs" />
     <Compile Include="Crawler\ICrawler.cs" />
     <Compile Include="Crawler\InstagramCrawler.cs" />
