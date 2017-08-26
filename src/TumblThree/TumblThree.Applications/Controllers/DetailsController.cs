@@ -175,21 +175,18 @@ namespace TumblThree.Applications.Controllers
             };
         }
 
-        private static T SetProperty<T>(IReadOnlyCollection<IBlog> blogs, string propertyName) where T: IConvertible
+        private static T SetProperty<T>(IReadOnlyCollection<IBlog> blogs, string propertyName) where T : IConvertible
         {
-            try
+            PropertyInfo property = typeof(IBlog).GetProperty(propertyName);
+            var value = (T)property.GetValue(blogs.FirstOrDefault());
+            if (value != null)
             {
-                PropertyInfo property = typeof(IBlog).GetProperty(propertyName);
-                var value = (T)property.GetValue(blogs.FirstOrDefault());
                 bool equal = blogs.All(blog => property.GetValue(blog).Equals(value));
                 if (equal)
                     return value;
                 return default(T);
             }
-            catch (NullReferenceException)
-            {
-                return default(T);
-            }
+            return default(T);
         }
 
         private static bool SetCheckBox(IReadOnlyCollection<IBlog> blogs, string propertyName)
@@ -201,7 +198,7 @@ namespace TumblThree.Applications.Controllers
                 return true;
             if (checkedBlogs == 0)
                 return false;
-            //return null;
+            //return null; // three-state checkbox for the details view?
             return false;
         }
 

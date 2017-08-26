@@ -38,8 +38,15 @@ namespace TumblThree.Applications.Crawler
                 string document = await GetSvcPageAsync("1", "0");
                 blog.Online = true;
             }
-            catch (WebException)
+            catch (WebException webException)
             {
+                if (webException.Message.Contains("429"))
+                {
+                    Logger.Error("TumblrPrivateBlogCrawler:IsBlogOnlineAsync:WebException {0}", webException);
+                    shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
+                    blog.Online = true;
+                    return;
+                }
                 blog.Online = false;
             }
         }
@@ -65,7 +72,7 @@ namespace TumblThree.Applications.Crawler
                 var webRespStatusCode = (int)((HttpWebResponse)webException?.Response).StatusCode;
                 if (webRespStatusCode == 503)
                 {
-                    Logger.Error("TumblrBlogCrawler:GetUrlsAsync: {0}", "User not logged in");
+                    Logger.Error("TumblrPrivateCrawler:GetUrlsAsync: {0}", "User not logged in");
                     shellService.ShowError(new Exception("User not logged in"), Resources.NotLoggedIn, blog.Name);
                 }
                 else
@@ -77,7 +84,7 @@ namespace TumblThree.Applications.Crawler
 
         public async Task Crawl()
         {
-            Logger.Verbose("TumblrBlogCrawler.Crawl:Start");
+            Logger.Verbose("TumblrPrivateCrawler.Crawl:Start");
 
             Task grabber = GetUrlsAsync();
             Task<bool> download = downloader.DownloadBlogAsync();
@@ -146,7 +153,7 @@ namespace TumblThree.Applications.Crawler
 
             if (!await CheckIfLoggedIn())
             {
-                Logger.Error("TumblrBlogCrawler:GetUrlsAsync: {0}", "User not logged in");
+                Logger.Error("TumblrPrivateCrawler:GetUrlsAsync: {0}", "User not logged in");
                 shellService.ShowError(new Exception("User not logged in"), Resources.NotLoggedIn, blog.Name);
                 producerConsumerCollection.CompleteAdding();
                 return;
@@ -174,7 +181,7 @@ namespace TumblThree.Applications.Crawler
                         if (webException.Message.Contains("429"))
                         {
                             // TODO: add retry logic?
-                            Logger.Error("TumblrBlogCrawler:GetUrls:WebException {0}", webException);
+                            Logger.Error("TumblrPrivateCrawler:GetUrls:WebException {0}", webException);
                             shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
                         }
                     }
@@ -193,7 +200,7 @@ namespace TumblThree.Applications.Crawler
 
             //if (!ct.IsCancellationRequested)
             //{
-                UpdateBlogStats();
+            UpdateBlogStats();
             //}
         }
 
