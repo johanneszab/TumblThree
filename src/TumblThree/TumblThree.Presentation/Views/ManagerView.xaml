@@ -24,8 +24,7 @@
                   SelectedItem="{Binding SelectedBlogFile}" CanUserReorderColumns="True" BorderBrush="White"
                   BorderThickness="0,1,0,0"
                   ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto"
-                  Grid.Row="0" Grid.Column="0"
-                  ctrl:SelectionBehavior.SyncSelectedItems="{Binding SelectionService.SelectedBlogFiles}">
+                  Grid.Row="0" Grid.Column="0">
             <DataGrid.Resources>
                 <Style TargetType="ctrl:RatingItem">
                     <Style.Triggers>

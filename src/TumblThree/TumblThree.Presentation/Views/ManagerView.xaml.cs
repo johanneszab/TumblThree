@@ -31,6 +31,13 @@ namespace TumblThree.Presentation.Views
 
             Loaded += LoadedHandler;
             blogFilesGrid.Sorting += BlogFilesGridSorting;
+            blogFilesGrid.SelectionChanged += SelectionChanged;
+        }
+
+        private void SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ViewModel.SelectionService.AddRange(e.AddedItems.Cast<IBlog>());
+            ViewModel.SelectionService.RemoveRange(e.RemovedItems.Cast<IBlog>());
         }
 
         private ManagerViewModel ViewModel
