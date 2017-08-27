@@ -262,7 +262,7 @@
     <value>Foto Unterschrift: {0}</value>
   </data>
   <data name="LimitExceeded" xml:space="preserve">
-    <value>Limit exceeded: {0}. Die Verbindungen zur Tumblr api sollten verringert werden.</value>
+    <value>Limit exceeded: {0}. Die Verbindungen zur Tumblr svc sollten verringert werden.</value>
   </data>
   <data name="ApplicationUpToDate" xml:space="preserve">
     <value>Die Anwendung ist aktuell</value>
@@ -305,5 +305,8 @@
   </data>
   <data name="MaxBytePerSecond" xml:space="preserve">
     <value>MaxBytesPerSecond muss nicht negativ sein.</value>
+  </data>
+  <data name="Summary" xml:space="preserve">
+    <value>Zusammenfassung: {0}</value>
   </data>
 </root>

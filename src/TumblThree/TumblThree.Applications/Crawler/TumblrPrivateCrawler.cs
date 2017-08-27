@@ -16,8 +16,7 @@ using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain;
 using TumblThree.Domain.Models;
-
-using Post = TumblThree.Applications.DataModels.Post;
+using TumblThree.Applications.DataModels.TumblrSvcJson;
 
 namespace TumblThree.Applications.Crawler
 {
@@ -200,7 +199,7 @@ namespace TumblThree.Applications.Crawler
 
             //if (!ct.IsCancellationRequested)
             //{
-                UpdateBlogStats();
+            UpdateBlogStats();
             //}
         }
 
@@ -333,8 +332,7 @@ namespace TumblThree.Applications.Crawler
                     if (post.type != "photo" && !tags.Any() || post.tags.Intersect(tags, StringComparer.OrdinalIgnoreCase).Any())
                     {
                         if (CheckIfDownloadRebloggedPosts(post))
-                            try { AddInlinePhotoUrl(post); }
-                            catch { }
+                            AddInlinePhotoUrl(post);
                     }
                 }
             }
@@ -360,6 +358,8 @@ namespace TumblThree.Applications.Crawler
 
         private void AddInlinePhotoUrl(Post post)
         {
+            if (post.body == null)
+                return;
             var regex = new Regex("\"(http[A-Za-z0-9_/:.]*media.tumblr.com[A-Za-z0-9_/:.]*(jpg|png|gif))\"");
             foreach (Match match in regex.Matches(post.body))
             {
@@ -394,8 +394,7 @@ namespace TumblThree.Applications.Crawler
                     if (post.type != "video" && !tags.Any() || post.tags.Intersect(tags, StringComparer.OrdinalIgnoreCase).Any())
                     {
                         if (CheckIfDownloadRebloggedPosts(post))
-                            try { AddInlineVideoUrl(post); }
-                            catch { }
+                            AddInlineVideoUrl(post);
                     }
                 }
             }
@@ -418,6 +417,8 @@ namespace TumblThree.Applications.Crawler
 
         private void AddInlineVideoUrl(Post post)
         {
+            if (post.body == null)
+                return;
             var regex = new Regex("\"(http[A-Za-z0-9_/:.]*.com/video_file/[A-Za-z0-9_/:.]*)\"");
             foreach (Match match in regex.Matches(post.body))
             {
@@ -621,6 +622,8 @@ namespace TumblThree.Applications.Crawler
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
                    Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Summary, post.summary) +
+                   Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Title, post.title) +
                    Environment.NewLine + post.body +
                    Environment.NewLine +
@@ -642,7 +645,9 @@ namespace TumblThree.Applications.Crawler
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Quote, post.dialogue.Select(dialogue => dialogue.phrase).FirstOrDefault()) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Summary, post.summary) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Quote, post.text) +
                    Environment.NewLine + post.body +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Tags,
@@ -663,7 +668,9 @@ namespace TumblThree.Applications.Crawler
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Link, post.link_url) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Summary, post.summary) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Link, post.post_html) +
                    Environment.NewLine + post.body +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Tags,
@@ -684,7 +691,9 @@ namespace TumblThree.Applications.Crawler
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Quote, post.dialogue.Select(dialogue => dialogue.phrase).FirstOrDefault()) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Summary, post.summary) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Quote, post.dialogue.Select(dialogue => new { dialogue.name, dialogue.phrase })) +
                    Environment.NewLine + post.body +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Tags,
@@ -704,6 +713,8 @@ namespace TumblThree.Applications.Crawler
                    string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.reblogged_from_url) +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Summary, post.summary) +
                    Environment.NewLine +
                    post.question +
                    Environment.NewLine +
@@ -727,9 +738,11 @@ namespace TumblThree.Applications.Crawler
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
                    Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Summary, post.summary) +
+                   Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.PhotoUrl, post.photos.Select(photo => photo.original_size.url).FirstOrDefault()) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.PhotoCaption, post.photos.Select(photo => photo.caption).FirstOrDefault()) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.PhotoCaption, post.trail.Select(trail => trail.content_raw).FirstOrDefault()) +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Tags,
                        string.Join(", ", post.tags.ToArray())) +
@@ -749,7 +762,9 @@ namespace TumblThree.Applications.Crawler
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.VideoPlayer, post.caption) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Summary, post.summary) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.VideoPlayer, post.player.Select(player => player.embed_code).FirstOrDefault()) +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Tags,
                        string.Join(", ", post.tags.ToArray())) +
@@ -769,7 +784,9 @@ namespace TumblThree.Applications.Crawler
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.AudioCaption, post.caption) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Summary, post.summary) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.AudioCaption, post.trail.Select(trail => trail.content_raw).FirstOrDefault()) +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Id3Artist, post.artist) +
                    Environment.NewLine +

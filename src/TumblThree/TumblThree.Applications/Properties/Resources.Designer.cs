@@ -439,7 +439,7 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Limit exceeded: {0}. You should lower the connections to the tumblr api..
+        ///   Looks up a localized string similar to Limit exceeded: {0}. You should lower the connections to the tumblr svc..
         /// </summary>
         public static string LimitExceeded {
             get {
@@ -588,6 +588,15 @@ namespace TumblThree.Applications.Properties {
         public static string ReblogUrl {
             get {
                 return ResourceManager.GetString("ReblogUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Summary: {0}.
+        /// </summary>
+        public static string Summary {
+            get {
+                return ResourceManager.GetString("Summary", resourceCulture);
             }
         }
         

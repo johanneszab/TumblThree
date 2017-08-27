@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TumblThree.Applications.DataModels
+namespace TumblThree.Applications.DataModels.TumblrSvcJson
 {
     public class TumblrJson
     {
@@ -237,7 +237,7 @@ namespace TumblThree.Applications.DataModels
         public int thumbnail_width { get; set; }
         public int thumbnail_height { get; set; }
         public float duration { get; set; }
-        public object player { get; set; } // should be either List<Player> or Player instead of object
+        public List<Player> player { get; set; }
         public string audio_url { get; set; }
         public string audio_source_url { get; set; }
         public string audio_type { get; set; }
