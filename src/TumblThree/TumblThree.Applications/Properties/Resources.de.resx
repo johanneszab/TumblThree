@@ -306,4 +306,7 @@
   <data name="MaxBytePerSecond" xml:space="preserve">
     <value>MaxBytesPerSecond muss nicht negativ sein.</value>
   </data>
+  <data name="Summary" xml:space="preserve">
+    <value>Zusammenfassung: {0}</value>
+  </data>
 </root>

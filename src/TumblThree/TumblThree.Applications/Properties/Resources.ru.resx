@@ -288,6 +288,9 @@
   <data name="ReblogUrl" xml:space="preserve">
     <value>Ссылка реблога: {0}</value>
   </data>
+  <data name="Summary" xml:space="preserve">
+    <value>Резюме: {0}</value>
+  </data>
   <data name="Tags" xml:space="preserve">
     <value>Теги: {0}</value>
   </data>

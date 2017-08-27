@@ -294,6 +294,9 @@
   <data name="ReblogUrl" xml:space="preserve">
     <value>Reblog Url: {0}</value>
   </data>
+  <data name="Summary" xml:space="preserve">
+    <value>Summary: {0}</value>
+  </data>
   <data name="Tags" xml:space="preserve">
     <value>Tags: {0}</value>
   </data>

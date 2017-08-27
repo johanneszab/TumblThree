@@ -70,7 +70,7 @@
     <Compile Include="Controllers\ModuleController.cs" />
     <Compile Include="Controllers\QueueController.cs" />
     <Compile Include="DataModels\DownloadProgress.cs" />
-    <Compile Include="DataModels\TumblrJson.cs" />
+    <Compile Include="DataModels\TumblrSvcJson.cs" />
     <Compile Include="DataModels\TumblrPost.cs" />
     <Compile Include="DataModels\TumblrSearchJson.cs" />
     <Compile Include="Data\StringListConverter.cs" />

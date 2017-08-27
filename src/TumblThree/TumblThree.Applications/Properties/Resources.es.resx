@@ -256,7 +256,7 @@
     <value>Nueva versión disponible para descarga: {0}</value>
   </data>
   <data name="NotLoggedIn" xml:space="preserve">
-    <value>Debes iniciar sesión en tumblr.com para descargar {0}. Vaya a Configuración->Autenticar.</value>
+    <value>Debes iniciar sesión en tumblr.com para descargar {0}. Vaya a Configuración-&gt;Autenticar.</value>
   </data>
   <data name="PhotoCaption" xml:space="preserve">
     <value>Photo Caption: {0}</value>
@@ -293,6 +293,9 @@
   </data>
   <data name="ReblogUrl" xml:space="preserve">
     <value>Reblog Url: {0}</value>
+  </data>
+  <data name="Summary" xml:space="preserve">
+    <value>Resumen: {0}</value>
   </data>
   <data name="Tags" xml:space="preserve">
     <value>Etiquetas: {0}</value>
