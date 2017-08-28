@@ -1,26 +1,49 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.IO;
+using System.Runtime.Serialization;
 
 namespace TumblThree.Domain.Models
 {
     [DataContract]
     public class TumblrTagSearchBlog : Blog
     {
-        public TumblrTagSearchBlog(string url, string location, BlogTypes blogType) : base(url, location, blogType)
+        public static new Blog Create(string url, string location, BlogTypes blogType)
         {
+            var blog = new TumblrTagSearchBlog()
+            {
+                Url = ExtractUrl(url),
+                Name = ExtractName(url),
+                BlogType = blogType,
+                Location = location,
+                Version = "3",
+                DateAdded = DateTime.Now
+            };
+
+            Directory.CreateDirectory(location);
+            Directory.CreateDirectory(Path.Combine(Directory.GetParent(location).FullName, blog.Name));
+
+            blog.ChildId = Path.Combine(location, blog.Name + "_files." + blogType);
+            if (!File.Exists(blog.ChildId))
+            {
+                IFiles files = new Files(blog.Name, blog.Location, blog.BlogType);
+                files.Save();
+                files = null;
+            }
+            return blog;
         }
 
-        protected override string ExtractName()
+        protected static new string ExtractName(string url)
         {
-            return Url.Split('/')[4].Replace("-", "+");
+            return url.Split('/')[4].Replace("-", "+");
         }
 
-        protected override string ExtractUrl()
+        protected static new string ExtractUrl(string url)
         {
-            if (Url.StartsWith("http://"))
-                Url = Url.Insert(4, "s");
-            int blogNameLength = Url.Split('/')[4].Length;
+            if (url.StartsWith("http://"))
+                url = url.Insert(4, "s");
+            int blogNameLength = url.Split('/')[4].Length;
             var urlLength = 30;
-            return Url.Substring(0, blogNameLength + urlLength);
+            return url.Substring(0, blogNameLength + urlLength);
         }
     }
 }

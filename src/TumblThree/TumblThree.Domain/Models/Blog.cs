@@ -73,31 +73,29 @@ namespace TumblThree.Domain.Models
         private List<string> links;
         private int downloadedImages;
 
-        public Blog()
+        public static Blog Create(string url, string location, BlogTypes blogType)
         {
-        }
-
-        public Blog(string url, string location, BlogTypes blogType)
-        {
-            Url = url;
-            Url = ExtractUrl();
-            Name = ExtractName();
-            BlogType = blogType;
-            ChildId = Path.Combine(location, Name + "_files." + blogType);
-            Location = location;
-            Version = "3";
-            DateAdded = DateTime.Now;
-
-            Directory.CreateDirectory(Location);
-            Directory.CreateDirectory(Path.Combine(Directory.GetParent(Location).FullName, Name));
-
-            if (!File.Exists(ChildId))
+            var blog = new Blog()
             {
-                IFiles files = new Files(Name, Location, BlogType);
+                Url = ExtractUrl(url),
+                Name = ExtractName(url),
+                BlogType = blogType,
+                Location = location,
+                Version = "3",
+                DateAdded = DateTime.Now
+            };
 
+            Directory.CreateDirectory(location);
+            Directory.CreateDirectory(Path.Combine(Directory.GetParent(location).FullName, blog.Name));
+
+            blog.ChildId = Path.Combine(location, blog.Name + "_files." + blogType);
+            if (!File.Exists(blog.ChildId))
+            {
+                IFiles files = new Files(blog.Name, blog.Location, blog.BlogType);
                 files.Save();
                 files = null;
             }
+            return blog;
         }
 
         [DataMember]
@@ -729,9 +727,9 @@ namespace TumblThree.Domain.Models
             }
         }
 
-        protected virtual string ExtractSubDomain()
+        protected static string ExtractSubDomain(string url)
         {
-            string[] source = Url.Split(new char[] { '.' });
+            string[] source = url.Split(new char[] { '.' });
             if ((source.Count<string>() >= 3) && source[0].StartsWith("http://", true, null))
             {
                 return source[0].Replace("http://", string.Empty);
@@ -743,14 +741,14 @@ namespace TumblThree.Domain.Models
             return null;
         }
 
-        protected virtual string ExtractName()
+        protected static string ExtractName(string url)
         {
-            return ExtractSubDomain();
+            return ExtractSubDomain(url);
         }
 
-        protected virtual string ExtractUrl()
+        protected static string ExtractUrl(string url)
         {
-            return ("https://" + ExtractSubDomain() + ".tumblr.com/");
+            return ("https://" + ExtractSubDomain(url) + ".tumblr.com/");
         }
 
         [OnDeserialized]
