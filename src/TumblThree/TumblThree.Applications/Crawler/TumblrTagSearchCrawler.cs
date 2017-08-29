@@ -24,8 +24,8 @@ namespace TumblThree.Applications.Crawler
     public class TumblrTagSearchCrawler : AbstractCrawler, ICrawler
     {
         public TumblrTagSearchCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
-            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IDownloader downloader, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog, IFiles files)
-            : base(shellService, ct, pt, progress, crawlerService, downloader, producerConsumerCollection, blog, files)
+            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IDownloader downloader, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
+            : base(shellService, ct, pt, progress, crawlerService, downloader, producerConsumerCollection, blog)
         {
         }
 

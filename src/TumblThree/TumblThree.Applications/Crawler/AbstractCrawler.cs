@@ -22,7 +22,6 @@ namespace TumblThree.Applications.Crawler
     {
         protected readonly IBlog blog;
         protected readonly ICrawlerService crawlerService;
-        protected readonly IFiles files;
         protected readonly IProgress<DownloadProgress> progress;
         protected readonly object lockObjectDb = new object();
         protected readonly object lockObjectDirectory = new object();
@@ -37,7 +36,7 @@ namespace TumblThree.Applications.Crawler
         protected List<string> tags = new List<string>();
         protected int numberOfPagesCrawled = 0;
 
-        protected AbstractCrawler(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IDownloader downloader, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog, IFiles files)
+        protected AbstractCrawler(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IDownloader downloader, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
         {
             this.shellService = shellService;
             this.crawlerService = crawlerService;
@@ -47,7 +46,6 @@ namespace TumblThree.Applications.Crawler
             this.ct = ct;
             this.pt = pt;
             this.progress = progress;
-            this.files = files;
         }
 
         public virtual async Task UpdateMetaInformationAsync()
