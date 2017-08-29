@@ -42,18 +42,19 @@ namespace TumblThree.Applications.Crawler
         public ICrawler GetCrawler(BlogTypes blogtype, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, IShellService shellService, ICrawlerService crawlerService, IBlog blog)
         {
             BlockingCollection<TumblrPost> producerConsumerCollection = GetProducerConsumerCollection();
+            IFiles files = LoadFiles(blog);
             switch (blogtype)
             {
                 case BlogTypes.tumblr:
-                    return new TumblrBlogCrawler(shellService, ct, pt, progress, crawlerService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, producerConsumerCollection), producerConsumerCollection, blog, LoadFiles(blog));
+                    return new TumblrBlogCrawler(shellService, ct, pt, progress, crawlerService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, files, producerConsumerCollection), producerConsumerCollection, blog);
                 case BlogTypes.tmblrpriv:
-                    return new TumblrPrivateCrawler(shellService, ct, pt, progress, crawlerService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, producerConsumerCollection), producerConsumerCollection, blog, LoadFiles(blog));
+                    return new TumblrPrivateCrawler(shellService, ct, pt, progress, crawlerService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, files, producerConsumerCollection), producerConsumerCollection, blog);
                 case BlogTypes.tlb:
-                    return new TumblrLikedByCrawler(shellService, ct, pt, progress, crawlerService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, producerConsumerCollection), producerConsumerCollection, blog, LoadFiles(blog));
+                    return new TumblrLikedByCrawler(shellService, ct, pt, progress, crawlerService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, files, producerConsumerCollection), producerConsumerCollection, blog);
                 case BlogTypes.tumblrsearch:
-                    return new TumblrSearchCrawler(shellService, ct, pt, progress, crawlerService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, producerConsumerCollection), producerConsumerCollection, blog, LoadFiles(blog));
+                    return new TumblrSearchCrawler(shellService, ct, pt, progress, crawlerService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, files, producerConsumerCollection), producerConsumerCollection, blog);
                 case BlogTypes.tumblrtagsearch:
-                    return new TumblrTagSearchCrawler(shellService, ct, pt, progress, crawlerService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, producerConsumerCollection), producerConsumerCollection, blog, LoadFiles(blog));
+                    return new TumblrTagSearchCrawler(shellService, ct, pt, progress, crawlerService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, files, producerConsumerCollection), producerConsumerCollection, blog);
                 default:
                     throw new ArgumentException("Website is not supported!", "blogType");
             }
@@ -69,9 +70,14 @@ namespace TumblThree.Applications.Crawler
             return new FileDownloader(settings, ct);
         }
 
-        private TumblrDownloader GetTumblrDownloader(CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, IShellService shellService, ICrawlerService crawlerService, IBlog blog, BlockingCollection<TumblrPost> producerConsumerCollection)
+        private static IBlogService GetBlogService(IBlog blog, IFiles files)
         {
-            return new TumblrDownloader(shellService, ct, pt, progress, new PostCounter(blog), producerConsumerCollection, GetFileDownloader(ct), crawlerService, blog, LoadFiles(blog));
+            return new BlogService(blog, files);
+        }
+
+        private TumblrDownloader GetTumblrDownloader(CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, IShellService shellService, ICrawlerService crawlerService, IBlog blog, IFiles files, BlockingCollection<TumblrPost> producerConsumerCollection)
+        {
+            return new TumblrDownloader(shellService, GetBlogService(blog, files), ct, pt, progress, producerConsumerCollection, GetFileDownloader(ct), crawlerService, blog);
         }
 
         private BlockingCollection<TumblrPost> GetProducerConsumerCollection()

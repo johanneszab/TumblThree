@@ -101,9 +101,11 @@
     <Compile Include="Properties\AppSettings.cs" />
     <Compile Include="Services\ApplicationBusyContext.cs" />
     <Compile Include="Services\ApplicationUpdateService.cs" />
+    <Compile Include="Services\BlogService.cs" />
     <Compile Include="Services\CrawlerService.cs" />
     <Compile Include="Services\CrawlerServiceExtensions.cs" />
     <Compile Include="Services\IApplicationUpdateService.cs" />
+    <Compile Include="Services\IBlogService.cs" />
     <Compile Include="Services\IClipboardService.cs" />
     <Compile Include="Services\ICrawlerService.cs" />
     <Compile Include="Services\IEnvironmentService.cs" />
