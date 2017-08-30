@@ -308,6 +308,32 @@ namespace TumblThree.Applications.Crawler
             return new Tuple<ulong, bool>(highestId, apiLimitHit);
         }
 
+        private bool PostWithinTimeSpan(XElement post)
+        {
+            if (!string.IsNullOrEmpty(blog.DownloadFrom) && !string.IsNullOrEmpty(blog.DownloadTo))
+            {
+                long downloadFromUnixTime = 0;
+                long downloadToUnixTime = long.MaxValue;
+                if (!string.IsNullOrEmpty(blog.DownloadFrom))
+                {
+                    DateTime downloadFrom = DateTime.ParseExact(blog.DownloadFrom, "yyyyMMdd", CultureInfo.InvariantCulture,
+                        DateTimeStyles.None);
+                    downloadFromUnixTime = new DateTimeOffset(downloadFrom).ToUnixTimeSeconds();
+                }
+                if (!string.IsNullOrEmpty(blog.DownloadTo))
+                {
+                    DateTime downloadTo = DateTime.ParseExact(blog.DownloadTo, "yyyyMMdd", CultureInfo.InvariantCulture,
+                        DateTimeStyles.None);
+                    downloadToUnixTime = new DateTimeOffset(downloadTo).ToUnixTimeSeconds();
+                }
+                long postTime = 0;
+                long.TryParse(post.Attribute("unix-timestamp").Value, out postTime);
+                if (downloadFromUnixTime >= postTime || postTime >= downloadToUnixTime)
+                    return false;
+            }
+            return true;
+        }
+
         private bool CheckPostAge(XContainer document)
         {
             ulong highestPostId = 0;
@@ -360,6 +386,8 @@ namespace TumblThree.Applications.Crawler
             {
                 foreach (XElement post in document.Descendants("post"))
                 {
+                    if (!PostWithinTimeSpan(post))
+                        continue;
                     if (post.Attribute("type").Value == "photo" && (!tags.Any() ||
                         post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase))))
                     {
@@ -374,6 +402,8 @@ namespace TumblThree.Applications.Crawler
                 // check for inline images
                 foreach (XElement post in document.Descendants("post").Where(p => p.Attribute("type").Value != "photo"))
                 {
+                    if (!PostWithinTimeSpan(post))
+                        continue;
                     if (!tags.Any() || post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
                     {
                         if (CheckIfDownloadRebloggedPosts(post))
@@ -389,6 +419,8 @@ namespace TumblThree.Applications.Crawler
             {
                 foreach (XElement post in document.Descendants("post"))
                 {
+                    if (!PostWithinTimeSpan(post))
+                        continue;
                     if (post.Attribute("type").Value == "video" && (!tags.Any() ||
                         post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase))))
                     {
@@ -400,6 +432,8 @@ namespace TumblThree.Applications.Crawler
                 // check for inline images
                 foreach (XElement post in document.Descendants("post").Where(p => p.Attribute("type").Value != "video"))
                 {
+                    if (!PostWithinTimeSpan(post))
+                        continue;
                     if (!tags.Any() || post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
                     {
                         if (CheckIfDownloadRebloggedPosts(post))
@@ -415,6 +449,8 @@ namespace TumblThree.Applications.Crawler
             {
                 foreach (XElement post in document.Descendants("post"))
                 {
+                    if (!PostWithinTimeSpan(post))
+                        continue;
                     if (post.Attribute("type").Value == "audio" && (!tags.Any() ||
                         post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase))))
                     {
@@ -431,6 +467,8 @@ namespace TumblThree.Applications.Crawler
             {
                 foreach (XElement post in document.Descendants("post"))
                 {
+                    if (!PostWithinTimeSpan(post))
+                        continue;
                     if (post.Attribute("type").Value == "regular" && (!tags.Any() ||
                         post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase))))
                     {
@@ -450,6 +488,8 @@ namespace TumblThree.Applications.Crawler
             {
                 foreach (XElement post in document.Descendants("post"))
                 {
+                    if (!PostWithinTimeSpan(post))
+                        continue;
                     if (post.Attribute("type").Value == "quote" && (!tags.Any() ||
                         post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase))))
                     {
@@ -469,6 +509,8 @@ namespace TumblThree.Applications.Crawler
             {
                 foreach (XElement post in document.Descendants("post"))
                 {
+                    if (!PostWithinTimeSpan(post))
+                        continue;
                     if (post.Attribute("type").Value == "link" && (!tags.Any() ||
                         post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase))))
                     {
@@ -488,6 +530,8 @@ namespace TumblThree.Applications.Crawler
             {
                 foreach (XElement post in document.Descendants("post"))
                 {
+                    if (!PostWithinTimeSpan(post))
+                        continue;
                     if (post.Attribute("type").Value == "conversation" && (!tags.Any() ||
                         post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase))))
                     {
@@ -507,6 +551,8 @@ namespace TumblThree.Applications.Crawler
             {
                 foreach (XElement post in document.Descendants("post"))
                 {
+                    if (!PostWithinTimeSpan(post))
+                        continue;
                     if (post.Attribute("type").Value == "answer" && (!tags.Any() ||
                         post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase))))
                     {
@@ -526,6 +572,8 @@ namespace TumblThree.Applications.Crawler
             {
                 foreach (XElement post in document.Descendants("post"))
                 {
+                    if (!PostWithinTimeSpan(post))
+                        continue;
                     if (post.Attribute("type").Value == "photo" && (!tags.Any() ||
                         post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase))))
                     {
@@ -545,6 +593,8 @@ namespace TumblThree.Applications.Crawler
             {
                 foreach (XElement post in document.Descendants("post"))
                 {
+                    if (!PostWithinTimeSpan(post))
+                        continue;
                     if (post.Attribute("type").Value == "video" && (!tags.Any() ||
                         post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase))))
                     {
@@ -564,6 +614,8 @@ namespace TumblThree.Applications.Crawler
             {
                 foreach (XElement post in document.Descendants("post"))
                 {
+                    if (!PostWithinTimeSpan(post))
+                        continue;
                     if (post.Attribute("type").Value == "audio" && (!tags.Any() ||
                         post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase))))
                     {

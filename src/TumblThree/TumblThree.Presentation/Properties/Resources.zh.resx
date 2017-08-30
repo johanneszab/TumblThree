@@ -606,11 +606,17 @@
   <data name="ToolTipDownloadFrom" xml:space="preserve">
     <value>从此日期检索帖子</value>
   </data>
-  <data name="ToolTipDownloadFromDescription" xml:space="preserve">
+  <data name="ToolTipDownloadTagsFromDescription" xml:space="preserve">
     <value>必须是YYYYMMDD格式。空意味着从2007年5月开始。</value>
   </data>
   <data name="ToolTipDownloadTo" xml:space="preserve">
     <value>抓取帖子到这个日期</value>
+  </data>
+  <data name="ToolTipDownloadTagsToDescription" xml:space="preserve">
+    <value>必须是YYYYMMDD格式。空意味着现在。</value>
+  </data>
+  <data name="ToolTipDownloadFromDescription" xml:space="preserve">
+    <value>必须是YYYYMMDD格式。空白表示从博客开始。</value>
   </data>
   <data name="ToolTipDownloadToDescription" xml:space="preserve">
     <value>必须是YYYYMMDD格式。空意味着现在。</value>

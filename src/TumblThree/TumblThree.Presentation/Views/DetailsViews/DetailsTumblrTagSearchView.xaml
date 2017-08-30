@@ -239,7 +239,7 @@
                         <ToolTip>
                             <StackPanel>
                                 <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadFrom}" />
-                                <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipDownloadFromDescription}" />
+                                <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipDownloadTagsFromDescription}" />
                             </StackPanel>
                         </ToolTip>
                     </Label.ToolTip>
@@ -252,7 +252,7 @@
                             <StackPanel>
                                 <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadFrom}" />
                                 <TextBlock xml:space="preserve"
-                                           Text="{x:Static p:Resources.ToolTipDownloadFromDescription}" />
+                                           Text="{x:Static p:Resources.ToolTipDownloadTagsFromDescription}" />
                             </StackPanel>
                         </ToolTip>
                     </TextBox.ToolTip>
@@ -263,7 +263,7 @@
                         <ToolTip>
                             <StackPanel>
                                 <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadTo}" />
-                                <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipDownloadToDescription}" />
+                                <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipDownloadTagsToDescription}" />
                             </StackPanel>
                         </ToolTip>
                     </Label.ToolTip>
@@ -276,7 +276,7 @@
                             <StackPanel>
                                 <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadTo}" />
                                 <TextBlock xml:space="preserve"
-                                           Text="{x:Static p:Resources.ToolTipDownloadToDescription}" />
+                                           Text="{x:Static p:Resources.ToolTipDownloadTagsToDescription}" />
                             </StackPanel>
                         </ToolTip>
                     </TextBox.ToolTip>

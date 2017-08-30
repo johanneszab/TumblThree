@@ -597,11 +597,17 @@
   <data name="ToolTipDownloadFrom" xml:space="preserve">
     <value>Заполнять сообщения с этой даты</value>
   </data>
-  <data name="ToolTipDownloadFromDescription" xml:space="preserve">
+  <data name="ToolTipDownloadTagsFromDescription" xml:space="preserve">
     <value>Должно быть в формате YYYYMMDD. Пустые средства - с мая 2007 года.</value>
   </data>
   <data name="ToolTipDownloadTo" xml:space="preserve">
     <value>Заполнять сообщения на эту дату</value>
+  </data>
+  <data name="ToolTipDownloadTagsToDescription" xml:space="preserve">
+    <value>Должно быть в формате YYYYMMDD. Пустое означает сейчас.</value>
+  </data>
+  <data name="ToolTipDownloadFromDescription" xml:space="preserve">
+    <value>Должно быть в формате YYYYMMDD. Пустой означает с самого начала блога.</value>
   </data>
   <data name="ToolTipDownloadToDescription" xml:space="preserve">
     <value>Должно быть в формате YYYYMMDD. Пустое означает сейчас.</value>
