@@ -142,7 +142,21 @@ namespace TumblThree.Domain.Models
 
         Exception LoadError { get; set; }
 
-        List<string> Links { get; set; }
+        List<string> Links { get; }
+
+        void UpdateProgress();
+
+        void UpdatePostCount(string propertyName);
+
+        void AddFileToDb(string fileName);
+
+        bool CreateDataFolder();
+
+        bool CheckIfFileExistsInDB(string url);
+
+        bool CheckIfBlogShouldCheckDirectory(string url);
+
+        bool CheckIfFileExistsInDirectory(string url);
 
         bool Save();
 

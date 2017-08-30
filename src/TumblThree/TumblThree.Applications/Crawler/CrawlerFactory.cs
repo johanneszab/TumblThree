@@ -77,7 +77,7 @@ namespace TumblThree.Applications.Crawler
 
         private TumblrDownloader GetTumblrDownloader(CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, IShellService shellService, ICrawlerService crawlerService, IBlog blog, IFiles files, BlockingCollection<TumblrPost> producerConsumerCollection)
         {
-            return new TumblrDownloader(shellService, GetBlogService(blog, files), ct, pt, progress, producerConsumerCollection, GetFileDownloader(ct), crawlerService, blog);
+            return new TumblrDownloader(shellService, ct, pt, progress, producerConsumerCollection, GetFileDownloader(ct), crawlerService, blog, files);
         }
 
         private BlockingCollection<TumblrPost> GetProducerConsumerCollection()
