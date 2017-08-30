@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Threading;
 using System.Waf.Foundation;
 using System.Xml;
 
@@ -12,13 +15,17 @@ namespace TumblThree.Domain.Models
     [DataContract]
     public class Files : Model, IFiles
     {
+        [DataMember(Name = "Links")]
         private List<string> links;
+
+        private object lockObjectProgress = new object();
+        private object lockObjectDb = new object();
 
         public Files()
         {
         }
 
-        public Files(string name, string location, BlogTypes blogType)
+        public Files(string name, string location, BlogTypes blogType) : this()
         {
             Name = name;
             Location = location;
@@ -39,11 +46,31 @@ namespace TumblThree.Domain.Models
         [DataMember]
         public string Version { get; set; }
 
-        [DataMember]
-        public List<string> Links
+        public IList<string> Links
         {
             get { return links; }
-            set { SetProperty(ref links, value); }
+            private set { }
+        }
+
+        public void AddFileToDb(string fileName)
+        {
+            lock (lockObjectProgress)
+            {
+                Links.Add(fileName);
+            }
+        }
+
+        public virtual bool CheckIfFileExistsInDB(string url)
+        {
+            string fileName = url.Split('/').Last();
+            Monitor.Enter(lockObjectDb);
+            if (Links.Contains(fileName))
+            {
+                Monitor.Exit(lockObjectDb);
+                return true;
+            }
+            Monitor.Exit(lockObjectDb);
+            return false;
         }
 
         public IFiles Load(string fileLocation)
@@ -110,6 +137,13 @@ namespace TumblThree.Domain.Models
                 Logger.Error("Files:Save: {0}", ex);
                 throw;
             }
+        }
+
+        [OnDeserializing]
+        private void OnDeserializing(StreamingContext context)
+        {
+            lockObjectDb = new object();
+            lockObjectProgress = new object();
         }
     }
 }

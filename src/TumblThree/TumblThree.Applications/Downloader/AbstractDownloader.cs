@@ -19,22 +19,22 @@ namespace TumblThree.Applications.Downloader
     public abstract class AbstractDownloader : IDownloader
     {
         protected readonly IBlog blog;
+        protected readonly IFiles files;
         protected readonly ICrawlerService crawlerService;
         protected readonly IProgress<DownloadProgress> progress;
         protected readonly object lockObjectDownload = new object();
         protected readonly BlockingCollection<TumblrPost> producerConsumerCollection;
         protected readonly IShellService shellService;
-        protected readonly IBlogService blogService;
         protected readonly CancellationToken ct;
         protected readonly PauseToken pt;
         protected readonly FileDownloader fileDownloader;
 
-        protected AbstractDownloader(IShellService shellService, IBlogService blogService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, BlockingCollection<TumblrPost> producerConsumerCollection, FileDownloader fileDownloader, ICrawlerService crawlerService = null, IBlog blog = null, IFiles files = null)
+        protected AbstractDownloader(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, BlockingCollection<TumblrPost> producerConsumerCollection, FileDownloader fileDownloader, ICrawlerService crawlerService = null, IBlog blog = null, IFiles files = null)
         {
             this.shellService = shellService;
-            this.blogService = blogService;
             this.crawlerService = crawlerService;
             this.blog = blog;
+            this.files = files;
             this.ct = ct;
             this.pt = pt;
             this.progress = progress;
@@ -132,7 +132,7 @@ namespace TumblThree.Applications.Downloader
             var trackedTasks = new List<Task>();
             var completeDownload = true;
 
-            blogService.CreateDataFolder();
+            blog.CreateDataFolder();
 
             foreach (TumblrPost downloadItem in producerConsumerCollection.GetConsumingEnumerable())
             {
@@ -160,7 +160,7 @@ namespace TumblThree.Applications.Downloader
             blog.LastDownloadedPhoto = null;
             blog.LastDownloadedVideo = null;
 
-            blogService.SaveFiles();
+            files.Save();
 
             return completeDownload;
         }
@@ -210,7 +210,7 @@ namespace TumblThree.Applications.Downloader
         protected virtual async Task<bool> DownloadPhotoAsync(TumblrPost downloadItem)
         {
             string url = Url(downloadItem);
-            if (!(blogService.CheckIfFileExistsInDB(url) || blogService.CheckIfBlogShouldCheckDirectory(GetCoreImageUrl(url))))
+            if (!(files.CheckIfFileExistsInDB(url) || blog.CheckIfBlogShouldCheckDirectory(GetCoreImageUrl(url))))
             {
                 string blogDownloadLocation = blog.DownloadLocation();
                 string fileName = FileName(downloadItem);
@@ -243,7 +243,7 @@ namespace TumblThree.Applications.Downloader
         private async Task DownloadVideoAsync(TumblrPost downloadItem)
         {
             string url = Url(downloadItem);
-            if (!(blogService.CheckIfFileExistsInDB(url) || blogService.CheckIfBlogShouldCheckDirectory(url)))
+            if (!(files.CheckIfFileExistsInDB(url) || blog.CheckIfBlogShouldCheckDirectory(url)))
             {
                 string blogDownloadLocation = blog.DownloadLocation();
                 string fileName = FileName(downloadItem);
@@ -266,7 +266,7 @@ namespace TumblThree.Applications.Downloader
         private async Task DownloadAudioAsync(TumblrPost downloadItem)
         {
             string url = Url(downloadItem);
-            if (!(blogService.CheckIfFileExistsInDB(url) || blogService.CheckIfBlogShouldCheckDirectory(url)))
+            if (!(files.CheckIfFileExistsInDB(url) || blog.CheckIfBlogShouldCheckDirectory(url)))
             {
                 string blogDownloadLocation = blog.DownloadLocation();
                 string fileName = FileName(downloadItem);
@@ -285,7 +285,7 @@ namespace TumblThree.Applications.Downloader
         private void DownloadText(TumblrPost downloadItem)
         {
             string postId = PostId(downloadItem);
-            if (!blogService.CheckIfFileExistsInDB(postId))
+            if (!files.CheckIfFileExistsInDB(postId))
             {
                 string url = Url(downloadItem);
                 string blogDownloadLocation = blog.DownloadLocation();
@@ -301,7 +301,7 @@ namespace TumblThree.Applications.Downloader
         private void DownloadQuote(TumblrPost downloadItem)
         {
             string postId = PostId(downloadItem);
-            if (!blogService.CheckIfFileExistsInDB(postId))
+            if (!files.CheckIfFileExistsInDB(postId))
             {
                 string blogDownloadLocation = blog.DownloadLocation();
                 string url = Url(downloadItem);
@@ -317,7 +317,7 @@ namespace TumblThree.Applications.Downloader
         private void DownloadLink(TumblrPost downloadItem)
         {
             string postId = PostId(downloadItem);
-            if (!blogService.CheckIfFileExistsInDB(postId))
+            if (!files.CheckIfFileExistsInDB(postId))
             {
                 string blogDownloadLocation = blog.DownloadLocation();
                 string url = Url(downloadItem);
@@ -333,7 +333,7 @@ namespace TumblThree.Applications.Downloader
         private void DownloadConversation(TumblrPost downloadItem)
         {
             string postId = PostId(downloadItem);
-            if (!blogService.CheckIfFileExistsInDB(postId))
+            if (!files.CheckIfFileExistsInDB(postId))
             {
                 string blogDownloadLocation = blog.DownloadLocation();
                 string url = Url(downloadItem);
@@ -349,7 +349,7 @@ namespace TumblThree.Applications.Downloader
         private void DownloadAnswer(TumblrPost downloadItem)
         {
             string postId = PostId(downloadItem);
-            if (!blogService.CheckIfFileExistsInDB(postId))
+            if (!files.CheckIfFileExistsInDB(postId))
             {
                 string blogDownloadLocation = blog.DownloadLocation();
                 string url = Url(downloadItem);
@@ -367,7 +367,7 @@ namespace TumblThree.Applications.Downloader
 
             string postId = PostId(downloadItem);
 
-            if (!blogService.CheckIfFileExistsInDB(postId))
+            if (!files.CheckIfFileExistsInDB(postId))
             {
                 string blogDownloadLocation = blog.DownloadLocation();
                 string url = Url(downloadItem);
@@ -383,7 +383,7 @@ namespace TumblThree.Applications.Downloader
         private void DownloadVideoMeta(TumblrPost downloadItem)
         {
             string postId = PostId(downloadItem);
-            if (!blogService.CheckIfFileExistsInDB(postId))
+            if (!files.CheckIfFileExistsInDB(postId))
             {
                 string blogDownloadLocation = blog.DownloadLocation();
                 string url = Url(downloadItem);
@@ -399,7 +399,7 @@ namespace TumblThree.Applications.Downloader
         private void DownloadAudioMeta(TumblrPost downloadItem)
         {
             string postId = PostId(downloadItem);
-            if (!blogService.CheckIfFileExistsInDB(postId))
+            if (!files.CheckIfFileExistsInDB(postId))
             {
                 string blogDownloadLocation = blog.DownloadLocation();
                 string url = Url(downloadItem);
@@ -414,9 +414,9 @@ namespace TumblThree.Applications.Downloader
 
         private void UpdateBlogDB(string postType, string fileName)
         {
-            blogService.UpdateBlogPostCount(postType);
-            blogService.UpdateBlogProgress();
-            blogService.UpdateBlogDB(fileName);
+            blog.UpdatePostCount(postType);
+            blog.UpdateProgress();
+            files.AddFileToDb(fileName);
         }
 
         protected void SetFileDate(string fileLocation, DateTime postDate)

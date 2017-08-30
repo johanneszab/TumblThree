@@ -5,7 +5,11 @@ namespace TumblThree.Domain.Models
 {
     public interface IFiles : INotifyPropertyChanged
     {
-        List<string> Links { get; set; }
+        IList<string> Links { get; }
+
+        void AddFileToDb(string fileName);
+
+        bool CheckIfFileExistsInDB(string url);
 
         bool Save();
 

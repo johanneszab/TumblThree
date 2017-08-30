@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Threading;
 using System.Waf.Foundation;
 using System.Xml;
 
@@ -70,8 +72,14 @@ namespace TumblThree.Domain.Models
         private bool online;
         private int progress;
         private int quotes;
+        [DataMember(Name = "Links")]
         private List<string> links;
         private int downloadedImages;
+
+        private object lockObjectProgress = new object();
+        private object lockObjectPostCount = new object();
+        private object lockObjectDb = new object();
+        private object lockObjectDirectory = new object();
 
         public static Blog Create(string url, string location, BlogTypes blogType)
         {
@@ -82,7 +90,8 @@ namespace TumblThree.Domain.Models
                 BlogType = blogType,
                 Location = location,
                 Version = "3",
-                DateAdded = DateTime.Now
+                DateAdded = DateTime.Now,
+                links = new List<string>()
             };
 
             Directory.CreateDirectory(location);
@@ -579,11 +588,10 @@ namespace TumblThree.Domain.Models
         [DataMember]
         public Exception LoadError { get; set; }
 
-        [DataMember]
         public List<string> Links
         {
             get { return links; }
-            set { SetProperty(ref links, value); }
+            private set { }
         }
 
         [DataMember]
@@ -648,6 +656,81 @@ namespace TumblThree.Domain.Models
                 SetProperty(ref forceRescan, value);
                 Dirty = true;
             }
+        }
+
+        public void UpdateProgress()
+        {
+            lock (lockObjectProgress)
+            {
+                DownloadedImages++;
+                Progress = (int)((double)DownloadedImages / (double)TotalCount * 100);
+            }
+        }
+
+        public void UpdatePostCount(string propertyName)
+        {
+            lock (lockObjectPostCount)
+            {
+                PropertyInfo property = typeof(IBlog).GetProperty(propertyName);
+                var postCounter = (int)property.GetValue(this);
+                postCounter++;
+                property.SetValue(this, postCounter, null);
+            }
+
+        }
+
+        public void AddFileToDb(string fileName)
+        {
+            lock (lockObjectProgress)
+            {
+                Links.Add(fileName);
+            }
+        }
+
+        public bool CreateDataFolder()
+        {
+            if (!Directory.Exists(DownloadLocation()))
+            {
+                Directory.CreateDirectory(DownloadLocation());
+                return true;
+            }
+            return true;
+        }
+
+        public virtual bool CheckIfFileExistsInDB(string url)
+        {
+            string fileName = url.Split('/').Last();
+            Monitor.Enter(lockObjectDb);
+            if (Links.Contains(fileName))
+            {
+                Monitor.Exit(lockObjectDb);
+                return true;
+            }
+            Monitor.Exit(lockObjectDb);
+            return false;
+        }
+
+        public virtual bool CheckIfBlogShouldCheckDirectory(string url)
+        {
+            if (CheckDirectoryForFiles)
+            {
+                return CheckIfFileExistsInDirectory(url);
+            }
+            return false;
+        }
+
+        public virtual bool CheckIfFileExistsInDirectory(string url)
+        {
+            string fileName = url.Split('/').Last();
+            Monitor.Enter(lockObjectDirectory);
+            string blogPath = DownloadLocation();
+            if (File.Exists(Path.Combine(blogPath, fileName)))
+            {
+                Monitor.Exit(lockObjectDirectory);
+                return true;
+            }
+            Monitor.Exit(lockObjectDirectory);
+            return false;
         }
 
         public string DownloadLocation()
@@ -754,6 +837,10 @@ namespace TumblThree.Domain.Models
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
         {
+            lockObjectProgress = new object();
+            lockObjectPostCount = new object();
+            lockObjectDb = new object();
+            lockObjectDirectory = new object();
         }
     }
 }
