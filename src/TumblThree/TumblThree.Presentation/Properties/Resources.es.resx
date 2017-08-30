@@ -606,11 +606,17 @@
   <data name="ToolTipDownloadFrom" xml:space="preserve">
     <value>Rastrear mensajes desde esta fecha</value>
   </data>
-  <data name="ToolTipDownloadFromDescription" xml:space="preserve">
+  <data name="ToolTipDownloadTagsFromDescription" xml:space="preserve">
     <value>Debe estar en formato AAAAMMDD. Vaciar significa desde mayo de 2007.</value>
   </data>
   <data name="ToolTipDownloadTo" xml:space="preserve">
     <value>Rastrear posts a esta fecha</value>
+  </data>
+  <data name="ToolTipDownloadTagsToDescription" xml:space="preserve">
+    <value>Debe estar en formato AAAAMMDD. Vacío significa ahora.</value>
+  </data>
+  <data name="ToolTipDownloadFromDescription" xml:space="preserve">
+    <value>Debe estar en formato AAAAMMDD. Empty significa desde el principio del blog.</value>
   </data>
   <data name="ToolTipDownloadToDescription" xml:space="preserve">
     <value>Debe estar en formato AAAAMMDD. Vacío significa ahora.</value>

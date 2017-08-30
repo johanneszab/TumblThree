@@ -606,11 +606,17 @@
   <data name="ToolTipDownloadFrom" xml:space="preserve">
     <value>Ranger les messages à partir de cette date</value>
   </data>
-  <data name="ToolTipDownloadFromDescription" xml:space="preserve">
+  <data name="ToolTipDownloadTagsFromDescription" xml:space="preserve">
     <value>Doit être au format YYYYMMDD. Moyens vide à partir de mai 2007.</value>
   </data>
   <data name="ToolTipDownloadTo" xml:space="preserve">
     <value>Ranger les messages à cette date</value>
+  </data>
+  <data name="ToolTipDownloadTagsToDescription" xml:space="preserve">
+    <value>Doit être au format YYYYMMDD. Des moyens vides pour l'instant.</value>
+  </data>
+  <data name="ToolTipDownloadFromDescription" xml:space="preserve">
+    <value>Doit être au format YYYYMMDD. Vide signifie dès le début du blog.</value>
   </data>
   <data name="ToolTipDownloadToDescription" xml:space="preserve">
     <value>Doit être au format YYYYMMDD. Des moyens vides pour l'instant.</value>

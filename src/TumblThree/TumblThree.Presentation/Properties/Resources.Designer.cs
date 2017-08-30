@@ -1258,7 +1258,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Must be in YYYYMMDD format. Empty means from May 2007..
+        ///   Looks up a localized string similar to Must be in YYYYMMDD format. Empty means from the beginning of the blog..
         /// </summary>
         public static string ToolTipDownloadFromDescription {
             get {
@@ -1281,6 +1281,24 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipDownloadPagesDescription {
             get {
                 return ResourceManager.GetString("ToolTipDownloadPagesDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Must be in YYYYMMDD format. Empty means from May 2007..
+        /// </summary>
+        public static string ToolTipDownloadTagsFromDescription {
+            get {
+                return ResourceManager.GetString("ToolTipDownloadTagsFromDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Must be in YYYYMMDD format. Empty means to now..
+        /// </summary>
+        public static string ToolTipDownloadTagsToDescription {
+            get {
+                return ResourceManager.GetString("ToolTipDownloadTagsToDescription", resourceCulture);
             }
         }
         

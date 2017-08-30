@@ -41,7 +41,7 @@ namespace TumblThree.Applications.Crawler
             {
                 if (webException.Message.Contains("429"))
                 {
-                    Logger.Error("TumblrBlogCrawler:IsBlogOnlineAsync:WebException {0}", webException);
+                    Logger.Error("TumblrPrivateBlogCrawler:IsBlogOnlineAsync:WebException {0}", webException);
                     shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
                     blog.Online = true;
                     return;
@@ -71,7 +71,7 @@ namespace TumblThree.Applications.Crawler
                 var webRespStatusCode = (int)((HttpWebResponse)webException?.Response).StatusCode;
                 if (webRespStatusCode == 503)
                 {
-                    Logger.Error("TumblrBlogCrawler:GetUrlsAsync: {0}", "User not logged in");
+                    Logger.Error("TumblrPrivateCrawler:GetUrlsAsync: {0}", "User not logged in");
                     shellService.ShowError(new Exception("User not logged in"), Resources.NotLoggedIn, blog.Name);
                 }
                 else
@@ -83,7 +83,7 @@ namespace TumblThree.Applications.Crawler
 
         public async Task Crawl()
         {
-            Logger.Verbose("TumblrBlogCrawler.Crawl:Start");
+            Logger.Verbose("TumblrPrivateCrawler.Crawl:Start");
 
             Task grabber = GetUrlsAsync();
             Task<bool> download = downloader.DownloadBlogAsync();
@@ -152,7 +152,7 @@ namespace TumblThree.Applications.Crawler
 
             if (!await CheckIfLoggedIn())
             {
-                Logger.Error("TumblrBlogCrawler:GetUrlsAsync: {0}", "User not logged in");
+                Logger.Error("TumblrPrivateCrawler:GetUrlsAsync: {0}", "User not logged in");
                 shellService.ShowError(new Exception("User not logged in"), Resources.NotLoggedIn, blog.Name);
                 producerConsumerCollection.CompleteAdding();
                 return;
@@ -180,7 +180,7 @@ namespace TumblThree.Applications.Crawler
                         if (webException.Message.Contains("429"))
                         {
                             // TODO: add retry logic?
-                            Logger.Error("TumblrBlogCrawler:GetUrls:WebException {0}", webException);
+                            Logger.Error("TumblrPrivateCrawler:GetUrls:WebException {0}", webException);
                             shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
                         }
                     }
@@ -201,6 +201,32 @@ namespace TumblThree.Applications.Crawler
             //{
             UpdateBlogStats();
             //}
+        }
+
+        private bool PostWithinTimeSpan(Post post)
+        {
+            if (!string.IsNullOrEmpty(blog.DownloadFrom) && !string.IsNullOrEmpty(blog.DownloadTo))
+            {
+                long downloadFromUnixTime = 0;
+                long downloadToUnixTime = long.MaxValue;
+                if (!string.IsNullOrEmpty(blog.DownloadFrom))
+                {
+                    DateTime downloadFrom = DateTime.ParseExact(blog.DownloadFrom, "yyyyMMdd", CultureInfo.InvariantCulture,
+                        DateTimeStyles.None);
+                    downloadFromUnixTime = new DateTimeOffset(downloadFrom).ToUnixTimeSeconds();
+                }
+                if (!string.IsNullOrEmpty(blog.DownloadTo))
+                {
+                    DateTime downloadTo = DateTime.ParseExact(blog.DownloadTo, "yyyyMMdd", CultureInfo.InvariantCulture,
+                        DateTimeStyles.None);
+                    downloadToUnixTime = new DateTimeOffset(downloadTo).ToUnixTimeSeconds();
+                }
+                long postTime = 0;
+                postTime = Convert.ToInt64(post.timestamp);
+                if (downloadFromUnixTime >= postTime || postTime >= downloadToUnixTime)
+                    return false;
+            }
+            return true;
         }
 
         private async Task<bool> CheckIfLoggedIn()
@@ -321,6 +347,8 @@ namespace TumblThree.Applications.Crawler
             {
                 foreach (Post post in document.response.posts)
                 {
+                    if (!PostWithinTimeSpan(post))
+                        continue;
                     if (post.type == "photo" && (!tags.Any() || post.tags.Intersect(tags, StringComparer.OrdinalIgnoreCase).Any()))
                     {
                         if (CheckIfDownloadRebloggedPosts(post))
@@ -383,6 +411,8 @@ namespace TumblThree.Applications.Crawler
             {
                 foreach (Post post in document.response.posts)
                 {
+                    if (!PostWithinTimeSpan(post))
+                        continue;
                     if (post.type == "video" && (!tags.Any() || post.tags.Intersect(tags, StringComparer.OrdinalIgnoreCase).Any()))
                     {
                         if (CheckIfDownloadRebloggedPosts(post))
@@ -442,6 +472,8 @@ namespace TumblThree.Applications.Crawler
             {
                 foreach (Post post in document.response.posts)
                 {
+                    if (!PostWithinTimeSpan(post))
+                        continue;
                     if (post.type == "audio" && (!tags.Any() || post.tags.Intersect(tags, StringComparer.OrdinalIgnoreCase).Any()))
                     {
                         if (CheckIfDownloadRebloggedPosts(post))
@@ -463,6 +495,8 @@ namespace TumblThree.Applications.Crawler
             {
                 foreach (Post post in document.response.posts)
                 {
+                    if (!PostWithinTimeSpan(post))
+                        continue;
                     if (post.type == "text" && (!tags.Any() || post.tags.Intersect(tags, StringComparer.OrdinalIgnoreCase).Any()))
                     {
                         if (CheckIfDownloadRebloggedPosts(post))
@@ -482,6 +516,8 @@ namespace TumblThree.Applications.Crawler
             {
                 foreach (Post post in document.response.posts)
                 {
+                    if (!PostWithinTimeSpan(post))
+                        continue;
                     if (post.type == "quote" && (!tags.Any() || post.tags.Intersect(tags, StringComparer.OrdinalIgnoreCase).Any()))
                     {
                         if (CheckIfDownloadRebloggedPosts(post))
@@ -501,6 +537,8 @@ namespace TumblThree.Applications.Crawler
             {
                 foreach (Post post in document.response.posts)
                 {
+                    if (!PostWithinTimeSpan(post))
+                        continue;
                     if (post.type == "link" && (!tags.Any() || post.tags.Intersect(tags, StringComparer.OrdinalIgnoreCase).Any()))
                     {
                         if (CheckIfDownloadRebloggedPosts(post))
@@ -520,6 +558,8 @@ namespace TumblThree.Applications.Crawler
             {
                 foreach (Post post in document.response.posts)
                 {
+                    if (!PostWithinTimeSpan(post))
+                        continue;
                     if (post.type == "chat" && (!tags.Any() || post.tags.Intersect(tags, StringComparer.OrdinalIgnoreCase).Any()))
                     {
                         if (CheckIfDownloadRebloggedPosts(post))
@@ -539,6 +579,8 @@ namespace TumblThree.Applications.Crawler
             {
                 foreach (Post post in document.response.posts)
                 {
+                    if (!PostWithinTimeSpan(post))
+                        continue;
                     if (post.type == "answer" && (!tags.Any() || post.tags.Intersect(tags, StringComparer.OrdinalIgnoreCase).Any()))
                     {
                         if (CheckIfDownloadRebloggedPosts(post))
@@ -558,6 +600,8 @@ namespace TumblThree.Applications.Crawler
             {
                 foreach (Post post in document.response.posts)
                 {
+                    if (!PostWithinTimeSpan(post))
+                        continue;
                     if (post.type == "photo" && (!tags.Any() || post.tags.Intersect(tags, StringComparer.OrdinalIgnoreCase).Any()))
                     {
                         if (CheckIfDownloadRebloggedPosts(post))
@@ -577,6 +621,8 @@ namespace TumblThree.Applications.Crawler
             {
                 foreach (Post post in document.response.posts)
                 {
+                    if (!PostWithinTimeSpan(post))
+                        continue;
                     if (post.type == "video" && (!tags.Any() || post.tags.Intersect(tags, StringComparer.OrdinalIgnoreCase).Any()))
                     {
                         if (CheckIfDownloadRebloggedPosts(post))
@@ -596,6 +642,8 @@ namespace TumblThree.Applications.Crawler
             {
                 foreach (Post post in document.response.posts)
                 {
+                    if (!PostWithinTimeSpan(post))
+                        continue;
                     if (post.type == "audio" && (!tags.Any() || post.tags.Intersect(tags, StringComparer.OrdinalIgnoreCase).Any()))
                     {
                         if (CheckIfDownloadRebloggedPosts(post))

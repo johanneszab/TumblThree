@@ -36,8 +36,8 @@ namespace TumblThree.Presentation.Views
 
         private void SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ViewModel.SelectionService.AddRange(e.AddedItems.Cast<IBlog>());
             ViewModel.SelectionService.RemoveRange(e.RemovedItems.Cast<IBlog>());
+            ViewModel.SelectionService.AddRange(e.AddedItems.Cast<IBlog>());
         }
 
         private ManagerViewModel ViewModel

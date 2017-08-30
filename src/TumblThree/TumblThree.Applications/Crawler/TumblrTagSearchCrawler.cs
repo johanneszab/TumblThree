@@ -104,7 +104,7 @@ namespace TumblThree.Applications.Crawler
 
             //if (!ct.IsCancellationRequested)
             //{
-            UpdateBlogStats();
+                UpdateBlogStats();
             //}
         }
 
@@ -117,7 +117,7 @@ namespace TumblThree.Applications.Crawler
                     DateTimeStyles.None);
                 var dateTimeOffset = new DateTimeOffset(downloadFrom);
                 tagsIntroduced = dateTimeOffset.ToUnixTimeSeconds();
-            }
+            }                           
             long unixTimeNow = DateTimeOffset.Now.ToUnixTimeSeconds();
             if (!string.IsNullOrEmpty(blog.DownloadTo))
             {
@@ -235,7 +235,7 @@ namespace TumblThree.Applications.Crawler
         {
             if (blog.DownloadPhoto)
             {
-                var regex = new Regex("\"(http[A-Za-z0-9_/:.]*media.tumblr.com[A-Za-z0-9_/:.]*(jpg|png|gif))\"");
+                var regex = new Regex("src=\"(http[A-Za-z0-9_/:.]*media.tumblr.com[A-Za-z0-9_/:.]*(jpg|png|gif))\"");
                 foreach (Match match in regex.Matches(document))
                 {
                     string imageUrl = match.Groups[1].Value;
