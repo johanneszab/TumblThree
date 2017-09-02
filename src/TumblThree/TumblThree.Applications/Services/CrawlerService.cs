@@ -15,7 +15,6 @@ namespace TumblThree.Applications.Services
     {
         private readonly ObservableCollection<QueueListItem> activeItems;
         private readonly ReadOnlyObservableList<QueueListItem> readonlyActiveItems;
-        private readonly IShellService shellService;
         private ICommand addBlogCommand;
         private ICommand autoDownloadCommand;
         private ICommand crawlCommand;
@@ -38,7 +37,6 @@ namespace TumblThree.Applications.Services
         [ImportingConstructor]
         public CrawlerService(IShellService shellService)
         {
-            this.shellService = shellService;
             timeconstraint =
                 RateLimiter.Create((double)shellService.Settings.MaxConnections /
                                    (double)shellService.Settings.ConnectionTimeInterval);

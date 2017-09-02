@@ -614,8 +614,8 @@ namespace TumblThree.Applications.ViewModels
                 OAuthTokenSecret = string.Empty;
                 DownloadLocation = "Blogs";
                 ExportLocation = "blogs.txt";
-                ParallelImages = 25;
-                ParallelBlogs = 2;
+                ParallelImages = 8;
+                ParallelBlogs = 1;
                 ParallelScans = 4;
                 LimitScanBandwidth = false;
                 TimeOut = 120;

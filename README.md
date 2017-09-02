@@ -18,6 +18,7 @@ TumblThree is the code rewrite of [TumblTwo](https://github.com/johanneszab/Tumb
 * Allows to download only original content of the blog and skip reblogged posts.
 * Set a time interval for a automatic download (e.g. during nights).
 * Can download only specific blog pages instead of the whole blog.
+* Allows to download blog posts in a defined time span.
 * Uses SSL instead of unsecure http connections.
 * Allows to set a proxy.
 * A bandwidth throttler.
@@ -92,7 +93,7 @@ The default settings should cover most users. You should only have to change the
     *  _Force Rescan_: Force Rescan always crawls the whole blog and not just new posts which were added after the last successful crawl. The statistics of a blog (total posts, number of post, number of duplicates) currently can only be updated if the whole blog is crawled. Thus, disabling this might result in downloading "more" posts than displayed in TumblThree. If you don't matter if about the displayed blog statistics, turning Force Rescan off will decrease the scanning time since already downloaded posts are skipped in the scanning.
 
 Settings you might want to change if the download speed is not satisfactory:
-* General -> Parallel connections: Specifies the number of connections used for downloading posts. The number is shared between all actively downloading blogs.
+* General -> Parallel connections: Specifies the number of connections used for downloading posts. The number is shared between all actively downloading blogs. __Note:__ If you only download video blogs, you might want to decrease the number of parallel connections to eight or below, depending on your internet connection speed. Otherwise you might end up with incomplete files as the tumblr servers regularly close all open connections if there are too many open. For small files (images) this generally isn't an issue.
 * General -> Parallel Blogs: Number of blogs to download in parallel.
 
 Most likely you don't have to change any of the other connection settings. In particular, settings you should never change, unless you're sure you know what you are doing:
