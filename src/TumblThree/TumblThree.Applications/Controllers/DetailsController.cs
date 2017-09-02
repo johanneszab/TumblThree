@@ -94,7 +94,7 @@ namespace TumblThree.Applications.Controllers
             foreach (IBlog blog in blogsToSave)
             {
                 PropertyInfo property = typeof(IBlog).GetProperty(e.PropertyName);
-                property.SetValue(blog, property.GetValue(DetailsViewModel.BlogFile), null);
+                property.SetValue(blog, property.GetValue(DetailsViewModel.BlogFile));
             }
         }
 
@@ -181,7 +181,7 @@ namespace TumblThree.Applications.Controllers
             var value = (T)property.GetValue(blogs.FirstOrDefault());
             if (value != null)
             {
-                bool equal = blogs.All(blog => property.GetValue(blog).Equals(value));
+                bool equal = blogs.All(blog => property.GetValue(blog)?.Equals(value) ?? false);
                 if (equal)
                     return value;
                 return default(T);

@@ -91,7 +91,7 @@ namespace TumblThree.Applications.Crawler
             // Quote: The Timeout property has no effect on asynchronous requests made with the BeginGetResponse or BeginGetRequestStream method.
             // TODO: Use HttpClient instead?
             request.ReadWriteTimeout = shellService.Settings.TimeOut * 1000;
-            request.Timeout = -1;
+            request.Timeout = shellService.Settings.TimeOut * 1000;
             request.CookieContainer = SharedCookieService.GetUriCookieContainer(new Uri("https://www.tumblr.com/"));
             ServicePointManager.DefaultConnectionLimit = 400;
             request = SetWebRequestProxy(request, shellService.Settings);
@@ -113,7 +113,7 @@ namespace TumblThree.Applications.Crawler
             request.Method = "POST";
             request.Accept = "application/json, text/javascript, */*; q=0.01";
             request.ContentType = "application/x-www-form-urlencoded";
-            request.Referer = @"https://www.tumblr.com/search/" + blog.Name;
+            request.Referer = referer;
             request.Headers["X-Requested-With"] = "XMLHttpRequest";
             if (headers == null)
             {

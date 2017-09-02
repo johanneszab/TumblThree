@@ -40,7 +40,7 @@ namespace TumblThree.Applications
             // Quote: The Timeout property has no effect on asynchronous requests made with the BeginGetResponse or BeginGetRequestStream method.
             // TODO: Use HttpClient instead?
             request.ReadWriteTimeout = settings.TimeOut * 1000;
-            request.Timeout = -1;
+            request.Timeout = settings.TimeOut * 1000;
             //TODO: Fix site specific cookies!
             request.CookieContainer = SharedCookieService.GetUriCookieContainer(new Uri("https://www.tumblr.com/"));
             ServicePointManager.DefaultConnectionLimit = 400;
