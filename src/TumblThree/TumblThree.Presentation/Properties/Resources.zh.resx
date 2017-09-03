@@ -621,4 +621,10 @@
   <data name="ToolTipDownloadToDescription" xml:space="preserve">
     <value>必须是YYYYMMDD格式。空意味着现在。</value>
   </data>
+  <data name="ToolTipPageSizeTumblrSearch" xml:space="preserve">
+    <value>每页帖数</value>
+  </data>
+  <data name="ToolTipPageSizeTumblrSearchDescription" xml:space="preserve">
+    <value>设置每页帖数。例如50表示每页50条帖子。</value>
+  </data>
 </root>

@@ -134,6 +134,8 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="{StaticResource Layout.RowSpace}" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="{StaticResource Layout.LargeRowSpace}" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
@@ -276,7 +278,7 @@
                     </CheckBox.ToolTip>
                 </CheckBox>
 
-                <Label Content="{x:Static p:Resources.Preview}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="36" />
+                <Label Content="{x:Static p:Resources.Preview}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="26" />
                 <Label Content="" Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="26" />
 
                 <UserControl x:Name="Preview" Width="Auto" Height="Auto" Grid.ColumnSpan="5" Grid.Row="28" MouseDown="Preview_OnMouseDown">
