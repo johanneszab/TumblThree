@@ -16,7 +16,8 @@ namespace TumblThree.Domain.Models
                 BlogType = blogType,
                 Location = location,
                 Version = "3",
-                DateAdded = DateTime.Now
+                DateAdded = DateTime.Now,
+                PageSize = 20
             };
 
             Directory.CreateDirectory(location);

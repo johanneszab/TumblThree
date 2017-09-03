@@ -618,4 +618,10 @@
   <data name="ToolTipDownloadToDescription" xml:space="preserve">
     <value>Angabe in JJJJMMTT. Leer bedeutet bis jetzt.</value>
   </data>
+  <data name="ToolTipPageSizeTumblrSearch" xml:space="preserve">
+    <value>Beiträge pro Seite</value>
+  </data>
+  <data name="ToolTipPageSizeTumblrSearchDescription" xml:space="preserve">
+    <value>Setzt die Anzahl der Beiträge pro Seite.</value>
+  </data>
 </root>

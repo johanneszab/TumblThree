@@ -1465,6 +1465,24 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Posts per Page.
+        /// </summary>
+        public static string ToolTipPageSizeTumblrSearch {
+            get {
+                return ResourceManager.GetString("ToolTipPageSizeTumblrSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sets the post per page. E.g. 50 means to scan 50 posts per page..
+        /// </summary>
+        public static string ToolTipPageSizeTumblrSearchDescription {
+            get {
+                return ResourceManager.GetString("ToolTipPageSizeTumblrSearchDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Activates the portable mode..
         /// </summary>
         public static string ToolTipPortableMode {

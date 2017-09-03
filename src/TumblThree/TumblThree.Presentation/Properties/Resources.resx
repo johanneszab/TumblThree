@@ -621,4 +621,10 @@
   <data name="ToolTipDownloadToDescription" xml:space="preserve">
     <value>Must be in YYYYMMDD format. Empty means to now.</value>
   </data>
+  <data name="ToolTipPageSizeTumblrSearch" xml:space="preserve">
+    <value>Posts per Page</value>
+  </data>
+  <data name="ToolTipPageSizeTumblrSearchDescription" xml:space="preserve">
+    <value>Sets the post per page. E.g. 50 means to scan 50 posts per page.</value>
+  </data>
 </root>

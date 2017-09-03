@@ -612,4 +612,10 @@
   <data name="ToolTipDownloadToDescription" xml:space="preserve">
     <value>Должно быть в формате YYYYMMDD. Пустое означает сейчас.</value>
   </data>
+  <data name="ToolTipPageSizeTumblrSearch" xml:space="preserve">
+    <value>Размер страницы</value>
+  </data>
+  <data name="ToolTipPageSizeTumblrSearchDescription" xml:space="preserve">
+    <value>Устанавливает размер страницы</value>
+  </data>
 </root>

@@ -136,6 +136,8 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="{StaticResource Layout.RowSpace}" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="{StaticResource Layout.LargeRowSpace}" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
