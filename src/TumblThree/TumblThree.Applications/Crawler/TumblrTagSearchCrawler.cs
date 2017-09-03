@@ -87,7 +87,8 @@ namespace TumblThree.Applications.Crawler
                     try
                     {
                         long pagination = DateTimeOffset.Now.ToUnixTimeSeconds() - (crawlerNumber * crawlerTimeOffset);
-                        await AddUrlsToDownloadList(pagination);
+                        long nextCrawlersPagination = DateTimeOffset.Now.ToUnixTimeSeconds() - ((crawlerNumber + 1) * crawlerTimeOffset);
+                        await AddUrlsToDownloadList(pagination, nextCrawlersPagination);
                     }
                     catch
                     {
@@ -182,7 +183,7 @@ namespace TumblThree.Applications.Crawler
             }
         }
 
-        private async Task AddUrlsToDownloadList(long pagination)
+        private async Task AddUrlsToDownloadList(long pagination, long nextCrawlersPagination)
         {
             while (true)
             {
@@ -213,6 +214,8 @@ namespace TumblThree.Applications.Crawler
                 Interlocked.Increment(ref numberOfPagesCrawled);
                 UpdateProgressQueueInformation(Resources.ProgressGetUrlShort, numberOfPagesCrawled);
                 pagination = ExtractNextPageLink(document);
+                if (pagination < nextCrawlersPagination)
+                    return;
                 if (!CheckIfWithinTimespan(pagination))
                     return;
             }
