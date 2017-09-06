@@ -154,6 +154,7 @@ namespace TumblThree.Applications.Controllers
                 PageSize = SetProperty<int>(sharedBlogFiles, "PageSize"),
                 DownloadFrom = SetProperty<string>(sharedBlogFiles, "DownloadFrom"),
                 DownloadTo = SetProperty<string>(sharedBlogFiles, "DownloadTo"),
+                Password = SetProperty<string>(sharedBlogFiles, "Password"),
                 DownloadAudio = SetCheckBox(sharedBlogFiles, "DownloadAudio"),
                 DownloadConversation = SetCheckBox(sharedBlogFiles, "DownloadConversation"),
                 DownloadLink = SetCheckBox(sharedBlogFiles, "DownloadLink"),

@@ -627,4 +627,13 @@
   <data name="ToolTipPageSizeTumblrSearchDescription" xml:space="preserve">
     <value>Sets the post per page. E.g. 50 means to scan 50 posts per page.</value>
   </data>
+  <data name="Password" xml:space="preserve">
+    <value>Mot de passe:</value>
+  </data>
+  <data name="ToolTipPassword" xml:space="preserve">
+    <value>Password for password-protected blogs</value>
+  </data>
+  <data name="ToolTipPasswordDescription" xml:space="preserve">
+    <value>Caution: The password is stored in clear text in the blogs database.</value>
+  </data>
 </root>

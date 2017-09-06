@@ -39,12 +39,27 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException)
             {
-                if (webException.Message.Contains("429"))
+                if (webException.Status == WebExceptionStatus.ProtocolError && webException.Response != null)
                 {
-                    Logger.Error("TumblrPrivateBlogCrawler:IsBlogOnlineAsync:WebException {0}", webException);
-                    shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
-                    blog.Online = true;
-                    return;
+                    var resp = (HttpWebResponse)webException.Response;
+                    if (resp.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        Logger.Error("TumblrBlogCrawler:IsBlogOnlineAsync:WebException {0}", webException);
+                        shellService.ShowError(webException, Resources.PasswordProtected, blog.Name);
+                        blog.Online = true;
+                        return;
+                    }
+                }
+                if (webException.Status == WebExceptionStatus.ProtocolError && webException.Response != null)
+                {
+                    var resp = (HttpWebResponse)webException.Response;
+                    if ((int)resp.StatusCode == 429)
+                    {
+                        Logger.Error("TumblrBlogCrawler:IsBlogOnlineAsync:WebException {0}", webException);
+                        shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
+                        blog.Online = true;
+                        return;
+                    }
                 }
                 blog.Online = false;
             }
@@ -58,9 +73,10 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException)
             {
-                if (webException.Message.Contains("429"))
+                var webRespStatusCode = (int)((HttpWebResponse)webException?.Response).StatusCode;
+                if (webRespStatusCode == 429)
                 {
-                    Logger.Error("TumblrPrivateBlogCrawler:UpdateTotalPostCountAsync:WebException {0}", webException);
+                    Logger.Error("TumblrBlogCrawler:UpdateMetaInformationAsync:WebException {0}", webException);
                     shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
                 }
             }
@@ -121,6 +137,7 @@ namespace TumblThree.Applications.Crawler
             try
             {
                 HttpWebRequest request = CreateGetReqeust(url);
+                request.Credentials = new NetworkCredential(blog.Name + "tumblr.com", blog.Password);
                 requestRegistration = ct.Register(() => request.Abort());
 
                 using (var response = await request.GetResponseAsync() as HttpWebResponse)
@@ -185,9 +202,10 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException)
             {
-                if (webException.Message.Contains("429"))
+                var webRespStatusCode = (int)((HttpWebResponse)webException?.Response).StatusCode;
+                if (webRespStatusCode == 429)
                 {
-                    Logger.Error("TumblrPrivateBlogCrawler:UpdateTotalPostCountAsync:WebException {0}", webException);
+                    Logger.Error("TumblrBlogCrawler:UpdateTotalPostCountAsync:WebException {0}", webException);
                     shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
                 }
                 blog.Posts = 0;
@@ -211,9 +229,10 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException)
             {
-                if (webException.Message.Contains("429"))
+                var webRespStatusCode = (int)((HttpWebResponse)webException?.Response).StatusCode;
+                if (webRespStatusCode == 429)
                 {
-                    Logger.Error("TumblrPrivateBlogCrawler:GetHighestPostIdAsync:WebException {0}", webException);
+                    Logger.Error("TumblrBlogCrawler:GetHighestPostIdAsync:WebException {0}", webException);
                     shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
                 }
                 return 0;
@@ -276,9 +295,9 @@ namespace TumblThree.Applications.Crawler
                     }
                     catch (WebException webException)
                     {
-                        if (webException.Message.Contains("429"))
+                        var webRespStatusCode = (int)((HttpWebResponse)webException?.Response).StatusCode;
+                        if (webRespStatusCode == 429)
                         {
-                            // TODO: add retry logic?
                             apiLimitHit = true;
                             Logger.Error("TumblrBlogCrawler:GetUrls:WebException {0}", webException);
                             shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);

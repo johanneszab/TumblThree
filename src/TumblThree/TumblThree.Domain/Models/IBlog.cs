@@ -106,6 +106,8 @@ namespace TumblThree.Domain.Models
 
         string DownloadTo { get; set; }
 
+        string Password { get; set; }
+
         bool DownloadRebloggedPosts { get; set; }
 
         bool SkipGif { get; set; }

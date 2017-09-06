@@ -66,6 +66,7 @@ namespace TumblThree.Domain.Models
         private int pageSize;
         private string downloadFrom;
         private string downloadTo;
+        private string password;
         private bool downloadRebloggedPosts;
         private DateTime dateAdded;
         private DateTime lastCompleteCrawl;
@@ -517,6 +518,17 @@ namespace TumblThree.Domain.Models
             set
             {
                 SetProperty(ref downloadTo, value);
+                Dirty = true;
+            }
+        }
+
+        [DataMember]
+        public string Password
+        {
+            get { return password; }
+            set
+            {
+                SetProperty(ref password, value);
                 Dirty = true;
             }
         }

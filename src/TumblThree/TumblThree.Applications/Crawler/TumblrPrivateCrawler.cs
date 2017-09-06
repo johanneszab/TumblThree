@@ -6,6 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,6 +25,8 @@ namespace TumblThree.Applications.Crawler
     [ExportMetadata("BlogType", BlogTypes.tmblrpriv)]
     public class TumblrPrivateCrawler : AbstractCrawler, ICrawler
     {
+        private string authentication = String.Empty;
+
         public TumblrPrivateCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
             IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IDownloader downloader, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
             : base(shellService, ct, pt, progress, crawlerService, downloader, producerConsumerCollection, blog)
@@ -34,19 +37,39 @@ namespace TumblThree.Applications.Crawler
         {
             try
             {
+                // Hidden and password protected blogs don't exist?
+                await UpdateAuthentication();
                 string document = await GetSvcPageAsync("1", "0");
                 blog.Online = true;
             }
             catch (WebException webException)
             {
-                if (webException.Message.Contains("429"))
+                if (webException.Status == WebExceptionStatus.ProtocolError && webException.Response != null)
                 {
-                    Logger.Error("TumblrPrivateBlogCrawler:IsBlogOnlineAsync:WebException {0}", webException);
-                    shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
-                    blog.Online = true;
-                    return;
+                    var resp = (HttpWebResponse)webException.Response;
+                    if (resp.StatusCode == HttpStatusCode.ServiceUnavailable)
+                    {
+                        Logger.Error("TumblrPrivateCrawler:IsBlogOnlineAsync:WebException {0}", webException);
+                        shellService.ShowError(webException, Resources.NotLoggedIn, blog.Name);
+                        blog.Online = true;
+                        return;
+                    }
                 }
-                blog.Online = false;
+                if (webException.Status == WebExceptionStatus.ProtocolError && webException.Response != null)
+                {
+                    var resp = (HttpWebResponse)webException.Response;
+                    if ((int)resp.StatusCode == 429)
+                    {
+                        Logger.Error("TumblrPrivateCrawler:IsBlogOnlineAsync:WebException {0}", webException);
+                        shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
+                        blog.Online = true;
+                        return;
+                    }
+                }
+                Logger.Error("TumblrPrivateCrawler:IsBlogOnlineAsync:WebException {0}", webException);
+                shellService.ShowError(webException, Resources.PasswordProtectedOrOffline, blog.Name);
+                blog.Online = true;
+                return;
             }
         }
 
@@ -73,10 +96,6 @@ namespace TumblThree.Applications.Crawler
                 {
                     Logger.Error("TumblrPrivateCrawler:GetUrlsAsync: {0}", "User not logged in");
                     shellService.ShowError(new Exception("User not logged in"), Resources.NotLoggedIn, blog.Name);
-                }
-                else
-                {
-                    blog.Online = false;
                 }
             }
         }
@@ -108,6 +127,82 @@ namespace TumblThree.Applications.Crawler
             blog.Save();
 
             UpdateProgressQueueInformation("");
+        }
+
+        private async Task UpdateAuthentication()
+        {
+            string document = await ThrottleAsync(Authenticate);
+            authentication = ExtractAuthenticationKey(document);
+            await UpdateCookieWithAuthentication();
+        }
+
+        private async Task<T> ThrottleAsync<T>(Func<Task<T>> method)
+        {
+            if (shellService.Settings.LimitConnections)
+            {
+                return await method();
+            }
+            return await method();
+        }
+
+        protected async Task<string> Authenticate()
+        {
+            var requestRegistration = new CancellationTokenRegistration();
+            try
+            {
+                string url = "https://www.tumblr.com/blog_auth/" + blog.Name;
+                var headers = new Dictionary<string, string>();
+                HttpWebRequest request = CreatePostReqeust(url, url, headers);
+                string requestBody = "password=" + blog.Password;
+                using (Stream postStream = await request.GetRequestStreamAsync())
+                {
+                    byte[] postBytes = Encoding.ASCII.GetBytes(requestBody);
+                    await postStream.WriteAsync(postBytes, 0, postBytes.Length);
+                    await postStream.FlushAsync();
+                }
+
+                requestRegistration = ct.Register(() => request.Abort());
+                return await ReadReqestToEnd(request);
+            }
+            finally
+            {
+                requestRegistration.Dispose();
+            }
+        }
+
+        private static string ExtractAuthenticationKey(string document)
+        {
+            return Regex.Match(document, "name=\"auth\" value=\"([\\S]*)\"").Groups[1].Value;
+        }
+
+        protected async Task UpdateCookieWithAuthentication()
+        {
+            var requestRegistration = new CancellationTokenRegistration();
+            try
+            {
+                string url = "https://" + blog.Name + ".tumblr.com/";
+                string referer = "https://www.tumblr.com/blog_auth/" + blog.Name;
+                var headers = new Dictionary<string, string>();
+                headers.Add("DNT", "1");
+                HttpWebRequest request = CreatePostReqeust(url, referer, headers);
+                string requestBody = "auth=" + authentication;
+                using (Stream postStream = await request.GetRequestStreamAsync())
+                {
+                    byte[] postBytes = Encoding.ASCII.GetBytes(requestBody);
+                    await postStream.WriteAsync(postBytes, 0, postBytes.Length);
+                    await postStream.FlushAsync();
+                }
+
+                requestRegistration = ct.Register(() => request.Abort());
+                using (var response = await request.GetResponseAsync() as HttpWebResponse)
+                {
+                    SharedCookieService.SetUriCookieContainer(response.Cookies);
+                }
+            }
+            finally
+            {
+                requestRegistration.Dispose();
+            }
         }
 
         protected override IEnumerable<int> GetPageNumbers()
@@ -177,7 +272,8 @@ namespace TumblThree.Applications.Crawler
                     }
                     catch (WebException webException)
                     {
-                        if (webException.Message.Contains("429"))
+                        var resp = (HttpWebResponse)webException.Response;
+                        if ((int)resp.StatusCode == 429)
                         {
                             // TODO: add retry logic?
                             Logger.Error("TumblrPrivateCrawler:GetUrls:WebException {0}", webException);
@@ -265,19 +361,7 @@ namespace TumblThree.Applications.Crawler
                 string referer = @"https://www.tumblr.com/dashboard/blog/" + blog.Name;
                 HttpWebRequest request = CreateGetXhrReqeust(url, referer);
                 requestRegistration = ct.Register(() => request.Abort());
-                using (var response = await request.GetResponseAsync() as HttpWebResponse)
-                {
-                    using (var stream = GetStreamForApiRequest(response.GetResponseStream()))
-                    {
-                        using (var buffer = new BufferedStream(stream))
-                        {
-                            using (var reader = new StreamReader(buffer))
-                            {
-                                return reader.ReadToEnd();
-                            }
-                        }
-                    }
-                }
+                return await ReadReqestToEnd(request);
             }
             finally
             {

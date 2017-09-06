@@ -826,6 +826,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Password:.
+        /// </summary>
+        public static string Password {
+            get {
+                return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pause.
         /// </summary>
         public static string Pause {
@@ -1479,6 +1488,24 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipPageSizeTumblrSearchDescription {
             get {
                 return ResourceManager.GetString("ToolTipPageSizeTumblrSearchDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password for password-protected blogs.
+        /// </summary>
+        public static string ToolTipPassword {
+            get {
+                return ResourceManager.GetString("ToolTipPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Caution: The password is stored in clear text in the blogs database..
+        /// </summary>
+        public static string ToolTipPasswordDescription {
+            get {
+                return ResourceManager.GetString("ToolTipPasswordDescription", resourceCulture);
             }
         }
         

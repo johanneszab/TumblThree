@@ -162,6 +162,8 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="{StaticResource Layout.RowSpace}" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="{StaticResource Layout.LargeRowSpace}" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
@@ -653,17 +655,41 @@
                     </TextBox.ToolTip>
                 </TextBox>
 
+                <Label Content="{x:Static p:Resources.Password}" Grid.Column="0" Grid.Row="40" Margin="3,0,3,0" Padding="3,0,3,0">
+                    <Label.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipPassword}" />
+                                <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipPasswordDescription}" />
+                            </StackPanel>
+                        </ToolTip>
+                    </Label.ToolTip>
+                </Label>
+
+                <TextBox Grid.Column="1" Grid.Row="40" Padding="0" 
+                         Text="{Binding BlogFile.Password, Mode=TwoWay, ValidatesOnDataErrors=True}">
+                    <TextBox.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipPassword}" />
+                                <TextBlock xml:space="preserve"
+                                           Text="{x:Static p:Resources.ToolTipPasswordDescription}" />
+                            </StackPanel>
+                        </ToolTip>
+                    </TextBox.ToolTip>
+                </TextBox>
+
                 <CheckBox Content="{x:Static p:Resources.SkipGif}" IsChecked="{Binding BlogFile.SkipGif, Mode=TwoWay}"
-                          Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="40" Margin="3,0,0,0" Padding="3,0,0,0" />
+                          Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="42" Margin="3,0,0,0" Padding="3,0,0,0" />
 
                 <CheckBox Content="{x:Static p:Resources.DownloadRebloggedPosts}"
-                          IsChecked="{Binding BlogFile.DownloadRebloggedPosts, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="42"
+                          IsChecked="{Binding BlogFile.DownloadRebloggedPosts, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="44"
                           Margin="3,0,0,0" Padding="3,0,0,0">
                 </CheckBox>
 
                 <CheckBox Content="{x:Static p:Resources.CheckDirectoryForFiles}"
                           IsChecked="{Binding BlogFile.CheckDirectoryForFiles, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2"
-                          Grid.Row="44" Margin="3,0,0,0" Padding="3,0,0,0">
+                          Grid.Row="46" Margin="3,0,0,0" Padding="3,0,0,0">
                     <CheckBox.ToolTip>
                         <ToolTip>
                             <StackPanel>
@@ -677,7 +703,7 @@
                 </CheckBox>
                 
                 <CheckBox Content="{x:Static p:Resources.DownloadUrlList}"
-                          IsChecked="{Binding BlogFile.DownloadUrlList, Mode=TwoWay}" Grid.Column="0" Grid.Row="46" Grid.ColumnSpan="2"
+                          IsChecked="{Binding BlogFile.DownloadUrlList, Mode=TwoWay}" Grid.Column="0" Grid.Row="48" Grid.ColumnSpan="2"
                           Margin="3,0,0,0" Padding="3,0,0,0">
                     <CheckBox.ToolTip>
                         <ToolTip>
@@ -692,7 +718,7 @@
                 
                 <CheckBox Content="{x:Static p:Resources.ForceSize}"
                           IsChecked="{Binding BlogFile.ForceSize, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="5"
-                          Grid.Row="48" Margin="3,0,0,0" Padding="3,0,0,0">
+                          Grid.Row="50" Margin="3,0,0,0" Padding="3,0,0,0">
                     <CheckBox.ToolTip>
                         <ToolTip>
                             <StackPanel>
@@ -706,7 +732,7 @@
                 
                 <CheckBox Content="{x:Static p:Resources.ForceRescan}"
                           IsChecked="{Binding BlogFile.ForceRescan, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="5"
-                          Grid.Row="50" Margin="3,0,0,0" Padding="3,0,0,0">
+                          Grid.Row="52" Margin="3,0,0,0" Padding="3,0,0,0">
                     <CheckBox.ToolTip>
                         <ToolTip>
                             <StackPanel>
@@ -718,10 +744,10 @@
                     </CheckBox.ToolTip>
                 </CheckBox>
 
-                <Label Content="{x:Static p:Resources.Preview}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="52" />
-                <Label Content="" Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="52" />
+                <Label Content="{x:Static p:Resources.Preview}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="54" />
+                <Label Content="" Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="54" />
 
-                <UserControl x:Name="Preview" Width="Auto" Height="Auto" Grid.ColumnSpan="5" Grid.Row="54" MouseDown="Preview_OnMouseDown">
+                <UserControl x:Name="Preview" Width="Auto" Height="Auto" Grid.ColumnSpan="5" Grid.Row="56" MouseDown="Preview_OnMouseDown">
                     <Grid>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="SwitchableStates">

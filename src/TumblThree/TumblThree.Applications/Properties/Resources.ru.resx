@@ -252,6 +252,12 @@
   <data name="NotLoggedIn" xml:space="preserve">
     <value>Вы должны залогинится в tumblr.com для загрузки {0}. Идите в Настройки-&gt;Авторизироваться.</value>
   </data>
+  <data name="PasswordProtected" xml:space="preserve">
+    <value>Password protected blog: {0}. You need to enter the password in the Details.</value>
+  </data>
+  <data name="PasswordProtectedOrOffline" xml:space="preserve">
+    <value>Hidden password protected or offline blog detected: {0}. You need to enter the password in the Details.</value>
+  </data>
   <data name="PhotoCaption" xml:space="preserve">
     <value>Подпись к фотографии: {0}</value>
   </data>

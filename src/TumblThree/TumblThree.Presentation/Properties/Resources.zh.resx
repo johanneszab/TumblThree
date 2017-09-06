@@ -627,4 +627,13 @@
   <data name="ToolTipPageSizeTumblrSearchDescription" xml:space="preserve">
     <value>设置每页帖数。例如50表示每页50条帖子。</value>
   </data>
+  <data name="Password" xml:space="preserve">
+    <value>密码：</value>
+  </data>
+  <data name="ToolTipPassword" xml:space="preserve">
+    <value>Password for password-protected blogs</value>
+  </data>
+  <data name="ToolTipPasswordDescription" xml:space="preserve">
+    <value>Caution: The password is stored in clear text in the blogs database.</value>
+  </data>
 </root>

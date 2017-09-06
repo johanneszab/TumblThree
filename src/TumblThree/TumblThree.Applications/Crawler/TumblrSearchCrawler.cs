@@ -98,7 +98,7 @@ namespace TumblThree.Applications.Crawler
 
             //if (!ct.IsCancellationRequested)
             //{
-                UpdateBlogStats();
+            UpdateBlogStats();
             //}
         }
 
@@ -132,7 +132,7 @@ namespace TumblThree.Applications.Crawler
                 var headers = new Dictionary<string, string>();
                 headers.Add("X-tumblr-form-key", tumblrKey);
                 headers.Add("DNT", "1");
-                HttpWebRequest request = CreatePostReqeust(url, referer, headers);
+                HttpWebRequest request = CreatePostXhrReqeust(url, referer, headers);
 
                 //Complete requestBody from webbrowser, searching for cars:
                 //q=cars&sort=top&post_view=masonry&blogs_before=8&num_blogs_shown=8&num_posts_shown=20&before=24&blog_page=2&safe_mode=true&post_page=2&filter_nsfw=true&filter_post_type=&next_ad_offset=0&ad_placement_id=0&more_posts=true
@@ -145,19 +145,7 @@ namespace TumblThree.Applications.Crawler
                 }
 
                 requestRegistration = ct.Register(() => request.Abort());
-                using (var response = await request.GetResponseAsync() as HttpWebResponse)
-                {
-                    using (var stream = GetStreamForApiRequest(response.GetResponseStream()))
-                    {
-                        using (var buffer = new BufferedStream(stream))
-                        {
-                            using (var reader = new StreamReader(buffer))
-                            {
-                                return reader.ReadToEnd();
-                            }
-                        }
-                    }
-                }
+                return await ReadReqestToEnd(request);
             }
             finally
             {
@@ -174,19 +162,7 @@ namespace TumblThree.Applications.Crawler
                 HttpWebRequest request = CreateGetReqeust(url);
 
                 requestRegistration = ct.Register(() => request.Abort());
-                using (var response = await request.GetResponseAsync() as HttpWebResponse)
-                {
-                    using (var stream = GetStreamForApiRequest(response.GetResponseStream()))
-                    {
-                        using (var buffer = new BufferedStream(stream))
-                        {
-                            using (var reader = new StreamReader(buffer))
-                            {
-                                return reader.ReadToEnd();
-                            }
-                        }
-                    }
-                }
+                return await ReadReqestToEnd(request);
             }
             finally
             {

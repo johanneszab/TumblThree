@@ -18,6 +18,12 @@ namespace TumblThree.Applications.Services
             int dwFlags,
             IntPtr lpReserved);
 
+        [DllImport("wininet.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Auto, SetLastError = true)]
+        static extern bool InternetSetCookie(
+            string urlName,
+            string cookieName,
+            string cookieData);
+
         /// <summary>
         ///     Gets the URI cookie container.
         /// </summary>
@@ -26,8 +32,8 @@ namespace TumblThree.Applications.Services
         public static CookieContainer GetUriCookieContainer(Uri uri)
         {
             CookieContainer cookies = null;
-            // Determine the size of the cookie
-            int datasize = 8192 * 16;
+            var datasize = 0;
+            InternetGetCookieEx(uri.ToString(), null, null, ref datasize, InternetCookieHttponly, IntPtr.Zero);
             var cookieData = new StringBuilder(datasize);
             if (!InternetGetCookieEx(uri.ToString(), null, cookieData, ref datasize, InternetCookieHttponly, IntPtr.Zero))
             {
@@ -53,6 +59,14 @@ namespace TumblThree.Applications.Services
                 cookies.SetCookies(uri, cookieData.ToString().Replace(';', ','));
             }
             return cookies;
+        }
+
+        public static void SetUriCookieContainer(CookieCollection cookies)
+        {
+            foreach (Cookie cookie in cookies)
+            {
+                InternetSetCookie("http://" + cookie.Domain, cookie.Name, cookie.Value);
+            }
         }
     }
 }

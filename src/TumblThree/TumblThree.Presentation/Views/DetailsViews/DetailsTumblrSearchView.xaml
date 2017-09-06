@@ -252,9 +252,9 @@
                     <TextBox.ToolTip>
                         <ToolTip>
                             <StackPanel>
-                                <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipPageSize}" />
+                                <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipPageSizeTumblrSearch}" />
                                 <TextBlock xml:space="preserve"
-                                           Text="{x:Static p:Resources.ToolTipPageSizeDescription}" />
+                                           Text="{x:Static p:Resources.ToolTipPageSizeTumblrSearchDescription}" />
                             </StackPanel>
                         </ToolTip>
                     </TextBox.ToolTip>

@@ -624,4 +624,13 @@
   <data name="ToolTipPageSizeTumblrSearchDescription" xml:space="preserve">
     <value>Setzt die Anzahl der Beiträge pro Seite.</value>
   </data>
+  <data name="Password" xml:space="preserve">
+    <value>Passwort:</value>
+  </data>
+  <data name="ToolTipPassword" xml:space="preserve">
+    <value>Passwort für passwortgeschützte Blogs</value>
+  </data>
+  <data name="ToolTipPasswordDescription" xml:space="preserve">
+    <value>Achtung: Das Passwort wird in Klartext in der Blogdatenbank gespeichert.</value>
+  </data>
 </root>
