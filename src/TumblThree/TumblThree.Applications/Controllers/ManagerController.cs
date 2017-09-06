@@ -365,27 +365,9 @@ namespace TumblThree.Applications.Controllers
             }
 
             TransferGlobalSettingsToBlog(blog);
-
-            try
-            {
-                ICrawler crawler = CrawlerFactory.GetCrawler(blog.BlogType, new CancellationToken(), new PauseToken(), new Progress<DownloadProgress>(), shellService, crawlerService, blog);
-                await crawler.IsBlogOnlineAsync();
-                await crawler.UpdateMetaInformationAsync();
-            }
-            catch (WebException webException)
-            {
-                var webRespStatusCode = (int)((HttpWebResponse)webException?.Response).StatusCode;
-                if (webRespStatusCode == 503)
-                {
-                    Logger.Error("TumblrDownloader:GetUrlsAsync: {0}", "User not logged in");
-                    shellService.ShowError(new Exception("User not logged in"), Resources.NotLoggedIn, blog.Name);
-                }
-                else
-                {
-                    blog.Online = false;
-                }
-            }
-
+            ICrawler crawler = CrawlerFactory.GetCrawler(blog.BlogType, new CancellationToken(), new PauseToken(), new Progress<DownloadProgress>(), shellService, crawlerService, blog);
+            await crawler.IsBlogOnlineAsync();
+            await crawler.UpdateMetaInformationAsync();
             lock (lockObject)
             {
                 if (managerService.BlogFiles.Any(blogs => blogs.Name.Equals(blog.Name) && blogs.BlogType.Equals(blog.BlogType)))

@@ -92,10 +92,24 @@ namespace TumblThree.Applications.Crawler
             // TODO: Use HttpClient instead?
             request.ReadWriteTimeout = shellService.Settings.TimeOut * 1000;
             request.Timeout = shellService.Settings.TimeOut * 1000;
-            request.CookieContainer = SharedCookieService.GetUriCookieContainer(new Uri("https://www.tumblr.com/"));
+            request.CookieContainer = new CookieContainer();
+            SetCookies(request, new Uri("https://www.tumblr.com/"));
+            SetCookies(request, new Uri("https://" + blog.Name + ".tumblr.com"));
             ServicePointManager.DefaultConnectionLimit = 400;
             request = SetWebRequestProxy(request, shellService.Settings);
             return request;
+        }
+
+        private static void SetCookies(HttpWebRequest request, Uri uri)
+        {
+            CookieContainer cookieContainer = SharedCookieService.GetUriCookieContainer(uri);
+            if (cookieContainer != null)
+            {
+                foreach (Cookie blogCookie in cookieContainer.GetCookies(uri))
+                {
+                    request.CookieContainer.Add(blogCookie);
+                }
+            }
         }
 
         protected HttpWebRequest CreateGetXhrReqeust(string url, string referer = "")
@@ -111,10 +125,8 @@ namespace TumblThree.Applications.Crawler
         {
             var request = CreateGetReqeust(url);
             request.Method = "POST";
-            request.Accept = "application/json, text/javascript, */*; q=0.01";
             request.ContentType = "application/x-www-form-urlencoded";
             request.Referer = referer;
-            request.Headers["X-Requested-With"] = "XMLHttpRequest";
             if (headers == null)
             {
                 return request;
@@ -123,6 +135,14 @@ namespace TumblThree.Applications.Crawler
             {
                 request.Headers[header.Key] = header.Value;
             }
+            return request;
+        }
+
+        protected HttpWebRequest CreatePostXhrReqeust(string url, string referer = "", Dictionary<string, string> headers = null)
+        {
+            var request = CreatePostReqeust(url, referer, headers);
+            request.Accept = "application/json, text/javascript, */*; q=0.01";
+            request.Headers["X-Requested-With"] = "XMLHttpRequest";
             return request;
         }
 
@@ -153,23 +173,28 @@ namespace TumblThree.Applications.Crawler
             {
                 HttpWebRequest request = CreateGetReqeust(url);
                 requestRegistration = ct.Register(() => request.Abort());
-                using (var response = await request.GetResponseAsync() as HttpWebResponse)
-                {
-                    using (var stream = GetStreamForApiRequest(response.GetResponseStream()))
-                    {
-                        using (var buffer = new BufferedStream(stream))
-                        {
-                            using (var reader = new StreamReader(buffer))
-                            {
-                                return reader.ReadToEnd();
-                            }
-                        }
-                    }
-                }
+                return await ReadReqestToEnd(request);
             }
             finally
             {
                 requestRegistration.Dispose();
+            }
+        }
+
+        protected async Task<string> ReadReqestToEnd(HttpWebRequest request)
+        {
+            using (var response = await request.GetResponseAsync() as HttpWebResponse)
+            {
+                using (var stream = GetStreamForApiRequest(response.GetResponseStream()))
+                {
+                    using (var buffer = new BufferedStream(stream))
+                    {
+                        using (var reader = new StreamReader(buffer))
+                        {
+                            return reader.ReadToEnd();
+                        }
+                    }
+                }
             }
         }
 

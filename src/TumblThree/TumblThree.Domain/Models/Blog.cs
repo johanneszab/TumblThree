@@ -66,13 +66,14 @@ namespace TumblThree.Domain.Models
         private int pageSize;
         private string downloadFrom;
         private string downloadTo;
+        private string password;
         private bool downloadRebloggedPosts;
         private DateTime dateAdded;
         private DateTime lastCompleteCrawl;
         private bool online;
         private int progress;
         private int quotes;
-        [DataMember(Name = "Links")]
+        [DataMember(Name="Links")]
         private List<string> links;
         private int downloadedImages;
 
@@ -522,6 +523,17 @@ namespace TumblThree.Domain.Models
         }
 
         [DataMember]
+        public string Password
+        {
+            get { return password; }
+            set
+            {
+                SetProperty(ref password, value);
+                Dirty = true;
+            }
+        }
+
+        [DataMember]
         public DateTime DateAdded
         {
             get { return dateAdded; }
@@ -841,6 +853,6 @@ namespace TumblThree.Domain.Models
             lockObjectPostCount = new object();
             lockObjectDb = new object();
             lockObjectDirectory = new object();
-        }
+    }
     }
 }

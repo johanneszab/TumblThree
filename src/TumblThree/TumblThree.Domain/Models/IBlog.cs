@@ -98,13 +98,15 @@ namespace TumblThree.Domain.Models
 
         bool CreateAudioMeta { get; set; }
 
-        string DownloadPages { get; set; }
+        string DownloadPages{ get; set; }
 
         int PageSize { get; set; }
 
         string DownloadFrom { get; set; }
 
         string DownloadTo { get; set; }
+
+        string Password { get; set; }
 
         bool DownloadRebloggedPosts { get; set; }
 

@@ -2,40 +2,45 @@
 
 TumblThree is the code rewrite of [TumblTwo](https://github.com/johanneszab/TumblTwo), a free and open source Tumblr blog backup application, using C# with WPF and the MVVM pattern. It uses the [Win Application Framework (WAF)](https://github.com/jbe2277/waf). It downloads photo, video, audio and text posts from a given tumblr blog.
 
-### New Features (over TumblTwo):
+### Features:
+* Source code at github (Written in C# using WPF and MVVM).
+* Multiple simultaneous downloads of a single blog.
+* Multiple simultaneous downloads of different blogs.
 * Internationalization support (currently available: zh, ru, de, fr, es).
+* A download queue.
 * Autosave of the queuelist.
 * Save, clear and restore the queuelist.
-* Download of text, audio, quote, conversation, link and question posts.
-* Download meta information for photo, video and audio posts.
-* Downloads inlined photos and videos (e.g. photos embedded in question&answer posts).
-* Download of \_raw image files (original/higher resolution pictures). 
-* A downloader for private blogs (login required blogs).
-* A downloader for downloading "liked by" photos and videos instead of a tumblr blog.
-* A downloader for downloading photos and videos from the tumblr tag search (e.g. http://www.tumblr.com/tagged/my+keywords) (login required).
-* A downloader for downloading photos and videos from the tumblr search (e.g. http://www.tumblr.com/search/my+keywords).
-* An option to download an url list instead of the actual files.
-* Allows to download only original content of the blog and skip reblogged posts.
-* Set a time interval for a automatic download (e.g. during nights).
-* Can download only specific blog pages instead of the whole blog.
-* Allows to download blog posts in a defined time span.
-* Uses SSL instead of unsecure http connections.
+* A clipboard monitor that detects *http(s):// .tumblr.com* urls in the clipboard (copy and paste) and automatically adds the blog to the bloglist.
+* A settings panel (change download location, turn preview off/on, define number of simultaneous downloads, set the imagesize of downloaded pictures, set download defaults, enable portable mode, etc.).
 * Allows to set a proxy.
-* A bandwidth throttler.
+* ~~A bandwidth throttler.~~ Currently broken.
+* An option to download an url list instead of the actual files.
+* Set a start time for a automatic download (e.g. during nights).
+* Uses SSL instead of unsecure http connections.
 * Preview of photos & videos.
 * Taskbar buttons and key bindings.
 
-### New Features (over TumblOne):
-* Multiple simultaneous downloads of a single blog.
-* Multiple simultaneous downloads of different blogs, customizable in the settings.
-* Download of tumblr.com hosted videos.
-* It is possible to download images from blogs only for specific tags.
-* A clipboard monitor that detects *http(s):// .tumblr.com* urls in the clipboard (copy and paste) and automatically adds the blog to the bloglist.
-* A download queue for blogs.
-* A detection if the blog is still online or the owner has changed.
-* The blogview is now sortable and shows more information, e.g. date added, last time finished and the progress.
-* A settings panel (change download location, turn preview off/on, define number of simultaneous downloads, set the imagesize of downloaded pictures, etc.).
-* Source code at github (Written in C# using WPF and MVVM).
+### Blog backup/download
+* Download of photo, video (only tumblr.com hosted), text, audio, quote, conversation, link and question posts.
+* Download meta information for photo, video and audio posts.
+* Downloads inlined photos and videos (e.g. photos embedded in question&answer posts).
+* Download of \_raw image files (original/higher resolution pictures). 
+* Allows to download only original content of the blog and skip reblogged posts.
+* Can download only specificly tagged posts.
+* Can download only specific blog pages instead of the whole blog.
+* Allows to download blog posts in a defined time span.
+* Can download hidden blogs (login required blogs).
+* Can download password protected blogs (of non-hidden blogs).
+
+### Liked/by backup/download
+* A downloader for downloading "liked by" photos and videos instead of a tumblr blog (e.g. https://www.tumblr.com/liked/by/wallpaperfx/).
+
+### Tumblr search
+* A downloader for downloading photos and videos from the tumblr search (e.g. http://www.tumblr.com/search/my+keywords).
+
+### Tumblr tag search
+* A downloader for downloading photos and videos from the tumblr tag search (e.g. http://www.tumblr.com/tagged/my+keywords) (login required).
+* Allows to download posts in a defined time span.
 
 ## Screenshot:
 ![TumblThree Main UI](http://www.jzab.de/sites/default/files/images/tumblthree.png?raw=true "TumblThree Main UI")

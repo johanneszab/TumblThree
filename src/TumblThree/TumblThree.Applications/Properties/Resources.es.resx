@@ -258,6 +258,12 @@
   <data name="NotLoggedIn" xml:space="preserve">
     <value>Debes iniciar sesión en tumblr.com para descargar {0}. Vaya a Configuración-&gt;Autenticar.</value>
   </data>
+  <data name="PasswordProtected" xml:space="preserve">
+    <value>Password protected blog: {0}. You need to enter the password in the Details.</value>
+  </data>
+  <data name="PasswordProtectedOrOffline" xml:space="preserve">
+    <value>Hidden password protected or offline blog detected: {0}. You need to enter the password in the Details.</value>
+  </data>
   <data name="PhotoCaption" xml:space="preserve">
     <value>Photo Caption: {0}</value>
   </data>

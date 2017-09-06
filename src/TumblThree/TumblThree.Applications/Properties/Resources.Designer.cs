@@ -484,6 +484,24 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Password protected blog: {0}. You need to enter the password in the Details..
+        /// </summary>
+        public static string PasswordProtected {
+            get {
+                return ResourceManager.GetString("PasswordProtected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hidden password protected or offline blog detected: {0}. You need to enter the password in the Details..
+        /// </summary>
+        public static string PasswordProtectedOrOffline {
+            get {
+                return ResourceManager.GetString("PasswordProtectedOrOffline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Photo Caption: {0}.
         /// </summary>
         public static string PhotoCaption {

@@ -154,6 +154,7 @@ namespace TumblThree.Applications.Controllers
                 PageSize = SetProperty<int>(sharedBlogFiles, "PageSize"),
                 DownloadFrom = SetProperty<string>(sharedBlogFiles, "DownloadFrom"),
                 DownloadTo = SetProperty<string>(sharedBlogFiles, "DownloadTo"),
+                Password = SetProperty<string>(sharedBlogFiles, "Password"),
                 DownloadAudio = SetCheckBox(sharedBlogFiles, "DownloadAudio"),
                 DownloadConversation = SetCheckBox(sharedBlogFiles, "DownloadConversation"),
                 DownloadLink = SetCheckBox(sharedBlogFiles, "DownloadLink"),
@@ -175,7 +176,7 @@ namespace TumblThree.Applications.Controllers
             };
         }
 
-        private static T SetProperty<T>(IReadOnlyCollection<IBlog> blogs, string propertyName) where T : IConvertible
+        private static T SetProperty<T>(IReadOnlyCollection<IBlog> blogs, string propertyName) where T: IConvertible
         {
             PropertyInfo property = typeof(IBlog).GetProperty(propertyName);
             var value = (T)property.GetValue(blogs.FirstOrDefault());

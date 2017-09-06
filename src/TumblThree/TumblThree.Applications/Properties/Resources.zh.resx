@@ -258,6 +258,12 @@
   <data name="NotLoggedIn" xml:space="preserve">
     <value>您需要登录tumblr才能下载{0}。转到设置-&gt;授权。</value>
   </data>
+  <data name="PasswordProtected" xml:space="preserve">
+    <value>Password protected blog: {0}. You need to enter the password in the Details.</value>
+  </data>
+  <data name="PasswordProtectedOrOffline" xml:space="preserve">
+    <value>Hidden password protected or offline blog detected: {0}. You need to enter the password in the Details.</value>
+  </data>
   <data name="PhotoCaption" xml:space="preserve">
     <value>Photo Caption: {0}</value>
   </data>

@@ -163,19 +163,7 @@ namespace TumblThree.Applications.Crawler
                 HttpWebRequest request = CreateGetReqeust(urlForGetRequest);
 
                 requestRegistration = ct.Register(() => request.Abort());
-                using (var response = await request.GetResponseAsync() as HttpWebResponse)
-                {
-                    using (var stream = GetStreamForApiRequest(response.GetResponseStream()))
-                    {
-                        using (var buffer = new BufferedStream(stream))
-                        {
-                            using (var reader = new StreamReader(buffer))
-                            {
-                                return reader.ReadToEnd();
-                            }
-                        }
-                    }
-                }
+                return await ReadReqestToEnd(request);
             }
             finally
             {
