@@ -133,9 +133,9 @@
                                     Binding="{Binding Online, Converter={StaticResource StatusToBoolConverter}}"
                                     IsReadOnly="True" Width="80"
                                     ElementStyle="{StaticResource TextCellElementStyle}" />
-                <DataGridTextColumn x:Name="tagsColumn" Header="{x:Static p:Resources.Tags}"
-                                    Binding="{Binding Tags, Mode=TwoWay}"
-                                    IsReadOnly="False" Width="120" ElementStyle="{StaticResource TextCellElementStyle}" />
+                <DataGridTextColumn x:Name="tagsColumn" Header="{x:Static p:Resources.Blogtype}"
+                                    Binding="{Binding BlogType, Converter={StaticResource BlogtypeToDisplayValueConverter}}"
+                                    IsReadOnly="True" Width="120" ElementStyle="{StaticResource TextCellElementStyle}" />
                 <DataGridTextColumn x:Name="dateAddedColumn" Header="{x:Static p:Resources.DateAdded}"
                                     Binding="{Binding DateAdded, Converter={StaticResource DateToDisplayValueConverter}}"
                                     IsReadOnly="True" Width="120"

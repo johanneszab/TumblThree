@@ -142,6 +142,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        public static string Blogtype {
+            get {
+                return ResourceManager.GetString("Blogtype", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter URL:.
         /// </summary>
         public static string BlogUrl {
@@ -1560,6 +1569,24 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipScanDescription {
             get {
                 return ResourceManager.GetString("ToolTipScanDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download only tagged posts.
+        /// </summary>
+        public static string ToolTipTags {
+            get {
+                return ResourceManager.GetString("ToolTipTags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Must be in a comma separated list, e.g.  great big car, bears searches for great big cars and bears..
+        /// </summary>
+        public static string ToolTipTagsDescription {
+            get {
+                return ResourceManager.GetString("ToolTipTagsDescription", resourceCulture);
             }
         }
         

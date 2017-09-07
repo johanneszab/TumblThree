@@ -41,6 +41,8 @@
 
     <c:InverseBooleanConverter x:Key="InverseBooleanConverter" />
 
+    <c:BlogtypeToDisplayValueConverter x:Key="BlogtypeToDisplayValueConverter" />
+
     <c:IsQueueItemCrawlingMultiConverter x:Key="IsQueueItemCrawlingMultiConverter" />
 
     <c:IsBlogInQueueMultiConverter x:Key="IsBlogInQueueMultiConverter" />

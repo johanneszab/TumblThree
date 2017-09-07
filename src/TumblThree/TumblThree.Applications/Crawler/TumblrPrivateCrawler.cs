@@ -28,8 +28,8 @@ namespace TumblThree.Applications.Crawler
         private string authentication = String.Empty;
 
         public TumblrPrivateCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
-            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IDownloader downloader, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
-            : base(shellService, ct, pt, progress, crawlerService, downloader, producerConsumerCollection, blog)
+            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, ISharedCookieService cookieService, IDownloader downloader, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
+            : base(shellService, ct, pt, progress, crawlerService, cookieService, downloader, producerConsumerCollection, blog)
         {
         }
 
@@ -196,7 +196,7 @@ namespace TumblThree.Applications.Crawler
                 requestRegistration = ct.Register(() => request.Abort());
                 using (var response = await request.GetResponseAsync() as HttpWebResponse)
                 {
-                    SharedCookieService.SetUriCookieContainer(response.Cookies);
+                    cookieService.SetUriCookie(response.Cookies);
                 }
             }
             finally
@@ -270,7 +270,7 @@ namespace TumblThree.Applications.Crawler
                         var response = ConvertJsonToClass<TumblrJson>(document);
                         await AddUrlsToDownloadList(response, crawlerNumber);
                     }
-                    catch (WebException webException)
+                    catch (WebException webException) when ((webException.Response != null))
                     {
                         var resp = (HttpWebResponse)webException.Response;
                         if ((int)resp.StatusCode == 429)

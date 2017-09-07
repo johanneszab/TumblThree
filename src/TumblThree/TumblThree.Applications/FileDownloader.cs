@@ -13,14 +13,16 @@ namespace TumblThree.Applications
     {
         private readonly AppSettings settings;
         private readonly CancellationToken ct;
+        private readonly ISharedCookieService cookieService;
         public static readonly int BufferSize = 512 * 4096;
         public event EventHandler Completed;
         public event EventHandler<DownloadProgressChangedEventArgs> ProgressChanged;
 
-        public FileDownloader(AppSettings settings, CancellationToken ct)
+        public FileDownloader(AppSettings settings, CancellationToken ct, ISharedCookieService cookieService)
         {
             this.settings = settings;
             this.ct = ct;
+            this.cookieService = cookieService;
         }
 
         private HttpWebRequest CreateWebReqeust(string url)
@@ -41,11 +43,24 @@ namespace TumblThree.Applications
             // TODO: Use HttpClient instead?
             request.ReadWriteTimeout = settings.TimeOut * 1000;
             request.Timeout = settings.TimeOut * 1000;
+            request.CookieContainer = new CookieContainer();
             //TODO: Fix site specific cookies!
-            request.CookieContainer = SharedCookieService.GetUriCookieContainer(new Uri("https://www.tumblr.com/"));
+            GetCookies(request, new Uri("https://www.tumblr.com/"));
             ServicePointManager.DefaultConnectionLimit = 400;
             request = SetWebRequestProxy(request, settings);
             return request;
+        }
+
+        private void GetCookies(HttpWebRequest request, Uri uri)
+        {
+            CookieCollection cookies = cookieService.GetUriCookie(uri);
+            if (cookies != null)
+            {
+                foreach (Cookie cookie in cookies)
+                {
+                    request.CookieContainer.Add(cookie);
+                }
+            }
         }
 
         private static HttpWebRequest SetWebRequestProxy(HttpWebRequest request, AppSettings settings)

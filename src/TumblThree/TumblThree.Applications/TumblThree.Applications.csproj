@@ -115,6 +115,7 @@
     <Compile Include="Services\ISelectionService.cs" />
     <Compile Include="Services\ISettingsProvider.cs" />
     <Compile Include="Services\ISettingsService.cs" />
+    <Compile Include="Services\ISharedCookieService.cs" />
     <Compile Include="Services\IShellService.cs" />
     <Compile Include="Services\ManagerService.cs" />
     <Compile Include="Services\SelectionService.cs" />

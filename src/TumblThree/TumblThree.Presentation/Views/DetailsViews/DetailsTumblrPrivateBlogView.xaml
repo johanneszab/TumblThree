@@ -666,7 +666,7 @@
                     </Label.ToolTip>
                 </Label>
 
-                <TextBox Grid.Column="1" Grid.Row="40" Padding="0" 
+                <TextBox Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="40" Padding="0" 
                          Text="{Binding BlogFile.Password, Mode=TwoWay, ValidatesOnDataErrors=True}">
                     <TextBox.ToolTip>
                         <ToolTip>
@@ -679,15 +679,39 @@
                     </TextBox.ToolTip>
                 </TextBox>
 
+                <Label Content="{x:Static p:Resources.Tags}" Grid.Column="0" Grid.Row="42" Margin="3,0,3,0" Padding="3,0,3,0">
+                    <Label.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipTags}" />
+                                <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipTagsDescription}" />
+                            </StackPanel>
+                        </ToolTip>
+                    </Label.ToolTip>
+                </Label>
+
+                <TextBox Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="42" Padding="0" 
+                         Text="{Binding BlogFile.Tags, Mode=TwoWay, ValidatesOnDataErrors=True}">
+                    <TextBox.ToolTip>
+                        <ToolTip>
+                            <StackPanel>
+                                <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipTags}" />
+                                <TextBlock xml:space="preserve"
+                                           Text="{x:Static p:Resources.ToolTipTagsDescription}" />
+                            </StackPanel>
+                        </ToolTip>
+                    </TextBox.ToolTip>
+                </TextBox>
+
                 <CheckBox Content="{x:Static p:Resources.SkipGif}" IsChecked="{Binding BlogFile.SkipGif, Mode=TwoWay}"
-                          Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="42" Margin="3,0,0,0" Padding="3,0,0,0" />
+                          Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="44" Margin="3,0,0,0" Padding="3,0,0,0" />
 
                 <CheckBox Content="{x:Static p:Resources.DownloadRebloggedPosts}"
-                          IsChecked="{Binding BlogFile.DownloadRebloggedPosts, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="44"
+                          IsChecked="{Binding BlogFile.DownloadRebloggedPosts, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="46"
                           Margin="3,0,0,0" Padding="3,0,0,0">
                 </CheckBox>
 
-                <CheckBox Content="{x:Static p:Resources.CheckDirectoryForFiles}"
+                <!--<CheckBox Content="{x:Static p:Resources.CheckDirectoryForFiles}"
                           IsChecked="{Binding BlogFile.CheckDirectoryForFiles, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2"
                           Grid.Row="46" Margin="3,0,0,0" Padding="3,0,0,0">
                     <CheckBox.ToolTip>
@@ -700,7 +724,7 @@
                             </StackPanel>
                         </ToolTip>
                     </CheckBox.ToolTip>
-                </CheckBox>
+                </CheckBox>-->
 
                 <CheckBox Content="{x:Static p:Resources.DownloadUrlList}"
                           IsChecked="{Binding BlogFile.DownloadUrlList, Mode=TwoWay}" Grid.Column="0" Grid.Row="48" Grid.ColumnSpan="2"

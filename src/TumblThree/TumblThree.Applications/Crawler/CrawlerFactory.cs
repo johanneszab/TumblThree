@@ -17,11 +17,13 @@ namespace TumblThree.Applications.Crawler
     public class CrawlerFactory : ICrawlerFactory
     {
         private readonly AppSettings settings;
+        private readonly ISharedCookieService cookieService;
 
         [ImportingConstructor]
-        internal CrawlerFactory(ShellService shellService)
+        internal CrawlerFactory(ShellService shellService, ISharedCookieService cookieService)
         {
             this.settings = shellService.Settings;
+            this.cookieService = cookieService;
         }
 
         [ImportMany(typeof(ICrawler))]
@@ -46,15 +48,15 @@ namespace TumblThree.Applications.Crawler
             switch (blogtype)
             {
                 case BlogTypes.tumblr:
-                    return new TumblrBlogCrawler(shellService, ct, pt, progress, crawlerService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, files, producerConsumerCollection), producerConsumerCollection, blog);
+                    return new TumblrBlogCrawler(shellService, ct, pt, progress, crawlerService, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, files, producerConsumerCollection), producerConsumerCollection, blog);
                 case BlogTypes.tmblrpriv:
-                    return new TumblrPrivateCrawler(shellService, ct, pt, progress, crawlerService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, files, producerConsumerCollection), producerConsumerCollection, blog);
+                    return new TumblrPrivateCrawler(shellService, ct, pt, progress, crawlerService, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, files, producerConsumerCollection), producerConsumerCollection, blog);
                 case BlogTypes.tlb:
-                    return new TumblrLikedByCrawler(shellService, ct, pt, progress, crawlerService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, files, producerConsumerCollection), producerConsumerCollection, blog);
+                    return new TumblrLikedByCrawler(shellService, ct, pt, progress, crawlerService, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, files, producerConsumerCollection), producerConsumerCollection, blog);
                 case BlogTypes.tumblrsearch:
-                    return new TumblrSearchCrawler(shellService, ct, pt, progress, crawlerService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, files, producerConsumerCollection), producerConsumerCollection, blog);
+                    return new TumblrSearchCrawler(shellService, ct, pt, progress, crawlerService, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, files, producerConsumerCollection), producerConsumerCollection, blog);
                 case BlogTypes.tumblrtagsearch:
-                    return new TumblrTagSearchCrawler(shellService, ct, pt, progress, crawlerService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, files, producerConsumerCollection), producerConsumerCollection, blog);
+                    return new TumblrTagSearchCrawler(shellService, ct, pt, progress, crawlerService, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, files, producerConsumerCollection), producerConsumerCollection, blog);
                 default:
                     throw new ArgumentException("Website is not supported!", "blogType");
             }
@@ -67,7 +69,7 @@ namespace TumblThree.Applications.Crawler
 
         private FileDownloader GetFileDownloader(CancellationToken ct)
         {
-            return new FileDownloader(settings, ct);
+            return new FileDownloader(settings, ct, cookieService);
         }
 
         private static IBlogService GetBlogService(IBlog blog, IFiles files)

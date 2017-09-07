@@ -182,6 +182,7 @@
     <Compile Include="Controls\SelectionBehavior.cs" />
     <Compile Include="Controls\SuperToolTip.cs" />
     <Compile Include="Controls\ToolTipBehavior.cs" />
+    <Compile Include="Converters\BlogtypeToDisplayValueConverter.cs" />
     <Compile Include="Converters\ConverterHelper.cs" />
     <Compile Include="Converters\DateToDisplayValueConverter.cs" />
     <Compile Include="Converters\DetailsProgressConverter.cs" />
