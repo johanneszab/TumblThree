@@ -21,8 +21,8 @@ namespace TumblThree.Applications.Crawler
     public class TumblrLikedByCrawler : AbstractCrawler, ICrawler
     {
         public TumblrLikedByCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
-            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IDownloader downloader, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
-            : base(shellService, ct, pt, progress, crawlerService, downloader, producerConsumerCollection, blog)
+            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, ISharedCookieService cookieService, IDownloader downloader, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
+            : base(shellService, ct, pt, progress, crawlerService, cookieService, downloader, producerConsumerCollection, blog)
         {
         }
 

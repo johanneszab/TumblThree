@@ -136,7 +136,7 @@
                           SelectedValue="{Binding VideoSize}"
                           SelectedItem="{Binding VideoSize, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                           HorizontalAlignment="Left" VerticalAlignment="Center" MinWidth="40" />
-                            <Label x:Name="bandwidthLabel" Grid.Column="2" Content="{x:Static p:Resources.Bandwidth}"
+                            <!--<Label x:Name="bandwidthLabel" Grid.Column="2" Content="{x:Static p:Resources.Bandwidth}"
                        VerticalAlignment="Center" HorizontalAlignment="Left">
                                 <Label.ToolTip>
                                     <ToolTip>
@@ -157,7 +157,7 @@
                                         </Binding.ValidationRules>
                                     </Binding>
                                 </TextBox.Text>
-                            </TextBox>
+                            </TextBox>-->
                         </Grid>
                         <Grid MinHeight="46" Height="Auto" Grid.Row="5">
                             <Grid.ColumnDefinitions>

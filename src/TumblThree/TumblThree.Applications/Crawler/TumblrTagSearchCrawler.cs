@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
@@ -24,8 +23,8 @@ namespace TumblThree.Applications.Crawler
     public class TumblrTagSearchCrawler : AbstractCrawler, ICrawler
     {
         public TumblrTagSearchCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
-            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IDownloader downloader, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
-            : base(shellService, ct, pt, progress, crawlerService, downloader, producerConsumerCollection, blog)
+            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, ISharedCookieService cookieService, IDownloader downloader, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
+            : base(shellService, ct, pt, progress, crawlerService, cookieService, downloader, producerConsumerCollection, blog)
         {
         }
 

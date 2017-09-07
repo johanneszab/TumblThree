@@ -1,12 +1,15 @@
 ﻿using System;
+using System.ComponentModel.Composition;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 
 namespace TumblThree.Applications.Services
 {
-    public class SharedCookieService
+    [Export(typeof(ISharedCookieService)), Export]
+    public class SharedCookieService : ISharedCookieService
     {
+        private readonly CookieContainer cookieContainer = new CookieContainer();
         private const int InternetCookieHttponly = 0x2000;
 
         [DllImport("wininet.dll", SetLastError = true)]
@@ -24,12 +27,33 @@ namespace TumblThree.Applications.Services
             string cookieName,
             string cookieData);
 
+        public CookieCollection GetUriCookie(Uri uri)
+        {
+            if (cookieContainer.GetCookies(uri).Count == 0)
+            {
+                foreach (Cookie cookie in GetUriCookieContainer(uri).GetCookies(uri))
+                {
+                    cookieContainer.Add(cookie);
+                }
+            }
+            return cookieContainer.GetCookies(uri);
+        }
+
+        public void SetUriCookie(CookieCollection cookies)
+        {
+            foreach (Cookie cookie in cookies)
+            {
+                InternetSetCookie("http://" + cookie.Domain, cookie.Name, cookie.Value);
+                cookieContainer.Add(cookie);
+            }
+        }
+
         /// <summary>
         ///     Gets the URI cookie container.
         /// </summary>
         /// <param name="uri">The URI.</param>
         /// <returns></returns>
-        public static CookieContainer GetUriCookieContainer(Uri uri)
+        private static CookieContainer GetUriCookieContainer(Uri uri)
         {
             CookieContainer cookies = null;
             var datasize = 0;
@@ -61,7 +85,7 @@ namespace TumblThree.Applications.Services
             return cookies;
         }
 
-        public static void SetUriCookieContainer(CookieCollection cookies)
+        private static void SetUriCookieContainer(CookieCollection cookies)
         {
             foreach (Cookie cookie in cookies)
             {

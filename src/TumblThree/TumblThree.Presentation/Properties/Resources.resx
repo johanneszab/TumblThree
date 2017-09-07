@@ -636,4 +636,13 @@
   <data name="ToolTipPasswordDescription" xml:space="preserve">
     <value>Caution: The password is stored in clear text in the blogs database.</value>
   </data>
+  <data name="Blogtype" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="ToolTipTags" xml:space="preserve">
+    <value>Download only tagged posts</value>
+  </data>
+  <data name="ToolTipTagsDescription" xml:space="preserve">
+    <value>Must be in a comma separated list, e.g.  great big car, bears searches for great big cars and bears.</value>
+  </data>
 </root>

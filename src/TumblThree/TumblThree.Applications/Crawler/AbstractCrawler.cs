@@ -23,6 +23,7 @@ namespace TumblThree.Applications.Crawler
         protected readonly IBlog blog;
         protected readonly ICrawlerService crawlerService;
         protected readonly IProgress<DownloadProgress> progress;
+        protected readonly ISharedCookieService cookieService;
         protected readonly object lockObjectDb = new object();
         protected readonly object lockObjectDirectory = new object();
         protected readonly object lockObjectDownload = new object();
@@ -36,10 +37,11 @@ namespace TumblThree.Applications.Crawler
         protected List<string> tags = new List<string>();
         protected int numberOfPagesCrawled = 0;
 
-        protected AbstractCrawler(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IDownloader downloader, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
+        protected AbstractCrawler(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, ICrawlerService crawlerService, ISharedCookieService cookieService, IDownloader downloader, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
         {
             this.shellService = shellService;
             this.crawlerService = crawlerService;
+            this.cookieService = cookieService;
             this.downloader = downloader;
             this.producerConsumerCollection = producerConsumerCollection;
             this.blog = blog;
@@ -93,21 +95,21 @@ namespace TumblThree.Applications.Crawler
             request.ReadWriteTimeout = shellService.Settings.TimeOut * 1000;
             request.Timeout = shellService.Settings.TimeOut * 1000;
             request.CookieContainer = new CookieContainer();
-            SetCookies(request, new Uri("https://www.tumblr.com/"));
-            SetCookies(request, new Uri("https://" + blog.Name + ".tumblr.com"));
+            GetCookies(request, new Uri("https://www.tumblr.com/"));
+            GetCookies(request, new Uri("https://" + blog.Name + ".tumblr.com"));
             ServicePointManager.DefaultConnectionLimit = 400;
             request = SetWebRequestProxy(request, shellService.Settings);
             return request;
         }
 
-        private static void SetCookies(HttpWebRequest request, Uri uri)
+        private void GetCookies(HttpWebRequest request, Uri uri)
         {
-            CookieContainer cookieContainer = SharedCookieService.GetUriCookieContainer(uri);
-            if (cookieContainer != null)
+            CookieCollection cookies = cookieService.GetUriCookie(uri);
+            if (cookies != null)
             {
-                foreach (Cookie blogCookie in cookieContainer.GetCookies(uri))
+                foreach (Cookie cookie in cookies)
                 {
-                    request.CookieContainer.Add(blogCookie);
+                    request.CookieContainer.Add(cookie);
                 }
             }
         }

@@ -253,7 +253,7 @@
     <value>1个项目</value>
   </data>
   <data name="CheckStatus" xml:space="preserve">
-    <value>启动时检查博客在线状态</value>
+    <value>启动时检查博客状态</value>
   </data>
   <data name="DeleteIndex" xml:space="preserve">
     <value>仅删除索引文件(保留下载的文件)</value>
@@ -319,19 +319,19 @@
     <value>登录tumblr并授权</value>
   </data>
   <data name="ToolTipAuthenticateDescription" xml:space="preserve">
-    <value>打开一个浏览器窗口来登录tumblr并授权，使能够下载私密博客。授权密匙将被保存故该操作仅需一次。</value>
+    <value>打开一个浏览器窗口来登录tumblr并授权，使能够下载私密博客。授权信息将被保存故该操作仅需一次。</value>
   </data>
   <data name="ToolTipBlogs" xml:space="preserve">
     <value>同时处理的博客数量</value>
   </data>
   <data name="ToolTipBlogsDescription" xml:space="preserve">
-    <value>设置同时处理的博客的数量。如将此设置为2将同时从两个博客中下载数据。</value>
+    <value>设置同时处理的博客的数量。如将此设置为'2'将同时从两个博客中下载数据。</value>
   </data>
   <data name="ToolTipConnections" xml:space="preserve">
     <value>同时处理的连接数量</value>
   </data>
   <data name="ToolTipConnectionsDescription" xml:space="preserve">
-    <value>设置同时处理的连接的数量，将被均分给同时处理的博客，如设置为25而并行博客数为2则每个博客将打开12条连接。</value>
+    <value>设置同时处理的连接的数量，将被均分给同时处理的博客，如设置为'25'而并行博客数为'2'则每个博客将打开12条连接。</value>
   </data>
   <data name="Notes" xml:space="preserve">
     <value>备注</value>
@@ -433,7 +433,7 @@
     <value>即使tumblr未提供也强制下载指定分辨率的图片。</value>
   </data>
   <data name="ToolTipForceSizeDescription" xml:space="preserve">
-    <value>如果下载器只找到比指定分辨率更小的图片，启用这个选项将把url重命名为指定文件分辨率。通常能提供更大的分辨率，但也可能只是重新命名了较小分辨率的图片。打开比较保险。</value>
+    <value>如果下载器只找到比指定分辨率更小的图片，启用这个选项将把url重命名为指定文件分辨率。通常能提供更大的分辨率，但也可能只是重新命名了较小分辨率的图片。打开较保险。</value>
   </data>
   <data name="ProxyHost" xml:space="preserve">
     <value>HTTP代理：</value>
@@ -451,7 +451,7 @@
     <value>限制下载器的速度</value>
   </data>
   <data name="ToolTipLimitBandwidthDescription" xml:space="preserve">
-    <value>以kbytes/s设置下载器可用的最大速度。设置为0即不限速。</value>
+    <value>以kbytes/s设置下载器可用的最大速度。设置为'0'即不限速。</value>
   </data>
   <data name="LimitScan" xml:space="preserve">
     <value>限制扫描速度</value>
@@ -475,7 +475,7 @@
     <value>价值必须介于0至9,000,000,000,000,000之间。</value>
   </data>
   <data name="TimeSpanTypeError" xml:space="preserve">
-    <value>该值必须以hh:mm:ss的形式。</value>
+    <value>该值必须以hh:mm:ss的格式。</value>
   </data>
   <data name="IntRangeError" xml:space="preserve">
     <value>该值必须介于0和2,147,483,647之间。</value>
@@ -583,7 +583,7 @@
     <value>每页帖数</value>
   </data>
   <data name="ToolTipPageSizeDescription" xml:space="preserve">
-    <value>设置每页帖数(应该在1-50之间，默认50)。例如50表示每页50条帖子。</value>
+    <value>设置每页帖数(应该在1-50之间，默认50)。例如'50'表示每页50条帖子。</value>
   </data>
   <data name="FullScreenMedia" xml:space="preserve">
     <value>全屏视图</value>
@@ -598,28 +598,28 @@
     <value>将所有url保存为文本文件以供交换。</value>
   </data>
   <data name="DownloadFrom" xml:space="preserve">
-    <value>下载地址：</value>
+    <value>下载日期：</value>
   </data>
   <data name="DownloadTo" xml:space="preserve">
-    <value>至：</value>
+    <value>←从|至→：</value>
   </data>
   <data name="ToolTipDownloadFrom" xml:space="preserve">
-    <value>从此日期检索帖子</value>
+    <value>下载从此日期开始的帖子</value>
   </data>
   <data name="ToolTipDownloadTagsFromDescription" xml:space="preserve">
-    <value>必须是YYYYMMDD格式。空意味着从2007年5月开始。</value>
+    <value>必须为YYYYMMDD格式。留空表示2007年5月。</value>
   </data>
   <data name="ToolTipDownloadTo" xml:space="preserve">
-    <value>抓取帖子到这个日期</value>
+    <value>下载到此日期为止的帖子</value>
   </data>
   <data name="ToolTipDownloadTagsToDescription" xml:space="preserve">
     <value>必须是YYYYMMDD格式。空意味着现在。</value>
   </data>
   <data name="ToolTipDownloadFromDescription" xml:space="preserve">
-    <value>必须是YYYYMMDD格式。空白表示从博客开始。</value>
+    <value>必须为YYYYMMDD格式。留空表示从博客最早帖子开始。</value>
   </data>
   <data name="ToolTipDownloadToDescription" xml:space="preserve">
-    <value>必须是YYYYMMDD格式。空意味着现在。</value>
+    <value>必须为YYYYMMDD格式。留空表示现在。</value>
   </data>
   <data name="ToolTipPageSizeTumblrSearch" xml:space="preserve">
     <value>每页帖数</value>
