@@ -27,16 +27,15 @@ namespace TumblThree.Applications.Services
             string cookieName,
             string cookieData);
 
-        public CookieCollection GetUriCookie(Uri uri)
+        public void GetUriCookie(CookieContainer request, Uri uri)
         {
             if (cookieContainer.GetCookies(uri).Count == 0)
             {
                 foreach (Cookie cookie in GetUriCookieContainer(uri).GetCookies(uri))
                 {
-                    cookieContainer.Add(cookie);
+                    request.Add(cookie);
                 }
             }
-            return cookieContainer.GetCookies(uri);
         }
 
         public void SetUriCookie(CookieCollection cookies)
@@ -55,7 +54,7 @@ namespace TumblThree.Applications.Services
         /// <returns></returns>
         private static CookieContainer GetUriCookieContainer(Uri uri)
         {
-            CookieContainer cookies = null;
+            CookieContainer cookies = new CookieContainer();
             var datasize = 0;
             InternetGetCookieEx(uri.ToString(), null, null, ref datasize, InternetCookieHttponly, IntPtr.Zero);
             var cookieData = new StringBuilder(datasize);
@@ -63,7 +62,7 @@ namespace TumblThree.Applications.Services
             {
                 if (datasize < 0)
                 {
-                    return null;
+                    return cookies;
                 }
                 // Allocate stringbuilder large enough to hold the cookie
                 cookieData = new StringBuilder(datasize);
@@ -74,12 +73,11 @@ namespace TumblThree.Applications.Services
                     InternetCookieHttponly,
                     IntPtr.Zero))
                 {
-                    return null;
+                    return cookies;
                 }
             }
             if (cookieData.Length > 0)
             {
-                cookies = new CookieContainer();
                 cookies.SetCookies(uri, cookieData.ToString().Replace(';', ','));
             }
             return cookies;

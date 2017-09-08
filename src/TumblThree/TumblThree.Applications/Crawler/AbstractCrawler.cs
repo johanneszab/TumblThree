@@ -95,23 +95,11 @@ namespace TumblThree.Applications.Crawler
             request.ReadWriteTimeout = shellService.Settings.TimeOut * 1000;
             request.Timeout = shellService.Settings.TimeOut * 1000;
             request.CookieContainer = new CookieContainer();
-            GetCookies(request, new Uri("https://www.tumblr.com/"));
-            GetCookies(request, new Uri("https://" + blog.Name + ".tumblr.com"));
+            cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
+            cookieService.GetUriCookie(request.CookieContainer, new Uri("https://" + blog.Name + ".tumblr.com"));
             ServicePointManager.DefaultConnectionLimit = 400;
             request = SetWebRequestProxy(request, shellService.Settings);
             return request;
-        }
-
-        private void GetCookies(HttpWebRequest request, Uri uri)
-        {
-            CookieCollection cookies = cookieService.GetUriCookie(uri);
-            if (cookies != null)
-            {
-                foreach (Cookie cookie in cookies)
-                {
-                    request.CookieContainer.Add(cookie);
-                }
-            }
         }
 
         protected HttpWebRequest CreateGetXhrReqeust(string url, string referer = "")

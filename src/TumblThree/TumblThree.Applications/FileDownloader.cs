@@ -45,22 +45,10 @@ namespace TumblThree.Applications
             request.Timeout = settings.TimeOut * 1000;
             request.CookieContainer = new CookieContainer();
             //TODO: Fix site specific cookies!
-            GetCookies(request, new Uri("https://www.tumblr.com/"));
+            cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
             ServicePointManager.DefaultConnectionLimit = 400;
             request = SetWebRequestProxy(request, settings);
             return request;
-        }
-
-        private void GetCookies(HttpWebRequest request, Uri uri)
-        {
-            CookieCollection cookies = cookieService.GetUriCookie(uri);
-            if (cookies != null)
-            {
-                foreach (Cookie cookie in cookies)
-                {
-                    request.CookieContainer.Add(cookie);
-                }
-            }
         }
 
         private static HttpWebRequest SetWebRequestProxy(HttpWebRequest request, AppSettings settings)

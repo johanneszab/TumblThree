@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Windows.Data;
 
 using TumblThree.Domain.Models;
+using TumblThree.Presentation.Properties;
 
 namespace TumblThree.Presentation.Converters
 {
@@ -15,21 +16,21 @@ namespace TumblThree.Presentation.Converters
             switch (type)
             {
                 case BlogTypes.tumblr:
-                    return "Tumblr";
+                    return string.Format(CultureInfo.CurrentCulture, Resources.BlogtypeTumblr);
+                case BlogTypes.tmblrpriv:
+                    return string.Format(CultureInfo.CurrentCulture, Resources.BlogtypeTumblrPrivate);
                 case BlogTypes.tumblrsearch:
-                    return "Tumblr Search";
+                    return string.Format(CultureInfo.CurrentCulture, Resources.BlogtypeTumblrSearch);
+                case BlogTypes.tumblrtagsearch:
+                    return string.Format(CultureInfo.CurrentCulture, Resources.BlogtypeTumblrTagSearch);
+                case BlogTypes.tlb:
+                    return string.Format(CultureInfo.CurrentCulture, Resources.BlogtypeTumblrLikedBy);
+                case BlogTypes.instagram:
+                    return string.Format(CultureInfo.CurrentCulture, Resources.BlogtypeInstagram);
+                case BlogTypes.twitter:
+                    return string.Format(CultureInfo.CurrentCulture, Resources.BlogtypeTwitter);
                 case BlogTypes.all:
                     return "";
-                case BlogTypes.instagram:
-                    return "Instagram";
-                case BlogTypes.tlb:
-                    return "Tumblr Liked/By";
-                case BlogTypes.tmblrpriv:
-                    return "Tumblr Hidden";
-                case BlogTypes.tumblrtagsearch:
-                    return "Tumblr Tag Search";
-                case BlogTypes.twitter:
-                    return "Twitter";
                 default:
                     return "";
             }

@@ -645,4 +645,28 @@
   <data name="ToolTipTagsDescription" xml:space="preserve">
     <value>Must be in a comma separated list, e.g.  great big car, bears searches for great big cars and bears.</value>
   </data>
+  <data name="BlogtypeAll" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="BlogtypeInstagram" xml:space="preserve">
+    <value>Instagram</value>
+  </data>
+  <data name="BlogtypeTumblr" xml:space="preserve">
+    <value>Tumblr</value>
+  </data>
+  <data name="BlogtypeTumblrLikedBy" xml:space="preserve">
+    <value>Tumblr Liked-by</value>
+  </data>
+  <data name="BlogtypeTumblrPrivate" xml:space="preserve">
+    <value>Tumblr Hidden</value>
+  </data>
+  <data name="BlogtypeTumblrSearch" xml:space="preserve">
+    <value>Tumblr Search</value>
+  </data>
+  <data name="BlogtypeTumblrTagSearch" xml:space="preserve">
+    <value>Tumblr Tag Search</value>
+  </data>
+  <data name="BlogtypeTwitter" xml:space="preserve">
+    <value>Twitter</value>
+  </data>
 </root>

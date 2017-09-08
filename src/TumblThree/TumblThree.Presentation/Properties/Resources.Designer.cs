@@ -151,6 +151,78 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string BlogtypeAll {
+            get {
+                return ResourceManager.GetString("BlogtypeAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Instagram.
+        /// </summary>
+        public static string BlogtypeInstagram {
+            get {
+                return ResourceManager.GetString("BlogtypeInstagram", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tumblr.
+        /// </summary>
+        public static string BlogtypeTumblr {
+            get {
+                return ResourceManager.GetString("BlogtypeTumblr", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tumblr Liked-by.
+        /// </summary>
+        public static string BlogtypeTumblrLikedBy {
+            get {
+                return ResourceManager.GetString("BlogtypeTumblrLikedBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tumblr Hidden.
+        /// </summary>
+        public static string BlogtypeTumblrPrivate {
+            get {
+                return ResourceManager.GetString("BlogtypeTumblrPrivate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tumblr Search.
+        /// </summary>
+        public static string BlogtypeTumblrSearch {
+            get {
+                return ResourceManager.GetString("BlogtypeTumblrSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tumblr Tag Search.
+        /// </summary>
+        public static string BlogtypeTumblrTagSearch {
+            get {
+                return ResourceManager.GetString("BlogtypeTumblrTagSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Twitter.
+        /// </summary>
+        public static string BlogtypeTwitter {
+            get {
+                return ResourceManager.GetString("BlogtypeTwitter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Enter URL:.
         /// </summary>
         public static string BlogUrl {
