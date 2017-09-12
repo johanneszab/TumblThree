@@ -27,16 +27,17 @@ TumblThree is the code rewrite of [TumblTwo](https://github.com/johanneszab/Tumb
 * Download meta information for photo, video and audio posts.
 * Downloads inlined photos and videos (e.g. photos embedded in question&answer posts).
 * Download of \_raw image files (original/higher resolution pictures). 
+* Download of safe mode blogs.
 * Allows to download only original content of the blog and skip reblogged posts.
 * Can download only tagged posts.
 * Can download only specific blog pages instead of the whole blog.
 * Allows to download blog posts in a defined time span.
-* Can download hidden blogs (login required blogs).
+* Can download hidden blogs (login required / dash board blogs).
 * Can download password protected blogs (of non-hidden blogs).
 
 ### Liked/by backup/download:
 
-* A downloader for downloading "liked by" photos and videos instead of a tumblr blog (e.g. https://www.tumblr.com/liked/by/wallpaperfx/).
+* A downloader for downloading "liked by" photos and videos instead of a tumblr blog (e.g. https://www.tumblr.com/liked/by/wallpaperfx/) (login required).
 
 ### Tumblr search backup/download:
 
@@ -65,22 +66,21 @@ Latest releases can be found [here](https://github.com/johanneszab/TumblThree/re
   * The blog manager on the left side also indicates the state of each blog. A red background shows an offline blog, a green background an actively crawled blog and a purple background an enqueue blog.
   * You can set up more than one parallel download in the 'Settings'. Also, it is possible to change the download location and the sizes of the picture and video files to download. It is possible to setup a timer for automatic start of the download. 
   * In the Details window you can view statistics of your blog and set blog specific options. You can choose here what kind of post type (photo, video, audio, text, conversation, quote, link) to download.
-  * For downloading password protected blogs, you have to do some steps:
+  * For downloading only tagged posts, you'll have to do some steps:
+    1. Add the blog url.
+	2. Open the blog in the details tab, enter the tags in the Tags textbox in a comma separated list without the leading hash (#) sign. E.g. _great big car,bears_ would search for images that are tagged for either a _great big car_ or _bears_ or both.
+  * For downloading password protected blogs, you'll have to do some steps:
     1. Add the blog url.
 	2. Open the blog in the details tab, enter the password in the Password textbox.
   * For downloading hidden blogs (login required blogs), you have to do some steps:
     1. Go to Settings, click the Authenticate button. Logon to tumblr using an account. The window/browser should automatically close after the login indicating a successful authentication. TumblThree will use the Internet Explorer cookies for authentication. Alternatively, you can also use the Internet Explorer directly for logging in to the Tumblr.com network.
     2. Add the blog url.
-  * For downloading liked photos and videos, you have to do some steps:
+  * For downloading liked photos and videos, you'll have to do some steps:
     1. Go to Settings, click the Authenticate button. Logon to tumblr using an account. The window/browser should automatically close after the login indicating a successful authentication. TumblThree will use the Internet Explorer cookies for authentication. Alternatively, you can also use the Internet Explorer directly for logging in to the Tumblr.com network.
     2. Add the blog url including the liked/by string in the url (e.g. https://www.tumblr.com/liked/by/wallpaperfx/).
-  * For downloading photos and videos from the tumblr tag search, you have to do some steps:
+  * For downloading photos and videos from the tumblr tag search, you'll have to do some steps:
     1. Go to Settings, click the Authenticate button. Logon to tumblr using an account. The window/browser should automatically close after the login indicating a successful authentication. TumblThree will use the Internet Explorer cookies for authentication. Alternatively, you can also use the Internet Explorer directly for logging in to the Tumblr.com network.
     2. Add the search url including your tags separated by plus signs (+) in the url (e.g. https://www.tumblr.com/tagged/my+special+tags).
-
-* Tags
-
-  * You can also download only tagged images by adding tags in a comma separated list. For example: _great big car,bears_ would search for images that are tagged for either a _great big car_ or _bears_ or both.
 
 * Key Mappings
 

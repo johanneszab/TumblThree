@@ -97,6 +97,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to blogs to the queue..
+        /// </summary>
+        public static string AutoDownloadBlogs {
+            get {
+                return ResourceManager.GetString("AutoDownloadBlogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Limit Bandwidth (KB/s).
         /// </summary>
         public static string Bandwidth {
@@ -295,7 +304,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Time interval (s):.
+        ///   Looks up a localized string similar to per time interval (s):.
         /// </summary>
         public static string ConnectionTimeInterval {
             get {
@@ -439,7 +448,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download From:.
+        ///   Looks up a localized string similar to Download from:.
         /// </summary>
         public static string DownloadFrom {
             get {
@@ -574,7 +583,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Enable autodownload blogs and add.
+        ///   Looks up a localized string similar to Start download at.
         /// </summary>
         public static string EnableAutoDownload {
             get {
@@ -745,7 +754,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Limit Tumblr Api Connections.
+        ///   Looks up a localized string similar to Limit Tumblr Api Connections:.
         /// </summary>
         public static string LimitConnections {
             get {
@@ -808,7 +817,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} Images.
+        ///   Looks up a localized string similar to {0} Posts.
         /// </summary>
         public static string NumberOfImages {
             get {
@@ -817,7 +826,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} Items.
+        ///   Looks up a localized string similar to {0} Blogs.
         /// </summary>
         public static string NumberOfItems {
             get {
@@ -844,7 +853,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 1 Item.
+        ///   Looks up a localized string similar to 1 Blog.
         /// </summary>
         public static string OneItem {
             get {
@@ -925,7 +934,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Activate portable mode..
+        ///   Looks up a localized string similar to Activate portable mode.
         /// </summary>
         public static string PortableMode {
             get {
@@ -1213,7 +1222,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to at time (hh:mm:ss).
+        ///   Looks up a localized string similar to (hh:mm:ss) and add.
         /// </summary>
         public static string Timer {
             get {
@@ -1240,7 +1249,8 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Opens a browser window to authenticate yourself to the tumblr.com site. Allows the download of private blogs with your account. The access token to your account is saved and the authentication process needs to be done only once..
+        ///   Looks up a localized string similar to Opens a browser window to authenticate yourself to the tumblr.com site.
+        ///The cookie with your credentials of your account is saved and the authentication process needs to be done only once..
         /// </summary>
         public static string ToolTipAuthenticateDescription {
             get {
@@ -1258,7 +1268,8 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sets the Number of simultaneous processed blogs. Setting this to 2 would download data from two blogs at a time..
+        ///   Looks up a localized string similar to Sets the number of simultaneous processing blogs.
+        ///Setting this to 2 would proccess two blogs at a time..
         /// </summary>
         public static string ToolTipBlogsDescription {
             get {
@@ -1276,7 +1287,8 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Checks the directory and the database for already downloaded files. Might negatively impact the download speed for large directories..
+        ///   Looks up a localized string similar to Checks the directory and the database for already downloaded files.
+        ///Might negatively impact the download speed for large directories..
         /// </summary>
         public static string ToolTipCheckDirectoryForFilesDescription {
             get {
@@ -1294,7 +1306,8 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sets the Number of total simultaneous connections. The number is divided by the number of Parallel Blogs settings. 25/2 would open 12 connections per blog download..
+        ///   Looks up a localized string similar to Sets the number of total simultaneous connections.
+        ///The number is shared between all actively downloading blogs..
         /// </summary>
         public static string ToolTipConnectionsDescription {
             get {
@@ -1312,7 +1325,8 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The backup uses indivual settings for each blog. To change them, select a blog in the main interface and select the Details window on the right hand side..
+        ///   Looks up a localized string similar to The scan/download uses indivual settings for each blog.
+        ///To change them, select blog(s) in the main interface and select the Details tab on the right hand side..
         /// </summary>
         public static string ToolTipDefaultSettingsForBlogsDescription {
             get {
@@ -1321,7 +1335,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Number of downloaded post types / total post types.
+        ///   Looks up a localized string similar to Number of downloaded post types of total post types.
         /// </summary>
         public static string ToolTipDetailsStats {
             get {
@@ -1330,7 +1344,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Check to download post type or skip during the backup.
+        ///   Looks up a localized string similar to Check to download post type or skip during the download.
         /// </summary>
         public static string ToolTipDetailsStatsDescription {
             get {
@@ -1456,7 +1470,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Forces a complete scan using the Tumblr api. Enabling this also updates the blog statistics..
+        ///   Looks up a localized string similar to Forces a complete scan using the Tumblr api..
         /// </summary>
         public static string ToolTipForceRescanDescription {
             get {
@@ -1474,7 +1488,9 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to If the crawler only finds lower sized images than specified, enabling this option will rename the url to the specified files size. Those files generally exist and sometimes offer a larger resolution or are just renamed smaller resolution files. It&apos;s safe to turn this on..
+        ///   Looks up a localized string similar to If the crawler only finds lower sized images than specified, enabling this option will rename the url to the specified files size.
+        ///Those files generally exist and sometimes offer a larger resolution or are just renamed smaller resolution files.
+        ///It&apos;s safe to turn this on..
         /// </summary>
         public static string ToolTipForceSizeDescription {
             get {
@@ -1492,7 +1508,8 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sets the maximum bandwidth available for the downloader in kbytes/s. 0 disables throttling..
+        ///   Looks up a localized string similar to Sets the maximum bandwidth available for the downloader in kbytes/s.
+        ///0 disables throttling..
         /// </summary>
         public static string ToolTipLimitBandwidthDescription {
             get {
@@ -1510,7 +1527,10 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr api. A too small value will decrease the download speed..
+        ///   Looks up a localized string similar to A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr api.
+        ///A too small value will decrease the scanning speed.
+        ///Set a number/time pair.
+        ///Note: The tumblr api is only used for regular tumblr blog downloads..
         /// </summary>
         public static string ToolTipLimitConnectionsDescription {
             get {
@@ -1528,7 +1548,8 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Since the data used for scanning is usually small, you should leave this off since the throttling algorithm is too slow to adjust and will negatively impact the performance..
+        ///   Looks up a localized string similar to Since the data used for scanning is usually small, you should leave this off
+        ///since the throttling algorithm is too slow to adjust and might negatively impact the scan performance..
         /// </summary>
         public static string ToolTipLimitScanDescription {
             get {
@@ -1546,7 +1567,8 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sets the post per page (should be between 1-50, default 50). E.g. 50 means to scan 50 posts per page..
+        ///   Looks up a localized string similar to Sets the post per page (should be between 1-50, default 50).
+        ///E.g. 50 means to scan 50 posts per page..
         /// </summary>
         public static string ToolTipPageSizeDescription {
             get {
@@ -1636,7 +1658,8 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sets the number connections used for scanning. Since the data is usually small, you should leave this high..
+        ///   Looks up a localized string similar to Sets the number connections used for scanning.
+        ///Since the data is usually small, you should leave this high..
         /// </summary>
         public static string ToolTipScanDescription {
             get {
@@ -1654,11 +1677,30 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Must be in a comma separated list, e.g.  great big car, bears searches for great big cars and bears..
+        ///   Looks up a localized string similar to Must be in a comma separated list without the leading hash (#) sign.
+        ///E.g.  great big car, bears searches for great big cars and bears..
         /// </summary>
         public static string ToolTipTagsDescription {
             get {
                 return ResourceManager.GetString("ToolTipTagsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Timeout for web requests.
+        /// </summary>
+        public static string ToolTipTimeout {
+            get {
+                return ResourceManager.GetString("ToolTipTimeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The length of time, in seconds, until the request times out..
+        /// </summary>
+        public static string ToolTipTimeoutDescription {
+            get {
+                return ResourceManager.GetString("ToolTipTimeoutDescription", resourceCulture);
             }
         }
         

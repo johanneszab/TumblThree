@@ -96,7 +96,7 @@ namespace TumblThree.Applications.Crawler
             request.Timeout = shellService.Settings.TimeOut * 1000;
             request.CookieContainer = new CookieContainer();
             cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
-            cookieService.GetUriCookie(request.CookieContainer, new Uri("https://" + blog.Name + ".tumblr.com"));
+            cookieService.GetUriCookie(request.CookieContainer, new Uri("https://" + blog.Name.Replace("+", "-") + ".tumblr.com"));
             ServicePointManager.DefaultConnectionLimit = 400;
             request = SetWebRequestProxy(request, shellService.Settings);
             return request;
