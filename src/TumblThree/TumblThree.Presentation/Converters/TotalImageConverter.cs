@@ -11,7 +11,7 @@ namespace TumblThree.Presentation.Converters
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             object totalImageCount = values[0];
-            return string.Format(CultureInfo.CurrentCulture, Resources.NumberOfItems, totalImageCount);
+            return string.Format(CultureInfo.CurrentCulture, Resources.NumberOfImages, totalImageCount);
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

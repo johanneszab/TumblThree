@@ -110,7 +110,16 @@
                           SelectedItem="{Binding ImageSize, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                           HorizontalAlignment="Left" VerticalAlignment="Center" MinWidth="40" />
                             <Label x:Name="timeOutLabel" Grid.Column="2" Content="{x:Static p:Resources.TimeOut}"
-                       VerticalAlignment="Center" HorizontalAlignment="Left" />
+                       VerticalAlignment="Center" HorizontalAlignment="Left">
+                                <Label.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipTimeout}" />
+                                            <TextBlock Text="{x:Static p:Resources.ToolTipTimeoutDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </Label.ToolTip>
+                            </Label>
                             <TextBox x:Name="timeOutComboBox" Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center"
                          MinWidth="40">
                                 <TextBox.Text>
@@ -120,6 +129,14 @@
                                         </Binding.ValidationRules>
                                     </Binding>
                                 </TextBox.Text>
+                                <TextBox.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipTimeout}" />
+                                            <TextBlock Text="{x:Static p:Resources.ToolTipTimeoutDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </TextBox.ToolTip>
                             </TextBox>
                         </Grid>
                         <Grid MinHeight="46" Height="Auto" Grid.Row="4">
@@ -201,7 +218,7 @@
                                 </TextBox.Text>
                             </TextBox>
                         </Grid>
-                        <Grid MinHeight="46" Height="Auto" Grid.Row="6">
+                        <Grid MinHeight="46" Height="Auto" Grid.Row="6" HorizontalAlignment="Left">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
@@ -327,8 +344,9 @@
                          Grid.Column="3" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center"
                          Margin="00,0,10,0" />
                         </Grid>
-                        <Grid MinHeight="46" Height="Auto" Grid.Row="9">
+                        <Grid MinHeight="46" Height="Auto" Grid.Row="9" HorizontalAlignment="Left">
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
@@ -337,14 +355,7 @@
                             <CheckBox x:Name="autoDownloadEnableCheckBox" Grid.Column="0"
                           Content="{x:Static p:Resources.EnableAutoDownload}" IsChecked="{Binding AutoDownload}"
                           IsEnabled="True" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10" />
-                            <ComboBox x:Name="autoDownloadChoseBlogsComboBox" Grid.Column="1"
-                          ItemsSource="{Binding ShellService.Settings.BlogTypes}" SelectedValuePath="."
-                          SelectedValue="{Binding BlogType}"
-                          SelectedItem="{Binding BlogType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                          HorizontalAlignment="Left" VerticalAlignment="Center" MinWidth="60" />
-                            <Label x:Name="autoDownloadTimerLabel" Grid.Column="2" Content="{x:Static p:Resources.Timer}"
-                       HorizontalAlignment="Left" VerticalAlignment="Center" />
-                            <TextBox x:Name="autoDownloadSetTimerComboBox" Grid.Column="3" HorizontalAlignment="Left"
+                            <TextBox x:Name="autoDownloadSetTimerComboBox" Grid.Column="1" HorizontalAlignment="Left"
                          VerticalAlignment="Center" MinWidth="60">
                                 <TextBox.Text>
                                     <Binding Path="TimerInterval" UpdateSourceTrigger="PropertyChanged">
@@ -354,6 +365,15 @@
                                     </Binding>
                                 </TextBox.Text>
                             </TextBox>
+                            <Label x:Name="autoDownloadTimerLabel" Grid.Column="2" Content="{x:Static p:Resources.Timer}"
+                       HorizontalAlignment="Left" VerticalAlignment="Center" />
+                            <ComboBox x:Name="autoDownloadChoseBlogsComboBox" Grid.Column="3"
+                          ItemsSource="{Binding ShellService.Settings.BlogTypes}" SelectedValuePath="."
+                          SelectedValue="{Binding BlogType}"
+                          SelectedItem="{Binding BlogType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                          HorizontalAlignment="Left" VerticalAlignment="Center" MinWidth="60" />
+                            <Label x:Name="autoDownloadBlogsLabel" Grid.Column="4" Content="{x:Static p:Resources.AutoDownloadBlogs}"
+                       HorizontalAlignment="Left" VerticalAlignment="Center" />
                         </Grid>
                     </Grid>
                 </TabItem>
