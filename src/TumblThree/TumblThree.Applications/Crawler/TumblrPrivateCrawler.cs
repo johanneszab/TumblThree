@@ -25,7 +25,7 @@ namespace TumblThree.Applications.Crawler
     [ExportMetadata("BlogType", BlogTypes.tmblrpriv)]
     public class TumblrPrivateCrawler : AbstractCrawler, ICrawler
     {
-        private string authentication = String.Empty;
+        private string authentication = string.Empty;
 
         public TumblrPrivateCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
             IProgress<DownloadProgress> progress, ICrawlerService crawlerService, ISharedCookieService cookieService, IDownloader downloader, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
@@ -212,7 +212,7 @@ namespace TumblThree.Applications.Crawler
 
             if (string.IsNullOrEmpty(blog.DownloadPages))
             {
-                return Enumerable.Range(0, shellService.Settings.ParallelScans);
+                return Enumerable.Range(0, shellService.Settings.ConcurrentScans);
             }
             return RangeToSequence(blog.DownloadPages);
         }
@@ -242,7 +242,7 @@ namespace TumblThree.Applications.Crawler
 
         private async Task GetUrlsAsync()
         {
-            var semaphoreSlim = new SemaphoreSlim(shellService.Settings.ParallelScans);
+            var semaphoreSlim = new SemaphoreSlim(shellService.Settings.ConcurrentScans);
             var trackedTasks = new List<Task>();
 
             if (!await CheckIfLoggedIn())
@@ -253,7 +253,7 @@ namespace TumblThree.Applications.Crawler
                 return;
             }
 
-            foreach (int crawlerNumber in Enumerable.Range(0, shellService.Settings.ParallelScans))
+            foreach (int crawlerNumber in Enumerable.Range(0, shellService.Settings.ConcurrentScans))
             {
                 await semaphoreSlim.WaitAsync();
 
@@ -410,7 +410,7 @@ namespace TumblThree.Applications.Crawler
                     return;
                 }
 
-                crawlerNumber += shellService.Settings.ParallelScans;
+                crawlerNumber += shellService.Settings.ConcurrentScans;
             }
         }
 
@@ -438,6 +438,11 @@ namespace TumblThree.Applications.Crawler
                         if (CheckIfDownloadRebloggedPosts(post))
                         {
                             AddPhotoUrl(post);
+                            if (post.caption != null)
+                            {
+                                post.photos.Clear();
+                                AddInlinePhotoUrl(post);
+                            }
                         }
                     }
                     // check for inline images
@@ -502,6 +507,11 @@ namespace TumblThree.Applications.Crawler
                         if (CheckIfDownloadRebloggedPosts(post))
                         {
                             AddVideoUrl(post);
+                            if (post.caption != null)
+                            {
+                                post.video_url = string.Empty;
+                                AddInlineVideoUrl(post);
+                            }
                         }
                     }
                     // check for inline videos

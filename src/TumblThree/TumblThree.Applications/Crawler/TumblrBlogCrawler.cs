@@ -250,7 +250,7 @@ namespace TumblThree.Applications.Crawler
 
         private async Task<Tuple<ulong, bool>> GetUrlsAsync()
         {
-            var semaphoreSlim = new SemaphoreSlim(shellService.Settings.ParallelScans);
+            var semaphoreSlim = new SemaphoreSlim(shellService.Settings.ConcurrentScans);
             var trackedTasks = new List<Task>();
             var apiLimitHit = false;
             var completeGrab = true;
@@ -414,6 +414,11 @@ namespace TumblThree.Applications.Crawler
                         {
                             AddPhotoUrl(post);
                             AddPhotoSetUrl(post);
+                            if (post.Element("photo-caption") != null)
+                            {
+                                post.Elements("photo-url").Remove();
+                                AddInlinePhotoUrl(post);
+                            }
                         }
                     }
                 }
@@ -448,7 +453,7 @@ namespace TumblThree.Applications.Crawler
                     }
                 }
 
-                // check for inline images
+                // check for inline videos
                 foreach (XElement post in document.Descendants("post").Where(p => p.Attribute("type").Value != "video"))
                 {
                     if (!PostWithinTimeSpan(post))
@@ -456,7 +461,15 @@ namespace TumblThree.Applications.Crawler
                     if (!tags.Any() || post.Descendants("tag").Any(x => tags.Contains(x.Value, StringComparer.OrdinalIgnoreCase)))
                     {
                         if (CheckIfDownloadRebloggedPosts(post))
+                        {
                             AddInlineVideoUrl(post);
+                            if (post.Element("video-caption") != null)
+                            {
+                                post.Elements("video-player").Remove();
+                                AddInlineVideoUrl(post);
+                            }
+
+                        }
                     }
                 }
             }

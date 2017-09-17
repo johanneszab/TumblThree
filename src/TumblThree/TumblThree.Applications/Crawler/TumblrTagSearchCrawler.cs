@@ -59,7 +59,7 @@ namespace TumblThree.Applications.Crawler
 
         private async Task GetUrlsAsync()
         {
-            var semaphoreSlim = new SemaphoreSlim(shellService.Settings.ParallelScans);
+            var semaphoreSlim = new SemaphoreSlim(shellService.Settings.ConcurrentScans);
             var trackedTasks = new List<Task>();
 
             if (!await CheckIfLoggedIn())
@@ -72,7 +72,7 @@ namespace TumblThree.Applications.Crawler
 
             long crawlerTimeOffset = GenerateCrawlerTimeOffsets();
 
-            foreach (int crawlerNumber in Enumerable.Range(0, shellService.Settings.ParallelScans))
+            foreach (int crawlerNumber in Enumerable.Range(0, shellService.Settings.ConcurrentScans))
             {
                 await semaphoreSlim.WaitAsync();
 
@@ -127,7 +127,7 @@ namespace TumblThree.Applications.Crawler
                 unixTimeNow = dateTimeOffset.ToUnixTimeSeconds();
             }
             long tagsLifeTime = unixTimeNow - tagsIntroduced;
-            return tagsLifeTime / shellService.Settings.ParallelScans;
+            return tagsLifeTime / shellService.Settings.ConcurrentScans;
         }
 
         private async Task<bool> CheckIfLoggedIn()

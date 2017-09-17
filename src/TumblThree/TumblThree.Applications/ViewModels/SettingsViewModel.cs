@@ -65,9 +65,10 @@ namespace TumblThree.Applications.ViewModels
         private string oauthCallbackUrl;
         private string oauthToken;
         private string oauthTokenSecret;
-        private int parallelBlogs;
-        private int parallelImages;
-        private int parallelScans;
+        private int concurrentBlogs;
+        private int concurrentConnections;
+        private int concurrentVideoConnections;
+        private int concurrentScans;
         private bool portableMode;
         private string proxyHost;
         private string proxyPort;
@@ -188,22 +189,28 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref exportLocation, value); }
         }
 
-        public int ParallelImages
+        public int ConcurrentConnections
         {
-            get { return parallelImages; }
-            set { SetProperty(ref parallelImages, value); }
+            get { return concurrentConnections; }
+            set { SetProperty(ref concurrentConnections, value); }
         }
 
-        public int ParallelBlogs
+        public int ConcurrentVideoConnections
         {
-            get { return parallelBlogs; }
-            set { SetProperty(ref parallelBlogs, value); }
+            get { return concurrentVideoConnections; }
+            set { SetProperty(ref concurrentVideoConnections, value); }
         }
 
-        public int ParallelScans
+        public int ConcurrentBlogs
         {
-            get { return parallelScans; }
-            set { SetProperty(ref parallelScans, value); }
+            get { return concurrentBlogs; }
+            set { SetProperty(ref concurrentBlogs, value); }
+        }
+
+        public int ConcurrentScans
+        {
+            get { return concurrentScans; }
+            set { SetProperty(ref concurrentScans, value); }
         }
 
         public int TimeOut
@@ -561,9 +568,10 @@ namespace TumblThree.Applications.ViewModels
                 OAuthCallbackUrl = settings.OAuthCallbackUrl;
                 DownloadLocation = settings.DownloadLocation;
                 ExportLocation = settings.ExportLocation;
-                ParallelImages = settings.ParallelImages;
-                ParallelBlogs = settings.ParallelBlogs;
-                ParallelScans = settings.ParallelScans;
+                ConcurrentConnections = settings.ConcurrentConnections;
+                ConcurrentVideoConnections = settings.ConcurrentVideoConnections;
+                ConcurrentBlogs = settings.ConcurrentBlogs;
+                ConcurrentScans = settings.ConcurrentScans;
                 LimitScanBandwidth = settings.LimitScanBandwidth;
                 ImageSize = settings.ImageSize;
                 VideoSize = settings.VideoSize;
@@ -614,9 +622,10 @@ namespace TumblThree.Applications.ViewModels
                 OAuthTokenSecret = string.Empty;
                 DownloadLocation = "Blogs";
                 ExportLocation = "blogs.txt";
-                ParallelImages = 8;
-                ParallelBlogs = 1;
-                ParallelScans = 4;
+                ConcurrentConnections = 8;
+                ConcurrentVideoConnections = 4;
+                ConcurrentBlogs = 1;
+                ConcurrentScans = 4;
                 LimitScanBandwidth = false;
                 TimeOut = 120;
                 LimitConnections = true;
@@ -686,9 +695,10 @@ namespace TumblThree.Applications.ViewModels
         {
             settings.DownloadLocation = DownloadLocation;
             settings.ExportLocation = ExportLocation;
-            settings.ParallelImages = ParallelImages;
-            settings.ParallelBlogs = ParallelBlogs;
-            settings.ParallelScans = ParallelScans;
+            settings.ConcurrentConnections = ConcurrentConnections;
+            settings.ConcurrentVideoConnections = ConcurrentVideoConnections;
+            settings.ConcurrentBlogs = ConcurrentBlogs;
+            settings.ConcurrentScans = ConcurrentScans;
             settings.LimitScanBandwidth = LimitScanBandwidth;
             settings.TimeOut = TimeOut;
             settings.LimitConnections = LimitConnections;

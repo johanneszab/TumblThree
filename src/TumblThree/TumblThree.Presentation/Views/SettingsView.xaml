@@ -55,7 +55,7 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Label x:Name="parallelConnectionsLabel" Grid.Column="0"
-                       Content="{x:Static p:Resources.ParallelConnections}" VerticalAlignment="Center" Margin="10"
+                       Content="{x:Static p:Resources.ConcurrentConnections}" VerticalAlignment="Center" Margin="10"
                        HorizontalAlignment="Left" MinWidth="140">
                                 <Label.ToolTip>
                                     <ToolTip>
@@ -67,9 +67,9 @@
                                 </Label.ToolTip>
                             </Label>
                             <TextBlock Grid.Column="1" MinWidth="20" HorizontalAlignment="Stretch" TextWrapping="Wrap"
-                           VerticalAlignment="Center" Text="{Binding Value, ElementName=parallelImagesSlider}" />
-                            <Slider x:Name="parallelImagesSlider" Grid.Column="2" SmallChange="1"
-                        Value="{Binding ParallelImages, UpdateSourceTrigger=PropertyChanged}"
+                           VerticalAlignment="Center" Text="{Binding Value, ElementName=concurrentConnectionsSlider}" />
+                            <Slider x:Name="concurrentConnectionsSlider" Grid.Column="2" SmallChange="1"
+                        Value="{Binding ConcurrentConnections, UpdateSourceTrigger=PropertyChanged}"
                         HorizontalAlignment="Stretch" VerticalAlignment="Center" Maximum="100" MinWidth="250" Minimum="1" />
                         </Grid>
                         <Grid MinHeight="46" Height="Auto" Grid.Row="2">
@@ -78,7 +78,31 @@
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <Label x:Name="parallelBlogsLabel" Grid.Column="0" Content="{x:Static p:Resources.ParallelBlogs}"
+                            <Label x:Name="concurrentVideoConnectionsLabel" Grid.Column="0"
+                       Content="{x:Static p:Resources.ConcurrentVideoConnections}" VerticalAlignment="Center" Margin="10"
+                       HorizontalAlignment="Left" MinWidth="140">
+                                <Label.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipVideoConnections}" />
+                                            <TextBlock Text="{x:Static p:Resources.ToolTipVideoConnectionsDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </Label.ToolTip>
+                            </Label>
+                            <TextBlock Grid.Column="1" MinWidth="20" HorizontalAlignment="Stretch" TextWrapping="Wrap"
+                           VerticalAlignment="Center" Text="{Binding Value, ElementName=concurrentVideoConnectionsSlider}" />
+                            <Slider x:Name="concurrentVideoConnectionsSlider" Grid.Column="2" SmallChange="1"
+                        Value="{Binding ConcurrentVideoConnections, UpdateSourceTrigger=PropertyChanged}"
+                        HorizontalAlignment="Stretch" VerticalAlignment="Center" Maximum="100" MinWidth="250" Minimum="1" />
+                        </Grid>
+                        <Grid MinHeight="46" Height="Auto" Grid.Row="3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Label x:Name="concurrentBlogsLabel" Grid.Column="0" Content="{x:Static p:Resources.ConcurrentBlogs}"
                        VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10" MinWidth="140">
                                 <Label.ToolTip>
                                     <ToolTip>
@@ -90,12 +114,12 @@
                                 </Label.ToolTip>
                             </Label>
                             <TextBlock Grid.Column="1" HorizontalAlignment="Stretch" MinWidth="20" TextWrapping="Wrap"
-                           VerticalAlignment="Center" Text="{Binding Value, ElementName=parallelBlogsSlider}" />
-                            <Slider x:Name="parallelBlogsSlider" Grid.Column="2" SmallChange="1"
-                        Value="{Binding ParallelBlogs, UpdateSourceTrigger=PropertyChanged}"
+                           VerticalAlignment="Center" Text="{Binding Value, ElementName=concurrentBlogsSlider}" />
+                            <Slider x:Name="concurrentBlogsSlider" Grid.Column="2" SmallChange="1"
+                        Value="{Binding ConcurrentBlogs, UpdateSourceTrigger=PropertyChanged}"
                         HorizontalAlignment="Stretch" VerticalAlignment="Center" Maximum="40" MinWidth="250" Minimum="1" />
                         </Grid>
-                        <Grid MinHeight="46" Height="Auto" Grid.Row="3">
+                        <Grid MinHeight="46" Height="Auto" Grid.Row="4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
@@ -139,7 +163,7 @@
                                 </TextBox.ToolTip>
                             </TextBox>
                         </Grid>
-                        <Grid MinHeight="46" Height="Auto" Grid.Row="4">
+                        <Grid MinHeight="46" Height="Auto" Grid.Row="5">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
@@ -153,6 +177,48 @@
                           SelectedValue="{Binding VideoSize}"
                           SelectedItem="{Binding VideoSize, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                           HorizontalAlignment="Left" VerticalAlignment="Center" MinWidth="40" />
+                            <Label x:Name="scanConnectionsLabel" Grid.Column="2" Content="{x:Static p:Resources.ScanConnections}"
+                       VerticalAlignment="Center" HorizontalAlignment="Left">
+                                <Label.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipScan}" />
+                                            <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipScanDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </Label.ToolTip>
+                            </Label>
+                            <TextBox x:Name="scanBandwidthComboBox" Grid.Column="3" HorizontalAlignment="Left"
+                         VerticalAlignment="Center" MinWidth="40">
+                                <TextBox.Text>
+                                    <Binding Path="ConcurrentScans" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <vr:IntRangeRule />
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
+                        </Grid>
+                        <Grid MinHeight="46" Height="Auto" Grid.Row="6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <!--<CheckBox x:Name="checkBoxLimitScan" Content="{x:Static p:Resources.LimitScan}"
+                          IsChecked="{Binding LimitScanBandwidth, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2"
+                          VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10">
+                                <CheckBox.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipLimitScan}" />
+                                            <TextBlock xml:space="preserve"
+                                           Text="{x:Static p:Resources.ToolTipLimitScanDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>-->
                             <!--<Label x:Name="bandwidthLabel" Grid.Column="2" Content="{x:Static p:Resources.Bandwidth}"
                        VerticalAlignment="Center" HorizontalAlignment="Left">
                                 <Label.ToolTip>
@@ -175,48 +241,6 @@
                                     </Binding>
                                 </TextBox.Text>
                             </TextBox>-->
-                        </Grid>
-                        <Grid MinHeight="46" Height="Auto" Grid.Row="5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <CheckBox x:Name="checkBoxLimitScan" Content="{x:Static p:Resources.LimitScan}"
-                          IsChecked="{Binding LimitScanBandwidth, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2"
-                          VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10">
-                                <CheckBox.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipLimitScan}" />
-                                            <TextBlock xml:space="preserve"
-                                           Text="{x:Static p:Resources.ToolTipLimitScanDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </CheckBox.ToolTip>
-                            </CheckBox>
-                            <Label x:Name="scanConnectionsLabel" Grid.Column="2" Content="{x:Static p:Resources.ScanConnections}"
-                       VerticalAlignment="Center" HorizontalAlignment="Left">
-                                <Label.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipScan}" />
-                                            <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipScanDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </Label.ToolTip>
-                            </Label>
-                            <TextBox x:Name="scanBandwidthComboBox" Grid.Column="3" HorizontalAlignment="Left"
-                         VerticalAlignment="Center" MinWidth="40">
-                                <TextBox.Text>
-                                    <Binding Path="ParallelScans" UpdateSourceTrigger="PropertyChanged">
-                                        <Binding.ValidationRules>
-                                            <vr:IntRangeRule />
-                                        </Binding.ValidationRules>
-                                    </Binding>
-                                </TextBox.Text>
-                            </TextBox>
                         </Grid>
                         <Grid MinHeight="46" Height="Auto" Grid.Row="6" HorizontalAlignment="Left">
                             <Grid.ColumnDefinitions>

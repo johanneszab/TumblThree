@@ -63,11 +63,11 @@ namespace TumblThree.Applications.Crawler
 
         private async Task GetUrlsAsync()
         {
-            var semaphoreSlim = new SemaphoreSlim(shellService.Settings.ParallelScans);
+            var semaphoreSlim = new SemaphoreSlim(shellService.Settings.ConcurrentScans);
             var trackedTasks = new List<Task>();
             await UpdateTumblrKey();
 
-            foreach (int crawlerNumber in Enumerable.Range(1, shellService.Settings.ParallelScans))
+            foreach (int crawlerNumber in Enumerable.Range(1, shellService.Settings.ConcurrentScans))
             {
                 await semaphoreSlim.WaitAsync();
 
@@ -204,8 +204,8 @@ namespace TumblThree.Applications.Crawler
 
                 Interlocked.Increment(ref numberOfPagesCrawled);
                 UpdateProgressQueueInformation(Resources.ProgressGetUrlShort, numberOfPagesCrawled);
-                response = await GetSearchPageAsync((crawlerNumber + shellService.Settings.ParallelScans));
-                crawlerNumber += shellService.Settings.ParallelScans;
+                response = await GetSearchPageAsync((crawlerNumber + shellService.Settings.ConcurrentScans));
+                crawlerNumber += shellService.Settings.ConcurrentScans;
             }
         }
 

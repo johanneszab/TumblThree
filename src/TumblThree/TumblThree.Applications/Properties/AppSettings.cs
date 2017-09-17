@@ -86,13 +86,16 @@ namespace TumblThree.Applications.Properties
         public string ExportLocation { get; set; }
 
         [DataMember]
-        public int ParallelImages { get; set; }
+        public int ConcurrentConnections { get; set; }
 
         [DataMember]
-        public int ParallelBlogs { get; set; }
+        public int ConcurrentVideoConnections { get; set; }
 
         [DataMember]
-        public int ParallelScans { get; set; }
+        public int ConcurrentBlogs { get; set; }
+
+        [DataMember]
+        public int ConcurrentScans { get; set; }
 
         [DataMember]
         public bool LimitScanBandwidth { get; set; }
@@ -263,9 +266,10 @@ namespace TumblThree.Applications.Properties
             GridSplitterPosition = 250;
             DownloadLocation = @"Blogs";
             ExportLocation = @"blogs.txt";
-            ParallelImages = 8;
-            ParallelBlogs = 1;
-            ParallelScans = 4;
+            ConcurrentConnections = 8;
+            ConcurrentVideoConnections = 4;
+            ConcurrentBlogs = 1;
+            ConcurrentScans = 4;
             LimitScanBandwidth = false;
             TimeOut = 120;
             LimitConnections = true;

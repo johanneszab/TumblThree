@@ -152,7 +152,7 @@ namespace TumblThree.Applications.Crawler
         {
             if (!shellService.Settings.LimitScanBandwidth || shellService.Settings.Bandwidth == 0)
                 return stream;
-            return new ThrottledStream(stream, (shellService.Settings.Bandwidth / shellService.Settings.ParallelImages) * 1024);
+            return new ThrottledStream(stream, (shellService.Settings.Bandwidth / shellService.Settings.ConcurrentConnections) * 1024);
 
         }
 
