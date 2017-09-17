@@ -295,6 +295,33 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Concurrent blogs.
+        /// </summary>
+        public static string ConcurrentBlogs {
+            get {
+                return ResourceManager.GetString("ConcurrentBlogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Concurrent connections.
+        /// </summary>
+        public static string ConcurrentConnections {
+            get {
+                return ResourceManager.GetString("ConcurrentConnections", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Concurrent video connections:.
+        /// </summary>
+        public static string ConcurrentVideoConnections {
+            get {
+                return ResourceManager.GetString("ConcurrentVideoConnections", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Connection.
         /// </summary>
         public static string Connection {
@@ -898,24 +925,6 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Parallel blogs.
-        /// </summary>
-        public static string ParallelBlogs {
-            get {
-                return ResourceManager.GetString("ParallelBlogs", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Parallel connections.
-        /// </summary>
-        public static string ParallelConnections {
-            get {
-                return ResourceManager.GetString("ParallelConnections", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Password:.
         /// </summary>
         public static string Password {
@@ -1259,7 +1268,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Number of simultaneous processed blogs.
+        ///   Looks up a localized string similar to Number of concurrent processing blogs.
         /// </summary>
         public static string ToolTipBlogs {
             get {
@@ -1268,7 +1277,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sets the number of simultaneous processing blogs.
+        ///   Looks up a localized string similar to Sets the number of concurrent processing blogs.
         ///Setting this to 2 would proccess two blogs at a time..
         /// </summary>
         public static string ToolTipBlogsDescription {
@@ -1297,7 +1306,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Number of total simultaneous connections.
+        ///   Looks up a localized string similar to Number of total concurrent connections.
         /// </summary>
         public static string ToolTipConnections {
             get {
@@ -1306,7 +1315,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sets the number of total simultaneous connections.
+        ///   Looks up a localized string similar to Sets the number of total concurrent connections.
         ///The number is shared between all actively downloading blogs..
         /// </summary>
         public static string ToolTipConnectionsDescription {
@@ -1701,6 +1710,24 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipTimeoutDescription {
             get {
                 return ResourceManager.GetString("ToolTipTimeoutDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number of concurrent connections to the tumblr video host.
+        /// </summary>
+        public static string ToolTipVideoConnections {
+            get {
+                return ResourceManager.GetString("ToolTipVideoConnections", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The vtt.tumblr.com host regularly closes connections if the number is to high..
+        /// </summary>
+        public static string ToolTipVideoConnectionsDescription {
+            get {
+                return ResourceManager.GetString("ToolTipVideoConnectionsDescription", resourceCulture);
             }
         }
         

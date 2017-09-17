@@ -234,10 +234,10 @@
   <data name="ImageSize" xml:space="preserve">
     <value>Tamaño de la imagen (px)</value>
   </data>
-  <data name="ParallelBlogs" xml:space="preserve">
+  <data name="ConcurrentBlogs" xml:space="preserve">
     <value>Número de blogs paralelos</value>
   </data>
-  <data name="ParallelConnections" xml:space="preserve">
+  <data name="ConcurrentConnections" xml:space="preserve">
     <value>Número de conexiones paralelas</value>
   </data>
   <data name="Online" xml:space="preserve">
@@ -635,5 +635,57 @@
   </data>
   <data name="ToolTipPasswordDescription" xml:space="preserve">
     <value>Caution: The password is stored in clear text in the blogs database.</value>
+  </data>
+    <data name="Blogtype" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="ToolTipTags" xml:space="preserve">
+    <value>Download only tagged posts</value>
+  </data>
+  <data name="ToolTipTagsDescription" xml:space="preserve">
+    <value>Must be in a comma separated list without the leading hash (#) sign.
+E.g.  great big car, bears searches for great big cars and bears.</value>
+  </data>
+  <data name="BlogtypeAll" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="BlogtypeInstagram" xml:space="preserve">
+    <value>Instagram</value>
+  </data>
+  <data name="BlogtypeTumblr" xml:space="preserve">
+    <value>Tumblr</value>
+  </data>
+  <data name="BlogtypeTumblrLikedBy" xml:space="preserve">
+    <value>Tumblr Liked-by</value>
+  </data>
+  <data name="BlogtypeTumblrPrivate" xml:space="preserve">
+    <value>Tumblr Hidden</value>
+  </data>
+  <data name="BlogtypeTumblrSearch" xml:space="preserve">
+    <value>Tumblr Search</value>
+  </data>
+  <data name="BlogtypeTumblrTagSearch" xml:space="preserve">
+    <value>Tumblr Tag Search</value>
+  </data>
+  <data name="BlogtypeTwitter" xml:space="preserve">
+    <value>Twitter</value>
+  </data>
+  <data name="AutoDownloadBlogs" xml:space="preserve">
+    <value>blogs to the queue.</value>
+  </data>
+  <data name="ToolTipTimeout" xml:space="preserve">
+    <value>Timeout for web requests</value>
+  </data>
+  <data name="ToolTipTimeoutDescription" xml:space="preserve">
+    <value>The length of time, in seconds, until the request times out.</value>
+  </data>
+  <data name="ConcurrentVideoConnections" xml:space="preserve">
+    <value>Concurrent video connections:</value>
+  </data>
+  <data name="ToolTipVideoConnections" xml:space="preserve">
+    <value>Number of concurrent connections to the tumblr video host</value>
+  </data>
+  <data name="ToolTipVideoConnectionsDescription" xml:space="preserve">
+    <value>The vt.tumblr.com host regularly closes connections if the number is too high.</value>
   </data>
 </root>

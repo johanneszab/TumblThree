@@ -152,7 +152,7 @@ namespace TumblThree.Applications.Controllers
             pauseCommand.RaiseCanExecuteChanged();
             stopCommand.RaiseCanExecuteChanged();
 
-            for (var i = 0; i < shellService.Settings.ParallelBlogs; i++)
+            for (var i = 0; i < shellService.Settings.ConcurrentBlogs; i++)
             {
                 runningTasks.Add(Task.Run(() => RunCrawlerTasks(cancellation.Token, pause.Token)));
             }

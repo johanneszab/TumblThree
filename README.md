@@ -5,14 +5,14 @@ TumblThree is the code rewrite of [TumblTwo](https://github.com/johanneszab/Tumb
 ## Features:
 
 * Source code at github (Written in C# using WPF and MVVM).
-* Multiple simultaneous downloads of a single blog.
-* Multiple simultaneous downloads of different blogs.
+* Multiple concurrent downloads of a single blog.
+* Multiple concurrent downloads of different blogs.
 * Internationalization support (currently available: zh, ru, de, fr, es).
 * A download queue.
 * Autosave of the queuelist.
 * Save, clear and restore the queuelist.
 * A clipboard monitor that detects *http(s):// .tumblr.com* urls in the clipboard (copy and paste) and automatically adds the blog to the bloglist.
-* A settings panel (change download location, turn preview off/on, define number of simultaneous downloads, set the imagesize of downloaded pictures, set download defaults, enable portable mode, etc.).
+* A settings panel (change download location, turn preview off/on, define number of concurrent downloads, set the imagesize of downloaded pictures, set download defaults, enable portable mode, etc.).
 * Allows to set a proxy.
 * ~~A bandwidth throttler.~~ Currently broken.
 * An option to download an url list instead of the actual files.
@@ -38,14 +38,17 @@ TumblThree is the code rewrite of [TumblTwo](https://github.com/johanneszab/Tumb
 ### Liked/by backup/download:
 
 * A downloader for downloading "liked by" photos and videos instead of a tumblr blog (e.g. https://www.tumblr.com/liked/by/wallpaperfx/) (login required).
+* Download of \_raw image files (original/higher resolution pictures). 
 
 ### Tumblr search backup/download:
 
 * A downloader for downloading photos and videos from the tumblr search (e.g. http://www.tumblr.com/search/my+keywords).
+* Download of \_raw image files (original/higher resolution pictures). 
 
 ### Tumblr tag search backup/download:
 
 * A downloader for downloading photos and videos from the tumblr tag search (e.g. http://www.tumblr.com/tagged/my+keywords) (login required).
+* Download of \_raw image files (original/higher resolution pictures). 
 * Allows to download posts in a defined time span.
 
 ## Download:

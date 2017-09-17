@@ -78,7 +78,7 @@ namespace TumblThree.Applications
                 {
                     return null;
                 }
-            }
+            } 
         }
 
         private async Task<long> CheckDownloadSizeAsync(string url)
@@ -105,7 +105,7 @@ namespace TumblThree.Applications
         {
             if (settings.Bandwidth == 0)
                 return stream;
-            return new ThrottledStream(stream, (settings.Bandwidth / settings.ParallelImages) * 1024);
+            return new ThrottledStream(stream, (settings.Bandwidth / settings.ConcurrentConnections) * 1024);
         }
 
         // TODO: Needs a complete rewrite. Also a append/cache function for resuming incomplete files on the disk.

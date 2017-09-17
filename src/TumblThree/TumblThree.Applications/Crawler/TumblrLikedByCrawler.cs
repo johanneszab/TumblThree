@@ -57,7 +57,7 @@ namespace TumblThree.Applications.Crawler
 
         private async Task GetUrlsAsync()
         {
-            var semaphoreSlim = new SemaphoreSlim(shellService.Settings.ParallelScans);
+            var semaphoreSlim = new SemaphoreSlim(shellService.Settings.ConcurrentScans);
             var trackedTasks = new List<Task>();
 
             if (!await CheckIfLoggedIn())
@@ -68,7 +68,7 @@ namespace TumblThree.Applications.Crawler
                 return;
             }
 
-            foreach (int crawlerNumber in Enumerable.Range(0, shellService.Settings.ParallelScans))
+            foreach (int crawlerNumber in Enumerable.Range(0, shellService.Settings.ConcurrentScans))
             {
                 await semaphoreSlim.WaitAsync();
 
@@ -127,7 +127,7 @@ namespace TumblThree.Applications.Crawler
 
                 Interlocked.Increment(ref numberOfPagesCrawled);
                 UpdateProgressQueueInformation(Resources.ProgressGetUrlShort, numberOfPagesCrawled);
-                crawlerNumber += shellService.Settings.ParallelScans;
+                crawlerNumber += shellService.Settings.ConcurrentScans;
                 document = await RequestDataAsync(blog.Url + "/page/" + crawlerNumber);
                 if (document.Contains("<div class=\"no_posts_found\">"))
                 {

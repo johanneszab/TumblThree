@@ -128,7 +128,8 @@ namespace TumblThree.Applications.Downloader
 
         public virtual async Task<bool> DownloadBlogAsync()
         {
-            var semaphoreSlim = new SemaphoreSlim(shellService.Settings.ParallelImages / crawlerService.ActiveItems.Count);
+            var concurrentConnectionsSemaphore = new SemaphoreSlim(shellService.Settings.ConcurrentConnections / crawlerService.ActiveItems.Count);
+            var concurrentVideoConnectionsSemaphore = new SemaphoreSlim(shellService.Settings.ConcurrentVideoConnections / crawlerService.ActiveItems.Count);
             var trackedTasks = new List<Task>();
             var completeDownload = true;
 
@@ -136,7 +137,8 @@ namespace TumblThree.Applications.Downloader
 
             foreach (TumblrPost downloadItem in producerConsumerCollection.GetConsumingEnumerable())
             {
-                await semaphoreSlim.WaitAsync();
+                await concurrentVideoConnectionsSemaphore.WaitAsync();
+                await concurrentConnectionsSemaphore.WaitAsync();
 
                 if (ct.IsCancellationRequested)
                 {
@@ -150,8 +152,8 @@ namespace TumblThree.Applications.Downloader
                 trackedTasks.Add(new Func<Task>(async () =>
                 {
                     try { await DownloadPostAsync(downloadItem); }
-                    catch { }
-                    finally { semaphoreSlim.Release(); }
+                    catch {}
+                    finally { concurrentConnectionsSemaphore.Release(); concurrentVideoConnectionsSemaphore.Release(); }
                 })());
             }
             try { await Task.WhenAll(trackedTasks); }
