@@ -77,10 +77,9 @@ namespace TumblThree.Applications.Crawler
             progress.Report(newProgress);
         }
 
-        protected HttpWebRequest CreateGetReqeust(string url)
+        protected HttpWebRequest CreateStubReqeust(string url)
         {
             var request = (HttpWebRequest)WebRequest.Create(url);
-            request.Method = "GET";
             request.ProtocolVersion = HttpVersion.Version11;
             request.UserAgent =
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
@@ -102,9 +101,16 @@ namespace TumblThree.Applications.Crawler
             return request;
         }
 
+        protected HttpWebRequest CreateGetReqeust(string url)
+        {
+            HttpWebRequest request = CreateStubReqeust(url);
+            return request;
+        }
+
         protected HttpWebRequest CreateGetXhrReqeust(string url, string referer = "")
         {
-            HttpWebRequest request = CreateGetReqeust(url);
+            HttpWebRequest request = CreateStubReqeust(url);
+            request.Method = "GET";
             request.ContentType = "application/json";
             request.Headers["X-Requested-With"] = "XMLHttpRequest";
             request.Referer = referer;
@@ -113,7 +119,7 @@ namespace TumblThree.Applications.Crawler
 
         protected HttpWebRequest CreatePostReqeust(string url, string referer = "", Dictionary<string, string> headers = null)
         {
-            var request = CreateGetReqeust(url);
+            var request = CreateStubReqeust(url);
             request.Method = "POST";
             request.ContentType = "application/x-www-form-urlencoded";
             request.Referer = referer;
@@ -163,7 +169,7 @@ namespace TumblThree.Applications.Crawler
             {
                 HttpWebRequest request = CreateGetReqeust(url);
                 requestRegistration = ct.Register(() => request.Abort());
-                return await ReadReqestToEnd(request);
+                return await ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
             }
             finally
             {

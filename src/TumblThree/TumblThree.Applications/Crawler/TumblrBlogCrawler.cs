@@ -361,7 +361,7 @@ namespace TumblThree.Applications.Crawler
                 string referer = @"https://www.tumblr.com/dashboard/blog/" + blog.Name;
                 HttpWebRequest request = CreateGetXhrReqeust(url, referer);
                 requestRegistration = ct.Register(() => request.Abort());
-                return await ReadReqestToEnd(request);
+                return await ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
             }
             finally
             {

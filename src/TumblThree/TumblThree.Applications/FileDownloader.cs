@@ -121,7 +121,7 @@ namespace TumblThree.Applications
             {
                 var fileInfo = new FileInfo(destinationPath);
                 totalBytesReceived = fileInfo.Length;
-                if (totalBytesReceived >= await CheckDownloadSizeAsync(url))
+                if (totalBytesReceived >= await CheckDownloadSizeAsync(url).TimeoutAfter(settings.TimeOut))
                     return true;
             }
             if (ct.IsCancellationRequested)

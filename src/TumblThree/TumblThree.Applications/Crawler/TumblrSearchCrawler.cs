@@ -129,9 +129,7 @@ namespace TumblThree.Applications.Crawler
             {
                 string url = "https://www.tumblr.com/search/" + blog.Name + "/post_page/" + pageNumber;
                 string referer = @"https://www.tumblr.com/search/" + blog.Name;
-                var headers = new Dictionary<string, string>();
-                headers.Add("X-tumblr-form-key", tumblrKey);
-                headers.Add("DNT", "1");
+                var headers = new Dictionary<string, string> { { "X-tumblr-form-key", tumblrKey }, { "DNT", "1" } };
                 HttpWebRequest request = CreatePostXhrReqeust(url, referer, headers);
 
                 //Complete requestBody from webbrowser, searching for cars:
@@ -145,7 +143,7 @@ namespace TumblThree.Applications.Crawler
                 }
 
                 requestRegistration = ct.Register(() => request.Abort());
-                return await ReadReqestToEnd(request);
+                return await ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
             }
             finally
             {
@@ -162,7 +160,7 @@ namespace TumblThree.Applications.Crawler
                 HttpWebRequest request = CreateGetReqeust(url);
 
                 requestRegistration = ct.Register(() => request.Abort());
-                return await ReadReqestToEnd(request);
+                return await ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
             }
             finally
             {
