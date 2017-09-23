@@ -515,7 +515,7 @@
                                 </ToolTip>
                             </TextBox.ToolTip>
                         </TextBox>
-                        <CheckBox x:Name="checkBoxCheckDirectoryForFiles"
+                        <!--<CheckBox x:Name="checkBoxCheckDirectoryForFiles"
                           Content="{x:Static p:Resources.CheckDirectoryForFiles}"
                           IsChecked="{Binding CheckDirectoryForFiles, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="11"
                           Margin="10">
@@ -529,9 +529,9 @@
                                     </StackPanel>
                                 </ToolTip>
                             </CheckBox.ToolTip>
-                        </CheckBox>
+                        </CheckBox>-->
                         <CheckBox x:Name="checkBoxDownloadUrlList" Content="{x:Static p:Resources.DownloadUrlList}"
-                          IsChecked="{Binding DownloadUrlList, Mode=TwoWay}" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="11" Margin="10">
+                          IsChecked="{Binding DownloadUrlList, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="11" Margin="10">
                             <CheckBox.ToolTip>
                                 <ToolTip>
                                     <StackPanel>
@@ -545,7 +545,7 @@
                         <CheckBox x:Name="checkBoxSkipGif" Content="{x:Static p:Resources.SkipGif}"
                           IsChecked="{Binding SkipGif, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="12" Margin="10" />
                         <CheckBox x:Name="checkBoxForceSize" Content="{x:Static p:Resources.ForceSize}"
-                          IsChecked="{Binding ForceSize, Mode=TwoWay}" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="12" Margin="10">
+                          IsChecked="{Binding ForceSize, Mode=TwoWay}" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="11" Margin="10">
                             <CheckBox.ToolTip>
                                 <ToolTip>
                                     <StackPanel>

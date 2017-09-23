@@ -162,7 +162,7 @@ namespace TumblThree.Applications.Crawler
                 HttpWebRequest request = CreateGetReqeust(urlForGetRequest);
 
                 requestRegistration = ct.Register(() => request.Abort());
-                return await ReadReqestToEnd(request);
+                return await ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
             }
             finally
             {

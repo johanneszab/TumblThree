@@ -131,9 +131,9 @@ namespace TumblThree.Applications.Crawler
 
         private async Task UpdateAuthentication()
         {
-            string document = await ThrottleAsync(Authenticate);
+            string document = await ThrottleAsync(Authenticate).TimeoutAfter(shellService.Settings.TimeOut);
             authentication = ExtractAuthenticationKey(document);
-            await UpdateCookieWithAuthentication();
+            await UpdateCookieWithAuthentication().TimeoutAfter(shellService.Settings.TimeOut);
         }
 
         private async Task<T> ThrottleAsync<T>(Func<Task<T>> method)
@@ -162,7 +162,7 @@ namespace TumblThree.Applications.Crawler
                 }
 
                 requestRegistration = ct.Register(() => request.Abort());
-                return await ReadReqestToEnd(request);
+                return await ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
             }
             finally
             {
@@ -361,7 +361,7 @@ namespace TumblThree.Applications.Crawler
                 string referer = @"https://www.tumblr.com/dashboard/blog/" + blog.Name;
                 HttpWebRequest request = CreateGetXhrReqeust(url, referer);
                 requestRegistration = ct.Register(() => request.Abort());
-                return await ReadReqestToEnd(request);
+                return await ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
             }
             finally
             {

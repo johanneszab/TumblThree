@@ -189,9 +189,9 @@ namespace TumblThree.Applications.Crawler
             if (shellService.Settings.LimitConnections)
             {
                 crawlerService.Timeconstraint.Acquire();
-                return await RequestDataAsync(url);
+                return await RequestDataAsync(url).TimeoutAfter(shellService.Settings.TimeOut);
             }
-            return await RequestDataAsync(url);
+            return await RequestDataAsync(url).TimeoutAfter(shellService.Settings.TimeOut);
         }
 
         private async Task UpdateTotalPostCountAsync()

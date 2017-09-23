@@ -60,7 +60,7 @@ namespace TumblThree.Applications.Downloader
         {
             try
             {
-                return await fileDownloader.DownloadFileWithResumeAsync(url, fileLocation);
+                return await fileDownloader.DownloadFileWithResumeAsync(url, fileLocation).TimeoutAfter(shellService.Settings.TimeOut);
             }
             catch (IOException ex) when ((ex.HResult & 0xFFFF) == 0x27 || (ex.HResult & 0xFFFF) == 0x70)
             {
@@ -137,7 +137,8 @@ namespace TumblThree.Applications.Downloader
 
             foreach (TumblrPost downloadItem in producerConsumerCollection.GetConsumingEnumerable())
             {
-                await concurrentVideoConnectionsSemaphore.WaitAsync();
+                if (downloadItem.PostType == PostTypes.Video)
+                    await concurrentVideoConnectionsSemaphore.WaitAsync();
                 await concurrentConnectionsSemaphore.WaitAsync();
 
                 if (ct.IsCancellationRequested)

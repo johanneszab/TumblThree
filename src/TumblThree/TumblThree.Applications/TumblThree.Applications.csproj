@@ -124,6 +124,7 @@
     <Compile Include="Services\SharedCookieService.cs" />
     <Compile Include="Services\ShellService.cs" />
     <Compile Include="Services\ShellServiceExtensions.cs" />
+    <Compile Include="TaskTimeoutExtension.cs" />
     <Compile Include="ThrottledStream.cs" />
     <Compile Include="ViewModels\DetailsViewModels\DetailsTumblrPrivateBlogViewModel.cs" />
     <Compile Include="ViewModels\DetailsViewModels\DetailsTumblrBlogViewModel.cs" />
