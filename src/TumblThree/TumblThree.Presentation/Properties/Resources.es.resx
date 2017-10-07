@@ -121,10 +121,10 @@
     <value>Acerca de</value>
   </data>
   <data name="AddBlog" xml:space="preserve">
-    <value>Añadir blog</value>
+    <value>Añadir un blog</value>
   </data>
   <data name="AddToQueue" xml:space="preserve">
-    <value>Añadir a cola</value>
+    <value>Añadir a la cola</value>
   </data>
   <data name="BlogUrl" xml:space="preserve">
     <value>Introducir URL:</value>
@@ -136,13 +136,13 @@
     <value>Borrar cola</value>
   </data>
   <data name="ClipboardMonitor" xml:space="preserve">
-    <value>controlar el Portapapeles</value>
+    <value>Compruebe el Portapapeles</value>
   </data>
   <data name="Crawl" xml:space="preserve">
-    <value>Descargar</value>
+    <value>Gatear</value>
   </data>
   <data name="CrawlSelection" xml:space="preserve">
-    <value>Descargar la selección</value>
+    <value>Selección de rastreo</value>
   </data>
   <data name="DateAdded" xml:space="preserve">
     <value>Fecha Agregada</value>
@@ -157,10 +157,10 @@
     <value>Archivos descargados</value>
   </data>
   <data name="DownloadLocation" xml:space="preserve">
-    <value>Ubicación de la descarga</value>
+    <value>Ubicación de descarga</value>
   </data>
   <data name="EnqueueSelection" xml:space="preserve">
-    <value>Enqueue la selección</value>
+    <value>Selección de Enqueue</value>
   </data>
   <data name="Error" xml:space="preserve">
     <value>Error</value>
@@ -178,7 +178,7 @@
     <value>Número de descargas</value>
   </data>
   <data name="OpenQueue" xml:space="preserve">
-    <value>Abrir la cola</value>
+    <value>Abrir cola</value>
   </data>
   <data name="Pause" xml:space="preserve">
     <value>Pausa</value>
@@ -190,28 +190,28 @@
     <value>Clasificación</value>
   </data>
   <data name="RemoveBlog" xml:space="preserve">
-    <value>Eliminar blog</value>
+    <value>Eliminar Blog</value>
   </data>
   <data name="RemoveFromQueue" xml:space="preserve">
     <value>Eliminar de la cola</value>
   </data>
   <data name="RemoveSelected" xml:space="preserve">
-    <value>Eliminar el blog seleccionado</value>
+    <value>Eliminar selección</value>
   </data>
   <data name="Resume" xml:space="preserve">
-    <value>reanudar</value>
+    <value>Currículum</value>
   </data>
   <data name="Return" xml:space="preserve">
-    <value>regreso</value>
+    <value>Regreso</value>
   </data>
   <data name="SaveQueue" xml:space="preserve">
-    <value>Guardar la cola</value>
+    <value>Guardar cola</value>
   </data>
   <data name="Settings" xml:space="preserve">
     <value>Ajustes</value>
   </data>
   <data name="ShiftReturn" xml:space="preserve">
-    <value>Mayús+Retorno</value>
+    <value>Mayús + Retorno</value>
   </data>
   <data name="ShowDetails" xml:space="preserve">
     <value>Mostrar detalles</value>
@@ -235,10 +235,10 @@
     <value>Tamaño de la imagen (px)</value>
   </data>
   <data name="ConcurrentBlogs" xml:space="preserve">
-    <value>Número de blogs paralelos</value>
+    <value>Blogs concurrentes</value>
   </data>
   <data name="ConcurrentConnections" xml:space="preserve">
-    <value>Número de conexiones paralelas</value>
+    <value>Conexiones concurrentes</value>
   </data>
   <data name="Online" xml:space="preserve">
     <value>En línea</value>
@@ -247,28 +247,28 @@
     <value>Progreso</value>
   </data>
   <data name="NumberOfItems" xml:space="preserve">
-    <value>{0} Artículos</value>
+    <value>{0} Blogs</value>
   </data>
   <data name="OneItem" xml:space="preserve">
-    <value>1 Item</value>
+    <value>1 Blog</value>
   </data>
   <data name="CheckStatus" xml:space="preserve">
-    <value>Check blog online status on startup</value>
+    <value>Compruebe el estado en línea del blog en el inicio</value>
   </data>
   <data name="DeleteIndex" xml:space="preserve">
-    <value>Delete only the index files (no downloaded files)</value>
+    <value>Eliminar sólo los archivos de índice (sin archivos descargados)</value>
   </data>
   <data name="RemoveIndex" xml:space="preserve">
-    <value>Remove blog index after crawl</value>
+    <value>Eliminar el índice del blog después del rastreo</value>
   </data>
   <data name="SkipGif" xml:space="preserve">
     <value>Omitir archivos .gif</value>
   </data>
   <data name="Info32Bit" xml:space="preserve">
-    <value>32 Bits</value>
+    <value>32 bits</value>
   </data>
   <data name="Info64Bit" xml:space="preserve">
-    <value>64 Bits</value>
+    <value>64 bits</value>
   </data>
   <data name="License" xml:space="preserve">
     <value>Licencia</value>
@@ -292,13 +292,13 @@
     <value>Sitio web</value>
   </data>
   <data name="LastCompleteCrawl" xml:space="preserve">
-    <value>Última descarga completa</value>
+    <value>Último rastreo completo</value>
   </data>
   <data name="VisitBlog" xml:space="preserve">
     <value>Abrir el sitio en el navegador web</value>
   </data>
   <data name="NumberOfImages" xml:space="preserve">
-    <value>{0} Images</value>
+    <value>{0} Puestos</value>
   </data>
   <data name="DownloadedFilesOf" xml:space="preserve">
     <value>Archivo descargado {0} de {1}</value>
@@ -307,7 +307,7 @@
     <value>Descargar imágenes</value>
   </data>
   <data name="DownloadVideos" xml:space="preserve">
-    <value>Descargar videos (tumblr.com)</value>
+    <value>Descargar videos (tumblr.com self hosted)</value>
   </data>
   <data name="VideoSize" xml:space="preserve">
     <value>Tamaño del vídeo (px)</value>
@@ -316,37 +316,40 @@
     <value>Autenticar</value>
   </data>
   <data name="ToolTipAuthenticate" xml:space="preserve">
-    <value>Authenticate to the tumblr.com network</value>
+    <value>Autenticarse en la red tumblr.com</value>
   </data>
   <data name="ToolTipAuthenticateDescription" xml:space="preserve">
-    <value>Opens a browser window to authenticate yourself to the tumblr.com site. Allows the download of private blogs with your account. The access token to your account is saved and the authentication process needs to be done only once.</value>
+    <value>Abre una ventana del navegador para autenticarse en el sitio tumblr.com.
+La cookie con sus credenciales de su cuenta se guarda y el proceso de autenticación sólo se debe realizar una vez.</value>
   </data>
   <data name="ToolTipBlogs" xml:space="preserve">
-    <value>Number of simultaneous processed blogs</value>
+    <value>Número de blogs de procesamiento simultáneos</value>
   </data>
   <data name="ToolTipBlogsDescription" xml:space="preserve">
-    <value>Sets the Number of simultaneous processed blogs. Setting this to 2 would download data from two blogs at a time.</value>
+    <value>Establece el número de blogs de procesamiento simultáneos.
+Establecer esto a 2 procesaría dos blogs a la vez.</value>
   </data>
   <data name="ToolTipConnections" xml:space="preserve">
-    <value>Number of total simultaneous connections</value>
+    <value>Número total de conexiones simultáneas</value>
   </data>
   <data name="ToolTipConnectionsDescription" xml:space="preserve">
-    <value>Sets the Number of total simultaneous connections. The number is divided by the number of Parallel Blogs settings. 25/2 would open 12 connections per blog download.</value>
+    <value>Establece el número total de conexiones simultáneas.
+El número se comparte entre todos los blogs de descarga activa.</value>
   </data>
   <data name="Notes" xml:space="preserve">
     <value>Notas personales</value>
   </data>
   <data name="TimeOut" xml:space="preserve">
-    <value>Se acabó el tiempo (s)</value>
+    <value>Tiempo (s) de espera</value>
   </data>
   <data name="Bandwidth" xml:space="preserve">
-    <value>Límite de ancho de banda (KB/s)</value>
+    <value>Límite de ancho de banda (KB / s)</value>
   </data>
   <data name="EnableAutoDownload" xml:space="preserve">
-    <value>Habilitar la descarga automática de blogs y agregar</value>
+    <value>Iniciar descarga en</value>
   </data>
   <data name="Timer" xml:space="preserve">
-    <value>En el momento (hh:mm:ss)</value>
+    <value>(hh: mm: ss) y agregue</value>
   </data>
   <data name="SelectABlog" xml:space="preserve">
     <value>Selecciona un blog</value>
@@ -361,7 +364,7 @@
     <value>Cantidad de mensajes:</value>
   </data>
   <data name="Preview" xml:space="preserve">
-    <value>Preview:</value>
+    <value>Avance:</value>
   </data>
   <data name="DownloadAudios" xml:space="preserve">
     <value>Descargar archivos de audio</value>
@@ -382,7 +385,7 @@
     <value>{0} de {1}, se encontraron duplicados: {2}</value>
   </data>
   <data name="EnablePreview" xml:space="preserve">
-    <value>Vista previa on/off</value>
+    <value>Vista previa on / off</value>
   </data>
   <data name="BlogSettings" xml:space="preserve">
     <value>Configuración del blog:</value>
@@ -394,19 +397,19 @@
     <value>Estadísticas del blog:</value>
   </data>
   <data name="ToolTipDetailsStats" xml:space="preserve">
-    <value>Número de tipos de publicaciones descargadas / tipos de publicaciones totales</value>
+    <value>Número de tipos de publicaciones descargadas de los tipos de publicaciones totales</value>
   </data>
   <data name="ToolTipDetailsStatsDescription" xml:space="preserve">
-    <value>Check to download post type or skip during the backup</value>
+    <value>Comprobar para descargar el tipo de publicación o omitir durante la descarga</value>
   </data>
   <data name="DownloadAudioMeta" xml:space="preserve">
-    <value>Descargar metadatos de audio</value>
+    <value>Descargar audio meta</value>
   </data>
   <data name="DownloadImageMeta" xml:space="preserve">
-    <value>Descargar metadatos de la imagen</value>
+    <value>Descargar imagen meta</value>
   </data>
   <data name="DownloadVideoMeta" xml:space="preserve">
-    <value>Descargar metadatos de vídeo</value>
+    <value>Descargar video meta</value>
   </data>
   <data name="DefaultSettingsForBlogs" xml:space="preserve">
     <value>Configuración aplicada a cada blog después de la adición:</value>
@@ -415,10 +418,11 @@
     <value>Descargar videos</value>
   </data>
   <data name="ToolTipDefaultSettingsForBlogs" xml:space="preserve">
-    <value>Sets the default settings for newly added blogs.</value>
+    <value>Establece la configuración predeterminada para los blogs agregados recientemente.</value>
   </data>
   <data name="ToolTipDefaultSettingsForBlogsDescription" xml:space="preserve">
-    <value>The backup uses indivual settings for each blog. To change them, select a blog in the main interface and select the Details window on the right hand side.</value>
+    <value>La exploración / descarga utiliza configuraciones individuales para cada blog. 
+Para cambiarlos, seleccione el (los) blog (es) en la interfaz principal y seleccione la pestaña Detalles en el lado derecho.</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Salvar</value>
@@ -430,16 +434,18 @@
     <value>Descargar el tamaño especificado aunque no se ofrezca</value>
   </data>
   <data name="ToolTipForceSize" xml:space="preserve">
-    <value>Download the specified resolution of images even if the size is not offered.</value>
+    <value>Descargue la resolución especificada de las imágenes aunque no se ofrezca el tamaño.</value>
   </data>
   <data name="ToolTipForceSizeDescription" xml:space="preserve">
-    <value>If the crawler only finds lower sized images than specified, enabling this option will rename the url to the specified files size. Those files generally exist and sometimes offer a larger resolution or are just renamed smaller resolution files. It's safe to turn this on.</value>
+    <value>Si el rastreador sólo encuentra imágenes de tamaño inferior al especificado, habilitar esta opción cambiará el nombre del url al tamaño de los archivos especificados. 
+Esos archivos generalmente existen ya veces ofrecen una resolución mayor o simplemente se renombran archivos de resolución más pequeños. 
+Es seguro encenderlo.</value>
   </data>
   <data name="ProxyHost" xml:space="preserve">
     <value>Proxy HTTP:</value>
   </data>
   <data name="ProxyPort" xml:space="preserve">
-    <value>Port:</value>
+    <value>Puerto:</value>
   </data>
   <data name="ThirdPartySoftware" xml:space="preserve">
     <value>Software de terceros</value>
@@ -448,10 +454,11 @@
     <value>Software y licencias de terceros</value>
   </data>
   <data name="ToolTipLimitBandwidth" xml:space="preserve">
-    <value>Throttles the bandwidth of the downloader</value>
+    <value>Reduce el ancho de banda del descargador</value>
   </data>
   <data name="ToolTipLimitBandwidthDescription" xml:space="preserve">
-    <value>Sets the maximum bandwidth available for the downloader in kbytes/s. 0 disables throttling.</value>
+    <value>Establece el ancho de banda máximo disponible para el descargador en kbytes / s. 
+0 desactiva el estrangulamiento.</value>
   </data>
   <data name="LimitScan" xml:space="preserve">
     <value>Limitar el ancho de banda de exploración</value>
@@ -460,232 +467,237 @@
     <value>Explorar conexiones</value>
   </data>
   <data name="ToolTipLimitScan" xml:space="preserve">
-    <value>Includes the scan bandwidth in the throttling</value>
+    <value>Incluye el ancho de banda de exploración en el estrangulador</value>
   </data>
   <data name="ToolTipLimitScanDescription" xml:space="preserve">
-    <value>Since the data used for scanning is usually small, you should leave this off since the throttling algorithm is too slow to adjust and will negatively impact the performance.</value>
+    <value>Dado que los datos utilizados para la exploración son generalmente pequeños, 
+debe dejar esto puesto que el algoritmo de regulación es demasiado lento para ajustar y podría afectar negativamente el rendimiento del análisis.
+Número de conexiones utilizadas para cada exploración</value>
   </data>
   <data name="ToolTipScan" xml:space="preserve">
-    <value>Number of connections used for each scan</value>
+    <value>Establece el número de conexiones utilizadas para la exploración. 
+Dado que los datos son generalmente pequeños, debe dejar esta alta.</value>
   </data>
   <data name="ToolTipScanDescription" xml:space="preserve">
-    <value>Sets the number connections used for scanning. Since the data is usually small, you should leave this high.</value>
-  </data>
-  <data name="BandwidthRangeError" xml:space="preserve">
     <value>El valor debe estar entre 0 y 9,000,000,000,000,000.</value>
   </data>
-  <data name="TimeSpanTypeError" xml:space="preserve">
+  <data name="BandwidthRangeError" xml:space="preserve">
     <value>El valor debe tener que formar hh: mm: ss.</value>
   </data>
-  <data name="IntRangeError" xml:space="preserve">
+  <data name="TimeSpanTypeError" xml:space="preserve">
     <value>El valor debe estar entre 0 y 2.147.483.647.</value>
   </data>
-  <data name="IntTypeError" xml:space="preserve">
+  <data name="IntRangeError" xml:space="preserve">
     <value>El valor debe ser del tipo integer.</value>
   </data>
+  <data name="IntTypeError" xml:space="preserve">
+    <value>por intervalo (s) de tiempo:</value>
+  </data>
   <data name="ConnectionTimeInterval" xml:space="preserve">
-    <value>Intervalo de tiempo (s):</value>
+    <value>Limit Tumblr Api Conexiones:</value>
   </data>
   <data name="LimitConnections" xml:space="preserve">
-    <value>Limitar Tumblr Api Conexiones</value>
-  </data>
-  <data name="MaxConnections" xml:space="preserve">
     <value>Número de conexiones:</value>
   </data>
-  <data name="ToolTipLimitConnections" xml:space="preserve">
+  <data name="MaxConnections" xml:space="preserve">
     <value>Limitar las conexiones a la api de tumblr.</value>
   </data>
+  <data name="ToolTipLimitConnections" xml:space="preserve">
+    <value>Un valor demasiado alto cerrará con fuerza las conexiones (429 - Límite excedido) hechas a la api del tumblr. 
+Un valor demasiado pequeño disminuirá la velocidad de escaneado. 
+Establezca un par número / hora. Nota: El apuki del tumblr se utiliza solamente para las transferencias directas regulares del blog del tumblr.</value>
+  </data>
   <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
-    <value>A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr api. A too small value will decrease the download speed.</value>
+    <value>Reanudación de la fuerza</value>
   </data>
   <data name="ForceRescan" xml:space="preserve">
-    <value>Forzar nuevo análisis</value>
+    <value>Rescates todo el blog, no sólo nuevos mensajes.</value>
   </data>
   <data name="ToolTipForceRescan" xml:space="preserve">
-    <value>Rescans the whole blog, not just new posts.</value>
+    <value>Fuerza un análisis completo con la API de Tumblr.</value>
   </data>
   <data name="ToolTipForceRescanDescription" xml:space="preserve">
-    <value>Forces a complete scan using the Tumblr api.</value>
-  </data>
-  <data name="CheckForUpdates" xml:space="preserve">
     <value>Buscar actualizaciones</value>
   </data>
+  <data name="CheckForUpdates" xml:space="preserve">
+    <value>Descargar ahora</value>
+  </data>
   <data name="DownloadNow" xml:space="preserve">
-    <value>Download Now</value>
+    <value>Revise el directorio de archivos</value>
   </data>
   <data name="CheckDirectoryForFiles" xml:space="preserve">
-    <value>Compruebe directorio de archivos</value>
+    <value>Comprueba el directorio de los archivos que ya se han descargado.</value>
   </data>
   <data name="ToolTipCheckDirectoryForFiles" xml:space="preserve">
-    <value>Checks the directory for already downloaded files.</value>
+    <value>Comprueba el directorio y la base de datos para los archivos ya descargados. 
+Puede tener un impacto negativo en la velocidad de descarga de los directorios grandes.</value>
   </data>
   <data name="ToolTipCheckDirectoryForFilesDescription" xml:space="preserve">
-    <value>Checks the directory and the database for already downloaded files. Might negatively impact the download speed for large directories.</value>
+    <value>Descargar la lista de url</value>
   </data>
   <data name="DownloadUrlList" xml:space="preserve">
-    <value>Descargar lista de url</value>
+    <value>Descargar una lista de url.</value>
   </data>
   <data name="ToolTipDownloadUrlList" xml:space="preserve">
-    <value>Download a url list.</value>
+    <value>Descarga una lista de url de los archivos binarios en lugar de los archivos reales</value>
   </data>
   <data name="ToolTipDownloadUrlListDescription" xml:space="preserve">
-    <value>Downloads a url list of the binary files instead of the actual files</value>
-  </data>
-  <data name="DownloadAnswers" xml:space="preserve">
     <value>Descargar mensajes de respuesta</value>
   </data>
-  <data name="Blog" xml:space="preserve">
+  <data name="DownloadAnswers" xml:space="preserve">
     <value>Blog</value>
   </data>
-  <data name="Connection" xml:space="preserve">
-    <value>conexión</value>
+  <data name="Blog" xml:space="preserve">
+    <value>Conexión</value>
   </data>
-  <data name="General" xml:space="preserve">
+  <data name="Connection" xml:space="preserve">
     <value>General</value>
   </data>
+  <data name="General" xml:space="preserve">
+    <value>Activar modo portátil</value>
+  </data>
   <data name="PortableMode" xml:space="preserve">
-    <value>Active el modo portátil.</value>
+    <value>Activa el modo portátil.</value>
   </data>
   <data name="ToolTipPortableMode" xml:space="preserve">
-    <value>Activates the portable mode.</value>
+    <value>Guarda la configuración en la carpeta del ejecutable en lugar de AppData.</value>
   </data>
   <data name="ToolTipPortableModeDescription" xml:space="preserve">
-    <value>Saves the settings in the folder of the executable instead of AppData.</value>
+    <value>Descargar</value>
   </data>
   <data name="DownloadRebloggedPosts" xml:space="preserve">
-    <value>Descargar reblogged mensajes</value>
-  </data>
-  <data name="ProxyPassword" xml:space="preserve">
     <value>Contraseña de Proxy:</value>
   </data>
+  <data name="ProxyPassword" xml:space="preserve">
+    <value>Nombre de usuario del proxy:</value>
+  </data>
   <data name="ProxyUsername" xml:space="preserve">
-    <value>Nombre de usuario proxy:</value>
+    <value>Credenciales para el servidor proxy no anónimo</value>
   </data>
   <data name="ToolTipProxyPassword" xml:space="preserve">
-    <value>Credentials for non-anonymous proxy server</value>
+    <value>Las credenciales se guardan en texto claro en el archivo de configuración</value>
   </data>
   <data name="ToolTipProxyPasswordDescription" xml:space="preserve">
-    <value>Credentials are saved in clear text in the settings file</value>
+    <value>Descargar páginas:</value>
   </data>
   <data name="DownloadPages" xml:space="preserve">
-    <value>Descargar páginas: </value>
-  </data>
-  <data name="PageSize" xml:space="preserve">
     <value>Mensajes por página:</value>
   </data>
+  <data name="PageSize" xml:space="preserve">
+    <value>Descargar sólo páginas específicas</value>
+  </data>
   <data name="ToolTipDownloadPages" xml:space="preserve">
-    <value>Download only specific pages</value>
+    <value>Las notaciones posibles son: 1 o 1-3 o 1,2,3. Vacío significa todo el blog.</value>
   </data>
   <data name="ToolTipDownloadPagesDescription" xml:space="preserve">
-    <value>Possible notations are: 1 or 1-3 or 1,2,3. Empty means the whole blog.</value>
+    <value>Mensajes por página</value>
   </data>
   <data name="ToolTipPageSize" xml:space="preserve">
-    <value>Mensajes por página</value>
+    <value>Establece la publicación por página (debe estar entre 1-50, predeterminado 50). 
+P.ej. 50 medios para escanear 50 mensajes por página.</value>
   </data>
   <data name="ToolTipPageSizeDescription" xml:space="preserve">
-    <value>Sets the post per page (should be between 1-50, default 50). E.g. 50 means to scan 50 posts per page.</value>
+    <value>FullScreenView</value>
   </data>
   <data name="FullScreenMedia" xml:space="preserve">
-    <value>Pantalla completa</value>
+    <value>Exportar Blogs</value>
   </data>
   <data name="Export" xml:space="preserve">
-    <value>Exportar blogs</value>
+    <value>Exportar todas las urls del blog como archivo de texto</value>
   </data>
   <data name="ToolTipExportBlogs" xml:space="preserve">
-    <value>Export all blog urls as text file</value>
+    <value>Guarda todas las URL como un archivo de texto para el intercambio.</value>
   </data>
   <data name="ToolTipExportBlogsDescription" xml:space="preserve">
-    <value>Saves all urls as a text file for exchange.</value>
-  </data>
-  <data name="DownloadFrom" xml:space="preserve">
     <value>Descargar desde:</value>
   </data>
-  <data name="DownloadTo" xml:space="preserve">
+  <data name="DownloadFrom" xml:space="preserve">
     <value>A:</value>
   </data>
-  <data name="ToolTipDownloadFrom" xml:space="preserve">
+  <data name="DownloadTo" xml:space="preserve">
     <value>Rastrear mensajes desde esta fecha</value>
   </data>
-  <data name="ToolTipDownloadTagsFromDescription" xml:space="preserve">
+  <data name="ToolTipDownloadFrom" xml:space="preserve">
     <value>Debe estar en formato AAAAMMDD. Vaciar significa desde mayo de 2007.</value>
   </data>
+  <data name="ToolTipDownloadTagsFromDescription" xml:space="preserve">
+    <value>Rastrear publicaciones a esta fecha</value>
+  </data>
   <data name="ToolTipDownloadTo" xml:space="preserve">
-    <value>Rastrear posts a esta fecha</value>
+    <value>Debe estar en formato AAAAMMDD. Vacío significa ahora.</value>
   </data>
   <data name="ToolTipDownloadTagsToDescription" xml:space="preserve">
-    <value>Debe estar en formato AAAAMMDD. Vacío significa ahora.</value>
-  </data>
-  <data name="ToolTipDownloadFromDescription" xml:space="preserve">
     <value>Debe estar en formato AAAAMMDD. Empty significa desde el principio del blog.</value>
   </data>
-  <data name="ToolTipDownloadToDescription" xml:space="preserve">
+  <data name="ToolTipDownloadFromDescription" xml:space="preserve">
     <value>Debe estar en formato AAAAMMDD. Vacío significa ahora.</value>
   </data>
-  <data name="ToolTipPageSizeTumblrSearch" xml:space="preserve">
+  <data name="ToolTipDownloadToDescription" xml:space="preserve">
     <value>Mensajes por página</value>
   </data>
-  <data name="ToolTipPageSizeTumblrSearchDescription" xml:space="preserve">
-    <value>Sets the post per page. E.g. 50 means to scan 50 posts per page.</value>
+  <data name="ToolTipPageSizeTumblrSearch" xml:space="preserve">
+    <value>Establece la publicación por página. 
+P.ej. 50 medios para escanear 50 mensajes por página.</value>
   </data>
-  <data name="Password" xml:space="preserve">
+  <data name="ToolTipPageSizeTumblrSearchDescription" xml:space="preserve">
     <value>Contraseña:</value>
   </data>
+  <data name="Password" xml:space="preserve">
+    <value>Contraseña para blogs protegidos por contraseña</value>
+  </data>
   <data name="ToolTipPassword" xml:space="preserve">
-    <value>Password for password-protected blogs</value>
+    <value>Precaución: La contraseña se almacena en texto claro en la base de datos de blogs.</value>
   </data>
   <data name="ToolTipPasswordDescription" xml:space="preserve">
-    <value>Caution: The password is stored in clear text in the blogs database.</value>
+    <value>Tipo</value>
   </data>
-    <data name="Blogtype" xml:space="preserve">
-    <value>Type</value>
+  <data name="Blogtype" xml:space="preserve">
+    <value>Descargar solo mensajes etiquetados</value>
   </data>
   <data name="ToolTipTags" xml:space="preserve">
-    <value>Download only tagged posts</value>
+    <value>Debe estar en una lista separada por comas sin el signo hash principal (#). 
+P.ej. gran coche grande, lleva búsquedas de grandes coches grandes y osos.</value>
   </data>
   <data name="ToolTipTagsDescription" xml:space="preserve">
-    <value>Must be in a comma separated list without the leading hash (#) sign.
-E.g.  great big car, bears searches for great big cars and bears.</value>
+    <value>Todas</value>
   </data>
   <data name="BlogtypeAll" xml:space="preserve">
-    <value>All</value>
-  </data>
-  <data name="BlogtypeInstagram" xml:space="preserve">
     <value>Instagram</value>
   </data>
-  <data name="BlogtypeTumblr" xml:space="preserve">
+  <data name="BlogtypeInstagram" xml:space="preserve">
     <value>Tumblr</value>
   </data>
+  <data name="BlogtypeTumblr" xml:space="preserve">
+    <value>Tumblr le gustó</value>
+  </data>
   <data name="BlogtypeTumblrLikedBy" xml:space="preserve">
-    <value>Tumblr Liked-by</value>
+    <value>Tumblr Ocultos</value>
   </data>
   <data name="BlogtypeTumblrPrivate" xml:space="preserve">
-    <value>Tumblr Hidden</value>
+    <value>Buscar en Tumblr</value>
   </data>
   <data name="BlogtypeTumblrSearch" xml:space="preserve">
-    <value>Tumblr Search</value>
+    <value>Búsqueda de etiquetas de Tumblr</value>
   </data>
   <data name="BlogtypeTumblrTagSearch" xml:space="preserve">
-    <value>Tumblr Tag Search</value>
+    <value>Gorjeo</value>
   </data>
   <data name="BlogtypeTwitter" xml:space="preserve">
-    <value>Twitter</value>
+    <value>blogs a la cola.</value>
   </data>
   <data name="AutoDownloadBlogs" xml:space="preserve">
-    <value>blogs to the queue.</value>
+    <value>Tiempo de espera para solicitudes web</value>
   </data>
   <data name="ToolTipTimeout" xml:space="preserve">
-    <value>Timeout for web requests</value>
+    <value>La duración de tiempo, en segundos, hasta que la solicitud se agota.</value>
   </data>
   <data name="ToolTipTimeoutDescription" xml:space="preserve">
-    <value>The length of time, in seconds, until the request times out.</value>
+    <value>Conexiones de vídeo simultáneas:</value>
   </data>
   <data name="ConcurrentVideoConnections" xml:space="preserve">
-    <value>Concurrent video connections:</value>
+    <value>Número de conexiones simultáneas al host de video tumblr</value>
   </data>
   <data name="ToolTipVideoConnections" xml:space="preserve">
-    <value>Number of concurrent connections to the tumblr video host</value>
-  </data>
-  <data name="ToolTipVideoConnectionsDescription" xml:space="preserve">
-    <value>The vt.tumblr.com host regularly closes connections if the number is too high.</value>
+    <value>El host vt.tumblr.com cierra regularmente las conexiones si el número es demasiado alto.</value>
   </data>
 </root>

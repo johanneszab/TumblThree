@@ -118,588 +118,583 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="About" xml:space="preserve">
-    <value>Über</value>
+    <value>약</value>
   </data>
   <data name="AddBlog" xml:space="preserve">
-    <value>Blog hinzufügen</value>
+    <value>블로그 추가</value>
   </data>
   <data name="AddToQueue" xml:space="preserve">
-    <value>Zur Warteschlange hinzufügen</value>
+    <value>대기열에 추가</value>
   </data>
   <data name="BlogUrl" xml:space="preserve">
-    <value>URL eingeben:</value>
+    <value>URL 입력 :</value>
   </data>
   <data name="Browse" xml:space="preserve">
-    <value>Durchsuchen</value>
+    <value>검색</value>
   </data>
   <data name="ClearQueue" xml:space="preserve">
-    <value>Klare Warteschlange</value>
+    <value>대기열 지우기</value>
   </data>
   <data name="ClipboardMonitor" xml:space="preserve">
-    <value>Überprüfen Sie die Zwischenablage</value>
+    <value>클립 보드 확인</value>
   </data>
   <data name="Crawl" xml:space="preserve">
-    <value>Kriechen</value>
+    <value>포복</value>
   </data>
   <data name="CrawlSelection" xml:space="preserve">
-    <value>Crawling auswählen</value>
+    <value>크롤링 선택</value>
   </data>
   <data name="DateAdded" xml:space="preserve">
-    <value>Datum hinzugefügt</value>
+    <value>추가 된 날짜</value>
   </data>
   <data name="Delete" xml:space="preserve">
-    <value>Löschen</value>
+    <value>지우다</value>
   </data>
   <data name="Details" xml:space="preserve">
-    <value>Details</value>
+    <value>세부</value>
   </data>
   <data name="DownloadedFiles" xml:space="preserve">
-    <value>Heruntergeladene Dateien</value>
+    <value>다운로드 한 파일</value>
   </data>
   <data name="DownloadLocation" xml:space="preserve">
-    <value>Standort herunterladen</value>
+    <value>위치 다운로드</value>
   </data>
   <data name="EnqueueSelection" xml:space="preserve">
-    <value>Enqueue Auswahl</value>
+    <value>대기열 선택</value>
   </data>
   <data name="Error" xml:space="preserve">
-    <value>Fehler</value>
+    <value>오류</value>
   </data>
   <data name="ErrorMessage" xml:space="preserve">
-    <value>Fehler {0}: {1}</value>
+    <value>오류 {0} : {1}</value>
   </data>
   <data name="InternalErrorDescription" xml:space="preserve">
-    <value>Interne Fehlerbeschreibung</value>
+    <value>내부 오류 설명</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value>Name</value>
+    <value>이름</value>
   </data>
   <data name="NumberOfDownloads" xml:space="preserve">
-    <value>Anzahl der Downloads</value>
+    <value>다운로드 수</value>
   </data>
   <data name="OpenQueue" xml:space="preserve">
-    <value>Warteschlange öffnen</value>
+    <value>대기열 열기</value>
   </data>
   <data name="Pause" xml:space="preserve">
-    <value>Pause</value>
+    <value>중지</value>
   </data>
   <data name="Queue" xml:space="preserve">
-    <value>Warteschlange</value>
+    <value>열</value>
   </data>
   <data name="Rating" xml:space="preserve">
-    <value>Bewertung</value>
+    <value>평가</value>
   </data>
   <data name="RemoveBlog" xml:space="preserve">
-    <value>Blog entfernen</value>
+    <value>블로그 삭제</value>
   </data>
   <data name="RemoveFromQueue" xml:space="preserve">
-    <value>Aus Warteschlange entfernen</value>
+    <value>대기열에서 삭제</value>
   </data>
   <data name="RemoveSelected" xml:space="preserve">
-    <value>Ausgewählt entfernen</value>
+    <value>선택된 것을 지우다</value>
   </data>
   <data name="Resume" xml:space="preserve">
-    <value>Fortsetzen</value>
+    <value>이력서</value>
   </data>
   <data name="Return" xml:space="preserve">
-    <value>Rückkehr</value>
+    <value>반환</value>
   </data>
   <data name="SaveQueue" xml:space="preserve">
-    <value>Warteschlange speichern</value>
+    <value>대기열 저장</value>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>Einstellungen</value>
+    <value>설정</value>
   </data>
   <data name="ShiftReturn" xml:space="preserve">
-    <value>Umschalt + Rückkehr</value>
+    <value>Shift + Return</value>
   </data>
   <data name="ShowDetails" xml:space="preserve">
-    <value>Zeige Details</value>
+    <value>세부 정보 표시</value>
   </data>
   <data name="ShowFiles" xml:space="preserve">
-    <value>Zeige Dateien</value>
+    <value>파일 표시</value>
   </data>
   <data name="Stop" xml:space="preserve">
-    <value>Halt</value>
+    <value>중지</value>
   </data>
   <data name="Tags" xml:space="preserve">
-    <value>Tags</value>
+    <value>태그</value>
   </data>
   <data name="UnknownError" xml:space="preserve">
-    <value>Unbekannter Anwendungsfehler</value>
+    <value>알 수없는 응용 프로그램 오류</value>
   </data>
   <data name="Url" xml:space="preserve">
-    <value>Url</value>
+    <value>URL</value>
   </data>
   <data name="ImageSize" xml:space="preserve">
-    <value>Bildgröße (px)</value>
+    <value>이미지 크기 (픽셀)</value>
   </data>
   <data name="ConcurrentBlogs" xml:space="preserve">
-    <value>Gleichzeitige Blogs</value>
+    <value>동시 블로그</value>
   </data>
   <data name="ConcurrentConnections" xml:space="preserve">
-    <value>Gleichzeitige Verbindungen</value>
+    <value>동시 연결</value>
   </data>
   <data name="Online" xml:space="preserve">
-    <value>Online</value>
+    <value>온라인</value>
   </data>
   <data name="Progress" xml:space="preserve">
-    <value>Fortschritt</value>
+    <value>진행</value>
   </data>
   <data name="NumberOfItems" xml:space="preserve">
-    <value>{0} Blogs</value>
+    <value>{0} 블로그</value>
   </data>
   <data name="OneItem" xml:space="preserve">
-    <value>1 Blog</value>
+    <value>1 블로그</value>
   </data>
   <data name="CheckStatus" xml:space="preserve">
-    <value>Überprüfen Sie den Blog-Online-Status beim Start</value>
+    <value>시작시 블로그 온라인 상태 확인</value>
   </data>
   <data name="DeleteIndex" xml:space="preserve">
-    <value>Löschen Sie nur die Indexdateien (keine heruntergeladenen Dateien)</value>
+    <value>색인 파일 만 삭제합니다 (다운로드 한 파일 없음).</value>
   </data>
   <data name="RemoveIndex" xml:space="preserve">
-    <value>Blog-Index nach dem Crawling entfernen</value>
+    <value>크롤링 후 블로그 색인 삭제</value>
   </data>
   <data name="SkipGif" xml:space="preserve">
-    <value>Überspringen Sie .gif-Dateien</value>
+    <value>.gif 파일 건너 뛰기</value>
   </data>
   <data name="Info32Bit" xml:space="preserve">
-    <value>32 bit</value>
+    <value>32 비트</value>
   </data>
   <data name="Info64Bit" xml:space="preserve">
-    <value>64 bit</value>
+    <value>64 비트</value>
   </data>
   <data name="License" xml:space="preserve">
-    <value>Lizenz</value>
+    <value>특허</value>
   </data>
   <data name="NetFramework" xml:space="preserve">
-    <value>.NET Framework</value>
+    <value>.넷 프레임 워크</value>
   </data>
   <data name="Ok" xml:space="preserve">
-    <value>OK</value>
+    <value>승인</value>
   </data>
   <data name="OperatingSystem" xml:space="preserve">
-    <value>Betriebssystem</value>
+    <value>운영 체제</value>
   </data>
   <data name="Product" xml:space="preserve">
-    <value>Produkt</value>
+    <value>생성물</value>
   </data>
   <data name="Version" xml:space="preserve">
-    <value>Version</value>
+    <value>번역</value>
   </data>
   <data name="Website" xml:space="preserve">
-    <value>Webseite</value>
+    <value>웹 사이트</value>
   </data>
   <data name="LastCompleteCrawl" xml:space="preserve">
-    <value>Letzter vollständiger Crawling</value>
+    <value>마지막으로 완료된 크롤링</value>
   </data>
   <data name="VisitBlog" xml:space="preserve">
-    <value>Öffnen Sie die Website im Webbrowser</value>
+    <value>웹 브라우저에서 사이트 열기</value>
   </data>
   <data name="NumberOfImages" xml:space="preserve">
-    <value>{0} Beiträge</value>
+    <value>{0} 게시물</value>
   </data>
   <data name="DownloadedFilesOf" xml:space="preserve">
-    <value>Heruntergeladene Datei {0} von {1}</value>
+    <value>{1} 중 {0} 파일 다운로드 됨</value>
   </data>
   <data name="DownloadImages" xml:space="preserve">
-    <value>Bilder herunterladen</value>
+    <value>이미지 다운로드</value>
   </data>
   <data name="DownloadVideos" xml:space="preserve">
-    <value>Videos herunterladen (tumblr.com selbst gehostet)</value>
+    <value>다운로드 비디오 (tumblr.com 자기 호스팅)</value>
   </data>
   <data name="VideoSize" xml:space="preserve">
-    <value>Videogröße (px)</value>
+    <value>동영상 크기 (픽셀)</value>
   </data>
   <data name="Authenticate" xml:space="preserve">
-    <value>Authentifizieren</value>
+    <value>인증</value>
   </data>
   <data name="ToolTipAuthenticate" xml:space="preserve">
-    <value>Authentifizierung zum tumblr.com Netzwerk</value>
+    <value>tumblr.com 네트워크 인증</value>
   </data>
   <data name="ToolTipAuthenticateDescription" xml:space="preserve">
-    <value>Öffnet ein Browser-Fenster, um sich auf der Website von tumblr.com zu authentifizieren.
-Der Cookie mit Ihren Anmeldeinformationen Ihres Kontos wird gespeichert und der Authentifizierungsprozess muss nur einmal durchgeführt werden.</value>
+    <value>tumblr.com 사이트에 자신을 인증하는 브라우저 창을 엽니 다.
+계정의 자격 증명이있는 쿠키가 저장되고 인증 프로세스는 한 번만 수행하면됩니다.</value>
   </data>
   <data name="ToolTipBlogs" xml:space="preserve">
-    <value>Anzahl gleichzeitiger Verarbeitungsblogs</value>
+    <value>동시 처리 블로그 수</value>
   </data>
   <data name="ToolTipBlogsDescription" xml:space="preserve">
-    <value>Legt die Anzahl der gleichzeitigen Verarbeitungsblogs fest.
-Wenn man dies auf 2 setzt, würde es zwei Blogs gleichzeitig geben.</value>
+    <value>동시 처리 블로그의 수를 설정합니다.
+이 값을 2로 설정하면 한 번에 두 개의 블로그를 처리 할 수 ​​있습니다.</value>
   </data>
   <data name="ToolTipConnections" xml:space="preserve">
-    <value>Anzahl der gleichzeitigen Verbindungen</value>
+    <value>총 동시 연결 수</value>
   </data>
   <data name="ToolTipConnectionsDescription" xml:space="preserve">
-    <value>Setzt die Anzahl der gesamten gleichzeitigen Verbindungen.
-Die Nummer wird zwischen allen aktiv heruntergeladenen Blogs geteilt.</value>
+    <value>총 동시 연결 수를 설정합니다.
+이 번호는 모든 적극적으로 다운로드하는 블로그간에 공유됩니다.</value>
   </data>
   <data name="Notes" xml:space="preserve">
-    <value>Persönliche Hinweise</value>
+    <value>개인 메모</value>
   </data>
   <data name="TimeOut" xml:space="preserve">
-    <value>Timeout (s)</value>
+    <value>시간 초과</value>
   </data>
   <data name="Bandwidth" xml:space="preserve">
-    <value>Grenzbandbreite (KB / s)</value>
+    <value>대역폭 제한 (KB / s)</value>
   </data>
   <data name="EnableAutoDownload" xml:space="preserve">
-    <value>Starten Sie den Download bei</value>
+    <value>에서 다운로드 시작</value>
   </data>
   <data name="Timer" xml:space="preserve">
-    <value>(hh: mm: ss) und fügen Sie hinzu</value>
+    <value>(hh : mm : ss)를 추가하고</value>
   </data>
   <data name="SelectABlog" xml:space="preserve">
-    <value>Bitte wählen Sie ein Blog</value>
+    <value>블로그를 선택하십시오.</value>
   </data>
   <data name="ShowItems" xml:space="preserve">
-    <value>Zusammenfassung von {0} Blogs</value>
+    <value>{0} 블로그 요약</value>
   </data>
   <data name="CopyUrl" xml:space="preserve">
-    <value>Kopiere URL</value>
+    <value>URL 복사</value>
   </data>
   <data name="Posts" xml:space="preserve">
-    <value>Anzahl der Beiträge:</value>
+    <value>게시물 수 :</value>
   </data>
   <data name="Preview" xml:space="preserve">
-    <value>Vorschau:</value>
+    <value>시사:</value>
   </data>
   <data name="DownloadAudios" xml:space="preserve">
-    <value>Laden Sie Audiodateien herunter</value>
+    <value>오디오 파일 다운로드</value>
   </data>
   <data name="DownloadConversations" xml:space="preserve">
-    <value>Laden Sie Konversationsposten herunter</value>
+    <value>대화 게시물 다운로드</value>
   </data>
   <data name="DownloadLinks" xml:space="preserve">
-    <value>Link-Beiträge herunterladen</value>
+    <value>링크 게시물 다운로드</value>
   </data>
   <data name="DownloadQuotes" xml:space="preserve">
-    <value>Download Zitat Beiträge</value>
+    <value>견적 게시물 다운로드</value>
   </data>
   <data name="DownloadTexts" xml:space="preserve">
-    <value>Texttexte herunterladen</value>
+    <value>텍스트 게시물 다운로드</value>
   </data>
   <data name="DetailsProgress" xml:space="preserve">
-    <value>{0} von {1}, Duplikate gefunden: {2}</value>
+    <value>{1} 중 {0}, 중복 발견됨 : {2}</value>
   </data>
   <data name="EnablePreview" xml:space="preserve">
-    <value>Vorschau auf / aus</value>
+    <value>미리보기 켜기 / 끄기</value>
   </data>
   <data name="BlogSettings" xml:space="preserve">
-    <value>Blog-Einstellungen:</value>
+    <value>블로그 설정 :</value>
   </data>
   <data name="GlobalSettings" xml:space="preserve">
-    <value>Globale Einstellungen:</value>
+    <value>전역 설정 :</value>
   </data>
   <data name="BlogStatistics" xml:space="preserve">
-    <value>Blog-Statistiken:</value>
+    <value>블로그 통계 :</value>
   </data>
   <data name="ToolTipDetailsStats" xml:space="preserve">
-    <value>Anzahl der heruntergeladenen Post-Typen der gesamten Post-Typen</value>
+    <value>총 게시물 유형 중 다운로드 된 게시물 유형 수</value>
   </data>
   <data name="ToolTipDetailsStatsDescription" xml:space="preserve">
-    <value>Überprüfen Sie, um Post-Typ herunterladen oder überspringen während des Downloads</value>
+    <value>다운로드 중에 게시물 유형을 다운로드하거나 건너 뛰려면 선택하십시오.</value>
   </data>
   <data name="DownloadAudioMeta" xml:space="preserve">
-    <value>Laden Sie die Audio-Meta herunter</value>
+    <value>오디오 메타 다운로드</value>
   </data>
   <data name="DownloadImageMeta" xml:space="preserve">
-    <value>Bild herunterladen meta</value>
+    <value>이미지 메타 다운로드</value>
   </data>
   <data name="DownloadVideoMeta" xml:space="preserve">
-    <value>Video herunterladen Meta</value>
+    <value>동영상 메타 다운로드</value>
   </data>
   <data name="DefaultSettingsForBlogs" xml:space="preserve">
-    <value>Einstellungen für jeden Blog bei Hinzufügen:</value>
+    <value>추가시 각 블로그에 적용되는 설정 :</value>
   </data>
   <data name="DownloadVideosShort" xml:space="preserve">
-    <value>Videos herunterladen</value>
+    <value>동영상 다운로드</value>
   </data>
   <data name="ToolTipDefaultSettingsForBlogs" xml:space="preserve">
-    <value>Legt die Standardeinstellungen für neu hinzugefügte Blogs fest.</value>
+    <value>새로 추가 된 블로그의 기본 설정을 지정합니다.</value>
   </data>
   <data name="ToolTipDefaultSettingsForBlogsDescription" xml:space="preserve">
-    <value>Der Scan / Download verwendet indivuelle Einstellungen für jeden Blog.
-Um sie zu ändern, wählen Sie Blog (s) in der Hauptschnittstelle und wählen Sie die Registerkarte Details auf der rechten Seite.</value>
+    <value>스캔 / 다운로드는 각 블로그에 대해 개별적인 설정을 사용합니다.
+변경하려면 주 인터페이스에서 블로그를 선택하고 오른쪽에서 세부 정보 탭을 선택하십시오.</value>
   </data>
   <data name="Save" xml:space="preserve">
-    <value>sparen</value>
+    <value>구하다</value>
   </data>
   <data name="Offline" xml:space="preserve">
-    <value>Offline</value>
+    <value>오프라인</value>
   </data>
   <data name="ForceSize" xml:space="preserve">
-    <value>Laden Sie die angegebene Größe, auch wenn es nicht angeboten wird</value>
+    <value>지정된 크기가 제공되지 않더라도 다운로드하십시오.</value>
   </data>
   <data name="ToolTipForceSize" xml:space="preserve">
-    <value>Laden Sie die angegebene Auflösung von Bildern herunter, auch wenn die Größe nicht angeboten wird.</value>
+    <value>크기가 제공되지 않더라도 이미지의 지정된 해상도를 다운로드하십시오.</value>
   </data>
   <data name="ToolTipForceSizeDescription" xml:space="preserve">
-    <value>Wenn der Crawler nur Bilder mit geringerer Größe als angegeben findet,
-wird diese Option um die URL in die angegebene Dateigröße umbenannt. 
-Diese Dateien sind in der Regel vorhanden und bieten manchmal eine größere Auflösung oder sind nur umbenannt kleinere Auflösung Dateien.
-Es ist sicher, dies zu aktivieren.</value>
+    <value>크롤러가 지정된 크기보다 낮은 크기의 이미지 만 찾으면이 옵션을 사용하면 URL의 이름이 지정된 파일 크기로 바뀝니다.
+이러한 파일은 일반적으로 존재하며 때로는 더 큰 해상도를 제공하거나 더 작은 해상도 파일로 이름이 변경됩니다. 
+이것을 켜는 것이 안전합니다.</value>
   </data>
   <data name="ProxyHost" xml:space="preserve">
-    <value>HTTP-Proxy:</value>
+    <value>HTTP 프록시 :</value>
   </data>
   <data name="ProxyPort" xml:space="preserve">
-    <value>Hafen:</value>
+    <value>포트:</value>
   </data>
   <data name="ThirdPartySoftware" xml:space="preserve">
-    <value>Drittanbietersoftware</value>
+    <value>타사 소프트웨어</value>
   </data>
   <data name="ThirdPartySoftwareDescription" xml:space="preserve">
-    <value>Software und Lizenzen von Drittanbietern</value>
+    <value>타사 소프트웨어 및 라이센스</value>
   </data>
   <data name="ToolTipLimitBandwidth" xml:space="preserve">
-    <value>Drosselt die Bandbreite des Downloaders</value>
+    <value>다운로더의 대역폭을 조절합니다.</value>
   </data>
   <data name="ToolTipLimitBandwidthDescription" xml:space="preserve">
-    <value>Setzt die maximale Bandbreite für den Downloader in kbytes / s. 
-0 deaktiviert die Drosselung.</value>
+    <value>다운로더에 사용할 수있는 최대 대역폭을 kbytes / s 단위로 설정합니다. 0은 스로틀을 비활성화합니다.</value>
   </data>
   <data name="LimitScan" xml:space="preserve">
-    <value>Begrenzung der Scan-Bandbreite</value>
+    <value>스캔 대역폭 제한</value>
   </data>
   <data name="ScanConnections" xml:space="preserve">
-    <value>Scanverbindungen</value>
+    <value>연결 검색</value>
   </data>
   <data name="ToolTipLimitScan" xml:space="preserve">
-    <value>Enthält die Scan-Bandbreite in der Drosselung</value>
+    <value>스로틀 링에서 스캔 대역폭을 포함합니다.</value>
   </data>
   <data name="ToolTipLimitScanDescription" xml:space="preserve">
-    <value>Da die für das Scannen verwendeten Daten in der Regel klein sind, sollten Sie diese ausschalten,
-da der Drosselungsalgorithmus zu langsam ist, um sich anzupassen und die Scanleistung negativ beeinflussen zu können.
-Anzahl der für jeden Scan verwendeten Verbindungen</value>
+    <value>일반적으로 검색에 사용되는 데이터는 작기 때문에 조정 알고리즘이 너무 느리므로 검색 성능에 부정적인 영향을 줄 수 있으므로이 값을 그대로 사용해야합니다. 
+각 검사에 사용 된 연결 수</value>
   </data>
   <data name="ToolTipScan" xml:space="preserve">
-    <value>Legt die für das Scannen verwendeten Nummernverbindungen fest. 
-Da die Daten in der Regel klein sind, solltest du das hoch lassen.</value>
+    <value>스캔에 사용 된 연결 수를 설정합니다. 
+데이터는 대개 작기 때문에이 값을 높게 두어야합니다.</value>
   </data>
   <data name="ToolTipScanDescription" xml:space="preserve">
-    <value>Der Wert muss zwischen 0 und 9.000.000.000.000.000 liegen.</value>
+    <value>값은 0에서 9,000,000,000,000,000 사이 여야합니다.</value>
   </data>
   <data name="BandwidthRangeError" xml:space="preserve">
-    <value>Der Wert muss hh bilden: mm: ss.</value>
+    <value>값은 hh : mm : ss 형식이어야합니다.</value>
   </data>
   <data name="TimeSpanTypeError" xml:space="preserve">
-    <value>Der Wert muss zwischen 0 und 2.147.483.647 liegen.</value>
+    <value>값은 0과 2,147,483,647 사이 여야합니다.</value>
   </data>
   <data name="IntRangeError" xml:space="preserve">
-    <value>Der Wert muss vom Typ Integer sein.</value>
+    <value>값은 정수 유형이어야합니다.</value>
   </data>
   <data name="IntTypeError" xml:space="preserve">
-    <value>pro Zeitintervall (e):</value>
+    <value>시간 간격 당 :</value>
   </data>
   <data name="ConnectionTimeInterval" xml:space="preserve">
-    <value>Limit Tumblr Api Verbindungen:</value>
+    <value>Tumblr API 연결 제한 :</value>
   </data>
   <data name="LimitConnections" xml:space="preserve">
-    <value>Anzahl der Anschlüsse:</value>
+    <value>연결 수 :</value>
   </data>
   <data name="MaxConnections" xml:space="preserve">
-    <value>Begrenzung der Verbindungen zum tumblr api.</value>
+    <value>tumblr API에 대한 연결을 제한하십시오.</value>
   </data>
   <data name="ToolTipLimitConnections" xml:space="preserve">
-    <value>Ein zu hoher Wert wird die Verbindungen (429 - Limit Exceeded), die an die tumblr api gemacht wurden, kraftvoll schließen.
-Ein zu kleiner Wert verringert die Abtastgeschwindigkeit.
-Stellen Sie ein Zahlen- / Zeitpaar ein. 
-Hinweis: Die tumblr api wird nur für regelmäßige tumblr Blog Downloads verwendet.</value>
+    <value>너무 높은 값은 tumblr API에 대한 연결을 강제 종료합니다 (429 - 제한 초과). 값이 너무 작 으면 스캔 속도가 느려집니다. 
+숫자 / 시간 쌍을 설정하십시오. 참고 : tumblr API는 일반 tumblr 블로그 다운로드에만 사용됩니다.</value>
   </data>
   <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
-    <value>Force rescan</value>
+    <value>강제 재검색</value>
   </data>
   <data name="ForceRescan" xml:space="preserve">
-    <value>Rescans das ganze Blog, nicht nur neue Beiträge.</value>
+    <value>새 게시물뿐만 아니라 전체 블로그를 다시 검색합니다.</value>
   </data>
   <data name="ToolTipForceRescan" xml:space="preserve">
-    <value>Erzwingt einen kompletten Scan mit dem Tumblr api.</value>
+    <value>Tumblr API를 사용하여 전체 스캔을 수행합니다.</value>
   </data>
   <data name="ToolTipForceRescanDescription" xml:space="preserve">
-    <value>Auf Updates prüfen</value>
+    <value>업데이트 확인</value>
   </data>
   <data name="CheckForUpdates" xml:space="preserve">
-    <value>Jetzt herunterladen</value>
+    <value>지금 다운로드</value>
   </data>
   <data name="DownloadNow" xml:space="preserve">
-    <value>Überprüfen Sie das Verzeichnis auf Dateien</value>
+    <value>디렉토리에서 파일 검사</value>
   </data>
   <data name="CheckDirectoryForFiles" xml:space="preserve">
-    <value>Überprüft das Verzeichnis für bereits heruntergeladene Dateien.</value>
+    <value>이미 다운로드 한 파일이 있는지 디렉토리를 확인합니다.</value>
   </data>
   <data name="ToolTipCheckDirectoryForFiles" xml:space="preserve">
-    <value>Überprüft das Verzeichnis und die Datenbank auf bereits heruntergeladene Dateien.
-Kann die Downloadgeschwindigkeit für große Verzeichnisse negativ beeinflussen.</value>
+    <value>이미 다운로드 한 파일이 있는지 디렉토리와 데이터베이스를 확인합니다. 
+큰 디렉토리의 다운로드 속도에 부정적인 영향을 미칠 수 있습니다.</value>
   </data>
   <data name="ToolTipCheckDirectoryForFilesDescription" xml:space="preserve">
-    <value>Download der URL-Liste</value>
+    <value>URL 목록 다운로드</value>
   </data>
   <data name="DownloadUrlList" xml:space="preserve">
-    <value>Laden Sie eine URL-Liste herunter.</value>
+    <value>URL 목록을 다운로드하십시오.</value>
   </data>
   <data name="ToolTipDownloadUrlList" xml:space="preserve">
-    <value>Downloads eine URL-Liste der Binärdateien anstelle der eigentlichen Dateien</value>
+    <value>실제 파일 대신 이진 파일의 URL 목록을 다운로드합니다.</value>
   </data>
   <data name="ToolTipDownloadUrlListDescription" xml:space="preserve">
-    <value>Antwort-Beiträge herunterladen</value>
+    <value>답변 게시물 다운로드</value>
   </data>
   <data name="DownloadAnswers" xml:space="preserve">
-    <value>Blog</value>
+    <value>블로그</value>
   </data>
   <data name="Blog" xml:space="preserve">
-    <value>Verbindung</value>
+    <value>연결</value>
   </data>
   <data name="Connection" xml:space="preserve">
-    <value>General</value>
+    <value>일반</value>
   </data>
   <data name="General" xml:space="preserve">
-    <value>Aktivieren Sie den tragbaren Modus</value>
+    <value>휴대용 모드 활성화</value>
   </data>
   <data name="PortableMode" xml:space="preserve">
-    <value>Aktiviert den tragbaren Modus.</value>
+    <value>휴대용 모드를 활성화합니다.</value>
   </data>
   <data name="ToolTipPortableMode" xml:space="preserve">
-    <value>Speichert die Einstellungen im Ordner der ausführbaren Datei anstelle von AppData.</value>
+    <value>AppData 대신 실행 파일의 폴더에 설정을 저장합니다.</value>
   </data>
   <data name="ToolTipPortableModeDescription" xml:space="preserve">
-    <value>Download von gesendeten Beiträgen</value>
+    <value>다운로드 게시물</value>
   </data>
   <data name="DownloadRebloggedPosts" xml:space="preserve">
-    <value>Proxy-Passwort:</value>
+    <value>프록시 비밀번호 :</value>
   </data>
   <data name="ProxyPassword" xml:space="preserve">
-    <value>Proxy Benutzername:</value>
+    <value>프록시 사용자 이름 :</value>
   </data>
   <data name="ProxyUsername" xml:space="preserve">
-    <value>Anmeldeinformationen für nicht anonymen Proxy-Server</value>
+    <value>비 익명 프록시 서버에 대한 자격 증명</value>
   </data>
   <data name="ToolTipProxyPassword" xml:space="preserve">
-    <value>Anmeldeinformationen werden in der Einstellungsdatei in Klartext gespeichert</value>
+    <value>자격 증명은 설정 파일에 일반 텍스트로 저장됩니다.</value>
   </data>
   <data name="ToolTipProxyPasswordDescription" xml:space="preserve">
-    <value>Download Seiten:</value>
+    <value>다운로드 페이지 :</value>
   </data>
   <data name="DownloadPages" xml:space="preserve">
-    <value>Beiträge pro Seite:</value>
+    <value>페이지 당 게시물 수 :</value>
   </data>
   <data name="PageSize" xml:space="preserve">
-    <value>Laden Sie nur bestimmte Seiten herunter</value>
+    <value>특정 페이지 만 다운로드</value>
   </data>
   <data name="ToolTipDownloadPages" xml:space="preserve">
-    <value>Mögliche Notationen sind: 1 oder 1-3 oder 1,2,3. 
-Leer bedeutet das ganze Blog.</value>
+    <value>가능한 표기법은 1 또는 1-3 또는 1,2,3입니다. 
+비우기 란 전체 블로그를 의미합니다.</value>
   </data>
   <data name="ToolTipDownloadPagesDescription" xml:space="preserve">
-    <value>Beiträge pro Seite</value>
+    <value>페이지 당 게시물</value>
   </data>
   <data name="ToolTipPageSize" xml:space="preserve">
-    <value>Setzt den Beitrag pro Seite (sollte zwischen 1-50, Standard 50) sein.
-Z.B. 50 bedeutet, 50 Beiträge pro Seite zu scannen.</value>
+    <value>페이지 당 게시물을 설정합니다 (1-50 사이, 기본값은 50). 
+예 : 50은 페이지 당 50 개의 게시물을 스캔하는 것을 의미합니다.</value>
   </data>
   <data name="ToolTipPageSizeDescription" xml:space="preserve">
-    <value>Vollbildansicht</value>
+    <value>전체 화면보기</value>
   </data>
   <data name="FullScreenMedia" xml:space="preserve">
-    <value>Export-Blogs</value>
+    <value>블로그 내보내기</value>
   </data>
   <data name="Export" xml:space="preserve">
-    <value>Exportiere alle Blog-URLs als Textdatei</value>
+    <value>모든 블로그 URL을 텍스트 파일로 내보내기</value>
   </data>
   <data name="ToolTipExportBlogs" xml:space="preserve">
-    <value>Speichert alle URLs als Textdatei für den Austausch.</value>
+    <value>모든 URL을 교환 용 텍스트 파일로 저장합니다.</value>
   </data>
   <data name="ToolTipExportBlogsDescription" xml:space="preserve">
-    <value>Herunterladen von:</value>
+    <value>다운로드 위치 :</value>
   </data>
   <data name="DownloadFrom" xml:space="preserve">
-    <value>Nach:</value>
+    <value>에:</value>
   </data>
   <data name="DownloadTo" xml:space="preserve">
-    <value>Crawling Beiträge von diesem Datum</value>
+    <value>이 날짜의 소식 크롤링</value>
   </data>
   <data name="ToolTipDownloadFrom" xml:space="preserve">
-    <value>Muss im JJJJMMDD-Format sein. Leere bedeutet ab Mai 2007.</value>
+    <value>YYYYMMDD 형식이어야합니다. 비어 있음이란 2007 년 5 월을 의미합니다.</value>
   </data>
   <data name="ToolTipDownloadTagsFromDescription" xml:space="preserve">
-    <value>Crawl Beiträge zu diesem Datum</value>
+    <value>이 날짜의 소식 크롤링</value>
   </data>
   <data name="ToolTipDownloadTo" xml:space="preserve">
-    <value>Muss im JJJJMMDD-Format sein. Leer bedeutet jetzt</value>
+    <value>YYYYMMDD 형식이어야합니다. 비어 있음을 의미합니다.</value>
   </data>
   <data name="ToolTipDownloadTagsToDescription" xml:space="preserve">
-    <value>Muss im JJJJMMDD-Format sein. Leere bedeutet vom Anfang des Blogs.</value>
+    <value>YYYYMMDD 형식이어야합니다. 비어 있음은 블로그의 처음부터 의미합니다.</value>
   </data>
   <data name="ToolTipDownloadFromDescription" xml:space="preserve">
-    <value>Muss im JJJJMMDD-Format sein. Leer bedeutet jetzt</value>
+    <value>YYYYMMDD 형식이어야합니다. 비어 있음을 의미합니다.</value>
   </data>
   <data name="ToolTipDownloadToDescription" xml:space="preserve">
-    <value>Beiträge pro Seite</value>
+    <value>페이지 당 게시물</value>
   </data>
   <data name="ToolTipPageSizeTumblrSearch" xml:space="preserve">
-    <value>Setzt den Beitrag pro Seite. Z.B. 50 bedeutet, 50 Beiträge pro Seite zu scannen.</value>
+    <value>페이지 당 게시물을 설정합니다. 예 : 50은 페이지 당 50 개의 게시물을 스캔하는 것을 의미합니다.</value>
   </data>
   <data name="ToolTipPageSizeTumblrSearchDescription" xml:space="preserve">
-    <value>Passwort:</value>
+    <value>암호:</value>
   </data>
   <data name="Password" xml:space="preserve">
-    <value>Passwort für passwortgeschützte Blogs</value>
+    <value>비밀번호로 보호 된 블로그의 비밀번호</value>
   </data>
   <data name="ToolTipPassword" xml:space="preserve">
-    <value>Achtung: Das Passwort wird in der Blogs-Datenbank in Klartext gespeichert.</value>
+    <value>주의 : 암호는 블로그 데이터베이스에 일반 텍스트로 저장됩니다.</value>
   </data>
   <data name="ToolTipPasswordDescription" xml:space="preserve">
-    <value>Art</value>
+    <value>유형</value>
   </data>
   <data name="Blogtype" xml:space="preserve">
-    <value>Nur getaggte Beiträge herunterladen</value>
+    <value>태그가 지정된 게시물 만 다운로드</value>
   </data>
   <data name="ToolTipTags" xml:space="preserve">
-    <value>Muss in einer kommagetrennten Liste ohne das führende Hash (#) Zeichen sein. 
-Z.B. großes großes Auto, Bären sucht nach großen großen Autos und Bären.</value>
+    <value>선행 해시 (#) 기호없이 쉼표로 구분 된 목록에 있어야합니다. 
+예 : 위대한 큰 자동차, 곰 큰 위대한 자동차와 곰을 검색합니다.</value>
   </data>
   <data name="ToolTipTagsDescription" xml:space="preserve">
-    <value>Alle</value>
+    <value>모든</value>
   </data>
   <data name="BlogtypeAll" xml:space="preserve">
-    <value>Instagram</value>
+    <value>인스 타 그램</value>
   </data>
   <data name="BlogtypeInstagram" xml:space="preserve">
-    <value>Tumblr</value>
+    <value>텀블러</value>
   </data>
   <data name="BlogtypeTumblr" xml:space="preserve">
-    <value>Tumblr Liked-by</value>
+    <value>Tumblr이 (가)</value>
   </data>
   <data name="BlogtypeTumblrLikedBy" xml:space="preserve">
-    <value>Tumblr versteckt</value>
+    <value>숨겨진 Tumblr</value>
   </data>
   <data name="BlogtypeTumblrPrivate" xml:space="preserve">
-    <value>Tumblr Suche</value>
+    <value>Tumblr 검색</value>
   </data>
   <data name="BlogtypeTumblrSearch" xml:space="preserve">
-    <value>Tumblr Tag Suche</value>
+    <value>Tumblr 태그 검색</value>
   </data>
   <data name="BlogtypeTumblrTagSearch" xml:space="preserve">
-    <value>Twitter</value>
+    <value>지저귀다</value>
   </data>
   <data name="BlogtypeTwitter" xml:space="preserve">
-    <value>Blogs zur Warteschlange.</value>
+    <value>블로그를 대기열에 추가합니다.</value>
   </data>
   <data name="AutoDownloadBlogs" xml:space="preserve">
-    <value>Timeout für Webanfragen</value>
+    <value>웹 요청 시간 초과</value>
   </data>
   <data name="ToolTipTimeout" xml:space="preserve">
-    <value>Die Zeitdauer, in Sekunden, bis die Anforderung abläuft.</value>
+    <value>요청이 시간 초과 될 때까지의 시간 (초).</value>
   </data>
   <data name="ToolTipTimeoutDescription" xml:space="preserve">
-    <value>Gleichzeitige Videoverbindungen:</value>
+    <value>동시 비디오 연결 :</value>
   </data>
   <data name="ConcurrentVideoConnections" xml:space="preserve">
-    <value>Anzahl der gleichzeitigen Verbindungen zum tumblr Video-Host</value>
+    <value>tumblr 비디오 호스트에 대한 동시 연결 수</value>
   </data>
   <data name="ToolTipVideoConnections" xml:space="preserve">
-    <value>Der vt.tumblr.com-Host schließt regelmäßig Verbindungen, wenn die Nummer zu hoch ist.</value>
+    <value>vt.tumblr.com 호스트는 번호가 너무 높으면 정기적으로 연결을 닫습니다.</value>
   </data>
 </root>

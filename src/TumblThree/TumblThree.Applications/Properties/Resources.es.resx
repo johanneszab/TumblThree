@@ -121,16 +121,16 @@
     <value>Su solicitud está actualizada.</value>
   </data>
   <data name="AudioCaption" xml:space="preserve">
-    <value>Leyenda del audio: {0}</value>
+    <value>Leyenda de audio: {0}</value>
   </data>
   <data name="AuthenticationFailure" xml:space="preserve">
-    <value>Fallo de autentificacion: {0}</value>
+    <value>Error de autenticación: {0}</value>
   </data>
   <data name="BlogAlreadyExist" xml:space="preserve">
     <value>El blog ya existe: {0}</value>
   </data>
   <data name="BlogIsOffline" xml:space="preserve">
-    <value>El Blog está desconectado: {0}</value>
+    <value>El Blog está Desconectado: {0}</value>
   </data>
   <data name="BlogTypesAll" xml:space="preserve">
     <value>Todas</value>
@@ -148,10 +148,10 @@
     <value>Cuerpo: {0]</value>
   </data>
   <data name="Conversation" xml:space="preserve">
-    <value>Conversacion: {0}</value>
+    <value>Conversación: {0}</value>
   </data>
   <data name="CouldNotAddBlog" xml:space="preserve">
-    <value>No se pudo agregar el blog:  {0}</value>
+    <value>No se pudo agregar el blog: {0}</value>
   </data>
   <data name="CouldNotLoadLibrary" xml:space="preserve">
     <value>No se pudo cargar el archivo en la biblioteca: {0}</value>
@@ -181,7 +181,7 @@
     <value>No se pudo inicializar el OAuth Manager</value>
   </data>
   <data name="CrawlerError" xml:space="preserve">
-    <value>Le fil de la chaîne a rencontré une erreur.</value>
+    <value>El hilo de rastreador encontró un error.</value>
   </data>
   <data name="Date" xml:space="preserve">
     <value>Fecha: {0}</value>
@@ -193,13 +193,13 @@
     <value>Archivos de texto (* .txt) | * .txt</value>
   </data>
   <data name="ExportFileFilterExtension" xml:space="preserve">
-    <value>.txt</value>
+    <value>.TXT</value>
   </data>
   <data name="FileNameAnswers" xml:space="preserve">
-    <value>respuestas.txt</value>
+    <value>answers.txt</value>
   </data>
   <data name="FileNameAudios" xml:space="preserve">
-    <value>Audios_url.txt</value>
+    <value>audios_url.txt</value>
   </data>
   <data name="FileNameConversations" xml:space="preserve">
     <value>conversaciones.txt</value>
@@ -211,13 +211,13 @@
     <value>audios.txt</value>
   </data>
   <data name="FileNameMetaPhoto" xml:space="preserve">
-    <value>imágenes.txt</value>
+    <value>images.txt</value>
   </data>
   <data name="FileNameMetaVideo" xml:space="preserve">
     <value>videos.txt</value>
   </data>
   <data name="FileNamePhotos" xml:space="preserve">
-    <value>imágenes_url.txt</value>
+    <value>images_url.txt</value>
   </data>
   <data name="FileNameQuotes" xml:space="preserve">
     <value>citas.txt</value>
@@ -229,49 +229,49 @@
     <value>videos_url.txt</value>
   </data>
   <data name="Id3Album" xml:space="preserve">
-    <value>Id3: Album: {0}</value>
+    <value>Id3: Álbum: {0}</value>
   </data>
   <data name="Id3Artist" xml:space="preserve">
-    <value>Id3: Artist: {0}</value>
+    <value>Id3: Artista: {0}</value>
   </data>
   <data name="Id3Title" xml:space="preserve">
-    <value>Id3: Title: {0}</value>
+    <value>Id3: Título: {0}</value>
   </data>
   <data name="Id3Track" xml:space="preserve">
-    <value>Id3: Track: {0}</value>
+    <value>Id3: Pista: {0}</value>
   </data>
   <data name="Id3Year" xml:space="preserve">
-    <value>Id3: Year: {0}</value>
+    <value>Id3: Año: {0}</value>
   </data>
   <data name="LimitExceeded" xml:space="preserve">
-    <value>Se ha superado el límite: {0}. Debes bajar las conexiones a la api del tumblr.</value>
+    <value>Límite excedido: {0}. Debes bajar las conexiones al tumblr svc.</value>
   </data>
   <data name="Link" xml:space="preserve">
-    <value>Link: {0}</value>
+    <value>Enlace: {0}</value>
   </data>
   <data name="MaxBytePerSecond" xml:space="preserve">
-    <value>MaxBytesPerSecond tiene que ser no negativo.</value>
+    <value>MaxBytesPerSecond tiene que ser no negativo</value>
   </data>
   <data name="NewVersionAvailable" xml:space="preserve">
     <value>Nueva versión disponible para descarga: {0}</value>
   </data>
   <data name="NotLoggedIn" xml:space="preserve">
-    <value>Debes iniciar sesión en tumblr.com para descargar {0}. Vaya a Configuración-&gt;Autenticar.</value>
+    <value>Debes iniciar sesión en tumblr.com para descargar {0}. Vaya a Configuración-&gt; Autenticar.</value>
   </data>
   <data name="PasswordProtected" xml:space="preserve">
-    <value>Password protected blog: {0}. You need to enter the password in the Details.</value>
+    <value>Blog protegido por contraseña: {0}. Debe introducir la contraseña en los Detalles.</value>
   </data>
   <data name="PasswordProtectedOrOffline" xml:space="preserve">
-    <value>Hidden password protected or offline blog detected: {0}. You need to enter the password in the Details.</value>
+    <value>Detectado el blog protegido con contraseña o sin conexión: {0}. Debe introducir la contraseña en los Detalles.</value>
   </data>
   <data name="PhotoCaption" xml:space="preserve">
-    <value>Photo Caption: {0}</value>
+    <value>Leyenda de la foto: {0}</value>
   </data>
   <data name="PhotoUrl" xml:space="preserve">
-    <value>Photo Url: {0}</value>
+    <value>Url de la foto: {0}</value>
   </data>
   <data name="PostId" xml:space="preserve">
-    <value>Post ID: {0}</value>
+    <value>ID de la publicación: {0}</value>
   </data>
   <data name="ProgressDownloadImage" xml:space="preserve">
     <value>Descargando {0}.</value>
@@ -286,19 +286,19 @@
     <value>Cálculo de descargas únicas, eliminación de duplicados ...</value>
   </data>
   <data name="Queuelist" xml:space="preserve">
-    <value>Lista de colas</value>
+    <value>Queuelista</value>
   </data>
   <data name="Quote" xml:space="preserve">
-    <value>Quote: {0}</value>
+    <value>Cita: {0}</value>
   </data>
   <data name="ReblogKey" xml:space="preserve">
-    <value>Reblog key: {0}</value>
+    <value>Tecla Reblog: {0}</value>
   </data>
   <data name="ReblogName" xml:space="preserve">
-    <value>Reblog Name: {0}</value>
+    <value>Nombre del Reblog: {0}</value>
   </data>
   <data name="ReblogUrl" xml:space="preserve">
-    <value>Reblog Url: {0}</value>
+    <value>URL de Reblog: {0}</value>
   </data>
   <data name="Summary" xml:space="preserve">
     <value>Resumen: {0}</value>
@@ -310,9 +310,9 @@
     <value>Título: {0}</value>
   </data>
   <data name="UrlWithSlug" xml:space="preserve">
-    <value>Url with slug: {0}</value>
+    <value>Url con slug: {0}</value>
   </data>
   <data name="VideoPlayer" xml:space="preserve">
-    <value>Video Player: {0}</value>
+    <value>Reproductor de vídeo: {0}</value>
   </data>
 </root>

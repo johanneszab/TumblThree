@@ -906,8 +906,6 @@ namespace TumblThree.Applications.Crawler
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Summary, post.summary) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.VideoPlayer, post.player.Select(player => player.embed_code).FirstOrDefault()) +
-                   Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Tags,
                        string.Join(", ", post.tags.ToArray())) +
                    Environment.NewLine;

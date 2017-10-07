@@ -1,0 +1,699 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="About" xml:space="preserve">
+    <value>ਇਸ ਬਾਰੇ</value>
+  </data>
+  <data name="AddBlog" xml:space="preserve">
+    <value>ਬਲੌਗ ਜੋੜੋ</value>
+  </data>
+  <data name="AddToQueue" xml:space="preserve">
+    <value>ਕਤਾਰ ਵਿੱਚ ਜੋੜੋ</value>
+  </data>
+  <data name="BlogUrl" xml:space="preserve">
+    <value>URL ਦਾਖਲ ਕਰੋ:</value>
+  </data>
+  <data name="Browse" xml:space="preserve">
+    <value>ਬਰਾਊਜ਼ ਕਰੋ</value>
+  </data>
+  <data name="ClearQueue" xml:space="preserve">
+    <value>ਕਤਾਰ ਸਾਫ਼ ਕਰੋ</value>
+  </data>
+  <data name="ClipboardMonitor" xml:space="preserve">
+    <value>ਕਲਿੱਪਬੋਰਡ ਚੈੱਕ ਕਰੋ</value>
+  </data>
+  <data name="Crawl" xml:space="preserve">
+    <value>ਕ੍ਰੌਲ</value>
+  </data>
+  <data name="CrawlSelection" xml:space="preserve">
+    <value>ਕ੍ਰੌਲ ਚੋਣ</value>
+  </data>
+  <data name="DateAdded" xml:space="preserve">
+    <value>ਮਿਤੀ ਜੋੜੀ ਗਈ</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>ਮਿਟਾਓ</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>ਵੇਰਵਾ</value>
+  </data>
+  <data name="DownloadedFiles" xml:space="preserve">
+    <value>ਡਾਊਨਲੋਡ ਕੀਤੀਆਂ ਫਾਈਲਾਂ</value>
+  </data>
+  <data name="DownloadLocation" xml:space="preserve">
+    <value>ਡਾਊਨਲੋਡ ਸਥਿਤੀ</value>
+  </data>
+  <data name="EnqueueSelection" xml:space="preserve">
+    <value>ਐਂਕਯੂ ਚੋਣ</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>ਗਲਤੀ</value>
+  </data>
+  <data name="ErrorMessage" xml:space="preserve">
+    <value>ਗਲਤੀ {0}: {1}</value>
+  </data>
+  <data name="InternalErrorDescription" xml:space="preserve">
+    <value>ਅੰਦਰੂਨੀ ਗਲਤੀ ਦਾ ਵੇਰਵਾ</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>ਨਾਮ</value>
+  </data>
+  <data name="NumberOfDownloads" xml:space="preserve">
+    <value>ਡਾਉਨਲੋਡਸ ਦੀ ਸੰਖਿਆ</value>
+  </data>
+  <data name="OpenQueue" xml:space="preserve">
+    <value>ਓਪਨ ਕਤਾਰ</value>
+  </data>
+  <data name="Pause" xml:space="preserve">
+    <value>ਰੋਕੋ</value>
+  </data>
+  <data name="Queue" xml:space="preserve">
+    <value>ਕਤਾਰ</value>
+  </data>
+  <data name="Rating" xml:space="preserve">
+    <value>ਰੇਟਿੰਗ</value>
+  </data>
+  <data name="RemoveBlog" xml:space="preserve">
+    <value>ਬਲੌਗ ਹਟਾਓ</value>
+  </data>
+  <data name="RemoveFromQueue" xml:space="preserve">
+    <value>ਕਤਾਰ ਵਿੱਚੋਂ ਹਟਾਓ</value>
+  </data>
+  <data name="RemoveSelected" xml:space="preserve">
+    <value>ਚੁਣੇ ਗਏ ਹਟਾਓ</value>
+  </data>
+  <data name="Resume" xml:space="preserve">
+    <value>ਮੁੜ ਸ਼ੁਰੂ ਕਰੋ</value>
+  </data>
+  <data name="Return" xml:space="preserve">
+    <value>ਵਾਪਸੀ</value>
+  </data>
+  <data name="SaveQueue" xml:space="preserve">
+    <value>ਕਿਊ ਸੰਭਾਲੋ</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>ਸੈਟਿੰਗਾਂ</value>
+  </data>
+  <data name="ShiftReturn" xml:space="preserve">
+    <value>ਸ਼ਿਫਟ + ਵਾਪਸੀ</value>
+  </data>
+  <data name="ShowDetails" xml:space="preserve">
+    <value>ਵੇਰਵਾ ਦਿਖਾਓ</value>
+  </data>
+  <data name="ShowFiles" xml:space="preserve">
+    <value>ਫਾਈਲਾਂ ਦਿਖਾਓ</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>ਰੂਕੋ</value>
+  </data>
+  <data name="Tags" xml:space="preserve">
+    <value>ਟੈਗਸ</value>
+  </data>
+  <data name="UnknownError" xml:space="preserve">
+    <value>ਅਗਿਆਤ ਐਪਲੀਕੇਸ਼ਨ ਤਰੁੱਟੀ</value>
+  </data>
+  <data name="Url" xml:space="preserve">
+    <value>Url</value>
+  </data>
+  <data name="ImageSize" xml:space="preserve">
+    <value>ਚਿੱਤਰ ਦਾ ਆਕਾਰ (ਪੈਕਸ)</value>
+  </data>
+  <data name="ConcurrentBlogs" xml:space="preserve">
+    <value>ਸਮਕਾਲੀ ਬਲੌਗ</value>
+  </data>
+  <data name="ConcurrentConnections" xml:space="preserve">
+    <value>ਸਮਕਾਲੀ ਕਨੈਕਸ਼ਨ</value>
+  </data>
+  <data name="Online" xml:space="preserve">
+    <value>ਆਨਲਾਈਨ</value>
+  </data>
+  <data name="Progress" xml:space="preserve">
+    <value>ਪ੍ਰਗਤੀ</value>
+  </data>
+  <data name="NumberOfItems" xml:space="preserve">
+    <value>{0} ਬਲੌਗ</value>
+  </data>
+  <data name="OneItem" xml:space="preserve">
+    <value>1 ਬਲਾਗ</value>
+  </data>
+  <data name="CheckStatus" xml:space="preserve">
+    <value>ਸਟਾਰਟਅਪ ਤੇ ਬਲੌਗ ਆਨਲਾਇਨ ਸਥਿਤੀ ਨੂੰ ਚੈਕ ਕਰੋ</value>
+  </data>
+  <data name="DeleteIndex" xml:space="preserve">
+    <value>ਸਿਰਫ ਇੰਡੈਕਸ ਫਾਈਲਾਂ (ਕੋਈ ਡਾਊਨਲੋਡ ਕੀਤੀ ਫਾਈਲਾਂ) ਨਹੀਂ ਮਿਟਾਓ</value>
+  </data>
+  <data name="RemoveIndex" xml:space="preserve">
+    <value>Crawl ਤੋਂ ਬਾਅਦ ਬਲਾੱਗ ਸੂਚਕਾਂਕ ਨੂੰ ਹਟਾਓ</value>
+  </data>
+  <data name="SkipGif" xml:space="preserve">
+    <value>.gif ਫਾਈਲਾਂ ਨੂੰ ਛੱਡ ਦਿਓ</value>
+  </data>
+  <data name="Info32Bit" xml:space="preserve">
+    <value>32 ਬਿੱਟ</value>
+  </data>
+  <data name="Info64Bit" xml:space="preserve">
+    <value>64 ਬਿੱਟ</value>
+  </data>
+  <data name="License" xml:space="preserve">
+    <value>ਲਾਇਸੈਂਸ</value>
+  </data>
+  <data name="NetFramework" xml:space="preserve">
+    <value>.NET ਫਰੇਮਵਰਕ</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>ਠੀਕ ਹੈ</value>
+  </data>
+  <data name="OperatingSystem" xml:space="preserve">
+    <value>ਆਪਰੇਟਿੰਗ ਸਿਸਟਮ</value>
+  </data>
+  <data name="Product" xml:space="preserve">
+    <value>ਉਤਪਾਦ</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>ਵਰਜਨ</value>
+  </data>
+  <data name="Website" xml:space="preserve">
+    <value>ਵੈੱਬਸਾਇਟ</value>
+  </data>
+  <data name="LastCompleteCrawl" xml:space="preserve">
+    <value>ਆਖਰੀ ਪੂਰਾ ਕਰੋਲ</value>
+  </data>
+  <data name="VisitBlog" xml:space="preserve">
+    <value>ਵੈੱਬ ਬਰਾਊਜ਼ਰ ਵਿੱਚ ਸਾਈਟ ਨੂੰ ਖੋਲ੍ਹੋ</value>
+  </data>
+  <data name="NumberOfImages" xml:space="preserve">
+    <value>{0} ਪੋਸਟ</value>
+  </data>
+  <data name="DownloadedFilesOf" xml:space="preserve">
+    <value>{1} ਦਾ {0} ਡਾਊਨਲੋਡ ਕੀਤੀ ਫਾਈਲ</value>
+  </data>
+  <data name="DownloadImages" xml:space="preserve">
+    <value>ਤਸਵੀਰਾਂ ਡਾਊਨਲੋਡ ਕਰੋ</value>
+  </data>
+  <data name="DownloadVideos" xml:space="preserve">
+    <value>ਵੀਡਿਓ ਡਾਊਨਲੋਡ ਕਰੋ (tumblr.com ਸਵੈ-ਮੇਜ਼ਬਾਨੀ ਕੀਤੀ ਗਈ)</value>
+  </data>
+  <data name="VideoSize" xml:space="preserve">
+    <value>ਵੀਡੀਓ ਅਕਾਰ (ਪੈਕਸ)</value>
+  </data>
+  <data name="Authenticate" xml:space="preserve">
+    <value>ਪ੍ਰਮਾਣਿਤ ਕਰੋ</value>
+  </data>
+  <data name="ToolTipAuthenticate" xml:space="preserve">
+    <value>Tumblr.com ਨੈਟਵਰਕ ਤੇ ਪ੍ਰਮਾਣਿਤ ਕਰੋ</value>
+  </data>
+  <data name="ToolTipAuthenticateDescription" xml:space="preserve">
+    <value>Tumblr.com ਸਾਈਟ ਤੇ ਆਪਣੇ ਆਪ ਨੂੰ ਪ੍ਰਮਾਣਿਤ ਕਰਨ ਲਈ ਇੱਕ 
+ਬ੍ਰਾਊਜ਼ਰ ਵਿੰਡੋ ਖੋਲ੍ਹਦਾ ਹੈ ਤੁਹਾਡੇ ਅਕਾਉਂਟ ਦੀ ਤੁਹਾਡੇ ਕ੍ਰੇਡੈਂਸ਼ਿਅਲਸ ਨਾਲ ਕੂਕੀ ਨੂੰ ਸੁਰੱਖਿਅਤ ਕੀਤਾ ਜਾਂਦਾ ਹੈ 
+ਅਤੇ ਪ੍ਰਮਾਣੀਕਰਨ ਪ੍ਰਕਿਰਿਆ ਕੇਵਲ ਇਕ ਵਾਰ ਹੀ ਕਰਨ ਦੀ ਜ਼ਰੂਰਤ ਹੁੰਦੀ ਹੈ.</value>
+  </data>
+  <data name="ToolTipBlogs" xml:space="preserve">
+    <value>ਸਮਕਾਲੀ ਪ੍ਰੋਸੈਸਿੰਗ ਬਲੌਗਜ਼ ਦੀ ਗਿਣਤੀ</value>
+  </data>
+  <data name="ToolTipBlogsDescription" xml:space="preserve">
+    <value>ਸਮਕਾਲੀ ਪ੍ਰੋਸੈਸਿੰਗ ਬਲੌਗਜ਼ ਦੀ ਗਿਣਤੀ ਸੈਟ ਕਰਦਾ ਹੈ.
+ਇਸ ਨੂੰ 2 ਤੇ ਸੈਟ ਕਰਨਾ ਇਕ ਸਮੇਂ ਦੋ ਬਲਾਕਾਂ ਦੀ ਪ੍ਰਕਿਰਿਆ ਕਰੇਗਾ.</value>
+  </data>
+  <data name="ToolTipConnections" xml:space="preserve">
+    <value>ਕੁੱਲ ਸਮਕਾਲੀ ਕਨੈਕਸ਼ਨਾਂ ਦੀ ਗਿਣਤੀ</value>
+  </data>
+  <data name="ToolTipConnectionsDescription" xml:space="preserve">
+    <value>ਕੁੱਲ ਸਮਕਾਲੀ ਕਨੈਕਸ਼ਨਾਂ ਦੀ ਗਿਣਤੀ ਸੈਟ ਕਰਦਾ ਹੈ ਇਹ ਨੰਬਰ ਸਾਰੇ ਬਲੌਗ 
+ਨੂੰ ਡਾਊਨਲੋਡ ਕਰਨ ਦੇ ਨਾਲ ਸਾਂਝਾ ਕੀਤਾ ਗਿਆ ਹੈ.</value>
+  </data>
+  <data name="Notes" xml:space="preserve">
+    <value>ਨਿੱਜੀ ਨੋਟਸ</value>
+  </data>
+  <data name="TimeOut" xml:space="preserve">
+    <value>ਸਮਾਂ ਸਮਾਪਤ (ਆਂ)</value>
+  </data>
+  <data name="Bandwidth" xml:space="preserve">
+    <value>ਸੀਮਾ ਬੈਨਡਵਿਡਥ (KB / s)</value>
+  </data>
+  <data name="EnableAutoDownload" xml:space="preserve">
+    <value>ਡਾਊਨਲੋਡ ਸ਼ੁਰੂ ਕਰੋ</value>
+  </data>
+  <data name="Timer" xml:space="preserve">
+    <value>(hh: mm: ss) ਅਤੇ ਸ਼ਾਮਿਲ ਕਰੋ</value>
+  </data>
+  <data name="SelectABlog" xml:space="preserve">
+    <value>ਕਿਰਪਾ ਕਰਕੇ ਕੋਈ ਬਲੌਗ ਚੁਣੋ</value>
+  </data>
+  <data name="ShowItems" xml:space="preserve">
+    <value>{0} ਬਲੌਗ ਦਾ ਸੰਖੇਪ</value>
+  </data>
+  <data name="CopyUrl" xml:space="preserve">
+    <value>Url ਕਾਪੀ ਕਰੋ</value>
+  </data>
+  <data name="Posts" xml:space="preserve">
+    <value>ਪੋਸਟਾਂ ਦੀ ਗਿਣਤੀ:</value>
+  </data>
+  <data name="Preview" xml:space="preserve">
+    <value>ਪੂਰਵ ਦਰਸ਼ਨ:</value>
+  </data>
+  <data name="DownloadAudios" xml:space="preserve">
+    <value>ਔਡੀਓ ਫਾਈਲਾਂ ਡਾਊਨਲੋਡ ਕਰੋ</value>
+  </data>
+  <data name="DownloadConversations" xml:space="preserve">
+    <value>ਗੱਲਬਾਤ ਦੀਆਂ ਪੋਸਟਾਂ ਡਾਊਨਲੋਡ ਕਰੋ</value>
+  </data>
+  <data name="DownloadLinks" xml:space="preserve">
+    <value>ਲਿੰਕ ਪੋਸਟਾਂ ਨੂੰ ਡਾਊਨਲੋਡ ਕਰੋ</value>
+  </data>
+  <data name="DownloadQuotes" xml:space="preserve">
+    <value>ਹਵਾਲਾ ਪੋਸਟ ਡਾਊਨਲੋਡ ਕਰੋ</value>
+  </data>
+  <data name="DownloadTexts" xml:space="preserve">
+    <value>ਟੈਕਸਟ ਪੋਸਟ ਡਾਊਨਲੋਡ ਕਰੋ</value>
+  </data>
+  <data name="DetailsProgress" xml:space="preserve">
+    <value>{1} ਦੇ {0}, ਡੁਪਲੀਕੇਟ ਮਿਲੇ: {2}</value>
+  </data>
+  <data name="EnablePreview" xml:space="preserve">
+    <value>ਪੂਰਵ-ਦਰਸ਼ਨ ਤੇ / ਬੰਦ</value>
+  </data>
+  <data name="BlogSettings" xml:space="preserve">
+    <value>ਬਲਾੱਗ ਸੈਟਿੰਗਜ਼:</value>
+  </data>
+  <data name="GlobalSettings" xml:space="preserve">
+    <value>ਗਲੋਬਲ ਸੈਟਿੰਗਜ਼:</value>
+  </data>
+  <data name="BlogStatistics" xml:space="preserve">
+    <value>ਬਲਾੱਗ ਸਥਿਤੀ:</value>
+  </data>
+  <data name="ToolTipDetailsStats" xml:space="preserve">
+    <value>ਕੁੱਲ ਪੋਸਟ ਕਿਸਮ ਦੇ ਡਾਉਨਲੋਡ ਕੀਤੇ ਪੋਸਟ ਕਿਸਮਾਂ ਦੀ ਗਿਣਤੀ</value>
+  </data>
+  <data name="ToolTipDetailsStatsDescription" xml:space="preserve">
+    <value>ਪੋਸਟ ਟਾਈਪ ਨੂੰ ਡਾਊਨਲੋਡ ਕਰਨ ਜਾਂ ਡਾਊਨਲੋਡ ਦੌਰਾਨ ਰੁਕਣ ਲਈ ਜਾਂਚ ਕਰੋ</value>
+  </data>
+  <data name="DownloadAudioMeta" xml:space="preserve">
+    <value>ਔਡੀਓ ਮੀਟਾ ਡਾਊਨਲੋਡ ਕਰੋ</value>
+  </data>
+  <data name="DownloadImageMeta" xml:space="preserve">
+    <value>ਚਿੱਤਰ ਮੈਟਾ ਡਾਊਨਲੋਡ ਕਰੋ</value>
+  </data>
+  <data name="DownloadVideoMeta" xml:space="preserve">
+    <value>ਵੀਡੀਓ ਮੈਟਾ ਡਾਊਨਲੋਡ ਕਰੋ</value>
+  </data>
+  <data name="DefaultSettingsForBlogs" xml:space="preserve">
+    <value>ਇਸਦੇ ਇਲਾਵਾ ਹਰੇਕ ਬਲੌਗ ਤੇ ਲਾਗੂ ਸੈਟਿੰਗਜ਼:</value>
+  </data>
+  <data name="DownloadVideosShort" xml:space="preserve">
+    <value>ਵੀਡਿਓ ਡਾਊਨਲੋਡ ਕਰੋ</value>
+  </data>
+  <data name="ToolTipDefaultSettingsForBlogs" xml:space="preserve">
+    <value>ਨਵੇਂ ਸ਼ਾਮਿਲ ਕੀਤੇ ਗਏ ਬਲੌਗ ਲਈ ਡਿਫੌਲਟ ਸੈਟਿੰਗਜ਼ ਸੈਟ ਕਰਦਾ ਹੈ</value>
+  </data>
+  <data name="ToolTipDefaultSettingsForBlogsDescription" xml:space="preserve">
+    <value>ਸਕੈਨ / ਡਾਉਨਲੋਡ ਹਰ ਬਲਾਗ ਲਈ ਅਡੀਉਵਿਕ ਸੈਟਿੰਗਜ਼ ਵਰਤਦਾ ਹੈ. ਉਨ੍ਹਾਂ ਨੂੰ 
+ਬਦਲਣ ਲਈ ਮੁੱਖ ਇੰਟਰਫੇਸ ਤੇ ਬਲੌਗ ਚੁਣੋ ਅਤੇ ਸੱਜੇ ਪਾਸੇ ਦੇ ਵੇਰਵੇ ਟੈਬ ਚੁਣੋ.</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>ਸੇਵ ਕਰੋ</value>
+  </data>
+  <data name="Offline" xml:space="preserve">
+    <value>ਔਫਲਾਈਨ</value>
+  </data>
+  <data name="ForceSize" xml:space="preserve">
+    <value>ਨਿਸ਼ਚਿਤ ਆਕਾਰ ਡਾਊਨਲੋਡ ਕਰੋ ਭਾਵੇਂ ਇਹ ਪੇਸ਼ਕਸ਼ ਨਾ ਕੀਤੀ ਗਈ ਹੋਵੇ</value>
+  </data>
+  <data name="ToolTipForceSize" xml:space="preserve">
+    <value>ਚਿੱਤਰਾਂ ਦੇ ਦਿੱਤੇ ਰਿਜ਼ੋਲਿਊਸ਼ਨ ਨੂੰ ਡਾਊਨਲੋਡ ਕਰੋ ਭਾਵੇਂ ਇਹ ਅਕਾਰ ਦੀ ਪੇਸ਼ਕਸ਼ ਨਾ ਹੋਵੇ.</value>
+  </data>
+  <data name="ToolTipForceSizeDescription" xml:space="preserve">
+    <value>ਜੇ ਕ੍ਰਾਊਲਰ ਕੇਵਲ ਸਪਸ਼ਟ ਤੌਰ ਤੇ ਨੀਚੇ ਅਕਾਰ ਦੇ ਚਿੱਤਰ ਹੀ ਲੱਭਦਾ ਹੈ, ਤਾਂ ਇਹ ਚੋਣ ਯੋਗ ਕਰਨ ਨਾਲ url ਨੂੰ ਖਾਸ ਫਾਇਲਾਂ ਦੇ ਅਕਾਰ ਵਿੱਚ ਬਦਲ ਦਿੱਤਾ ਜਾਵੇਗਾ. 
+ਉਹ ਫਾਈਲਾਂ ਆਮ ਤੌਰ ਤੇ ਹੋਂਦ ਵਿਚ ਹੁੰਦੀਆਂ ਹਨ ਅਤੇ ਕਈ ਵਾਰੀ ਵੱਡੇ ਰੈਜ਼ੋਲੂਸ਼ਨ ਪੇਸ਼ ਕਰਦੀਆਂ ਹਨ ਜਾਂ ਕੇਵਲ ਛੋਟੇ ਰਿਜ਼ੋਲਿਊਸ਼ਨ ਫਾਈਲਾਂ ਦਾ ਨਾਂ 
+ਬਦਲਿਆ ਗਿਆ ਇਸ ਨੂੰ ਚਾਲੂ ਕਰਨ ਲਈ ਸੁਰੱਖਿਅਤ ਹੈ</value>
+  </data>
+  <data name="ProxyHost" xml:space="preserve">
+    <value>HTTP ਪਰਾਕਸੀ:</value>
+  </data>
+  <data name="ProxyPort" xml:space="preserve">
+    <value>ਪੋਰਟ:</value>
+  </data>
+  <data name="ThirdPartySoftware" xml:space="preserve">
+    <value>ਤੀਜੀ-ਪਾਰਟੀ ਸੌਫਟਵੇਅਰ</value>
+  </data>
+  <data name="ThirdPartySoftwareDescription" xml:space="preserve">
+    <value>ਤੀਜੇ ਪੱਖ ਦੇ ਸੌਫਟਵੇਅਰ ਅਤੇ ਲਾਇਸੈਂਸ</value>
+  </data>
+  <data name="ToolTipLimitBandwidth" xml:space="preserve">
+    <value>ਡਾਉਨਲੋਡਰ ਦੀ ਬੈਂਡਵਿਡਥ ਨੂੰ ਠੋਕਿਆ</value>
+  </data>
+  <data name="ToolTipLimitBandwidthDescription" xml:space="preserve">
+    <value>Kbytes / s ਵਿੱਚ ਡਾਊਨਲੋਡਰ ਲਈ ਅਧਿਕਤਮ ਬੈਂਡਵਿਡਥ ਸੈਟ ਕਰਦਾ ਹੈ. 0 ਥਰੋਟਿੰਗ ਨੂੰ ਅਸਮਰੱਥ ਬਣਾਉਂਦਾ ਹੈ</value>
+  </data>
+  <data name="LimitScan" xml:space="preserve">
+    <value>ਸਕੈਨ ਬੈਂਡਵਿਡਥ ਨੂੰ ਸੀਮਿਤ ਕਰੋ</value>
+  </data>
+  <data name="ScanConnections" xml:space="preserve">
+    <value>ਸਕੈਨ ਕੁਨੈਕਸ਼ਨ</value>
+  </data>
+  <data name="ToolTipLimitScan" xml:space="preserve">
+    <value>ਥਰੌਟਲਿੰਗ ਵਿੱਚ ਸਕੈਨ ਬੈਂਡਵਿਡਥ ਸ਼ਾਮਲ ਕਰਦਾ ਹੈ</value>
+  </data>
+  <data name="ToolTipLimitScanDescription" xml:space="preserve">
+    <value>ਕਿਉਂਕਿ ਸਕੈਨਿੰਗ ਲਈ ਵਰਤਿਆ ਜਾਣ ਵਾਲਾ ਡਾਟਾ ਆਮ ਤੌਰ 'ਤੇ ਛੋਟਾ ਹੁੰਦਾ ਹੈ, ਇਸ ਲਈ ਤੁਹਾਨੂੰ ਇਸ ਨੂੰ ਬੰਦ ਕਰਨਾ ਚਾਹੀਦਾ ਹੈ ਕਿਉਂਕਿ ਥਰੌਟਲਿੰਗ ਅਲਗੋਰਿਦਮ ਅਡਜੱਸਟ ਕਰਨ ਲਈ ਬਹੁਤ ਹੌਲੀ ਹੈ ਅਤੇ ਸਕੈਨ ਪ੍ਰਦਰਸ਼ਨ ਨੂੰ ਨਾਕਾਰਾਤਮਕ ਪ੍ਰਭਾਵ ਪਾ ਸਕਦਾ ਹੈ. ਹਰੇਕ ਸਕੈਨ ਲਈ ਵਰਤੇ ਗਏ ਕਨੈਕਸ਼ਨਾਂ ਦੀ ਗਿਣਤੀ</value>
+  </data>
+  <data name="ToolTipScan" xml:space="preserve">
+    <value>ਸਕੈਨਿੰਗ ਲਈ ਵਰਤੇ ਗਏ ਨੰਬਰ ਕਨੈਕਸ਼ਨਜ਼ ਸੈਟ ਕਰਦਾ ਹੈ. ਕਿਉਂਕਿ ਡਾਟਾ ਆਮ ਤੌਰ 'ਤੇ ਛੋਟਾ ਹੁੰਦਾ ਹੈ, ਤੁਹਾਨੂੰ ਇਸ ਉੱਚ ਨੂੰ ਛੱਡ ਦੇਣਾ ਚਾਹੀਦਾ ਹੈ.</value>
+  </data>
+  <data name="ToolTipScanDescription" xml:space="preserve">
+    <value>ਮੁੱਲ 0 ਅਤੇ 9, 000, 000, 000, 000,000 ਦੇ ਵਿੱਚ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ</value>
+  </data>
+  <data name="BandwidthRangeError" xml:space="preserve">
+    <value>ਮੁੱਲ ਨੂੰ hh: mm: ss ਬਣਾਉਣਾ ਚਾਹੀਦਾ ਹੈ.</value>
+  </data>
+  <data name="TimeSpanTypeError" xml:space="preserve">
+    <value>ਮੁੱਲ 0 ਅਤੇ 2,147,483,647 ਦੇ ਵਿਚਕਾਰ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ.</value>
+  </data>
+  <data name="IntRangeError" xml:space="preserve">
+    <value>ਮੁੱਲ ਟਾਈਪ ਪੂਰਨ ਅੰਕ ਦਾ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ.</value>
+  </data>
+  <data name="IntTypeError" xml:space="preserve">
+    <value>ਪ੍ਰਤੀ ਸਮਾਂ ਅੰਤਰਾਲ:</value>
+  </data>
+  <data name="ConnectionTimeInterval" xml:space="preserve">
+    <value>ਟਾਮਲਰ ਅਪੀ ਕੁਨੈਕਸ਼ਨਾਂ ਨੂੰ ਸੀਮਿਤ ਕਰੋ:</value>
+  </data>
+  <data name="LimitConnections" xml:space="preserve">
+    <value>ਕੁਨੈਕਸ਼ਨਾਂ ਦੀ ਗਿਣਤੀ:</value>
+  </data>
+  <data name="MaxConnections" xml:space="preserve">
+    <value>ਟਾਮਲਰ ਏਪੀਆਈ ਨਾਲ ਕੁਨੈਕਸ਼ਨ ਸੀਮਿਤ ਕਰੋ.</value>
+  </data>
+  <data name="ToolTipLimitConnections" xml:space="preserve">
+    <value>ਇੱਕ ਬਹੁਤ ਉੱਚ ਮੁੱਲ ਟਬਲਬਲ ਏਪੀਆਈ (API) ਨੂੰ ਬਣਾਏ ਗਏ ਬੰਦੋਬੰਦ ਤਰੀਕੇ ਨਾਲ (429 - ਸੀਮਾ ਤੋਂ ਬਾਹਰ) ਕੁਨੈਕਸ਼ਨ ਬੰਦ ਕਰੇਗਾ.
+ਇੱਕ ਬਹੁਤ ਛੋਟਾ ਮੁੱਲ ਸਕੈਨਿੰਗ ਦੀ ਗਤੀ ਨੂੰ ਘਟਾ ਦੇਵੇਗਾ ਇੱਕ ਨੰਬਰ / ਟਾਈਮ ਜੋੜਾ ਸੈੱਟ ਕਰੋ. ਨੋਟ: ਟ
+ੁੰਮਲਬ ਏਪੀਆਈ ਸਿਰਫ ਨਿਯਮਿਤ ਟੰਬਲਰ ਬਲੌਗ ਡਾਊਨਲੋਡਾਂ ਲਈ ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ.</value>
+  </data>
+  <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
+    <value>ਫੋਰਸ ਦੀ ਮੁੜ ਜਾਂਚ</value>
+  </data>
+  <data name="ForceRescan" xml:space="preserve">
+    <value>ਪੂਰੇ ਬਲੌਗ ਨੂੰ ਰੀਸੇਨ ਕਰੋ, ਨਾ ਕਿ ਸਿਰਫ ਨਵੀਆਂ ਪੋਸਟਾਂ.</value>
+  </data>
+  <data name="ToolTipForceRescan" xml:space="preserve">
+    <value>Tumblr api ਦੁਆਰਾ ਇੱਕ ਪੂਰਨ ਸਕੈਨ ਦੀ ਵਰਤੋਂ</value>
+  </data>
+  <data name="ToolTipForceRescanDescription" xml:space="preserve">
+    <value>ਅੱਪਡੇਟ ਲਈ ਚੈੱਕ ਕਰੋ</value>
+  </data>
+  <data name="CheckForUpdates" xml:space="preserve">
+    <value>ਹੁਣੇ ਡਾਊਨਲੋਡ ਕਰੋ</value>
+  </data>
+  <data name="DownloadNow" xml:space="preserve">
+    <value>ਫਾਈਲਾਂ ਲਈ ਡਾਇਰੈਕਟਰੀ ਚੈਕ ਕਰੋ</value>
+  </data>
+  <data name="CheckDirectoryForFiles" xml:space="preserve">
+    <value>ਪਹਿਲਾਂ ਹੀ ਡਾਊਨਲੋਡ ਕੀਤੀਆਂ ਫਾਈਲਾਂ ਲਈ ਡਾਇਰੈਕਟਰੀ ਨੂੰ ਜਾਂਚ ਕਰਦਾ ਹੈ.</value>
+  </data>
+  <data name="ToolTipCheckDirectoryForFiles" xml:space="preserve">
+    <value>ਪਹਿਲਾਂ ਤੋਂ ਡਾਊਨਲੋਡ ਕੀਤੀਆਂ ਫਾਈਲਾਂ ਲਈ ਡਾਇਰੈਕਟਰੀ ਅਤੇ ਡਾਟਾਬੇਸ ਦੀ ਜਾਂਚ ਕਰਦਾ ਹੈ. 
+ਵੱਡੀਆਂ ਡਾਇਰੈਕਟਰੀਆਂ ਲਈ ਡਾਉਨਲੋਡ ਦੀ ਗਤੀ ਨੂੰ ਨਕਾਰਾਤਮਕ ਪ੍ਰਭਾਵ ਪਾ ਸਕਦਾ ਹੈ.</value>
+  </data>
+  <data name="ToolTipCheckDirectoryForFilesDescription" xml:space="preserve">
+    <value>Url ਸੂਚੀ ਡਾਊਨਲੋਡ ਕਰੋ</value>
+  </data>
+  <data name="DownloadUrlList" xml:space="preserve">
+    <value>ਇੱਕ url ਸੂਚੀ ਡਾਊਨਲੋਡ ਕਰੋ.</value>
+  </data>
+  <data name="ToolTipDownloadUrlList" xml:space="preserve">
+    <value>ਅਸਲ ਫਾਈਲਾਂ ਦੀ ਬਜਾਏ ਬਾਇਨਰੀ ਫਾਈਲਾਂ ਦੀ ਇੱਕ url ਸੂਚੀ ਨੂੰ ਡਾਊਨਲੋਡ ਕਰਦਾ ਹੈ</value>
+  </data>
+  <data name="ToolTipDownloadUrlListDescription" xml:space="preserve">
+    <value>ਜਵਾਬ ਪੋਸਟਾਂ ਡਾਊਨਲੋਡ ਕਰੋ</value>
+  </data>
+  <data name="DownloadAnswers" xml:space="preserve">
+    <value>ਬਲੌਗ</value>
+  </data>
+  <data name="Blog" xml:space="preserve">
+    <value>ਕੁਨੈਕਸ਼ਨ</value>
+  </data>
+  <data name="Connection" xml:space="preserve">
+    <value>ਜਨਰਲ</value>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>ਪੋਰਟੇਬਲ ਮੋਡ ਨੂੰ ਸਕਿਰਿਆ ਬਣਾਓ</value>
+  </data>
+  <data name="PortableMode" xml:space="preserve">
+    <value>ਪੋਰਟੇਬਲ ਮੋਡ ਨੂੰ ਐਕਟੀਵੇਟ ਕਰਦਾ ਹੈ</value>
+  </data>
+  <data name="ToolTipPortableMode" xml:space="preserve">
+    <value>ਐਪਡਾਟਾ ਦੀ ਬਜਾਏ ਐਗਜ਼ੀਕਿਊਟੇਬਲ ਦੇ ਫੋਲਡਰ ਵਿੱਚ ਸੈਟਿੰਗਜ਼ ਨੂੰ ਸੁਰੱਖਿਅਤ ਕਰਦਾ ਹੈ.</value>
+  </data>
+  <data name="ToolTipPortableModeDescription" xml:space="preserve">
+    <value>ਰੀਲੌਗਡ ਪੋਸਟਾਂ ਡਾਊਨਲੋਡ ਕਰੋ</value>
+  </data>
+  <data name="DownloadRebloggedPosts" xml:space="preserve">
+    <value>ਪ੍ਰੌਕਸੀ ਪਾਸਵਰਡ:</value>
+  </data>
+  <data name="ProxyPassword" xml:space="preserve">
+    <value>ਪ੍ਰੌਕਸੀ ਉਪਭੋਗਤਾ ਨਾਮ:</value>
+  </data>
+  <data name="ProxyUsername" xml:space="preserve">
+    <value>ਗ਼ੈਰ-ਅਗਿਆਤ ਪ੍ਰੌਕਸੀ ਸਰਵਰ ਲਈ ਕ੍ਰੈਡੈਂਸ਼ੀਅਲ</value>
+  </data>
+  <data name="ToolTipProxyPassword" xml:space="preserve">
+    <value>ਪ੍ਰਮਾਣੀਕਰਣ ਸੈਟਿੰਗਜ਼ ਫਾਈਲ ਵਿੱਚ ਸਪਸ਼ਟ ਟੈਕਸਟ ਵਿੱਚ ਸੁਰੱਖਿਅਤ ਕੀਤੇ ਜਾਂਦੇ ਹਨ</value>
+  </data>
+  <data name="ToolTipProxyPasswordDescription" xml:space="preserve">
+    <value>ਡਾਊਨਲੋਡ ਪੰਨੇ:</value>
+  </data>
+  <data name="DownloadPages" xml:space="preserve">
+    <value>ਪ੍ਰਤੀ ਪੰਨਾ ਪੋਸਟ:</value>
+  </data>
+  <data name="PageSize" xml:space="preserve">
+    <value>ਕੇਵਲ ਖਾਸ ਸਫ਼ੇ ਡਾਊਨਲੋਡ ਕਰੋ</value>
+  </data>
+  <data name="ToolTipDownloadPages" xml:space="preserve">
+    <value>ਸੰਭਵ ਸੰਕੇਤ ਹਨ: 1 ਜਾਂ 1-3 ਜਾਂ 1,2,3 ਖਾਲੀ ਦਾ ਮਤਲਬ ਹੈ ਸਾਰਾ ਬਲੌਗ</value>
+  </data>
+  <data name="ToolTipDownloadPagesDescription" xml:space="preserve">
+    <value>ਪ੍ਰਤੀ ਪੰਨਾ ਪੋਸਟ</value>
+  </data>
+  <data name="ToolTipPageSize" xml:space="preserve">
+    <value>ਪ੍ਰਤੀ ਪੇਜ਼ ਸੈੱਟ ਕਰਦਾ ਹੈ (1-50, ਡਿਫਾਲਟ 50 ਦੇ ਵਿਚਕਾਰ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ) 
+E.g. 50 ਦਾ ਮਤਲਬ ਹੈ ਪ੍ਰਤੀ ਸਫ਼ਾ 50 ਪੋਸਟ ਸਕੈਨ ਕਰੋ.</value>
+  </data>
+  <data name="ToolTipPageSizeDescription" xml:space="preserve">
+    <value>ਫੁਲਸਕਰੀਨਵਿਊ</value>
+  </data>
+  <data name="FullScreenMedia" xml:space="preserve">
+    <value>ਬਲੌਗ ਐਕਸਪੋਰਟ ਕਰੋ</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>ਸਾਰੇ ਬਲੌਗ urls ਨੂੰ ਟੈਕਸਟ ਫਾਇਲ ਦੇ ਤੌਰ ਤੇ ਐਕਸਪੋਰਟ ਕਰੋ</value>
+  </data>
+  <data name="ToolTipExportBlogs" xml:space="preserve">
+    <value>ਸਾਰੇ ਯੂਆਰਏਲ ਨੂੰ ਐਕਸਚੇਂਜ ਲਈ ਇੱਕ ਪਾਠ ਫਾਇਲ ਦੇ ਤੌਰ ਤੇ ਸੁਰੱਖਿਅਤ ਕਰਦਾ ਹੈ.</value>
+  </data>
+  <data name="ToolTipExportBlogsDescription" xml:space="preserve">
+    <value>ਇਸ ਤੋਂ ਡਾਊਨਲੋਡ ਕਰੋ:</value>
+  </data>
+  <data name="DownloadFrom" xml:space="preserve">
+    <value>ਵੱਲ:</value>
+  </data>
+  <data name="DownloadTo" xml:space="preserve">
+    <value>ਇਸ ਮਿਤੀ ਤੋਂ ਪੋਸਟਾਂ ਨੂੰ ਕ੍ਰੇਲ ਕਰੋ</value>
+  </data>
+  <data name="ToolTipDownloadFrom" xml:space="preserve">
+    <value>YYYYMMDD ਫਾਰਮੈਟ ਵਿੱਚ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ. ਮਈ 2007 ਤੋਂ ਖਾਲੀ ਥਾਂਵਾਂ</value>
+  </data>
+  <data name="ToolTipDownloadTagsFromDescription" xml:space="preserve">
+    <value>ਇਸ ਤਾਰੀਖ ਨੂੰ ਪੋਸਟਾਂ ਨੂੰ ਕ੍ਰੇਲ ਕਰੋ</value>
+  </data>
+  <data name="ToolTipDownloadTo" xml:space="preserve">
+    <value>YYYYMMDD ਫਾਰਮੈਟ ਵਿੱਚ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ. ਖਾਲੀ ਸਾਧਨ ਹੁਣ ਤੋਂ.</value>
+  </data>
+  <data name="ToolTipDownloadTagsToDescription" xml:space="preserve">
+    <value>YYYYMMDD ਫਾਰਮੈਟ ਵਿੱਚ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ. ਬਲੌਗ ਦੀ ਸ਼ੁਰੂਆਤ ਤੋਂ ਖਾਲੀ ਖ਼ੇਤਰ</value>
+  </data>
+  <data name="ToolTipDownloadFromDescription" xml:space="preserve">
+    <value>YYYYMMDD ਫਾਰਮੈਟ ਵਿੱਚ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ. ਖਾਲੀ ਸਾਧਨ ਹੁਣ ਤੋਂ.</value>
+  </data>
+  <data name="ToolTipDownloadToDescription" xml:space="preserve">
+    <value>ਪ੍ਰਤੀ ਪੰਨਾ ਪੋਸਟ</value>
+  </data>
+  <data name="ToolTipPageSizeTumblrSearch" xml:space="preserve">
+    <value>ਪ੍ਰਤੀ ਪੰਨਾ ਪੋਸਟ ਸੈੱਟ ਕਰਦਾ ਹੈ E.g. 50 ਦਾ ਮਤਲਬ ਹੈ ਪ੍ਰਤੀ ਸਫ਼ਾ 50 ਪੋਸਟ ਸਕੈਨ ਕਰੋ.</value>
+  </data>
+  <data name="ToolTipPageSizeTumblrSearchDescription" xml:space="preserve">
+    <value>ਪਾਸਵਰਡ:</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>ਪਾਸਵਰਡ-ਸੁਰੱਖਿਅਤ ਬਲੌਗ ਲਈ ਪਾਸਵਰਡ</value>
+  </data>
+  <data name="ToolTipPassword" xml:space="preserve">
+    <value>ਸਾਵਧਾਨ: ਬਲੌਗ ਡਾਟਾਬੇਸ ਵਿੱਚ ਪਾਸਵਰਡ ਨੂੰ ਸਪਸ਼ਟ ਪਾਠ ਵਿੱਚ ਸਟੋਰ ਕੀਤਾ ਜਾਂਦਾ ਹੈ.</value>
+  </data>
+  <data name="ToolTipPasswordDescription" xml:space="preserve">
+    <value>ਟਾਈਪ ਕਰੋ</value>
+  </data>
+  <data name="Blogtype" xml:space="preserve">
+    <value>ਸਿਰਫ ਪੋਸਟ ਕੀਤੀਆਂ ਪੋਸਟਾਂ ਡਾਊਨਲੋਡ ਕਰੋ</value>
+  </data>
+  <data name="ToolTipTags" xml:space="preserve">
+    <value>ਮੋਹਰੀ ਹੈਸ਼ (#) ਚਿੰਨ੍ਹ ਤੋਂ ਬਿਨਾਂ ਇੱਕ ਕਾਮੇ ਨਾਲ ਵੱਖ ਕੀਤੀ ਸੂਚੀ ਵਿੱਚ ਹੋਣਾ ਜ਼ਰੂਰੀ ਹੈ. 
+E.g. ਬਹੁਤ ਵੱਡੀ ਕਾਰ, ਸ਼ਾਨਦਾਰ ਵੱਡੀਆਂ ਕਾਰਾਂ ਅਤੇ ਰਿੱਛਾਂ ਲਈ ਭਾਲ ਕਰਦਾ ਹੈ.</value>
+  </data>
+  <data name="ToolTipTagsDescription" xml:space="preserve">
+    <value>ਸਭ</value>
+  </data>
+  <data name="BlogtypeAll" xml:space="preserve">
+    <value>Instagram</value>
+  </data>
+  <data name="BlogtypeInstagram" xml:space="preserve">
+    <value>ਟਮਬਲਰ</value>
+  </data>
+  <data name="BlogtypeTumblr" xml:space="preserve">
+    <value>ਟਮਬਲਰ ਪਸੰਦ ਕਰਦੇ ਹੋਏ</value>
+  </data>
+  <data name="BlogtypeTumblrLikedBy" xml:space="preserve">
+    <value>ਟੈਂਬਰਲ ਓਹਲੇ</value>
+  </data>
+  <data name="BlogtypeTumblrPrivate" xml:space="preserve">
+    <value>ਟਾਮਲਬਰ ਖੋਜ</value>
+  </data>
+  <data name="BlogtypeTumblrSearch" xml:space="preserve">
+    <value>ਟਾਮਲਬਰ ਟੈਗ ਖੋਜ</value>
+  </data>
+  <data name="BlogtypeTumblrTagSearch" xml:space="preserve">
+    <value>ਟਵਿੱਟਰ</value>
+  </data>
+  <data name="BlogtypeTwitter" xml:space="preserve">
+    <value>ਕਤਾਰ 'ਤੇ ਬਲੌਗ</value>
+  </data>
+  <data name="AutoDownloadBlogs" xml:space="preserve">
+    <value>ਵੈਬ ਬੇਨਤੀਆਂ ਲਈ ਸਮਾਂ ਸਮਾਪਤ</value>
+  </data>
+  <data name="ToolTipTimeout" xml:space="preserve">
+    <value>ਵਾਰ ਦੀ ਲੰਬਾਈ, ਸਕਿੰਟ ਵਿੱਚ, ਬੇਨਤੀ ਵਾਰ ਬਾਹਰ ਜਦ ਤੱਕ</value>
+  </data>
+  <data name="ToolTipTimeoutDescription" xml:space="preserve">
+    <value>ਸਮਕਾਲੀ ਵੀਡੀਓ ਕਨੈਕਸ਼ਨ:</value>
+  </data>
+  <data name="ConcurrentVideoConnections" xml:space="preserve">
+    <value>ਟਾਮਲਬਰ ਵੀਡੀਓ ਹੋਸਟ ਨੂੰ ਸਮਕਾਲੀ ਕਨੈਕਸ਼ਨਾਂ ਦੀ ਗਿਣਤੀ</value>
+  </data>
+  <data name="ToolTipVideoConnections" xml:space="preserve">
+    <value>Vt.tumblr.com ਹੋਸਟ ਨੇ ਨਿਯਮਿਤ ਤੌਰ ਤੇ ਕੁਨੈਕਸ਼ਨ ਬੰਦ ਕਰ ਦਿੱਤੇ ਹਨ ਜੇ ਨੰਬਰ ਬਹੁਤ ਜ਼ਿਆਦਾ ਹੈ.</value>
+  </data>
+</root>

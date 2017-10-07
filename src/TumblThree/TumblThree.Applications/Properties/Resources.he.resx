@@ -118,85 +118,85 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ApplicationUpToDate" xml:space="preserve">
-    <value>Ihre Bewerbung ist aktuell.</value>
+    <value>האפליקציה שלך מעודכנת.</value>
   </data>
   <data name="AudioCaption" xml:space="preserve">
-    <value>Audio-Untertitel: {0}</value>
+    <value>אודיו הכיתוב: {0}</value>
   </data>
   <data name="AuthenticationFailure" xml:space="preserve">
-    <value>Authentifizierungsfehler: {0}</value>
+    <value>כשל באימות: {0}</value>
   </data>
   <data name="BlogAlreadyExist" xml:space="preserve">
-    <value>Der Blog existiert bereits: {0}</value>
+    <value>הבלוג כבר קיים: {0}</value>
   </data>
   <data name="BlogIsOffline" xml:space="preserve">
-    <value>Der Blog ist offline: {0}</value>
+    <value>הבלוג אינו מקוון: {0}</value>
   </data>
   <data name="BlogTypesAll" xml:space="preserve">
-    <value>Alle</value>
+    <value>את כל</value>
   </data>
   <data name="BlogTypesNeverFinished" xml:space="preserve">
-    <value>Niemals fertig</value>
+    <value>מעולם לא סיים</value>
   </data>
   <data name="BlogTypesNone" xml:space="preserve">
-    <value>Keiner</value>
+    <value>אף אחד</value>
   </data>
   <data name="BlogTypesOnceFinished" xml:space="preserve">
-    <value>Einmal fertig</value>
+    <value>לאחר שתסיים</value>
   </data>
   <data name="Body" xml:space="preserve">
-    <value>Körper: {0]</value>
+    <value>גוף: {0]</value>
   </data>
   <data name="Conversation" xml:space="preserve">
-    <value>Konversation: {0}</value>
+    <value>שיחה: {0}</value>
   </data>
   <data name="CouldNotAddBlog" xml:space="preserve">
-    <value>Das Blog konnte nicht hinzugefügt werden: {0}</value>
+    <value>לא ניתן להוסיף את הבלוג: {0}</value>
   </data>
   <data name="CouldNotLoadLibrary" xml:space="preserve">
-    <value>Die Datei konnte nicht geladen werden: {0}</value>
+    <value>לא ניתן לטעון קובץ בספריה: {0}</value>
   </data>
   <data name="CouldNotLoadQueuelist" xml:space="preserve">
-    <value>Der queuelist konnte nicht geladen werden Vielleicht existieren einige referenzierte Blogs nicht mehr.</value>
+    <value>קוואליסט לא היה יכול להיות נטען. אולי כמה בלוגים הפניה לא קיימים יותר.</value>
   </data>
   <data name="CouldNotOpenFiles" xml:space="preserve">
-    <value>Eine Datei konnte nicht geöffnet werden.</value>
+    <value>לא ניתן היה לפתוח תיק.</value>
   </data>
   <data name="CouldNotRemoveBlog" xml:space="preserve">
-    <value>Konnte das Blog nicht entfernen: {0}</value>
+    <value>לא ניתן להסיר את הבלוג: {0}</value>
   </data>
   <data name="CouldNotRemoveBlogIndex" xml:space="preserve">
-    <value>Konnte das Blog nicht entfernen: {0}</value>
+    <value>לא ניתן להסיר את הבלוג: {0}</value>
   </data>
   <data name="CouldNotRestoreUISettings" xml:space="preserve">
-    <value>Die UI-Einstellungen konnten nicht wiederhergestellt werden.</value>
+    <value>לא ניתן לשחזר הגדרות ממשק משתמש.</value>
   </data>
   <data name="CouldNotSaveBlog" xml:space="preserve">
-    <value>Konnte das Blog nicht speichern: {0}</value>
+    <value>לא ניתן היה לשמור את הבלוג: {0}</value>
   </data>
   <data name="CouldNotSaveQueueList" xml:space="preserve">
-    <value>Der queuelist konnte nicht gerettet werden</value>
+    <value>את queuelist לא ניתן להציל.</value>
   </data>
   <data name="CouldNotStartOAuthManager" xml:space="preserve">
-    <value>Der OAuth Manager konnte nicht initialisiert werden</value>
+    <value>לא ניתן לאתחל את מנהל OAuth</value>
   </data>
   <data name="CrawlerError" xml:space="preserve">
-    <value>Der Crawler-Thread ist auf einen Fehler gestoßen.</value>
+    <value>הסורק של הסורק נתקל בשגיאה.</value>
   </data>
   <data name="Date" xml:space="preserve">
-    <value>Datum: {0}</value>
+    <value>תאריך: {0}</value>
   </data>
   <data name="DiskFull" xml:space="preserve">
-    <value>Es gibt nicht genug Platz auf der Festplatte.</value>
+    <value>אין מספיק מקום בדיסק.</value>
   </data>
   <data name="ExportFileFilter" xml:space="preserve">
-    <value>Textdateien (* .txt) | * .txt</value>
+    <value>קבצי טקסט (* .txt) | * .txt</value>
   </data>
   <data name="ExportFileFilterExtension" xml:space="preserve">
-    <value>.txt</value>
+    <value>.טקסט</value>
   </data>
   <data name="FileNameAnswers" xml:space="preserve">
-    <value>answers.txt</value>
+    <value>תשובות</value>
   </data>
   <data name="FileNameAudios" xml:space="preserve">
     <value>audios_url.txt</value>
@@ -223,96 +223,96 @@
     <value>quotes.txt</value>
   </data>
   <data name="FileNameTexts" xml:space="preserve">
-    <value>texte.txt</value>
+    <value>texts.txt</value>
   </data>
   <data name="FileNameVideos" xml:space="preserve">
     <value>videos_url.txt</value>
   </data>
   <data name="Id3Album" xml:space="preserve">
-    <value>Id3: Album: {0}</value>
+    <value>Id3: אלבום: {0}</value>
   </data>
   <data name="Id3Artist" xml:space="preserve">
-    <value>Id3: Künstler: {0}</value>
+    <value>Id3: אמן: {0}</value>
   </data>
   <data name="Id3Title" xml:space="preserve">
-    <value>Id3: Titel: {0}</value>
+    <value>Id3: כותרת: {0}</value>
   </data>
   <data name="Id3Track" xml:space="preserve">
-    <value>Id3: Spur: {0}</value>
+    <value>Id3: מסלול: {0}</value>
   </data>
   <data name="Id3Year" xml:space="preserve">
-    <value>Id3: Jahr: {0}</value>
+    <value>Id3: שנה: {0}</value>
   </data>
   <data name="LimitExceeded" xml:space="preserve">
-    <value>Grenzwert überschritten: {0}. Sie sollten die Verbindungen zum tumblr svc senken.</value>
+    <value>חריגה מהגבול: {0}. אתה צריך להוריד את החיבורים כדי svc tumblr.</value>
   </data>
   <data name="Link" xml:space="preserve">
-    <value>Link: {0}</value>
+    <value>קישור: {0}</value>
   </data>
   <data name="MaxBytePerSecond" xml:space="preserve">
-    <value>MaxBytesPerSecond muss nicht negativ sein</value>
+    <value>MaxBytesPerSecond חייב להיות לא שלילי</value>
   </data>
   <data name="NewVersionAvailable" xml:space="preserve">
-    <value>Neue Version zum Download verfügbar: {0}</value>
+    <value>גרסה חדשה זמינה להורדה: {0}</value>
   </data>
   <data name="NotLoggedIn" xml:space="preserve">
-    <value>Sie müssen sich bei tumblr.com anmelden, um {0} herunterzuladen. Gehen Sie zu den Einstellungen-&gt; Authentifizieren.</value>
+    <value>עליך להיכנס ל- tumblr.com להורדה {0}. עבור אל Settings-&gt; Authenticate.</value>
   </data>
   <data name="PasswordProtected" xml:space="preserve">
-    <value>Passwortgeschützter Blog: {0}. Sie müssen das Passwort in die Details eingeben.</value>
+    <value>בלוג מוגן באמצעות סיסמה: {0}. עליך להזין את הסיסמה בפרטים.</value>
   </data>
   <data name="PasswordProtectedOrOffline" xml:space="preserve">
-    <value>Hidden Password geschützt oder Offline-Blog erkannt: {0}. Sie müssen das Passwort in die Details eingeben.</value>
+    <value>זוהה סיסמה מוסתרת או הבלוג לא מקוון: {0}. עליך להזין את הסיסמה בפרטים.</value>
   </data>
   <data name="PhotoCaption" xml:space="preserve">
-    <value>Bildunterschrift: {0}</value>
+    <value>כותרת התמונה: {0}</value>
   </data>
   <data name="PhotoUrl" xml:space="preserve">
-    <value>Foto Url: {0}</value>
+    <value>כתובת תמונה: {0}</value>
   </data>
   <data name="PostId" xml:space="preserve">
-    <value>Beitrags-ID: {0}</value>
+    <value>מזהה פוסט: {0}</value>
   </data>
   <data name="ProgressDownloadImage" xml:space="preserve">
-    <value>Herunterladen {0}.</value>
+    <value>מוריד {0}.</value>
   </data>
   <data name="ProgressGetUrlLong" xml:space="preserve">
-    <value>Ausgewertet {0} tumblr post urls aus {1} insgesamt Beiträge.</value>
+    <value>העריכו {0} כתובות אתר של tumblr מתוך {1} סה"כ הודעות.</value>
   </data>
   <data name="ProgressGetUrlShort" xml:space="preserve">
-    <value>Ausgewertet {0} tumblr Blog-Seiten.</value>
+    <value>העריכו {0} אתרי בלוגים של tumblr.</value>
   </data>
   <data name="ProgressUniqueDownloads" xml:space="preserve">
-    <value>Berechnen von einzigartigen Downloads, Entfernen von Duplikaten ...</value>
+    <value>חישוב הורדות ייחודיות, הסרת כפילויות ...</value>
   </data>
   <data name="Queuelist" xml:space="preserve">
-    <value>Queuelist</value>
+    <value>קוואליסטית</value>
   </data>
   <data name="Quote" xml:space="preserve">
-    <value>Zitat: {0}</value>
+    <value>ציטוט: {0}</value>
   </data>
   <data name="ReblogKey" xml:space="preserve">
-    <value>Reblog-Taste: {0}</value>
+    <value>מפתח Reblog: {0}</value>
   </data>
   <data name="ReblogName" xml:space="preserve">
-    <value>Reblog Name: {0}</value>
+    <value>שם ריבלוג: {0}</value>
   </data>
   <data name="ReblogUrl" xml:space="preserve">
-    <value>Reblog Url: {0}</value>
+    <value>כתובת אתר של Reblog: {0}</value>
   </data>
   <data name="Summary" xml:space="preserve">
-    <value>Zusammenfassung: {0}</value>
+    <value>סיכום: {0}</value>
   </data>
   <data name="Tags" xml:space="preserve">
-    <value>Stichworte: {0}</value>
+    <value>תגיות: {0}</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Titel: {0}</value>
+    <value>כותרת: {0}</value>
   </data>
   <data name="UrlWithSlug" xml:space="preserve">
-    <value>Url mit Schnecke: {0}</value>
+    <value>כתובת אתר עם שבלול: {0}</value>
   </data>
   <data name="VideoPlayer" xml:space="preserve">
-    <value>Video-Spieler: {0}</value>
+    <value>נגן וידאו: {0}</value>
   </data>
 </root>

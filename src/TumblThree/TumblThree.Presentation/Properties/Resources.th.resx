@@ -1,0 +1,698 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="About" xml:space="preserve">
+    <value>เกี่ยวกับ</value>
+  </data>
+  <data name="AddBlog" xml:space="preserve">
+    <value>เพิ่ม Blog</value>
+  </data>
+  <data name="AddToQueue" xml:space="preserve">
+    <value>เพิ่มในคิว</value>
+  </data>
+  <data name="BlogUrl" xml:space="preserve">
+    <value>ป้อน URL:</value>
+  </data>
+  <data name="Browse" xml:space="preserve">
+    <value>หมวด</value>
+  </data>
+  <data name="ClearQueue" xml:space="preserve">
+    <value>ล้างคิว</value>
+  </data>
+  <data name="ClipboardMonitor" xml:space="preserve">
+    <value>ตรวจสอบคลิปบอร์ด</value>
+  </data>
+  <data name="Crawl" xml:space="preserve">
+    <value>คลาน</value>
+  </data>
+  <data name="CrawlSelection" xml:space="preserve">
+    <value>การรวบรวมข้อมูลที่เลือก</value>
+  </data>
+  <data name="DateAdded" xml:space="preserve">
+    <value>เพิ่มวันที่</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>ลบ</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>รายละเอียด</value>
+  </data>
+  <data name="DownloadedFiles" xml:space="preserve">
+    <value>ไฟล์ที่ดาวน์โหลด</value>
+  </data>
+  <data name="DownloadLocation" xml:space="preserve">
+    <value>ดาวน์โหลดตำแหน่ง</value>
+  </data>
+  <data name="EnqueueSelection" xml:space="preserve">
+    <value>เลือก Enqueue</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>ความผิดพลาด</value>
+  </data>
+  <data name="ErrorMessage" xml:space="preserve">
+    <value>ข้อผิดพลาด {0}: {1}</value>
+  </data>
+  <data name="InternalErrorDescription" xml:space="preserve">
+    <value>คำอธิบายข้อผิดพลาดภายใน</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>ชื่อ</value>
+  </data>
+  <data name="NumberOfDownloads" xml:space="preserve">
+    <value>จำนวนการดาวน์โหลด</value>
+  </data>
+  <data name="OpenQueue" xml:space="preserve">
+    <value>เปิดคิว</value>
+  </data>
+  <data name="Pause" xml:space="preserve">
+    <value>หยุด</value>
+  </data>
+  <data name="Queue" xml:space="preserve">
+    <value>คิว</value>
+  </data>
+  <data name="Rating" xml:space="preserve">
+    <value>อันดับ</value>
+  </data>
+  <data name="RemoveBlog" xml:space="preserve">
+    <value>ลบบล็อก</value>
+  </data>
+  <data name="RemoveFromQueue" xml:space="preserve">
+    <value>นำออกจากคิว</value>
+  </data>
+  <data name="RemoveSelected" xml:space="preserve">
+    <value>นำรายการที่เลือกออก</value>
+  </data>
+  <data name="Resume" xml:space="preserve">
+    <value>ประวัติย่อ</value>
+  </data>
+  <data name="Return" xml:space="preserve">
+    <value>กลับ</value>
+  </data>
+  <data name="SaveQueue" xml:space="preserve">
+    <value>บันทึกคิว</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>การตั้งค่า</value>
+  </data>
+  <data name="ShiftReturn" xml:space="preserve">
+    <value>Shift + ย้อนกลับ</value>
+  </data>
+  <data name="ShowDetails" xml:space="preserve">
+    <value>แสดงรายละเอียด</value>
+  </data>
+  <data name="ShowFiles" xml:space="preserve">
+    <value>แสดงไฟล์</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>หยุด</value>
+  </data>
+  <data name="Tags" xml:space="preserve">
+    <value>แท็ก</value>
+  </data>
+  <data name="UnknownError" xml:space="preserve">
+    <value>ข้อผิดพลาดในแอพพลิเคชัน</value>
+  </data>
+  <data name="Url" xml:space="preserve">
+    <value>url</value>
+  </data>
+  <data name="ImageSize" xml:space="preserve">
+    <value>ขนาดภาพ (px)</value>
+  </data>
+  <data name="ConcurrentBlogs" xml:space="preserve">
+    <value>บล็อกพร้อมกัน</value>
+  </data>
+  <data name="ConcurrentConnections" xml:space="preserve">
+    <value>การเชื่อมต่อที่เกิดขึ้นพร้อมกัน</value>
+  </data>
+  <data name="Online" xml:space="preserve">
+    <value>ออนไลน์</value>
+  </data>
+  <data name="Progress" xml:space="preserve">
+    <value>ความคืบหน้า</value>
+  </data>
+  <data name="NumberOfItems" xml:space="preserve">
+    <value>{0} บล็อก</value>
+  </data>
+  <data name="OneItem" xml:space="preserve">
+    <value>1 บล็อก</value>
+  </data>
+  <data name="CheckStatus" xml:space="preserve">
+    <value>ตรวจสอบสถานะออนไลน์ของบล็อกเมื่อเริ่มต้น</value>
+  </data>
+  <data name="DeleteIndex" xml:space="preserve">
+    <value>ลบไฟล์ดัชนี (ไม่มีไฟล์ที่ดาวน์โหลดมา)</value>
+  </data>
+  <data name="RemoveIndex" xml:space="preserve">
+    <value>ลบดัชนีบล็อกหลังจากรวบรวมข้อมูล</value>
+  </data>
+  <data name="SkipGif" xml:space="preserve">
+    <value>ข้ามไฟล์. gif</value>
+  </data>
+  <data name="Info32Bit" xml:space="preserve">
+    <value>32 บิต</value>
+  </data>
+  <data name="Info64Bit" xml:space="preserve">
+    <value>64 บิต</value>
+  </data>
+  <data name="License" xml:space="preserve">
+    <value>การอนุญาต</value>
+  </data>
+  <data name="NetFramework" xml:space="preserve">
+    <value>.NET Framework</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>ตกลง</value>
+  </data>
+  <data name="OperatingSystem" xml:space="preserve">
+    <value>ระบบปฏิบัติการ</value>
+  </data>
+  <data name="Product" xml:space="preserve">
+    <value>สินค้า</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>รุ่น</value>
+  </data>
+  <data name="Website" xml:space="preserve">
+    <value>เว็บไซต์</value>
+  </data>
+  <data name="LastCompleteCrawl" xml:space="preserve">
+    <value>การรวบรวมข้อมูลเสร็จสมบูรณ์ครั้งสุดท้าย</value>
+  </data>
+  <data name="VisitBlog" xml:space="preserve">
+    <value>เปิดเว็บไซต์ในเว็บเบราเซอร์</value>
+  </data>
+  <data name="NumberOfImages" xml:space="preserve">
+    <value>{0} โพสต์</value>
+  </data>
+  <data name="DownloadedFilesOf" xml:space="preserve">
+    <value>ไฟล์ที่ดาวน์โหลด {0} จาก {1}</value>
+  </data>
+  <data name="DownloadImages" xml:space="preserve">
+    <value>ดาวน์โหลดภาพ</value>
+  </data>
+  <data name="DownloadVideos" xml:space="preserve">
+    <value>ดาวน์โหลดวิดีโอ (self-hosted tumblr.com)</value>
+  </data>
+  <data name="VideoSize" xml:space="preserve">
+    <value>ขนาดวิดีโอ (px)</value>
+  </data>
+  <data name="Authenticate" xml:space="preserve">
+    <value>รับรอง</value>
+  </data>
+  <data name="ToolTipAuthenticate" xml:space="preserve">
+    <value>ตรวจสอบสิทธิ์กับเครือข่าย tumblr.com</value>
+  </data>
+  <data name="ToolTipAuthenticateDescription" xml:space="preserve">
+    <value>เปิดหน้าต่างเบราว์เซอร์เพื่อตรวจสอบตัวเองไปยังไซต์ tumblr.com 
+คุกกี้ที่มีข้อมูลรับรองบัญชีของคุณจะได้รับการบันทึกไว้และกระบวนการรับรองความถูกต้องจะต้องทำเพียงครั้งเดียวเท่านั้น</value>
+  </data>
+  <data name="ToolTipBlogs" xml:space="preserve">
+    <value>จำนวนบล็อกการประมวลผลพร้อมกัน</value>
+  </data>
+  <data name="ToolTipBlogsDescription" xml:space="preserve">
+    <value>ตั้งค่าจำนวนบล็อกการประมวลผลแบบพร้อมกัน การตั้งค่านี้เป็น 2 จะทำให้เกิดการบล็อกสองบล็อกในแต่ละครั้ง</value>
+  </data>
+  <data name="ToolTipConnections" xml:space="preserve">
+    <value>จำนวนการเชื่อมต่อที่เกิดขึ้นพร้อมกันทั้งหมด</value>
+  </data>
+  <data name="ToolTipConnectionsDescription" xml:space="preserve">
+    <value>ตั้งค่าจำนวนการเชื่อมต่อพร้อมกันทั้งหมด หมายเลขนี้ใช้ร่วมกันระหว่างทุกบล็อกที่กำลังดาวน์โหลดอย่างแข็งขัน</value>
+  </data>
+  <data name="Notes" xml:space="preserve">
+    <value>บันทึกส่วนบุคคล</value>
+  </data>
+  <data name="TimeOut" xml:space="preserve">
+    <value>ช่วงหมดเวลา</value>
+  </data>
+  <data name="Bandwidth" xml:space="preserve">
+    <value>จำกัด แบนด์วิดท์ (KB / s)</value>
+  </data>
+  <data name="EnableAutoDownload" xml:space="preserve">
+    <value>เริ่มดาวน์โหลดได้ที่</value>
+  </data>
+  <data name="Timer" xml:space="preserve">
+    <value>(hh: mm: ss) และเพิ่ม</value>
+  </data>
+  <data name="SelectABlog" xml:space="preserve">
+    <value>โปรดเลือกบล็อก</value>
+  </data>
+  <data name="ShowItems" xml:space="preserve">
+    <value>สรุป {0} บล็อก</value>
+  </data>
+  <data name="CopyUrl" xml:space="preserve">
+    <value>คัดลอก URL</value>
+  </data>
+  <data name="Posts" xml:space="preserve">
+    <value>จำนวนข้อความ:</value>
+  </data>
+  <data name="Preview" xml:space="preserve">
+    <value>ตัวอย่าง:</value>
+  </data>
+  <data name="DownloadAudios" xml:space="preserve">
+    <value>ดาวน์โหลดไฟล์เสียง</value>
+  </data>
+  <data name="DownloadConversations" xml:space="preserve">
+    <value>ดาวน์โหลดโพสต์การสนทนา</value>
+  </data>
+  <data name="DownloadLinks" xml:space="preserve">
+    <value>ดาวน์โหลดโพสต์ลิงก์</value>
+  </data>
+  <data name="DownloadQuotes" xml:space="preserve">
+    <value>ดาวน์โหลดโพสต์ข้อความ</value>
+  </data>
+  <data name="DownloadTexts" xml:space="preserve">
+    <value>ดาวน์โหลดข้อความ</value>
+  </data>
+  <data name="DetailsProgress" xml:space="preserve">
+    <value>{0} จาก {1} รายการที่ซ้ำ: {2}</value>
+  </data>
+  <data name="EnablePreview" xml:space="preserve">
+    <value>เปิด / ปิดการแสดงตัวอย่าง</value>
+  </data>
+  <data name="BlogSettings" xml:space="preserve">
+    <value>การตั้งค่า Blog:</value>
+  </data>
+  <data name="GlobalSettings" xml:space="preserve">
+    <value>การตั้งค่าสากล:</value>
+  </data>
+  <data name="BlogStatistics" xml:space="preserve">
+    <value>สถิติ Blog:</value>
+  </data>
+  <data name="ToolTipDetailsStats" xml:space="preserve">
+    <value>จำนวนประเภทโพสต์ที่ดาวน์โหลดจากประเภทโพสต์ทั้งหมด</value>
+  </data>
+  <data name="ToolTipDetailsStatsDescription" xml:space="preserve">
+    <value>เลือกเพื่อดาวน์โหลดประเภทโพสต์หรือข้ามระหว่างการดาวน์โหลด</value>
+  </data>
+  <data name="DownloadAudioMeta" xml:space="preserve">
+    <value>ดาวน์โหลด meta เสียง</value>
+  </data>
+  <data name="DownloadImageMeta" xml:space="preserve">
+    <value>ดาวน์โหลด meta ภาพ</value>
+  </data>
+  <data name="DownloadVideoMeta" xml:space="preserve">
+    <value>ดาวน์โหลดวิดีโอเมตา</value>
+  </data>
+  <data name="DefaultSettingsForBlogs" xml:space="preserve">
+    <value>การตั้งค่าที่ใช้กับแต่ละบล็อกเมื่อเพิ่ม:</value>
+  </data>
+  <data name="DownloadVideosShort" xml:space="preserve">
+    <value>ดาวน์โหลดวิดีโอ</value>
+  </data>
+  <data name="ToolTipDefaultSettingsForBlogs" xml:space="preserve">
+    <value>ตั้งค่าเริ่มต้นสำหรับบล็อกที่เพิ่มใหม่</value>
+  </data>
+  <data name="ToolTipDefaultSettingsForBlogsDescription" xml:space="preserve">
+    <value>การสแกน / ดาวน์โหลดใช้การตั้งค่า indivual สำหรับแต่ละบล็อก หากต้องการเปลี่ยนให้เลือกบล็อก (s) 
+ในส่วนติดต่อหลักและเลือกแท็บรายละเอียดทางด้านขวามือ</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>บันทึก</value>
+  </data>
+  <data name="Offline" xml:space="preserve">
+    <value>ออฟไลน์</value>
+  </data>
+  <data name="ForceSize" xml:space="preserve">
+    <value>ดาวน์โหลดขนาดที่ระบุแม้ว่าจะไม่ได้นำเสนอ</value>
+  </data>
+  <data name="ToolTipForceSize" xml:space="preserve">
+    <value>ดาวน์โหลดความละเอียดที่ระบุของภาพแม้ว่าจะไม่ได้ระบุขนาด</value>
+  </data>
+  <data name="ToolTipForceSizeDescription" xml:space="preserve">
+    <value>หากโปรแกรมรวบรวมข้อมูลพบเฉพาะภาพที่มีขนาดต่ำกว่าที่ระบุการเปิดใช้งานตัวเลือกนี้จะเปลี่ยนชื่อ URL เป็นขนาดไฟล์ที่ระบุ
+ไฟล์เหล่านี้มักมีอยู่และบางครั้งมีความละเอียดสูงกว่าหรือมีการเปลี่ยนชื่อไฟล์ความละเอียดที่เล็กลง 
+สามารถเปิดใช้งานได้อย่างปลอดภัย</value>
+  </data>
+  <data name="ProxyHost" xml:space="preserve">
+    <value>พร็อกซี HTTP:</value>
+  </data>
+  <data name="ProxyPort" xml:space="preserve">
+    <value>ท่าเรือ:</value>
+  </data>
+  <data name="ThirdPartySoftware" xml:space="preserve">
+    <value>ซอฟต์แวร์ของบุคคลที่สาม</value>
+  </data>
+  <data name="ThirdPartySoftwareDescription" xml:space="preserve">
+    <value>ซอฟต์แวร์และใบอนุญาตของบุคคลที่สาม</value>
+  </data>
+  <data name="ToolTipLimitBandwidth" xml:space="preserve">
+    <value>ช่วยให้แบนด์วิดท์ของเครื่องดาวน์โหลด</value>
+  </data>
+  <data name="ToolTipLimitBandwidthDescription" xml:space="preserve">
+    <value>ตั้งค่าแบนด์วิดธ์สูงสุดที่มีให้สำหรับ downloader ใน kbytes / s 0 ปิดใช้งานการควบคุมปริมาณ</value>
+  </data>
+  <data name="LimitScan" xml:space="preserve">
+    <value>จำกัด แบนด์วิดท์การสแกน</value>
+  </data>
+  <data name="ScanConnections" xml:space="preserve">
+    <value>สแกนการเชื่อมต่อ</value>
+  </data>
+  <data name="ToolTipLimitScan" xml:space="preserve">
+    <value>รวมแบนด์วิดท์การสแกนในการควบคุมการบีบอัด</value>
+  </data>
+  <data name="ToolTipLimitScanDescription" xml:space="preserve">
+    <value>เนื่องจากข้อมูลที่ใช้ในการสแกนมักมีขนาดเล็กคุณควรปล่อยให้ข้อผิดพลาดนี้ออกเนื่อ
+งจากอัลกอริทึมการควบคุมการปรับน้ำหนักทำงานช้าเกินไปในการปรับเปลี่ยนและอาจส่งผลเสียต่อประสิทธิ
+ภาพการสแกน จำนวนการเชื่อมต่อที่ใช้สำหรับการสแกนแต่ละครั้ง</value>
+  </data>
+  <data name="ToolTipScan" xml:space="preserve">
+    <value>กำหนดจำนวนการเชื่อมต่อที่ใช้สำหรับการสแกน เนื่องจากข้อมูลมักมีขนาดเล็กคุณควรปล่อยให้ระดับสูง</value>
+  </data>
+  <data name="ToolTipScanDescription" xml:space="preserve">
+    <value>มูลค่าต้องอยู่ระหว่าง 0 ถึง 9,000,000,000,000,000</value>
+  </data>
+  <data name="BandwidthRangeError" xml:space="preserve">
+    <value>ค่าต้องมีรูปแบบ hh: mm: ss</value>
+  </data>
+  <data name="TimeSpanTypeError" xml:space="preserve">
+    <value>ค่าต้องอยู่ระหว่าง 0 ถึง 2,147,483,647</value>
+  </data>
+  <data name="IntRangeError" xml:space="preserve">
+    <value>ค่าต้องเป็นจำนวนเต็มชนิด</value>
+  </data>
+  <data name="IntTypeError" xml:space="preserve">
+    <value>ต่อช่วงเวลา (s):</value>
+  </data>
+  <data name="ConnectionTimeInterval" xml:space="preserve">
+    <value>จำกัด การเชื่อมต่อ Api ของ Tumblr:</value>
+  </data>
+  <data name="LimitConnections" xml:space="preserve">
+    <value>จำนวนการเชื่อมต่อ:</value>
+  </data>
+  <data name="MaxConnections" xml:space="preserve">
+    <value>จำกัด การเชื่อมต่อกับ api tumblr</value>
+  </data>
+  <data name="ToolTipLimitConnections" xml:space="preserve">
+    <value>ค่าที่สูงเกินไปจะปิดการเชื่อมต่ออย่างแน่นหนา (429 - Limit Exceeded) ที่ทำกับแอ็พพลิเคชั่น tumblr api
+ค่าที่เล็กเกินไปจะทำให้ความเร็วในการสแกนลดลง ตั้งคู่หมายเลข / เวลา หมายเหตุ: แอพพลิเคชัน tumblr
+ใช้เฉพาะสำหรับการดาวน์โหลดบล็อกที่เป็นแบบ Tumblr เท่านั้น</value>
+  </data>
+  <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
+    <value>บังคับให้ rescan</value>
+  </data>
+  <data name="ForceRescan" xml:space="preserve">
+    <value>บล็อกทั้งบล็อกไม่ใช่เฉพาะโพสต์ใหม่</value>
+  </data>
+  <data name="ToolTipForceRescan" xml:space="preserve">
+    <value>บังคับใช้การสแกนที่สมบูรณ์โดยใช้ Tumblr api</value>
+  </data>
+  <data name="ToolTipForceRescanDescription" xml:space="preserve">
+    <value>ตรวจสอบสำหรับการอัพเดต</value>
+  </data>
+  <data name="CheckForUpdates" xml:space="preserve">
+    <value>ดาวน์โหลดเดี๋ยวนี้</value>
+  </data>
+  <data name="DownloadNow" xml:space="preserve">
+    <value>ตรวจสอบไดเรกทอรีสำหรับไฟล์</value>
+  </data>
+  <data name="CheckDirectoryForFiles" xml:space="preserve">
+    <value>ตรวจสอบไดเรกทอรีสำหรับไฟล์ที่ดาวน์โหลดมาแล้ว</value>
+  </data>
+  <data name="ToolTipCheckDirectoryForFiles" xml:space="preserve">
+    <value>ตรวจสอบไดเรกทอรีและฐานข้อมูลสำหรับไฟล์ที่ดาวน์โหลดมาแล้ว 
+อาจส่งผลเสียต่อความเร็วในการดาวน์โหลดสำหรับไดเรกทอรีขนาดใหญ่</value>
+  </data>
+  <data name="ToolTipCheckDirectoryForFilesDescription" xml:space="preserve">
+    <value>ดาวน์โหลดรายชื่อ URL</value>
+  </data>
+  <data name="DownloadUrlList" xml:space="preserve">
+    <value>ดาวน์โหลดรายการ URL</value>
+  </data>
+  <data name="ToolTipDownloadUrlList" xml:space="preserve">
+    <value>ดาวน์โหลดรายการ URL ของไฟล์ไบนารีแทนไฟล์จริง</value>
+  </data>
+  <data name="ToolTipDownloadUrlListDescription" xml:space="preserve">
+    <value>ดาวน์โหลดโพสต์ตอบ</value>
+  </data>
+  <data name="DownloadAnswers" xml:space="preserve">
+    <value>บล็อก</value>
+  </data>
+  <data name="Blog" xml:space="preserve">
+    <value>สัมพันธ์</value>
+  </data>
+  <data name="Connection" xml:space="preserve">
+    <value>ทั่วไป</value>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>เปิดใช้งานโหมดพกพา</value>
+  </data>
+  <data name="PortableMode" xml:space="preserve">
+    <value>เปิดใช้งานโหมดพกพา</value>
+  </data>
+  <data name="ToolTipPortableMode" xml:space="preserve">
+    <value>บันทึกการตั้งค่าในโฟลเดอร์ของ executable แทน AppData</value>
+  </data>
+  <data name="ToolTipPortableModeDescription" xml:space="preserve">
+    <value>ดาวน์โหลดโพสต์ที่ถูกโพสต์ใหม่</value>
+  </data>
+  <data name="DownloadRebloggedPosts" xml:space="preserve">
+    <value>พร็อกซีรหัสผ่าน:</value>
+  </data>
+  <data name="ProxyPassword" xml:space="preserve">
+    <value>ชื่อผู้ใช้พร็อกซี:</value>
+  </data>
+  <data name="ProxyUsername" xml:space="preserve">
+    <value>ข้อมูลรับรองสำหรับพร็อกซีเซิร์ฟเวอร์ที่ไม่ระบุชื่อ</value>
+  </data>
+  <data name="ToolTipProxyPassword" xml:space="preserve">
+    <value>ข้อมูลประจำตัวจะถูกบันทึกไว้ในข้อความที่ชัดเจนในไฟล์การตั้งค่า</value>
+  </data>
+  <data name="ToolTipProxyPasswordDescription" xml:space="preserve">
+    <value>หน้าดาวน์โหลด:</value>
+  </data>
+  <data name="DownloadPages" xml:space="preserve">
+    <value>โพสต์ต่อหน้า:</value>
+  </data>
+  <data name="PageSize" xml:space="preserve">
+    <value>ดาวน์โหลดเฉพาะหน้าที่เฉพาะเจาะจง</value>
+  </data>
+  <data name="ToolTipDownloadPages" xml:space="preserve">
+    <value>หมายเหตุที่เป็นไปได้ ได้แก่ 1 หรือ 1-3 หรือ 1,2,3 ว่างเปล่าหมายถึงทั้งบล็อก</value>
+  </data>
+  <data name="ToolTipDownloadPagesDescription" xml:space="preserve">
+    <value>โพสต์ต่อหน้า</value>
+  </data>
+  <data name="ToolTipPageSize" xml:space="preserve">
+    <value>ตั้งค่าโพสต์ต่อหน้า (ควรอยู่ระหว่าง 1-50, ค่าเริ่มต้น 50)
+เช่น. 50 หมายถึงการสแกน 50 โพสต์ต่อหน้า</value>
+  </data>
+  <data name="ToolTipPageSizeDescription" xml:space="preserve">
+    <value>FullScreenView</value>
+  </data>
+  <data name="FullScreenMedia" xml:space="preserve">
+    <value>ส่งออกบล็อก</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>ส่งออก URL บล็อกทั้งหมดเป็นไฟล์ข้อความ</value>
+  </data>
+  <data name="ToolTipExportBlogs" xml:space="preserve">
+    <value>บันทึก URL ทั้งหมดเป็นไฟล์ข้อความเพื่อแลกเปลี่ยน</value>
+  </data>
+  <data name="ToolTipExportBlogsDescription" xml:space="preserve">
+    <value>ดาวน์โหลดจาก:</value>
+  </data>
+  <data name="DownloadFrom" xml:space="preserve">
+    <value>ไปที่:</value>
+  </data>
+  <data name="DownloadTo" xml:space="preserve">
+    <value>รวบรวมข้อความจากวันที่นี้</value>
+  </data>
+  <data name="ToolTipDownloadFrom" xml:space="preserve">
+    <value>ต้องเป็นรูปแบบ YYYYMMDD ว่างเปล่าตั้งแต่เดือนพฤษภาคม 2007</value>
+  </data>
+  <data name="ToolTipDownloadTagsFromDescription" xml:space="preserve">
+    <value>รวบรวมข้อความถึงวันที่นี้</value>
+  </data>
+  <data name="ToolTipDownloadTo" xml:space="preserve">
+    <value>ต้องเป็นรูปแบบ YYYYMMDD ว่างเปล่าหมายถึงตอนนี้</value>
+  </data>
+  <data name="ToolTipDownloadTagsToDescription" xml:space="preserve">
+    <value>ต้องเป็นรูปแบบ YYYYMMDD ความว่างเปล่าหมายถึงตั้งแต่เริ่มต้นของบล็อก</value>
+  </data>
+  <data name="ToolTipDownloadFromDescription" xml:space="preserve">
+    <value>ต้องเป็นรูปแบบ YYYYMMDD ว่างเปล่าหมายถึงตอนนี้</value>
+  </data>
+  <data name="ToolTipDownloadToDescription" xml:space="preserve">
+    <value>โพสต์ต่อหน้า</value>
+  </data>
+  <data name="ToolTipPageSizeTumblrSearch" xml:space="preserve">
+    <value>ตั้งค่าโพสต์ต่อหน้า เช่น. 50 หมายถึงการสแกน 50 โพสต์ต่อหน้า</value>
+  </data>
+  <data name="ToolTipPageSizeTumblrSearchDescription" xml:space="preserve">
+    <value>รหัสผ่าน:</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>รหัสผ่านสำหรับบล็อกที่มีการป้องกันด้วยรหัสผ่าน</value>
+  </data>
+  <data name="ToolTipPassword" xml:space="preserve">
+    <value>ข้อควรระวัง: รหัสผ่านจะถูกเก็บไว้ในข้อความที่ชัดเจนในฐานข้อมูลบล็อก</value>
+  </data>
+  <data name="ToolTipPasswordDescription" xml:space="preserve">
+    <value>ชนิด</value>
+  </data>
+  <data name="Blogtype" xml:space="preserve">
+    <value>ดาวน์โหลดเฉพาะโพสต์ที่ติดแท็กเท่านั้น</value>
+  </data>
+  <data name="ToolTipTags" xml:space="preserve">
+    <value>ต้องอยู่ในรายการคั่นด้วยจุลภาคโดยไม่มีเครื่องหมายกัญชา (#) ชั้นนำ เช่น.
+รถยนต์ขนาดใหญ่ยอดเยี่ยมค้นหาหมาใหญ่และหมีหมี</value>
+  </data>
+  <data name="ToolTipTagsDescription" xml:space="preserve">
+    <value>ทั้งหมด</value>
+  </data>
+  <data name="BlogtypeAll" xml:space="preserve">
+    <value>Instagram</value>
+  </data>
+  <data name="BlogtypeInstagram" xml:space="preserve">
+    <value>Tumblr</value>
+  </data>
+  <data name="BlogtypeTumblr" xml:space="preserve">
+    <value>Tumblr ชอบด้วย</value>
+  </data>
+  <data name="BlogtypeTumblrLikedBy" xml:space="preserve">
+    <value>ซ่อน Tumblr</value>
+  </data>
+  <data name="BlogtypeTumblrPrivate" xml:space="preserve">
+    <value>Tumblr Search</value>
+  </data>
+  <data name="BlogtypeTumblrSearch" xml:space="preserve">
+    <value>ค้นหาแท็ก Tumblr</value>
+  </data>
+  <data name="BlogtypeTumblrTagSearch" xml:space="preserve">
+    <value>พูดเบาและรวดเร็ว</value>
+  </data>
+  <data name="BlogtypeTwitter" xml:space="preserve">
+    <value>บล็อกไปยังคิว</value>
+  </data>
+  <data name="AutoDownloadBlogs" xml:space="preserve">
+    <value>หมดเวลาสำหรับคำขอเว็บ</value>
+  </data>
+  <data name="ToolTipTimeout" xml:space="preserve">
+    <value>ระยะเวลาเป็นวินาทีจนกว่าคำขอจะหมดอายุ</value>
+  </data>
+  <data name="ToolTipTimeoutDescription" xml:space="preserve">
+    <value>การเชื่อมต่อวิดีโอพร้อมกัน:</value>
+  </data>
+  <data name="ConcurrentVideoConnections" xml:space="preserve">
+    <value>จำนวนการเชื่อมต่อพร้อมกันไปยังโฮสต์วิดีโอ tumblr</value>
+  </data>
+  <data name="ToolTipVideoConnections" xml:space="preserve">
+    <value>โฮสต์ vt.tumblr.com จะปิดการเชื่อมต่อเป็นประจำถ้าจำนวนดังกล่าวสูงเกินไป</value>
+  </data>
+</root>

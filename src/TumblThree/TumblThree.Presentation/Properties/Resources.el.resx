@@ -118,133 +118,133 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="About" xml:space="preserve">
-    <value>Über</value>
+    <value>Σχετικά με</value>
   </data>
   <data name="AddBlog" xml:space="preserve">
-    <value>Blog hinzufügen</value>
+    <value>Προσθήκη Blog</value>
   </data>
   <data name="AddToQueue" xml:space="preserve">
-    <value>Zur Warteschlange hinzufügen</value>
+    <value>Προσθέστε στην ουρά</value>
   </data>
   <data name="BlogUrl" xml:space="preserve">
-    <value>URL eingeben:</value>
+    <value>Εισαγάγετε διεύθυνση URL:</value>
   </data>
   <data name="Browse" xml:space="preserve">
-    <value>Durchsuchen</value>
+    <value>Ξεφυλλίζω</value>
   </data>
   <data name="ClearQueue" xml:space="preserve">
-    <value>Klare Warteschlange</value>
+    <value>Σαφή ουρά</value>
   </data>
   <data name="ClipboardMonitor" xml:space="preserve">
-    <value>Überprüfen Sie die Zwischenablage</value>
+    <value>Ελέγξτε το Πρόχειρο</value>
   </data>
   <data name="Crawl" xml:space="preserve">
-    <value>Kriechen</value>
+    <value>Αργή πορεία</value>
   </data>
   <data name="CrawlSelection" xml:space="preserve">
-    <value>Crawling auswählen</value>
+    <value>Επιλογή ανίχνευσης</value>
   </data>
   <data name="DateAdded" xml:space="preserve">
-    <value>Datum hinzugefügt</value>
+    <value>Ημερομηνία Προστέθηκε</value>
   </data>
   <data name="Delete" xml:space="preserve">
-    <value>Löschen</value>
+    <value>Διαγράφω</value>
   </data>
   <data name="Details" xml:space="preserve">
-    <value>Details</value>
+    <value>Λεπτομέριες</value>
   </data>
   <data name="DownloadedFiles" xml:space="preserve">
-    <value>Heruntergeladene Dateien</value>
+    <value>Λήψη αρχείων</value>
   </data>
   <data name="DownloadLocation" xml:space="preserve">
-    <value>Standort herunterladen</value>
+    <value>Λήψη τοποθεσίας</value>
   </data>
   <data name="EnqueueSelection" xml:space="preserve">
-    <value>Enqueue Auswahl</value>
+    <value>Περικοπή επιλογής</value>
   </data>
   <data name="Error" xml:space="preserve">
-    <value>Fehler</value>
+    <value>Λάθος</value>
   </data>
   <data name="ErrorMessage" xml:space="preserve">
-    <value>Fehler {0}: {1}</value>
+    <value>Σφάλμα {0}: {1}</value>
   </data>
   <data name="InternalErrorDescription" xml:space="preserve">
-    <value>Interne Fehlerbeschreibung</value>
+    <value>Εσωτερική περιγραφή σφάλματος</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value>Name</value>
+    <value>Ονομα</value>
   </data>
   <data name="NumberOfDownloads" xml:space="preserve">
-    <value>Anzahl der Downloads</value>
+    <value>Αριθμός λήψεων</value>
   </data>
   <data name="OpenQueue" xml:space="preserve">
-    <value>Warteschlange öffnen</value>
+    <value>Ανοικτή ουρά</value>
   </data>
   <data name="Pause" xml:space="preserve">
-    <value>Pause</value>
+    <value>Παύση</value>
   </data>
   <data name="Queue" xml:space="preserve">
-    <value>Warteschlange</value>
+    <value>Ουρά</value>
   </data>
   <data name="Rating" xml:space="preserve">
-    <value>Bewertung</value>
+    <value>Εκτίμηση</value>
   </data>
   <data name="RemoveBlog" xml:space="preserve">
-    <value>Blog entfernen</value>
+    <value>Κατάργηση του ιστολογίου</value>
   </data>
   <data name="RemoveFromQueue" xml:space="preserve">
-    <value>Aus Warteschlange entfernen</value>
+    <value>Κατάργηση από την ουρά</value>
   </data>
   <data name="RemoveSelected" xml:space="preserve">
-    <value>Ausgewählt entfernen</value>
+    <value>Αφαιρέστε τα επιλεγμένα</value>
   </data>
   <data name="Resume" xml:space="preserve">
-    <value>Fortsetzen</value>
+    <value>ΒΙΟΓΡΑΦΙΚΟ</value>
   </data>
   <data name="Return" xml:space="preserve">
-    <value>Rückkehr</value>
+    <value>ΕΠΙΣΤΡΟΦΗ</value>
   </data>
   <data name="SaveQueue" xml:space="preserve">
-    <value>Warteschlange speichern</value>
+    <value>Αποθήκευση ουράς</value>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>Einstellungen</value>
+    <value>Ρυθμίσεις</value>
   </data>
   <data name="ShiftReturn" xml:space="preserve">
-    <value>Umschalt + Rückkehr</value>
+    <value>Shift + Επιστροφή</value>
   </data>
   <data name="ShowDetails" xml:space="preserve">
-    <value>Zeige Details</value>
+    <value>Δείξε λεπτομέρειες</value>
   </data>
   <data name="ShowFiles" xml:space="preserve">
-    <value>Zeige Dateien</value>
+    <value>Εμφάνιση αρχείων</value>
   </data>
   <data name="Stop" xml:space="preserve">
-    <value>Halt</value>
+    <value>Να σταματήσει</value>
   </data>
   <data name="Tags" xml:space="preserve">
-    <value>Tags</value>
+    <value>Ετικέτες</value>
   </data>
   <data name="UnknownError" xml:space="preserve">
-    <value>Unbekannter Anwendungsfehler</value>
+    <value>Άγνωστο σφάλμα εφαρμογής</value>
   </data>
   <data name="Url" xml:space="preserve">
     <value>Url</value>
   </data>
   <data name="ImageSize" xml:space="preserve">
-    <value>Bildgröße (px)</value>
+    <value>Μέγεθος εικόνας (px)</value>
   </data>
   <data name="ConcurrentBlogs" xml:space="preserve">
-    <value>Gleichzeitige Blogs</value>
+    <value>Ταυτόχρονα ιστολόγια</value>
   </data>
   <data name="ConcurrentConnections" xml:space="preserve">
-    <value>Gleichzeitige Verbindungen</value>
+    <value>Συγχρονισμένες συνδέσεις</value>
   </data>
   <data name="Online" xml:space="preserve">
     <value>Online</value>
   </data>
   <data name="Progress" xml:space="preserve">
-    <value>Fortschritt</value>
+    <value>Πρόοδος</value>
   </data>
   <data name="NumberOfItems" xml:space="preserve">
     <value>{0} Blogs</value>
@@ -253,415 +253,422 @@
     <value>1 Blog</value>
   </data>
   <data name="CheckStatus" xml:space="preserve">
-    <value>Überprüfen Sie den Blog-Online-Status beim Start</value>
+    <value>Ελέγξτε την κατάσταση του ιστολογίου κατά την εκκίνηση</value>
   </data>
   <data name="DeleteIndex" xml:space="preserve">
-    <value>Löschen Sie nur die Indexdateien (keine heruntergeladenen Dateien)</value>
+    <value>Διαγράψτε μόνο τα αρχεία ευρετηρίου (χωρίς αρχεία που έχουν ληφθεί)</value>
   </data>
   <data name="RemoveIndex" xml:space="preserve">
-    <value>Blog-Index nach dem Crawling entfernen</value>
+    <value>Κατάργηση του ευρετηρίου ιστοτόπων μετά την ανίχνευση</value>
   </data>
   <data name="SkipGif" xml:space="preserve">
-    <value>Überspringen Sie .gif-Dateien</value>
+    <value>Παράκαμψη αρχείων .gif</value>
   </data>
   <data name="Info32Bit" xml:space="preserve">
-    <value>32 bit</value>
+    <value>32 Bit</value>
   </data>
   <data name="Info64Bit" xml:space="preserve">
-    <value>64 bit</value>
+    <value>64 Bit</value>
   </data>
   <data name="License" xml:space="preserve">
-    <value>Lizenz</value>
+    <value>Αδεια</value>
   </data>
   <data name="NetFramework" xml:space="preserve">
-    <value>.NET Framework</value>
+    <value>.Πλαίσιο δικτύου</value>
   </data>
   <data name="Ok" xml:space="preserve">
-    <value>OK</value>
+    <value>Εντάξει</value>
   </data>
   <data name="OperatingSystem" xml:space="preserve">
-    <value>Betriebssystem</value>
+    <value>Λειτουργικό σύστημα</value>
   </data>
   <data name="Product" xml:space="preserve">
-    <value>Produkt</value>
+    <value>Προϊόν</value>
   </data>
   <data name="Version" xml:space="preserve">
-    <value>Version</value>
+    <value>Εκδοχή</value>
   </data>
   <data name="Website" xml:space="preserve">
-    <value>Webseite</value>
+    <value>Δικτυακός τόπος</value>
   </data>
   <data name="LastCompleteCrawl" xml:space="preserve">
-    <value>Letzter vollständiger Crawling</value>
+    <value>Τελευταία ολοκλήρωση της ανίχνευσης</value>
   </data>
   <data name="VisitBlog" xml:space="preserve">
-    <value>Öffnen Sie die Website im Webbrowser</value>
+    <value>Ανοίξτε τον ιστότοπο στο πρόγραμμα περιήγησης ιστού</value>
   </data>
   <data name="NumberOfImages" xml:space="preserve">
-    <value>{0} Beiträge</value>
+    <value>{0} Δημοσιεύσεις</value>
   </data>
   <data name="DownloadedFilesOf" xml:space="preserve">
-    <value>Heruntergeladene Datei {0} von {1}</value>
+    <value>Λήψη αρχείου {0} από {1}</value>
   </data>
   <data name="DownloadImages" xml:space="preserve">
-    <value>Bilder herunterladen</value>
+    <value>Λήψη εικόνων</value>
   </data>
   <data name="DownloadVideos" xml:space="preserve">
-    <value>Videos herunterladen (tumblr.com selbst gehostet)</value>
+    <value>Λήψη βίντεο (tumblr.com που φιλοξενείται από μόνη της)</value>
   </data>
   <data name="VideoSize" xml:space="preserve">
-    <value>Videogröße (px)</value>
+    <value>Μέγεθος βίντεο (px)</value>
   </data>
   <data name="Authenticate" xml:space="preserve">
-    <value>Authentifizieren</value>
+    <value>Πιστοποιώ την αυθεντικότητα</value>
   </data>
   <data name="ToolTipAuthenticate" xml:space="preserve">
-    <value>Authentifizierung zum tumblr.com Netzwerk</value>
+    <value>Επαληθεύστε την ταυτότητα στο δίκτυο tumblr.com</value>
   </data>
   <data name="ToolTipAuthenticateDescription" xml:space="preserve">
-    <value>Öffnet ein Browser-Fenster, um sich auf der Website von tumblr.com zu authentifizieren.
-Der Cookie mit Ihren Anmeldeinformationen Ihres Kontos wird gespeichert und der Authentifizierungsprozess muss nur einmal durchgeführt werden.</value>
+    <value>Ανοίγει ένα παράθυρο προγράμματος περιήγησης για να πιστοποιήσετε τον εαυτό σας στον ιστότοπο tumblr.com.
+Το cookie με τα διαπιστευτήρια του λογαριασμού σας αποθηκεύεται και η διαδικασία ελέγχου ταυτότητας πρέπει να γίνει μόνο μία φορά.</value>
   </data>
   <data name="ToolTipBlogs" xml:space="preserve">
-    <value>Anzahl gleichzeitiger Verarbeitungsblogs</value>
+    <value>Αριθμός ταυτόχρονων ιστολογίων επεξεργασίας</value>
   </data>
   <data name="ToolTipBlogsDescription" xml:space="preserve">
-    <value>Legt die Anzahl der gleichzeitigen Verarbeitungsblogs fest.
-Wenn man dies auf 2 setzt, würde es zwei Blogs gleichzeitig geben.</value>
+    <value>Ορίζει τον αριθμό των ταυτόχρονων ιστολογίων επεξεργασίας.
+Κάνοντας αυτό το 2 θα επεξεργάζονταν δύο ιστολόγια τη φορά.</value>
   </data>
   <data name="ToolTipConnections" xml:space="preserve">
-    <value>Anzahl der gleichzeitigen Verbindungen</value>
+    <value>Αριθμός συνολικών ταυτόχρονων συνδέσεων</value>
   </data>
   <data name="ToolTipConnectionsDescription" xml:space="preserve">
-    <value>Setzt die Anzahl der gesamten gleichzeitigen Verbindungen.
-Die Nummer wird zwischen allen aktiv heruntergeladenen Blogs geteilt.</value>
+    <value>Ορίζει τον αριθμό των συνολικών ταυτόχρονων συνδέσεων.
+Ο αριθμός μοιράζεται μεταξύ όλων των ενεργά τοποθετημένων ιστολογίων.</value>
   </data>
   <data name="Notes" xml:space="preserve">
-    <value>Persönliche Hinweise</value>
+    <value>Προσωπικές σημειώσεις</value>
   </data>
   <data name="TimeOut" xml:space="preserve">
-    <value>Timeout (s)</value>
+    <value>Χρονικό όριο</value>
   </data>
   <data name="Bandwidth" xml:space="preserve">
-    <value>Grenzbandbreite (KB / s)</value>
+    <value>Όριο εύρους ζώνης (KB / s)</value>
   </data>
   <data name="EnableAutoDownload" xml:space="preserve">
-    <value>Starten Sie den Download bei</value>
+    <value>Ξεκινήστε τη λήψη στο</value>
   </data>
   <data name="Timer" xml:space="preserve">
-    <value>(hh: mm: ss) und fügen Sie hinzu</value>
+    <value>(hh: mm: ss) και προσθέστε</value>
   </data>
   <data name="SelectABlog" xml:space="preserve">
-    <value>Bitte wählen Sie ein Blog</value>
+    <value>Επιλέξτε ένα blog</value>
   </data>
   <data name="ShowItems" xml:space="preserve">
-    <value>Zusammenfassung von {0} Blogs</value>
+    <value>Σύνοψη {0} ιστολογίων</value>
   </data>
   <data name="CopyUrl" xml:space="preserve">
-    <value>Kopiere URL</value>
+    <value>Αντιγράψτε τη διεύθυνση URL</value>
   </data>
   <data name="Posts" xml:space="preserve">
-    <value>Anzahl der Beiträge:</value>
+    <value>Αριθμός μηνυμάτων:</value>
   </data>
   <data name="Preview" xml:space="preserve">
-    <value>Vorschau:</value>
+    <value>Προεπισκόπηση:</value>
   </data>
   <data name="DownloadAudios" xml:space="preserve">
-    <value>Laden Sie Audiodateien herunter</value>
+    <value>Λήψη αρχείων ήχου</value>
   </data>
   <data name="DownloadConversations" xml:space="preserve">
-    <value>Laden Sie Konversationsposten herunter</value>
+    <value>Κατεβάστε τις αναρτήσεις συζητήσεων</value>
   </data>
   <data name="DownloadLinks" xml:space="preserve">
-    <value>Link-Beiträge herunterladen</value>
+    <value>Κατεβάστε τις δημοσιεύσεις συνδέσμων</value>
   </data>
   <data name="DownloadQuotes" xml:space="preserve">
-    <value>Download Zitat Beiträge</value>
+    <value>Κατεβάστε τις δημοσιεύσεις quote</value>
   </data>
   <data name="DownloadTexts" xml:space="preserve">
-    <value>Texttexte herunterladen</value>
+    <value>Λήψη μηνυμάτων κειμένου</value>
   </data>
   <data name="DetailsProgress" xml:space="preserve">
-    <value>{0} von {1}, Duplikate gefunden: {2}</value>
+    <value>{0} από {1}, βρέθηκαν διπλότυπα: {2}</value>
   </data>
   <data name="EnablePreview" xml:space="preserve">
-    <value>Vorschau auf / aus</value>
+    <value>Προεπισκόπηση στο on / off</value>
   </data>
   <data name="BlogSettings" xml:space="preserve">
-    <value>Blog-Einstellungen:</value>
+    <value>Ρυθμίσεις ιστολογίου:</value>
   </data>
   <data name="GlobalSettings" xml:space="preserve">
-    <value>Globale Einstellungen:</value>
+    <value>Γενικές ρυθμίσεις:</value>
   </data>
   <data name="BlogStatistics" xml:space="preserve">
-    <value>Blog-Statistiken:</value>
+    <value>Στατιστικά στο ιστολόγιο:</value>
   </data>
   <data name="ToolTipDetailsStats" xml:space="preserve">
-    <value>Anzahl der heruntergeladenen Post-Typen der gesamten Post-Typen</value>
+    <value>Αριθμός ληφθέντων τύπων ταχυδρομείων συνολικών τύπων θέσεων</value>
   </data>
   <data name="ToolTipDetailsStatsDescription" xml:space="preserve">
-    <value>Überprüfen Sie, um Post-Typ herunterladen oder überspringen während des Downloads</value>
+    <value>Ελέγξτε εάν θέλετε να κάνετε λήψη τύπου δημοσίευσης ή να παραλείψετε κατά τη διάρκεια της λήψης</value>
   </data>
   <data name="DownloadAudioMeta" xml:space="preserve">
-    <value>Laden Sie die Audio-Meta herunter</value>
+    <value>Λήψη μεταδεδομένων ήχου</value>
   </data>
   <data name="DownloadImageMeta" xml:space="preserve">
-    <value>Bild herunterladen meta</value>
+    <value>Μεταφορτώστε μετα-εικόνα</value>
   </data>
   <data name="DownloadVideoMeta" xml:space="preserve">
-    <value>Video herunterladen Meta</value>
+    <value>Μεταφορτώστε το meta βίντεο</value>
   </data>
   <data name="DefaultSettingsForBlogs" xml:space="preserve">
-    <value>Einstellungen für jeden Blog bei Hinzufügen:</value>
+    <value>Ρυθμίσεις που εφαρμόζονται σε κάθε blog κατά την προσθήκη:</value>
   </data>
   <data name="DownloadVideosShort" xml:space="preserve">
-    <value>Videos herunterladen</value>
+    <value>Λήψη βίντεο</value>
   </data>
   <data name="ToolTipDefaultSettingsForBlogs" xml:space="preserve">
-    <value>Legt die Standardeinstellungen für neu hinzugefügte Blogs fest.</value>
+    <value>Ορίζει τις προεπιλεγμένες ρυθμίσεις για τα νέα προστιθέμενα ιστολόγια.</value>
   </data>
   <data name="ToolTipDefaultSettingsForBlogsDescription" xml:space="preserve">
-    <value>Der Scan / Download verwendet indivuelle Einstellungen für jeden Blog.
-Um sie zu ändern, wählen Sie Blog (s) in der Hauptschnittstelle und wählen Sie die Registerkarte Details auf der rechten Seite.</value>
+    <value>Η σάρωση / λήψη χρησιμοποιεί ξεχωριστές ρυθμίσεις για κάθε ιστολόγιο. 
+Για να τις αλλάξετε, επιλέξτε ιστολόγια στο κύριο περιβάλλον εργασίας και επιλέξτε την καρτέλα Λεπτομέρειες στη δεξιά πλευρά.</value>
   </data>
   <data name="Save" xml:space="preserve">
-    <value>sparen</value>
+    <value>Αποθηκεύσετε</value>
   </data>
   <data name="Offline" xml:space="preserve">
     <value>Offline</value>
   </data>
   <data name="ForceSize" xml:space="preserve">
-    <value>Laden Sie die angegebene Größe, auch wenn es nicht angeboten wird</value>
+    <value>Λήψη καθορισμένου μεγέθους ακόμα και αν δεν προσφέρεται</value>
   </data>
   <data name="ToolTipForceSize" xml:space="preserve">
-    <value>Laden Sie die angegebene Auflösung von Bildern herunter, auch wenn die Größe nicht angeboten wird.</value>
+    <value>Κάντε λήψη της καθορισμένης ανάλυσης εικόνων, 
+ακόμη και αν το μέγεθος δεν προσφέρεται.</value>
   </data>
   <data name="ToolTipForceSizeDescription" xml:space="preserve">
-    <value>Wenn der Crawler nur Bilder mit geringerer Größe als angegeben findet,
-wird diese Option um die URL in die angegebene Dateigröße umbenannt. 
-Diese Dateien sind in der Regel vorhanden und bieten manchmal eine größere Auflösung oder sind nur umbenannt kleinere Auflösung Dateien.
-Es ist sicher, dies zu aktivieren.</value>
+    <value>Εάν ο ανιχνευτής βρίσκει μόνο εικόνες μικρότερου μεγέθους από αυτές που έχουν οριστεί, 
+ενεργοποιώντας αυτή την επιλογή, θα μετονομάσετε τη διεύθυνση url στο καθορισμένο μέγεθος αρχείων. 
+Αυτά τα αρχεία γενικά υπάρχουν και μερικές φορές προσφέρουν μεγαλύτερη ανάλυση ή απλώς μετονομάζονται σε αρχεία μικρότερης ανάλυσης. 
+Είναι ασφαλές να το ενεργοποιήσετε.</value>
   </data>
   <data name="ProxyHost" xml:space="preserve">
-    <value>HTTP-Proxy:</value>
+    <value>HTTP Proxy:</value>
   </data>
   <data name="ProxyPort" xml:space="preserve">
-    <value>Hafen:</value>
+    <value>Λιμάνι:</value>
   </data>
   <data name="ThirdPartySoftware" xml:space="preserve">
-    <value>Drittanbietersoftware</value>
+    <value>Λογισμικό τρίτου μέρους</value>
   </data>
   <data name="ThirdPartySoftwareDescription" xml:space="preserve">
-    <value>Software und Lizenzen von Drittanbietern</value>
+    <value>Λογισμικό και άδειες τρίτων κατασκευαστών</value>
   </data>
   <data name="ToolTipLimitBandwidth" xml:space="preserve">
-    <value>Drosselt die Bandbreite des Downloaders</value>
+    <value>Επιταχύνει το εύρος ζώνης του προγράμματος λήψης</value>
   </data>
   <data name="ToolTipLimitBandwidthDescription" xml:space="preserve">
-    <value>Setzt die maximale Bandbreite für den Downloader in kbytes / s. 
-0 deaktiviert die Drosselung.</value>
+    <value>Ορίζει το μέγιστο εύρος ζώνης που είναι διαθέσιμο για το πρόγραμμα λήψης σε kbytes / s.
+0 απενεργοποιεί τον περιορισμό.</value>
   </data>
   <data name="LimitScan" xml:space="preserve">
-    <value>Begrenzung der Scan-Bandbreite</value>
+    <value>Περιορίστε το εύρος ζώνης σάρωσης</value>
   </data>
   <data name="ScanConnections" xml:space="preserve">
-    <value>Scanverbindungen</value>
+    <value>Σάρωση συνδέσεων</value>
   </data>
   <data name="ToolTipLimitScan" xml:space="preserve">
-    <value>Enthält die Scan-Bandbreite in der Drosselung</value>
+    <value>Περιλαμβάνει το εύρος ζώνης σάρωσης στο στραγγαλισμό</value>
   </data>
   <data name="ToolTipLimitScanDescription" xml:space="preserve">
-    <value>Da die für das Scannen verwendeten Daten in der Regel klein sind, sollten Sie diese ausschalten,
-da der Drosselungsalgorithmus zu langsam ist, um sich anzupassen und die Scanleistung negativ beeinflussen zu können.
-Anzahl der für jeden Scan verwendeten Verbindungen</value>
+    <value>Δεδομένου ότι τα δεδομένα που χρησιμοποιούνται για τη σάρωση είναι συνήθως μικρά, 
+θα πρέπει να αφήσετε αυτό μακριά επειδή ο αλγόριθμος στραγγαλισμού είναι πολύ αργός για να προσαρμοστεί και μπορεί να επηρεάσει αρνητικά την απόδοση σάρωσης.
+Αριθμός συνδέσεων που χρησιμοποιούνται για κάθε σάρωση</value>
   </data>
   <data name="ToolTipScan" xml:space="preserve">
-    <value>Legt die für das Scannen verwendeten Nummernverbindungen fest. 
-Da die Daten in der Regel klein sind, solltest du das hoch lassen.</value>
+    <value>Ορίζει τις αριθμητικές συνδέσεις που χρησιμοποιούνται για τη σάρωση.
+Δεδομένου ότι τα δεδομένα είναι συνήθως μικρά, 
+πρέπει να αφήσετε αυτό το υψηλό.</value>
   </data>
   <data name="ToolTipScanDescription" xml:space="preserve">
-    <value>Der Wert muss zwischen 0 und 9.000.000.000.000.000 liegen.</value>
+    <value>Η αξία πρέπει να είναι μεταξύ 0 και 9.000.000.000.000.000.</value>
   </data>
   <data name="BandwidthRangeError" xml:space="preserve">
-    <value>Der Wert muss hh bilden: mm: ss.</value>
+    <value>Η τιμή πρέπει να έχει μορφή hh: mm: ss.</value>
   </data>
   <data name="TimeSpanTypeError" xml:space="preserve">
-    <value>Der Wert muss zwischen 0 und 2.147.483.647 liegen.</value>
+    <value>Η τιμή πρέπει να είναι μεταξύ 0 και 2.147.483.647.</value>
   </data>
   <data name="IntRangeError" xml:space="preserve">
-    <value>Der Wert muss vom Typ Integer sein.</value>
+    <value>Η τιμή πρέπει να είναι ακέραιου τύπου.</value>
   </data>
   <data name="IntTypeError" xml:space="preserve">
-    <value>pro Zeitintervall (e):</value>
+    <value>ανά χρονικό διάστημα (α):</value>
   </data>
   <data name="ConnectionTimeInterval" xml:space="preserve">
-    <value>Limit Tumblr Api Verbindungen:</value>
+    <value>Περιορίστε τις συνδέσεις Tumblr Api:</value>
   </data>
   <data name="LimitConnections" xml:space="preserve">
-    <value>Anzahl der Anschlüsse:</value>
+    <value>Αριθμός συνδέσεων:</value>
   </data>
   <data name="MaxConnections" xml:space="preserve">
-    <value>Begrenzung der Verbindungen zum tumblr api.</value>
+    <value>Περιορίστε τις συνδέσεις με το tumblr api.</value>
   </data>
   <data name="ToolTipLimitConnections" xml:space="preserve">
-    <value>Ein zu hoher Wert wird die Verbindungen (429 - Limit Exceeded), die an die tumblr api gemacht wurden, kraftvoll schließen.
-Ein zu kleiner Wert verringert die Abtastgeschwindigkeit.
-Stellen Sie ein Zahlen- / Zeitpaar ein. 
-Hinweis: Die tumblr api wird nur für regelmäßige tumblr Blog Downloads verwendet.</value>
+    <value>Μια υπερβολικά υψηλή τιμή θα κλείσει δυναμικά τις συνδέσεις (429 - Υπέρβαση ορίου) που έγιναν στο tumblr api.
+Μια πολύ μικρή τιμή θα μειώσει την ταχύτητα σάρωσης. Ορίστε ένα ζεύγος αριθμών / ωρών. 
+Σημείωση: Το tumblr api χρησιμοποιείται μόνο για κανονικές λήψεις blog του tumblr.</value>
   </data>
   <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
-    <value>Force rescan</value>
+    <value>Δύναμη επανεξέτασης</value>
   </data>
   <data name="ForceRescan" xml:space="preserve">
-    <value>Rescans das ganze Blog, nicht nur neue Beiträge.</value>
+    <value>Rescans ολόκληρο το blog, όχι μόνο νέες θέσεις.</value>
   </data>
   <data name="ToolTipForceRescan" xml:space="preserve">
-    <value>Erzwingt einen kompletten Scan mit dem Tumblr api.</value>
+    <value>Επιβάλλει μια πλήρη σάρωση χρησιμοποιώντας το Tumblr api.</value>
   </data>
   <data name="ToolTipForceRescanDescription" xml:space="preserve">
-    <value>Auf Updates prüfen</value>
+    <value>Ελεγχος για ενημερώσεις</value>
   </data>
   <data name="CheckForUpdates" xml:space="preserve">
-    <value>Jetzt herunterladen</value>
+    <value>Ληψη τωρα</value>
   </data>
   <data name="DownloadNow" xml:space="preserve">
-    <value>Überprüfen Sie das Verzeichnis auf Dateien</value>
+    <value>Ελέγξτε τον κατάλογο αρχείων</value>
   </data>
   <data name="CheckDirectoryForFiles" xml:space="preserve">
-    <value>Überprüft das Verzeichnis für bereits heruntergeladene Dateien.</value>
+    <value>Ελέγχει τον κατάλογο για αρχεία που έχουν ήδη ληφθεί.</value>
   </data>
   <data name="ToolTipCheckDirectoryForFiles" xml:space="preserve">
-    <value>Überprüft das Verzeichnis und die Datenbank auf bereits heruntergeladene Dateien.
-Kann die Downloadgeschwindigkeit für große Verzeichnisse negativ beeinflussen.</value>
+    <value>Ελέγχει τον κατάλογο και τη βάση δεδομένων για αρχεία που έχουν ήδη ληφθεί. 
+Μπορεί να επηρεάσει αρνητικά την ταχύτητα λήψης για μεγάλους καταλόγους.</value>
   </data>
   <data name="ToolTipCheckDirectoryForFilesDescription" xml:space="preserve">
-    <value>Download der URL-Liste</value>
+    <value>Λήψη λίστας url</value>
   </data>
   <data name="DownloadUrlList" xml:space="preserve">
-    <value>Laden Sie eine URL-Liste herunter.</value>
+    <value>Λήψη λίστας url.</value>
   </data>
   <data name="ToolTipDownloadUrlList" xml:space="preserve">
-    <value>Downloads eine URL-Liste der Binärdateien anstelle der eigentlichen Dateien</value>
+    <value>Λήγει μια λίστα url των δυαδικών αρχείων αντί των πραγματικών αρχείων</value>
   </data>
   <data name="ToolTipDownloadUrlListDescription" xml:space="preserve">
-    <value>Antwort-Beiträge herunterladen</value>
+    <value>Λήψη θέσεων απάντησης</value>
   </data>
   <data name="DownloadAnswers" xml:space="preserve">
     <value>Blog</value>
   </data>
   <data name="Blog" xml:space="preserve">
-    <value>Verbindung</value>
+    <value>Σύνδεση</value>
   </data>
   <data name="Connection" xml:space="preserve">
-    <value>General</value>
+    <value>Γενικός</value>
   </data>
   <data name="General" xml:space="preserve">
-    <value>Aktivieren Sie den tragbaren Modus</value>
+    <value>Ενεργοποιήστε τη φορητή λειτουργία</value>
   </data>
   <data name="PortableMode" xml:space="preserve">
-    <value>Aktiviert den tragbaren Modus.</value>
+    <value>Ενεργοποιεί τη φορητή λειτουργία.</value>
   </data>
   <data name="ToolTipPortableMode" xml:space="preserve">
-    <value>Speichert die Einstellungen im Ordner der ausführbaren Datei anstelle von AppData.</value>
+    <value>Αποθηκεύει τις ρυθμίσεις στο φάκελο του εκτελέσιμου αρχείου αντί του AppData.</value>
   </data>
   <data name="ToolTipPortableModeDescription" xml:space="preserve">
-    <value>Download von gesendeten Beiträgen</value>
+    <value>Κατεβάστε τις αναρτημένες αναρτήσεις</value>
   </data>
   <data name="DownloadRebloggedPosts" xml:space="preserve">
-    <value>Proxy-Passwort:</value>
+    <value>Κωδικός πρόσβασης μεσολάβησης:</value>
   </data>
   <data name="ProxyPassword" xml:space="preserve">
-    <value>Proxy Benutzername:</value>
+    <value>Όνομα χρήστη μεσολάβησης:</value>
   </data>
   <data name="ProxyUsername" xml:space="preserve">
-    <value>Anmeldeinformationen für nicht anonymen Proxy-Server</value>
+    <value>Πιστοποιητικά για μη ανώνυμο διακομιστή μεσολάβησης</value>
   </data>
   <data name="ToolTipProxyPassword" xml:space="preserve">
-    <value>Anmeldeinformationen werden in der Einstellungsdatei in Klartext gespeichert</value>
+    <value>Τα διαπιστευτήρια αποθηκεύονται με καθαρό κείμενο στο αρχείο ρυθμίσεων</value>
   </data>
   <data name="ToolTipProxyPasswordDescription" xml:space="preserve">
-    <value>Download Seiten:</value>
+    <value>Λήψη σελίδων:</value>
   </data>
   <data name="DownloadPages" xml:space="preserve">
-    <value>Beiträge pro Seite:</value>
+    <value>Δημοσιεύσεις ανά σελίδα:</value>
   </data>
   <data name="PageSize" xml:space="preserve">
-    <value>Laden Sie nur bestimmte Seiten herunter</value>
+    <value>Λήψη μόνο συγκεκριμένων σελίδων</value>
   </data>
   <data name="ToolTipDownloadPages" xml:space="preserve">
-    <value>Mögliche Notationen sind: 1 oder 1-3 oder 1,2,3. 
-Leer bedeutet das ganze Blog.</value>
+    <value>Οι πιθανές σημειώσεις είναι: 1 ή 1-3 ή 1,2,3.
+Άδειο σημαίνει όλο το ιστολόγιο.</value>
   </data>
   <data name="ToolTipDownloadPagesDescription" xml:space="preserve">
-    <value>Beiträge pro Seite</value>
+    <value>Δημοσιεύσεις ανά σελίδα</value>
   </data>
   <data name="ToolTipPageSize" xml:space="preserve">
-    <value>Setzt den Beitrag pro Seite (sollte zwischen 1-50, Standard 50) sein.
-Z.B. 50 bedeutet, 50 Beiträge pro Seite zu scannen.</value>
+    <value>Ορίζει την ανάρτηση ανά σελίδα (πρέπει να είναι μεταξύ 1-50, προεπιλογή 50).
+Π.χ. Το 50 σημαίνει σάρωση 50 μηνυμάτων ανά σελίδα.</value>
   </data>
   <data name="ToolTipPageSizeDescription" xml:space="preserve">
-    <value>Vollbildansicht</value>
+    <value>FullScreenView</value>
   </data>
   <data name="FullScreenMedia" xml:space="preserve">
-    <value>Export-Blogs</value>
+    <value>Εξαγωγή ιστολογίων</value>
   </data>
   <data name="Export" xml:space="preserve">
-    <value>Exportiere alle Blog-URLs als Textdatei</value>
+    <value>Εξαγωγή όλων των URL urls ως αρχείου κειμένου</value>
   </data>
   <data name="ToolTipExportBlogs" xml:space="preserve">
-    <value>Speichert alle URLs als Textdatei für den Austausch.</value>
+    <value>Αποθηκεύει όλες τις urls ως αρχείο κειμένου για ανταλλαγή.</value>
   </data>
   <data name="ToolTipExportBlogsDescription" xml:space="preserve">
-    <value>Herunterladen von:</value>
+    <value>Κατεβάστε από:</value>
   </data>
   <data name="DownloadFrom" xml:space="preserve">
-    <value>Nach:</value>
+    <value>Προς την:</value>
   </data>
   <data name="DownloadTo" xml:space="preserve">
-    <value>Crawling Beiträge von diesem Datum</value>
+    <value>Ανίχνευση αναρτήσεων από αυτήν την ημερομηνία</value>
   </data>
   <data name="ToolTipDownloadFrom" xml:space="preserve">
-    <value>Muss im JJJJMMDD-Format sein. Leere bedeutet ab Mai 2007.</value>
+    <value>Πρέπει να είναι σε μορφή ΕΕΕΕΜΜDD.
+Άδειες μέσα από τον Μάιο του 2007.</value>
   </data>
   <data name="ToolTipDownloadTagsFromDescription" xml:space="preserve">
-    <value>Crawl Beiträge zu diesem Datum</value>
+    <value>Ανίχνευση αναρτήσεων σε αυτήν την ημερομηνία</value>
   </data>
   <data name="ToolTipDownloadTo" xml:space="preserve">
-    <value>Muss im JJJJMMDD-Format sein. Leer bedeutet jetzt</value>
+    <value>Πρέπει να είναι σε μορφή ΕΕΕΕΜΜDD. 
+Άδειες σημαίνει μέχρι τώρα.</value>
   </data>
   <data name="ToolTipDownloadTagsToDescription" xml:space="preserve">
-    <value>Muss im JJJJMMDD-Format sein. Leere bedeutet vom Anfang des Blogs.</value>
+    <value>Πρέπει να είναι σε μορφή ΕΕΕΕΜΜDD.
+Άδειο σημαίνει από την αρχή του ιστολογίου.</value>
   </data>
   <data name="ToolTipDownloadFromDescription" xml:space="preserve">
-    <value>Muss im JJJJMMDD-Format sein. Leer bedeutet jetzt</value>
+    <value>Πρέπει να είναι σε μορφή ΕΕΕΕΜΜDD.
+Άδειες σημαίνει μέχρι τώρα.</value>
   </data>
   <data name="ToolTipDownloadToDescription" xml:space="preserve">
-    <value>Beiträge pro Seite</value>
+    <value>Δημοσιεύσεις ανά σελίδα</value>
   </data>
   <data name="ToolTipPageSizeTumblrSearch" xml:space="preserve">
-    <value>Setzt den Beitrag pro Seite. Z.B. 50 bedeutet, 50 Beiträge pro Seite zu scannen.</value>
+    <value>Ορίζει την ανάρτηση ανά σελίδα. 
+Π.χ. Το 50 σημαίνει σάρωση 50 μηνυμάτων ανά σελίδα.</value>
   </data>
   <data name="ToolTipPageSizeTumblrSearchDescription" xml:space="preserve">
-    <value>Passwort:</value>
+    <value>Κωδικός πρόσβασης:</value>
   </data>
   <data name="Password" xml:space="preserve">
-    <value>Passwort für passwortgeschützte Blogs</value>
+    <value>Κωδικός πρόσβασης για ιστολόγια που προστατεύονται με κωδικό πρόσβασης</value>
   </data>
   <data name="ToolTipPassword" xml:space="preserve">
-    <value>Achtung: Das Passwort wird in der Blogs-Datenbank in Klartext gespeichert.</value>
+    <value>Προσοχή: Ο κωδικός πρόσβασης αποθηκεύεται σε καθαρό κείμενο στη βάση δεδομένων των ιστολογίων.</value>
   </data>
   <data name="ToolTipPasswordDescription" xml:space="preserve">
-    <value>Art</value>
+    <value>Τύπος</value>
   </data>
   <data name="Blogtype" xml:space="preserve">
-    <value>Nur getaggte Beiträge herunterladen</value>
+    <value>Λήψη μόνο μηνυμάτων με ετικέτα</value>
   </data>
   <data name="ToolTipTags" xml:space="preserve">
-    <value>Muss in einer kommagetrennten Liste ohne das führende Hash (#) Zeichen sein. 
-Z.B. großes großes Auto, Bären sucht nach großen großen Autos und Bären.</value>
+    <value>Πρέπει να βρίσκεται σε μια λίστα χωρισμένη με κόμματα,
+χωρίς την υπογραφή αιχμής (#).
+Π.χ. μεγάλο μεγάλο αυτοκίνητο, φέρνει αναζητήσεις για μεγάλα μεγάλα αυτοκίνητα και αρκούδες.</value>
   </data>
   <data name="ToolTipTagsDescription" xml:space="preserve">
-    <value>Alle</value>
+    <value>Ολα</value>
   </data>
   <data name="BlogtypeAll" xml:space="preserve">
     <value>Instagram</value>
@@ -670,36 +677,37 @@ Z.B. großes großes Auto, Bären sucht nach großen großen Autos und Bären.</
     <value>Tumblr</value>
   </data>
   <data name="BlogtypeTumblr" xml:space="preserve">
-    <value>Tumblr Liked-by</value>
+    <value>Το Tumblr άρεσε</value>
   </data>
   <data name="BlogtypeTumblrLikedBy" xml:space="preserve">
-    <value>Tumblr versteckt</value>
+    <value>Tumblr Κρυφό</value>
   </data>
   <data name="BlogtypeTumblrPrivate" xml:space="preserve">
-    <value>Tumblr Suche</value>
+    <value>Αναζήτηση Tumblr</value>
   </data>
   <data name="BlogtypeTumblrSearch" xml:space="preserve">
-    <value>Tumblr Tag Suche</value>
+    <value>Αναζήτηση ετικετών Tumblr</value>
   </data>
   <data name="BlogtypeTumblrTagSearch" xml:space="preserve">
-    <value>Twitter</value>
+    <value>Κελάδημα</value>
   </data>
   <data name="BlogtypeTwitter" xml:space="preserve">
-    <value>Blogs zur Warteschlange.</value>
+    <value>blogs στην ουρά.</value>
   </data>
   <data name="AutoDownloadBlogs" xml:space="preserve">
-    <value>Timeout für Webanfragen</value>
+    <value>Χρονικό όριο για αιτήσεις ιστού</value>
   </data>
   <data name="ToolTipTimeout" xml:space="preserve">
-    <value>Die Zeitdauer, in Sekunden, bis die Anforderung abläuft.</value>
+    <value>Το χρονικό διάστημα, σε δευτερόλεπτα, 
+μέχρι να διαρκέσει η αίτηση.</value>
   </data>
   <data name="ToolTipTimeoutDescription" xml:space="preserve">
-    <value>Gleichzeitige Videoverbindungen:</value>
+    <value>Συγχρονισμένες συνδέσεις βίντεο:</value>
   </data>
   <data name="ConcurrentVideoConnections" xml:space="preserve">
-    <value>Anzahl der gleichzeitigen Verbindungen zum tumblr Video-Host</value>
+    <value>Αριθμός ταυτόχρονων συνδέσεων στον κεντρικό υπολογιστή βίντεο tumblr</value>
   </data>
   <data name="ToolTipVideoConnections" xml:space="preserve">
-    <value>Der vt.tumblr.com-Host schließt regelmäßig Verbindungen, wenn die Nummer zu hoch ist.</value>
+    <value>Ο κεντρικός υπολογιστής vt.tumblr.com κλείνει τακτικά τις συνδέσεις αν ο αριθμός είναι πολύ υψηλός.</value>
   </data>
 </root>

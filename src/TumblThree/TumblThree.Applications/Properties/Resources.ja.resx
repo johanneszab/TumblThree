@@ -118,82 +118,82 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ApplicationUpToDate" xml:space="preserve">
-    <value>Ihre Bewerbung ist aktuell.</value>
+    <value>あなたのアプリケーションは最新です。</value>
   </data>
   <data name="AudioCaption" xml:space="preserve">
-    <value>Audio-Untertitel: {0}</value>
+    <value>音声キャプション：{0}</value>
   </data>
   <data name="AuthenticationFailure" xml:space="preserve">
-    <value>Authentifizierungsfehler: {0}</value>
+    <value>認証に失敗しました：{0}</value>
   </data>
   <data name="BlogAlreadyExist" xml:space="preserve">
-    <value>Der Blog existiert bereits: {0}</value>
+    <value>ブログは既に存在します：{0}</value>
   </data>
   <data name="BlogIsOffline" xml:space="preserve">
-    <value>Der Blog ist offline: {0}</value>
+    <value>ブログはオフラインです：{0}</value>
   </data>
   <data name="BlogTypesAll" xml:space="preserve">
-    <value>Alle</value>
+    <value>すべて</value>
   </data>
   <data name="BlogTypesNeverFinished" xml:space="preserve">
-    <value>Niemals fertig</value>
+    <value>決して終わらなかった</value>
   </data>
   <data name="BlogTypesNone" xml:space="preserve">
-    <value>Keiner</value>
+    <value>なし</value>
   </data>
   <data name="BlogTypesOnceFinished" xml:space="preserve">
-    <value>Einmal fertig</value>
+    <value>終了したら</value>
   </data>
   <data name="Body" xml:space="preserve">
-    <value>Körper: {0]</value>
+    <value>本文：{0}</value>
   </data>
   <data name="Conversation" xml:space="preserve">
-    <value>Konversation: {0}</value>
+    <value>会話：{0}</value>
   </data>
   <data name="CouldNotAddBlog" xml:space="preserve">
-    <value>Das Blog konnte nicht hinzugefügt werden: {0}</value>
+    <value>ブログを追加できませんでした：{0}</value>
   </data>
   <data name="CouldNotLoadLibrary" xml:space="preserve">
-    <value>Die Datei konnte nicht geladen werden: {0}</value>
+    <value>ライブラリ内のファイルを読み込めませんでした：{0}</value>
   </data>
   <data name="CouldNotLoadQueuelist" xml:space="preserve">
-    <value>Der queuelist konnte nicht geladen werden Vielleicht existieren einige referenzierte Blogs nicht mehr.</value>
+    <value>キューリストをロードできませんでした。たぶん、参照されているブログがもう存在しないかもしれません。</value>
   </data>
   <data name="CouldNotOpenFiles" xml:space="preserve">
-    <value>Eine Datei konnte nicht geöffnet werden.</value>
+    <value>ファイルを開くことができませんでした。</value>
   </data>
   <data name="CouldNotRemoveBlog" xml:space="preserve">
-    <value>Konnte das Blog nicht entfernen: {0}</value>
+    <value>ブログを削除できませんでした：{0}</value>
   </data>
   <data name="CouldNotRemoveBlogIndex" xml:space="preserve">
-    <value>Konnte das Blog nicht entfernen: {0}</value>
+    <value>ブログを削除できませんでした：{0}</value>
   </data>
   <data name="CouldNotRestoreUISettings" xml:space="preserve">
-    <value>Die UI-Einstellungen konnten nicht wiederhergestellt werden.</value>
+    <value>UI設定を復元できませんでした。</value>
   </data>
   <data name="CouldNotSaveBlog" xml:space="preserve">
-    <value>Konnte das Blog nicht speichern: {0}</value>
+    <value>ブログを保存できませんでした：{0}</value>
   </data>
   <data name="CouldNotSaveQueueList" xml:space="preserve">
-    <value>Der queuelist konnte nicht gerettet werden</value>
+    <value>queuelistは救われることができませんでした。</value>
   </data>
   <data name="CouldNotStartOAuthManager" xml:space="preserve">
-    <value>Der OAuth Manager konnte nicht initialisiert werden</value>
+    <value>OAuthマネージャを初期化できませんでした</value>
   </data>
   <data name="CrawlerError" xml:space="preserve">
-    <value>Der Crawler-Thread ist auf einen Fehler gestoßen.</value>
+    <value>クローラスレッドでエラーが発生しました。</value>
   </data>
   <data name="Date" xml:space="preserve">
-    <value>Datum: {0}</value>
+    <value>日付：{0}</value>
   </data>
   <data name="DiskFull" xml:space="preserve">
-    <value>Es gibt nicht genug Platz auf der Festplatte.</value>
+    <value>ディスクに十分な容量がありません。</value>
   </data>
   <data name="ExportFileFilter" xml:space="preserve">
-    <value>Textdateien (* .txt) | * .txt</value>
+    <value>テキストファイル（* .txt）| * .txt</value>
   </data>
   <data name="ExportFileFilterExtension" xml:space="preserve">
-    <value>.txt</value>
+    <value>。TXT</value>
   </data>
   <data name="FileNameAnswers" xml:space="preserve">
     <value>answers.txt</value>
@@ -223,96 +223,96 @@
     <value>quotes.txt</value>
   </data>
   <data name="FileNameTexts" xml:space="preserve">
-    <value>texte.txt</value>
+    <value>texts.txt</value>
   </data>
   <data name="FileNameVideos" xml:space="preserve">
     <value>videos_url.txt</value>
   </data>
   <data name="Id3Album" xml:space="preserve">
-    <value>Id3: Album: {0}</value>
+    <value>Id3：アルバム：{0}</value>
   </data>
   <data name="Id3Artist" xml:space="preserve">
-    <value>Id3: Künstler: {0}</value>
+    <value>Id3：アーティスト：{0}</value>
   </data>
   <data name="Id3Title" xml:space="preserve">
-    <value>Id3: Titel: {0}</value>
+    <value>Id3：タイトル：{0}</value>
   </data>
   <data name="Id3Track" xml:space="preserve">
-    <value>Id3: Spur: {0}</value>
+    <value>Id3：トラック：{0}</value>
   </data>
   <data name="Id3Year" xml:space="preserve">
-    <value>Id3: Jahr: {0}</value>
+    <value>Id3：年：{0}</value>
   </data>
   <data name="LimitExceeded" xml:space="preserve">
-    <value>Grenzwert überschritten: {0}. Sie sollten die Verbindungen zum tumblr svc senken.</value>
+    <value>限界を超えました：{0}。あなたはtumblr svcへの接続を下げるべきです。</value>
   </data>
   <data name="Link" xml:space="preserve">
-    <value>Link: {0}</value>
+    <value>リンク：{0}</value>
   </data>
   <data name="MaxBytePerSecond" xml:space="preserve">
-    <value>MaxBytesPerSecond muss nicht negativ sein</value>
+    <value>MaxBytesPerSecondは負でない</value>
   </data>
   <data name="NewVersionAvailable" xml:space="preserve">
-    <value>Neue Version zum Download verfügbar: {0}</value>
+    <value>新しいバージョンのダウンロードが可能です：{0}</value>
   </data>
   <data name="NotLoggedIn" xml:space="preserve">
-    <value>Sie müssen sich bei tumblr.com anmelden, um {0} herunterzuladen. Gehen Sie zu den Einstellungen-&gt; Authentifizieren.</value>
+    <value>{0}をダウンロードするには、tumblr.comにログインする必要があります。 [設定]  - &gt; [認証]を選択します。</value>
   </data>
   <data name="PasswordProtected" xml:space="preserve">
-    <value>Passwortgeschützter Blog: {0}. Sie müssen das Passwort in die Details eingeben.</value>
+    <value>パスワードで保護されたブログ：{0}。詳細にパスワードを入力する必要があります。</value>
   </data>
   <data name="PasswordProtectedOrOffline" xml:space="preserve">
-    <value>Hidden Password geschützt oder Offline-Blog erkannt: {0}. Sie müssen das Passwort in die Details eingeben.</value>
+    <value>非表示のパスワードで保護されたオフラインブログが検出されました：{0}。詳細にパスワードを入力する必要があります。</value>
   </data>
   <data name="PhotoCaption" xml:space="preserve">
-    <value>Bildunterschrift: {0}</value>
+    <value>写真のキャプション：{0}</value>
   </data>
   <data name="PhotoUrl" xml:space="preserve">
-    <value>Foto Url: {0}</value>
+    <value>写真のURL：{0}</value>
   </data>
   <data name="PostId" xml:space="preserve">
-    <value>Beitrags-ID: {0}</value>
+    <value>投稿ID：{0}</value>
   </data>
   <data name="ProgressDownloadImage" xml:space="preserve">
-    <value>Herunterladen {0}.</value>
+    <value>{0}をダウンロード中です。</value>
   </data>
   <data name="ProgressGetUrlLong" xml:space="preserve">
-    <value>Ausgewertet {0} tumblr post urls aus {1} insgesamt Beiträge.</value>
+    <value>評価された{0} tumblr投稿総数の{1}個のURLを投稿しました。</value>
   </data>
   <data name="ProgressGetUrlShort" xml:space="preserve">
-    <value>Ausgewertet {0} tumblr Blog-Seiten.</value>
+    <value>{0} tumblrのブログサイトを評価しました。</value>
   </data>
   <data name="ProgressUniqueDownloads" xml:space="preserve">
-    <value>Berechnen von einzigartigen Downloads, Entfernen von Duplikaten ...</value>
+    <value>一意のダウンロードを計算し、重複を削除します...</value>
   </data>
   <data name="Queuelist" xml:space="preserve">
-    <value>Queuelist</value>
+    <value>クエスト</value>
   </data>
   <data name="Quote" xml:space="preserve">
-    <value>Zitat: {0}</value>
+    <value>引用：{0}</value>
   </data>
   <data name="ReblogKey" xml:space="preserve">
-    <value>Reblog-Taste: {0}</value>
+    <value>改訂キー：{0}</value>
   </data>
   <data name="ReblogName" xml:space="preserve">
-    <value>Reblog Name: {0}</value>
+    <value>Reblog名：{0}</value>
   </data>
   <data name="ReblogUrl" xml:space="preserve">
-    <value>Reblog Url: {0}</value>
+    <value>Reblog Url：{0}</value>
   </data>
   <data name="Summary" xml:space="preserve">
-    <value>Zusammenfassung: {0}</value>
+    <value>要約：{0}</value>
   </data>
   <data name="Tags" xml:space="preserve">
-    <value>Stichworte: {0}</value>
+    <value>タグ：{0}</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Titel: {0}</value>
+    <value>タイトル：{0}</value>
   </data>
   <data name="UrlWithSlug" xml:space="preserve">
-    <value>Url mit Schnecke: {0}</value>
+    <value>スラグ付きのURL：{0}</value>
   </data>
   <data name="VideoPlayer" xml:space="preserve">
-    <value>Video-Spieler: {0}</value>
+    <value>動画プレーヤー：{0}</value>
   </data>
 </root>

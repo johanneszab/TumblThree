@@ -118,82 +118,82 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ApplicationUpToDate" xml:space="preserve">
-    <value>Ihre Bewerbung ist aktuell.</value>
+    <value>Sua aplicação está atualizada.</value>
   </data>
   <data name="AudioCaption" xml:space="preserve">
-    <value>Audio-Untertitel: {0}</value>
+    <value>Legenda de áudio: {0}</value>
   </data>
   <data name="AuthenticationFailure" xml:space="preserve">
-    <value>Authentifizierungsfehler: {0}</value>
+    <value>Falha na autenticação: {0}</value>
   </data>
   <data name="BlogAlreadyExist" xml:space="preserve">
-    <value>Der Blog existiert bereits: {0}</value>
+    <value>O blog já existe: {0}</value>
   </data>
   <data name="BlogIsOffline" xml:space="preserve">
-    <value>Der Blog ist offline: {0}</value>
+    <value>O Blog está Desligado: {0}</value>
   </data>
   <data name="BlogTypesAll" xml:space="preserve">
-    <value>Alle</value>
+    <value>Todos</value>
   </data>
   <data name="BlogTypesNeverFinished" xml:space="preserve">
-    <value>Niemals fertig</value>
+    <value>Nunca terminou</value>
   </data>
   <data name="BlogTypesNone" xml:space="preserve">
-    <value>Keiner</value>
+    <value>Nenhum</value>
   </data>
   <data name="BlogTypesOnceFinished" xml:space="preserve">
-    <value>Einmal fertig</value>
+    <value>Uma vez terminado</value>
   </data>
   <data name="Body" xml:space="preserve">
-    <value>Körper: {0]</value>
+    <value>Corpo: {0]</value>
   </data>
   <data name="Conversation" xml:space="preserve">
-    <value>Konversation: {0}</value>
+    <value>Conversação: {0}</value>
   </data>
   <data name="CouldNotAddBlog" xml:space="preserve">
-    <value>Das Blog konnte nicht hinzugefügt werden: {0}</value>
+    <value>Não foi possível adicionar o blog: {0}</value>
   </data>
   <data name="CouldNotLoadLibrary" xml:space="preserve">
-    <value>Die Datei konnte nicht geladen werden: {0}</value>
+    <value>Não foi possível carregar o arquivo na biblioteca: {0}</value>
   </data>
   <data name="CouldNotLoadQueuelist" xml:space="preserve">
-    <value>Der queuelist konnte nicht geladen werden Vielleicht existieren einige referenzierte Blogs nicht mehr.</value>
+    <value>O queuelist não podia ser carregado. Talvez já existam alguns blogs referenciados.</value>
   </data>
   <data name="CouldNotOpenFiles" xml:space="preserve">
-    <value>Eine Datei konnte nicht geöffnet werden.</value>
+    <value>Não foi possível abrir um arquivo.</value>
   </data>
   <data name="CouldNotRemoveBlog" xml:space="preserve">
-    <value>Konnte das Blog nicht entfernen: {0}</value>
+    <value>Não foi possível remover o blog: {0}</value>
   </data>
   <data name="CouldNotRemoveBlogIndex" xml:space="preserve">
-    <value>Konnte das Blog nicht entfernen: {0}</value>
+    <value>Não foi possível remover o blog: {0}</value>
   </data>
   <data name="CouldNotRestoreUISettings" xml:space="preserve">
-    <value>Die UI-Einstellungen konnten nicht wiederhergestellt werden.</value>
+    <value>Não foi possível restaurar as configurações de UI.</value>
   </data>
   <data name="CouldNotSaveBlog" xml:space="preserve">
-    <value>Konnte das Blog nicht speichern: {0}</value>
+    <value>Não foi possível salvar o blog: {0}</value>
   </data>
   <data name="CouldNotSaveQueueList" xml:space="preserve">
-    <value>Der queuelist konnte nicht gerettet werden</value>
+    <value>O queuelist não pôde ser salvo.</value>
   </data>
   <data name="CouldNotStartOAuthManager" xml:space="preserve">
-    <value>Der OAuth Manager konnte nicht initialisiert werden</value>
+    <value>Não foi possível inicializar o OAuth Manager</value>
   </data>
   <data name="CrawlerError" xml:space="preserve">
-    <value>Der Crawler-Thread ist auf einen Fehler gestoßen.</value>
+    <value>O segmento de rastreador encontrou um erro.</value>
   </data>
   <data name="Date" xml:space="preserve">
-    <value>Datum: {0}</value>
+    <value>Data: {0}</value>
   </data>
   <data name="DiskFull" xml:space="preserve">
-    <value>Es gibt nicht genug Platz auf der Festplatte.</value>
+    <value>Não há espaço suficiente no disco.</value>
   </data>
   <data name="ExportFileFilter" xml:space="preserve">
-    <value>Textdateien (* .txt) | * .txt</value>
+    <value>Arquivos de texto (* .txt) | * .txt</value>
   </data>
   <data name="ExportFileFilterExtension" xml:space="preserve">
-    <value>.txt</value>
+    <value>.TXT</value>
   </data>
   <data name="FileNameAnswers" xml:space="preserve">
     <value>answers.txt</value>
@@ -202,7 +202,7 @@
     <value>audios_url.txt</value>
   </data>
   <data name="FileNameConversations" xml:space="preserve">
-    <value>conversations.txt</value>
+    <value>conversações.txt</value>
   </data>
   <data name="FileNameLinks" xml:space="preserve">
     <value>links.txt</value>
@@ -223,96 +223,96 @@
     <value>quotes.txt</value>
   </data>
   <data name="FileNameTexts" xml:space="preserve">
-    <value>texte.txt</value>
+    <value>texts.txt</value>
   </data>
   <data name="FileNameVideos" xml:space="preserve">
     <value>videos_url.txt</value>
   </data>
   <data name="Id3Album" xml:space="preserve">
-    <value>Id3: Album: {0}</value>
+    <value>Id3: Álbum: {0}</value>
   </data>
   <data name="Id3Artist" xml:space="preserve">
-    <value>Id3: Künstler: {0}</value>
+    <value>Id3: Artista: {0}</value>
   </data>
   <data name="Id3Title" xml:space="preserve">
-    <value>Id3: Titel: {0}</value>
+    <value>Id3: Título: {0}</value>
   </data>
   <data name="Id3Track" xml:space="preserve">
-    <value>Id3: Spur: {0}</value>
+    <value>Id3: Track: {0}</value>
   </data>
   <data name="Id3Year" xml:space="preserve">
-    <value>Id3: Jahr: {0}</value>
+    <value>Id3: Ano: {0}</value>
   </data>
   <data name="LimitExceeded" xml:space="preserve">
-    <value>Grenzwert überschritten: {0}. Sie sollten die Verbindungen zum tumblr svc senken.</value>
+    <value>Limite excedido: {0}. Você deve baixar as conexões para o tumblr svc.</value>
   </data>
   <data name="Link" xml:space="preserve">
     <value>Link: {0}</value>
   </data>
   <data name="MaxBytePerSecond" xml:space="preserve">
-    <value>MaxBytesPerSecond muss nicht negativ sein</value>
+    <value>MaxBytesPerSecond deve ser não negativo</value>
   </data>
   <data name="NewVersionAvailable" xml:space="preserve">
-    <value>Neue Version zum Download verfügbar: {0}</value>
+    <value>Nova versão disponível para download: {0}</value>
   </data>
   <data name="NotLoggedIn" xml:space="preserve">
-    <value>Sie müssen sich bei tumblr.com anmelden, um {0} herunterzuladen. Gehen Sie zu den Einstellungen-&gt; Authentifizieren.</value>
+    <value>Você precisa fazer o login no tumblr.com para fazer o download de {0}. Vá para Configurações-&gt; Autenticar.</value>
   </data>
   <data name="PasswordProtected" xml:space="preserve">
-    <value>Passwortgeschützter Blog: {0}. Sie müssen das Passwort in die Details eingeben.</value>
+    <value>Blog protegido por senha: {0}. Você precisa inserir a senha nos Detalhes.</value>
   </data>
   <data name="PasswordProtectedOrOffline" xml:space="preserve">
-    <value>Hidden Password geschützt oder Offline-Blog erkannt: {0}. Sie müssen das Passwort in die Details eingeben.</value>
+    <value>Detecção de senha escondida protegida ou offline: {0}. Você precisa inserir a senha nos Detalhes.</value>
   </data>
   <data name="PhotoCaption" xml:space="preserve">
-    <value>Bildunterschrift: {0}</value>
+    <value>Legenda da foto: {0}</value>
   </data>
   <data name="PhotoUrl" xml:space="preserve">
-    <value>Foto Url: {0}</value>
+    <value>Url da foto: {0}</value>
   </data>
   <data name="PostId" xml:space="preserve">
-    <value>Beitrags-ID: {0}</value>
+    <value>ID do post: {0}</value>
   </data>
   <data name="ProgressDownloadImage" xml:space="preserve">
-    <value>Herunterladen {0}.</value>
+    <value>Carregando {0}.</value>
   </data>
   <data name="ProgressGetUrlLong" xml:space="preserve">
-    <value>Ausgewertet {0} tumblr post urls aus {1} insgesamt Beiträge.</value>
+    <value>Avaliado {0} tumblr post urls out of {1} posts totais.</value>
   </data>
   <data name="ProgressGetUrlShort" xml:space="preserve">
-    <value>Ausgewertet {0} tumblr Blog-Seiten.</value>
+    <value>Avaliou {0} tumblr blog sites.</value>
   </data>
   <data name="ProgressUniqueDownloads" xml:space="preserve">
-    <value>Berechnen von einzigartigen Downloads, Entfernen von Duplikaten ...</value>
+    <value>Cálculo de downloads exclusivos, remoção de duplicatas ...</value>
   </data>
   <data name="Queuelist" xml:space="preserve">
     <value>Queuelist</value>
   </data>
   <data name="Quote" xml:space="preserve">
-    <value>Zitat: {0}</value>
+    <value>Citação: {0}</value>
   </data>
   <data name="ReblogKey" xml:space="preserve">
-    <value>Reblog-Taste: {0}</value>
+    <value>Tecla Reblog: {0}</value>
   </data>
   <data name="ReblogName" xml:space="preserve">
-    <value>Reblog Name: {0}</value>
+    <value>Nome do Reblog: {0}</value>
   </data>
   <data name="ReblogUrl" xml:space="preserve">
-    <value>Reblog Url: {0}</value>
+    <value>URL do Reblog: {0}</value>
   </data>
   <data name="Summary" xml:space="preserve">
-    <value>Zusammenfassung: {0}</value>
+    <value>Resumo: {0}</value>
   </data>
   <data name="Tags" xml:space="preserve">
-    <value>Stichworte: {0}</value>
+    <value>Tags: {0}</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Titel: {0}</value>
+    <value>Título: {0}</value>
   </data>
   <data name="UrlWithSlug" xml:space="preserve">
-    <value>Url mit Schnecke: {0}</value>
+    <value>Url com slug: {0}</value>
   </data>
   <data name="VideoPlayer" xml:space="preserve">
-    <value>Video-Spieler: {0}</value>
+    <value>Video Player: {0}</value>
   </data>
 </root>

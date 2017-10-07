@@ -237,7 +237,7 @@ namespace TumblThree.Applications.DataModels.TumblrSvcJson
         public int thumbnail_width { get; set; }
         public int thumbnail_height { get; set; }
         public float duration { get; set; }
-        public List<Player> player { get; set; }
+        public object player { get; set; }
         public string audio_url { get; set; }
         public string audio_source_url { get; set; }
         public string audio_type { get; set; }
