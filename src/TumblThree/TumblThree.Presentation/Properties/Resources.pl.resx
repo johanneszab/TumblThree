@@ -118,550 +118,550 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="About" xml:space="preserve">
-    <value>Über</value>
+    <value>O</value>
   </data>
   <data name="AddBlog" xml:space="preserve">
-    <value>Blog hinzufügen</value>
+    <value>Dodaj blog</value>
   </data>
   <data name="AddToQueue" xml:space="preserve">
-    <value>Zur Warteschlange hinzufügen</value>
+    <value>Dodać do kolejki</value>
   </data>
   <data name="BlogUrl" xml:space="preserve">
-    <value>URL eingeben:</value>
+    <value>Wprowadź URL:</value>
   </data>
   <data name="Browse" xml:space="preserve">
-    <value>Durchsuchen</value>
+    <value>Paść się</value>
   </data>
   <data name="ClearQueue" xml:space="preserve">
-    <value>Klare Warteschlange</value>
+    <value>Wyczyść kolejkę</value>
   </data>
   <data name="ClipboardMonitor" xml:space="preserve">
-    <value>Überprüfen Sie die Zwischenablage</value>
+    <value>Sprawdź schowek</value>
   </data>
   <data name="Crawl" xml:space="preserve">
-    <value>Kriechen</value>
+    <value>Czołgać się</value>
   </data>
   <data name="CrawlSelection" xml:space="preserve">
-    <value>Crawling auswählen</value>
+    <value>Wybór indeksowania</value>
   </data>
   <data name="DateAdded" xml:space="preserve">
-    <value>Datum hinzugefügt</value>
+    <value>Data dodania</value>
   </data>
   <data name="Delete" xml:space="preserve">
-    <value>Löschen</value>
+    <value>Kasować</value>
   </data>
   <data name="Details" xml:space="preserve">
-    <value>Details</value>
+    <value>Detale</value>
   </data>
   <data name="DownloadedFiles" xml:space="preserve">
-    <value>Heruntergeladene Dateien</value>
+    <value>Pobrane pliki</value>
   </data>
   <data name="DownloadLocation" xml:space="preserve">
-    <value>Standort herunterladen</value>
+    <value>Pobierz lokalizację</value>
   </data>
   <data name="EnqueueSelection" xml:space="preserve">
-    <value>Enqueue Auswahl</value>
+    <value>Wybór enków</value>
   </data>
   <data name="Error" xml:space="preserve">
-    <value>Fehler</value>
+    <value>Błąd</value>
   </data>
   <data name="ErrorMessage" xml:space="preserve">
-    <value>Fehler {0}: {1}</value>
+    <value>Błąd {0}: {1}</value>
   </data>
   <data name="InternalErrorDescription" xml:space="preserve">
-    <value>Interne Fehlerbeschreibung</value>
+    <value>Opis błędu wewnętrznego</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value>Name</value>
+    <value>Nazwa</value>
   </data>
   <data name="NumberOfDownloads" xml:space="preserve">
-    <value>Anzahl der Downloads</value>
+    <value>Liczba pobranych plików</value>
   </data>
   <data name="OpenQueue" xml:space="preserve">
-    <value>Warteschlange öffnen</value>
+    <value>Otwórz kolejkę</value>
   </data>
   <data name="Pause" xml:space="preserve">
-    <value>Pause</value>
+    <value>Pauza</value>
   </data>
   <data name="Queue" xml:space="preserve">
-    <value>Warteschlange</value>
+    <value>Kolejka</value>
   </data>
   <data name="Rating" xml:space="preserve">
-    <value>Bewertung</value>
+    <value>Ocena</value>
   </data>
   <data name="RemoveBlog" xml:space="preserve">
-    <value>Blog entfernen</value>
+    <value>Usuń Blog</value>
   </data>
   <data name="RemoveFromQueue" xml:space="preserve">
-    <value>Aus Warteschlange entfernen</value>
+    <value>Usuń z kolejki</value>
   </data>
   <data name="RemoveSelected" xml:space="preserve">
-    <value>Ausgewählt entfernen</value>
+    <value>Usuń wybrane</value>
   </data>
   <data name="Resume" xml:space="preserve">
-    <value>Fortsetzen</value>
+    <value>Wznawianie</value>
   </data>
   <data name="Return" xml:space="preserve">
-    <value>Rückkehr</value>
+    <value>Powrót</value>
   </data>
   <data name="SaveQueue" xml:space="preserve">
-    <value>Warteschlange speichern</value>
+    <value>Zapisz kolejkę</value>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>Einstellungen</value>
+    <value>Ustawienia</value>
   </data>
   <data name="ShiftReturn" xml:space="preserve">
-    <value>Umschalt + Rückkehr</value>
+    <value>Shift + Return</value>
   </data>
   <data name="ShowDetails" xml:space="preserve">
-    <value>Zeige Details</value>
+    <value>Pokaż szczegóły</value>
   </data>
   <data name="ShowFiles" xml:space="preserve">
-    <value>Zeige Dateien</value>
+    <value>Pokaż pliki</value>
   </data>
   <data name="Stop" xml:space="preserve">
-    <value>Halt</value>
+    <value>Zatrzymać</value>
   </data>
   <data name="Tags" xml:space="preserve">
-    <value>Tags</value>
+    <value>Tagi</value>
   </data>
   <data name="UnknownError" xml:space="preserve">
-    <value>Unbekannter Anwendungsfehler</value>
+    <value>Nieznany błąd aplikacji</value>
   </data>
   <data name="Url" xml:space="preserve">
     <value>Url</value>
   </data>
   <data name="ImageSize" xml:space="preserve">
-    <value>Bildgröße (px)</value>
+    <value>Rozmiar obrazu (px)</value>
   </data>
   <data name="ConcurrentBlogs" xml:space="preserve">
-    <value>Gleichzeitige Blogs</value>
+    <value>Jednoczesne blogi</value>
   </data>
   <data name="ConcurrentConnections" xml:space="preserve">
-    <value>Gleichzeitige Verbindungen</value>
+    <value>Jednoczesne połączenia</value>
   </data>
   <data name="Online" xml:space="preserve">
     <value>Online</value>
   </data>
   <data name="Progress" xml:space="preserve">
-    <value>Fortschritt</value>
+    <value>Postęp</value>
   </data>
   <data name="NumberOfItems" xml:space="preserve">
-    <value>{0} Blogs</value>
+    <value>{0} Blogi</value>
   </data>
   <data name="OneItem" xml:space="preserve">
     <value>1 Blog</value>
   </data>
   <data name="CheckStatus" xml:space="preserve">
-    <value>Überprüfen Sie den Blog-Online-Status beim Start</value>
+    <value>Sprawdź status online bloga podczas uruchamiania</value>
   </data>
   <data name="DeleteIndex" xml:space="preserve">
-    <value>Löschen Sie nur die Indexdateien (keine heruntergeladenen Dateien)</value>
+    <value>Usuń tylko pliki indeksu (nie pobrano plików)</value>
   </data>
   <data name="RemoveIndex" xml:space="preserve">
-    <value>Blog-Index nach dem Crawling entfernen</value>
+    <value>Usuń indeks blogu po indeksowaniu</value>
   </data>
   <data name="SkipGif" xml:space="preserve">
-    <value>Überspringen Sie .gif-Dateien</value>
+    <value>Pomiń pliki .gif</value>
   </data>
   <data name="Info32Bit" xml:space="preserve">
-    <value>32 bit</value>
+    <value>32 Bit</value>
   </data>
   <data name="Info64Bit" xml:space="preserve">
-    <value>64 bit</value>
+    <value>64 Bit</value>
   </data>
   <data name="License" xml:space="preserve">
-    <value>Lizenz</value>
+    <value>Licencja</value>
   </data>
   <data name="NetFramework" xml:space="preserve">
     <value>.NET Framework</value>
   </data>
   <data name="Ok" xml:space="preserve">
-    <value>OK</value>
+    <value>Ok</value>
   </data>
   <data name="OperatingSystem" xml:space="preserve">
-    <value>Betriebssystem</value>
+    <value>System operacyjny</value>
   </data>
   <data name="Product" xml:space="preserve">
     <value>Produkt</value>
   </data>
   <data name="Version" xml:space="preserve">
-    <value>Version</value>
+    <value>Wersja</value>
   </data>
   <data name="Website" xml:space="preserve">
-    <value>Webseite</value>
+    <value>Stronie internetowej</value>
   </data>
   <data name="LastCompleteCrawl" xml:space="preserve">
-    <value>Letzter vollständiger Crawling</value>
+    <value>Ostatni kompletny indeks</value>
   </data>
   <data name="VisitBlog" xml:space="preserve">
-    <value>Öffnen Sie die Website im Webbrowser</value>
+    <value>Otwórz witrynę w przeglądarce internetowej</value>
   </data>
   <data name="NumberOfImages" xml:space="preserve">
-    <value>{0} Beiträge</value>
+    <value>{0} postów</value>
   </data>
   <data name="DownloadedFilesOf" xml:space="preserve">
-    <value>Heruntergeladene Datei {0} von {1}</value>
+    <value>Pobrany plik {0} z {1}</value>
   </data>
   <data name="DownloadImages" xml:space="preserve">
-    <value>Bilder herunterladen</value>
+    <value>Pobierz zdjęcia</value>
   </data>
   <data name="DownloadVideos" xml:space="preserve">
-    <value>Videos herunterladen (tumblr.com selbst gehostet)</value>
+    <value>Pobierz filmy wideo (tumblr.com self hosted)</value>
   </data>
   <data name="VideoSize" xml:space="preserve">
-    <value>Videogröße (px)</value>
+    <value>Rozmiar wideo (px)</value>
   </data>
   <data name="Authenticate" xml:space="preserve">
-    <value>Authentifizieren</value>
+    <value>Uwierzytelniać</value>
   </data>
   <data name="ToolTipAuthenticate" xml:space="preserve">
-    <value>Authentifizierung zum tumblr.com Netzwerk</value>
+    <value>Uwierzytelnij się w sieci tumblr.com</value>
   </data>
   <data name="ToolTipAuthenticateDescription" xml:space="preserve">
-    <value>Öffnet ein Browser-Fenster, um sich auf der Website von tumblr.com zu authentifizieren.
-Der Cookie mit Ihren Anmeldeinformationen Ihres Kontos wird gespeichert und der Authentifizierungsprozess muss nur einmal durchgeführt werden.</value>
+    <value>Otwiera okno przeglądarki, aby uwierzytelniać się w witrynie tumblr.com.
+Plik cookie z poświadczeniami Twojego konta zostanie zapisany, a proces uwierzytelniania należy wykonać tylko raz.</value>
   </data>
   <data name="ToolTipBlogs" xml:space="preserve">
-    <value>Anzahl gleichzeitiger Verarbeitungsblogs</value>
+    <value>Liczba równoległych blogów przetwarzania</value>
   </data>
   <data name="ToolTipBlogsDescription" xml:space="preserve">
-    <value>Legt die Anzahl der gleichzeitigen Verarbeitungsblogs fest.
-Wenn man dies auf 2 setzt, würde es zwei Blogs gleichzeitig geben.</value>
+    <value>Ustawia liczbę współbieżnych blogów przetwarzania.
+Ustawienie to na 2 spowoduje wyświetlenie dwóch blogów jednocześnie.</value>
   </data>
   <data name="ToolTipConnections" xml:space="preserve">
-    <value>Anzahl der gleichzeitigen Verbindungen</value>
+    <value>Liczba łącznych jednoczesnych połączeń</value>
   </data>
   <data name="ToolTipConnectionsDescription" xml:space="preserve">
-    <value>Setzt die Anzahl der gesamten gleichzeitigen Verbindungen.
-Die Nummer wird zwischen allen aktiv heruntergeladenen Blogs geteilt.</value>
+    <value>Ustawia liczbę łącznych połączeń jednocześnie.
+Liczba ta jest dzielona między wszystkie aktywne pobieranie blogów.</value>
   </data>
   <data name="Notes" xml:space="preserve">
-    <value>Persönliche Hinweise</value>
+    <value>Osobiste notatki</value>
   </data>
   <data name="TimeOut" xml:space="preserve">
-    <value>Timeout (s)</value>
+    <value>Limit czasu</value>
   </data>
   <data name="Bandwidth" xml:space="preserve">
-    <value>Grenzbandbreite (KB / s)</value>
+    <value>Limit Bandwidth (KB / s)</value>
   </data>
   <data name="EnableAutoDownload" xml:space="preserve">
-    <value>Starten Sie den Download bei</value>
+    <value>Zacznij pobieranie z</value>
   </data>
   <data name="Timer" xml:space="preserve">
-    <value>(hh: mm: ss) und fügen Sie hinzu</value>
+    <value>(hh: mm: ss) i dodać</value>
   </data>
   <data name="SelectABlog" xml:space="preserve">
-    <value>Bitte wählen Sie ein Blog</value>
+    <value>Wybierz blog</value>
   </data>
   <data name="ShowItems" xml:space="preserve">
-    <value>Zusammenfassung von {0} Blogs</value>
+    <value>Podsumowanie {0} blogów</value>
   </data>
   <data name="CopyUrl" xml:space="preserve">
-    <value>Kopiere URL</value>
+    <value>Skopiuj adres</value>
   </data>
   <data name="Posts" xml:space="preserve">
-    <value>Anzahl der Beiträge:</value>
+    <value>Liczba postów:</value>
   </data>
   <data name="Preview" xml:space="preserve">
-    <value>Vorschau:</value>
+    <value>Zapowiedź:</value>
   </data>
   <data name="DownloadAudios" xml:space="preserve">
-    <value>Laden Sie Audiodateien herunter</value>
+    <value>Pobieranie plików audio</value>
   </data>
   <data name="DownloadConversations" xml:space="preserve">
-    <value>Laden Sie Konversationsposten herunter</value>
+    <value>Pobierz posty konwersacyjne</value>
   </data>
   <data name="DownloadLinks" xml:space="preserve">
-    <value>Link-Beiträge herunterladen</value>
+    <value>Pobierz posty linku</value>
   </data>
   <data name="DownloadQuotes" xml:space="preserve">
-    <value>Download Zitat Beiträge</value>
+    <value>Pobierz cytaty cytatów</value>
   </data>
   <data name="DownloadTexts" xml:space="preserve">
-    <value>Texttexte herunterladen</value>
+    <value>Pobierz wpisy tekstowe</value>
   </data>
   <data name="DetailsProgress" xml:space="preserve">
-    <value>{0} von {1}, Duplikate gefunden: {2}</value>
+    <value>{0} z {1} znaleziono duplikaty: {2}</value>
   </data>
   <data name="EnablePreview" xml:space="preserve">
-    <value>Vorschau auf / aus</value>
+    <value>Podgląd włączania / wyłączania</value>
   </data>
   <data name="BlogSettings" xml:space="preserve">
-    <value>Blog-Einstellungen:</value>
+    <value>Ustawienia bloga:</value>
   </data>
   <data name="GlobalSettings" xml:space="preserve">
-    <value>Globale Einstellungen:</value>
+    <value>Ustawienia ogólne:</value>
   </data>
   <data name="BlogStatistics" xml:space="preserve">
-    <value>Blog-Statistiken:</value>
+    <value>Statystyki blogów:</value>
   </data>
   <data name="ToolTipDetailsStats" xml:space="preserve">
-    <value>Anzahl der heruntergeladenen Post-Typen der gesamten Post-Typen</value>
+    <value>Liczba pobranych typów postów wszystkich typów postów</value>
   </data>
   <data name="ToolTipDetailsStatsDescription" xml:space="preserve">
-    <value>Überprüfen Sie, um Post-Typ herunterladen oder überspringen während des Downloads</value>
+    <value>Zaznacz, aby pobrać typ wpisu lub pominąć podczas pobierania</value>
   </data>
   <data name="DownloadAudioMeta" xml:space="preserve">
-    <value>Laden Sie die Audio-Meta herunter</value>
+    <value>Pobierz plik audio meta</value>
   </data>
   <data name="DownloadImageMeta" xml:space="preserve">
-    <value>Bild herunterladen meta</value>
+    <value>Pobierz obraz meta</value>
   </data>
   <data name="DownloadVideoMeta" xml:space="preserve">
-    <value>Video herunterladen Meta</value>
+    <value>Pobierz meta wideo</value>
   </data>
   <data name="DefaultSettingsForBlogs" xml:space="preserve">
-    <value>Einstellungen für jeden Blog bei Hinzufügen:</value>
+    <value>Ustawienia stosowane do każdego bloga po dodaniu:</value>
   </data>
   <data name="DownloadVideosShort" xml:space="preserve">
-    <value>Videos herunterladen</value>
+    <value>Pobierz filmy</value>
   </data>
   <data name="ToolTipDefaultSettingsForBlogs" xml:space="preserve">
-    <value>Legt die Standardeinstellungen für neu hinzugefügte Blogs fest.</value>
+    <value>Ustaw domyślne ustawienia dla nowo dodanych blogów.</value>
   </data>
   <data name="ToolTipDefaultSettingsForBlogsDescription" xml:space="preserve">
-    <value>Der Scan / Download verwendet indivuelle Einstellungen für jeden Blog.
-Um sie zu ändern, wählen Sie Blog (s) in der Hauptschnittstelle und wählen Sie die Registerkarte Details auf der rechten Seite.</value>
+    <value>Skanowanie / pobieranie wykorzystuje indywualne ustawienia każdego bloga.
+Aby je zmienić, wybierz z menu głównego bloga (y) i wybierz kartę Szczegóły (Details) po prawej stronie.</value>
   </data>
   <data name="Save" xml:space="preserve">
-    <value>sparen</value>
+    <value>Zapisać</value>
   </data>
   <data name="Offline" xml:space="preserve">
     <value>Offline</value>
   </data>
   <data name="ForceSize" xml:space="preserve">
-    <value>Laden Sie die angegebene Größe, auch wenn es nicht angeboten wird</value>
+    <value>Pobierz określony rozmiar, nawet jeśli nie jest oferowany</value>
   </data>
   <data name="ToolTipForceSize" xml:space="preserve">
-    <value>Laden Sie die angegebene Auflösung von Bildern herunter, auch wenn die Größe nicht angeboten wird.</value>
+    <value>Pobierz określoną rozdzielczość obrazów, nawet jeśli rozmiar nie jest oferowany.</value>
   </data>
   <data name="ToolTipForceSizeDescription" xml:space="preserve">
-    <value>Wenn der Crawler nur Bilder mit geringerer Größe als angegeben findet,
-wird diese Option um die URL in die angegebene Dateigröße umbenannt. 
-Diese Dateien sind in der Regel vorhanden und bieten manchmal eine größere Auflösung oder sind nur umbenannt kleinere Auflösung Dateien.
-Es ist sicher, dies zu aktivieren.</value>
+    <value>Jeśli przeszukiwacz stwierdzi, że obrazy są niższe niż określone, 
+	włączenie tej opcji spowoduje zmianę nazwy adresu URL na określony rozmiar. 
+	Pliki te zazwyczaj istnieją i czasami oferują większą rozdzielczość lub są po prostu zmieniane na mniejsze pliki rozdzielczości.
+	Włącz to dobrze.</value>
   </data>
   <data name="ProxyHost" xml:space="preserve">
-    <value>HTTP-Proxy:</value>
+    <value>Http Proxy:</value>
   </data>
   <data name="ProxyPort" xml:space="preserve">
-    <value>Hafen:</value>
+    <value>Port:</value>
   </data>
   <data name="ThirdPartySoftware" xml:space="preserve">
-    <value>Drittanbietersoftware</value>
+    <value>Oprogramowanie innych firm</value>
   </data>
   <data name="ThirdPartySoftwareDescription" xml:space="preserve">
-    <value>Software und Lizenzen von Drittanbietern</value>
+    <value>Oprogramowanie i licencje innych firm</value>
   </data>
   <data name="ToolTipLimitBandwidth" xml:space="preserve">
-    <value>Drosselt die Bandbreite des Downloaders</value>
+    <value>Ogranicza przepustowość pobieracza</value>
   </data>
   <data name="ToolTipLimitBandwidthDescription" xml:space="preserve">
-    <value>Setzt die maximale Bandbreite für den Downloader in kbytes / s. 
-0 deaktiviert die Drosselung.</value>
+    <value>Ustawia maksymalną szerokość pasma dostępną dla ściągacza w kbajtach. 0 wyłącza dławienie.</value>
   </data>
   <data name="LimitScan" xml:space="preserve">
-    <value>Begrenzung der Scan-Bandbreite</value>
+    <value>Ogranicz pasmo skanowania</value>
   </data>
   <data name="ScanConnections" xml:space="preserve">
-    <value>Scanverbindungen</value>
+    <value>Skanuj połączenia</value>
   </data>
   <data name="ToolTipLimitScan" xml:space="preserve">
-    <value>Enthält die Scan-Bandbreite in der Drosselung</value>
+    <value>Zawiera szerokość pasma skanowania w dławieniu</value>
   </data>
   <data name="ToolTipLimitScanDescription" xml:space="preserve">
-    <value>Da die für das Scannen verwendeten Daten in der Regel klein sind, sollten Sie diese ausschalten,
-da der Drosselungsalgorithmus zu langsam ist, um sich anzupassen und die Scanleistung negativ beeinflussen zu können.
-Anzahl der für jeden Scan verwendeten Verbindungen</value>
+    <value>Ponieważ dane używane do skanowania są zwykle małe,
+należy je wyłączyć, ponieważ algorytm dławienia jest zbyt wolny,
+aby można było dostosować i może negatywnie wpłynąć na wydajność skanowania.
+Liczba połączeń używanych do każdego skanowania</value>
   </data>
   <data name="ToolTipScan" xml:space="preserve">
-    <value>Legt die für das Scannen verwendeten Nummernverbindungen fest. 
-Da die Daten in der Regel klein sind, solltest du das hoch lassen.</value>
+    <value>Ustawia liczbę połączeń używanych do skanowania.
+Ponieważ dane są zazwyczaj małe, należy pozostawić to wysokie.</value>
   </data>
   <data name="ToolTipScanDescription" xml:space="preserve">
-    <value>Der Wert muss zwischen 0 und 9.000.000.000.000.000 liegen.</value>
+    <value>Wartość musi wynosić od 0 do 9,000,000 000 000 000.</value>
   </data>
   <data name="BandwidthRangeError" xml:space="preserve">
-    <value>Der Wert muss hh bilden: mm: ss.</value>
+    <value>Wartość musi mieć formę hh: mm: ss.</value>
   </data>
   <data name="TimeSpanTypeError" xml:space="preserve">
-    <value>Der Wert muss zwischen 0 und 2.147.483.647 liegen.</value>
+    <value>Wartość musi wynosić od 0 do 2 147 473 647.</value>
   </data>
   <data name="IntRangeError" xml:space="preserve">
-    <value>Der Wert muss vom Typ Integer sein.</value>
+    <value>Wartość musi być typu integer.</value>
   </data>
   <data name="IntTypeError" xml:space="preserve">
-    <value>pro Zeitintervall (e):</value>
+    <value>na przedziały czasowe:</value>
   </data>
   <data name="ConnectionTimeInterval" xml:space="preserve">
-    <value>Limit Tumblr Api Verbindungen:</value>
+    <value>Ograniczanie połączeń Tumblr Api:</value>
   </data>
   <data name="LimitConnections" xml:space="preserve">
-    <value>Anzahl der Anschlüsse:</value>
+    <value>Liczba połączeń:</value>
   </data>
   <data name="MaxConnections" xml:space="preserve">
-    <value>Begrenzung der Verbindungen zum tumblr api.</value>
+    <value>Ogranicz połączenia z tumblr api.</value>
   </data>
   <data name="ToolTipLimitConnections" xml:space="preserve">
-    <value>Ein zu hoher Wert wird die Verbindungen (429 - Limit Exceeded), die an die tumblr api gemacht wurden, kraftvoll schließen.
-Ein zu kleiner Wert verringert die Abtastgeschwindigkeit.
-Stellen Sie ein Zahlen- / Zeitpaar ein. 
-Hinweis: Die tumblr api wird nur für regelmäßige tumblr Blog Downloads verwendet.</value>
+    <value>Zbyt wysoka wartość spowoduje silne zamknięcie połączeń (429 - Limit Exceeded),
+które zostały wykonane w apliku tumblr. 
+Zbyt mała wartość zmniejszy prędkość skanowania. Ustaw parę liczb / czasu.
+Uwaga: Aplikacja tumblr jest używana tylko w przypadku regularnych pobierania blogów przez tumblr.</value>
   </data>
   <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
-    <value>Force rescan</value>
+    <value>Wymuś skanowanie</value>
   </data>
   <data name="ForceRescan" xml:space="preserve">
-    <value>Rescans das ganze Blog, nicht nur neue Beiträge.</value>
+    <value>Rescans cały blog, a nie tylko nowe posty.</value>
   </data>
   <data name="ToolTipForceRescan" xml:space="preserve">
-    <value>Erzwingt einen kompletten Scan mit dem Tumblr api.</value>
+    <value>Wymusza pełne skanowanie przy użyciu aplikacji Tumblr.</value>
   </data>
   <data name="ToolTipForceRescanDescription" xml:space="preserve">
-    <value>Auf Updates prüfen</value>
+    <value>Sprawdź aktualizacje</value>
   </data>
   <data name="CheckForUpdates" xml:space="preserve">
-    <value>Jetzt herunterladen</value>
+    <value>Pobierz teraz</value>
   </data>
   <data name="DownloadNow" xml:space="preserve">
-    <value>Überprüfen Sie das Verzeichnis auf Dateien</value>
+    <value>Sprawdź katalog plików</value>
   </data>
   <data name="CheckDirectoryForFiles" xml:space="preserve">
-    <value>Überprüft das Verzeichnis für bereits heruntergeladene Dateien.</value>
+    <value>Sprawdza katalog już pobranych plików.</value>
   </data>
   <data name="ToolTipCheckDirectoryForFiles" xml:space="preserve">
-    <value>Überprüft das Verzeichnis und die Datenbank auf bereits heruntergeladene Dateien.
-Kann die Downloadgeschwindigkeit für große Verzeichnisse negativ beeinflussen.</value>
+    <value>Sprawdza katalog i bazę danych już pobranych plików.
+Może mieć negatywny wpływ na szybkość pobierania dużych katalogów.</value>
   </data>
   <data name="ToolTipCheckDirectoryForFilesDescription" xml:space="preserve">
-    <value>Download der URL-Liste</value>
+    <value>Pobierz listę adresów URL</value>
   </data>
   <data name="DownloadUrlList" xml:space="preserve">
-    <value>Laden Sie eine URL-Liste herunter.</value>
+    <value>Pobierz listę adresów URL.</value>
   </data>
   <data name="ToolTipDownloadUrlList" xml:space="preserve">
-    <value>Downloads eine URL-Liste der Binärdateien anstelle der eigentlichen Dateien</value>
+    <value>Pobiera listę url plików binarnych zamiast plików rzeczywistych</value>
   </data>
   <data name="ToolTipDownloadUrlListDescription" xml:space="preserve">
-    <value>Antwort-Beiträge herunterladen</value>
+    <value>Pobierz posty odpowiedzi</value>
   </data>
   <data name="DownloadAnswers" xml:space="preserve">
     <value>Blog</value>
   </data>
   <data name="Blog" xml:space="preserve">
-    <value>Verbindung</value>
+    <value>Połączenie</value>
   </data>
   <data name="Connection" xml:space="preserve">
-    <value>General</value>
+    <value>Generał</value>
   </data>
   <data name="General" xml:space="preserve">
-    <value>Aktivieren Sie den tragbaren Modus</value>
+    <value>Uaktywnij tryb przenośny</value>
   </data>
   <data name="PortableMode" xml:space="preserve">
-    <value>Aktiviert den tragbaren Modus.</value>
+    <value>Uaktywnia tryb przenośny.</value>
   </data>
   <data name="ToolTipPortableMode" xml:space="preserve">
-    <value>Speichert die Einstellungen im Ordner der ausführbaren Datei anstelle von AppData.</value>
+    <value>Zapisuje ustawienia w folderze pliku wykonywalnego zamiast AppData.</value>
   </data>
   <data name="ToolTipPortableModeDescription" xml:space="preserve">
-    <value>Download von gesendeten Beiträgen</value>
+    <value>Pobierz zdemonowane posty</value>
   </data>
   <data name="DownloadRebloggedPosts" xml:space="preserve">
-    <value>Proxy-Passwort:</value>
+    <value>Proxy Password:</value>
   </data>
   <data name="ProxyPassword" xml:space="preserve">
-    <value>Proxy Benutzername:</value>
+    <value>Prośba o nazwę użytkownika:</value>
   </data>
   <data name="ProxyUsername" xml:space="preserve">
-    <value>Anmeldeinformationen für nicht anonymen Proxy-Server</value>
+    <value>Poświadczenia dla nie-anonimowego serwera proxy</value>
   </data>
   <data name="ToolTipProxyPassword" xml:space="preserve">
-    <value>Anmeldeinformationen werden in der Einstellungsdatei in Klartext gespeichert</value>
+    <value>Poświadczenia są zapisywane w czystym tekście w pliku ustawień</value>
   </data>
   <data name="ToolTipProxyPasswordDescription" xml:space="preserve">
-    <value>Download Seiten:</value>
+    <value>Strony pobierania:</value>
   </data>
   <data name="DownloadPages" xml:space="preserve">
-    <value>Beiträge pro Seite:</value>
+    <value>Liczba postów na stronie:</value>
   </data>
   <data name="PageSize" xml:space="preserve">
-    <value>Laden Sie nur bestimmte Seiten herunter</value>
+    <value>Pobieranie tylko określonych stron</value>
   </data>
   <data name="ToolTipDownloadPages" xml:space="preserve">
-    <value>Mögliche Notationen sind: 1 oder 1-3 oder 1,2,3. 
-Leer bedeutet das ganze Blog.</value>
+    <value>Możliwe notacje to: 1 lub 1-3 lub 1,2,3.
+Pusty oznacza cały blog.</value>
   </data>
   <data name="ToolTipDownloadPagesDescription" xml:space="preserve">
-    <value>Beiträge pro Seite</value>
+    <value>Liczba postów na stronie</value>
   </data>
   <data name="ToolTipPageSize" xml:space="preserve">
-    <value>Setzt den Beitrag pro Seite (sollte zwischen 1-50, Standard 50) sein.
-Z.B. 50 bedeutet, 50 Beiträge pro Seite zu scannen.</value>
+    <value>Ustawia post na stronie (powinien wynosić 1-50, domyślnie 50).
+Na przykład. 50 oznacza skanowanie 50 postów na stronie.</value>
   </data>
   <data name="ToolTipPageSizeDescription" xml:space="preserve">
-    <value>Vollbildansicht</value>
+    <value>FullScreenView</value>
   </data>
   <data name="FullScreenMedia" xml:space="preserve">
-    <value>Export-Blogs</value>
+    <value>Eksportuj blogi</value>
   </data>
   <data name="Export" xml:space="preserve">
-    <value>Exportiere alle Blog-URLs als Textdatei</value>
+    <value>Eksportuj wszystkie adresy blogów jako plik tekstowy</value>
   </data>
   <data name="ToolTipExportBlogs" xml:space="preserve">
-    <value>Speichert alle URLs als Textdatei für den Austausch.</value>
+    <value>Zapisuje wszystkie adresy URL jako plik tekstowy do wymiany.</value>
   </data>
   <data name="ToolTipExportBlogsDescription" xml:space="preserve">
-    <value>Herunterladen von:</value>
+    <value>Pobierz z:</value>
   </data>
   <data name="DownloadFrom" xml:space="preserve">
-    <value>Nach:</value>
+    <value>Do:</value>
   </data>
   <data name="DownloadTo" xml:space="preserve">
-    <value>Crawling Beiträge von diesem Datum</value>
+    <value>Przesyłaj wiadomości z tej daty</value>
   </data>
   <data name="ToolTipDownloadFrom" xml:space="preserve">
-    <value>Muss im JJJJMMDD-Format sein. Leere bedeutet ab Mai 2007.</value>
+    <value>Musi być w formacie RRRRMMDD. Pusty oznacza od maja 2007.</value>
   </data>
   <data name="ToolTipDownloadTagsFromDescription" xml:space="preserve">
-    <value>Crawl Beiträge zu diesem Datum</value>
+    <value>Przesyłaj wiadomości do tej daty</value>
   </data>
   <data name="ToolTipDownloadTo" xml:space="preserve">
-    <value>Muss im JJJJMMDD-Format sein. Leer bedeutet jetzt</value>
+    <value>Musi być w formacie RRRRMMDD. Puste znaczenie dla teraz.</value>
   </data>
   <data name="ToolTipDownloadTagsToDescription" xml:space="preserve">
-    <value>Muss im JJJJMMDD-Format sein. Leere bedeutet vom Anfang des Blogs.</value>
+    <value>Musi być w formacie RRRRMMDD. Puste środki od początku bloga.</value>
   </data>
   <data name="ToolTipDownloadFromDescription" xml:space="preserve">
-    <value>Muss im JJJJMMDD-Format sein. Leer bedeutet jetzt</value>
+    <value>Musi być w formacie RRRRMMDD. Puste znaczenie dla teraz.</value>
   </data>
   <data name="ToolTipDownloadToDescription" xml:space="preserve">
-    <value>Beiträge pro Seite</value>
+    <value>Liczba postów na stronie</value>
   </data>
   <data name="ToolTipPageSizeTumblrSearch" xml:space="preserve">
-    <value>Setzt den Beitrag pro Seite. Z.B. 50 bedeutet, 50 Beiträge pro Seite zu scannen.</value>
+    <value>Ustawia post na stronie. Na przykład. 50 oznacza skanowanie 50 postów na stronie.</value>
   </data>
   <data name="ToolTipPageSizeTumblrSearchDescription" xml:space="preserve">
-    <value>Passwort:</value>
+    <value>Hasło:</value>
   </data>
   <data name="Password" xml:space="preserve">
-    <value>Passwort für passwortgeschützte Blogs</value>
+    <value>Hasło dla blogów chronionych hasłem</value>
   </data>
   <data name="ToolTipPassword" xml:space="preserve">
-    <value>Achtung: Das Passwort wird in der Blogs-Datenbank in Klartext gespeichert.</value>
+    <value>Uwaga: hasło jest zapisywane w czystym tekście w bazie blogów.</value>
   </data>
   <data name="ToolTipPasswordDescription" xml:space="preserve">
-    <value>Art</value>
+    <value>Rodzaj</value>
   </data>
   <data name="Blogtype" xml:space="preserve">
-    <value>Nur getaggte Beiträge herunterladen</value>
+    <value>Pobieraj tylko oznaczone posty</value>
   </data>
   <data name="ToolTipTags" xml:space="preserve">
-    <value>Muss in einer kommagetrennten Liste ohne das führende Hash (#) Zeichen sein. 
-Z.B. großes großes Auto, Bären sucht nach großen großen Autos und Bären.</value>
+    <value>Musi znajdować się w oddzielonej przecinkowej liście bez znaku głównego hash (#).
+Na przykład. wielki samochód, poszukuje wielkich samochodów i niedźwiedzi.</value>
   </data>
   <data name="ToolTipTagsDescription" xml:space="preserve">
-    <value>Alle</value>
+    <value>Wszystko</value>
   </data>
   <data name="BlogtypeAll" xml:space="preserve">
     <value>Instagram</value>
@@ -670,36 +670,36 @@ Z.B. großes großes Auto, Bären sucht nach großen großen Autos und Bären.</
     <value>Tumblr</value>
   </data>
   <data name="BlogtypeTumblr" xml:space="preserve">
-    <value>Tumblr Liked-by</value>
+    <value>Tumblr Przybytkujący</value>
   </data>
   <data name="BlogtypeTumblrLikedBy" xml:space="preserve">
-    <value>Tumblr versteckt</value>
+    <value>Tumblr Ukryty</value>
   </data>
   <data name="BlogtypeTumblrPrivate" xml:space="preserve">
-    <value>Tumblr Suche</value>
+    <value>Szukaj Tumblr</value>
   </data>
   <data name="BlogtypeTumblrSearch" xml:space="preserve">
-    <value>Tumblr Tag Suche</value>
+    <value>Szukaj tagów Tumblr</value>
   </data>
   <data name="BlogtypeTumblrTagSearch" xml:space="preserve">
-    <value>Twitter</value>
+    <value>Świergot</value>
   </data>
   <data name="BlogtypeTwitter" xml:space="preserve">
-    <value>Blogs zur Warteschlange.</value>
+    <value>blogi do kolejki.</value>
   </data>
   <data name="AutoDownloadBlogs" xml:space="preserve">
-    <value>Timeout für Webanfragen</value>
+    <value>Limit czasu dla żądań internetowych</value>
   </data>
   <data name="ToolTipTimeout" xml:space="preserve">
-    <value>Die Zeitdauer, in Sekunden, bis die Anforderung abläuft.</value>
+    <value>Długość czasu, w sekundach, do czasu wygaśnięcia żądania.</value>
   </data>
   <data name="ToolTipTimeoutDescription" xml:space="preserve">
-    <value>Gleichzeitige Videoverbindungen:</value>
+    <value>Jednoczesne połączenia wideo:</value>
   </data>
   <data name="ConcurrentVideoConnections" xml:space="preserve">
-    <value>Anzahl der gleichzeitigen Verbindungen zum tumblr Video-Host</value>
+    <value>Liczba jednoczesnych połączeń z hostem wideo tumblr</value>
   </data>
   <data name="ToolTipVideoConnections" xml:space="preserve">
-    <value>Der vt.tumblr.com-Host schließt regelmäßig Verbindungen, wenn die Nummer zu hoch ist.</value>
+    <value>Oficer vt.tumblr.com regularnie zamyka połączenia, jeśli liczba jest za wysoka.</value>
   </data>
 </root>

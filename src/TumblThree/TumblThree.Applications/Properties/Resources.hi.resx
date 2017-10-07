@@ -118,82 +118,82 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ApplicationUpToDate" xml:space="preserve">
-    <value>Ihre Bewerbung ist aktuell.</value>
+    <value>आपका एप्लिकेशन अद्यतित है</value>
   </data>
   <data name="AudioCaption" xml:space="preserve">
-    <value>Audio-Untertitel: {0}</value>
+    <value>ऑडियो कैप्शन: {0}</value>
   </data>
   <data name="AuthenticationFailure" xml:space="preserve">
-    <value>Authentifizierungsfehler: {0}</value>
+    <value>प्रमाणीकरण विफलता: {0}</value>
   </data>
   <data name="BlogAlreadyExist" xml:space="preserve">
-    <value>Der Blog existiert bereits: {0}</value>
+    <value>ब्लॉग पहले से मौजूद है: {0}</value>
   </data>
   <data name="BlogIsOffline" xml:space="preserve">
-    <value>Der Blog ist offline: {0}</value>
+    <value>ब्लॉग ऑफ़लाइन है: {0}</value>
   </data>
   <data name="BlogTypesAll" xml:space="preserve">
-    <value>Alle</value>
+    <value>सब</value>
   </data>
   <data name="BlogTypesNeverFinished" xml:space="preserve">
-    <value>Niemals fertig</value>
+    <value>कभी खत्म नहीं हुआ</value>
   </data>
   <data name="BlogTypesNone" xml:space="preserve">
-    <value>Keiner</value>
+    <value>कोई नहीं</value>
   </data>
   <data name="BlogTypesOnceFinished" xml:space="preserve">
-    <value>Einmal fertig</value>
+    <value>एक बार समाप्त हो गया</value>
   </data>
   <data name="Body" xml:space="preserve">
-    <value>Körper: {0]</value>
+    <value>बॉडी: {0]</value>
   </data>
   <data name="Conversation" xml:space="preserve">
-    <value>Konversation: {0}</value>
+    <value>वार्तालाप: {0}</value>
   </data>
   <data name="CouldNotAddBlog" xml:space="preserve">
-    <value>Das Blog konnte nicht hinzugefügt werden: {0}</value>
+    <value>ब्लॉग नहीं जोड़ा जा सका: {0}</value>
   </data>
   <data name="CouldNotLoadLibrary" xml:space="preserve">
-    <value>Die Datei konnte nicht geladen werden: {0}</value>
+    <value>फ़ाइल को लाइब्रेरी में लोड नहीं किया जा सका: {0}</value>
   </data>
   <data name="CouldNotLoadQueuelist" xml:space="preserve">
-    <value>Der queuelist konnte nicht geladen werden Vielleicht existieren einige referenzierte Blogs nicht mehr.</value>
+    <value>क्यूएलियलिस्ट लोड नहीं किया जा सका। शायद कुछ संदर्भित ब्लॉग अब मौजूद नहीं हैं</value>
   </data>
   <data name="CouldNotOpenFiles" xml:space="preserve">
-    <value>Eine Datei konnte nicht geöffnet werden.</value>
+    <value>एक फाइल खोली नहीं जा सकी</value>
   </data>
   <data name="CouldNotRemoveBlog" xml:space="preserve">
-    <value>Konnte das Blog nicht entfernen: {0}</value>
+    <value>ब्लॉग को नहीं निकाला जा सका: {0}</value>
   </data>
   <data name="CouldNotRemoveBlogIndex" xml:space="preserve">
-    <value>Konnte das Blog nicht entfernen: {0}</value>
+    <value>ब्लॉग को नहीं निकाला जा सका: {0}</value>
   </data>
   <data name="CouldNotRestoreUISettings" xml:space="preserve">
-    <value>Die UI-Einstellungen konnten nicht wiederhergestellt werden.</value>
+    <value>UI सेटिंग्स पुनर्स्थापित नहीं की जा सकीं</value>
   </data>
   <data name="CouldNotSaveBlog" xml:space="preserve">
-    <value>Konnte das Blog nicht speichern: {0}</value>
+    <value>ब्लॉग को सहेजा नहीं जा सका: {0}</value>
   </data>
   <data name="CouldNotSaveQueueList" xml:space="preserve">
-    <value>Der queuelist konnte nicht gerettet werden</value>
+    <value>क्यूएलिस्ट को बचाया नहीं जा सका।</value>
   </data>
   <data name="CouldNotStartOAuthManager" xml:space="preserve">
-    <value>Der OAuth Manager konnte nicht initialisiert werden</value>
+    <value>OAuth प्रबंधक को प्रारंभ नहीं किया जा सका</value>
   </data>
   <data name="CrawlerError" xml:space="preserve">
-    <value>Der Crawler-Thread ist auf einen Fehler gestoßen.</value>
+    <value>क्रॉलर थ्रेड को एक त्रुटि मिली।</value>
   </data>
   <data name="Date" xml:space="preserve">
-    <value>Datum: {0}</value>
+    <value>दिनांक: {0}</value>
   </data>
   <data name="DiskFull" xml:space="preserve">
-    <value>Es gibt nicht genug Platz auf der Festplatte.</value>
+    <value>डिस्क में पर्याप्त जगह की कमी हैं।</value>
   </data>
   <data name="ExportFileFilter" xml:space="preserve">
-    <value>Textdateien (* .txt) | * .txt</value>
+    <value>पाठ फ़ाइलें (* .txt) | * .txt</value>
   </data>
   <data name="ExportFileFilterExtension" xml:space="preserve">
-    <value>.txt</value>
+    <value>।टेक्स्ट</value>
   </data>
   <data name="FileNameAnswers" xml:space="preserve">
     <value>answers.txt</value>
@@ -223,96 +223,96 @@
     <value>quotes.txt</value>
   </data>
   <data name="FileNameTexts" xml:space="preserve">
-    <value>texte.txt</value>
+    <value>texts.txt</value>
   </data>
   <data name="FileNameVideos" xml:space="preserve">
     <value>videos_url.txt</value>
   </data>
   <data name="Id3Album" xml:space="preserve">
-    <value>Id3: Album: {0}</value>
+    <value>आईडी 3: एल्बम: {0}</value>
   </data>
   <data name="Id3Artist" xml:space="preserve">
-    <value>Id3: Künstler: {0}</value>
+    <value>आईडी 3: कलाकार: {0}</value>
   </data>
   <data name="Id3Title" xml:space="preserve">
-    <value>Id3: Titel: {0}</value>
+    <value>आईडी 3: शीर्षक: {0}</value>
   </data>
   <data name="Id3Track" xml:space="preserve">
-    <value>Id3: Spur: {0}</value>
+    <value>आईडी 3: ट्रैक: {0}</value>
   </data>
   <data name="Id3Year" xml:space="preserve">
-    <value>Id3: Jahr: {0}</value>
+    <value>आईडी 3: वर्ष: {0}</value>
   </data>
   <data name="LimitExceeded" xml:space="preserve">
-    <value>Grenzwert überschritten: {0}. Sie sollten die Verbindungen zum tumblr svc senken.</value>
+    <value>सीमा पार हो गई: {0} आप कनेक्शन को कम करना चाहिए tumblr svc।</value>
   </data>
   <data name="Link" xml:space="preserve">
-    <value>Link: {0}</value>
+    <value>लिंक: {0}</value>
   </data>
   <data name="MaxBytePerSecond" xml:space="preserve">
-    <value>MaxBytesPerSecond muss nicht negativ sein</value>
+    <value>मैक्सबाइट्सपेरसेन को गैर-नकारात्मक होना चाहिए</value>
   </data>
   <data name="NewVersionAvailable" xml:space="preserve">
-    <value>Neue Version zum Download verfügbar: {0}</value>
+    <value>डाउनलोड के लिए नया संस्करण उपलब्ध है: {0}</value>
   </data>
   <data name="NotLoggedIn" xml:space="preserve">
-    <value>Sie müssen sich bei tumblr.com anmelden, um {0} herunterzuladen. Gehen Sie zu den Einstellungen-&gt; Authentifizieren.</value>
+    <value>{0} को डाउनलोड करने के लिए आपको tumblr.com पर लॉग इन करना होगा। सेटिंग्स-&gt; प्रमाणीकरण पर जाएं</value>
   </data>
   <data name="PasswordProtected" xml:space="preserve">
-    <value>Passwortgeschützter Blog: {0}. Sie müssen das Passwort in die Details eingeben.</value>
+    <value>पासवर्ड संरक्षित ब्लॉग: {0} आपको विवरण में पासवर्ड दर्ज करना होगा।</value>
   </data>
   <data name="PasswordProtectedOrOffline" xml:space="preserve">
-    <value>Hidden Password geschützt oder Offline-Blog erkannt: {0}. Sie müssen das Passwort in die Details eingeben.</value>
+    <value>छुपे हुए पासवर्ड संरक्षित या ऑफ़लाइन ब्लॉग का पता चला: {0}। आपको विवरण में पासवर्ड दर्ज करना होगा।</value>
   </data>
   <data name="PhotoCaption" xml:space="preserve">
-    <value>Bildunterschrift: {0}</value>
+    <value>फोटो कैप्शन: {0}</value>
   </data>
   <data name="PhotoUrl" xml:space="preserve">
-    <value>Foto Url: {0}</value>
+    <value>फोटो यूआरएल: {0}</value>
   </data>
   <data name="PostId" xml:space="preserve">
-    <value>Beitrags-ID: {0}</value>
+    <value>पोस्ट आईडी: {0}</value>
   </data>
   <data name="ProgressDownloadImage" xml:space="preserve">
-    <value>Herunterladen {0}.</value>
+    <value>{0} को डाउनलोड करना</value>
   </data>
   <data name="ProgressGetUrlLong" xml:space="preserve">
-    <value>Ausgewertet {0} tumblr post urls aus {1} insgesamt Beiträge.</value>
+    <value>{1} कुल पोस्ट के बाहर {0} टंबर पोस्ट यूआरएल का मूल्यांकन किया गया।</value>
   </data>
   <data name="ProgressGetUrlShort" xml:space="preserve">
-    <value>Ausgewertet {0} tumblr Blog-Seiten.</value>
+    <value>{0} टुम्ब्लर ब्लॉग साइटों का मूल्यांकन</value>
   </data>
   <data name="ProgressUniqueDownloads" xml:space="preserve">
-    <value>Berechnen von einzigartigen Downloads, Entfernen von Duplikaten ...</value>
+    <value>अद्वितीय डाउनलोड की गणना, डुप्लिकेट हटाएं ...</value>
   </data>
   <data name="Queuelist" xml:space="preserve">
     <value>Queuelist</value>
   </data>
   <data name="Quote" xml:space="preserve">
-    <value>Zitat: {0}</value>
+    <value>उद्धरण: {0}</value>
   </data>
   <data name="ReblogKey" xml:space="preserve">
-    <value>Reblog-Taste: {0}</value>
+    <value>रीबॉल कुंजी: {0}</value>
   </data>
   <data name="ReblogName" xml:space="preserve">
-    <value>Reblog Name: {0}</value>
+    <value>रेबलो नाम: {0}</value>
   </data>
   <data name="ReblogUrl" xml:space="preserve">
-    <value>Reblog Url: {0}</value>
+    <value>रीबलो यूआरएल: {0}</value>
   </data>
   <data name="Summary" xml:space="preserve">
-    <value>Zusammenfassung: {0}</value>
+    <value>सारांश: {0}</value>
   </data>
   <data name="Tags" xml:space="preserve">
-    <value>Stichworte: {0}</value>
+    <value>टैग: {0}</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Titel: {0}</value>
+    <value>शीर्षक: {0}</value>
   </data>
   <data name="UrlWithSlug" xml:space="preserve">
-    <value>Url mit Schnecke: {0}</value>
+    <value>स्लग के साथ यूआरएल: {0}</value>
   </data>
   <data name="VideoPlayer" xml:space="preserve">
-    <value>Video-Spieler: {0}</value>
+    <value>वीडियो प्लेयर: {0}</value>
   </data>
 </root>

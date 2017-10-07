@@ -118,550 +118,549 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="About" xml:space="preserve">
-    <value>Über</value>
+    <value>Noin</value>
   </data>
   <data name="AddBlog" xml:space="preserve">
-    <value>Blog hinzufügen</value>
+    <value>Lisää blogi</value>
   </data>
   <data name="AddToQueue" xml:space="preserve">
-    <value>Zur Warteschlange hinzufügen</value>
+    <value>Lisää jonoon</value>
   </data>
   <data name="BlogUrl" xml:space="preserve">
-    <value>URL eingeben:</value>
+    <value>Anna URL:</value>
   </data>
   <data name="Browse" xml:space="preserve">
-    <value>Durchsuchen</value>
+    <value>selailla</value>
   </data>
   <data name="ClearQueue" xml:space="preserve">
-    <value>Klare Warteschlange</value>
+    <value>Tyhjennä jono</value>
   </data>
   <data name="ClipboardMonitor" xml:space="preserve">
-    <value>Überprüfen Sie die Zwischenablage</value>
+    <value>Tarkista leikepöydälle</value>
   </data>
   <data name="Crawl" xml:space="preserve">
-    <value>Kriechen</value>
+    <value>ryömiä</value>
   </data>
   <data name="CrawlSelection" xml:space="preserve">
-    <value>Crawling auswählen</value>
+    <value>Indeksoinnin valinta</value>
   </data>
   <data name="DateAdded" xml:space="preserve">
-    <value>Datum hinzugefügt</value>
+    <value>lisäyspäivämäärä</value>
   </data>
   <data name="Delete" xml:space="preserve">
-    <value>Löschen</value>
+    <value>Poistaa</value>
   </data>
   <data name="Details" xml:space="preserve">
-    <value>Details</value>
+    <value>Yksityiskohdat</value>
   </data>
   <data name="DownloadedFiles" xml:space="preserve">
-    <value>Heruntergeladene Dateien</value>
+    <value>Ladatut tiedostot</value>
   </data>
   <data name="DownloadLocation" xml:space="preserve">
-    <value>Standort herunterladen</value>
+    <value>Lataa sijainti</value>
   </data>
   <data name="EnqueueSelection" xml:space="preserve">
-    <value>Enqueue Auswahl</value>
+    <value>Enqueue valinta</value>
   </data>
   <data name="Error" xml:space="preserve">
-    <value>Fehler</value>
+    <value>Virhe</value>
   </data>
   <data name="ErrorMessage" xml:space="preserve">
-    <value>Fehler {0}: {1}</value>
+    <value>Virhe {0}: {1}</value>
   </data>
   <data name="InternalErrorDescription" xml:space="preserve">
-    <value>Interne Fehlerbeschreibung</value>
+    <value>Sisäinen virhekuvaus</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value>Name</value>
+    <value>Nimi</value>
   </data>
   <data name="NumberOfDownloads" xml:space="preserve">
-    <value>Anzahl der Downloads</value>
+    <value>Latausten määrä</value>
   </data>
   <data name="OpenQueue" xml:space="preserve">
-    <value>Warteschlange öffnen</value>
+    <value>Avaa jono</value>
   </data>
   <data name="Pause" xml:space="preserve">
-    <value>Pause</value>
+    <value>Tauko</value>
   </data>
   <data name="Queue" xml:space="preserve">
-    <value>Warteschlange</value>
+    <value>Jonottaa</value>
   </data>
   <data name="Rating" xml:space="preserve">
-    <value>Bewertung</value>
+    <value>luokitus</value>
   </data>
   <data name="RemoveBlog" xml:space="preserve">
-    <value>Blog entfernen</value>
+    <value>Poista blogi</value>
   </data>
   <data name="RemoveFromQueue" xml:space="preserve">
-    <value>Aus Warteschlange entfernen</value>
+    <value>Poista jonosta</value>
   </data>
   <data name="RemoveSelected" xml:space="preserve">
-    <value>Ausgewählt entfernen</value>
+    <value>Poista valitut</value>
   </data>
   <data name="Resume" xml:space="preserve">
-    <value>Fortsetzen</value>
+    <value>Jatkaa</value>
   </data>
   <data name="Return" xml:space="preserve">
-    <value>Rückkehr</value>
+    <value>Palata</value>
   </data>
   <data name="SaveQueue" xml:space="preserve">
-    <value>Warteschlange speichern</value>
+    <value>Tallenna jono</value>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>Einstellungen</value>
+    <value>asetukset</value>
   </data>
   <data name="ShiftReturn" xml:space="preserve">
-    <value>Umschalt + Rückkehr</value>
+    <value>Vaihto + Return</value>
   </data>
   <data name="ShowDetails" xml:space="preserve">
-    <value>Zeige Details</value>
+    <value>Näytä yksityiskohdat</value>
   </data>
   <data name="ShowFiles" xml:space="preserve">
-    <value>Zeige Dateien</value>
+    <value>Näytä tiedostot</value>
   </data>
   <data name="Stop" xml:space="preserve">
-    <value>Halt</value>
+    <value>Stop</value>
   </data>
   <data name="Tags" xml:space="preserve">
-    <value>Tags</value>
+    <value>Tunnisteet</value>
   </data>
   <data name="UnknownError" xml:space="preserve">
-    <value>Unbekannter Anwendungsfehler</value>
+    <value>Tuntematon sovellusvirhe</value>
   </data>
   <data name="Url" xml:space="preserve">
-    <value>Url</value>
+    <value>url</value>
   </data>
   <data name="ImageSize" xml:space="preserve">
-    <value>Bildgröße (px)</value>
+    <value>Kuvan koko (px)</value>
   </data>
   <data name="ConcurrentBlogs" xml:space="preserve">
-    <value>Gleichzeitige Blogs</value>
+    <value>Samanaikaiset blogit</value>
   </data>
   <data name="ConcurrentConnections" xml:space="preserve">
-    <value>Gleichzeitige Verbindungen</value>
+    <value>Samanaikaiset yhteydet</value>
   </data>
   <data name="Online" xml:space="preserve">
     <value>Online</value>
   </data>
   <data name="Progress" xml:space="preserve">
-    <value>Fortschritt</value>
+    <value>edistyminen</value>
   </data>
   <data name="NumberOfItems" xml:space="preserve">
-    <value>{0} Blogs</value>
+    <value>{0} Blogit</value>
   </data>
   <data name="OneItem" xml:space="preserve">
-    <value>1 Blog</value>
+    <value>1 blogi</value>
   </data>
   <data name="CheckStatus" xml:space="preserve">
-    <value>Überprüfen Sie den Blog-Online-Status beim Start</value>
+    <value>Tarkista blogin online-tila käynnistyksen yhteydessä</value>
   </data>
   <data name="DeleteIndex" xml:space="preserve">
-    <value>Löschen Sie nur die Indexdateien (keine heruntergeladenen Dateien)</value>
+    <value>Poista vain hakemistotiedostot (ei ladattuja tiedostoja)</value>
   </data>
   <data name="RemoveIndex" xml:space="preserve">
-    <value>Blog-Index nach dem Crawling entfernen</value>
+    <value>Poista blogikirja indeksoinnin jälkeen</value>
   </data>
   <data name="SkipGif" xml:space="preserve">
-    <value>Überspringen Sie .gif-Dateien</value>
+    <value>Ohita .gif-tiedostoja</value>
   </data>
   <data name="Info32Bit" xml:space="preserve">
     <value>32 bit</value>
   </data>
   <data name="Info64Bit" xml:space="preserve">
-    <value>64 bit</value>
+    <value>64 bittiä</value>
   </data>
   <data name="License" xml:space="preserve">
-    <value>Lizenz</value>
+    <value>lisenssi</value>
   </data>
   <data name="NetFramework" xml:space="preserve">
     <value>.NET Framework</value>
   </data>
   <data name="Ok" xml:space="preserve">
-    <value>OK</value>
+    <value>kunnossa</value>
   </data>
   <data name="OperatingSystem" xml:space="preserve">
-    <value>Betriebssystem</value>
+    <value>Käyttöjärjestelmä</value>
   </data>
   <data name="Product" xml:space="preserve">
-    <value>Produkt</value>
+    <value>Tuote</value>
   </data>
   <data name="Version" xml:space="preserve">
-    <value>Version</value>
+    <value>Versio</value>
   </data>
   <data name="Website" xml:space="preserve">
-    <value>Webseite</value>
+    <value>Verkkosivusto</value>
   </data>
   <data name="LastCompleteCrawl" xml:space="preserve">
-    <value>Letzter vollständiger Crawling</value>
+    <value>Viimeinen täydellinen indeksointi</value>
   </data>
   <data name="VisitBlog" xml:space="preserve">
-    <value>Öffnen Sie die Website im Webbrowser</value>
+    <value>Avaa sivusto selaimessa</value>
   </data>
   <data name="NumberOfImages" xml:space="preserve">
-    <value>{0} Beiträge</value>
+    <value>{0} Viestejä</value>
   </data>
   <data name="DownloadedFilesOf" xml:space="preserve">
-    <value>Heruntergeladene Datei {0} von {1}</value>
+    <value>Ladattu tiedosto {0} / {1}</value>
   </data>
   <data name="DownloadImages" xml:space="preserve">
-    <value>Bilder herunterladen</value>
+    <value>Lataa kuvia</value>
   </data>
   <data name="DownloadVideos" xml:space="preserve">
-    <value>Videos herunterladen (tumblr.com selbst gehostet)</value>
+    <value>Lataa videoita (tumblr.com itsenäinen)</value>
   </data>
   <data name="VideoSize" xml:space="preserve">
-    <value>Videogröße (px)</value>
+    <value>Videon koko (px)</value>
   </data>
   <data name="Authenticate" xml:space="preserve">
-    <value>Authentifizieren</value>
+    <value>todentaa</value>
   </data>
   <data name="ToolTipAuthenticate" xml:space="preserve">
-    <value>Authentifizierung zum tumblr.com Netzwerk</value>
+    <value>Vahvista tumblr.com-verkkoon</value>
   </data>
   <data name="ToolTipAuthenticateDescription" xml:space="preserve">
-    <value>Öffnet ein Browser-Fenster, um sich auf der Website von tumblr.com zu authentifizieren.
-Der Cookie mit Ihren Anmeldeinformationen Ihres Kontos wird gespeichert und der Authentifizierungsprozess muss nur einmal durchgeführt werden.</value>
+    <value>Avaa selainikkunan autentikoimaan itsesi tumblr.com-sivustolle.
+Tilisi kirjautumistunnuksesi evästetiedosto tallennetaan ja todennusprosessi on tehtävä vain kerran.</value>
   </data>
   <data name="ToolTipBlogs" xml:space="preserve">
-    <value>Anzahl gleichzeitiger Verarbeitungsblogs</value>
+    <value>Samanaikaisten käsittelyblogien määrä</value>
   </data>
   <data name="ToolTipBlogsDescription" xml:space="preserve">
-    <value>Legt die Anzahl der gleichzeitigen Verarbeitungsblogs fest.
-Wenn man dies auf 2 setzt, würde es zwei Blogs gleichzeitig geben.</value>
+    <value>Asettaa samanaikaisten käsittelyblogien määrän.
+Jos asetat tämän arvoon 2, käytät kaksi blogia kerrallaan.</value>
   </data>
   <data name="ToolTipConnections" xml:space="preserve">
-    <value>Anzahl der gleichzeitigen Verbindungen</value>
+    <value>Yhteisten rinnakkaisten yhteyksien lukumäärä</value>
   </data>
   <data name="ToolTipConnectionsDescription" xml:space="preserve">
-    <value>Setzt die Anzahl der gesamten gleichzeitigen Verbindungen.
-Die Nummer wird zwischen allen aktiv heruntergeladenen Blogs geteilt.</value>
+    <value>Asettaa kokonaisten rinnakkaisten yhteyksien määrän.
+Numero on jaettu kaikkien aktiivisesti ladattavien blogien kesken.</value>
   </data>
   <data name="Notes" xml:space="preserve">
-    <value>Persönliche Hinweise</value>
+    <value>Henkilökohtaiset huomautukset</value>
   </data>
   <data name="TimeOut" xml:space="preserve">
-    <value>Timeout (s)</value>
+    <value>Aikakatkaisut</value>
   </data>
   <data name="Bandwidth" xml:space="preserve">
-    <value>Grenzbandbreite (KB / s)</value>
+    <value>Rajoita kaistanleveyttä (KB / s)</value>
   </data>
   <data name="EnableAutoDownload" xml:space="preserve">
-    <value>Starten Sie den Download bei</value>
+    <value>Aloita lataus osoitteessa</value>
   </data>
   <data name="Timer" xml:space="preserve">
-    <value>(hh: mm: ss) und fügen Sie hinzu</value>
+    <value>(hh: mm: ss) ja lisää</value>
   </data>
   <data name="SelectABlog" xml:space="preserve">
-    <value>Bitte wählen Sie ein Blog</value>
+    <value>Valitse blogi</value>
   </data>
   <data name="ShowItems" xml:space="preserve">
-    <value>Zusammenfassung von {0} Blogs</value>
+    <value>Yhteenveto {0} blogeista</value>
   </data>
   <data name="CopyUrl" xml:space="preserve">
-    <value>Kopiere URL</value>
+    <value>Kopioi url</value>
   </data>
   <data name="Posts" xml:space="preserve">
-    <value>Anzahl der Beiträge:</value>
+    <value>Virkojen määrä:</value>
   </data>
   <data name="Preview" xml:space="preserve">
-    <value>Vorschau:</value>
+    <value>esikatselu:</value>
   </data>
   <data name="DownloadAudios" xml:space="preserve">
-    <value>Laden Sie Audiodateien herunter</value>
+    <value>Lataa äänitiedostoja</value>
   </data>
   <data name="DownloadConversations" xml:space="preserve">
-    <value>Laden Sie Konversationsposten herunter</value>
+    <value>Lataa keskustelupalsta</value>
   </data>
   <data name="DownloadLinks" xml:space="preserve">
-    <value>Link-Beiträge herunterladen</value>
+    <value>Lataa linkin viestit</value>
   </data>
   <data name="DownloadQuotes" xml:space="preserve">
-    <value>Download Zitat Beiträge</value>
+    <value>Lataa quote posts</value>
   </data>
   <data name="DownloadTexts" xml:space="preserve">
-    <value>Texttexte herunterladen</value>
+    <value>Lataa tekstiviestejä</value>
   </data>
   <data name="DetailsProgress" xml:space="preserve">
-    <value>{0} von {1}, Duplikate gefunden: {2}</value>
+    <value>{0} {1}, löydetyt jäljennökset: {2}</value>
   </data>
   <data name="EnablePreview" xml:space="preserve">
-    <value>Vorschau auf / aus</value>
+    <value>Esikatselu päälle / pois</value>
   </data>
   <data name="BlogSettings" xml:space="preserve">
-    <value>Blog-Einstellungen:</value>
+    <value>Blogin asetukset:</value>
   </data>
   <data name="GlobalSettings" xml:space="preserve">
-    <value>Globale Einstellungen:</value>
+    <value>Yleiset asetukset:</value>
   </data>
   <data name="BlogStatistics" xml:space="preserve">
-    <value>Blog-Statistiken:</value>
+    <value>Blogitilastot:</value>
   </data>
   <data name="ToolTipDetailsStats" xml:space="preserve">
-    <value>Anzahl der heruntergeladenen Post-Typen der gesamten Post-Typen</value>
+    <value>Postityyppisten ladattujen postityyppien määrä</value>
   </data>
   <data name="ToolTipDetailsStatsDescription" xml:space="preserve">
-    <value>Überprüfen Sie, um Post-Typ herunterladen oder überspringen während des Downloads</value>
+    <value>Tarkista latauksen tyypin tai ohita latauksen aikana</value>
   </data>
   <data name="DownloadAudioMeta" xml:space="preserve">
-    <value>Laden Sie die Audio-Meta herunter</value>
+    <value>Lataa äänimaailma</value>
   </data>
   <data name="DownloadImageMeta" xml:space="preserve">
-    <value>Bild herunterladen meta</value>
+    <value>Lataa kuvan meta</value>
   </data>
   <data name="DownloadVideoMeta" xml:space="preserve">
-    <value>Video herunterladen Meta</value>
+    <value>Lataa videon meta</value>
   </data>
   <data name="DefaultSettingsForBlogs" xml:space="preserve">
-    <value>Einstellungen für jeden Blog bei Hinzufügen:</value>
+    <value>Kullekin blogille asetetut asetukset lisättynä:</value>
   </data>
   <data name="DownloadVideosShort" xml:space="preserve">
-    <value>Videos herunterladen</value>
+    <value>Lataa videoita</value>
   </data>
   <data name="ToolTipDefaultSettingsForBlogs" xml:space="preserve">
-    <value>Legt die Standardeinstellungen für neu hinzugefügte Blogs fest.</value>
+    <value>Asettaa vasta lisättyjen blogien oletusasetukset.</value>
   </data>
   <data name="ToolTipDefaultSettingsForBlogsDescription" xml:space="preserve">
-    <value>Der Scan / Download verwendet indivuelle Einstellungen für jeden Blog.
-Um sie zu ändern, wählen Sie Blog (s) in der Hauptschnittstelle und wählen Sie die Registerkarte Details auf der rechten Seite.</value>
+    <value>Skannaus / lataus käyttää kunkin blogin yksittäisiä asetuksia.
+Voit vaihtaa niitä valitsemalla pääkäyttöliittymän blogit ja valitsemalla oikeanpuoleisen tiedot -välilehden.</value>
   </data>
   <data name="Save" xml:space="preserve">
-    <value>sparen</value>
+    <value>Tallentaa</value>
   </data>
   <data name="Offline" xml:space="preserve">
-    <value>Offline</value>
+    <value>Poissa</value>
   </data>
   <data name="ForceSize" xml:space="preserve">
-    <value>Laden Sie die angegebene Größe, auch wenn es nicht angeboten wird</value>
+    <value>Lataa määritetty koko, vaikka sitä ei tarjota</value>
   </data>
   <data name="ToolTipForceSize" xml:space="preserve">
-    <value>Laden Sie die angegebene Auflösung von Bildern herunter, auch wenn die Größe nicht angeboten wird.</value>
+    <value>Lataa määrätyn kuvan resoluutio, vaikka kokoa ei tarjota.</value>
   </data>
   <data name="ToolTipForceSizeDescription" xml:space="preserve">
-    <value>Wenn der Crawler nur Bilder mit geringerer Größe als angegeben findet,
-wird diese Option um die URL in die angegebene Dateigröße umbenannt. 
-Diese Dateien sind in der Regel vorhanden und bieten manchmal eine größere Auflösung oder sind nur umbenannt kleinere Auflösung Dateien.
-Es ist sicher, dies zu aktivieren.</value>
+    <value>Jos indeksoija löytää vain pienemmät kuvat kuin määritetty,
+tämän vaihtoehdon käyttäminen nimeää URL-osoitteen määrätyksi tiedostokokoon
+Nämä tiedostot ovat yleensä olemassa ja joskus tarjoavat suuremman resoluutiota tai ne on nimetty uudelleen pienempiä resoluution tiedostoja.
+On turvallista ottaa tämä käyttöön.</value>
   </data>
   <data name="ProxyHost" xml:space="preserve">
-    <value>HTTP-Proxy:</value>
+    <value>HTTP-välityspalvelin:</value>
   </data>
   <data name="ProxyPort" xml:space="preserve">
-    <value>Hafen:</value>
+    <value>Port:</value>
   </data>
   <data name="ThirdPartySoftware" xml:space="preserve">
-    <value>Drittanbietersoftware</value>
+    <value>Kolmannen osapuolen ohjelmisto</value>
   </data>
   <data name="ThirdPartySoftwareDescription" xml:space="preserve">
-    <value>Software und Lizenzen von Drittanbietern</value>
+    <value>Kolmannen osapuolen ohjelmistot ja käyttöoikeudet</value>
   </data>
   <data name="ToolTipLimitBandwidth" xml:space="preserve">
-    <value>Drosselt die Bandbreite des Downloaders</value>
+    <value>Kiihdyttää lataajan kaistanleveyden</value>
   </data>
   <data name="ToolTipLimitBandwidthDescription" xml:space="preserve">
-    <value>Setzt die maximale Bandbreite für den Downloader in kbytes / s. 
-0 deaktiviert die Drosselung.</value>
+    <value>Asettaa maksimissaan maksimi kaistanleveys, joka on ladattavassa kbytes / s.
+0 poistaa käytöstä kuristuksen.</value>
   </data>
   <data name="LimitScan" xml:space="preserve">
-    <value>Begrenzung der Scan-Bandbreite</value>
+    <value>Rajoita skannauskaistanleveys</value>
   </data>
   <data name="ScanConnections" xml:space="preserve">
-    <value>Scanverbindungen</value>
+    <value>Skannaa yhteydet</value>
   </data>
   <data name="ToolTipLimitScan" xml:space="preserve">
-    <value>Enthält die Scan-Bandbreite in der Drosselung</value>
+    <value>Sisältää tarkistuksen kaistanleveyden kuristuksessa</value>
   </data>
   <data name="ToolTipLimitScanDescription" xml:space="preserve">
-    <value>Da die für das Scannen verwendeten Daten in der Regel klein sind, sollten Sie diese ausschalten,
-da der Drosselungsalgorithmus zu langsam ist, um sich anzupassen und die Scanleistung negativ beeinflussen zu können.
-Anzahl der für jeden Scan verwendeten Verbindungen</value>
+    <value>Koska skannaukseen käytetyt tiedot ovat tavallisesti pieniä, jätä tämä pois päältä,
+koska kuristusalgoritmi on liian hidas säädettäessä ja voi vaikuttaa kielteisesti skannaustulokseen.
+Kunkin skannauksen yhteydessä käytettävien yhteyksien lukumäärä</value>
   </data>
   <data name="ToolTipScan" xml:space="preserve">
-    <value>Legt die für das Scannen verwendeten Nummernverbindungen fest. 
-Da die Daten in der Regel klein sind, solltest du das hoch lassen.</value>
+    <value>Asettaa skannaukseen käytettävät numeroliittymät.
+Koska tiedot ovat yleensä pieniä, sinun pitäisi jättää tämä korkea.</value>
   </data>
   <data name="ToolTipScanDescription" xml:space="preserve">
-    <value>Der Wert muss zwischen 0 und 9.000.000.000.000.000 liegen.</value>
+    <value>Arvon on oltava 0 - 9 000 000 000 000 000.</value>
   </data>
   <data name="BandwidthRangeError" xml:space="preserve">
-    <value>Der Wert muss hh bilden: mm: ss.</value>
+    <value>Arvon on muodostettava hh: mm: ss.</value>
   </data>
   <data name="TimeSpanTypeError" xml:space="preserve">
-    <value>Der Wert muss zwischen 0 und 2.147.483.647 liegen.</value>
+    <value>Arvon on oltava välillä 0 ja 2 147 483 647.</value>
   </data>
   <data name="IntRangeError" xml:space="preserve">
-    <value>Der Wert muss vom Typ Integer sein.</value>
+    <value>Arvon on oltava tyypiltään kokonaisluku.</value>
   </data>
   <data name="IntTypeError" xml:space="preserve">
-    <value>pro Zeitintervall (e):</value>
+    <value>aikaväli (t):</value>
   </data>
   <data name="ConnectionTimeInterval" xml:space="preserve">
-    <value>Limit Tumblr Api Verbindungen:</value>
+    <value>Limit Tumblr Api -yhteydet:</value>
   </data>
   <data name="LimitConnections" xml:space="preserve">
-    <value>Anzahl der Anschlüsse:</value>
+    <value>Yhteyksien lukumäärä:</value>
   </data>
   <data name="MaxConnections" xml:space="preserve">
-    <value>Begrenzung der Verbindungen zum tumblr api.</value>
+    <value>Rajoita yhteydet tumblr api: iin.</value>
   </data>
   <data name="ToolTipLimitConnections" xml:space="preserve">
-    <value>Ein zu hoher Wert wird die Verbindungen (429 - Limit Exceeded), die an die tumblr api gemacht wurden, kraftvoll schließen.
-Ein zu kleiner Wert verringert die Abtastgeschwindigkeit.
-Stellen Sie ein Zahlen- / Zeitpaar ein. 
-Hinweis: Die tumblr api wird nur für regelmäßige tumblr Blog Downloads verwendet.</value>
+    <value>Liian korkea arvo sitoo voimakkaasti tumblr apiin tehtyjä yhteyksiä (429 - Limit Exceeded).
+Liian pieni arvo pienentää skannausnopeutta. Aseta numero / aika pari.
+Huomaa: tumblr api käytetään vain tavallisiin tumblr-blogien latauksiin.</value>
   </data>
   <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
-    <value>Force rescan</value>
+    <value>Pakota uudelleen</value>
   </data>
   <data name="ForceRescan" xml:space="preserve">
-    <value>Rescans das ganze Blog, nicht nur neue Beiträge.</value>
+    <value>Rescans koko blogi, ei vain uusia viestejä.</value>
   </data>
   <data name="ToolTipForceRescan" xml:space="preserve">
-    <value>Erzwingt einen kompletten Scan mit dem Tumblr api.</value>
+    <value>Tarvitsee täydellisen skannauksen Tumblr api: n avulla.</value>
   </data>
   <data name="ToolTipForceRescanDescription" xml:space="preserve">
-    <value>Auf Updates prüfen</value>
+    <value>Tarkista päivitykset</value>
   </data>
   <data name="CheckForUpdates" xml:space="preserve">
-    <value>Jetzt herunterladen</value>
+    <value>Lataa nyt</value>
   </data>
   <data name="DownloadNow" xml:space="preserve">
-    <value>Überprüfen Sie das Verzeichnis auf Dateien</value>
+    <value>Tarkista tiedostojen hakemisto</value>
   </data>
   <data name="CheckDirectoryForFiles" xml:space="preserve">
-    <value>Überprüft das Verzeichnis für bereits heruntergeladene Dateien.</value>
+    <value>Tarkistaa hakemiston jo ladatuille tiedostoille.</value>
   </data>
   <data name="ToolTipCheckDirectoryForFiles" xml:space="preserve">
-    <value>Überprüft das Verzeichnis und die Datenbank auf bereits heruntergeladene Dateien.
-Kann die Downloadgeschwindigkeit für große Verzeichnisse negativ beeinflussen.</value>
+    <value>Tarkistaa hakemiston ja tietokannan jo ladatuille tiedostoille.
+Se voi vaikuttaa negatiivisesti suurien hakemistojen latausnopeuteen.</value>
   </data>
   <data name="ToolTipCheckDirectoryForFilesDescription" xml:space="preserve">
-    <value>Download der URL-Liste</value>
+    <value>Lataa url-luettelo</value>
   </data>
   <data name="DownloadUrlList" xml:space="preserve">
-    <value>Laden Sie eine URL-Liste herunter.</value>
+    <value>Lataa url-luettelo.</value>
   </data>
   <data name="ToolTipDownloadUrlList" xml:space="preserve">
-    <value>Downloads eine URL-Liste der Binärdateien anstelle der eigentlichen Dateien</value>
+    <value>Lataa binary-tiedostojen url-luettelon varsinaisten tiedostojen sijasta</value>
   </data>
   <data name="ToolTipDownloadUrlListDescription" xml:space="preserve">
-    <value>Antwort-Beiträge herunterladen</value>
+    <value>Lataa vastausviestejä</value>
   </data>
   <data name="DownloadAnswers" xml:space="preserve">
-    <value>Blog</value>
+    <value>blogi</value>
   </data>
   <data name="Blog" xml:space="preserve">
-    <value>Verbindung</value>
+    <value>yhteys</value>
   </data>
   <data name="Connection" xml:space="preserve">
-    <value>General</value>
+    <value>yleinen</value>
   </data>
   <data name="General" xml:space="preserve">
-    <value>Aktivieren Sie den tragbaren Modus</value>
+    <value>Aktivoi kannettava tila</value>
   </data>
   <data name="PortableMode" xml:space="preserve">
-    <value>Aktiviert den tragbaren Modus.</value>
+    <value>Aktivoi kannettavan tilan.</value>
   </data>
   <data name="ToolTipPortableMode" xml:space="preserve">
-    <value>Speichert die Einstellungen im Ordner der ausführbaren Datei anstelle von AppData.</value>
+    <value>Tallentaa asetukset sovelluksen kansioon AppData-ohjelman sijaan.</value>
   </data>
   <data name="ToolTipPortableModeDescription" xml:space="preserve">
-    <value>Download von gesendeten Beiträgen</value>
+    <value>Lataa uudelleenblogitut viestit</value>
   </data>
   <data name="DownloadRebloggedPosts" xml:space="preserve">
-    <value>Proxy-Passwort:</value>
+    <value>Välityspalvelimen salasana:</value>
   </data>
   <data name="ProxyPassword" xml:space="preserve">
-    <value>Proxy Benutzername:</value>
+    <value>Proxy-käyttäjätunnus:</value>
   </data>
   <data name="ProxyUsername" xml:space="preserve">
-    <value>Anmeldeinformationen für nicht anonymen Proxy-Server</value>
+    <value>Valtuutukset ei-anonyyminä välityspalvelimelle</value>
   </data>
   <data name="ToolTipProxyPassword" xml:space="preserve">
-    <value>Anmeldeinformationen werden in der Einstellungsdatei in Klartext gespeichert</value>
+    <value>Todentuvuudet tallennetaan selkeään tekstiin asetustiedostossa</value>
   </data>
   <data name="ToolTipProxyPasswordDescription" xml:space="preserve">
-    <value>Download Seiten:</value>
+    <value>Lataa sivuja:</value>
   </data>
   <data name="DownloadPages" xml:space="preserve">
-    <value>Beiträge pro Seite:</value>
+    <value>Viestejä sivulla:</value>
   </data>
   <data name="PageSize" xml:space="preserve">
-    <value>Laden Sie nur bestimmte Seiten herunter</value>
+    <value>Lataa vain tiettyjä sivuja</value>
   </data>
   <data name="ToolTipDownloadPages" xml:space="preserve">
-    <value>Mögliche Notationen sind: 1 oder 1-3 oder 1,2,3. 
-Leer bedeutet das ganze Blog.</value>
+    <value>Mahdolliset merkinnät ovat: 1 tai 1-3 tai 1,2,3.
+Tyhjä tarkoittaa koko blogia.</value>
   </data>
   <data name="ToolTipDownloadPagesDescription" xml:space="preserve">
-    <value>Beiträge pro Seite</value>
+    <value>Viestit per sivu</value>
   </data>
   <data name="ToolTipPageSize" xml:space="preserve">
-    <value>Setzt den Beitrag pro Seite (sollte zwischen 1-50, Standard 50) sein.
-Z.B. 50 bedeutet, 50 Beiträge pro Seite zu scannen.</value>
+    <value>Asettaa viestin sivua kohti (sen on oltava 1-50, oletusarvo 50).
+Esim. 50 tarkoittaa skannausta 50 viestiä sivua kohden.</value>
   </data>
   <data name="ToolTipPageSizeDescription" xml:space="preserve">
-    <value>Vollbildansicht</value>
+    <value>FullScreenView</value>
   </data>
   <data name="FullScreenMedia" xml:space="preserve">
-    <value>Export-Blogs</value>
+    <value>Vie blogit</value>
   </data>
   <data name="Export" xml:space="preserve">
-    <value>Exportiere alle Blog-URLs als Textdatei</value>
+    <value>Vie kaikki blogikirjoitukset tekstitiedostona</value>
   </data>
   <data name="ToolTipExportBlogs" xml:space="preserve">
-    <value>Speichert alle URLs als Textdatei für den Austausch.</value>
+    <value>Tallentaa kaikki URL-osoitteet tekstitiedostoiksi vaihtoon.</value>
   </data>
   <data name="ToolTipExportBlogsDescription" xml:space="preserve">
-    <value>Herunterladen von:</value>
+    <value>Lataa:</value>
   </data>
   <data name="DownloadFrom" xml:space="preserve">
-    <value>Nach:</value>
+    <value>To:</value>
   </data>
   <data name="DownloadTo" xml:space="preserve">
-    <value>Crawling Beiträge von diesem Datum</value>
+    <value>Indeksoi viestit tästä päivästä</value>
   </data>
   <data name="ToolTipDownloadFrom" xml:space="preserve">
-    <value>Muss im JJJJMMDD-Format sein. Leere bedeutet ab Mai 2007.</value>
+    <value>On oltava YYYYMMDD-muodossa. Tyhjä keino toukokuusta 2007.</value>
   </data>
   <data name="ToolTipDownloadTagsFromDescription" xml:space="preserve">
-    <value>Crawl Beiträge zu diesem Datum</value>
+    <value>Indeksoi viestejä tähän päivään</value>
   </data>
   <data name="ToolTipDownloadTo" xml:space="preserve">
-    <value>Muss im JJJJMMDD-Format sein. Leer bedeutet jetzt</value>
+    <value>On oltava YYYYMMDD-muodossa. Tyhjä tarkoittaa nyt.</value>
   </data>
   <data name="ToolTipDownloadTagsToDescription" xml:space="preserve">
-    <value>Muss im JJJJMMDD-Format sein. Leere bedeutet vom Anfang des Blogs.</value>
+    <value>On oltava YYYYMMDD-muodossa. Tyhjä tarkoittaa blogin alusta.</value>
   </data>
   <data name="ToolTipDownloadFromDescription" xml:space="preserve">
-    <value>Muss im JJJJMMDD-Format sein. Leer bedeutet jetzt</value>
+    <value>On oltava YYYYMMDD-muodossa. Tyhjä tarkoittaa nyt.</value>
   </data>
   <data name="ToolTipDownloadToDescription" xml:space="preserve">
-    <value>Beiträge pro Seite</value>
+    <value>Viestit per sivu</value>
   </data>
   <data name="ToolTipPageSizeTumblrSearch" xml:space="preserve">
-    <value>Setzt den Beitrag pro Seite. Z.B. 50 bedeutet, 50 Beiträge pro Seite zu scannen.</value>
+    <value>Asettaa viestin sivua kohden. Esim. 50 tarkoittaa skannausta 50 viestiä sivua kohden.</value>
   </data>
   <data name="ToolTipPageSizeTumblrSearchDescription" xml:space="preserve">
-    <value>Passwort:</value>
+    <value>Salasana:</value>
   </data>
   <data name="Password" xml:space="preserve">
-    <value>Passwort für passwortgeschützte Blogs</value>
+    <value>Salasanalla suojattujen blogien salasana</value>
   </data>
   <data name="ToolTipPassword" xml:space="preserve">
-    <value>Achtung: Das Passwort wird in der Blogs-Datenbank in Klartext gespeichert.</value>
+    <value>Varoitus: Salasana on tallennettu selkeään tekstiin blogeista.</value>
   </data>
   <data name="ToolTipPasswordDescription" xml:space="preserve">
-    <value>Art</value>
+    <value>Tyyppi</value>
   </data>
   <data name="Blogtype" xml:space="preserve">
-    <value>Nur getaggte Beiträge herunterladen</value>
+    <value>Lataa vain merkityt viestit</value>
   </data>
   <data name="ToolTipTags" xml:space="preserve">
-    <value>Muss in einer kommagetrennten Liste ohne das führende Hash (#) Zeichen sein. 
-Z.B. großes großes Auto, Bären sucht nach großen großen Autos und Bären.</value>
+    <value>On oltava pilkulla erotettu lista ilman johtavaa hajautusmerkkiä (#).
+Esim. suuri iso auto, karhu etsii suuria suuria autoja ja karhuja.</value>
   </data>
   <data name="ToolTipTagsDescription" xml:space="preserve">
-    <value>Alle</value>
+    <value>Kaikki</value>
   </data>
   <data name="BlogtypeAll" xml:space="preserve">
     <value>Instagram</value>
@@ -670,36 +669,37 @@ Z.B. großes großes Auto, Bären sucht nach großen großen Autos und Bären.</
     <value>Tumblr</value>
   </data>
   <data name="BlogtypeTumblr" xml:space="preserve">
-    <value>Tumblr Liked-by</value>
+    <value>Tumblr Tykkään</value>
   </data>
   <data name="BlogtypeTumblrLikedBy" xml:space="preserve">
-    <value>Tumblr versteckt</value>
+    <value>Tumblr piilotettu</value>
   </data>
   <data name="BlogtypeTumblrPrivate" xml:space="preserve">
-    <value>Tumblr Suche</value>
+    <value>Tumblr-haku</value>
   </data>
   <data name="BlogtypeTumblrSearch" xml:space="preserve">
-    <value>Tumblr Tag Suche</value>
+    <value>Tumblr-tagihaku</value>
   </data>
   <data name="BlogtypeTumblrTagSearch" xml:space="preserve">
-    <value>Twitter</value>
+    <value>Viserrys</value>
   </data>
   <data name="BlogtypeTwitter" xml:space="preserve">
-    <value>Blogs zur Warteschlange.</value>
+    <value>blogit jonoon.</value>
   </data>
   <data name="AutoDownloadBlogs" xml:space="preserve">
-    <value>Timeout für Webanfragen</value>
+    <value>Web-pyyntöjen aikakatkaisu</value>
   </data>
   <data name="ToolTipTimeout" xml:space="preserve">
-    <value>Die Zeitdauer, in Sekunden, bis die Anforderung abläuft.</value>
+    <value>Aika, sekunneissa, kunnes pyyntö kestää.</value>
   </data>
   <data name="ToolTipTimeoutDescription" xml:space="preserve">
-    <value>Gleichzeitige Videoverbindungen:</value>
+    <value>Samanaikaiset videoliitännät:</value>
   </data>
   <data name="ConcurrentVideoConnections" xml:space="preserve">
-    <value>Anzahl der gleichzeitigen Verbindungen zum tumblr Video-Host</value>
+    <value>Yhteensopivia yhteyksiä tumblr-video-isäntään</value>
   </data>
   <data name="ToolTipVideoConnections" xml:space="preserve">
-    <value>Der vt.tumblr.com-Host schließt regelmäßig Verbindungen, wenn die Nummer zu hoch ist.</value>
+    <value>Vt.tumblr.com-isäntä sulkee säännöllisesti yhteydet,
+jos määrä on liian korkea.</value>
   </data>
 </root>

@@ -118,151 +118,151 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="About" xml:space="preserve">
-    <value>Über</value>
+    <value>Handle om</value>
   </data>
   <data name="AddBlog" xml:space="preserve">
-    <value>Blog hinzufügen</value>
+    <value>Legg til Blogg</value>
   </data>
   <data name="AddToQueue" xml:space="preserve">
-    <value>Zur Warteschlange hinzufügen</value>
+    <value>Legg til i kø</value>
   </data>
   <data name="BlogUrl" xml:space="preserve">
-    <value>URL eingeben:</value>
+    <value>Angi nettadresse:</value>
   </data>
   <data name="Browse" xml:space="preserve">
-    <value>Durchsuchen</value>
+    <value>Søk</value>
   </data>
   <data name="ClearQueue" xml:space="preserve">
-    <value>Klare Warteschlange</value>
+    <value>Klar kø</value>
   </data>
   <data name="ClipboardMonitor" xml:space="preserve">
-    <value>Überprüfen Sie die Zwischenablage</value>
+    <value>Sjekk utklippstavlen</value>
   </data>
   <data name="Crawl" xml:space="preserve">
-    <value>Kriechen</value>
+    <value>Crawl</value>
   </data>
   <data name="CrawlSelection" xml:space="preserve">
-    <value>Crawling auswählen</value>
+    <value>Gjennomsøkingsvalg</value>
   </data>
   <data name="DateAdded" xml:space="preserve">
-    <value>Datum hinzugefügt</value>
+    <value>Dato lagt til</value>
   </data>
   <data name="Delete" xml:space="preserve">
-    <value>Löschen</value>
+    <value>Slett</value>
   </data>
   <data name="Details" xml:space="preserve">
-    <value>Details</value>
+    <value>detaljer</value>
   </data>
   <data name="DownloadedFiles" xml:space="preserve">
-    <value>Heruntergeladene Dateien</value>
+    <value>Nedlastede filer</value>
   </data>
   <data name="DownloadLocation" xml:space="preserve">
-    <value>Standort herunterladen</value>
+    <value>Last ned sted</value>
   </data>
   <data name="EnqueueSelection" xml:space="preserve">
-    <value>Enqueue Auswahl</value>
+    <value>Enqueue utvalg</value>
   </data>
   <data name="Error" xml:space="preserve">
-    <value>Fehler</value>
+    <value>Feil</value>
   </data>
   <data name="ErrorMessage" xml:space="preserve">
-    <value>Fehler {0}: {1}</value>
+    <value>Feil {0}: {1}</value>
   </data>
   <data name="InternalErrorDescription" xml:space="preserve">
-    <value>Interne Fehlerbeschreibung</value>
+    <value>Intern feilbeskrivelse</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value>Name</value>
+    <value>Navn</value>
   </data>
   <data name="NumberOfDownloads" xml:space="preserve">
-    <value>Anzahl der Downloads</value>
+    <value>Antall nedlastinger</value>
   </data>
   <data name="OpenQueue" xml:space="preserve">
-    <value>Warteschlange öffnen</value>
+    <value>Åpne køen</value>
   </data>
   <data name="Pause" xml:space="preserve">
     <value>Pause</value>
   </data>
   <data name="Queue" xml:space="preserve">
-    <value>Warteschlange</value>
+    <value>Kø</value>
   </data>
   <data name="Rating" xml:space="preserve">
-    <value>Bewertung</value>
+    <value>Vurdering</value>
   </data>
   <data name="RemoveBlog" xml:space="preserve">
-    <value>Blog entfernen</value>
+    <value>Fjern blogg</value>
   </data>
   <data name="RemoveFromQueue" xml:space="preserve">
-    <value>Aus Warteschlange entfernen</value>
+    <value>Fjern fra kø</value>
   </data>
   <data name="RemoveSelected" xml:space="preserve">
-    <value>Ausgewählt entfernen</value>
+    <value>Fjern valgte</value>
   </data>
   <data name="Resume" xml:space="preserve">
-    <value>Fortsetzen</value>
+    <value>Gjenoppta</value>
   </data>
   <data name="Return" xml:space="preserve">
-    <value>Rückkehr</value>
+    <value>Komme tilbake</value>
   </data>
   <data name="SaveQueue" xml:space="preserve">
-    <value>Warteschlange speichern</value>
+    <value>Lagre køen</value>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>Einstellungen</value>
+    <value>innstillinger</value>
   </data>
   <data name="ShiftReturn" xml:space="preserve">
-    <value>Umschalt + Rückkehr</value>
+    <value>Shift + Retur</value>
   </data>
   <data name="ShowDetails" xml:space="preserve">
-    <value>Zeige Details</value>
+    <value>Vis detaljer</value>
   </data>
   <data name="ShowFiles" xml:space="preserve">
-    <value>Zeige Dateien</value>
+    <value>Vis filer</value>
   </data>
   <data name="Stop" xml:space="preserve">
-    <value>Halt</value>
+    <value>Stoppe</value>
   </data>
   <data name="Tags" xml:space="preserve">
     <value>Tags</value>
   </data>
   <data name="UnknownError" xml:space="preserve">
-    <value>Unbekannter Anwendungsfehler</value>
+    <value>Ukjent programfeil</value>
   </data>
   <data name="Url" xml:space="preserve">
-    <value>Url</value>
+    <value>url</value>
   </data>
   <data name="ImageSize" xml:space="preserve">
-    <value>Bildgröße (px)</value>
+    <value>Bildestørrelse (px)</value>
   </data>
   <data name="ConcurrentBlogs" xml:space="preserve">
-    <value>Gleichzeitige Blogs</value>
+    <value>Samtidig blogger</value>
   </data>
   <data name="ConcurrentConnections" xml:space="preserve">
-    <value>Gleichzeitige Verbindungen</value>
+    <value>Samtidige tilkoblinger</value>
   </data>
   <data name="Online" xml:space="preserve">
-    <value>Online</value>
+    <value>på nett</value>
   </data>
   <data name="Progress" xml:space="preserve">
-    <value>Fortschritt</value>
+    <value>Framgang</value>
   </data>
   <data name="NumberOfItems" xml:space="preserve">
-    <value>{0} Blogs</value>
+    <value>{0} Blogger</value>
   </data>
   <data name="OneItem" xml:space="preserve">
-    <value>1 Blog</value>
+    <value>1 blogg</value>
   </data>
   <data name="CheckStatus" xml:space="preserve">
-    <value>Überprüfen Sie den Blog-Online-Status beim Start</value>
+    <value>Sjekk bloggens online status ved oppstart</value>
   </data>
   <data name="DeleteIndex" xml:space="preserve">
-    <value>Löschen Sie nur die Indexdateien (keine heruntergeladenen Dateien)</value>
+    <value>Slett bare indeksfilene (ingen nedlastede filer)</value>
   </data>
   <data name="RemoveIndex" xml:space="preserve">
-    <value>Blog-Index nach dem Crawling entfernen</value>
+    <value>Fjern bloggindeks etter gjennomsøking</value>
   </data>
   <data name="SkipGif" xml:space="preserve">
-    <value>Überspringen Sie .gif-Dateien</value>
+    <value>Hopp over .gif-filer</value>
   </data>
   <data name="Info32Bit" xml:space="preserve">
     <value>32 bit</value>
@@ -271,394 +271,393 @@
     <value>64 bit</value>
   </data>
   <data name="License" xml:space="preserve">
-    <value>Lizenz</value>
+    <value>Tillatelse</value>
   </data>
   <data name="NetFramework" xml:space="preserve">
     <value>.NET Framework</value>
   </data>
   <data name="Ok" xml:space="preserve">
-    <value>OK</value>
+    <value>ok</value>
   </data>
   <data name="OperatingSystem" xml:space="preserve">
-    <value>Betriebssystem</value>
+    <value>Operativsystem</value>
   </data>
   <data name="Product" xml:space="preserve">
     <value>Produkt</value>
   </data>
   <data name="Version" xml:space="preserve">
-    <value>Version</value>
+    <value>Versjon</value>
   </data>
   <data name="Website" xml:space="preserve">
-    <value>Webseite</value>
+    <value>nettsted</value>
   </data>
   <data name="LastCompleteCrawl" xml:space="preserve">
-    <value>Letzter vollständiger Crawling</value>
+    <value>Siste fullstendig gjennomsøking</value>
   </data>
   <data name="VisitBlog" xml:space="preserve">
-    <value>Öffnen Sie die Website im Webbrowser</value>
+    <value>Åpne nettstedet i nettleseren</value>
   </data>
   <data name="NumberOfImages" xml:space="preserve">
-    <value>{0} Beiträge</value>
+    <value>{0} Innlegg</value>
   </data>
   <data name="DownloadedFilesOf" xml:space="preserve">
-    <value>Heruntergeladene Datei {0} von {1}</value>
+    <value>Nedlastet fil {0} av {1}</value>
   </data>
   <data name="DownloadImages" xml:space="preserve">
-    <value>Bilder herunterladen</value>
+    <value>Last ned bilder</value>
   </data>
   <data name="DownloadVideos" xml:space="preserve">
-    <value>Videos herunterladen (tumblr.com selbst gehostet)</value>
+    <value>Last ned videoer (tumblr.com self hosted)</value>
   </data>
   <data name="VideoSize" xml:space="preserve">
-    <value>Videogröße (px)</value>
+    <value>Videostørrelse (px)</value>
   </data>
   <data name="Authenticate" xml:space="preserve">
-    <value>Authentifizieren</value>
+    <value>Verifisere</value>
   </data>
   <data name="ToolTipAuthenticate" xml:space="preserve">
-    <value>Authentifizierung zum tumblr.com Netzwerk</value>
+    <value>Godkjen deg til tumblr.com-nettverket</value>
   </data>
   <data name="ToolTipAuthenticateDescription" xml:space="preserve">
-    <value>Öffnet ein Browser-Fenster, um sich auf der Website von tumblr.com zu authentifizieren.
-Der Cookie mit Ihren Anmeldeinformationen Ihres Kontos wird gespeichert und der Authentifizierungsprozess muss nur einmal durchgeführt werden.</value>
+    <value>Åpner et nettleservindu for å autentisere deg til tumblr.com-siden.
+Cookien med legitimasjonene til kontoen din er lagret og godkjenningsprosessen må kun utføres én gang.</value>
   </data>
   <data name="ToolTipBlogs" xml:space="preserve">
-    <value>Anzahl gleichzeitiger Verarbeitungsblogs</value>
+    <value>Antall samtidige behandlingsblogger</value>
   </data>
   <data name="ToolTipBlogsDescription" xml:space="preserve">
-    <value>Legt die Anzahl der gleichzeitigen Verarbeitungsblogs fest.
-Wenn man dies auf 2 setzt, würde es zwei Blogs gleichzeitig geben.</value>
+    <value>Angir antall samtidige behandlingsblogger.
+Innstilling av dette til 2 ville frembringe to blogger om gangen.</value>
   </data>
   <data name="ToolTipConnections" xml:space="preserve">
-    <value>Anzahl der gleichzeitigen Verbindungen</value>
+    <value>Antall totalt samtidige tilkoblinger</value>
   </data>
   <data name="ToolTipConnectionsDescription" xml:space="preserve">
-    <value>Setzt die Anzahl der gesamten gleichzeitigen Verbindungen.
-Die Nummer wird zwischen allen aktiv heruntergeladenen Blogs geteilt.</value>
+    <value>Angir antall totale samtidige tilkoblinger.
+Tallet deles mellom alle aktive nedlastning av blogger.</value>
   </data>
   <data name="Notes" xml:space="preserve">
-    <value>Persönliche Hinweise</value>
+    <value>Personlige notater</value>
   </data>
   <data name="TimeOut" xml:space="preserve">
     <value>Timeout (s)</value>
   </data>
   <data name="Bandwidth" xml:space="preserve">
-    <value>Grenzbandbreite (KB / s)</value>
+    <value>Begrens båndbredde (KB / s)</value>
   </data>
   <data name="EnableAutoDownload" xml:space="preserve">
-    <value>Starten Sie den Download bei</value>
+    <value>Start nedlasting på</value>
   </data>
   <data name="Timer" xml:space="preserve">
-    <value>(hh: mm: ss) und fügen Sie hinzu</value>
+    <value>(hh: mm: ss) og legg til</value>
   </data>
   <data name="SelectABlog" xml:space="preserve">
-    <value>Bitte wählen Sie ein Blog</value>
+    <value>Vennligst velg en blogg</value>
   </data>
   <data name="ShowItems" xml:space="preserve">
-    <value>Zusammenfassung von {0} Blogs</value>
+    <value>Sammendrag av {0} blogger</value>
   </data>
   <data name="CopyUrl" xml:space="preserve">
-    <value>Kopiere URL</value>
+    <value>Kopier URL</value>
   </data>
   <data name="Posts" xml:space="preserve">
-    <value>Anzahl der Beiträge:</value>
+    <value>Antall innlegg:</value>
   </data>
   <data name="Preview" xml:space="preserve">
-    <value>Vorschau:</value>
+    <value>Preview:</value>
   </data>
   <data name="DownloadAudios" xml:space="preserve">
-    <value>Laden Sie Audiodateien herunter</value>
+    <value>Last ned lydfiler</value>
   </data>
   <data name="DownloadConversations" xml:space="preserve">
-    <value>Laden Sie Konversationsposten herunter</value>
+    <value>Last ned samtaleposter</value>
   </data>
   <data name="DownloadLinks" xml:space="preserve">
-    <value>Link-Beiträge herunterladen</value>
+    <value>Last ned linkinnlegg</value>
   </data>
   <data name="DownloadQuotes" xml:space="preserve">
-    <value>Download Zitat Beiträge</value>
+    <value>Last ned sitat innlegg</value>
   </data>
   <data name="DownloadTexts" xml:space="preserve">
-    <value>Texttexte herunterladen</value>
+    <value>Last ned tekstinnlegg</value>
   </data>
   <data name="DetailsProgress" xml:space="preserve">
-    <value>{0} von {1}, Duplikate gefunden: {2}</value>
+    <value>{0} av {1}, duplikater funnet: {2}</value>
   </data>
   <data name="EnablePreview" xml:space="preserve">
-    <value>Vorschau auf / aus</value>
+    <value>Forhåndsvisning på / av</value>
   </data>
   <data name="BlogSettings" xml:space="preserve">
-    <value>Blog-Einstellungen:</value>
+    <value>Blogginnstillinger:</value>
   </data>
   <data name="GlobalSettings" xml:space="preserve">
-    <value>Globale Einstellungen:</value>
+    <value>Globale innstillinger:</value>
   </data>
   <data name="BlogStatistics" xml:space="preserve">
-    <value>Blog-Statistiken:</value>
+    <value>Blogg statistikk:</value>
   </data>
   <data name="ToolTipDetailsStats" xml:space="preserve">
-    <value>Anzahl der heruntergeladenen Post-Typen der gesamten Post-Typen</value>
+    <value>Antall nedlastede posttyper av totale innleggstyper</value>
   </data>
   <data name="ToolTipDetailsStatsDescription" xml:space="preserve">
-    <value>Überprüfen Sie, um Post-Typ herunterladen oder überspringen während des Downloads</value>
+    <value>Sjekk for å laste ned posttype eller hopp over under nedlastingen</value>
   </data>
   <data name="DownloadAudioMeta" xml:space="preserve">
-    <value>Laden Sie die Audio-Meta herunter</value>
+    <value>Last ned audio meta</value>
   </data>
   <data name="DownloadImageMeta" xml:space="preserve">
-    <value>Bild herunterladen meta</value>
+    <value>Last ned bilde meta</value>
   </data>
   <data name="DownloadVideoMeta" xml:space="preserve">
-    <value>Video herunterladen Meta</value>
+    <value>Last ned video meta</value>
   </data>
   <data name="DefaultSettingsForBlogs" xml:space="preserve">
-    <value>Einstellungen für jeden Blog bei Hinzufügen:</value>
+    <value>Innstillinger som brukes til hver blogg ved tillegg:</value>
   </data>
   <data name="DownloadVideosShort" xml:space="preserve">
-    <value>Videos herunterladen</value>
+    <value>Last ned videoer</value>
   </data>
   <data name="ToolTipDefaultSettingsForBlogs" xml:space="preserve">
-    <value>Legt die Standardeinstellungen für neu hinzugefügte Blogs fest.</value>
+    <value>Angir standardinnstillingene for nylig lagt til blogger.</value>
   </data>
   <data name="ToolTipDefaultSettingsForBlogsDescription" xml:space="preserve">
-    <value>Der Scan / Download verwendet indivuelle Einstellungen für jeden Blog.
-Um sie zu ändern, wählen Sie Blog (s) in der Hauptschnittstelle und wählen Sie die Registerkarte Details auf der rechten Seite.</value>
+    <value>Skanningen / nedlastingen bruker individuelle innstillinger for hver blogg.
+For å endre dem, velg blog (er) i hovedgrensesnittet og velg fanen Detaljer på høyre side.</value>
   </data>
   <data name="Save" xml:space="preserve">
-    <value>sparen</value>
+    <value>Lagre</value>
   </data>
   <data name="Offline" xml:space="preserve">
-    <value>Offline</value>
+    <value>offline</value>
   </data>
   <data name="ForceSize" xml:space="preserve">
-    <value>Laden Sie die angegebene Größe, auch wenn es nicht angeboten wird</value>
+    <value>Last ned spesifisert størrelse, selv om den ikke blir tilbudt</value>
   </data>
   <data name="ToolTipForceSize" xml:space="preserve">
-    <value>Laden Sie die angegebene Auflösung von Bildern herunter, auch wenn die Größe nicht angeboten wird.</value>
+    <value>Last ned den angitte oppløsningen av bilder,
+selv om størrelsen ikke blir tilbudt.</value>
   </data>
   <data name="ToolTipForceSizeDescription" xml:space="preserve">
-    <value>Wenn der Crawler nur Bilder mit geringerer Größe als angegeben findet,
-wird diese Option um die URL in die angegebene Dateigröße umbenannt. 
-Diese Dateien sind in der Regel vorhanden und bieten manchmal eine größere Auflösung oder sind nur umbenannt kleinere Auflösung Dateien.
-Es ist sicher, dies zu aktivieren.</value>
+    <value>Hvis robotsøkeprogrammet bare finner bilder med lavere størrelse enn spesifisert, 
+aktiveres dette alternativet for å endre navn på nettadressen til den angitte filstørrelsen.
+Disse filene eksisterer vanligvis og noen ganger tilbyr en større oppløsning eller endres bare til mindre oppløsningsfiler.
+Det er trygt å slå på dette.</value>
   </data>
   <data name="ProxyHost" xml:space="preserve">
-    <value>HTTP-Proxy:</value>
+    <value>HTTP-proxy:</value>
   </data>
   <data name="ProxyPort" xml:space="preserve">
-    <value>Hafen:</value>
+    <value>Havn:</value>
   </data>
   <data name="ThirdPartySoftware" xml:space="preserve">
-    <value>Drittanbietersoftware</value>
+    <value>Tredjeparts programvare</value>
   </data>
   <data name="ThirdPartySoftwareDescription" xml:space="preserve">
-    <value>Software und Lizenzen von Drittanbietern</value>
+    <value>Tredjeparts programvare og lisenser</value>
   </data>
   <data name="ToolTipLimitBandwidth" xml:space="preserve">
-    <value>Drosselt die Bandbreite des Downloaders</value>
+    <value>Gasser båndbredden til nedlasteren</value>
   </data>
   <data name="ToolTipLimitBandwidthDescription" xml:space="preserve">
-    <value>Setzt die maximale Bandbreite für den Downloader in kbytes / s. 
-0 deaktiviert die Drosselung.</value>
+    <value>Angir maksimal båndbredde tilgjengelig for nedlasteren i kbytes / s. 0 deaktiverer gasspjeldingen.</value>
   </data>
   <data name="LimitScan" xml:space="preserve">
-    <value>Begrenzung der Scan-Bandbreite</value>
+    <value>Begrens skannebåndbredden</value>
   </data>
   <data name="ScanConnections" xml:space="preserve">
-    <value>Scanverbindungen</value>
+    <value>Skann tilkoblinger</value>
   </data>
   <data name="ToolTipLimitScan" xml:space="preserve">
-    <value>Enthält die Scan-Bandbreite in der Drosselung</value>
+    <value>Inkluderer skannebåndbredden i gasspjeldet</value>
   </data>
   <data name="ToolTipLimitScanDescription" xml:space="preserve">
-    <value>Da die für das Scannen verwendeten Daten in der Regel klein sind, sollten Sie diese ausschalten,
-da der Drosselungsalgorithmus zu langsam ist, um sich anzupassen und die Scanleistung negativ beeinflussen zu können.
-Anzahl der für jeden Scan verwendeten Verbindungen</value>
+    <value>Siden dataene som brukes for skanning, er vanligvis små,
+bør du legge av dette fordi gasspjeldingsalgoritmen er for sakte for å justere og kan påvirke skanneytelsen negativt.
+Antall tilkoblinger som brukes for hver skanning</value>
   </data>
   <data name="ToolTipScan" xml:space="preserve">
-    <value>Legt die für das Scannen verwendeten Nummernverbindungen fest. 
-Da die Daten in der Regel klein sind, solltest du das hoch lassen.</value>
+    <value>Angir antall tilkoblinger som brukes til skanning.
+Siden dataene er vanligvis små, bør du la dette være høyt.</value>
   </data>
   <data name="ToolTipScanDescription" xml:space="preserve">
-    <value>Der Wert muss zwischen 0 und 9.000.000.000.000.000 liegen.</value>
+    <value>Verdien må være mellom 0 og 9.000.000.000.000.000.</value>
   </data>
   <data name="BandwidthRangeError" xml:space="preserve">
-    <value>Der Wert muss hh bilden: mm: ss.</value>
+    <value>Verdien må ha formen hh: mm: ss.</value>
   </data>
   <data name="TimeSpanTypeError" xml:space="preserve">
-    <value>Der Wert muss zwischen 0 und 2.147.483.647 liegen.</value>
+    <value>Verdien må være mellom 0 og 2.147.483.647.</value>
   </data>
   <data name="IntRangeError" xml:space="preserve">
-    <value>Der Wert muss vom Typ Integer sein.</value>
+    <value>Verdien må være av typen heltall.</value>
   </data>
   <data name="IntTypeError" xml:space="preserve">
-    <value>pro Zeitintervall (e):</value>
+    <value>per tidsintervall (er):</value>
   </data>
   <data name="ConnectionTimeInterval" xml:space="preserve">
-    <value>Limit Tumblr Api Verbindungen:</value>
+    <value>Limit Tumblr Api-tilkoblinger:</value>
   </data>
   <data name="LimitConnections" xml:space="preserve">
-    <value>Anzahl der Anschlüsse:</value>
+    <value>Antall tilkoblinger:</value>
   </data>
   <data name="MaxConnections" xml:space="preserve">
-    <value>Begrenzung der Verbindungen zum tumblr api.</value>
+    <value>Begrense tilkoblinger til tumblr api.</value>
   </data>
   <data name="ToolTipLimitConnections" xml:space="preserve">
-    <value>Ein zu hoher Wert wird die Verbindungen (429 - Limit Exceeded), die an die tumblr api gemacht wurden, kraftvoll schließen.
-Ein zu kleiner Wert verringert die Abtastgeschwindigkeit.
-Stellen Sie ein Zahlen- / Zeitpaar ein. 
-Hinweis: Die tumblr api wird nur für regelmäßige tumblr Blog Downloads verwendet.</value>
+    <value>En for høy verdi vil tvinge tett tilkoblinger (429 - Limit Overskredet) gjort til tumblr api. 
+En for liten verdi vil redusere skannehastigheten. Sett et nummer / tidspar.
+Merk: The tumblr api brukes kun til vanlige tumblr blognedlastinger.</value>
   </data>
   <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
     <value>Force rescan</value>
   </data>
   <data name="ForceRescan" xml:space="preserve">
-    <value>Rescans das ganze Blog, nicht nur neue Beiträge.</value>
+    <value>Rescans hele bloggen, ikke bare nye innlegg.</value>
   </data>
   <data name="ToolTipForceRescan" xml:space="preserve">
-    <value>Erzwingt einen kompletten Scan mit dem Tumblr api.</value>
+    <value>Forces en komplett skanning med Tumblr api.</value>
   </data>
   <data name="ToolTipForceRescanDescription" xml:space="preserve">
-    <value>Auf Updates prüfen</value>
+    <value>Se etter oppdateringer</value>
   </data>
   <data name="CheckForUpdates" xml:space="preserve">
-    <value>Jetzt herunterladen</value>
+    <value>Last ned nå</value>
   </data>
   <data name="DownloadNow" xml:space="preserve">
-    <value>Überprüfen Sie das Verzeichnis auf Dateien</value>
+    <value>Sjekk katalogen for filer</value>
   </data>
   <data name="CheckDirectoryForFiles" xml:space="preserve">
-    <value>Überprüft das Verzeichnis für bereits heruntergeladene Dateien.</value>
+    <value>Kontrollerer katalogen for allerede nedlastede filer.</value>
   </data>
   <data name="ToolTipCheckDirectoryForFiles" xml:space="preserve">
-    <value>Überprüft das Verzeichnis und die Datenbank auf bereits heruntergeladene Dateien.
-Kann die Downloadgeschwindigkeit für große Verzeichnisse negativ beeinflussen.</value>
+    <value>Kontrollerer katalogen og databasen for allerede nedlastede filer.
+Kan påvirke nedlastingshastigheten for store kataloger negativt.</value>
   </data>
   <data name="ToolTipCheckDirectoryForFilesDescription" xml:space="preserve">
-    <value>Download der URL-Liste</value>
+    <value>Last ned URL-listen</value>
   </data>
   <data name="DownloadUrlList" xml:space="preserve">
-    <value>Laden Sie eine URL-Liste herunter.</value>
+    <value>Last ned en URL-liste.</value>
   </data>
   <data name="ToolTipDownloadUrlList" xml:space="preserve">
-    <value>Downloads eine URL-Liste der Binärdateien anstelle der eigentlichen Dateien</value>
+    <value>Laster ned en URL-liste over binære filer i stedet for de faktiske filene</value>
   </data>
   <data name="ToolTipDownloadUrlListDescription" xml:space="preserve">
-    <value>Antwort-Beiträge herunterladen</value>
+    <value>Last ned svarposter</value>
   </data>
   <data name="DownloadAnswers" xml:space="preserve">
-    <value>Blog</value>
+    <value>bloggen</value>
   </data>
   <data name="Blog" xml:space="preserve">
-    <value>Verbindung</value>
+    <value>Forbindelse</value>
   </data>
   <data name="Connection" xml:space="preserve">
-    <value>General</value>
+    <value>Generell</value>
   </data>
   <data name="General" xml:space="preserve">
-    <value>Aktivieren Sie den tragbaren Modus</value>
+    <value>Aktiver bærbar modus</value>
   </data>
   <data name="PortableMode" xml:space="preserve">
-    <value>Aktiviert den tragbaren Modus.</value>
+    <value>Aktiverer den bærbare modusen.</value>
   </data>
   <data name="ToolTipPortableMode" xml:space="preserve">
-    <value>Speichert die Einstellungen im Ordner der ausführbaren Datei anstelle von AppData.</value>
+    <value>Lagrer innstillingene i mappen til den kjørbare i stedet for AppData.</value>
   </data>
   <data name="ToolTipPortableModeDescription" xml:space="preserve">
-    <value>Download von gesendeten Beiträgen</value>
+    <value>Last ned reblogged innlegg</value>
   </data>
   <data name="DownloadRebloggedPosts" xml:space="preserve">
-    <value>Proxy-Passwort:</value>
+    <value>Proxy Passord:</value>
   </data>
   <data name="ProxyPassword" xml:space="preserve">
-    <value>Proxy Benutzername:</value>
+    <value>Proxy brukernavn:</value>
   </data>
   <data name="ProxyUsername" xml:space="preserve">
-    <value>Anmeldeinformationen für nicht anonymen Proxy-Server</value>
+    <value>Referanser for ikke-anonym proxy-server</value>
   </data>
   <data name="ToolTipProxyPassword" xml:space="preserve">
-    <value>Anmeldeinformationen werden in der Einstellungsdatei in Klartext gespeichert</value>
+    <value>Referanser lagres i klar tekst i innstillingsfilen</value>
   </data>
   <data name="ToolTipProxyPasswordDescription" xml:space="preserve">
-    <value>Download Seiten:</value>
+    <value>Last ned sider:</value>
   </data>
   <data name="DownloadPages" xml:space="preserve">
-    <value>Beiträge pro Seite:</value>
+    <value>Innlegg per side:</value>
   </data>
   <data name="PageSize" xml:space="preserve">
-    <value>Laden Sie nur bestimmte Seiten herunter</value>
+    <value>Last ned kun bestemte sider</value>
   </data>
   <data name="ToolTipDownloadPages" xml:space="preserve">
-    <value>Mögliche Notationen sind: 1 oder 1-3 oder 1,2,3. 
-Leer bedeutet das ganze Blog.</value>
+    <value>Mulige notater er: 1 eller 1-3 eller 1,2,3. Tom betyr hele bloggen.</value>
   </data>
   <data name="ToolTipDownloadPagesDescription" xml:space="preserve">
-    <value>Beiträge pro Seite</value>
+    <value>Innlegg per side</value>
   </data>
   <data name="ToolTipPageSize" xml:space="preserve">
-    <value>Setzt den Beitrag pro Seite (sollte zwischen 1-50, Standard 50) sein.
-Z.B. 50 bedeutet, 50 Beiträge pro Seite zu scannen.</value>
+    <value>Angir innlegget per side (skal være mellom 1-50, standard 50). 
+F.eks 50 betyr å skanne 50 innlegg per side.</value>
   </data>
   <data name="ToolTipPageSizeDescription" xml:space="preserve">
-    <value>Vollbildansicht</value>
+    <value>FullScreenView</value>
   </data>
   <data name="FullScreenMedia" xml:space="preserve">
-    <value>Export-Blogs</value>
+    <value>Eksporter blogger</value>
   </data>
   <data name="Export" xml:space="preserve">
-    <value>Exportiere alle Blog-URLs als Textdatei</value>
+    <value>Eksporter alle bloggadresser som tekstfil</value>
   </data>
   <data name="ToolTipExportBlogs" xml:space="preserve">
-    <value>Speichert alle URLs als Textdatei für den Austausch.</value>
+    <value>Lagrer alle nettadresser som en tekstfil for utveksling.</value>
   </data>
   <data name="ToolTipExportBlogsDescription" xml:space="preserve">
-    <value>Herunterladen von:</value>
+    <value>Last ned fra:</value>
   </data>
   <data name="DownloadFrom" xml:space="preserve">
-    <value>Nach:</value>
+    <value>Til:</value>
   </data>
   <data name="DownloadTo" xml:space="preserve">
-    <value>Crawling Beiträge von diesem Datum</value>
+    <value>Gjennomgå innlegg fra denne datoen</value>
   </data>
   <data name="ToolTipDownloadFrom" xml:space="preserve">
-    <value>Muss im JJJJMMDD-Format sein. Leere bedeutet ab Mai 2007.</value>
+    <value>Må være i YYYYMMDD format. Tom betyr fra mai 2007.</value>
   </data>
   <data name="ToolTipDownloadTagsFromDescription" xml:space="preserve">
-    <value>Crawl Beiträge zu diesem Datum</value>
+    <value>Gjennomgå innlegg til denne datoen</value>
   </data>
   <data name="ToolTipDownloadTo" xml:space="preserve">
-    <value>Muss im JJJJMMDD-Format sein. Leer bedeutet jetzt</value>
+    <value>Må være i YYYYMMDD format. Tom betyr å nå.</value>
   </data>
   <data name="ToolTipDownloadTagsToDescription" xml:space="preserve">
-    <value>Muss im JJJJMMDD-Format sein. Leere bedeutet vom Anfang des Blogs.</value>
+    <value>Må være i YYYYMMDD format. Tom betyr fra begynnelsen av bloggen.</value>
   </data>
   <data name="ToolTipDownloadFromDescription" xml:space="preserve">
-    <value>Muss im JJJJMMDD-Format sein. Leer bedeutet jetzt</value>
+    <value>Må være i YYYYMMDD format. Tom betyr å nå.</value>
   </data>
   <data name="ToolTipDownloadToDescription" xml:space="preserve">
-    <value>Beiträge pro Seite</value>
+    <value>Innlegg per side</value>
   </data>
   <data name="ToolTipPageSizeTumblrSearch" xml:space="preserve">
-    <value>Setzt den Beitrag pro Seite. Z.B. 50 bedeutet, 50 Beiträge pro Seite zu scannen.</value>
+    <value>Angir innlegget per side. 
+F.eks 50 betyr å skanne 50 innlegg per side.</value>
   </data>
   <data name="ToolTipPageSizeTumblrSearchDescription" xml:space="preserve">
-    <value>Passwort:</value>
+    <value>Passord:</value>
   </data>
   <data name="Password" xml:space="preserve">
-    <value>Passwort für passwortgeschützte Blogs</value>
+    <value>Passord for passordbeskyttede blogger</value>
   </data>
   <data name="ToolTipPassword" xml:space="preserve">
-    <value>Achtung: Das Passwort wird in der Blogs-Datenbank in Klartext gespeichert.</value>
+    <value>Forsiktig: Passordet er lagret i klar tekst i bloggdatabasen.</value>
   </data>
   <data name="ToolTipPasswordDescription" xml:space="preserve">
-    <value>Art</value>
+    <value>Type</value>
   </data>
   <data name="Blogtype" xml:space="preserve">
-    <value>Nur getaggte Beiträge herunterladen</value>
+    <value>Last ned kun merkede innlegg</value>
   </data>
   <data name="ToolTipTags" xml:space="preserve">
-    <value>Muss in einer kommagetrennten Liste ohne das führende Hash (#) Zeichen sein. 
-Z.B. großes großes Auto, Bären sucht nach großen großen Autos und Bären.</value>
+    <value>Må være i en kommaseparert liste uten ledende hash (#) tegn.
+F.eks stor stor bil, bjørn søker etter store store biler og bjørner.</value>
   </data>
   <data name="ToolTipTagsDescription" xml:space="preserve">
     <value>Alle</value>
@@ -667,39 +666,39 @@ Z.B. großes großes Auto, Bären sucht nach großen großen Autos und Bären.</
     <value>Instagram</value>
   </data>
   <data name="BlogtypeInstagram" xml:space="preserve">
-    <value>Tumblr</value>
+    <value>tumblr</value>
   </data>
   <data name="BlogtypeTumblr" xml:space="preserve">
     <value>Tumblr Liked-by</value>
   </data>
   <data name="BlogtypeTumblrLikedBy" xml:space="preserve">
-    <value>Tumblr versteckt</value>
+    <value>Tumblr skjult</value>
   </data>
   <data name="BlogtypeTumblrPrivate" xml:space="preserve">
-    <value>Tumblr Suche</value>
+    <value>Tumblr Søk</value>
   </data>
   <data name="BlogtypeTumblrSearch" xml:space="preserve">
-    <value>Tumblr Tag Suche</value>
+    <value>Tumblr Tag Search</value>
   </data>
   <data name="BlogtypeTumblrTagSearch" xml:space="preserve">
     <value>Twitter</value>
   </data>
   <data name="BlogtypeTwitter" xml:space="preserve">
-    <value>Blogs zur Warteschlange.</value>
+    <value>blogger til køen.</value>
   </data>
   <data name="AutoDownloadBlogs" xml:space="preserve">
-    <value>Timeout für Webanfragen</value>
+    <value>Timeout for webforespørsler</value>
   </data>
   <data name="ToolTipTimeout" xml:space="preserve">
-    <value>Die Zeitdauer, in Sekunden, bis die Anforderung abläuft.</value>
+    <value>Lengden på tid, i sekunder, til forespørselen går ut.</value>
   </data>
   <data name="ToolTipTimeoutDescription" xml:space="preserve">
-    <value>Gleichzeitige Videoverbindungen:</value>
+    <value>Samtidige videoforbindelser:</value>
   </data>
   <data name="ConcurrentVideoConnections" xml:space="preserve">
-    <value>Anzahl der gleichzeitigen Verbindungen zum tumblr Video-Host</value>
+    <value>Antall samtidige tilkoblinger til tumblr-videoverten</value>
   </data>
   <data name="ToolTipVideoConnections" xml:space="preserve">
-    <value>Der vt.tumblr.com-Host schließt regelmäßig Verbindungen, wenn die Nummer zu hoch ist.</value>
+    <value>Vt.tumblr.com-verten lukker regelmessig tilkoblinger dersom tallet er for høyt.</value>
   </data>
 </root>

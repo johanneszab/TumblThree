@@ -118,67 +118,67 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="About" xml:space="preserve">
-    <value>О программе</value>
+    <value>Около</value>
   </data>
   <data name="AddBlog" xml:space="preserve">
     <value>Добавить блог</value>
   </data>
   <data name="AddToQueue" xml:space="preserve">
-    <value>В очередь</value>
+    <value>Добавить в очередь</value>
   </data>
   <data name="BlogUrl" xml:space="preserve">
-    <value>Укажите URL:</value>
+    <value>Введите URL-адрес:</value>
   </data>
   <data name="Browse" xml:space="preserve">
-    <value>Открыть</value>
+    <value>Просматривать</value>
   </data>
   <data name="ClearQueue" xml:space="preserve">
     <value>Очистить очередь</value>
   </data>
   <data name="ClipboardMonitor" xml:space="preserve">
-    <value>Следить за буфером обмена</value>
+    <value>Проверить буфер обмена</value>
   </data>
   <data name="Crawl" xml:space="preserve">
-    <value>Выкачать</value>
+    <value>ползать</value>
   </data>
   <data name="CrawlSelection" xml:space="preserve">
-    <value>Вычкачать выбранное</value>
+    <value>Выбор сканирования</value>
   </data>
   <data name="DateAdded" xml:space="preserve">
-    <value>Добавлен</value>
+    <value>Дата Добавлена</value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Удалить</value>
   </data>
   <data name="Details" xml:space="preserve">
-    <value>Подробности</value>
+    <value>Детали</value>
   </data>
   <data name="DownloadedFiles" xml:space="preserve">
-    <value>Скачаные файлы</value>
+    <value>Загруженные файлы</value>
   </data>
   <data name="DownloadLocation" xml:space="preserve">
-    <value>Расположение файлов</value>
+    <value>Место загрузки</value>
   </data>
   <data name="EnqueueSelection" xml:space="preserve">
-    <value>Добавить выбранное в очередь</value>
+    <value>Выбор очереди</value>
   </data>
   <data name="Error" xml:space="preserve">
-    <value>Ошибка</value>
+    <value>ошибка</value>
   </data>
   <data name="ErrorMessage" xml:space="preserve">
     <value>Ошибка {0}: {1}</value>
   </data>
   <data name="InternalErrorDescription" xml:space="preserve">
-    <value>Описание внутренней ошибки</value>
+    <value>Внутреннее описание ошибки</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value>Имя</value>
+    <value>имя</value>
   </data>
   <data name="NumberOfDownloads" xml:space="preserve">
-    <value>К закачке</value>
+    <value>Количество загрузок</value>
   </data>
   <data name="OpenQueue" xml:space="preserve">
-    <value>Открыть список закачек</value>
+    <value>Открыть очередь</value>
   </data>
   <data name="Pause" xml:space="preserve">
     <value>Пауза</value>
@@ -196,25 +196,25 @@
     <value>Удалить из очереди</value>
   </data>
   <data name="RemoveSelected" xml:space="preserve">
-    <value>Удалить выбранное</value>
+    <value>Убрать выбранное</value>
   </data>
   <data name="Resume" xml:space="preserve">
     <value>Продолжить</value>
   </data>
   <data name="Return" xml:space="preserve">
-    <value>Enter</value>
+    <value>Вернуть</value>
   </data>
   <data name="SaveQueue" xml:space="preserve">
-    <value>Сохранить список закачек</value>
+    <value>Сохранить очередь</value>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>Настройки</value>
+    <value>настройки</value>
   </data>
   <data name="ShiftReturn" xml:space="preserve">
-    <value>Shift+Enter</value>
+    <value>Shift + Return</value>
   </data>
   <data name="ShowDetails" xml:space="preserve">
-    <value>Показать подробности</value>
+    <value>Показать детали</value>
   </data>
   <data name="ShowFiles" xml:space="preserve">
     <value>Показать файлы</value>
@@ -226,49 +226,49 @@
     <value>Теги</value>
   </data>
   <data name="UnknownError" xml:space="preserve">
-    <value>Неизвестная ошибка</value>
+    <value>Неизвестная ошибка приложения</value>
   </data>
   <data name="Url" xml:space="preserve">
-    <value>URL-адрес</value>
+    <value>Веб-сайт</value>
   </data>
   <data name="ImageSize" xml:space="preserve">
-    <value>Размер изображения (пикс)</value>
+    <value>Размер изображения (px)</value>
   </data>
   <data name="ConcurrentBlogs" xml:space="preserve">
-    <value>Одновременно скачивающихся блогов</value>
+    <value>Параллельные блоги</value>
   </data>
   <data name="ConcurrentConnections" xml:space="preserve">
-    <value>Одновременных соединений с сервером</value>
+    <value>Параллельные соединения</value>
   </data>
   <data name="Online" xml:space="preserve">
-    <value>Доступен</value>
+    <value>В сети</value>
   </data>
   <data name="Progress" xml:space="preserve">
-    <value>Состояние</value>
+    <value>Прогресс</value>
   </data>
   <data name="NumberOfItems" xml:space="preserve">
-    <value>{0} элементов</value>
+    <value>{0} Блоги</value>
   </data>
   <data name="OneItem" xml:space="preserve">
-    <value>1 элемент</value>
+    <value>1 Блог</value>
   </data>
   <data name="CheckStatus" xml:space="preserve">
-    <value>Проверять доступность блога при запуске программы</value>
+    <value>Проверка состояния онлайн-блогов в момент запуска</value>
   </data>
   <data name="DeleteIndex" xml:space="preserve">
-    <value>Удалять только индексные файлы (оставлять скачаные файлы)</value>
+    <value>Удалять только файлы индекса (без загруженных файлов)</value>
   </data>
   <data name="RemoveIndex" xml:space="preserve">
-    <value>Удалять индексные файлы по окончании закачки</value>
+    <value>Удалить индекс блога после сканирования</value>
   </data>
   <data name="SkipGif" xml:space="preserve">
-    <value>Пропускать gif-файлы</value>
+    <value>Пропустить .gif файлы</value>
   </data>
   <data name="Info32Bit" xml:space="preserve">
-    <value>32 бита</value>
+    <value>32 бит</value>
   </data>
   <data name="Info64Bit" xml:space="preserve">
-    <value>64 бита</value>
+    <value>64 бит</value>
   </data>
   <data name="License" xml:space="preserve">
     <value>Лицензия</value>
@@ -277,7 +277,7 @@
     <value>.NET Framework</value>
   </data>
   <data name="Ok" xml:space="preserve">
-    <value>OK</value>
+    <value>ОК</value>
   </data>
   <data name="OperatingSystem" xml:space="preserve">
     <value>Операционная система</value>
@@ -289,73 +289,76 @@
     <value>Версия</value>
   </data>
   <data name="Website" xml:space="preserve">
-    <value>Сайт</value>
+    <value>Веб-сайт</value>
   </data>
   <data name="LastCompleteCrawl" xml:space="preserve">
-    <value>Скачан полностью</value>
+    <value>Последний полный обход</value>
   </data>
   <data name="VisitBlog" xml:space="preserve">
-    <value>Открыть блог в браузере</value>
+    <value>Откройте сайт в веб-браузере</value>
   </data>
   <data name="NumberOfImages" xml:space="preserve">
-    <value>{0} изображений</value>
+    <value>{0} Посты</value>
   </data>
   <data name="DownloadedFilesOf" xml:space="preserve">
-    <value>Скачано файлов {0} из {1}</value>
+    <value>Загруженный файл {0} из {1}</value>
   </data>
   <data name="DownloadImages" xml:space="preserve">
-    <value>Скачивать изображения</value>
+    <value>Скачать изображения</value>
   </data>
   <data name="DownloadVideos" xml:space="preserve">
-    <value>Скачивать видео (кроме внешних ресурсов)</value>
+    <value>Загрузите видео (tumblr.com самостоятельно)</value>
   </data>
   <data name="VideoSize" xml:space="preserve">
-    <value>Размер видео (пикс)</value>
+    <value>Размер видео (px)</value>
   </data>
   <data name="Authenticate" xml:space="preserve">
-    <value>Авторизироваться</value>
+    <value>проверять подлинность</value>
   </data>
   <data name="ToolTipAuthenticate" xml:space="preserve">
-    <value>Авторизация на сайте Tumblr</value>
+    <value>Аутентификация сети tumblr.com</value>
   </data>
   <data name="ToolTipAuthenticateDescription" xml:space="preserve">
-    <value>Открывает браузер для авторизации на сайте Tumblr. Позволяет скачивать приватные блоги, доступные из под Вашего аккаунта. Авторизация однократная, токен авторизации сохраняется и будет использоваться в дальнейшем.</value>
+    <value>Открывает окно браузера для аутентификации на сайте tumblr.com. 
+Файл cookie с учетными данными вашей учетной записи сохраняется и процесс аутентификации должен выполняться только один раз.</value>
   </data>
   <data name="ToolTipBlogs" xml:space="preserve">
-    <value>Количество одновременно скачиваемых блогов</value>
+    <value>Количество параллельных блогов</value>
   </data>
   <data name="ToolTipBlogsDescription" xml:space="preserve">
-    <value>Устанавливает количество одновременно скачиваемых блогов. Например, при значении 2 одновременно будут скачиваться файлы из двух разных блогов в очереди.</value>
+    <value>Устанавливает количество одновременно работающих блогов. 
+Установка этого параметра на 2 будет выполнять два блога за раз.</value>
   </data>
   <data name="ToolTipConnections" xml:space="preserve">
     <value>Количество одновременных соединений</value>
   </data>
   <data name="ToolTipConnectionsDescription" xml:space="preserve">
-    <value>Устанавливает количество одновременных соединений с сервером. Соединения равномерно распределяются между одновременно скачиваемыми блогами. Например, для сочетания 10/2 будут одновременно установлены по 5 соединений для 2 блогов.</value>
+    <value>Устанавливает количество общих одновременных подключений.
+Номер делится между всеми активными загрузками блогов.</value>
   </data>
   <data name="Notes" xml:space="preserve">
-    <value>Примечания</value>
+    <value>Персональные заметки</value>
   </data>
   <data name="TimeOut" xml:space="preserve">
-    <value>Таймаут (сек.)</value>
+    <value>Тайм-аут (ы)</value>
   </data>
   <data name="Bandwidth" xml:space="preserve">
-    <value>Ограничение скорости (Кб/сек)</value>
+    <value>Предельная пропускная способность (КБ / с)</value>
   </data>
   <data name="EnableAutoDownload" xml:space="preserve">
-    <value>Включить автоматическую закачку и добавить</value>
+    <value>Начать загрузку</value>
   </data>
   <data name="Timer" xml:space="preserve">
-    <value>по расписанию (час:мин:сек)</value>
+    <value>(чч: мм: сс) и добавить</value>
   </data>
   <data name="SelectABlog" xml:space="preserve">
-    <value>Пожалуйста, укажите блог</value>
+    <value>Выберите блог</value>
   </data>
   <data name="ShowItems" xml:space="preserve">
-    <value>Сводная информация по {0} блогам</value>
+    <value>Резюме {0} блогов</value>
   </data>
   <data name="CopyUrl" xml:space="preserve">
-    <value>Копировать url-адрес</value>
+    <value>Копировать URL</value>
   </data>
   <data name="Posts" xml:space="preserve">
     <value>Количество сообщений:</value>
@@ -364,319 +367,339 @@
     <value>Предварительный просмотр:</value>
   </data>
   <data name="DownloadAudios" xml:space="preserve">
-    <value>Скачивать аудиофайлы</value>
+    <value>Загрузка аудиофайлов</value>
   </data>
   <data name="DownloadConversations" xml:space="preserve">
-    <value>Скачивать диалоги</value>
+    <value>Загрузите сообщения в чате</value>
   </data>
   <data name="DownloadLinks" xml:space="preserve">
-    <value>Скачивать сообщения по ссылкам</value>
+    <value>Загрузить ссылку</value>
   </data>
   <data name="DownloadQuotes" xml:space="preserve">
-    <value>Скачивать ответы</value>
+    <value>Скачать цитаты</value>
   </data>
   <data name="DownloadTexts" xml:space="preserve">
-    <value>Скачивать текстовые сообщения</value>
+    <value>Загрузите текстовые сообщения</value>
   </data>
   <data name="DetailsProgress" xml:space="preserve">
-    <value>{0} из {1}, дублирующихся файлов: {2}</value>
+    <value>{0} из {1}, найдены дубликаты: {2}</value>
   </data>
   <data name="EnablePreview" xml:space="preserve">
-    <value>Предварительный просмотр вкл/выкл</value>
+    <value>Предварительный просмотр вкл / выкл</value>
   </data>
   <data name="BlogSettings" xml:space="preserve">
     <value>Настройки блога:</value>
   </data>
   <data name="GlobalSettings" xml:space="preserve">
-    <value>Общие настройки:</value>
+    <value>Глобальные настройки:</value>
   </data>
   <data name="BlogStatistics" xml:space="preserve">
-    <value>Статистика блога:</value>
+    <value>Статистика блогов:</value>
   </data>
   <data name="ToolTipDetailsStats" xml:space="preserve">
-    <value>Количество скачаных сообщений / всего сообщений</value>
+    <value>Количество загруженных типов сообщений общего типа сообщений</value>
   </data>
   <data name="ToolTipDetailsStatsDescription" xml:space="preserve">
-    <value>Укажите, скачивать или пропускать сообщения этого типа при скачивании</value>
+    <value>Проверьте, чтобы скачать тип сообщения или пропустить во время загрузки</value>
   </data>
   <data name="DownloadAudioMeta" xml:space="preserve">
-    <value>Скачивать метаданные аудиофайлов</value>
+    <value>Загрузить аудио мета</value>
   </data>
   <data name="DownloadImageMeta" xml:space="preserve">
-    <value>Скачивать метаданные изображений</value>
+    <value>Скачать картинку meta</value>
   </data>
   <data name="DownloadVideoMeta" xml:space="preserve">
-    <value>Скачивать метаданные видофайлов</value>
+    <value>Скачать видео мета</value>
   </data>
   <data name="DefaultSettingsForBlogs" xml:space="preserve">
-    <value>Настройки для добавляемых блогов:</value>
+    <value>Настройки, применяемые к каждому блогу при добавлении:</value>
   </data>
   <data name="DownloadVideosShort" xml:space="preserve">
-    <value>Скачивать видеофайлы</value>
+    <value>Скачать видео</value>
   </data>
   <data name="ToolTipDefaultSettingsForBlogs" xml:space="preserve">
-    <value>Устанавливает настройки по умолчанию для вновь добавляемых блогов.</value>
+    <value>Устанавливает настройки по умолчанию для недавно добавленных блогов.</value>
   </data>
   <data name="ToolTipDefaultSettingsForBlogsDescription" xml:space="preserve">
-    <value>При скачивании для каждого блога используются свои индивидуальные настройки. Чтобы поменять их, выберите блог(-и) в основном  окне и переключитесь на вкладку Подробности в правой части окна.</value>
+    <value>Сканирование / загрузка использует отдельные настройки для каждого блога.
+Чтобы изменить их, выберите блог (ы) в главном интерфейсе и перейдите на вкладку «Сведения» справа.</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Сохранить</value>
   </data>
   <data name="Offline" xml:space="preserve">
-    <value>Недоступен</value>
+    <value>Не в сети</value>
   </data>
   <data name="ForceSize" xml:space="preserve">
-    <value>Download specified size even if it is not offered</value>
+    <value>Загрузите указанный размер, даже если он не предлагается</value>
   </data>
   <data name="ToolTipForceSize" xml:space="preserve">
-    <value>Download the specified resolution of images even if the size is not offered.</value>
+    <value>Загрузите указанное разрешение изображений, 
+даже если размер не предлагается.</value>
   </data>
   <data name="ToolTipForceSizeDescription" xml:space="preserve">
-    <value>If the crawler only finds lower sized images than specified, enabling this option will rename the url to the specified files size. Those files generally exist and sometimes offer a larger resolution or are just renamed smaller resolution files. It's safe to turn this on.</value>
+    <value>Если искатель только находит изображения меньшего размера, чем указано, 
+включение этой опции приведет к переименованию URL-адреса в указанный размер файлов. 
+Эти файлы обычно существуют и иногда предлагают большее разрешение или просто переименованы в файлы меньшего разрешения. 
+Безопасно включить это.</value>
   </data>
   <data name="ProxyHost" xml:space="preserve">
-    <value>Прокси-сервер:</value>
+    <value>Прокси HTTP:</value>
   </data>
   <data name="ProxyPort" xml:space="preserve">
     <value>Порт:</value>
   </data>
   <data name="ThirdPartySoftware" xml:space="preserve">
-    <value>Стороннее ПО</value>
+    <value>Программное обеспечение сторонних производителей</value>
   </data>
   <data name="ThirdPartySoftwareDescription" xml:space="preserve">
-    <value>Стороннее ПО и лицензии</value>
+    <value>Стороннее программное обеспечение и лицензии</value>
   </data>
   <data name="ToolTipLimitBandwidth" xml:space="preserve">
-    <value>Уменьшение пропускной способности загрузчика</value>
+    <value>Уменьшает пропускную способность загрузчика</value>
   </data>
   <data name="ToolTipLimitBandwidthDescription" xml:space="preserve">
-    <value>Устанавливает максимальную пропускную способность доступную для загрузчика в кбит/с. 0 отключает ограничение.</value>
+    <value>Устанавливает максимальную пропускную способность, доступную для загрузчика в килобайтах / с.
+0 отключает дросселирование.</value>
   </data>
   <data name="LimitScan" xml:space="preserve">
-    <value>Limit the scan bandwidth</value>
+    <value>Ограничить ширину полосы сканирования</value>
   </data>
   <data name="ScanConnections" xml:space="preserve">
-    <value>Scan connections</value>
+    <value>Соединения сканирования</value>
   </data>
   <data name="ToolTipLimitScan" xml:space="preserve">
-    <value>Includes the scan bandwidth in the throttling</value>
+    <value>Включает полосу пропускания сканирования в режиме дросселирования</value>
   </data>
   <data name="ToolTipLimitScanDescription" xml:space="preserve">
-    <value>Since the data used for scanning is usually small, you should leave this off since the throttling algorithm is too slow to adjust and will negatively impact the performance.</value>
+    <value>Поскольку данные, используемые для сканирования, обычно невелики, вы должны оставить это выключенным,
+поскольку алгоритм дросселирования слишком медленный для настройки и может негативно повлиять на производительность сканирования. 
+Количество соединений, используемых для каждого сканирования</value>
   </data>
   <data name="ToolTipScan" xml:space="preserve">
-    <value>Количество соединений используемых для каждого сканирования</value>
+    <value>Устанавливает число соединений, используемых для сканирования. 
+Поскольку данные обычно невелики, вы должны оставить это высоко.</value>
   </data>
   <data name="ToolTipScanDescription" xml:space="preserve">
-    <value>Устанавливает количество соединений используемых для сканирования. Поскольку данные, как правило, невелики, вы должны не устанавливать это значение слишком большим.</value>
+    <value>Значение должно быть от 0 до 9 000 000 000 000 000.</value>
   </data>
   <data name="BandwidthRangeError" xml:space="preserve">
-    <value>Значение должно быть между 0 и 9,000,000,000,000,000.</value>
+    <value>Значение должно иметь форму hh: mm: ss.</value>
   </data>
   <data name="TimeSpanTypeError" xml:space="preserve">
-    <value>Значение должно иметь формат час:мин:сек.</value>
+    <value>Значение должно быть от 0 до 2 147 483 647.</value>
   </data>
   <data name="IntRangeError" xml:space="preserve">
-    <value>Значение должно быть между 0 и 2,147,483,647.</value>
+    <value>Значение должно быть типа integer.</value>
   </data>
   <data name="IntTypeError" xml:space="preserve">
-    <value>Значение должно быть целым.</value>
+    <value>за промежуток времени:</value>
   </data>
   <data name="ConnectionTimeInterval" xml:space="preserve">
-    <value>Временной интервал (сек):</value>
+    <value>Limit Tumblr Api Соединения:</value>
   </data>
   <data name="LimitConnections" xml:space="preserve">
-    <value>Лимит подключений к Tumblr Api</value>
-  </data>
-  <data name="MaxConnections" xml:space="preserve">
     <value>Количество соединений:</value>
   </data>
+  <data name="MaxConnections" xml:space="preserve">
+    <value>Ограничьте соединения с tumblr api.</value>
+  </data>
   <data name="ToolTipLimitConnections" xml:space="preserve">
-    <value>Ограничить число подключений к Tumblr api.</value>
+    <value>Слишком высокое значение будет принудительно закрывать соединения (429 - Limit Exceeded), сделанные в tumblr api.
+Слишком маленькое значение уменьшит скорость сканирования. Задайте пару число / время.
+Примечание: tumblr api используется только для регулярных загрузок блога tumblr.</value>
   </data>
   <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
-    <value>Слишком высокое значение принудительно закрывает соединения (429 -- максимум) через tumblr api. Слишком маленькое значение приведет к снижению скорости загрузки.</value>
-  </data>
-  <data name="ForceRescan" xml:space="preserve">
     <value>Повторное сканирование</value>
   </data>
+  <data name="ForceRescan" xml:space="preserve">
+    <value>Rescans весь блог, а не только новые сообщения.</value>
+  </data>
   <data name="ToolTipForceRescan" xml:space="preserve">
-    <value>Повторное сканирование всего блога, а не только новых сообщений.</value>
+    <value>Завершает полное сканирование с помощью Tumblr api.</value>
   </data>
   <data name="ToolTipForceRescanDescription" xml:space="preserve">
-    <value>Принудительное полное сканирование с помощью Tumblr API.</value>
+    <value>Проверить наличие обновлений</value>
   </data>
   <data name="CheckForUpdates" xml:space="preserve">
-    <value>Проверить обновления</value>
-  </data>
-  <data name="DownloadNow" xml:space="preserve">
     <value>Скачать сейчас</value>
   </data>
-  <data name="CheckDirectoryForFiles" xml:space="preserve">
-    <value>Проверяет каталог на наличие файлов</value>
+  <data name="DownloadNow" xml:space="preserve">
+    <value>Проверить каталог для файлов</value>
   </data>
-  <data name="ToolTipCheckDirectoryForFiles" xml:space="preserve">
+  <data name="CheckDirectoryForFiles" xml:space="preserve">
     <value>Проверяет каталог для уже загруженных файлов.</value>
   </data>
+  <data name="ToolTipCheckDirectoryForFiles" xml:space="preserve">
+    <value>Проверяет каталог и базу данных для уже загруженных файлов.
+Может негативно сказаться на скорости загрузки больших каталогов.</value>
+  </data>
   <data name="ToolTipCheckDirectoryForFilesDescription" xml:space="preserve">
-    <value>Проверяет каталог и базу на уже загруженные файлы. Может отрицательно сказаться на скорости загрузки для больших каталогов.</value>
+    <value>Скачать URL-адрес</value>
   </data>
   <data name="DownloadUrlList" xml:space="preserve">
-    <value>Скачивать список URL</value>
+    <value>Загрузите URL-адрес.</value>
   </data>
   <data name="ToolTipDownloadUrlList" xml:space="preserve">
-    <value>Скачать список URL.</value>
+    <value>Загружает URL-адрес двоичных файлов вместо фактических файлов</value>
   </data>
   <data name="ToolTipDownloadUrlListDescription" xml:space="preserve">
-    <value>Downloads a url list of the binary files instead of the actual files</value>
+    <value>Скачать ответные сообщения</value>
   </data>
   <data name="DownloadAnswers" xml:space="preserve">
-    <value>Скачивать посты с ответами</value>
+    <value>Блог</value>
   </data>
   <data name="Blog" xml:space="preserve">
-    <value>Блоги</value>
+    <value>соединение</value>
   </data>
   <data name="Connection" xml:space="preserve">
-    <value>Соединение</value>
+    <value>Генеральная</value>
   </data>
   <data name="General" xml:space="preserve">
-    <value>Общее</value>
+    <value>Активировать переносной режим</value>
   </data>
   <data name="PortableMode" xml:space="preserve">
-    <value>Активировать портативный режим.</value>
+    <value>Активирует переносной режим.</value>
   </data>
   <data name="ToolTipPortableMode" xml:space="preserve">
-    <value>Активирует портативный режим</value>
-  </data>
-  <data name="ToolTipPortableModeDescription" xml:space="preserve">
     <value>Сохраняет настройки в папке исполняемого файла вместо AppData.</value>
   </data>
-  <data name="DownloadRebloggedPosts" xml:space="preserve">
-    <value>Скачивать посты-реблоги</value>
+  <data name="ToolTipPortableModeDescription" xml:space="preserve">
+    <value>Скачать рефинансированные сообщения</value>
   </data>
-  <data name="ProxyPassword" xml:space="preserve">
+  <data name="DownloadRebloggedPosts" xml:space="preserve">
     <value>Пароль прокси:</value>
   </data>
-  <data name="ProxyUsername" xml:space="preserve">
+  <data name="ProxyPassword" xml:space="preserve">
     <value>Имя пользователя прокси:</value>
   </data>
-  <data name="ToolTipProxyPassword" xml:space="preserve">
+  <data name="ProxyUsername" xml:space="preserve">
     <value>Учетные данные для неанонимного прокси-сервера</value>
   </data>
+  <data name="ToolTipProxyPassword" xml:space="preserve">
+    <value>Учетные данные сохраняются в текстовом файле в файле настроек</value>
+  </data>
   <data name="ToolTipProxyPasswordDescription" xml:space="preserve">
-    <value>Учетные данные сохраняются в текстовом файле настроек</value>
+    <value>Скачать страницы:</value>
   </data>
   <data name="DownloadPages" xml:space="preserve">
-    <value>Скачать страницы: </value>
+    <value>Сообщений на странице:</value>
   </data>
   <data name="PageSize" xml:space="preserve">
-    <value>Сообщений на страницу:</value>
+    <value>Загрузите только определенные страницы</value>
   </data>
   <data name="ToolTipDownloadPages" xml:space="preserve">
-    <value>Загрузка только определенных страниц</value>
+    <value>Возможные обозначения: 1 или 1-3 или 1,2,3. Пустой означает весь блог.</value>
   </data>
   <data name="ToolTipDownloadPagesDescription" xml:space="preserve">
-    <value>Возможные обозначения: 1 или 1-3 или 1,2,3</value>
+    <value>Сообщений на страницу</value>
   </data>
   <data name="ToolTipPageSize" xml:space="preserve">
-    <value>Размер страницы</value>
+    <value>Устанавливает сообщение на страницу (должно быть от 1 до 50, по умолчанию 50).
+Например. 50 означает сканирование 50 сообщений на страницу.</value>
   </data>
   <data name="ToolTipPageSizeDescription" xml:space="preserve">
-    <value>Устанавливает размер страницы (должно быть между 1-50, стандарт 50)</value>
-  </data>
-  <data name="FullScreenMedia" xml:space="preserve">
     <value>FullScreenView</value>
   </data>
-  <data name="DownloadFrom" xml:space="preserve">
+  <data name="FullScreenMedia" xml:space="preserve">
+    <value>Экспортные блоги</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Экспортировать все URL-адреса блога в виде текстового файла</value>
+  </data>
+  <data name="ToolTipExportBlogs" xml:space="preserve">
+    <value>Сохраняет все URL-адреса в виде текстового файла для обмена.</value>
+  </data>
+  <data name="ToolTipExportBlogsDescription" xml:space="preserve">
     <value>Загрузить с:</value>
   </data>
-  <data name="DownloadTo" xml:space="preserve">
-    <value>до</value>
+  <data name="DownloadFrom" xml:space="preserve">
+    <value>Для того, чтобы:</value>
   </data>
-  <data name="ToolTipDownloadFrom" xml:space="preserve">
+  <data name="DownloadTo" xml:space="preserve">
     <value>Заполнять сообщения с этой даты</value>
   </data>
-  <data name="ToolTipDownloadTagsFromDescription" xml:space="preserve">
+  <data name="ToolTipDownloadFrom" xml:space="preserve">
     <value>Должно быть в формате YYYYMMDD. Пустые средства - с мая 2007 года.</value>
   </data>
-  <data name="ToolTipDownloadTo" xml:space="preserve">
+  <data name="ToolTipDownloadTagsFromDescription" xml:space="preserve">
     <value>Заполнять сообщения на эту дату</value>
   </data>
-  <data name="ToolTipDownloadTagsToDescription" xml:space="preserve">
+  <data name="ToolTipDownloadTo" xml:space="preserve">
     <value>Должно быть в формате YYYYMMDD. Пустое означает сейчас.</value>
   </data>
-  <data name="ToolTipDownloadFromDescription" xml:space="preserve">
+  <data name="ToolTipDownloadTagsToDescription" xml:space="preserve">
     <value>Должно быть в формате YYYYMMDD. Пустой означает с самого начала блога.</value>
   </data>
-  <data name="ToolTipDownloadToDescription" xml:space="preserve">
+  <data name="ToolTipDownloadFromDescription" xml:space="preserve">
     <value>Должно быть в формате YYYYMMDD. Пустое означает сейчас.</value>
   </data>
+  <data name="ToolTipDownloadToDescription" xml:space="preserve">
+    <value>Сообщений на страницу</value>
+  </data>
   <data name="ToolTipPageSizeTumblrSearch" xml:space="preserve">
-    <value>Размер страницы</value>
+    <value>Устанавливает сообщение на странице. 
+Например. 50 означает сканирование 50 сообщений на страницу.</value>
   </data>
   <data name="ToolTipPageSizeTumblrSearchDescription" xml:space="preserve">
-    <value>Устанавливает размер страницы</value>
-  </data>
-  <data name="Password" xml:space="preserve">
     <value>Пароль:</value>
   </data>
+  <data name="Password" xml:space="preserve">
+    <value>Пароль для защищенных паролем блогов</value>
+  </data>
   <data name="ToolTipPassword" xml:space="preserve">
-    <value>Password for password-protected blogs</value>
+    <value>Внимание: пароль хранится в текстовом виде в базе данных блогов.</value>
   </data>
   <data name="ToolTipPasswordDescription" xml:space="preserve">
-    <value>Caution: The password is stored in clear text in the blogs database.</value>
+    <value>Тип</value>
   </data>
-    <data name="Blogtype" xml:space="preserve">
-    <value>Type</value>
+  <data name="Blogtype" xml:space="preserve">
+    <value>Загрузка только отмеченных сообщений</value>
   </data>
   <data name="ToolTipTags" xml:space="preserve">
-    <value>Download only tagged posts</value>
+    <value>Должен находиться в списке, разделенном запятыми, без знака ведущего хэша (#).
+Например. большой большой автомобиль, медведи ищут большие большие машины и медведей.</value>
   </data>
   <data name="ToolTipTagsDescription" xml:space="preserve">
-    <value>Must be in a comma separated list without the leading hash (#) sign.
-E.g.  great big car, bears searches for great big cars and bears.</value>
+    <value>Все</value>
   </data>
   <data name="BlogtypeAll" xml:space="preserve">
-    <value>All</value>
-  </data>
-  <data name="BlogtypeInstagram" xml:space="preserve">
     <value>Instagram</value>
   </data>
-  <data name="BlogtypeTumblr" xml:space="preserve">
+  <data name="BlogtypeInstagram" xml:space="preserve">
     <value>Tumblr</value>
   </data>
-  <data name="BlogtypeTumblrLikedBy" xml:space="preserve">
-    <value>Tumblr Liked-by</value>
+  <data name="BlogtypeTumblr" xml:space="preserve">
+    <value>Tumblr Понравилось</value>
   </data>
-  <data name="BlogtypeTumblrPrivate" xml:space="preserve">
+  <data name="BlogtypeTumblrLikedBy" xml:space="preserve">
     <value>Tumblr Hidden</value>
   </data>
+  <data name="BlogtypeTumblrPrivate" xml:space="preserve">
+    <value>Поиск по Tumblr</value>
+  </data>
   <data name="BlogtypeTumblrSearch" xml:space="preserve">
-    <value>Tumblr Search</value>
+    <value>Поиск тегов Tumblr</value>
   </data>
   <data name="BlogtypeTumblrTagSearch" xml:space="preserve">
-    <value>Tumblr Tag Search</value>
+    <value>щебет</value>
   </data>
   <data name="BlogtypeTwitter" xml:space="preserve">
-    <value>Twitter</value>
+    <value>блоги в очередь.</value>
   </data>
   <data name="AutoDownloadBlogs" xml:space="preserve">
-    <value>blogs to the queue.</value>
+    <value>Тайм-аут для веб-запросов</value>
   </data>
   <data name="ToolTipTimeout" xml:space="preserve">
-    <value>Timeout for web requests</value>
+    <value>Продолжительность времени, в секундах, пока запрос не истечет.</value>
   </data>
   <data name="ToolTipTimeoutDescription" xml:space="preserve">
-    <value>The length of time, in seconds, until the request times out.</value>
+    <value>Параллельные видеоподключения:</value>
   </data>
   <data name="ConcurrentVideoConnections" xml:space="preserve">
-    <value>Concurrent video connections:</value>
+    <value>Количество одновременных подключений к видеовходу tumblr</value>
   </data>
   <data name="ToolTipVideoConnections" xml:space="preserve">
-    <value>Number of concurrent connections to the tumblr video host</value>
-  </data>
-  <data name="ToolTipVideoConnectionsDescription" xml:space="preserve">
-    <value>The vt.tumblr.com host regularly closes connections if the number is too high.</value>
+    <value>Хост vt.tumblr.com регулярно закрывает соединения, если число слишком велико.</value>
   </data>
 </root>

@@ -118,588 +118,585 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="About" xml:space="preserve">
-    <value>Über</value>
+    <value>約</value>
   </data>
   <data name="AddBlog" xml:space="preserve">
-    <value>Blog hinzufügen</value>
+    <value>ブログを追加</value>
   </data>
   <data name="AddToQueue" xml:space="preserve">
-    <value>Zur Warteschlange hinzufügen</value>
+    <value>キューに追加する</value>
   </data>
   <data name="BlogUrl" xml:space="preserve">
-    <value>URL eingeben:</value>
+    <value>URLを入力：</value>
   </data>
   <data name="Browse" xml:space="preserve">
-    <value>Durchsuchen</value>
+    <value>ブラウズ</value>
   </data>
   <data name="ClearQueue" xml:space="preserve">
-    <value>Klare Warteschlange</value>
+    <value>キューをクリアする</value>
   </data>
   <data name="ClipboardMonitor" xml:space="preserve">
-    <value>Überprüfen Sie die Zwischenablage</value>
+    <value>クリップボードを確認する</value>
   </data>
   <data name="Crawl" xml:space="preserve">
-    <value>Kriechen</value>
+    <value>クロール</value>
   </data>
   <data name="CrawlSelection" xml:space="preserve">
-    <value>Crawling auswählen</value>
+    <value>クロールの選択</value>
   </data>
   <data name="DateAdded" xml:space="preserve">
-    <value>Datum hinzugefügt</value>
+    <value>追加された日付</value>
   </data>
   <data name="Delete" xml:space="preserve">
-    <value>Löschen</value>
+    <value>削除</value>
   </data>
   <data name="Details" xml:space="preserve">
-    <value>Details</value>
+    <value>詳細</value>
   </data>
   <data name="DownloadedFiles" xml:space="preserve">
-    <value>Heruntergeladene Dateien</value>
+    <value>ダウンロードしたファイル</value>
   </data>
   <data name="DownloadLocation" xml:space="preserve">
-    <value>Standort herunterladen</value>
+    <value>場所をダウンロード</value>
   </data>
   <data name="EnqueueSelection" xml:space="preserve">
-    <value>Enqueue Auswahl</value>
+    <value>エンキュー選択</value>
   </data>
   <data name="Error" xml:space="preserve">
-    <value>Fehler</value>
+    <value>エラー</value>
   </data>
   <data name="ErrorMessage" xml:space="preserve">
-    <value>Fehler {0}: {1}</value>
+    <value>エラー{0}：{1}</value>
   </data>
   <data name="InternalErrorDescription" xml:space="preserve">
-    <value>Interne Fehlerbeschreibung</value>
+    <value>内部エラーの説明</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value>Name</value>
+    <value>名</value>
   </data>
   <data name="NumberOfDownloads" xml:space="preserve">
-    <value>Anzahl der Downloads</value>
+    <value>ダウンロード数</value>
   </data>
   <data name="OpenQueue" xml:space="preserve">
-    <value>Warteschlange öffnen</value>
+    <value>キューを開く</value>
   </data>
   <data name="Pause" xml:space="preserve">
-    <value>Pause</value>
+    <value>一時停止</value>
   </data>
   <data name="Queue" xml:space="preserve">
-    <value>Warteschlange</value>
+    <value>キュー</value>
   </data>
   <data name="Rating" xml:space="preserve">
-    <value>Bewertung</value>
+    <value>評価</value>
   </data>
   <data name="RemoveBlog" xml:space="preserve">
-    <value>Blog entfernen</value>
+    <value>ブログを削除</value>
   </data>
   <data name="RemoveFromQueue" xml:space="preserve">
-    <value>Aus Warteschlange entfernen</value>
+    <value>キューから削除</value>
   </data>
   <data name="RemoveSelected" xml:space="preserve">
-    <value>Ausgewählt entfernen</value>
+    <value>削除選択</value>
   </data>
   <data name="Resume" xml:space="preserve">
-    <value>Fortsetzen</value>
+    <value>履歴書</value>
   </data>
   <data name="Return" xml:space="preserve">
-    <value>Rückkehr</value>
+    <value>戻る</value>
   </data>
   <data name="SaveQueue" xml:space="preserve">
-    <value>Warteschlange speichern</value>
+    <value>キューを保存</value>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>Einstellungen</value>
+    <value>設定</value>
   </data>
   <data name="ShiftReturn" xml:space="preserve">
-    <value>Umschalt + Rückkehr</value>
+    <value>Shift + Return</value>
   </data>
   <data name="ShowDetails" xml:space="preserve">
-    <value>Zeige Details</value>
+    <value>詳細を表示</value>
   </data>
   <data name="ShowFiles" xml:space="preserve">
-    <value>Zeige Dateien</value>
+    <value>ファイルを表示する</value>
   </data>
   <data name="Stop" xml:space="preserve">
-    <value>Halt</value>
+    <value>やめる</value>
   </data>
   <data name="Tags" xml:space="preserve">
-    <value>Tags</value>
+    <value>タグ</value>
   </data>
   <data name="UnknownError" xml:space="preserve">
-    <value>Unbekannter Anwendungsfehler</value>
+    <value>不明なアプリケーションエラー</value>
   </data>
   <data name="Url" xml:space="preserve">
-    <value>Url</value>
+    <value>URL</value>
   </data>
   <data name="ImageSize" xml:space="preserve">
-    <value>Bildgröße (px)</value>
+    <value>画像サイズ（px）</value>
   </data>
   <data name="ConcurrentBlogs" xml:space="preserve">
-    <value>Gleichzeitige Blogs</value>
+    <value>同時ブログ</value>
   </data>
   <data name="ConcurrentConnections" xml:space="preserve">
-    <value>Gleichzeitige Verbindungen</value>
+    <value>同時接続</value>
   </data>
   <data name="Online" xml:space="preserve">
-    <value>Online</value>
+    <value>オンライン</value>
   </data>
   <data name="Progress" xml:space="preserve">
-    <value>Fortschritt</value>
+    <value>進捗</value>
   </data>
   <data name="NumberOfItems" xml:space="preserve">
-    <value>{0} Blogs</value>
+    <value>{0}ブログ</value>
   </data>
   <data name="OneItem" xml:space="preserve">
-    <value>1 Blog</value>
+    <value>1ブログ</value>
   </data>
   <data name="CheckStatus" xml:space="preserve">
-    <value>Überprüfen Sie den Blog-Online-Status beim Start</value>
+    <value>起動時にブログのオンライン状態を確認する</value>
   </data>
   <data name="DeleteIndex" xml:space="preserve">
-    <value>Löschen Sie nur die Indexdateien (keine heruntergeladenen Dateien)</value>
+    <value>インデックスファイルのみを削除します（ダウンロードしたファイルはありません）</value>
   </data>
   <data name="RemoveIndex" xml:space="preserve">
-    <value>Blog-Index nach dem Crawling entfernen</value>
+    <value>クロール後にブログのインデックスを削除する</value>
   </data>
   <data name="SkipGif" xml:space="preserve">
-    <value>Überspringen Sie .gif-Dateien</value>
+    <value>.gifファイルをスキップする</value>
   </data>
   <data name="Info32Bit" xml:space="preserve">
-    <value>32 bit</value>
+    <value>32ビット</value>
   </data>
   <data name="Info64Bit" xml:space="preserve">
-    <value>64 bit</value>
+    <value>64ビット</value>
   </data>
   <data name="License" xml:space="preserve">
-    <value>Lizenz</value>
+    <value>ライセンス</value>
   </data>
   <data name="NetFramework" xml:space="preserve">
-    <value>.NET Framework</value>
+    <value>。ネットフレームワーク</value>
   </data>
   <data name="Ok" xml:space="preserve">
     <value>OK</value>
   </data>
   <data name="OperatingSystem" xml:space="preserve">
-    <value>Betriebssystem</value>
+    <value>オペレーティング·システム</value>
   </data>
   <data name="Product" xml:space="preserve">
-    <value>Produkt</value>
+    <value>製品</value>
   </data>
   <data name="Version" xml:space="preserve">
-    <value>Version</value>
+    <value>バージョン</value>
   </data>
   <data name="Website" xml:space="preserve">
-    <value>Webseite</value>
+    <value>ウェブサイト</value>
   </data>
   <data name="LastCompleteCrawl" xml:space="preserve">
-    <value>Letzter vollständiger Crawling</value>
+    <value>最後の完全なクロール</value>
   </data>
   <data name="VisitBlog" xml:space="preserve">
-    <value>Öffnen Sie die Website im Webbrowser</value>
+    <value>ウェブブラウザでサイトを開く</value>
   </data>
   <data name="NumberOfImages" xml:space="preserve">
-    <value>{0} Beiträge</value>
+    <value>{0}投稿</value>
   </data>
   <data name="DownloadedFilesOf" xml:space="preserve">
-    <value>Heruntergeladene Datei {0} von {1}</value>
+    <value>{1}のファイル{0}がダウンロードされました</value>
   </data>
   <data name="DownloadImages" xml:space="preserve">
-    <value>Bilder herunterladen</value>
+    <value>画像をダウンロードする</value>
   </data>
   <data name="DownloadVideos" xml:space="preserve">
-    <value>Videos herunterladen (tumblr.com selbst gehostet)</value>
+    <value>ダウンロードビデオ（tumblr.com self hosted）</value>
   </data>
   <data name="VideoSize" xml:space="preserve">
-    <value>Videogröße (px)</value>
+    <value>動画サイズ（px）</value>
   </data>
   <data name="Authenticate" xml:space="preserve">
-    <value>Authentifizieren</value>
+    <value>認証する</value>
   </data>
   <data name="ToolTipAuthenticate" xml:space="preserve">
-    <value>Authentifizierung zum tumblr.com Netzwerk</value>
+    <value>tumblr.comネットワークに認証する</value>
   </data>
   <data name="ToolTipAuthenticateDescription" xml:space="preserve">
-    <value>Öffnet ein Browser-Fenster, um sich auf der Website von tumblr.com zu authentifizieren.
-Der Cookie mit Ihren Anmeldeinformationen Ihres Kontos wird gespeichert und der Authentifizierungsprozess muss nur einmal durchgeführt werden.</value>
+    <value>tumblr.comサイトに自分自身を認証するブラウザウィンドウを開きます。
+アカウントの資格情報を持つCookieが保存され、認証プロセスは1回だけ行う必要があります。</value>
   </data>
   <data name="ToolTipBlogs" xml:space="preserve">
-    <value>Anzahl gleichzeitiger Verarbeitungsblogs</value>
+    <value>並行処理ブログの数</value>
   </data>
   <data name="ToolTipBlogsDescription" xml:space="preserve">
-    <value>Legt die Anzahl der gleichzeitigen Verarbeitungsblogs fest.
-Wenn man dies auf 2 setzt, würde es zwei Blogs gleichzeitig geben.</value>
+    <value>並行処理ブログの数を設定します。
+これを2に設定すると、一度に2つのブログが処理されます。</value>
   </data>
   <data name="ToolTipConnections" xml:space="preserve">
-    <value>Anzahl der gleichzeitigen Verbindungen</value>
+    <value>合計同時接続数</value>
   </data>
   <data name="ToolTipConnectionsDescription" xml:space="preserve">
-    <value>Setzt die Anzahl der gesamten gleichzeitigen Verbindungen.
-Die Nummer wird zwischen allen aktiv heruntergeladenen Blogs geteilt.</value>
+    <value>合計同時接続数を設定します。
+この数字は、積極的にダウンロードしているすべてのブログで共有されています。</value>
   </data>
   <data name="Notes" xml:space="preserve">
-    <value>Persönliche Hinweise</value>
+    <value>個人メモ</value>
   </data>
   <data name="TimeOut" xml:space="preserve">
-    <value>Timeout (s)</value>
+    <value>タイムアウト</value>
   </data>
   <data name="Bandwidth" xml:space="preserve">
-    <value>Grenzbandbreite (KB / s)</value>
+    <value>帯域幅を制限する（KB /秒）</value>
   </data>
   <data name="EnableAutoDownload" xml:space="preserve">
-    <value>Starten Sie den Download bei</value>
+    <value>ダウンロードを開始する</value>
   </data>
   <data name="Timer" xml:space="preserve">
-    <value>(hh: mm: ss) und fügen Sie hinzu</value>
+    <value>（hh：mm：ss）を追加して</value>
   </data>
   <data name="SelectABlog" xml:space="preserve">
-    <value>Bitte wählen Sie ein Blog</value>
+    <value>ブログを選択してください</value>
   </data>
   <data name="ShowItems" xml:space="preserve">
-    <value>Zusammenfassung von {0} Blogs</value>
+    <value>{0}ブログの要約</value>
   </data>
   <data name="CopyUrl" xml:space="preserve">
-    <value>Kopiere URL</value>
+    <value>URLをコピー</value>
   </data>
   <data name="Posts" xml:space="preserve">
-    <value>Anzahl der Beiträge:</value>
+    <value>投稿数：</value>
   </data>
   <data name="Preview" xml:space="preserve">
-    <value>Vorschau:</value>
+    <value>プレビュー：</value>
   </data>
   <data name="DownloadAudios" xml:space="preserve">
-    <value>Laden Sie Audiodateien herunter</value>
+    <value>オーディオファイルをダウンロードする</value>
   </data>
   <data name="DownloadConversations" xml:space="preserve">
-    <value>Laden Sie Konversationsposten herunter</value>
+    <value>会話の投稿をダウンロードする</value>
   </data>
   <data name="DownloadLinks" xml:space="preserve">
-    <value>Link-Beiträge herunterladen</value>
+    <value>リンクのポストをダウンロード</value>
   </data>
   <data name="DownloadQuotes" xml:space="preserve">
-    <value>Download Zitat Beiträge</value>
+    <value>引用文をダウンロードする</value>
   </data>
   <data name="DownloadTexts" xml:space="preserve">
-    <value>Texttexte herunterladen</value>
+    <value>テキスト投稿をダウンロード</value>
   </data>
   <data name="DetailsProgress" xml:space="preserve">
-    <value>{0} von {1}, Duplikate gefunden: {2}</value>
+    <value>{1}の{0}、重複が見つかりました：{2}</value>
   </data>
   <data name="EnablePreview" xml:space="preserve">
-    <value>Vorschau auf / aus</value>
+    <value>プレビューのオン/オフ</value>
   </data>
   <data name="BlogSettings" xml:space="preserve">
-    <value>Blog-Einstellungen:</value>
+    <value>ブログの設定：</value>
   </data>
   <data name="GlobalSettings" xml:space="preserve">
-    <value>Globale Einstellungen:</value>
+    <value>全体設定：</value>
   </data>
   <data name="BlogStatistics" xml:space="preserve">
-    <value>Blog-Statistiken:</value>
+    <value>ブログの統計情報：</value>
   </data>
   <data name="ToolTipDetailsStats" xml:space="preserve">
-    <value>Anzahl der heruntergeladenen Post-Typen der gesamten Post-Typen</value>
+    <value>ダウンロードした総投稿タイプの投稿タイプの数</value>
   </data>
   <data name="ToolTipDetailsStatsDescription" xml:space="preserve">
-    <value>Überprüfen Sie, um Post-Typ herunterladen oder überspringen während des Downloads</value>
+    <value>ポストタイプをダウンロードするか、ダウンロード中にスキップするかをチェックしてください</value>
   </data>
   <data name="DownloadAudioMeta" xml:space="preserve">
-    <value>Laden Sie die Audio-Meta herunter</value>
+    <value>オーディオメタのダウンロード</value>
   </data>
   <data name="DownloadImageMeta" xml:space="preserve">
-    <value>Bild herunterladen meta</value>
+    <value>画像メタをダウンロードする</value>
   </data>
   <data name="DownloadVideoMeta" xml:space="preserve">
-    <value>Video herunterladen Meta</value>
+    <value>ビデオメタをダウンロードする</value>
   </data>
   <data name="DefaultSettingsForBlogs" xml:space="preserve">
-    <value>Einstellungen für jeden Blog bei Hinzufügen:</value>
+    <value>追加時に各ブログに適用される設定：</value>
   </data>
   <data name="DownloadVideosShort" xml:space="preserve">
-    <value>Videos herunterladen</value>
+    <value>動画をダウンロードする</value>
   </data>
   <data name="ToolTipDefaultSettingsForBlogs" xml:space="preserve">
-    <value>Legt die Standardeinstellungen für neu hinzugefügte Blogs fest.</value>
+    <value>新しく追加されたブログのデフォルト設定を設定します。</value>
   </data>
   <data name="ToolTipDefaultSettingsForBlogsDescription" xml:space="preserve">
-    <value>Der Scan / Download verwendet indivuelle Einstellungen für jeden Blog.
-Um sie zu ändern, wählen Sie Blog (s) in der Hauptschnittstelle und wählen Sie die Registerkarte Details auf der rechten Seite.</value>
+    <value>スキャン/ダウンロードでは、各ブログの個人設定が使用されます。
+それらを変更するには、メインインターフェイスでブログを選択し、右側の[詳細]タブを選択します。</value>
   </data>
   <data name="Save" xml:space="preserve">
-    <value>sparen</value>
+    <value>セーブ</value>
   </data>
   <data name="Offline" xml:space="preserve">
-    <value>Offline</value>
+    <value>オフライン</value>
   </data>
   <data name="ForceSize" xml:space="preserve">
-    <value>Laden Sie die angegebene Größe, auch wenn es nicht angeboten wird</value>
+    <value>指定サイズが提供されていない場合でもダウンロードする</value>
   </data>
   <data name="ToolTipForceSize" xml:space="preserve">
-    <value>Laden Sie die angegebene Auflösung von Bildern herunter, auch wenn die Größe nicht angeboten wird.</value>
+    <value>サイズが提供されていない場合でも、
+指定された解像度の画像をダウンロードしてください。</value>
   </data>
   <data name="ToolTipForceSizeDescription" xml:space="preserve">
-    <value>Wenn der Crawler nur Bilder mit geringerer Größe als angegeben findet,
-wird diese Option um die URL in die angegebene Dateigröße umbenannt. 
-Diese Dateien sind in der Regel vorhanden und bieten manchmal eine größere Auflösung oder sind nur umbenannt kleinere Auflösung Dateien.
-Es ist sicher, dies zu aktivieren.</value>
+    <value>クローラーが指定したサイズよりも小さいサイズのイメージしか見つからない場合、このオプションを有効にすると、URLの名前が指定されたファイルサイズに変更されます。
+これらのファイルは一般的に存在し、より大きな解像度を提供する場合もあれば、より小さな解像度のファイルに名前を変更した場合もあります。
+これを有効にすることは安全です。</value>
   </data>
   <data name="ProxyHost" xml:space="preserve">
-    <value>HTTP-Proxy:</value>
+    <value>HTTPプロキシ：</value>
   </data>
   <data name="ProxyPort" xml:space="preserve">
-    <value>Hafen:</value>
+    <value>ポート：</value>
   </data>
   <data name="ThirdPartySoftware" xml:space="preserve">
-    <value>Drittanbietersoftware</value>
+    <value>サードパーティのソフトウェア</value>
   </data>
   <data name="ThirdPartySoftwareDescription" xml:space="preserve">
-    <value>Software und Lizenzen von Drittanbietern</value>
+    <value>サードパーティのソフトウェアとライセンス</value>
   </data>
   <data name="ToolTipLimitBandwidth" xml:space="preserve">
-    <value>Drosselt die Bandbreite des Downloaders</value>
+    <value>ダウンローダの帯域幅を絞る</value>
   </data>
   <data name="ToolTipLimitBandwidthDescription" xml:space="preserve">
-    <value>Setzt die maximale Bandbreite für den Downloader in kbytes / s. 
-0 deaktiviert die Drosselung.</value>
+    <value>ダウンローダで使用できる最大帯域幅をkバイト/秒単位で設定します。 0はスロットリングを無効にします。</value>
   </data>
   <data name="LimitScan" xml:space="preserve">
-    <value>Begrenzung der Scan-Bandbreite</value>
+    <value>スキャン帯域幅を制限する</value>
   </data>
   <data name="ScanConnections" xml:space="preserve">
-    <value>Scanverbindungen</value>
+    <value>接続をスキャンする</value>
   </data>
   <data name="ToolTipLimitScan" xml:space="preserve">
-    <value>Enthält die Scan-Bandbreite in der Drosselung</value>
+    <value>スロットリングにおけるスキャン帯域幅を含む</value>
   </data>
   <data name="ToolTipLimitScanDescription" xml:space="preserve">
-    <value>Da die für das Scannen verwendeten Daten in der Regel klein sind, sollten Sie diese ausschalten,
-da der Drosselungsalgorithmus zu langsam ist, um sich anzupassen und die Scanleistung negativ beeinflussen zu können.
-Anzahl der für jeden Scan verwendeten Verbindungen</value>
+    <value>通常、スキャンに使用するデータは小さいため、調整アルゴリズムの調整が遅すぎるためスキャンのパフォーマンスに悪影響を与える可能性があるため、オフにしておく必要があります。各スキャンに使用された接続の数</value>
   </data>
   <data name="ToolTipScan" xml:space="preserve">
-    <value>Legt die für das Scannen verwendeten Nummernverbindungen fest. 
-Da die Daten in der Regel klein sind, solltest du das hoch lassen.</value>
+    <value>スキャンに使用する接続数を設定します。データは通常小さいので、このままにしておく必要があります。</value>
   </data>
   <data name="ToolTipScanDescription" xml:space="preserve">
-    <value>Der Wert muss zwischen 0 und 9.000.000.000.000.000 liegen.</value>
+    <value>値は0〜9,000,000,000,000,000でなければなりません。</value>
   </data>
   <data name="BandwidthRangeError" xml:space="preserve">
-    <value>Der Wert muss hh bilden: mm: ss.</value>
+    <value>値は、hh：mm：ssの形式でなければなりません。</value>
   </data>
   <data name="TimeSpanTypeError" xml:space="preserve">
-    <value>Der Wert muss zwischen 0 und 2.147.483.647 liegen.</value>
+    <value>値は0〜2,147,483,647の間で指定してください。</value>
   </data>
   <data name="IntRangeError" xml:space="preserve">
-    <value>Der Wert muss vom Typ Integer sein.</value>
+    <value>値は整数型でなければなりません。</value>
   </data>
   <data name="IntTypeError" xml:space="preserve">
-    <value>pro Zeitintervall (e):</value>
+    <value>時間間隔ごとに：</value>
   </data>
   <data name="ConnectionTimeInterval" xml:space="preserve">
-    <value>Limit Tumblr Api Verbindungen:</value>
+    <value>Tumblr Apiの接続を制限する：</value>
   </data>
   <data name="LimitConnections" xml:space="preserve">
-    <value>Anzahl der Anschlüsse:</value>
+    <value>接続数：</value>
   </data>
   <data name="MaxConnections" xml:space="preserve">
-    <value>Begrenzung der Verbindungen zum tumblr api.</value>
+    <value>tumblr APIへの接続を制限する。</value>
   </data>
   <data name="ToolTipLimitConnections" xml:space="preserve">
-    <value>Ein zu hoher Wert wird die Verbindungen (429 - Limit Exceeded), die an die tumblr api gemacht wurden, kraftvoll schließen.
-Ein zu kleiner Wert verringert die Abtastgeschwindigkeit.
-Stellen Sie ein Zahlen- / Zeitpaar ein. 
-Hinweis: Die tumblr api wird nur für regelmäßige tumblr Blog Downloads verwendet.</value>
+    <value>値が大きすぎると、tumblr APIへの接続を強制的に閉じます（429  - 限界超過）。
+値が小さすぎるとスキャン速度が遅くなります。数値/時間のペアを設定します。注：tumblr APIは、tumblrの定期的なブログのダウンロードにのみ使用されます。</value>
   </data>
   <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
-    <value>Force rescan</value>
+    <value>強制再スキャン</value>
   </data>
   <data name="ForceRescan" xml:space="preserve">
-    <value>Rescans das ganze Blog, nicht nur neue Beiträge.</value>
+    <value>新しい投稿だけでなく、ブログ全体を再スキャンします。</value>
   </data>
   <data name="ToolTipForceRescan" xml:space="preserve">
-    <value>Erzwingt einen kompletten Scan mit dem Tumblr api.</value>
+    <value>Tumblr APIを使用して完全にスキャンします。</value>
   </data>
   <data name="ToolTipForceRescanDescription" xml:space="preserve">
-    <value>Auf Updates prüfen</value>
+    <value>アップデートを確認</value>
   </data>
   <data name="CheckForUpdates" xml:space="preserve">
-    <value>Jetzt herunterladen</value>
+    <value>ダウンロード中</value>
   </data>
   <data name="DownloadNow" xml:space="preserve">
-    <value>Überprüfen Sie das Verzeichnis auf Dateien</value>
+    <value>ディレクトリのファイルをチェックする</value>
   </data>
   <data name="CheckDirectoryForFiles" xml:space="preserve">
-    <value>Überprüft das Verzeichnis für bereits heruntergeladene Dateien.</value>
+    <value>すでにダウンロードされているファイルをディレクトリでチェックします。</value>
   </data>
   <data name="ToolTipCheckDirectoryForFiles" xml:space="preserve">
-    <value>Überprüft das Verzeichnis und die Datenbank auf bereits heruntergeladene Dateien.
-Kann die Downloadgeschwindigkeit für große Verzeichnisse negativ beeinflussen.</value>
+    <value>すでにダウンロードされているファイルをディレクトリとデータベースでチェックします。
+大きなディレクトリのダウンロード速度に悪影響を与える可能性があります。</value>
   </data>
   <data name="ToolTipCheckDirectoryForFilesDescription" xml:space="preserve">
-    <value>Download der URL-Liste</value>
+    <value>URLリストをダウンロード</value>
   </data>
   <data name="DownloadUrlList" xml:space="preserve">
-    <value>Laden Sie eine URL-Liste herunter.</value>
+    <value>URLリストをダウンロードしてください。</value>
   </data>
   <data name="ToolTipDownloadUrlList" xml:space="preserve">
-    <value>Downloads eine URL-Liste der Binärdateien anstelle der eigentlichen Dateien</value>
+    <value>実際のファイルの代わりにバイナリファイルのURLリストをダウンロードする</value>
   </data>
   <data name="ToolTipDownloadUrlListDescription" xml:space="preserve">
-    <value>Antwort-Beiträge herunterladen</value>
+    <value>回答の記事をダウンロード</value>
   </data>
   <data name="DownloadAnswers" xml:space="preserve">
-    <value>Blog</value>
+    <value>ブログ</value>
   </data>
   <data name="Blog" xml:space="preserve">
-    <value>Verbindung</value>
+    <value>接続</value>
   </data>
   <data name="Connection" xml:space="preserve">
-    <value>General</value>
+    <value>一般</value>
   </data>
   <data name="General" xml:space="preserve">
-    <value>Aktivieren Sie den tragbaren Modus</value>
+    <value>ポータブルモードを有効にする</value>
   </data>
   <data name="PortableMode" xml:space="preserve">
-    <value>Aktiviert den tragbaren Modus.</value>
+    <value>ポータブルモードを有効にします。</value>
   </data>
   <data name="ToolTipPortableMode" xml:space="preserve">
-    <value>Speichert die Einstellungen im Ordner der ausführbaren Datei anstelle von AppData.</value>
+    <value>AppDataの代わりに実行可能ファイルのフォルダに設定を保存します。</value>
   </data>
   <data name="ToolTipPortableModeDescription" xml:space="preserve">
-    <value>Download von gesendeten Beiträgen</value>
+    <value>ダウンロードはポストする</value>
   </data>
   <data name="DownloadRebloggedPosts" xml:space="preserve">
-    <value>Proxy-Passwort:</value>
+    <value>プロキシパスワード：</value>
   </data>
   <data name="ProxyPassword" xml:space="preserve">
-    <value>Proxy Benutzername:</value>
+    <value>プロキシユーザー名：</value>
   </data>
   <data name="ProxyUsername" xml:space="preserve">
-    <value>Anmeldeinformationen für nicht anonymen Proxy-Server</value>
+    <value>非匿名プロキシサーバーの資格情報</value>
   </data>
   <data name="ToolTipProxyPassword" xml:space="preserve">
-    <value>Anmeldeinformationen werden in der Einstellungsdatei in Klartext gespeichert</value>
+    <value>クレデンシャルは、
+設定ファイルにクリアテキストで保存されます</value>
   </data>
   <data name="ToolTipProxyPasswordDescription" xml:space="preserve">
-    <value>Download Seiten:</value>
+    <value>ダウンロードページ：</value>
   </data>
   <data name="DownloadPages" xml:space="preserve">
-    <value>Beiträge pro Seite:</value>
+    <value>ページあたりの投稿数：</value>
   </data>
   <data name="PageSize" xml:space="preserve">
-    <value>Laden Sie nur bestimmte Seiten herunter</value>
+    <value>特定のページのみをダウンロードする</value>
   </data>
   <data name="ToolTipDownloadPages" xml:space="preserve">
-    <value>Mögliche Notationen sind: 1 oder 1-3 oder 1,2,3. 
-Leer bedeutet das ganze Blog.</value>
+    <value>可能な表記法は、1または1-3または1,2,3です。
+Emptyはブログ全体を意味します。</value>
   </data>
   <data name="ToolTipDownloadPagesDescription" xml:space="preserve">
-    <value>Beiträge pro Seite</value>
+    <value>ページごとの投稿</value>
   </data>
   <data name="ToolTipPageSize" xml:space="preserve">
-    <value>Setzt den Beitrag pro Seite (sollte zwischen 1-50, Standard 50) sein.
-Z.B. 50 bedeutet, 50 Beiträge pro Seite zu scannen.</value>
+    <value>1ページあたりの投稿を設定します（1〜50の間で、デフォルトは50）。
+例えば。 50はページあたり50個の投稿をスキャンすることを意味します。</value>
   </data>
   <data name="ToolTipPageSizeDescription" xml:space="preserve">
-    <value>Vollbildansicht</value>
+    <value>FullScreenView</value>
   </data>
   <data name="FullScreenMedia" xml:space="preserve">
-    <value>Export-Blogs</value>
+    <value>ブログをエクスポート</value>
   </data>
   <data name="Export" xml:space="preserve">
-    <value>Exportiere alle Blog-URLs als Textdatei</value>
+    <value>すべてのブログURLをテキストファイルとしてエクスポートする</value>
   </data>
   <data name="ToolTipExportBlogs" xml:space="preserve">
-    <value>Speichert alle URLs als Textdatei für den Austausch.</value>
+    <value>すべてのURLをテキストファイルとして保存します。</value>
   </data>
   <data name="ToolTipExportBlogsDescription" xml:space="preserve">
-    <value>Herunterladen von:</value>
+    <value>ダウンロード元：</value>
   </data>
   <data name="DownloadFrom" xml:space="preserve">
-    <value>Nach:</value>
+    <value>に：</value>
   </data>
   <data name="DownloadTo" xml:space="preserve">
-    <value>Crawling Beiträge von diesem Datum</value>
+    <value>この日の投稿をクロールする</value>
   </data>
   <data name="ToolTipDownloadFrom" xml:space="preserve">
-    <value>Muss im JJJJMMDD-Format sein. Leere bedeutet ab Mai 2007.</value>
+    <value>YYYYMMDD形式である必要があります。
+空は2007年5月からの意味です。</value>
   </data>
   <data name="ToolTipDownloadTagsFromDescription" xml:space="preserve">
-    <value>Crawl Beiträge zu diesem Datum</value>
+    <value>この日の投稿をクロールする</value>
   </data>
   <data name="ToolTipDownloadTo" xml:space="preserve">
-    <value>Muss im JJJJMMDD-Format sein. Leer bedeutet jetzt</value>
+    <value>YYYYMMDD形式である必要があります。今は空です。</value>
   </data>
   <data name="ToolTipDownloadTagsToDescription" xml:space="preserve">
-    <value>Muss im JJJJMMDD-Format sein. Leere bedeutet vom Anfang des Blogs.</value>
+    <value>YYYYMMDD形式である必要があります。空白はブログの初めからの意味です。</value>
   </data>
   <data name="ToolTipDownloadFromDescription" xml:space="preserve">
-    <value>Muss im JJJJMMDD-Format sein. Leer bedeutet jetzt</value>
+    <value>YYYYMMDD形式である必要があります。今は空です。</value>
   </data>
   <data name="ToolTipDownloadToDescription" xml:space="preserve">
-    <value>Beiträge pro Seite</value>
+    <value>ページごとの投稿</value>
   </data>
   <data name="ToolTipPageSizeTumblrSearch" xml:space="preserve">
-    <value>Setzt den Beitrag pro Seite. Z.B. 50 bedeutet, 50 Beiträge pro Seite zu scannen.</value>
+    <value>1ページあたりの投稿を設定します。例えば。
+50はページあたり50個の投稿をスキャンすることを意味します。</value>
   </data>
   <data name="ToolTipPageSizeTumblrSearchDescription" xml:space="preserve">
-    <value>Passwort:</value>
+    <value>パスワード：</value>
   </data>
   <data name="Password" xml:space="preserve">
-    <value>Passwort für passwortgeschützte Blogs</value>
+    <value>パスワードで保護されたブログのパスワード</value>
   </data>
   <data name="ToolTipPassword" xml:space="preserve">
-    <value>Achtung: Das Passwort wird in der Blogs-Datenbank in Klartext gespeichert.</value>
+    <value>注意：パスワードは、ブログデータベースにクリアテキストで保存されています。</value>
   </data>
   <data name="ToolTipPasswordDescription" xml:space="preserve">
-    <value>Art</value>
+    <value>タイプ</value>
   </data>
   <data name="Blogtype" xml:space="preserve">
-    <value>Nur getaggte Beiträge herunterladen</value>
+    <value>タグ付きの記事のみをダウンロードする</value>
   </data>
   <data name="ToolTipTags" xml:space="preserve">
-    <value>Muss in einer kommagetrennten Liste ohne das führende Hash (#) Zeichen sein. 
-Z.B. großes großes Auto, Bären sucht nach großen großen Autos und Bären.</value>
+    <value>先頭のハッシュ記号（＃）を付けずにコンマ区切りのリストにする必要があります。
+例えば。大きなクルマとクマを探しています。</value>
   </data>
   <data name="ToolTipTagsDescription" xml:space="preserve">
-    <value>Alle</value>
+    <value>すべて</value>
   </data>
   <data name="BlogtypeAll" xml:space="preserve">
-    <value>Instagram</value>
+    <value>インスタグラム</value>
   </data>
   <data name="BlogtypeInstagram" xml:space="preserve">
-    <value>Tumblr</value>
+    <value>タンブラー</value>
   </data>
   <data name="BlogtypeTumblr" xml:space="preserve">
-    <value>Tumblr Liked-by</value>
+    <value>Tumblrが欲しい</value>
   </data>
   <data name="BlogtypeTumblrLikedBy" xml:space="preserve">
-    <value>Tumblr versteckt</value>
+    <value>Tumblr Hidden</value>
   </data>
   <data name="BlogtypeTumblrPrivate" xml:space="preserve">
-    <value>Tumblr Suche</value>
+    <value>Tumblrで検索</value>
   </data>
   <data name="BlogtypeTumblrSearch" xml:space="preserve">
-    <value>Tumblr Tag Suche</value>
+    <value>Tumblrのタグ検索</value>
   </data>
   <data name="BlogtypeTumblrTagSearch" xml:space="preserve">
     <value>Twitter</value>
   </data>
   <data name="BlogtypeTwitter" xml:space="preserve">
-    <value>Blogs zur Warteschlange.</value>
+    <value>ブログをキューに入れる。</value>
   </data>
   <data name="AutoDownloadBlogs" xml:space="preserve">
-    <value>Timeout für Webanfragen</value>
+    <value>Webリクエストのタイムアウト</value>
   </data>
   <data name="ToolTipTimeout" xml:space="preserve">
-    <value>Die Zeitdauer, in Sekunden, bis die Anforderung abläuft.</value>
+    <value>要求がタイムアウトするまでの時間の長さ（秒単位）。</value>
   </data>
   <data name="ToolTipTimeoutDescription" xml:space="preserve">
-    <value>Gleichzeitige Videoverbindungen:</value>
+    <value>同時ビデオ接続：</value>
   </data>
   <data name="ConcurrentVideoConnections" xml:space="preserve">
-    <value>Anzahl der gleichzeitigen Verbindungen zum tumblr Video-Host</value>
+    <value>tumblrビデオホストへの同時接続数</value>
   </data>
   <data name="ToolTipVideoConnections" xml:space="preserve">
-    <value>Der vt.tumblr.com-Host schließt regelmäßig Verbindungen, wenn die Nummer zu hoch ist.</value>
+    <value>vt.tumblr.comホストは、番号が高すぎる場合は定期的に接続を閉じます。</value>
   </data>
 </root>
