@@ -36,6 +36,9 @@ namespace TumblThree.Applications.Services
             blog.DownloadUrlList = shellService.Settings.DownloadUrlList;
             blog.DownloadPages = shellService.Settings.DownloadPages;
             blog.PageSize = shellService.Settings.PageSize;
+            blog.DownloadFrom = shellService.Settings.DownloadFrom;
+            blog.DownloadTo = shellService.Settings.DownloadTo;
+            blog.Tags = shellService.Settings.Tags;
             return blog;
         }
     }

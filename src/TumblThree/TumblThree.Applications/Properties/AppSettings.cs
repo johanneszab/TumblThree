@@ -182,6 +182,15 @@ namespace TumblThree.Applications.Properties
         public int PageSize { get; set; }
 
         [DataMember]
+        public string DownloadFrom { get; set; }
+
+        [DataMember]
+        public string DownloadTo { get; set; }
+
+        [DataMember]
+        public string Tags { get; set; }
+
+        [DataMember]
         public bool CreateImageMeta { get; set; }
 
         [DataMember]

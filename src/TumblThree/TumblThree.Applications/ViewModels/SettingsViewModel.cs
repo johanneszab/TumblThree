@@ -43,6 +43,9 @@ namespace TumblThree.Applications.ViewModels
         private bool createVideoMeta;
         private string downloadPages;
         private int pageSize;
+        private string downloadFrom;
+        private string downloadTo;
+        private string tags;
         private bool downloadRebloggedPosts;
         private bool deleteOnlyIndex;
         private bool downloadAudios;
@@ -441,6 +444,24 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref pageSize, value); }
         }
 
+        public string DownloadFrom
+        {
+            get { return downloadFrom; }
+            set { SetProperty(ref downloadFrom, value); }
+        }
+
+        public string DownloadTo
+        {
+            get { return downloadTo; }
+            set { SetProperty(ref downloadTo, value); }
+        }
+
+        public string Tags
+        {
+            get { return tags; }
+            set { SetProperty(ref tags, value); }
+        }
+
         public bool DownloadRebloggedPosts
         {
             get { return downloadRebloggedPosts; }
@@ -523,10 +544,13 @@ namespace TumblThree.Applications.ViewModels
 
         private void BrowseExportLocation()
         {
-            var dialog = new System.Windows.Forms.SaveFileDialog { FileName = exportLocation,
+            var dialog = new System.Windows.Forms.SaveFileDialog
+            {
+                FileName = exportLocation,
                 Filter = string.Format(CultureInfo.CurrentCulture, Resources.ExportFileFilter),
                 DefaultExt = string.Format(CultureInfo.CurrentCulture, Resources.ExportFileFilterExtension),
-                AddExtension = true };
+                AddExtension = true
+            };
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 ExportLocation = dialog.FileName;
@@ -601,6 +625,9 @@ namespace TumblThree.Applications.ViewModels
                 CreateAudioMeta = settings.CreateAudioMeta;
                 DownloadPages = settings.DownloadPages;
                 PageSize = settings.PageSize;
+                DownloadFrom = settings.DownloadFrom;
+                DownloadTo = settings.DownloadTo;
+                Tags = settings.Tags;
                 DownloadRebloggedPosts = settings.DownloadRebloggedPosts;
                 AutoDownload = settings.AutoDownload;
                 ForceSize = settings.ForceSize;
@@ -653,8 +680,11 @@ namespace TumblThree.Applications.ViewModels
                 CreateImageMeta = false;
                 CreateVideoMeta = false;
                 CreateAudioMeta = false;
-                DownloadPages = String.Empty;
+                DownloadPages = string.Empty;
                 PageSize = 50;
+                DownloadFrom = string.Empty;
+                DownloadTo = string.Empty;
+                Tags = string.Empty;
                 DownloadRebloggedPosts = true;
                 AutoDownload = false;
                 ForceSize = false;
@@ -679,7 +709,7 @@ namespace TumblThree.Applications.ViewModels
         private void ApplySettings(bool downloadLocationChanged)
         {
             CrawlerService.Timeconstraint.SetRate(((double)MaxConnections / (double)ConnectionTimeInterval));
-            
+
             if (!CrawlerService.IsCrawl && !downloadLocationChanged)
             {
                 CrawlerService.LoadLibraryCommand.Execute(null);
@@ -728,6 +758,9 @@ namespace TumblThree.Applications.ViewModels
             settings.CreateAudioMeta = CreateAudioMeta;
             settings.DownloadPages = DownloadPages;
             settings.PageSize = PageSize;
+            settings.DownloadFrom = DownloadFrom;
+            settings.DownloadTo = DownloadTo;
+            settings.Tags = Tags;
             settings.DownloadRebloggedPosts = DownloadRebloggedPosts;
             settings.ApiKey = ApiKey;
             settings.SecretKey = SecretKey;
