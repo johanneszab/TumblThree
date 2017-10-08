@@ -6,7 +6,7 @@
         xmlns:vr="clr-namespace:TumblThree.Presentation.ValidationRules"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:TumblThree.Applications.ViewModels;assembly=TumblThree.Applications"
-        mc:Ignorable="d" Title="Settings" Height="580" Width="700"
+        mc:Ignorable="d" Title="Settings" Height="620" Width="700"
         d:DataContext="{d:DesignInstance vm:SettingsViewModel}">
 
     <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
@@ -20,7 +20,7 @@
                     <Grid MinHeight="46" Height="Auto">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>                        
+                        </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
@@ -423,6 +423,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Label x:Name="perBlogLabel" Grid.Column="0" Grid.Row="0" Margin="5"
                        Content="{x:Static p:Resources.DefaultSettingsForBlogs}">
@@ -515,6 +516,56 @@
                                 </ToolTip>
                             </TextBox.ToolTip>
                         </TextBox>
+                        <Label Grid.Column="0" Grid.Row="11" Content="{x:Static p:Resources.DownloadFrom}"
+                       HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10" >
+                            <Label.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadFrom}" />
+                                        <TextBlock xml:space="preserve"
+                                           Text="{x:Static p:Resources.ToolTipDownloadFromDescription}" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </Label.ToolTip>
+                        </Label>
+                        <TextBox 
+                         Text="{Binding DownloadFrom, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                         Grid.Column="1" Grid.Row="11" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center" >
+                            <TextBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadFrom}" />
+                                        <TextBlock xml:space="preserve"
+                                           Text="{x:Static p:Resources.ToolTipDownloadFromDescription}" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </TextBox.ToolTip>
+                        </TextBox>
+                        <Label Grid.Column="2" Grid.Row="11" Content="{x:Static p:Resources.DownloadTo}"
+                       HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10" >
+                            <Label.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadTo}" />
+                                        <TextBlock xml:space="preserve"
+                                           Text="{x:Static p:Resources.ToolTipDownloadToDescription}" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </Label.ToolTip>
+                        </Label>
+                        <TextBox Text="{Binding DownloadTo, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                         Grid.Column="3" Grid.Row="11" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center"
+                         Margin="00,0,10,0" >
+                            <TextBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadTo}" />
+                                        <TextBlock xml:space="preserve"
+                                           Text="{x:Static p:Resources.ToolTipDownloadToDescription}" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </TextBox.ToolTip>
+                        </TextBox>
                         <!--<CheckBox x:Name="checkBoxCheckDirectoryForFiles"
                           Content="{x:Static p:Resources.CheckDirectoryForFiles}"
                           IsChecked="{Binding CheckDirectoryForFiles, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="11"
@@ -531,7 +582,7 @@
                             </CheckBox.ToolTip>
                         </CheckBox>-->
                         <CheckBox x:Name="checkBoxDownloadUrlList" Content="{x:Static p:Resources.DownloadUrlList}"
-                          IsChecked="{Binding DownloadUrlList, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="11" Margin="10">
+                          IsChecked="{Binding DownloadUrlList, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="12" Margin="10">
                             <CheckBox.ToolTip>
                                 <ToolTip>
                                     <StackPanel>
@@ -542,10 +593,35 @@
                                 </ToolTip>
                             </CheckBox.ToolTip>
                         </CheckBox>
+                        <Label Grid.Column="2" Grid.Row="12" Content="{x:Static p:Resources.Tags}"
+                       HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10" >
+                            <Label.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipTags}" />
+                                        <TextBlock xml:space="preserve"
+                                           Text="{x:Static p:Resources.ToolTipTagsDescription}" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </Label.ToolTip>
+                        </Label>
+                        <TextBox Text="{Binding Tags, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                         Grid.Column="3" Grid.Row="12" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center"
+                         Margin="00,0,10,0" >
+                            <TextBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipTags}" />
+                                        <TextBlock xml:space="preserve"
+                                           Text="{x:Static p:Resources.ToolTipTagsDescription}" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </TextBox.ToolTip>
+                        </TextBox>
                         <CheckBox x:Name="checkBoxSkipGif" Content="{x:Static p:Resources.SkipGif}"
-                          IsChecked="{Binding SkipGif, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="12" Margin="10" />
+                          IsChecked="{Binding SkipGif, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="13" Margin="10" />
                         <CheckBox x:Name="checkBoxForceSize" Content="{x:Static p:Resources.ForceSize}"
-                          IsChecked="{Binding ForceSize, Mode=TwoWay}" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="11" Margin="10">
+                          IsChecked="{Binding ForceSize, Mode=TwoWay}" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="13" Margin="10">
                             <CheckBox.ToolTip>
                                 <ToolTip>
                                     <StackPanel>
