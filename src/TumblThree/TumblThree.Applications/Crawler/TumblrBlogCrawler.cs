@@ -462,7 +462,6 @@ namespace TumblThree.Applications.Crawler
                     {
                         if (CheckIfDownloadRebloggedPosts(post))
                         {
-                            AddInlineVideoUrl(post);
                             if (post.Element("video-caption") != null)
                             {
                                 post.Elements("video-player").Remove();

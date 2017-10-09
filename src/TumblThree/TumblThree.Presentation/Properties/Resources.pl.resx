@@ -475,231 +475,231 @@ należy je wyłączyć, ponieważ algorytm dławienia jest zbyt wolny,
 aby można było dostosować i może negatywnie wpłynąć na wydajność skanowania.
 Liczba połączeń używanych do każdego skanowania</value>
   </data>
-  <data name="ToolTipScan" xml:space="preserve">
+  <data name="ToolTipScanDescription" xml:space="preserve">
     <value>Ustawia liczbę połączeń używanych do skanowania.
 Ponieważ dane są zazwyczaj małe, należy pozostawić to wysokie.</value>
   </data>
-  <data name="ToolTipScanDescription" xml:space="preserve">
+  <data name="BandwidthRangeError" xml:space="preserve">
     <value>Wartość musi wynosić od 0 do 9,000,000 000 000 000.</value>
   </data>
-  <data name="BandwidthRangeError" xml:space="preserve">
+  <data name="TimeSpanTypeError" xml:space="preserve">
     <value>Wartość musi mieć formę hh: mm: ss.</value>
   </data>
-  <data name="TimeSpanTypeError" xml:space="preserve">
+  <data name="IntRangeError" xml:space="preserve">
     <value>Wartość musi wynosić od 0 do 2 147 473 647.</value>
   </data>
-  <data name="IntRangeError" xml:space="preserve">
+  <data name="IntTypeError" xml:space="preserve">
     <value>Wartość musi być typu integer.</value>
   </data>
-  <data name="IntTypeError" xml:space="preserve">
+  <data name="ConnectionTimeInterval" xml:space="preserve">
     <value>na przedziały czasowe:</value>
   </data>
-  <data name="ConnectionTimeInterval" xml:space="preserve">
+  <data name="LimitConnections" xml:space="preserve">
     <value>Ograniczanie połączeń Tumblr Api:</value>
   </data>
-  <data name="LimitConnections" xml:space="preserve">
+  <data name="MaxConnections" xml:space="preserve">
     <value>Liczba połączeń:</value>
   </data>
-  <data name="MaxConnections" xml:space="preserve">
+  <data name="ToolTipLimitConnections" xml:space="preserve">
     <value>Ogranicz połączenia z tumblr api.</value>
   </data>
-  <data name="ToolTipLimitConnections" xml:space="preserve">
+  <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
     <value>Zbyt wysoka wartość spowoduje silne zamknięcie połączeń (429 - Limit Exceeded),
 które zostały wykonane w apliku tumblr. 
 Zbyt mała wartość zmniejszy prędkość skanowania. Ustaw parę liczb / czasu.
 Uwaga: Aplikacja tumblr jest używana tylko w przypadku regularnych pobierania blogów przez tumblr.</value>
   </data>
-  <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
+  <data name="ForceRescan" xml:space="preserve">
     <value>Wymuś skanowanie</value>
   </data>
-  <data name="ForceRescan" xml:space="preserve">
+  <data name="ToolTipForceRescan" xml:space="preserve">
     <value>Rescans cały blog, a nie tylko nowe posty.</value>
   </data>
-  <data name="ToolTipForceRescan" xml:space="preserve">
+  <data name="ToolTipForceRescanDescription" xml:space="preserve">
     <value>Wymusza pełne skanowanie przy użyciu aplikacji Tumblr.</value>
   </data>
-  <data name="ToolTipForceRescanDescription" xml:space="preserve">
+  <data name="CheckForUpdates" xml:space="preserve">
     <value>Sprawdź aktualizacje</value>
   </data>
-  <data name="CheckForUpdates" xml:space="preserve">
+  <data name="DownloadNow" xml:space="preserve">
     <value>Pobierz teraz</value>
   </data>
-  <data name="DownloadNow" xml:space="preserve">
+  <data name="CheckDirectoryForFiles" xml:space="preserve">
     <value>Sprawdź katalog plików</value>
   </data>
-  <data name="CheckDirectoryForFiles" xml:space="preserve">
+  <data name="ToolTipCheckDirectoryForFiles" xml:space="preserve">
     <value>Sprawdza katalog już pobranych plików.</value>
   </data>
-  <data name="ToolTipCheckDirectoryForFiles" xml:space="preserve">
+  <data name="ToolTipCheckDirectoryForFilesDescription" xml:space="preserve">
     <value>Sprawdza katalog i bazę danych już pobranych plików.
 Może mieć negatywny wpływ na szybkość pobierania dużych katalogów.</value>
   </data>
-  <data name="ToolTipCheckDirectoryForFilesDescription" xml:space="preserve">
+  <data name="DownloadUrlList" xml:space="preserve">
     <value>Pobierz listę adresów URL</value>
   </data>
-  <data name="DownloadUrlList" xml:space="preserve">
+  <data name="ToolTipDownloadUrlList" xml:space="preserve">
     <value>Pobierz listę adresów URL.</value>
   </data>
-  <data name="ToolTipDownloadUrlList" xml:space="preserve">
+  <data name="ToolTipDownloadUrlListDescription" xml:space="preserve">
     <value>Pobiera listę url plików binarnych zamiast plików rzeczywistych</value>
   </data>
-  <data name="ToolTipDownloadUrlListDescription" xml:space="preserve">
+  <data name="DownloadAnswers" xml:space="preserve">
     <value>Pobierz posty odpowiedzi</value>
   </data>
-  <data name="DownloadAnswers" xml:space="preserve">
+  <data name="Blog" xml:space="preserve">
     <value>Blog</value>
   </data>
-  <data name="Blog" xml:space="preserve">
+  <data name="Connection" xml:space="preserve">
     <value>Połączenie</value>
   </data>
-  <data name="Connection" xml:space="preserve">
+  <data name="General" xml:space="preserve">
     <value>Generał</value>
   </data>
-  <data name="General" xml:space="preserve">
+  <data name="PortableMode" xml:space="preserve">
     <value>Uaktywnij tryb przenośny</value>
   </data>
-  <data name="PortableMode" xml:space="preserve">
+  <data name="ToolTipPortableMode" xml:space="preserve">
     <value>Uaktywnia tryb przenośny.</value>
   </data>
-  <data name="ToolTipPortableMode" xml:space="preserve">
+  <data name="ToolTipPortableModeDescription" xml:space="preserve">
     <value>Zapisuje ustawienia w folderze pliku wykonywalnego zamiast AppData.</value>
   </data>
-  <data name="ToolTipPortableModeDescription" xml:space="preserve">
+  <data name="DownloadRebloggedPosts" xml:space="preserve">
     <value>Pobierz zdemonowane posty</value>
   </data>
-  <data name="DownloadRebloggedPosts" xml:space="preserve">
+  <data name="ProxyPassword" xml:space="preserve">
     <value>Proxy Password:</value>
   </data>
-  <data name="ProxyPassword" xml:space="preserve">
+  <data name="ProxyUsername" xml:space="preserve">
     <value>Prośba o nazwę użytkownika:</value>
   </data>
-  <data name="ProxyUsername" xml:space="preserve">
+  <data name="ToolTipProxyPassword" xml:space="preserve">
     <value>Poświadczenia dla nie-anonimowego serwera proxy</value>
   </data>
-  <data name="ToolTipProxyPassword" xml:space="preserve">
+  <data name="ToolTipProxyPasswordDescription" xml:space="preserve">
     <value>Poświadczenia są zapisywane w czystym tekście w pliku ustawień</value>
   </data>
-  <data name="ToolTipProxyPasswordDescription" xml:space="preserve">
+  <data name="DownloadPages" xml:space="preserve">
     <value>Strony pobierania:</value>
   </data>
-  <data name="DownloadPages" xml:space="preserve">
+  <data name="PageSize" xml:space="preserve">
     <value>Liczba postów na stronie:</value>
   </data>
-  <data name="PageSize" xml:space="preserve">
+  <data name="ToolTipDownloadPages" xml:space="preserve">
     <value>Pobieranie tylko określonych stron</value>
   </data>
-  <data name="ToolTipDownloadPages" xml:space="preserve">
+  <data name="ToolTipDownloadPagesDescription" xml:space="preserve">
     <value>Możliwe notacje to: 1 lub 1-3 lub 1,2,3.
 Pusty oznacza cały blog.</value>
   </data>
-  <data name="ToolTipDownloadPagesDescription" xml:space="preserve">
+  <data name="ToolTipPageSize" xml:space="preserve">
     <value>Liczba postów na stronie</value>
   </data>
-  <data name="ToolTipPageSize" xml:space="preserve">
+  <data name="ToolTipPageSizeDescription" xml:space="preserve">
     <value>Ustawia post na stronie (powinien wynosić 1-50, domyślnie 50).
 Na przykład. 50 oznacza skanowanie 50 postów na stronie.</value>
   </data>
-  <data name="ToolTipPageSizeDescription" xml:space="preserve">
+  <data name="FullScreenMedia" xml:space="preserve">
     <value>FullScreenView</value>
   </data>
-  <data name="FullScreenMedia" xml:space="preserve">
+  <data name="Export" xml:space="preserve">
     <value>Eksportuj blogi</value>
   </data>
-  <data name="Export" xml:space="preserve">
+  <data name="ToolTipExportBlogs" xml:space="preserve">
     <value>Eksportuj wszystkie adresy blogów jako plik tekstowy</value>
   </data>
-  <data name="ToolTipExportBlogs" xml:space="preserve">
+  <data name="ToolTipExportBlogsDescription" xml:space="preserve">
     <value>Zapisuje wszystkie adresy URL jako plik tekstowy do wymiany.</value>
   </data>
-  <data name="ToolTipExportBlogsDescription" xml:space="preserve">
+  <data name="DownloadFrom" xml:space="preserve">
     <value>Pobierz z:</value>
   </data>
-  <data name="DownloadFrom" xml:space="preserve">
+  <data name="DownloadTo" xml:space="preserve">
     <value>Do:</value>
   </data>
-  <data name="DownloadTo" xml:space="preserve">
+  <data name="ToolTipDownloadFrom" xml:space="preserve">
     <value>Przesyłaj wiadomości z tej daty</value>
   </data>
-  <data name="ToolTipDownloadFrom" xml:space="preserve">
+  <data name="ToolTipDownloadTagsFromDescription" xml:space="preserve">
     <value>Musi być w formacie RRRRMMDD. Pusty oznacza od maja 2007.</value>
   </data>
-  <data name="ToolTipDownloadTagsFromDescription" xml:space="preserve">
+  <data name="ToolTipDownloadTo" xml:space="preserve">
     <value>Przesyłaj wiadomości do tej daty</value>
   </data>
-  <data name="ToolTipDownloadTo" xml:space="preserve">
-    <value>Musi być w formacie RRRRMMDD. Puste znaczenie dla teraz.</value>
-  </data>
   <data name="ToolTipDownloadTagsToDescription" xml:space="preserve">
-    <value>Musi być w formacie RRRRMMDD. Puste środki od początku bloga.</value>
+    <value>Musi być w formacie RRRRMMDD. Puste znaczenie dla teraz.</value>
   </data>
   <data name="ToolTipDownloadFromDescription" xml:space="preserve">
-    <value>Musi być w formacie RRRRMMDD. Puste znaczenie dla teraz.</value>
+    <value>Musi być w formacie RRRRMMDD. Puste środki od początku bloga.</value>
   </data>
   <data name="ToolTipDownloadToDescription" xml:space="preserve">
-    <value>Liczba postów na stronie</value>
+    <value>Musi być w formacie RRRRMMDD. Puste znaczenie dla teraz.</value>
   </data>
   <data name="ToolTipPageSizeTumblrSearch" xml:space="preserve">
-    <value>Ustawia post na stronie. Na przykład. 50 oznacza skanowanie 50 postów na stronie.</value>
+    <value>Liczba postów na stronie</value>
   </data>
   <data name="ToolTipPageSizeTumblrSearchDescription" xml:space="preserve">
-    <value>Hasło:</value>
+    <value>Ustawia post na stronie. Na przykład. 50 oznacza skanowanie 50 postów na stronie.</value>
   </data>
   <data name="Password" xml:space="preserve">
-    <value>Hasło dla blogów chronionych hasłem</value>
+    <value>Hasło:</value>
   </data>
   <data name="ToolTipPassword" xml:space="preserve">
-    <value>Uwaga: hasło jest zapisywane w czystym tekście w bazie blogów.</value>
+    <value>Hasło dla blogów chronionych hasłem</value>
   </data>
   <data name="ToolTipPasswordDescription" xml:space="preserve">
-    <value>Rodzaj</value>
+    <value>Uwaga: hasło jest zapisywane w czystym tekście w bazie blogów.</value>
   </data>
   <data name="Blogtype" xml:space="preserve">
-    <value>Pobieraj tylko oznaczone posty</value>
+    <value>Rodzaj</value>
   </data>
   <data name="ToolTipTags" xml:space="preserve">
+    <value>Pobieraj tylko oznaczone posty</value>
+  </data>
+  <data name="ToolTipTagsDescription" xml:space="preserve">
     <value>Musi znajdować się w oddzielonej przecinkowej liście bez znaku głównego hash (#).
 Na przykład. wielki samochód, poszukuje wielkich samochodów i niedźwiedzi.</value>
   </data>
-  <data name="ToolTipTagsDescription" xml:space="preserve">
+  <data name="BlogtypeAll" xml:space="preserve">
     <value>Wszystko</value>
   </data>
-  <data name="BlogtypeAll" xml:space="preserve">
+  <data name="BlogtypeInstagram" xml:space="preserve">
     <value>Instagram</value>
   </data>
-  <data name="BlogtypeInstagram" xml:space="preserve">
+  <data name="BlogtypeTumblr" xml:space="preserve">
     <value>Tumblr</value>
   </data>
-  <data name="BlogtypeTumblr" xml:space="preserve">
+  <data name="BlogtypeTumblrLikedBy" xml:space="preserve">
     <value>Tumblr Przybytkujący</value>
   </data>
-  <data name="BlogtypeTumblrLikedBy" xml:space="preserve">
+  <data name="BlogtypeTumblrPrivate" xml:space="preserve">
     <value>Tumblr Ukryty</value>
   </data>
-  <data name="BlogtypeTumblrPrivate" xml:space="preserve">
+  <data name="BlogtypeTumblrSearch" xml:space="preserve">
     <value>Szukaj Tumblr</value>
   </data>
-  <data name="BlogtypeTumblrSearch" xml:space="preserve">
+  <data name="BlogtypeTumblrTagSearch" xml:space="preserve">
     <value>Szukaj tagów Tumblr</value>
   </data>
-  <data name="BlogtypeTumblrTagSearch" xml:space="preserve">
+  <data name="BlogtypeTwitter" xml:space="preserve">
     <value>Świergot</value>
   </data>
-  <data name="BlogtypeTwitter" xml:space="preserve">
+  <data name="AutoDownloadBlogs" xml:space="preserve">
     <value>blogi do kolejki.</value>
   </data>
-  <data name="AutoDownloadBlogs" xml:space="preserve">
+  <data name="ToolTipTimeout" xml:space="preserve">
     <value>Limit czasu dla żądań internetowych</value>
   </data>
-  <data name="ToolTipTimeout" xml:space="preserve">
+  <data name="ToolTipTimeoutDescription" xml:space="preserve">
     <value>Długość czasu, w sekundach, do czasu wygaśnięcia żądania.</value>
   </data>
-  <data name="ToolTipTimeoutDescription" xml:space="preserve">
+  <data name="ConcurrentVideoConnections" xml:space="preserve">
     <value>Jednoczesne połączenia wideo:</value>
   </data>
-  <data name="ConcurrentVideoConnections" xml:space="preserve">
+  <data name="ToolTipVideoConnections" xml:space="preserve">
     <value>Liczba jednoczesnych połączeń z hostem wideo tumblr</value>
   </data>
-  <data name="ToolTipVideoConnections" xml:space="preserve">
+  <data name="ToolTipVideoConnectionsDescription" xml:space="preserve">
     <value>Oficer vt.tumblr.com regularnie zamyka połączenia, jeśli liczba jest za wysoka.</value>
   </data>
 </root>

@@ -477,230 +477,230 @@
     <value>از آنجا که داده های مورد استفاده برای اسکن معمولا کوچک است، شما باید این را ترک کنید از آنجا که الگوریتم throttling برای تنظیم بسیار
 کند است و ممکن است عملکرد اسکن را منفی کند. تعداد اتصالات مورد استفاده برای هر اسکن</value>
   </data>
-  <data name="ToolTipScan" xml:space="preserve">
+  <data name="ToolTipScanDescription" xml:space="preserve">
     <value>اتصالات شماره مورد استفاده برای اسکن را تنظیم می کند. از آنجا که داده
 ها معمولا کوچک هستند، شما باید این مقدار را ترک کنید.</value>
   </data>
-  <data name="ToolTipScanDescription" xml:space="preserve">
+  <data name="BandwidthRangeError" xml:space="preserve">
     <value>ارزش باید بین 0 تا 9،000،000،000،000،000 باشد.</value>
   </data>
-  <data name="BandwidthRangeError" xml:space="preserve">
+  <data name="TimeSpanTypeError" xml:space="preserve">
     <value>مقدار باید hh: mm: ss باشد.</value>
   </data>
-  <data name="TimeSpanTypeError" xml:space="preserve">
+  <data name="IntRangeError" xml:space="preserve">
     <value>مقدار باید بین 0 تا 2،147،483،647 باشد.</value>
   </data>
-  <data name="IntRangeError" xml:space="preserve">
+  <data name="IntTypeError" xml:space="preserve">
     <value>مقدار باید از عدد صحیح نوع باشد.</value>
   </data>
-  <data name="IntTypeError" xml:space="preserve">
+  <data name="ConnectionTimeInterval" xml:space="preserve">
     <value>در هر فاصله زمانی (ثانیه):</value>
   </data>
-  <data name="ConnectionTimeInterval" xml:space="preserve">
+  <data name="LimitConnections" xml:space="preserve">
     <value>محدود کردن اتصالات Tumblr Api:</value>
   </data>
-  <data name="LimitConnections" xml:space="preserve">
+  <data name="MaxConnections" xml:space="preserve">
     <value>تعداد اتصالات:</value>
   </data>
-  <data name="MaxConnections" xml:space="preserve">
+  <data name="ToolTipLimitConnections" xml:space="preserve">
     <value>محدود کردن اتصالات به Tumblr API.</value>
   </data>
-  <data name="ToolTipLimitConnections" xml:space="preserve">
+  <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
     <value>مقدار بیش از حد بالا اتصالات را به شدت متوقف می کند (429 - Limit Exceeded) ساخته شده به Tumblr API. 
 	مقدار بسیار کوچک سرعت اسکن را کاهش می دهد. جفت شماره / زمان را تنظیم کنید. 
 	توجه: Tumblr API فقط برای دریافت وبلاگ وبلاگ Tumblr استفاده می شود.</value>
   </data>
-  <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
+  <data name="ForceRescan" xml:space="preserve">
     <value>مجبور کردن مجدد</value>
   </data>
-  <data name="ForceRescan" xml:space="preserve">
+  <data name="ToolTipForceRescan" xml:space="preserve">
     <value>تمام وبلاگ ها، و نه فقط پست های جدید را بازی می کند.</value>
   </data>
-  <data name="ToolTipForceRescan" xml:space="preserve">
+  <data name="ToolTipForceRescanDescription" xml:space="preserve">
     <value>اسکن کامل با استفاده از Tumblr API</value>
   </data>
-  <data name="ToolTipForceRescanDescription" xml:space="preserve">
+  <data name="CheckForUpdates" xml:space="preserve">
     <value>به روز رسانی ها رو بررسی کن</value>
   </data>
-  <data name="CheckForUpdates" xml:space="preserve">
+  <data name="DownloadNow" xml:space="preserve">
     <value>الان دانلود کن</value>
   </data>
-  <data name="DownloadNow" xml:space="preserve">
+  <data name="CheckDirectoryForFiles" xml:space="preserve">
     <value>دایرکتوری را برای فایل ها بررسی کنید</value>
   </data>
-  <data name="CheckDirectoryForFiles" xml:space="preserve">
+  <data name="ToolTipCheckDirectoryForFiles" xml:space="preserve">
     <value>دایرکتوری را برای فایل های دانلود شده منتقل می کند.</value>
   </data>
-  <data name="ToolTipCheckDirectoryForFiles" xml:space="preserve">
+  <data name="ToolTipCheckDirectoryForFilesDescription" xml:space="preserve">
     <value>دایرکتوری و پایگاه داده را برای فایل های دانلود شده منتقل می کن
 	د. ممکن است سرعت دانلود برای دایرکتوری بزرگ تاثیر منفی داشته باشد.</value>
   </data>
-  <data name="ToolTipCheckDirectoryForFilesDescription" xml:space="preserve">
+  <data name="DownloadUrlList" xml:space="preserve">
     <value>فهرست لیستی را دانلود کنید</value>
   </data>
-  <data name="DownloadUrlList" xml:space="preserve">
+  <data name="ToolTipDownloadUrlList" xml:space="preserve">
     <value>یک لیست آدرس دانلود کنید</value>
   </data>
-  <data name="ToolTipDownloadUrlList" xml:space="preserve">
+  <data name="ToolTipDownloadUrlListDescription" xml:space="preserve">
     <value>لیست پروندههای فایلهای باینری را به جای فایلهای واقعی بارگیری می کند</value>
   </data>
-  <data name="ToolTipDownloadUrlListDescription" xml:space="preserve">
+  <data name="DownloadAnswers" xml:space="preserve">
     <value>پست های پاسخ را دانلود کنید</value>
   </data>
-  <data name="DownloadAnswers" xml:space="preserve">
+  <data name="Blog" xml:space="preserve">
     <value>وبلاگ</value>
   </data>
-  <data name="Blog" xml:space="preserve">
+  <data name="Connection" xml:space="preserve">
     <value>ارتباط</value>
   </data>
-  <data name="Connection" xml:space="preserve">
+  <data name="General" xml:space="preserve">
     <value>عمومی</value>
   </data>
-  <data name="General" xml:space="preserve">
+  <data name="PortableMode" xml:space="preserve">
     <value>فعال کردن حالت قابل حمل</value>
   </data>
-  <data name="PortableMode" xml:space="preserve">
+  <data name="ToolTipPortableMode" xml:space="preserve">
     <value>حالت قابل حمل را فعال می کند.</value>
   </data>
-  <data name="ToolTipPortableMode" xml:space="preserve">
+  <data name="ToolTipPortableModeDescription" xml:space="preserve">
     <value>تنظیمات در پوشه اجرایی به جای AppData ذخیره می شود.</value>
   </data>
-  <data name="ToolTipPortableModeDescription" xml:space="preserve">
+  <data name="DownloadRebloggedPosts" xml:space="preserve">
     <value>پست های پست شده را بارگیری کنید</value>
   </data>
-  <data name="DownloadRebloggedPosts" xml:space="preserve">
+  <data name="ProxyPassword" xml:space="preserve">
     <value>رمز عبور پروکسی:</value>
   </data>
-  <data name="ProxyPassword" xml:space="preserve">
+  <data name="ProxyUsername" xml:space="preserve">
     <value>پروکسی نام کاربری:</value>
   </data>
-  <data name="ProxyUsername" xml:space="preserve">
+  <data name="ToolTipProxyPassword" xml:space="preserve">
     <value>مجوز برای سرور پروکسی ناشناس</value>
   </data>
-  <data name="ToolTipProxyPassword" xml:space="preserve">
+  <data name="ToolTipProxyPasswordDescription" xml:space="preserve">
     <value>مجوزها در متن روشن در فایل تنظیمات ذخیره می شوند</value>
   </data>
-  <data name="ToolTipProxyPasswordDescription" xml:space="preserve">
+  <data name="DownloadPages" xml:space="preserve">
     <value>صفحات دانلود:</value>
   </data>
-  <data name="DownloadPages" xml:space="preserve">
+  <data name="PageSize" xml:space="preserve">
     <value>نوشته ها در هر صفحه:</value>
   </data>
-  <data name="PageSize" xml:space="preserve">
+  <data name="ToolTipDownloadPages" xml:space="preserve">
     <value>فقط صفحات خاصی را دانلود کنید</value>
   </data>
-  <data name="ToolTipDownloadPages" xml:space="preserve">
+  <data name="ToolTipDownloadPagesDescription" xml:space="preserve">
     <value>نمادهای احتمالی عبارتند از: 1 یا 1-3 یا 1،2،3. خالی کل کل وبلاگ است.</value>
   </data>
-  <data name="ToolTipDownloadPagesDescription" xml:space="preserve">
+  <data name="ToolTipPageSize" xml:space="preserve">
     <value>پست در هر صفحه</value>
   </data>
-  <data name="ToolTipPageSize" xml:space="preserve">
+  <data name="ToolTipPageSizeDescription" xml:space="preserve">
     <value>پست هر صفحه را تعیین می کند (باید بین 1-50، به طور پی
 	ش فرض 50 باشد). به عنوان مثال. 50 به معنی اسکن 50 پست در هر صفحه است.</value>
   </data>
-  <data name="ToolTipPageSizeDescription" xml:space="preserve">
+  <data name="FullScreenMedia" xml:space="preserve">
     <value>FullScreenView</value>
   </data>
-  <data name="FullScreenMedia" xml:space="preserve">
+  <data name="Export" xml:space="preserve">
     <value>وبلاگ های صادراتی</value>
   </data>
-  <data name="Export" xml:space="preserve">
+  <data name="ToolTipExportBlogs" xml:space="preserve">
     <value>تمام URL های وبلاگ را به عنوان فایل متنی صادر کنید</value>
   </data>
-  <data name="ToolTipExportBlogs" xml:space="preserve">
+  <data name="ToolTipExportBlogsDescription" xml:space="preserve">
     <value>تمام نشانی های اینترنتی را به عنوان یک فایل متنی برای تبادل می کند.</value>
   </data>
-  <data name="ToolTipExportBlogsDescription" xml:space="preserve">
+  <data name="DownloadFrom" xml:space="preserve">
     <value>دانلود از:</value>
   </data>
-  <data name="DownloadFrom" xml:space="preserve">
+  <data name="DownloadTo" xml:space="preserve">
     <value>به:</value>
   </data>
-  <data name="DownloadTo" xml:space="preserve">
+  <data name="ToolTipDownloadFrom" xml:space="preserve">
     <value>پست های خزیدن از این تاریخ</value>
   </data>
-  <data name="ToolTipDownloadFrom" xml:space="preserve">
+  <data name="ToolTipDownloadTagsFromDescription" xml:space="preserve">
     <value>باید در قالب YYYYMMDD باشد از مه 2007 به معنای خالی است.</value>
   </data>
-  <data name="ToolTipDownloadTagsFromDescription" xml:space="preserve">
+  <data name="ToolTipDownloadTo" xml:space="preserve">
     <value>پست های خالی به این تاریخ</value>
   </data>
-  <data name="ToolTipDownloadTo" xml:space="preserve">
-    <value>باید در قالب YYYYMMDD باشد خالی به معنای این است که اکنون.</value>
-  </data>
   <data name="ToolTipDownloadTagsToDescription" xml:space="preserve">
-    <value>باید در قالب YYYYMMDD باشد از ابتدای وبلاگ به معنای خالی است.</value>
+    <value>باید در قالب YYYYMMDD باشد خالی به معنای این است که اکنون.</value>
   </data>
   <data name="ToolTipDownloadFromDescription" xml:space="preserve">
-    <value>باید در قالب YYYYMMDD باشد خالی به معنای این است که اکنون.</value>
+    <value>باید در قالب YYYYMMDD باشد از ابتدای وبلاگ به معنای خالی است.</value>
   </data>
   <data name="ToolTipDownloadToDescription" xml:space="preserve">
-    <value>پست در هر صفحه</value>
+    <value>باید در قالب YYYYMMDD باشد خالی به معنای این است که اکنون.</value>
   </data>
   <data name="ToolTipPageSizeTumblrSearch" xml:space="preserve">
+    <value>پست در هر صفحه</value>
+  </data>
+  <data name="ToolTipPageSizeTumblrSearchDescription" xml:space="preserve">
     <value>پست را در هر صفحه تنظیم می کند. به عنو
 	ان مثال. 50 به معنی اسکن 50 پست در هر صفحه است.</value>
   </data>
-  <data name="ToolTipPageSizeTumblrSearchDescription" xml:space="preserve">
+  <data name="Password" xml:space="preserve">
     <value>کلمه عبور:</value>
   </data>
-  <data name="Password" xml:space="preserve">
+  <data name="ToolTipPassword" xml:space="preserve">
     <value>رمز عبور برای وبلاگ های محافظت شده با رمز عبور</value>
   </data>
-  <data name="ToolTipPassword" xml:space="preserve">
+  <data name="ToolTipPasswordDescription" xml:space="preserve">
     <value>احتیاط: رمز عبور در متن روشن در پایگاه داده وبلاگ ها ذخیره می شود.</value>
   </data>
-  <data name="ToolTipPasswordDescription" xml:space="preserve">
+  <data name="Blogtype" xml:space="preserve">
     <value>تایپ کنید</value>
   </data>
-  <data name="Blogtype" xml:space="preserve">
+  <data name="ToolTipTags" xml:space="preserve">
     <value>فقط پست های برچسب گذاری را دانلود کنید</value>
   </data>
-  <data name="ToolTipTags" xml:space="preserve">
+  <data name="ToolTipTagsDescription" xml:space="preserve">
     <value>باید بدون علامت هش پیشنهادی (#) در لیست جدا شده با کاما قرار بگیرد. به عنوان مثا
 	ل. بزرگ ماشین بزرگ، خرس جستجو برای اتومبیل های بزرگ و خرس بزرگ است.</value>
   </data>
-  <data name="ToolTipTagsDescription" xml:space="preserve">
+  <data name="BlogtypeAll" xml:space="preserve">
     <value>همه</value>
   </data>
-  <data name="BlogtypeAll" xml:space="preserve">
+  <data name="BlogtypeInstagram" xml:space="preserve">
     <value>نمایش مشخصات عمومی</value>
   </data>
-  <data name="BlogtypeInstagram" xml:space="preserve">
+  <data name="BlogtypeTumblr" xml:space="preserve">
     <value>وبلاگ Tumblr</value>
   </data>
-  <data name="BlogtypeTumblr" xml:space="preserve">
+  <data name="BlogtypeTumblrLikedBy" xml:space="preserve">
     <value>وبلاگ Tumblr دوست داشتنی</value>
   </data>
-  <data name="BlogtypeTumblrLikedBy" xml:space="preserve">
+  <data name="BlogtypeTumblrPrivate" xml:space="preserve">
     <value>بستن Tumblr</value>
   </data>
-  <data name="BlogtypeTumblrPrivate" xml:space="preserve">
+  <data name="BlogtypeTumblrSearch" xml:space="preserve">
     <value>جستجوی وبلاگ Tumblr</value>
   </data>
-  <data name="BlogtypeTumblrSearch" xml:space="preserve">
+  <data name="BlogtypeTumblrTagSearch" xml:space="preserve">
     <value>تگ وبلاگ جستجو</value>
   </data>
-  <data name="BlogtypeTumblrTagSearch" xml:space="preserve">
+  <data name="BlogtypeTwitter" xml:space="preserve">
     <value>توییتر</value>
   </data>
-  <data name="BlogtypeTwitter" xml:space="preserve">
+  <data name="AutoDownloadBlogs" xml:space="preserve">
     <value>وبلاگ به صف.</value>
   </data>
-  <data name="AutoDownloadBlogs" xml:space="preserve">
+  <data name="ToolTipTimeout" xml:space="preserve">
     <value>زمان برای درخواست وب</value>
   </data>
-  <data name="ToolTipTimeout" xml:space="preserve">
+  <data name="ToolTipTimeoutDescription" xml:space="preserve">
     <value>طول زمان، در ثانیه، تا زمانی که زمان درخواست.</value>
   </data>
-  <data name="ToolTipTimeoutDescription" xml:space="preserve">
+  <data name="ConcurrentVideoConnections" xml:space="preserve">
     <value>اتصالات ویدیویی همزمان:</value>
   </data>
-  <data name="ConcurrentVideoConnections" xml:space="preserve">
+  <data name="ToolTipVideoConnections" xml:space="preserve">
     <value>تعداد اتصالات همزمان به میزبان ویدئو tumblr</value>
   </data>
-  <data name="ToolTipVideoConnections" xml:space="preserve">
+  <data name="ToolTipVideoConnectionsDescription" xml:space="preserve">
     <value>میزبان vt.tumblr.com به طور مرتب اتصا
 	لات را خاتمه می دهد در صورتی که تعداد زیاد باشد.</value>
   </data>

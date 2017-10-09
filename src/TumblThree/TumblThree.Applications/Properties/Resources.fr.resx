@@ -124,13 +124,13 @@
     <value>Légende audio: {0}</value>
   </data>
   <data name="AuthenticationFailure" xml:space="preserve">
-    <value>Erreur d'authentification: {0}</value>
+    <value>Échec d'authentification: {0}</value>
   </data>
   <data name="BlogAlreadyExist" xml:space="preserve">
     <value>Le blog existe déjà: {0}</value>
   </data>
   <data name="BlogIsOffline" xml:space="preserve">
-    <value>Le blog est hors-ligne: {0}</value>
+    <value>Le blog est hors ligne: {0}</value>
   </data>
   <data name="BlogTypesAll" xml:space="preserve">
     <value>Tout</value>
@@ -151,13 +151,13 @@
     <value>Conversation: {0}</value>
   </data>
   <data name="CouldNotAddBlog" xml:space="preserve">
-    <value>Impossible d'ajouter le blog: {0}</value>
+    <value>Impossible d'ajouter le blog:  {0}</value>
   </data>
   <data name="CouldNotLoadLibrary" xml:space="preserve">
     <value>Impossible de charger le fichier dans la bibliothèque: {0}</value>
   </data>
   <data name="CouldNotLoadQueuelist" xml:space="preserve">
-    <value>Le quiuelist ne pouvait pas être chargé. Peut-être que certains blogs référencés n'existent plus.</value>
+    <value>Le noeliste ne pouvait pas être chargé. Peut-être que certains blogs référencés n'existent plus.</value>
   </data>
   <data name="CouldNotOpenFiles" xml:space="preserve">
     <value>Un fichier n'a pas pu être ouvert.</value>
@@ -172,16 +172,16 @@
     <value>Impossible de restaurer les paramètres de l'interface utilisateur.</value>
   </data>
   <data name="CouldNotSaveBlog" xml:space="preserve">
-    <value>Impossible d'enregistrer le blog: {0}</value>
+    <value>Impossible de sauvegarder le blog: {0}</value>
   </data>
   <data name="CouldNotSaveQueueList" xml:space="preserve">
-    <value>Le québécois n'a pas pu être sauvé.</value>
+    <value>Le noeliste ne pouvait pas être sauvé.</value>
   </data>
   <data name="CouldNotStartOAuthManager" xml:space="preserve">
     <value>Impossible d'initialiser le gestionnaire OAuth</value>
   </data>
   <data name="CrawlerError" xml:space="preserve">
-    <value>Le fil du moteur de recherche a rencontré une erreur.</value>
+    <value>Le fil de la chaîne a rencontré une erreur.</value>
   </data>
   <data name="Date" xml:space="preserve">
     <value>Date: {0}</value>
@@ -193,10 +193,10 @@
     <value>Fichiers texte (* .txt) | * .txt</value>
   </data>
   <data name="ExportFileFilterExtension" xml:space="preserve">
-    <value>.SMS</value>
+    <value>.txt</value>
   </data>
   <data name="FileNameAnswers" xml:space="preserve">
-    <value>answers.txt</value>
+    <value>réponses.txt</value>
   </data>
   <data name="FileNameAudios" xml:space="preserve">
     <value>audios_url.txt</value>
@@ -220,10 +220,10 @@
     <value>images_url.txt</value>
   </data>
   <data name="FileNameQuotes" xml:space="preserve">
-    <value>quotes.txt</value>
+    <value>Citations.txt</value>
   </data>
   <data name="FileNameTexts" xml:space="preserve">
-    <value>text.txt</value>
+    <value>textes.txt</value>
   </data>
   <data name="FileNameVideos" xml:space="preserve">
     <value>videos_url.txt</value>
@@ -232,25 +232,25 @@
     <value>Id3: Album: {0}</value>
   </data>
   <data name="Id3Artist" xml:space="preserve">
-    <value>Id3: Artiste: {0}</value>
+    <value>Id3: Artist: {0}</value>
   </data>
   <data name="Id3Title" xml:space="preserve">
-    <value>Id3: Titre: {0}</value>
+    <value>Id3: Title: {0}</value>
   </data>
   <data name="Id3Track" xml:space="preserve">
     <value>Id3: Track: {0}</value>
   </data>
   <data name="Id3Year" xml:space="preserve">
-    <value>Id3: Année: {0}</value>
+    <value>Id3: Year: {0}</value>
   </data>
   <data name="LimitExceeded" xml:space="preserve">
-    <value>Limite dépassée: {0}. Vous devez réduire les connexions au tumblr svc.</value>
+    <value>Limite dépassée: {0}. Vous devez réduire les connexions au tumblr api.</value>
   </data>
   <data name="Link" xml:space="preserve">
-    <value>Lien: {0}</value>
+    <value>Link: {0}</value>
   </data>
   <data name="MaxBytePerSecond" xml:space="preserve">
-    <value>MaxBytesPerSecond doit être non négatif</value>
+    <value>MaxBytesPerSecond doit être non négatif.</value>
   </data>
   <data name="NewVersionAvailable" xml:space="preserve">
     <value>Nouvelle version disponible pour téléchargement: {0}</value>
@@ -259,19 +259,19 @@
     <value>Vous devez vous connecter à tumblr.com pour télécharger {0}. Accédez aux Paramètres-&gt; Authentification.</value>
   </data>
   <data name="PasswordProtected" xml:space="preserve">
-    <value>Blog protégé par mot de passe: {0}. Vous devez entrer le mot de passe dans les Détails.</value>
+    <value>Password protected blog: {0}. You need to enter the password in the Details.</value>
   </data>
   <data name="PasswordProtectedOrOffline" xml:space="preserve">
-    <value>Mot de passe caché protégé ou hors ligne détecté: {0}. Vous devez entrer le mot de passe dans les Détails.</value>
+    <value>Hidden password protected or offline blog detected: {0}. You need to enter the password in the Details.</value>
   </data>
   <data name="PhotoCaption" xml:space="preserve">
-    <value>Légende de la photo: {0}</value>
+    <value>Photo Caption: {0}</value>
   </data>
   <data name="PhotoUrl" xml:space="preserve">
-    <value>URL de la photo: {0}</value>
+    <value>Photo Url: {0}</value>
   </data>
   <data name="PostId" xml:space="preserve">
-    <value>ID de poste: {0}</value>
+    <value>Post ID: {0}</value>
   </data>
   <data name="ProgressDownloadImage" xml:space="preserve">
     <value>Téléchargement de {0}.</value>
@@ -286,33 +286,33 @@
     <value>Calcul des téléchargements uniques, suppression des doublons ...</value>
   </data>
   <data name="Queuelist" xml:space="preserve">
-    <value>Queuelist</value>
+    <value>Liste des files d'attente</value>
   </data>
   <data name="Quote" xml:space="preserve">
     <value>Quote: {0}</value>
   </data>
   <data name="ReblogKey" xml:space="preserve">
-    <value>Touche Reblog: {0}</value>
+    <value>Reblog key: {0}</value>
   </data>
   <data name="ReblogName" xml:space="preserve">
-    <value>Nom du reblog: {0}</value>
+    <value>Reblog Name: {0}</value>
   </data>
   <data name="ReblogUrl" xml:space="preserve">
-    <value>URL du remanier: {0}</value>
+    <value>Reblog Url: {0}</value>
   </data>
   <data name="Summary" xml:space="preserve">
-    <value>Sommaire: {0}</value>
+    <value>Résumé: {0}</value>
   </data>
   <data name="Tags" xml:space="preserve">
-    <value>Tags: {0}</value>
+    <value>Mots clés: {0}</value>
   </data>
   <data name="Title" xml:space="preserve">
     <value>Titre: {0}</value>
   </data>
   <data name="UrlWithSlug" xml:space="preserve">
-    <value>Url avec limace: {0}</value>
+    <value>Url with slug: {0}</value>
   </data>
   <data name="VideoPlayer" xml:space="preserve">
-    <value>Lecteur vidéo: {0}</value>
+    <value>Video Player: {0}</value>
   </data>
 </root>

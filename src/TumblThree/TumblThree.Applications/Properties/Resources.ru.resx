@@ -118,82 +118,76 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ApplicationUpToDate" xml:space="preserve">
-    <value>Ваше приложение обновлено.</value>
+    <value>Эта версия является актуальной</value>
   </data>
   <data name="AudioCaption" xml:space="preserve">
-    <value>Подпись аудио: {0}</value>
+    <value>Подпись аудиотрека: {0}</value>
   </data>
   <data name="AuthenticationFailure" xml:space="preserve">
-    <value>Ошибка аутентификации: {0}</value>
+    <value>Ошибка авторизации: {0}</value>
   </data>
   <data name="BlogAlreadyExist" xml:space="preserve">
-    <value>Блог уже существует: {0}</value>
+    <value>Блог уже существует:  {0}</value>
   </data>
   <data name="BlogIsOffline" xml:space="preserve">
-    <value>Блог не в сети: {0}</value>
+    <value>Блог недоступен: {0}</value>
   </data>
   <data name="BlogTypesAll" xml:space="preserve">
     <value>Все</value>
   </data>
   <data name="BlogTypesNeverFinished" xml:space="preserve">
-    <value>Никогда не закончил</value>
+    <value>Незавершённые</value>
   </data>
   <data name="BlogTypesNone" xml:space="preserve">
-    <value>Никто</value>
+    <value>Ни один</value>
   </data>
   <data name="BlogTypesOnceFinished" xml:space="preserve">
-    <value>После завершения</value>
+    <value>Хотя бы раз скачаные</value>
   </data>
   <data name="Body" xml:space="preserve">
-    <value>Тело: {0]</value>
+    <value>Тело поста: {0]</value>
   </data>
   <data name="Conversation" xml:space="preserve">
-    <value>Диалог: {0}</value>
+    <value>Текст диалога: {0}</value>
   </data>
   <data name="CouldNotAddBlog" xml:space="preserve">
-    <value>Не удалось добавить блог: {0}</value>
+    <value>Не удалось добавить блог:  {0}</value>
   </data>
   <data name="CouldNotLoadLibrary" xml:space="preserve">
-    <value>Не удалось загрузить файл в библиотеке: {0}</value>
+    <value>Не удается загрузить файл в библиотеку: {0}</value>
   </data>
   <data name="CouldNotLoadQueuelist" xml:space="preserve">
-    <value>Жгутик не мог быть загружен. Возможно, некоторые ссылки на блоги больше не существуют.</value>
+    <value>Не удаётся загрузить очередь закачек. Возможно, некоторые из блогов больше не существуют.</value>
   </data>
   <data name="CouldNotOpenFiles" xml:space="preserve">
-    <value>Не удалось открыть файл.</value>
+    <value>Не удаётся открыть файл.</value>
   </data>
   <data name="CouldNotRemoveBlog" xml:space="preserve">
-    <value>Не удалось удалить блог: {0}</value>
+    <value>Не удаётся удалить блог: {0}</value>
   </data>
   <data name="CouldNotRemoveBlogIndex" xml:space="preserve">
-    <value>Не удалось удалить блог: {0}</value>
+    <value>Не удаётся удалить блог: {0}</value>
   </data>
   <data name="CouldNotRestoreUISettings" xml:space="preserve">
-    <value>Не удалось восстановить настройки пользовательского интерфейса.</value>
+    <value>Не удаётся восстановить настройки интерфейса.</value>
   </data>
   <data name="CouldNotSaveBlog" xml:space="preserve">
-    <value>Не удалось сохранить блог: {0}</value>
+    <value>Не удаётся сохранить блог: {0}</value>
   </data>
   <data name="CouldNotSaveQueueList" xml:space="preserve">
-    <value>Суеверие не могло быть спасено.</value>
+    <value>Невозможно сохранить очередь закачек.</value>
   </data>
   <data name="CouldNotStartOAuthManager" xml:space="preserve">
-    <value>Не удалось инициализировать OAuth Manager</value>
+    <value>Не удаётся запустить менеджер OAuth</value>
   </data>
   <data name="CrawlerError" xml:space="preserve">
-    <value>Обнаружена ошибка в Crawler Thread.</value>
+    <value>Произошла ошибка в очереди скачивания.</value>
   </data>
   <data name="Date" xml:space="preserve">
     <value>Дата: {0}</value>
   </data>
   <data name="DiskFull" xml:space="preserve">
-    <value>На диске недостаточно места.</value>
-  </data>
-  <data name="ExportFileFilter" xml:space="preserve">
-    <value>Текстовые файлы (* .txt) | * .txt</value>
-  </data>
-  <data name="ExportFileFilterExtension" xml:space="preserve">
-    <value>.текст</value>
+    <value>Недостаточно места на диске.</value>
   </data>
   <data name="FileNameAnswers" xml:space="preserve">
     <value>answers.txt</value>
@@ -238,81 +232,81 @@
     <value>Id3: Название: {0}</value>
   </data>
   <data name="Id3Track" xml:space="preserve">
-    <value>Id3: Трек: {0}</value>
+    <value>Id3: Номер трека: {0}</value>
   </data>
   <data name="Id3Year" xml:space="preserve">
     <value>Id3: Год: {0}</value>
   </data>
   <data name="LimitExceeded" xml:space="preserve">
-    <value>Превышен предел: {0}. Вы должны опустить соединения с tumblr svc.</value>
+    <value>Превышен лимит: {0}. Вы должны уменьшить количество соединений с tumblr api.</value>
   </data>
   <data name="Link" xml:space="preserve">
     <value>Ссылка: {0}</value>
   </data>
   <data name="MaxBytePerSecond" xml:space="preserve">
-    <value>MaxBytesPerSecond должен быть неотрицательным</value>
+    <value>MaxBytesPerSecond has to be &gt;0</value>
   </data>
   <data name="NewVersionAvailable" xml:space="preserve">
-    <value>Доступна новая версия: {0}</value>
+    <value>Новая версия приложения готова для загузки: {0}</value>
   </data>
   <data name="NotLoggedIn" xml:space="preserve">
-    <value>Для загрузки {0} необходимо войти в систему tumblr.com. Перейдите в Настройки-&gt; Аутентификация.</value>
+    <value>Вы должны залогинится в tumblr.com для загрузки {0}. Идите в Настройки-&gt;Авторизироваться.</value>
   </data>
   <data name="PasswordProtected" xml:space="preserve">
-    <value>Защищенный паролем блог: {0}. Вам необходимо ввести пароль в «Детали».</value>
+    <value>Password protected blog: {0}. You need to enter the password in the Details.</value>
   </data>
   <data name="PasswordProtectedOrOffline" xml:space="preserve">
-    <value>Обнаружен скрытый пароль или автономный блог: {0}. Вам необходимо ввести пароль в «Детали».</value>
+    <value>Hidden password protected or offline blog detected: {0}. You need to enter the password in the Details.</value>
   </data>
   <data name="PhotoCaption" xml:space="preserve">
     <value>Подпись к фотографии: {0}</value>
   </data>
   <data name="PhotoUrl" xml:space="preserve">
-    <value>URL-адрес фотографии: {0}</value>
+    <value>Ссылка на фото: {0}</value>
   </data>
   <data name="PostId" xml:space="preserve">
-    <value>Идентификатор сообщения: {0}</value>
+    <value>Id поста: {0}</value>
   </data>
   <data name="ProgressDownloadImage" xml:space="preserve">
     <value>Загрузка {0}.</value>
   </data>
   <data name="ProgressGetUrlLong" xml:space="preserve">
-    <value>Оценочный {0} tumblr post urls из {1} всего сообщений.</value>
+    <value>Оценивается {0} ссылок на посты из {1}.</value>
   </data>
   <data name="ProgressGetUrlShort" xml:space="preserve">
-    <value>Оценены сайты {0} tumblr.</value>
+    <value>Оценивается {0} блогов</value>
   </data>
   <data name="ProgressUniqueDownloads" xml:space="preserve">
-    <value>Вычисление уникальных загрузок, удаление дубликатов ...</value>
+    <value>Определяются уникальные и удалаются дублирующиеся файлы...</value>
   </data>
   <data name="Queuelist" xml:space="preserve">
-    <value>Queuelist</value>
+    <value>Список очереди</value>
   </data>
   <data name="Quote" xml:space="preserve">
     <value>Цитата: {0}</value>
   </data>
   <data name="ReblogKey" xml:space="preserve">
-    <value>Reblog key: {0}</value>
+    <value>Код для репоста: {0}</value>
   </data>
   <data name="ReblogName" xml:space="preserve">
-    <value>Reblog Имя: {0}</value>
+    <value>Имя реблога: {0}</value>
   </data>
   <data name="ReblogUrl" xml:space="preserve">
-    <value>Reblog Url: {0}</value>
+    <value>Ссылка реблога: {0}</value>
   </data>
   <data name="Summary" xml:space="preserve">
-    <value>Реферат: {0}</value>
+    <value>Резюме: {0}</value>
   </data>
   <data name="Tags" xml:space="preserve">
     <value>Теги: {0}</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Название: {0}</value>
+    <value>Заголовок: {0}</value>
   </data>
   <data name="UrlWithSlug" xml:space="preserve">
-    <value>Url with slug: {0}</value>
+    <value>URL-адрес: {0}</value>
   </data>
   <data name="VideoPlayer" xml:space="preserve">
-    <value>Видеопроигрыватель: {0}</value>
+    <value>Код видеоплеера: {0}</value>
   </data>
 </root>
