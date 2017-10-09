@@ -418,7 +418,7 @@ namespace TumblThree.Applications.Crawler
         {
             if (!blog.DownloadRebloggedPosts)
             {
-                if (!post.reblogged_from_url.Any())
+                if (post.reblogged_from_url == null)
                     return true;
                 return false;
             }

@@ -471,228 +471,228 @@
 งจากอัลกอริทึมการควบคุมการปรับน้ำหนักทำงานช้าเกินไปในการปรับเปลี่ยนและอาจส่งผลเสียต่อประสิทธิ
 ภาพการสแกน จำนวนการเชื่อมต่อที่ใช้สำหรับการสแกนแต่ละครั้ง</value>
   </data>
-  <data name="ToolTipScan" xml:space="preserve">
+  <data name="ToolTipScanDescription" xml:space="preserve">
     <value>กำหนดจำนวนการเชื่อมต่อที่ใช้สำหรับการสแกน เนื่องจากข้อมูลมักมีขนาดเล็กคุณควรปล่อยให้ระดับสูง</value>
   </data>
-  <data name="ToolTipScanDescription" xml:space="preserve">
+  <data name="BandwidthRangeError" xml:space="preserve">
     <value>มูลค่าต้องอยู่ระหว่าง 0 ถึง 9,000,000,000,000,000</value>
   </data>
-  <data name="BandwidthRangeError" xml:space="preserve">
+  <data name="TimeSpanTypeError" xml:space="preserve">
     <value>ค่าต้องมีรูปแบบ hh: mm: ss</value>
   </data>
-  <data name="TimeSpanTypeError" xml:space="preserve">
+  <data name="IntRangeError" xml:space="preserve">
     <value>ค่าต้องอยู่ระหว่าง 0 ถึง 2,147,483,647</value>
   </data>
-  <data name="IntRangeError" xml:space="preserve">
+  <data name="IntTypeError" xml:space="preserve">
     <value>ค่าต้องเป็นจำนวนเต็มชนิด</value>
   </data>
-  <data name="IntTypeError" xml:space="preserve">
+  <data name="ConnectionTimeInterval" xml:space="preserve">
     <value>ต่อช่วงเวลา (s):</value>
   </data>
-  <data name="ConnectionTimeInterval" xml:space="preserve">
+  <data name="LimitConnections" xml:space="preserve">
     <value>จำกัด การเชื่อมต่อ Api ของ Tumblr:</value>
   </data>
-  <data name="LimitConnections" xml:space="preserve">
+  <data name="MaxConnections" xml:space="preserve">
     <value>จำนวนการเชื่อมต่อ:</value>
   </data>
-  <data name="MaxConnections" xml:space="preserve">
+  <data name="ToolTipLimitConnections" xml:space="preserve">
     <value>จำกัด การเชื่อมต่อกับ api tumblr</value>
   </data>
-  <data name="ToolTipLimitConnections" xml:space="preserve">
+  <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
     <value>ค่าที่สูงเกินไปจะปิดการเชื่อมต่ออย่างแน่นหนา (429 - Limit Exceeded) ที่ทำกับแอ็พพลิเคชั่น tumblr api
 ค่าที่เล็กเกินไปจะทำให้ความเร็วในการสแกนลดลง ตั้งคู่หมายเลข / เวลา หมายเหตุ: แอพพลิเคชัน tumblr
 ใช้เฉพาะสำหรับการดาวน์โหลดบล็อกที่เป็นแบบ Tumblr เท่านั้น</value>
   </data>
-  <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
+  <data name="ForceRescan" xml:space="preserve">
     <value>บังคับให้ rescan</value>
   </data>
-  <data name="ForceRescan" xml:space="preserve">
+  <data name="ToolTipForceRescan" xml:space="preserve">
     <value>บล็อกทั้งบล็อกไม่ใช่เฉพาะโพสต์ใหม่</value>
   </data>
-  <data name="ToolTipForceRescan" xml:space="preserve">
+  <data name="ToolTipForceRescanDescription" xml:space="preserve">
     <value>บังคับใช้การสแกนที่สมบูรณ์โดยใช้ Tumblr api</value>
   </data>
-  <data name="ToolTipForceRescanDescription" xml:space="preserve">
+  <data name="CheckForUpdates" xml:space="preserve">
     <value>ตรวจสอบสำหรับการอัพเดต</value>
   </data>
-  <data name="CheckForUpdates" xml:space="preserve">
+  <data name="DownloadNow" xml:space="preserve">
     <value>ดาวน์โหลดเดี๋ยวนี้</value>
   </data>
-  <data name="DownloadNow" xml:space="preserve">
+  <data name="CheckDirectoryForFiles" xml:space="preserve">
     <value>ตรวจสอบไดเรกทอรีสำหรับไฟล์</value>
   </data>
-  <data name="CheckDirectoryForFiles" xml:space="preserve">
+  <data name="ToolTipCheckDirectoryForFiles" xml:space="preserve">
     <value>ตรวจสอบไดเรกทอรีสำหรับไฟล์ที่ดาวน์โหลดมาแล้ว</value>
   </data>
-  <data name="ToolTipCheckDirectoryForFiles" xml:space="preserve">
+  <data name="ToolTipCheckDirectoryForFilesDescription" xml:space="preserve">
     <value>ตรวจสอบไดเรกทอรีและฐานข้อมูลสำหรับไฟล์ที่ดาวน์โหลดมาแล้ว 
 อาจส่งผลเสียต่อความเร็วในการดาวน์โหลดสำหรับไดเรกทอรีขนาดใหญ่</value>
   </data>
-  <data name="ToolTipCheckDirectoryForFilesDescription" xml:space="preserve">
+  <data name="DownloadUrlList" xml:space="preserve">
     <value>ดาวน์โหลดรายชื่อ URL</value>
   </data>
-  <data name="DownloadUrlList" xml:space="preserve">
+  <data name="ToolTipDownloadUrlList" xml:space="preserve">
     <value>ดาวน์โหลดรายการ URL</value>
   </data>
-  <data name="ToolTipDownloadUrlList" xml:space="preserve">
+  <data name="ToolTipDownloadUrlListDescription" xml:space="preserve">
     <value>ดาวน์โหลดรายการ URL ของไฟล์ไบนารีแทนไฟล์จริง</value>
   </data>
-  <data name="ToolTipDownloadUrlListDescription" xml:space="preserve">
+  <data name="DownloadAnswers" xml:space="preserve">
     <value>ดาวน์โหลดโพสต์ตอบ</value>
   </data>
-  <data name="DownloadAnswers" xml:space="preserve">
+  <data name="Blog" xml:space="preserve">
     <value>บล็อก</value>
   </data>
-  <data name="Blog" xml:space="preserve">
+  <data name="Connection" xml:space="preserve">
     <value>สัมพันธ์</value>
   </data>
-  <data name="Connection" xml:space="preserve">
-    <value>ทั่วไป</value>
-  </data>
   <data name="General" xml:space="preserve">
-    <value>เปิดใช้งานโหมดพกพา</value>
+    <value>ทั่วไป</value>
   </data>
   <data name="PortableMode" xml:space="preserve">
     <value>เปิดใช้งานโหมดพกพา</value>
   </data>
   <data name="ToolTipPortableMode" xml:space="preserve">
-    <value>บันทึกการตั้งค่าในโฟลเดอร์ของ executable แทน AppData</value>
+    <value>เปิดใช้งานโหมดพกพา</value>
   </data>
   <data name="ToolTipPortableModeDescription" xml:space="preserve">
-    <value>ดาวน์โหลดโพสต์ที่ถูกโพสต์ใหม่</value>
+    <value>บันทึกการตั้งค่าในโฟลเดอร์ของ executable แทน AppData</value>
   </data>
   <data name="DownloadRebloggedPosts" xml:space="preserve">
-    <value>พร็อกซีรหัสผ่าน:</value>
+    <value>ดาวน์โหลดโพสต์ที่ถูกโพสต์ใหม่</value>
   </data>
   <data name="ProxyPassword" xml:space="preserve">
-    <value>ชื่อผู้ใช้พร็อกซี:</value>
+    <value>พร็อกซีรหัสผ่าน:</value>
   </data>
   <data name="ProxyUsername" xml:space="preserve">
-    <value>ข้อมูลรับรองสำหรับพร็อกซีเซิร์ฟเวอร์ที่ไม่ระบุชื่อ</value>
+    <value>ชื่อผู้ใช้พร็อกซี:</value>
   </data>
   <data name="ToolTipProxyPassword" xml:space="preserve">
-    <value>ข้อมูลประจำตัวจะถูกบันทึกไว้ในข้อความที่ชัดเจนในไฟล์การตั้งค่า</value>
+    <value>ข้อมูลรับรองสำหรับพร็อกซีเซิร์ฟเวอร์ที่ไม่ระบุชื่อ</value>
   </data>
   <data name="ToolTipProxyPasswordDescription" xml:space="preserve">
-    <value>หน้าดาวน์โหลด:</value>
+    <value>ข้อมูลประจำตัวจะถูกบันทึกไว้ในข้อความที่ชัดเจนในไฟล์การตั้งค่า</value>
   </data>
   <data name="DownloadPages" xml:space="preserve">
-    <value>โพสต์ต่อหน้า:</value>
+    <value>หน้าดาวน์โหลด:</value>
   </data>
   <data name="PageSize" xml:space="preserve">
-    <value>ดาวน์โหลดเฉพาะหน้าที่เฉพาะเจาะจง</value>
+    <value>โพสต์ต่อหน้า:</value>
   </data>
   <data name="ToolTipDownloadPages" xml:space="preserve">
-    <value>หมายเหตุที่เป็นไปได้ ได้แก่ 1 หรือ 1-3 หรือ 1,2,3 ว่างเปล่าหมายถึงทั้งบล็อก</value>
+    <value>ดาวน์โหลดเฉพาะหน้าที่เฉพาะเจาะจง</value>
   </data>
   <data name="ToolTipDownloadPagesDescription" xml:space="preserve">
-    <value>โพสต์ต่อหน้า</value>
+    <value>หมายเหตุที่เป็นไปได้ ได้แก่ 1 หรือ 1-3 หรือ 1,2,3 ว่างเปล่าหมายถึงทั้งบล็อก</value>
   </data>
   <data name="ToolTipPageSize" xml:space="preserve">
+    <value>โพสต์ต่อหน้า</value>
+  </data>
+  <data name="ToolTipPageSizeDescription" xml:space="preserve">
     <value>ตั้งค่าโพสต์ต่อหน้า (ควรอยู่ระหว่าง 1-50, ค่าเริ่มต้น 50)
 เช่น. 50 หมายถึงการสแกน 50 โพสต์ต่อหน้า</value>
   </data>
-  <data name="ToolTipPageSizeDescription" xml:space="preserve">
+  <data name="FullScreenMedia" xml:space="preserve">
     <value>FullScreenView</value>
   </data>
-  <data name="FullScreenMedia" xml:space="preserve">
+  <data name="Export" xml:space="preserve">
     <value>ส่งออกบล็อก</value>
   </data>
-  <data name="Export" xml:space="preserve">
+  <data name="ToolTipExportBlogs" xml:space="preserve">
     <value>ส่งออก URL บล็อกทั้งหมดเป็นไฟล์ข้อความ</value>
   </data>
-  <data name="ToolTipExportBlogs" xml:space="preserve">
+  <data name="ToolTipExportBlogsDescription" xml:space="preserve">
     <value>บันทึก URL ทั้งหมดเป็นไฟล์ข้อความเพื่อแลกเปลี่ยน</value>
   </data>
-  <data name="ToolTipExportBlogsDescription" xml:space="preserve">
+  <data name="DownloadFrom" xml:space="preserve">
     <value>ดาวน์โหลดจาก:</value>
   </data>
-  <data name="DownloadFrom" xml:space="preserve">
+  <data name="DownloadTo" xml:space="preserve">
     <value>ไปที่:</value>
   </data>
-  <data name="DownloadTo" xml:space="preserve">
+  <data name="ToolTipDownloadFrom" xml:space="preserve">
     <value>รวบรวมข้อความจากวันที่นี้</value>
   </data>
-  <data name="ToolTipDownloadFrom" xml:space="preserve">
+  <data name="ToolTipDownloadTagsFromDescription" xml:space="preserve">
     <value>ต้องเป็นรูปแบบ YYYYMMDD ว่างเปล่าตั้งแต่เดือนพฤษภาคม 2007</value>
   </data>
-  <data name="ToolTipDownloadTagsFromDescription" xml:space="preserve">
+  <data name="ToolTipDownloadTo" xml:space="preserve">
     <value>รวบรวมข้อความถึงวันที่นี้</value>
   </data>
-  <data name="ToolTipDownloadTo" xml:space="preserve">
-    <value>ต้องเป็นรูปแบบ YYYYMMDD ว่างเปล่าหมายถึงตอนนี้</value>
-  </data>
   <data name="ToolTipDownloadTagsToDescription" xml:space="preserve">
-    <value>ต้องเป็นรูปแบบ YYYYMMDD ความว่างเปล่าหมายถึงตั้งแต่เริ่มต้นของบล็อก</value>
+    <value>ต้องเป็นรูปแบบ YYYYMMDD ว่างเปล่าหมายถึงตอนนี้</value>
   </data>
   <data name="ToolTipDownloadFromDescription" xml:space="preserve">
-    <value>ต้องเป็นรูปแบบ YYYYMMDD ว่างเปล่าหมายถึงตอนนี้</value>
+    <value>ต้องเป็นรูปแบบ YYYYMMDD ความว่างเปล่าหมายถึงตั้งแต่เริ่มต้นของบล็อก</value>
   </data>
   <data name="ToolTipDownloadToDescription" xml:space="preserve">
-    <value>โพสต์ต่อหน้า</value>
+    <value>ต้องเป็นรูปแบบ YYYYMMDD ว่างเปล่าหมายถึงตอนนี้</value>
   </data>
   <data name="ToolTipPageSizeTumblrSearch" xml:space="preserve">
-    <value>ตั้งค่าโพสต์ต่อหน้า เช่น. 50 หมายถึงการสแกน 50 โพสต์ต่อหน้า</value>
+    <value>โพสต์ต่อหน้า</value>
   </data>
   <data name="ToolTipPageSizeTumblrSearchDescription" xml:space="preserve">
-    <value>รหัสผ่าน:</value>
+    <value>ตั้งค่าโพสต์ต่อหน้า เช่น. 50 หมายถึงการสแกน 50 โพสต์ต่อหน้า</value>
   </data>
   <data name="Password" xml:space="preserve">
-    <value>รหัสผ่านสำหรับบล็อกที่มีการป้องกันด้วยรหัสผ่าน</value>
+    <value>รหัสผ่าน:</value>
   </data>
   <data name="ToolTipPassword" xml:space="preserve">
-    <value>ข้อควรระวัง: รหัสผ่านจะถูกเก็บไว้ในข้อความที่ชัดเจนในฐานข้อมูลบล็อก</value>
+    <value>รหัสผ่านสำหรับบล็อกที่มีการป้องกันด้วยรหัสผ่าน</value>
   </data>
   <data name="ToolTipPasswordDescription" xml:space="preserve">
-    <value>ชนิด</value>
+    <value>ข้อควรระวัง: รหัสผ่านจะถูกเก็บไว้ในข้อความที่ชัดเจนในฐานข้อมูลบล็อก</value>
   </data>
   <data name="Blogtype" xml:space="preserve">
-    <value>ดาวน์โหลดเฉพาะโพสต์ที่ติดแท็กเท่านั้น</value>
+    <value>ชนิด</value>
   </data>
   <data name="ToolTipTags" xml:space="preserve">
+    <value>ดาวน์โหลดเฉพาะโพสต์ที่ติดแท็กเท่านั้น</value>
+  </data>
+  <data name="ToolTipTagsDescription" xml:space="preserve">
     <value>ต้องอยู่ในรายการคั่นด้วยจุลภาคโดยไม่มีเครื่องหมายกัญชา (#) ชั้นนำ เช่น.
 รถยนต์ขนาดใหญ่ยอดเยี่ยมค้นหาหมาใหญ่และหมีหมี</value>
   </data>
-  <data name="ToolTipTagsDescription" xml:space="preserve">
+  <data name="BlogtypeAll" xml:space="preserve">
     <value>ทั้งหมด</value>
   </data>
-  <data name="BlogtypeAll" xml:space="preserve">
+  <data name="BlogtypeInstagram" xml:space="preserve">
     <value>Instagram</value>
   </data>
-  <data name="BlogtypeInstagram" xml:space="preserve">
+  <data name="BlogtypeTumblr" xml:space="preserve">
     <value>Tumblr</value>
   </data>
-  <data name="BlogtypeTumblr" xml:space="preserve">
+  <data name="BlogtypeTumblrLikedBy" xml:space="preserve">
     <value>Tumblr ชอบด้วย</value>
   </data>
-  <data name="BlogtypeTumblrLikedBy" xml:space="preserve">
+  <data name="BlogtypeTumblrPrivate" xml:space="preserve">
     <value>ซ่อน Tumblr</value>
   </data>
-  <data name="BlogtypeTumblrPrivate" xml:space="preserve">
+  <data name="BlogtypeTumblrSearch" xml:space="preserve">
     <value>Tumblr Search</value>
   </data>
-  <data name="BlogtypeTumblrSearch" xml:space="preserve">
+  <data name="BlogtypeTumblrTagSearch" xml:space="preserve">
     <value>ค้นหาแท็ก Tumblr</value>
   </data>
-  <data name="BlogtypeTumblrTagSearch" xml:space="preserve">
+  <data name="BlogtypeTwitter" xml:space="preserve">
     <value>พูดเบาและรวดเร็ว</value>
   </data>
-  <data name="BlogtypeTwitter" xml:space="preserve">
+  <data name="AutoDownloadBlogs" xml:space="preserve">
     <value>บล็อกไปยังคิว</value>
   </data>
-  <data name="AutoDownloadBlogs" xml:space="preserve">
+  <data name="ToolTipTimeout" xml:space="preserve">
     <value>หมดเวลาสำหรับคำขอเว็บ</value>
   </data>
-  <data name="ToolTipTimeout" xml:space="preserve">
+  <data name="ToolTipTimeoutDescription" xml:space="preserve">
     <value>ระยะเวลาเป็นวินาทีจนกว่าคำขอจะหมดอายุ</value>
   </data>
-  <data name="ToolTipTimeoutDescription" xml:space="preserve">
+  <data name="ConcurrentVideoConnections" xml:space="preserve">
     <value>การเชื่อมต่อวิดีโอพร้อมกัน:</value>
   </data>
-  <data name="ConcurrentVideoConnections" xml:space="preserve">
+  <data name="ToolTipVideoConnections" xml:space="preserve">
     <value>จำนวนการเชื่อมต่อพร้อมกันไปยังโฮสต์วิดีโอ tumblr</value>
   </data>
-  <data name="ToolTipVideoConnections" xml:space="preserve">
+  <data name="ToolTipVideoConnectionsDescription" xml:space="preserve">
     <value>โฮสต์ vt.tumblr.com จะปิดการเชื่อมต่อเป็นประจำถ้าจำนวนดังกล่าวสูงเกินไป</value>
   </data>
 </root>

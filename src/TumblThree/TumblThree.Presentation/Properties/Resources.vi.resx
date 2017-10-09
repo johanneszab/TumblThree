@@ -474,231 +474,231 @@ An toàn để bật tính năng này.</value>
 bạn nên để mặc định này vì thuật toán điều chỉnh quá chậm để điều chỉnh và có thể tác động tiêu cực đến hiệu suất quét.
 Số kết nối được sử dụng cho mỗi lần quét</value>
   </data>
-  <data name="ToolTipScan" xml:space="preserve">
+  <data name="ToolTipScanDescription" xml:space="preserve">
     <value>Thiết lập số kết nối được sử dụng để quét.
 Vì dữ liệu thường nhỏ nên bạn nên để ở mức cao.</value>
   </data>
-  <data name="ToolTipScanDescription" xml:space="preserve">
+  <data name="BandwidthRangeError" xml:space="preserve">
     <value>Giá trị phải từ 0 đến 9,000,000,000,000,000.</value>
   </data>
-  <data name="BandwidthRangeError" xml:space="preserve">
+  <data name="TimeSpanTypeError" xml:space="preserve">
     <value>Giá trị phải có để tạo thành hh: mm: ss.</value>
   </data>
-  <data name="TimeSpanTypeError" xml:space="preserve">
+  <data name="IntRangeError" xml:space="preserve">
     <value>Giá trị phải từ 0 đến 2,147,483,647.</value>
   </data>
-  <data name="IntRangeError" xml:space="preserve">
+  <data name="IntTypeError" xml:space="preserve">
     <value>Giá trị phải là kiểu số nguyên.</value>
   </data>
-  <data name="IntTypeError" xml:space="preserve">
+  <data name="ConnectionTimeInterval" xml:space="preserve">
     <value>mỗi khoảng thời gian:</value>
   </data>
-  <data name="ConnectionTimeInterval" xml:space="preserve">
+  <data name="LimitConnections" xml:space="preserve">
     <value>Giới hạn kết nối Api của Tumblr:</value>
   </data>
-  <data name="LimitConnections" xml:space="preserve">
+  <data name="MaxConnections" xml:space="preserve">
     <value>Số lượng kết nối:</value>
   </data>
-  <data name="MaxConnections" xml:space="preserve">
+  <data name="ToolTipLimitConnections" xml:space="preserve">
     <value>Hạn chế kết nối với api tumblr.</value>
   </data>
-  <data name="ToolTipLimitConnections" xml:space="preserve">
+  <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
     <value>Một giá trị quá cao sẽ chặt chẽ đóng kết nối (429 - Limit Exceeded) được thực hiện cho api tumblr.
 Giá trị quá nhỏ sẽ làm giảm tốc độ quét. Đặt một cặp số / thời gian.
 Lưu ý: Các api tumblr chỉ được sử dụng cho tải blog thường xuyên tumblr.</value>
   </data>
-  <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
+  <data name="ForceRescan" xml:space="preserve">
     <value>Lực lượng rescan</value>
   </data>
-  <data name="ForceRescan" xml:space="preserve">
+  <data name="ToolTipForceRescan" xml:space="preserve">
     <value>Rescans toàn bộ blog, không chỉ các bài viết mới.</value>
   </data>
-  <data name="ToolTipForceRescan" xml:space="preserve">
+  <data name="ToolTipForceRescanDescription" xml:space="preserve">
     <value>Lực lượng quét toàn bộ bằng cách sử dụng api Tumblr.</value>
   </data>
-  <data name="ToolTipForceRescanDescription" xml:space="preserve">
+  <data name="CheckForUpdates" xml:space="preserve">
     <value>Kiểm tra cập nhật</value>
   </data>
-  <data name="CheckForUpdates" xml:space="preserve">
+  <data name="DownloadNow" xml:space="preserve">
     <value>Tải ngay</value>
   </data>
-  <data name="DownloadNow" xml:space="preserve">
+  <data name="CheckDirectoryForFiles" xml:space="preserve">
     <value>Kiểm tra thư mục cho các tập tin</value>
   </data>
-  <data name="CheckDirectoryForFiles" xml:space="preserve">
+  <data name="ToolTipCheckDirectoryForFiles" xml:space="preserve">
     <value>Kiểm tra thư mục cho các tệp đã tải xuống.</value>
   </data>
-  <data name="ToolTipCheckDirectoryForFiles" xml:space="preserve">
+  <data name="ToolTipCheckDirectoryForFilesDescription" xml:space="preserve">
     <value>Kiểm tra thư mục và cơ sở dữ liệu cho các tệp đã tải xuống.
 Có thể tác động tiêu cực đến tốc độ tải xuống cho các thư mục lớn.</value>
   </data>
-  <data name="ToolTipCheckDirectoryForFilesDescription" xml:space="preserve">
+  <data name="DownloadUrlList" xml:space="preserve">
     <value>Tải xuống danh sách url</value>
   </data>
-  <data name="DownloadUrlList" xml:space="preserve">
+  <data name="ToolTipDownloadUrlList" xml:space="preserve">
     <value>Tải xuống danh sách url.</value>
   </data>
-  <data name="ToolTipDownloadUrlList" xml:space="preserve">
+  <data name="ToolTipDownloadUrlListDescription" xml:space="preserve">
     <value>Tải xuống danh sách url của các tệp nhị phân thay vì tệp thực</value>
   </data>
-  <data name="ToolTipDownloadUrlListDescription" xml:space="preserve">
+  <data name="DownloadAnswers" xml:space="preserve">
     <value>Tải xuống các bài đăng trả lời</value>
   </data>
-  <data name="DownloadAnswers" xml:space="preserve">
+  <data name="Blog" xml:space="preserve">
     <value>Blog</value>
   </data>
-  <data name="Blog" xml:space="preserve">
+  <data name="Connection" xml:space="preserve">
     <value>Kết nối</value>
   </data>
-  <data name="Connection" xml:space="preserve">
+  <data name="General" xml:space="preserve">
     <value>Chung</value>
   </data>
-  <data name="General" xml:space="preserve">
+  <data name="PortableMode" xml:space="preserve">
     <value>Bật chế độ di động</value>
   </data>
-  <data name="PortableMode" xml:space="preserve">
+  <data name="ToolTipPortableMode" xml:space="preserve">
     <value>Kích hoạt chế độ cầm tay.</value>
   </data>
-  <data name="ToolTipPortableMode" xml:space="preserve">
+  <data name="ToolTipPortableModeDescription" xml:space="preserve">
     <value>Lưu cài đặt trong thư mục của tệp thực thi thay vì AppData.</value>
   </data>
-  <data name="ToolTipPortableModeDescription" xml:space="preserve">
+  <data name="DownloadRebloggedPosts" xml:space="preserve">
     <value>Tải xuống các bài đăng được reblogged</value>
   </data>
-  <data name="DownloadRebloggedPosts" xml:space="preserve">
+  <data name="ProxyPassword" xml:space="preserve">
     <value>Mật khẩu Proxy:</value>
   </data>
-  <data name="ProxyPassword" xml:space="preserve">
+  <data name="ProxyUsername" xml:space="preserve">
     <value>Tên đăng nhập Proxy:</value>
   </data>
-  <data name="ProxyUsername" xml:space="preserve">
+  <data name="ToolTipProxyPassword" xml:space="preserve">
     <value>Thông tin xác thực cho máy chủ proxy không ẩn danh</value>
   </data>
-  <data name="ToolTipProxyPassword" xml:space="preserve">
+  <data name="ToolTipProxyPasswordDescription" xml:space="preserve">
     <value>Thông tin xác thực được lưu trong văn bản rõ ràng trong tập tin cài đặt</value>
   </data>
-  <data name="ToolTipProxyPasswordDescription" xml:space="preserve">
+  <data name="DownloadPages" xml:space="preserve">
     <value>Trang tải xuống:</value>
   </data>
-  <data name="DownloadPages" xml:space="preserve">
+  <data name="PageSize" xml:space="preserve">
     <value>Số bài viết mỗi trang:</value>
   </data>
-  <data name="PageSize" xml:space="preserve">
+  <data name="ToolTipDownloadPages" xml:space="preserve">
     <value>Chỉ tải xuống các trang cụ thể</value>
   </data>
-  <data name="ToolTipDownloadPages" xml:space="preserve">
+  <data name="ToolTipDownloadPagesDescription" xml:space="preserve">
     <value>Các ký hiệu có thể là: 1 hoặc 1-3 hoặc 1,2,3.
 Rỗng có nghĩa là toàn bộ blog.</value>
   </data>
-  <data name="ToolTipDownloadPagesDescription" xml:space="preserve">
+  <data name="ToolTipPageSize" xml:space="preserve">
     <value>Số bài trên mỗi trang</value>
   </data>
-  <data name="ToolTipPageSize" xml:space="preserve">
+  <data name="ToolTipPageSizeDescription" xml:space="preserve">
     <value>Đặt bài đăng trên mỗi trang (nên ở giữa 1-50, mặc định 50).
 Ví dụ. 50 có nghĩa là quét 50 bài viết trên mỗi trang.</value>
   </data>
-  <data name="ToolTipPageSizeDescription" xml:space="preserve">
+  <data name="FullScreenMedia" xml:space="preserve">
     <value>FullScreenView</value>
   </data>
-  <data name="FullScreenMedia" xml:space="preserve">
+  <data name="Export" xml:space="preserve">
     <value>Xuất nhật ký</value>
   </data>
-  <data name="Export" xml:space="preserve">
+  <data name="ToolTipExportBlogs" xml:space="preserve">
     <value>Xuất tất cả các URL của blog dưới dạng tệp tin văn bản</value>
   </data>
-  <data name="ToolTipExportBlogs" xml:space="preserve">
+  <data name="ToolTipExportBlogsDescription" xml:space="preserve">
     <value>Lưu tất cả các url dưới dạng tệp văn bản để trao đổi.</value>
   </data>
-  <data name="ToolTipExportBlogsDescription" xml:space="preserve">
+  <data name="DownloadFrom" xml:space="preserve">
     <value>Tải xuống từ:</value>
   </data>
-  <data name="DownloadFrom" xml:space="preserve">
+  <data name="DownloadTo" xml:space="preserve">
     <value>Đến:</value>
   </data>
-  <data name="DownloadTo" xml:space="preserve">
+  <data name="ToolTipDownloadFrom" xml:space="preserve">
     <value>Thu thập thông tin từ ngày này</value>
   </data>
-  <data name="ToolTipDownloadFrom" xml:space="preserve">
+  <data name="ToolTipDownloadTagsFromDescription" xml:space="preserve">
     <value>Phải ở định dạng YYYYMMDD. Rỗng có nghĩa là từ tháng 5 năm 2007.</value>
   </data>
-  <data name="ToolTipDownloadTagsFromDescription" xml:space="preserve">
+  <data name="ToolTipDownloadTo" xml:space="preserve">
     <value>Thu thập thông tin đến ngày này</value>
   </data>
-  <data name="ToolTipDownloadTo" xml:space="preserve">
-    <value>Phải ở định dạng YYYYMMDD. Rỗng có nghĩa là bây giờ.</value>
-  </data>
   <data name="ToolTipDownloadTagsToDescription" xml:space="preserve">
-    <value>Phải ở định dạng YYYYMMDD. Không có nghĩa là từ đầu của blog.</value>
+    <value>Phải ở định dạng YYYYMMDD. Rỗng có nghĩa là bây giờ.</value>
   </data>
   <data name="ToolTipDownloadFromDescription" xml:space="preserve">
-    <value>Phải ở định dạng YYYYMMDD. Rỗng có nghĩa là bây giờ.</value>
+    <value>Phải ở định dạng YYYYMMDD. Không có nghĩa là từ đầu của blog.</value>
   </data>
   <data name="ToolTipDownloadToDescription" xml:space="preserve">
-    <value>Số bài trên mỗi trang</value>
+    <value>Phải ở định dạng YYYYMMDD. Rỗng có nghĩa là bây giờ.</value>
   </data>
   <data name="ToolTipPageSizeTumblrSearch" xml:space="preserve">
+    <value>Số bài trên mỗi trang</value>
+  </data>
+  <data name="ToolTipPageSizeTumblrSearchDescription" xml:space="preserve">
     <value>Đặt bài đăng trên mỗi trang. 
 Ví dụ. 50 có nghĩa là quét 50 bài viết trên mỗi trang.</value>
   </data>
-  <data name="ToolTipPageSizeTumblrSearchDescription" xml:space="preserve">
+  <data name="Password" xml:space="preserve">
     <value>Mật khẩu:</value>
   </data>
-  <data name="Password" xml:space="preserve">
+  <data name="ToolTipPassword" xml:space="preserve">
     <value>Mật khẩu cho các blog được bảo vệ bằng mật khẩu</value>
   </data>
-  <data name="ToolTipPassword" xml:space="preserve">
+  <data name="ToolTipPasswordDescription" xml:space="preserve">
     <value>Chú ý: Mật khẩu được lưu trữ trong văn bản rõ ràng trong cơ sở dữ liệu blog.</value>
   </data>
-  <data name="ToolTipPasswordDescription" xml:space="preserve">
+  <data name="Blogtype" xml:space="preserve">
     <value>Kiểu</value>
   </data>
-  <data name="Blogtype" xml:space="preserve">
+  <data name="ToolTipTags" xml:space="preserve">
     <value>Chỉ tải xuống bài đăng được gắn thẻ</value>
   </data>
-  <data name="ToolTipTags" xml:space="preserve">
+  <data name="ToolTipTagsDescription" xml:space="preserve">
     <value>Phải nằm trong danh sách được phân cách bởi dấu phẩy mà không có dấu băm (#).
 Ví dụ. chiếc xe to lớn, tìm kiếm những chiếc xe lớn và gấu.</value>
   </data>
-  <data name="ToolTipTagsDescription" xml:space="preserve">
+  <data name="BlogtypeAll" xml:space="preserve">
     <value>Tất cả các</value>
   </data>
-  <data name="BlogtypeAll" xml:space="preserve">
+  <data name="BlogtypeInstagram" xml:space="preserve">
     <value>Instagram</value>
   </data>
-  <data name="BlogtypeInstagram" xml:space="preserve">
+  <data name="BlogtypeTumblr" xml:space="preserve">
     <value>Tumblr</value>
   </data>
-  <data name="BlogtypeTumblr" xml:space="preserve">
+  <data name="BlogtypeTumblrLikedBy" xml:space="preserve">
     <value>Tumblr Đã thích</value>
   </data>
-  <data name="BlogtypeTumblrLikedBy" xml:space="preserve">
+  <data name="BlogtypeTumblrPrivate" xml:space="preserve">
     <value>Tumblr Ẩn</value>
   </data>
-  <data name="BlogtypeTumblrPrivate" xml:space="preserve">
+  <data name="BlogtypeTumblrSearch" xml:space="preserve">
     <value>Tìm kiếm Tumblr</value>
   </data>
-  <data name="BlogtypeTumblrSearch" xml:space="preserve">
+  <data name="BlogtypeTumblrTagSearch" xml:space="preserve">
     <value>Tìm kiếm Tag Tumblr</value>
   </data>
-  <data name="BlogtypeTumblrTagSearch" xml:space="preserve">
+  <data name="BlogtypeTwitter" xml:space="preserve">
     <value>Twitter</value>
   </data>
-  <data name="BlogtypeTwitter" xml:space="preserve">
+  <data name="AutoDownloadBlogs" xml:space="preserve">
     <value>blog đến hàng đợi.</value>
   </data>
-  <data name="AutoDownloadBlogs" xml:space="preserve">
+  <data name="ToolTipTimeout" xml:space="preserve">
     <value>Thời gian chờ cho các yêu cầu web</value>
   </data>
-  <data name="ToolTipTimeout" xml:space="preserve">
+  <data name="ToolTipTimeoutDescription" xml:space="preserve">
     <value>Khoảng thời gian, tính bằng giây, cho đến khi yêu cầu hết thời gian.</value>
   </data>
-  <data name="ToolTipTimeoutDescription" xml:space="preserve">
+  <data name="ConcurrentVideoConnections" xml:space="preserve">
     <value>Kết nối video đồng thời:</value>
   </data>
-  <data name="ConcurrentVideoConnections" xml:space="preserve">
+  <data name="ToolTipVideoConnections" xml:space="preserve">
     <value>Số kết nối đồng thời với máy chủ video tumblr</value>
   </data>
-  <data name="ToolTipVideoConnections" xml:space="preserve">
+  <data name="ToolTipVideoConnectionsDescription" xml:space="preserve">
     <value>Máy chủ vt.tumblr.com thường xuyên đóng kết nối nếu số đó quá cao.</value>
   </data>
 </root>

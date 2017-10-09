@@ -476,238 +476,238 @@
 θα πρέπει να αφήσετε αυτό μακριά επειδή ο αλγόριθμος στραγγαλισμού είναι πολύ αργός για να προσαρμοστεί και μπορεί να επηρεάσει αρνητικά την απόδοση σάρωσης.
 Αριθμός συνδέσεων που χρησιμοποιούνται για κάθε σάρωση</value>
   </data>
-  <data name="ToolTipScan" xml:space="preserve">
+  <data name="ToolTipScanDescription" xml:space="preserve">
     <value>Ορίζει τις αριθμητικές συνδέσεις που χρησιμοποιούνται για τη σάρωση.
 Δεδομένου ότι τα δεδομένα είναι συνήθως μικρά, 
 πρέπει να αφήσετε αυτό το υψηλό.</value>
   </data>
-  <data name="ToolTipScanDescription" xml:space="preserve">
+  <data name="BandwidthRangeError" xml:space="preserve">
     <value>Η αξία πρέπει να είναι μεταξύ 0 και 9.000.000.000.000.000.</value>
   </data>
-  <data name="BandwidthRangeError" xml:space="preserve">
+  <data name="TimeSpanTypeError" xml:space="preserve">
     <value>Η τιμή πρέπει να έχει μορφή hh: mm: ss.</value>
   </data>
-  <data name="TimeSpanTypeError" xml:space="preserve">
+  <data name="IntRangeError" xml:space="preserve">
     <value>Η τιμή πρέπει να είναι μεταξύ 0 και 2.147.483.647.</value>
   </data>
-  <data name="IntRangeError" xml:space="preserve">
+  <data name="IntTypeError" xml:space="preserve">
     <value>Η τιμή πρέπει να είναι ακέραιου τύπου.</value>
   </data>
-  <data name="IntTypeError" xml:space="preserve">
+  <data name="ConnectionTimeInterval" xml:space="preserve">
     <value>ανά χρονικό διάστημα (α):</value>
   </data>
-  <data name="ConnectionTimeInterval" xml:space="preserve">
+  <data name="LimitConnections" xml:space="preserve">
     <value>Περιορίστε τις συνδέσεις Tumblr Api:</value>
   </data>
-  <data name="LimitConnections" xml:space="preserve">
+  <data name="MaxConnections" xml:space="preserve">
     <value>Αριθμός συνδέσεων:</value>
   </data>
-  <data name="MaxConnections" xml:space="preserve">
+  <data name="ToolTipLimitConnections" xml:space="preserve">
     <value>Περιορίστε τις συνδέσεις με το tumblr api.</value>
   </data>
-  <data name="ToolTipLimitConnections" xml:space="preserve">
+  <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
     <value>Μια υπερβολικά υψηλή τιμή θα κλείσει δυναμικά τις συνδέσεις (429 - Υπέρβαση ορίου) που έγιναν στο tumblr api.
 Μια πολύ μικρή τιμή θα μειώσει την ταχύτητα σάρωσης. Ορίστε ένα ζεύγος αριθμών / ωρών. 
 Σημείωση: Το tumblr api χρησιμοποιείται μόνο για κανονικές λήψεις blog του tumblr.</value>
   </data>
-  <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
+  <data name="ForceRescan" xml:space="preserve">
     <value>Δύναμη επανεξέτασης</value>
   </data>
-  <data name="ForceRescan" xml:space="preserve">
+  <data name="ToolTipForceRescan" xml:space="preserve">
     <value>Rescans ολόκληρο το blog, όχι μόνο νέες θέσεις.</value>
   </data>
-  <data name="ToolTipForceRescan" xml:space="preserve">
+  <data name="ToolTipForceRescanDescription" xml:space="preserve">
     <value>Επιβάλλει μια πλήρη σάρωση χρησιμοποιώντας το Tumblr api.</value>
   </data>
-  <data name="ToolTipForceRescanDescription" xml:space="preserve">
+  <data name="CheckForUpdates" xml:space="preserve">
     <value>Ελεγχος για ενημερώσεις</value>
   </data>
-  <data name="CheckForUpdates" xml:space="preserve">
+  <data name="DownloadNow" xml:space="preserve">
     <value>Ληψη τωρα</value>
   </data>
-  <data name="DownloadNow" xml:space="preserve">
+  <data name="CheckDirectoryForFiles" xml:space="preserve">
     <value>Ελέγξτε τον κατάλογο αρχείων</value>
   </data>
-  <data name="CheckDirectoryForFiles" xml:space="preserve">
+  <data name="ToolTipCheckDirectoryForFiles" xml:space="preserve">
     <value>Ελέγχει τον κατάλογο για αρχεία που έχουν ήδη ληφθεί.</value>
   </data>
-  <data name="ToolTipCheckDirectoryForFiles" xml:space="preserve">
+  <data name="ToolTipCheckDirectoryForFilesDescription" xml:space="preserve">
     <value>Ελέγχει τον κατάλογο και τη βάση δεδομένων για αρχεία που έχουν ήδη ληφθεί. 
 Μπορεί να επηρεάσει αρνητικά την ταχύτητα λήψης για μεγάλους καταλόγους.</value>
   </data>
-  <data name="ToolTipCheckDirectoryForFilesDescription" xml:space="preserve">
+  <data name="DownloadUrlList" xml:space="preserve">
     <value>Λήψη λίστας url</value>
   </data>
-  <data name="DownloadUrlList" xml:space="preserve">
+  <data name="ToolTipDownloadUrlList" xml:space="preserve">
     <value>Λήψη λίστας url.</value>
   </data>
-  <data name="ToolTipDownloadUrlList" xml:space="preserve">
+  <data name="ToolTipDownloadUrlListDescription" xml:space="preserve">
     <value>Λήγει μια λίστα url των δυαδικών αρχείων αντί των πραγματικών αρχείων</value>
   </data>
-  <data name="ToolTipDownloadUrlListDescription" xml:space="preserve">
+  <data name="DownloadAnswers" xml:space="preserve">
     <value>Λήψη θέσεων απάντησης</value>
   </data>
-  <data name="DownloadAnswers" xml:space="preserve">
+  <data name="Blog" xml:space="preserve">
     <value>Blog</value>
   </data>
-  <data name="Blog" xml:space="preserve">
+  <data name="Connection" xml:space="preserve">
     <value>Σύνδεση</value>
   </data>
-  <data name="Connection" xml:space="preserve">
+  <data name="General" xml:space="preserve">
     <value>Γενικός</value>
   </data>
-  <data name="General" xml:space="preserve">
+  <data name="PortableMode" xml:space="preserve">
     <value>Ενεργοποιήστε τη φορητή λειτουργία</value>
   </data>
-  <data name="PortableMode" xml:space="preserve">
+  <data name="ToolTipPortableMode" xml:space="preserve">
     <value>Ενεργοποιεί τη φορητή λειτουργία.</value>
   </data>
-  <data name="ToolTipPortableMode" xml:space="preserve">
+  <data name="ToolTipPortableModeDescription" xml:space="preserve">
     <value>Αποθηκεύει τις ρυθμίσεις στο φάκελο του εκτελέσιμου αρχείου αντί του AppData.</value>
   </data>
-  <data name="ToolTipPortableModeDescription" xml:space="preserve">
+  <data name="DownloadRebloggedPosts" xml:space="preserve">
     <value>Κατεβάστε τις αναρτημένες αναρτήσεις</value>
   </data>
-  <data name="DownloadRebloggedPosts" xml:space="preserve">
+  <data name="ProxyPassword" xml:space="preserve">
     <value>Κωδικός πρόσβασης μεσολάβησης:</value>
   </data>
-  <data name="ProxyPassword" xml:space="preserve">
+  <data name="ProxyUsername" xml:space="preserve">
     <value>Όνομα χρήστη μεσολάβησης:</value>
   </data>
-  <data name="ProxyUsername" xml:space="preserve">
+  <data name="ToolTipProxyPassword" xml:space="preserve">
     <value>Πιστοποιητικά για μη ανώνυμο διακομιστή μεσολάβησης</value>
   </data>
-  <data name="ToolTipProxyPassword" xml:space="preserve">
+  <data name="ToolTipProxyPasswordDescription" xml:space="preserve">
     <value>Τα διαπιστευτήρια αποθηκεύονται με καθαρό κείμενο στο αρχείο ρυθμίσεων</value>
   </data>
-  <data name="ToolTipProxyPasswordDescription" xml:space="preserve">
+  <data name="DownloadPages" xml:space="preserve">
     <value>Λήψη σελίδων:</value>
   </data>
-  <data name="DownloadPages" xml:space="preserve">
+  <data name="PageSize" xml:space="preserve">
     <value>Δημοσιεύσεις ανά σελίδα:</value>
   </data>
-  <data name="PageSize" xml:space="preserve">
+  <data name="ToolTipDownloadPages" xml:space="preserve">
     <value>Λήψη μόνο συγκεκριμένων σελίδων</value>
   </data>
-  <data name="ToolTipDownloadPages" xml:space="preserve">
+  <data name="ToolTipDownloadPagesDescription" xml:space="preserve">
     <value>Οι πιθανές σημειώσεις είναι: 1 ή 1-3 ή 1,2,3.
 Άδειο σημαίνει όλο το ιστολόγιο.</value>
   </data>
-  <data name="ToolTipDownloadPagesDescription" xml:space="preserve">
+  <data name="ToolTipPageSize" xml:space="preserve">
     <value>Δημοσιεύσεις ανά σελίδα</value>
   </data>
-  <data name="ToolTipPageSize" xml:space="preserve">
+  <data name="ToolTipPageSizeDescription" xml:space="preserve">
     <value>Ορίζει την ανάρτηση ανά σελίδα (πρέπει να είναι μεταξύ 1-50, προεπιλογή 50).
 Π.χ. Το 50 σημαίνει σάρωση 50 μηνυμάτων ανά σελίδα.</value>
   </data>
-  <data name="ToolTipPageSizeDescription" xml:space="preserve">
+  <data name="FullScreenMedia" xml:space="preserve">
     <value>FullScreenView</value>
   </data>
-  <data name="FullScreenMedia" xml:space="preserve">
+  <data name="Export" xml:space="preserve">
     <value>Εξαγωγή ιστολογίων</value>
   </data>
-  <data name="Export" xml:space="preserve">
+  <data name="ToolTipExportBlogs" xml:space="preserve">
     <value>Εξαγωγή όλων των URL urls ως αρχείου κειμένου</value>
   </data>
-  <data name="ToolTipExportBlogs" xml:space="preserve">
+  <data name="ToolTipExportBlogsDescription" xml:space="preserve">
     <value>Αποθηκεύει όλες τις urls ως αρχείο κειμένου για ανταλλαγή.</value>
   </data>
-  <data name="ToolTipExportBlogsDescription" xml:space="preserve">
+  <data name="DownloadFrom" xml:space="preserve">
     <value>Κατεβάστε από:</value>
   </data>
-  <data name="DownloadFrom" xml:space="preserve">
+  <data name="DownloadTo" xml:space="preserve">
     <value>Προς την:</value>
   </data>
-  <data name="DownloadTo" xml:space="preserve">
+  <data name="ToolTipDownloadFrom" xml:space="preserve">
     <value>Ανίχνευση αναρτήσεων από αυτήν την ημερομηνία</value>
   </data>
-  <data name="ToolTipDownloadFrom" xml:space="preserve">
+  <data name="ToolTipDownloadTagsFromDescription" xml:space="preserve">
     <value>Πρέπει να είναι σε μορφή ΕΕΕΕΜΜDD.
 Άδειες μέσα από τον Μάιο του 2007.</value>
   </data>
-  <data name="ToolTipDownloadTagsFromDescription" xml:space="preserve">
+  <data name="ToolTipDownloadTo" xml:space="preserve">
     <value>Ανίχνευση αναρτήσεων σε αυτήν την ημερομηνία</value>
   </data>
-  <data name="ToolTipDownloadTo" xml:space="preserve">
+  <data name="ToolTipDownloadTagsToDescription" xml:space="preserve">
     <value>Πρέπει να είναι σε μορφή ΕΕΕΕΜΜDD. 
 Άδειες σημαίνει μέχρι τώρα.</value>
   </data>
-  <data name="ToolTipDownloadTagsToDescription" xml:space="preserve">
+  <data name="ToolTipDownloadFromDescription" xml:space="preserve">
     <value>Πρέπει να είναι σε μορφή ΕΕΕΕΜΜDD.
 Άδειο σημαίνει από την αρχή του ιστολογίου.</value>
   </data>
-  <data name="ToolTipDownloadFromDescription" xml:space="preserve">
+  <data name="ToolTipDownloadToDescription" xml:space="preserve">
     <value>Πρέπει να είναι σε μορφή ΕΕΕΕΜΜDD.
 Άδειες σημαίνει μέχρι τώρα.</value>
   </data>
-  <data name="ToolTipDownloadToDescription" xml:space="preserve">
+  <data name="ToolTipPageSizeTumblrSearch" xml:space="preserve">
     <value>Δημοσιεύσεις ανά σελίδα</value>
   </data>
-  <data name="ToolTipPageSizeTumblrSearch" xml:space="preserve">
+  <data name="ToolTipPageSizeTumblrSearchDescription" xml:space="preserve">
     <value>Ορίζει την ανάρτηση ανά σελίδα. 
 Π.χ. Το 50 σημαίνει σάρωση 50 μηνυμάτων ανά σελίδα.</value>
   </data>
-  <data name="ToolTipPageSizeTumblrSearchDescription" xml:space="preserve">
+  <data name="Password" xml:space="preserve">
     <value>Κωδικός πρόσβασης:</value>
   </data>
-  <data name="Password" xml:space="preserve">
+  <data name="ToolTipPassword" xml:space="preserve">
     <value>Κωδικός πρόσβασης για ιστολόγια που προστατεύονται με κωδικό πρόσβασης</value>
   </data>
-  <data name="ToolTipPassword" xml:space="preserve">
+  <data name="ToolTipPasswordDescription" xml:space="preserve">
     <value>Προσοχή: Ο κωδικός πρόσβασης αποθηκεύεται σε καθαρό κείμενο στη βάση δεδομένων των ιστολογίων.</value>
   </data>
-  <data name="ToolTipPasswordDescription" xml:space="preserve">
+  <data name="Blogtype" xml:space="preserve">
     <value>Τύπος</value>
   </data>
-  <data name="Blogtype" xml:space="preserve">
+  <data name="ToolTipTags" xml:space="preserve">
     <value>Λήψη μόνο μηνυμάτων με ετικέτα</value>
   </data>
-  <data name="ToolTipTags" xml:space="preserve">
+  <data name="ToolTipTagsDescription" xml:space="preserve">
     <value>Πρέπει να βρίσκεται σε μια λίστα χωρισμένη με κόμματα,
 χωρίς την υπογραφή αιχμής (#).
 Π.χ. μεγάλο μεγάλο αυτοκίνητο, φέρνει αναζητήσεις για μεγάλα μεγάλα αυτοκίνητα και αρκούδες.</value>
   </data>
-  <data name="ToolTipTagsDescription" xml:space="preserve">
+  <data name="BlogtypeAll" xml:space="preserve">
     <value>Ολα</value>
   </data>
-  <data name="BlogtypeAll" xml:space="preserve">
+  <data name="BlogtypeInstagram" xml:space="preserve">
     <value>Instagram</value>
   </data>
-  <data name="BlogtypeInstagram" xml:space="preserve">
+  <data name="BlogtypeTumblr" xml:space="preserve">
     <value>Tumblr</value>
   </data>
-  <data name="BlogtypeTumblr" xml:space="preserve">
+  <data name="BlogtypeTumblrLikedBy" xml:space="preserve">
     <value>Το Tumblr άρεσε</value>
   </data>
-  <data name="BlogtypeTumblrLikedBy" xml:space="preserve">
+  <data name="BlogtypeTumblrPrivate" xml:space="preserve">
     <value>Tumblr Κρυφό</value>
   </data>
-  <data name="BlogtypeTumblrPrivate" xml:space="preserve">
+  <data name="BlogtypeTumblrSearch" xml:space="preserve">
     <value>Αναζήτηση Tumblr</value>
   </data>
-  <data name="BlogtypeTumblrSearch" xml:space="preserve">
+  <data name="BlogtypeTumblrTagSearch" xml:space="preserve">
     <value>Αναζήτηση ετικετών Tumblr</value>
   </data>
-  <data name="BlogtypeTumblrTagSearch" xml:space="preserve">
+  <data name="BlogtypeTwitter" xml:space="preserve">
     <value>Κελάδημα</value>
   </data>
-  <data name="BlogtypeTwitter" xml:space="preserve">
+  <data name="AutoDownloadBlogs" xml:space="preserve">
     <value>blogs στην ουρά.</value>
   </data>
-  <data name="AutoDownloadBlogs" xml:space="preserve">
+  <data name="ToolTipTimeout" xml:space="preserve">
     <value>Χρονικό όριο για αιτήσεις ιστού</value>
   </data>
-  <data name="ToolTipTimeout" xml:space="preserve">
+  <data name="ToolTipTimeoutDescription" xml:space="preserve">
     <value>Το χρονικό διάστημα, σε δευτερόλεπτα, 
 μέχρι να διαρκέσει η αίτηση.</value>
   </data>
-  <data name="ToolTipTimeoutDescription" xml:space="preserve">
+  <data name="ConcurrentVideoConnections" xml:space="preserve">
     <value>Συγχρονισμένες συνδέσεις βίντεο:</value>
   </data>
-  <data name="ConcurrentVideoConnections" xml:space="preserve">
+  <data name="ToolTipVideoConnections" xml:space="preserve">
     <value>Αριθμός ταυτόχρονων συνδέσεων στον κεντρικό υπολογιστή βίντεο tumblr</value>
   </data>
-  <data name="ToolTipVideoConnections" xml:space="preserve">
+  <data name="ToolTipVideoConnectionsDescription" xml:space="preserve">
     <value>Ο κεντρικός υπολογιστής vt.tumblr.com κλείνει τακτικά τις συνδέσεις αν ο αριθμός είναι πολύ υψηλός.</value>
   </data>
 </root>

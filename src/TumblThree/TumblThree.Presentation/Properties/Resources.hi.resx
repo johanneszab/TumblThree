@@ -473,229 +473,229 @@
 थ्रॉटलिंग एल्गोरिदम समायोजित करने के लिए बहुत धीमा है और स्कैन प्रदर्शन पर नकारात्मक प्रभाव डाल सकता है, 
 इसलिए आपको इसे बंद करना चाहिए। प्रत्येक स्कैन के लिए उपयोग किए जाने वाले कनेक्शन की संख्या</value>
   </data>
-  <data name="ToolTipScan" xml:space="preserve">
+  <data name="ToolTipScanDescription" xml:space="preserve">
     <value>स्कैनिंग के लिए उपयोग किए जाने वाले नंबर कनेक्शन सेट करता है। चूंकि डेटा आमतौर पर छोटा है, 
 इसलिए आपको यह उच्च छोड़ देना चाहिए।</value>
   </data>
-  <data name="ToolTipScanDescription" xml:space="preserve">
+  <data name="BandwidthRangeError" xml:space="preserve">
     <value>मान 0 और 9, 000, 000,000,000,000 के बीच होना चाहिए</value>
   </data>
-  <data name="BandwidthRangeError" xml:space="preserve">
+  <data name="TimeSpanTypeError" xml:space="preserve">
     <value>मान को एचएच: मिमी: एसएस बना दिया जाना चाहिए।</value>
   </data>
-  <data name="TimeSpanTypeError" xml:space="preserve">
+  <data name="IntRangeError" xml:space="preserve">
     <value>मान 0 और 2,147,483,647 के बीच होना चाहिए</value>
   </data>
-  <data name="IntRangeError" xml:space="preserve">
+  <data name="IntTypeError" xml:space="preserve">
     <value>मान का प्रकार पूर्णांक होना चाहिए</value>
   </data>
-  <data name="IntTypeError" xml:space="preserve">
+  <data name="ConnectionTimeInterval" xml:space="preserve">
     <value>प्रति समय अंतराल:</value>
   </data>
-  <data name="ConnectionTimeInterval" xml:space="preserve">
+  <data name="LimitConnections" xml:space="preserve">
     <value>सीमा टम्बलर एपीआई कनेक्शन:</value>
   </data>
-  <data name="LimitConnections" xml:space="preserve">
+  <data name="MaxConnections" xml:space="preserve">
     <value>कनेक्शन की संख्या:</value>
   </data>
-  <data name="MaxConnections" xml:space="preserve">
+  <data name="ToolTipLimitConnections" xml:space="preserve">
     <value>टैम्बलर एपीआई के लिए कनेक्शन सीमित करें</value>
   </data>
-  <data name="ToolTipLimitConnections" xml:space="preserve">
+  <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
     <value>एक बहुत अधिक मूल्य सशक्त रूप से कनेक्शन बंद कर देगा (42 9 - सीमा पार करने वाले) टम्बलर एपीआई के लिए बनाया गया
 है एक बहुत कम मूल्य स्कैनिंग की गति कम हो जाएगा संख्या / समय जोड़ सेट करें नोट: 
 टम्बलर एपीआई का उपयोग केवल नियमित टंब्लर ब्लॉग डाउनलोड के लिए किया जाता है।</value>
   </data>
-  <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
+  <data name="ForceRescan" xml:space="preserve">
     <value>बल की जांच</value>
   </data>
-  <data name="ForceRescan" xml:space="preserve">
+  <data name="ToolTipForceRescan" xml:space="preserve">
     <value>पूरे ब्लॉग को रद्द करें, केवल नई पोस्ट न करें</value>
   </data>
-  <data name="ToolTipForceRescan" xml:space="preserve">
+  <data name="ToolTipForceRescanDescription" xml:space="preserve">
     <value>टंब्लर एपीआई का इस्तेमाल करते हुए एक पूर्ण स्कैन के लिए मजबूर करता है</value>
   </data>
-  <data name="ToolTipForceRescanDescription" xml:space="preserve">
+  <data name="CheckForUpdates" xml:space="preserve">
     <value>अद्यतन के लिए जाँच</value>
   </data>
-  <data name="CheckForUpdates" xml:space="preserve">
+  <data name="DownloadNow" xml:space="preserve">
     <value>अभी डाउनलोड करो</value>
   </data>
-  <data name="DownloadNow" xml:space="preserve">
+  <data name="CheckDirectoryForFiles" xml:space="preserve">
     <value>फ़ाइलों के लिए निर्देशिका की जाँच करें</value>
   </data>
-  <data name="CheckDirectoryForFiles" xml:space="preserve">
+  <data name="ToolTipCheckDirectoryForFiles" xml:space="preserve">
     <value>पहले से डाउनलोड की गई फ़ाइलों के लिए निर्देशिका की जांच करता है</value>
   </data>
-  <data name="ToolTipCheckDirectoryForFiles" xml:space="preserve">
+  <data name="ToolTipCheckDirectoryForFilesDescription" xml:space="preserve">
     <value>पहले से डाउनलोड की गई फ़ाइलों के लिए निर्देशिका और डेटाबेस की जांच करता है
 । बड़ी निर्देशिकाओं के लिए डाउनलोड गति पर नकारात्मक प्रभाव पड़ सकता है</value>
   </data>
-  <data name="ToolTipCheckDirectoryForFilesDescription" xml:space="preserve">
+  <data name="DownloadUrlList" xml:space="preserve">
     <value>यूआरएल सूची डाउनलोड करें</value>
   </data>
-  <data name="DownloadUrlList" xml:space="preserve">
+  <data name="ToolTipDownloadUrlList" xml:space="preserve">
     <value>एक यूआरएल सूची डाउनलोड करें</value>
   </data>
-  <data name="ToolTipDownloadUrlList" xml:space="preserve">
+  <data name="ToolTipDownloadUrlListDescription" xml:space="preserve">
     <value>वास्तविक फ़ाइलों के बजाय बाइनरी फ़ाइलों की एक यूआरएल सूची डाउनलोड करें</value>
   </data>
-  <data name="ToolTipDownloadUrlListDescription" xml:space="preserve">
+  <data name="DownloadAnswers" xml:space="preserve">
     <value>उत्तर पोस्ट डाउनलोड करें</value>
   </data>
-  <data name="DownloadAnswers" xml:space="preserve">
+  <data name="Blog" xml:space="preserve">
     <value>ब्लॉग</value>
   </data>
-  <data name="Blog" xml:space="preserve">
+  <data name="Connection" xml:space="preserve">
     <value>संबंध</value>
   </data>
-  <data name="Connection" xml:space="preserve">
+  <data name="General" xml:space="preserve">
     <value>सामान्य</value>
   </data>
-  <data name="General" xml:space="preserve">
+  <data name="PortableMode" xml:space="preserve">
     <value>पोर्टेबल मोड सक्रिय करें</value>
   </data>
-  <data name="PortableMode" xml:space="preserve">
+  <data name="ToolTipPortableMode" xml:space="preserve">
     <value>पोर्टेबल मोड को सक्रिय करता है</value>
   </data>
-  <data name="ToolTipPortableMode" xml:space="preserve">
+  <data name="ToolTipPortableModeDescription" xml:space="preserve">
     <value>AppData के बजाय निष्पादन योग्य के फ़ोल्डर में सेटिंग्स को सहेजता है</value>
   </data>
-  <data name="ToolTipPortableModeDescription" xml:space="preserve">
+  <data name="DownloadRebloggedPosts" xml:space="preserve">
     <value>विद्रोही पदों को डाउनलोड करें</value>
   </data>
-  <data name="DownloadRebloggedPosts" xml:space="preserve">
+  <data name="ProxyPassword" xml:space="preserve">
     <value>प्रॉक्सी पासवर्ड:</value>
   </data>
-  <data name="ProxyPassword" xml:space="preserve">
+  <data name="ProxyUsername" xml:space="preserve">
     <value>प्रॉक्सी उपयोगकर्ता नाम:</value>
   </data>
-  <data name="ProxyUsername" xml:space="preserve">
+  <data name="ToolTipProxyPassword" xml:space="preserve">
     <value>गैर-अनाम प्रॉक्सी सर्वर के लिए प्रमाणन</value>
   </data>
-  <data name="ToolTipProxyPassword" xml:space="preserve">
+  <data name="ToolTipProxyPasswordDescription" xml:space="preserve">
     <value>प्रमाणन सेटिंग्स सेटिंग्स फ़ाइल में स्पष्ट पाठ में सहेजे जाते हैं</value>
   </data>
-  <data name="ToolTipProxyPasswordDescription" xml:space="preserve">
+  <data name="DownloadPages" xml:space="preserve">
     <value>डाउनलोड पृष्ठ:</value>
   </data>
-  <data name="DownloadPages" xml:space="preserve">
+  <data name="PageSize" xml:space="preserve">
     <value>प्रति पृष्ठ पोस्ट:</value>
   </data>
-  <data name="PageSize" xml:space="preserve">
+  <data name="ToolTipDownloadPages" xml:space="preserve">
     <value>केवल विशिष्ट पृष्ठ डाउनलोड करें</value>
   </data>
-  <data name="ToolTipDownloadPages" xml:space="preserve">
+  <data name="ToolTipDownloadPagesDescription" xml:space="preserve">
     <value>संभावित नोट्स हैं: 1 या 1-3 या 1,2,3 खाली का अर्थ है पूरे ब्लॉग</value>
   </data>
-  <data name="ToolTipDownloadPagesDescription" xml:space="preserve">
+  <data name="ToolTipPageSize" xml:space="preserve">
     <value>प्रति पृष्ठ पोस्ट</value>
   </data>
-  <data name="ToolTipPageSize" xml:space="preserve">
+  <data name="ToolTipPageSizeDescription" xml:space="preserve">
     <value>प्रति पृष्ठ पोस्ट सेट करता है (1-50, डिफ़ॉल्ट 50 के बीच होना चाहिए) 
 जैसे 50 प्रति पृष्ठ 50 पदों को स्कैन करने का मतलब है।</value>
   </data>
-  <data name="ToolTipPageSizeDescription" xml:space="preserve">
+  <data name="FullScreenMedia" xml:space="preserve">
     <value>FullScreenView</value>
   </data>
-  <data name="FullScreenMedia" xml:space="preserve">
+  <data name="Export" xml:space="preserve">
     <value>ब्लॉग निर्यात करें</value>
   </data>
-  <data name="Export" xml:space="preserve">
+  <data name="ToolTipExportBlogs" xml:space="preserve">
     <value>सभी ब्लॉग यूआरएल को पाठ फ़ाइल के रूप में निर्यात करें</value>
   </data>
-  <data name="ToolTipExportBlogs" xml:space="preserve">
+  <data name="ToolTipExportBlogsDescription" xml:space="preserve">
     <value>एक्सचेंज के लिए सभी यूआरएल को पाठ फ़ाइल के रूप में सहेजता है।</value>
   </data>
-  <data name="ToolTipExportBlogsDescription" xml:space="preserve">
+  <data name="DownloadFrom" xml:space="preserve">
     <value>वहाँ से डाउनलोड:</value>
   </data>
-  <data name="DownloadFrom" xml:space="preserve">
+  <data name="DownloadTo" xml:space="preserve">
     <value>सेवा मेरे:</value>
   </data>
-  <data name="DownloadTo" xml:space="preserve">
+  <data name="ToolTipDownloadFrom" xml:space="preserve">
     <value>इस तिथि से पोस्ट क्रॉल करें</value>
   </data>
-  <data name="ToolTipDownloadFrom" xml:space="preserve">
+  <data name="ToolTipDownloadTagsFromDescription" xml:space="preserve">
     <value>YYYYMMDD प्रारूप में होना चाहिए। मई 2007 से खाली अर्थ</value>
   </data>
-  <data name="ToolTipDownloadTagsFromDescription" xml:space="preserve">
+  <data name="ToolTipDownloadTo" xml:space="preserve">
     <value>इस तारीख को पोस्ट क्रॉल करें</value>
   </data>
-  <data name="ToolTipDownloadTo" xml:space="preserve">
-    <value>YYYYMMDD प्रारूप में होना चाहिए। खाली का मतलब अब</value>
-  </data>
   <data name="ToolTipDownloadTagsToDescription" xml:space="preserve">
-    <value>YYYYMMDD प्रारूप में होना चाहिए। ब्लॉग की शुरुआत से खाली का अर्थ है</value>
+    <value>YYYYMMDD प्रारूप में होना चाहिए। खाली का मतलब अब</value>
   </data>
   <data name="ToolTipDownloadFromDescription" xml:space="preserve">
-    <value>YYYYMMDD प्रारूप में होना चाहिए। खाली का मतलब अब</value>
+    <value>YYYYMMDD प्रारूप में होना चाहिए। ब्लॉग की शुरुआत से खाली का अर्थ है</value>
   </data>
   <data name="ToolTipDownloadToDescription" xml:space="preserve">
-    <value>प्रति पृष्ठ पोस्ट</value>
+    <value>YYYYMMDD प्रारूप में होना चाहिए। खाली का मतलब अब</value>
   </data>
   <data name="ToolTipPageSizeTumblrSearch" xml:space="preserve">
-    <value>प्रति पेज पोस्ट सेट करता है जैसे 50 प्रति पृष्ठ 50 पदों को स्कैन करने का मतलब है।</value>
+    <value>प्रति पृष्ठ पोस्ट</value>
   </data>
   <data name="ToolTipPageSizeTumblrSearchDescription" xml:space="preserve">
-    <value>पासवर्ड:</value>
+    <value>प्रति पेज पोस्ट सेट करता है जैसे 50 प्रति पृष्ठ 50 पदों को स्कैन करने का मतलब है।</value>
   </data>
   <data name="Password" xml:space="preserve">
-    <value>पासवर्ड-सुरक्षित ब्लॉग्स के लिए पासवर्ड</value>
+    <value>पासवर्ड:</value>
   </data>
   <data name="ToolTipPassword" xml:space="preserve">
-    <value>सावधानी: ब्लॉग डेटाबेस में पासवर्ड को स्पष्ट पाठ में रखा गया है।</value>
+    <value>पासवर्ड-सुरक्षित ब्लॉग्स के लिए पासवर्ड</value>
   </data>
   <data name="ToolTipPasswordDescription" xml:space="preserve">
-    <value>प्रकार</value>
+    <value>सावधानी: ब्लॉग डेटाबेस में पासवर्ड को स्पष्ट पाठ में रखा गया है।</value>
   </data>
   <data name="Blogtype" xml:space="preserve">
-    <value>केवल टैग पोस्ट डाउनलोड करें</value>
+    <value>प्रकार</value>
   </data>
   <data name="ToolTipTags" xml:space="preserve">
+    <value>केवल टैग पोस्ट डाउनलोड करें</value>
+  </data>
+  <data name="ToolTipTagsDescription" xml:space="preserve">
     <value>अग्रणी हैश (#) चिह्न के बिना अल्पविराम से अलग सूची में होना चाहिए जैसे महान बड़ी कार,
 बड़ी बड़ी कारों और भालू के लिए खोज करती है</value>
   </data>
-  <data name="ToolTipTagsDescription" xml:space="preserve">
+  <data name="BlogtypeAll" xml:space="preserve">
     <value>सब</value>
   </data>
-  <data name="BlogtypeAll" xml:space="preserve">
+  <data name="BlogtypeInstagram" xml:space="preserve">
     <value>इंस्टाग्राम</value>
   </data>
-  <data name="BlogtypeInstagram" xml:space="preserve">
+  <data name="BlogtypeTumblr" xml:space="preserve">
     <value>Tumblr</value>
   </data>
-  <data name="BlogtypeTumblr" xml:space="preserve">
+  <data name="BlogtypeTumblrLikedBy" xml:space="preserve">
     <value>Tumblr पसंद आया</value>
   </data>
-  <data name="BlogtypeTumblrLikedBy" xml:space="preserve">
+  <data name="BlogtypeTumblrPrivate" xml:space="preserve">
     <value>टम्बलर छिपे हुए</value>
   </data>
-  <data name="BlogtypeTumblrPrivate" xml:space="preserve">
+  <data name="BlogtypeTumblrSearch" xml:space="preserve">
     <value>Tumblr खोज</value>
   </data>
-  <data name="BlogtypeTumblrSearch" xml:space="preserve">
+  <data name="BlogtypeTumblrTagSearch" xml:space="preserve">
     <value>Tumblr टैग खोज</value>
   </data>
-  <data name="BlogtypeTumblrTagSearch" xml:space="preserve">
+  <data name="BlogtypeTwitter" xml:space="preserve">
     <value>ट्विटर</value>
   </data>
-  <data name="BlogtypeTwitter" xml:space="preserve">
+  <data name="AutoDownloadBlogs" xml:space="preserve">
     <value>कतार में ब्लॉग</value>
   </data>
-  <data name="AutoDownloadBlogs" xml:space="preserve">
+  <data name="ToolTipTimeout" xml:space="preserve">
     <value>वेब अनुरोधों के लिए समय समाप्ति</value>
   </data>
-  <data name="ToolTipTimeout" xml:space="preserve">
+  <data name="ToolTipTimeoutDescription" xml:space="preserve">
     <value>समय की लंबाई, सेकंड में, अनुरोध के समय तक।</value>
   </data>
-  <data name="ToolTipTimeoutDescription" xml:space="preserve">
+  <data name="ConcurrentVideoConnections" xml:space="preserve">
     <value>समवर्ती वीडियो कनेक्शन:</value>
   </data>
-  <data name="ConcurrentVideoConnections" xml:space="preserve">
+  <data name="ToolTipVideoConnections" xml:space="preserve">
     <value>टम्ब्लर वीडियो होस्ट के समवर्ती कनेक्शन की संख्या</value>
   </data>
-  <data name="ToolTipVideoConnections" xml:space="preserve">
+  <data name="ToolTipVideoConnectionsDescription" xml:space="preserve">
     <value>Vt.tumblr.com मेजबान कनेक्शन बंद कर देता है यदि संख्या बहुत अधिक है</value>
   </data>
 </root>

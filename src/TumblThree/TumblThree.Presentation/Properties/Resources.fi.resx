@@ -475,230 +475,230 @@ On turvallista ottaa tämä käyttöön.</value>
 koska kuristusalgoritmi on liian hidas säädettäessä ja voi vaikuttaa kielteisesti skannaustulokseen.
 Kunkin skannauksen yhteydessä käytettävien yhteyksien lukumäärä</value>
   </data>
-  <data name="ToolTipScan" xml:space="preserve">
+  <data name="ToolTipScanDescription" xml:space="preserve">
     <value>Asettaa skannaukseen käytettävät numeroliittymät.
 Koska tiedot ovat yleensä pieniä, sinun pitäisi jättää tämä korkea.</value>
   </data>
-  <data name="ToolTipScanDescription" xml:space="preserve">
+  <data name="BandwidthRangeError" xml:space="preserve">
     <value>Arvon on oltava 0 - 9 000 000 000 000 000.</value>
   </data>
-  <data name="BandwidthRangeError" xml:space="preserve">
+  <data name="TimeSpanTypeError" xml:space="preserve">
     <value>Arvon on muodostettava hh: mm: ss.</value>
   </data>
-  <data name="TimeSpanTypeError" xml:space="preserve">
+  <data name="IntRangeError" xml:space="preserve">
     <value>Arvon on oltava välillä 0 ja 2 147 483 647.</value>
   </data>
-  <data name="IntRangeError" xml:space="preserve">
+  <data name="IntTypeError" xml:space="preserve">
     <value>Arvon on oltava tyypiltään kokonaisluku.</value>
   </data>
-  <data name="IntTypeError" xml:space="preserve">
+  <data name="ConnectionTimeInterval" xml:space="preserve">
     <value>aikaväli (t):</value>
   </data>
-  <data name="ConnectionTimeInterval" xml:space="preserve">
+  <data name="LimitConnections" xml:space="preserve">
     <value>Limit Tumblr Api -yhteydet:</value>
   </data>
-  <data name="LimitConnections" xml:space="preserve">
+  <data name="MaxConnections" xml:space="preserve">
     <value>Yhteyksien lukumäärä:</value>
   </data>
-  <data name="MaxConnections" xml:space="preserve">
+  <data name="ToolTipLimitConnections" xml:space="preserve">
     <value>Rajoita yhteydet tumblr api: iin.</value>
   </data>
-  <data name="ToolTipLimitConnections" xml:space="preserve">
+  <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
     <value>Liian korkea arvo sitoo voimakkaasti tumblr apiin tehtyjä yhteyksiä (429 - Limit Exceeded).
 Liian pieni arvo pienentää skannausnopeutta. Aseta numero / aika pari.
 Huomaa: tumblr api käytetään vain tavallisiin tumblr-blogien latauksiin.</value>
   </data>
-  <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
+  <data name="ForceRescan" xml:space="preserve">
     <value>Pakota uudelleen</value>
   </data>
-  <data name="ForceRescan" xml:space="preserve">
+  <data name="ToolTipForceRescan" xml:space="preserve">
     <value>Rescans koko blogi, ei vain uusia viestejä.</value>
   </data>
-  <data name="ToolTipForceRescan" xml:space="preserve">
+  <data name="ToolTipForceRescanDescription" xml:space="preserve">
     <value>Tarvitsee täydellisen skannauksen Tumblr api: n avulla.</value>
   </data>
-  <data name="ToolTipForceRescanDescription" xml:space="preserve">
+  <data name="CheckForUpdates" xml:space="preserve">
     <value>Tarkista päivitykset</value>
   </data>
-  <data name="CheckForUpdates" xml:space="preserve">
+  <data name="DownloadNow" xml:space="preserve">
     <value>Lataa nyt</value>
   </data>
-  <data name="DownloadNow" xml:space="preserve">
+  <data name="CheckDirectoryForFiles" xml:space="preserve">
     <value>Tarkista tiedostojen hakemisto</value>
   </data>
-  <data name="CheckDirectoryForFiles" xml:space="preserve">
+  <data name="ToolTipCheckDirectoryForFiles" xml:space="preserve">
     <value>Tarkistaa hakemiston jo ladatuille tiedostoille.</value>
   </data>
-  <data name="ToolTipCheckDirectoryForFiles" xml:space="preserve">
+  <data name="ToolTipCheckDirectoryForFilesDescription" xml:space="preserve">
     <value>Tarkistaa hakemiston ja tietokannan jo ladatuille tiedostoille.
 Se voi vaikuttaa negatiivisesti suurien hakemistojen latausnopeuteen.</value>
   </data>
-  <data name="ToolTipCheckDirectoryForFilesDescription" xml:space="preserve">
+  <data name="DownloadUrlList" xml:space="preserve">
     <value>Lataa url-luettelo</value>
   </data>
-  <data name="DownloadUrlList" xml:space="preserve">
+  <data name="ToolTipDownloadUrlList" xml:space="preserve">
     <value>Lataa url-luettelo.</value>
   </data>
-  <data name="ToolTipDownloadUrlList" xml:space="preserve">
+  <data name="ToolTipDownloadUrlListDescription" xml:space="preserve">
     <value>Lataa binary-tiedostojen url-luettelon varsinaisten tiedostojen sijasta</value>
   </data>
-  <data name="ToolTipDownloadUrlListDescription" xml:space="preserve">
+  <data name="DownloadAnswers" xml:space="preserve">
     <value>Lataa vastausviestejä</value>
   </data>
-  <data name="DownloadAnswers" xml:space="preserve">
+  <data name="Blog" xml:space="preserve">
     <value>blogi</value>
   </data>
-  <data name="Blog" xml:space="preserve">
+  <data name="Connection" xml:space="preserve">
     <value>yhteys</value>
   </data>
-  <data name="Connection" xml:space="preserve">
+  <data name="General" xml:space="preserve">
     <value>yleinen</value>
   </data>
-  <data name="General" xml:space="preserve">
+  <data name="PortableMode" xml:space="preserve">
     <value>Aktivoi kannettava tila</value>
   </data>
-  <data name="PortableMode" xml:space="preserve">
+  <data name="ToolTipPortableMode" xml:space="preserve">
     <value>Aktivoi kannettavan tilan.</value>
   </data>
-  <data name="ToolTipPortableMode" xml:space="preserve">
+  <data name="ToolTipPortableModeDescription" xml:space="preserve">
     <value>Tallentaa asetukset sovelluksen kansioon AppData-ohjelman sijaan.</value>
   </data>
-  <data name="ToolTipPortableModeDescription" xml:space="preserve">
+  <data name="DownloadRebloggedPosts" xml:space="preserve">
     <value>Lataa uudelleenblogitut viestit</value>
   </data>
-  <data name="DownloadRebloggedPosts" xml:space="preserve">
+  <data name="ProxyPassword" xml:space="preserve">
     <value>Välityspalvelimen salasana:</value>
   </data>
-  <data name="ProxyPassword" xml:space="preserve">
+  <data name="ProxyUsername" xml:space="preserve">
     <value>Proxy-käyttäjätunnus:</value>
   </data>
-  <data name="ProxyUsername" xml:space="preserve">
+  <data name="ToolTipProxyPassword" xml:space="preserve">
     <value>Valtuutukset ei-anonyyminä välityspalvelimelle</value>
   </data>
-  <data name="ToolTipProxyPassword" xml:space="preserve">
+  <data name="ToolTipProxyPasswordDescription" xml:space="preserve">
     <value>Todentuvuudet tallennetaan selkeään tekstiin asetustiedostossa</value>
   </data>
-  <data name="ToolTipProxyPasswordDescription" xml:space="preserve">
+  <data name="DownloadPages" xml:space="preserve">
     <value>Lataa sivuja:</value>
   </data>
-  <data name="DownloadPages" xml:space="preserve">
+  <data name="PageSize" xml:space="preserve">
     <value>Viestejä sivulla:</value>
   </data>
-  <data name="PageSize" xml:space="preserve">
+  <data name="ToolTipDownloadPages" xml:space="preserve">
     <value>Lataa vain tiettyjä sivuja</value>
   </data>
-  <data name="ToolTipDownloadPages" xml:space="preserve">
+  <data name="ToolTipDownloadPagesDescription" xml:space="preserve">
     <value>Mahdolliset merkinnät ovat: 1 tai 1-3 tai 1,2,3.
 Tyhjä tarkoittaa koko blogia.</value>
   </data>
-  <data name="ToolTipDownloadPagesDescription" xml:space="preserve">
+  <data name="ToolTipPageSize" xml:space="preserve">
     <value>Viestit per sivu</value>
   </data>
-  <data name="ToolTipPageSize" xml:space="preserve">
+  <data name="ToolTipPageSizeDescription" xml:space="preserve">
     <value>Asettaa viestin sivua kohti (sen on oltava 1-50, oletusarvo 50).
 Esim. 50 tarkoittaa skannausta 50 viestiä sivua kohden.</value>
   </data>
-  <data name="ToolTipPageSizeDescription" xml:space="preserve">
+  <data name="FullScreenMedia" xml:space="preserve">
     <value>FullScreenView</value>
   </data>
-  <data name="FullScreenMedia" xml:space="preserve">
+  <data name="Export" xml:space="preserve">
     <value>Vie blogit</value>
   </data>
-  <data name="Export" xml:space="preserve">
+  <data name="ToolTipExportBlogs" xml:space="preserve">
     <value>Vie kaikki blogikirjoitukset tekstitiedostona</value>
   </data>
-  <data name="ToolTipExportBlogs" xml:space="preserve">
+  <data name="ToolTipExportBlogsDescription" xml:space="preserve">
     <value>Tallentaa kaikki URL-osoitteet tekstitiedostoiksi vaihtoon.</value>
   </data>
-  <data name="ToolTipExportBlogsDescription" xml:space="preserve">
+  <data name="DownloadFrom" xml:space="preserve">
     <value>Lataa:</value>
   </data>
-  <data name="DownloadFrom" xml:space="preserve">
+  <data name="DownloadTo" xml:space="preserve">
     <value>To:</value>
   </data>
-  <data name="DownloadTo" xml:space="preserve">
+  <data name="ToolTipDownloadFrom" xml:space="preserve">
     <value>Indeksoi viestit tästä päivästä</value>
   </data>
-  <data name="ToolTipDownloadFrom" xml:space="preserve">
+  <data name="ToolTipDownloadTagsFromDescription" xml:space="preserve">
     <value>On oltava YYYYMMDD-muodossa. Tyhjä keino toukokuusta 2007.</value>
   </data>
-  <data name="ToolTipDownloadTagsFromDescription" xml:space="preserve">
+  <data name="ToolTipDownloadTo" xml:space="preserve">
     <value>Indeksoi viestejä tähän päivään</value>
   </data>
-  <data name="ToolTipDownloadTo" xml:space="preserve">
-    <value>On oltava YYYYMMDD-muodossa. Tyhjä tarkoittaa nyt.</value>
-  </data>
   <data name="ToolTipDownloadTagsToDescription" xml:space="preserve">
-    <value>On oltava YYYYMMDD-muodossa. Tyhjä tarkoittaa blogin alusta.</value>
+    <value>On oltava YYYYMMDD-muodossa. Tyhjä tarkoittaa nyt.</value>
   </data>
   <data name="ToolTipDownloadFromDescription" xml:space="preserve">
-    <value>On oltava YYYYMMDD-muodossa. Tyhjä tarkoittaa nyt.</value>
+    <value>On oltava YYYYMMDD-muodossa. Tyhjä tarkoittaa blogin alusta.</value>
   </data>
   <data name="ToolTipDownloadToDescription" xml:space="preserve">
-    <value>Viestit per sivu</value>
+    <value>On oltava YYYYMMDD-muodossa. Tyhjä tarkoittaa nyt.</value>
   </data>
   <data name="ToolTipPageSizeTumblrSearch" xml:space="preserve">
-    <value>Asettaa viestin sivua kohden. Esim. 50 tarkoittaa skannausta 50 viestiä sivua kohden.</value>
+    <value>Viestit per sivu</value>
   </data>
   <data name="ToolTipPageSizeTumblrSearchDescription" xml:space="preserve">
-    <value>Salasana:</value>
+    <value>Asettaa viestin sivua kohden. Esim. 50 tarkoittaa skannausta 50 viestiä sivua kohden.</value>
   </data>
   <data name="Password" xml:space="preserve">
-    <value>Salasanalla suojattujen blogien salasana</value>
+    <value>Salasana:</value>
   </data>
   <data name="ToolTipPassword" xml:space="preserve">
-    <value>Varoitus: Salasana on tallennettu selkeään tekstiin blogeista.</value>
+    <value>Salasanalla suojattujen blogien salasana</value>
   </data>
   <data name="ToolTipPasswordDescription" xml:space="preserve">
-    <value>Tyyppi</value>
+    <value>Varoitus: Salasana on tallennettu selkeään tekstiin blogeista.</value>
   </data>
   <data name="Blogtype" xml:space="preserve">
-    <value>Lataa vain merkityt viestit</value>
+    <value>Tyyppi</value>
   </data>
   <data name="ToolTipTags" xml:space="preserve">
+    <value>Lataa vain merkityt viestit</value>
+  </data>
+  <data name="ToolTipTagsDescription" xml:space="preserve">
     <value>On oltava pilkulla erotettu lista ilman johtavaa hajautusmerkkiä (#).
 Esim. suuri iso auto, karhu etsii suuria suuria autoja ja karhuja.</value>
   </data>
-  <data name="ToolTipTagsDescription" xml:space="preserve">
+  <data name="BlogtypeAll" xml:space="preserve">
     <value>Kaikki</value>
   </data>
-  <data name="BlogtypeAll" xml:space="preserve">
+  <data name="BlogtypeInstagram" xml:space="preserve">
     <value>Instagram</value>
   </data>
-  <data name="BlogtypeInstagram" xml:space="preserve">
+  <data name="BlogtypeTumblr" xml:space="preserve">
     <value>Tumblr</value>
   </data>
-  <data name="BlogtypeTumblr" xml:space="preserve">
+  <data name="BlogtypeTumblrLikedBy" xml:space="preserve">
     <value>Tumblr Tykkään</value>
   </data>
-  <data name="BlogtypeTumblrLikedBy" xml:space="preserve">
+  <data name="BlogtypeTumblrPrivate" xml:space="preserve">
     <value>Tumblr piilotettu</value>
   </data>
-  <data name="BlogtypeTumblrPrivate" xml:space="preserve">
+  <data name="BlogtypeTumblrSearch" xml:space="preserve">
     <value>Tumblr-haku</value>
   </data>
-  <data name="BlogtypeTumblrSearch" xml:space="preserve">
+  <data name="BlogtypeTumblrTagSearch" xml:space="preserve">
     <value>Tumblr-tagihaku</value>
   </data>
-  <data name="BlogtypeTumblrTagSearch" xml:space="preserve">
+  <data name="BlogtypeTwitter" xml:space="preserve">
     <value>Viserrys</value>
   </data>
-  <data name="BlogtypeTwitter" xml:space="preserve">
+  <data name="AutoDownloadBlogs" xml:space="preserve">
     <value>blogit jonoon.</value>
   </data>
-  <data name="AutoDownloadBlogs" xml:space="preserve">
+  <data name="ToolTipTimeout" xml:space="preserve">
     <value>Web-pyyntöjen aikakatkaisu</value>
   </data>
-  <data name="ToolTipTimeout" xml:space="preserve">
+  <data name="ToolTipTimeoutDescription" xml:space="preserve">
     <value>Aika, sekunneissa, kunnes pyyntö kestää.</value>
   </data>
-  <data name="ToolTipTimeoutDescription" xml:space="preserve">
+  <data name="ConcurrentVideoConnections" xml:space="preserve">
     <value>Samanaikaiset videoliitännät:</value>
   </data>
-  <data name="ConcurrentVideoConnections" xml:space="preserve">
+  <data name="ToolTipVideoConnections" xml:space="preserve">
     <value>Yhteensopivia yhteyksiä tumblr-video-isäntään</value>
   </data>
-  <data name="ToolTipVideoConnections" xml:space="preserve">
+  <data name="ToolTipVideoConnectionsDescription" xml:space="preserve">
     <value>Vt.tumblr.com-isäntä sulkee säännöllisesti yhteydet,
 jos määrä on liian korkea.</value>
   </data>
