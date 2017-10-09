@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -118,46 +118,46 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ApplicationUpToDate" xml:space="preserve">
-    <value>您的申请是最新的。</value>
+    <value>您的应用程序已是最新。</value>
   </data>
   <data name="AudioCaption" xml:space="preserve">
-    <value>音频标题：{0}</value>
+    <value>Audio Caption: {0}</value>
   </data>
   <data name="AuthenticationFailure" xml:space="preserve">
-    <value>认证失败：{0}</value>
+    <value>授权失败：{0}</value>
   </data>
   <data name="BlogAlreadyExist" xml:space="preserve">
-    <value>博客已经存在：{0}</value>
+    <value>博客已添加：{0}</value>
   </data>
   <data name="BlogIsOffline" xml:space="preserve">
-    <value>博客离线：{0}</value>
+    <value>博客已离线：{0}</value>
   </data>
   <data name="BlogTypesAll" xml:space="preserve">
-    <value>所有</value>
+    <value>全部</value>
   </data>
   <data name="BlogTypesNeverFinished" xml:space="preserve">
     <value>从未完成</value>
   </data>
   <data name="BlogTypesNone" xml:space="preserve">
-    <value>没有</value>
+    <value>无</value>
   </data>
   <data name="BlogTypesOnceFinished" xml:space="preserve">
     <value>一旦完成</value>
   </data>
   <data name="Body" xml:space="preserve">
-    <value>身体：{0]</value>
+    <value>Body: {0]</value>
   </data>
   <data name="Conversation" xml:space="preserve">
-    <value>对话：{0}</value>
+    <value>Conversation: {0}</value>
   </data>
   <data name="CouldNotAddBlog" xml:space="preserve">
     <value>无法添加博客：{0}</value>
   </data>
   <data name="CouldNotLoadLibrary" xml:space="preserve">
-    <value>无法加载库中的文件：{0}</value>
+    <value>无法在库中加载文件：{0}</value>
   </data>
   <data name="CouldNotLoadQueuelist" xml:space="preserve">
-    <value>无法加载的队友也许一些引用的博客不再存在。</value>
+    <value>无法加载队列，也许其中某些博客已不存在。</value>
   </data>
   <data name="CouldNotOpenFiles" xml:space="preserve">
     <value>无法打开文件。</value>
@@ -175,144 +175,144 @@
     <value>无法保存博客：{0}</value>
   </data>
   <data name="CouldNotSaveQueueList" xml:space="preserve">
-    <value>这个队友不能得救。</value>
+    <value>队列保存失败。</value>
   </data>
   <data name="CouldNotStartOAuthManager" xml:space="preserve">
-    <value>无法初始化OAuth管理器</value>
+    <value>无法初始化OAuth。</value>
   </data>
   <data name="CrawlerError" xml:space="preserve">
     <value>抓取工具线程遇到错误。</value>
   </data>
   <data name="Date" xml:space="preserve">
-    <value>日期：{0}</value>
+    <value>Date: {0}</value>
   </data>
   <data name="DiskFull" xml:space="preserve">
-    <value>磁盘上没有足够的空间。</value>
+    <value>磁盘空间不足。</value>
   </data>
   <data name="ExportFileFilter" xml:space="preserve">
-    <value>文本文件（* .txt）| * .txt</value>
+    <value>文本文档 (* .txt)| * .txt</value>
   </data>
   <data name="ExportFileFilterExtension" xml:space="preserve">
-    <value>。文本</value>
+    <value>.txt</value>
   </data>
   <data name="FileNameAnswers" xml:space="preserve">
-    <value>answers.txt</value>
+    <value>回复.txt</value>
   </data>
   <data name="FileNameAudios" xml:space="preserve">
-    <value>audios_url.txt</value>
+    <value>音频网址.txt</value>
   </data>
   <data name="FileNameConversations" xml:space="preserve">
-    <value>conversations.txt</value>
+    <value>对话.txt</value>
   </data>
   <data name="FileNameLinks" xml:space="preserve">
-    <value>links.txt</value>
+    <value>链接.txt</value>
   </data>
   <data name="FileNameMetaAudio" xml:space="preserve">
-    <value>audios.txt</value>
+    <value>音频.txt</value>
   </data>
   <data name="FileNameMetaPhoto" xml:space="preserve">
-    <value>images.txt</value>
+    <value>图片.txt</value>
   </data>
   <data name="FileNameMetaVideo" xml:space="preserve">
-    <value>videos.txt</value>
+    <value>视频.txt</value>
   </data>
   <data name="FileNamePhotos" xml:space="preserve">
-    <value>images_url.txt</value>
+    <value>图片_网址.txt</value>
   </data>
   <data name="FileNameQuotes" xml:space="preserve">
-    <value>quotes.txt</value>
+    <value>引用.txt</value>
   </data>
   <data name="FileNameTexts" xml:space="preserve">
-    <value>texts.txt</value>
+    <value>文本.txt</value>
   </data>
   <data name="FileNameVideos" xml:space="preserve">
-    <value>videos_url.txt</value>
+    <value>视频_网址.txt</value>
   </data>
   <data name="Id3Album" xml:space="preserve">
-    <value>Id3：专辑：{0}</value>
+    <value>Id3: Album: {0}</value>
   </data>
   <data name="Id3Artist" xml:space="preserve">
-    <value>Id3：艺术家：{0}</value>
+    <value>Id3: Artist: {0}</value>
   </data>
   <data name="Id3Title" xml:space="preserve">
-    <value>Id3：标题：{0}</value>
+    <value>Id3: Title: {0}</value>
   </data>
   <data name="Id3Track" xml:space="preserve">
-    <value>Id3：Track：{0}</value>
+    <value>Id3: Track: {0}</value>
   </data>
   <data name="Id3Year" xml:space="preserve">
-    <value>Id3：年份：{0}</value>
+    <value>Id3: Year: {0}</value>
   </data>
   <data name="LimitExceeded" xml:space="preserve">
-    <value>超出限制：{0}。你应该降低与tumblr svc的连接。</value>
+    <value>超出限制：{0}。你应该减少与tumblr-api的连接数。</value>
   </data>
   <data name="Link" xml:space="preserve">
-    <value>链接：{0}</value>
+    <value>Link: {0}</value>
   </data>
   <data name="MaxBytePerSecond" xml:space="preserve">
-    <value>MaxBytesPerSecond必须是非负数</value>
+    <value>MaxBytesPerSecond必须为非负数</value>
   </data>
   <data name="NewVersionAvailable" xml:space="preserve">
     <value>新版本可供下载：{0}</value>
   </data>
   <data name="NotLoggedIn" xml:space="preserve">
-    <value>您需要登录tumblr.com才能下载{0}。转到设置 - &gt;验证。</value>
+    <value>您需要登录tumblr才能下载{0}。转到设置-&gt;授权。</value>
   </data>
   <data name="PasswordProtected" xml:space="preserve">
-    <value>受密码保护的博客：{0}。您需要在详细信息中输入密码。</value>
+    <value>Password protected blog: {0}. You need to enter the password in the Details.</value>
   </data>
   <data name="PasswordProtectedOrOffline" xml:space="preserve">
-    <value>检测到隐藏的密码保护或脱机博客：{0}。您需要在详细信息中输入密码。</value>
+    <value>Hidden password protected or offline blog detected: {0}. You need to enter the password in the Details.</value>
   </data>
   <data name="PhotoCaption" xml:space="preserve">
-    <value>照片说明：{0}</value>
+    <value>Photo Caption: {0}</value>
   </data>
   <data name="PhotoUrl" xml:space="preserve">
-    <value>照片网址：{0}</value>
+    <value>Photo Url: {0}</value>
   </data>
   <data name="PostId" xml:space="preserve">
-    <value>帖子ID：{0}</value>
+    <value>Post ID: {0}</value>
   </data>
   <data name="ProgressDownloadImage" xml:space="preserve">
-    <value>正在下载{0}。</value>
+    <value>正在下载 {0}。</value>
   </data>
   <data name="ProgressGetUrlLong" xml:space="preserve">
-    <value>评估{0} tumblr发布{1}个帖子的网址。</value>
+    <value>已评估 {0} / {1} 个帖子的网址。</value>
   </data>
   <data name="ProgressGetUrlShort" xml:space="preserve">
-    <value>评估{0} tumblr博客网站。</value>
+    <value>已评估 {0} 个博客。</value>
   </data>
   <data name="ProgressUniqueDownloads" xml:space="preserve">
-    <value>计算唯一的下载，删除重复的...</value>
+    <value>统计唯一的下载，删除重复文件...</value>
   </data>
   <data name="Queuelist" xml:space="preserve">
-    <value>Queuelist</value>
+    <value>队列列表</value>
   </data>
   <data name="Quote" xml:space="preserve">
-    <value>报价：{0}</value>
+    <value>Quote: {0}</value>
   </data>
   <data name="ReblogKey" xml:space="preserve">
-    <value>Reblog键：{0}</value>
+    <value>Reblog key: {0}</value>
   </data>
   <data name="ReblogName" xml:space="preserve">
-    <value>Reblog名称：{0}</value>
+    <value>Reblog Name: {0}</value>
   </data>
   <data name="ReblogUrl" xml:space="preserve">
-    <value>Reblog网址：{0}</value>
+    <value>Reblog Url: {0}</value>
   </data>
   <data name="Summary" xml:space="preserve">
-    <value>摘要：{0}</value>
+    <value>概要: {0}</value>
   </data>
   <data name="Tags" xml:space="preserve">
-    <value>标签：{0}</value>
+    <value>Tags: {0}</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>标题：{0}</value>
+    <value>Title: {0}</value>
   </data>
   <data name="UrlWithSlug" xml:space="preserve">
-    <value>网址：{0}</value>
+    <value>Url with slug: {0}</value>
   </data>
   <data name="VideoPlayer" xml:space="preserve">
-    <value>视频播放器：{0}</value>
+    <value>Video Player: {0}</value>
   </data>
 </root>
