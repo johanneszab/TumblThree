@@ -4,6 +4,9 @@ using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
 using System.Globalization;
 using System.Linq;
+using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.Waf;
 using System.Waf.Applications;
@@ -30,6 +33,8 @@ namespace TumblThree.Presentation
 
             InitializeCultures();
             System.Net.ServicePointManager.DefaultConnectionLimit = 400;
+            // Trust all SSL hosts since tumblr.com messed up their ssl cert on amazon s3.
+            ServicePointManager.ServerCertificateValidationCallback += new RemoteCertificateValidationCallback(ValidateCertificate);
 
             catalog = new AggregateCatalog();
             // Add the WpfApplicationFramework assembly to the catalog
@@ -136,6 +141,11 @@ namespace TumblThree.Presentation
             {
                 e.Handled = true;
             }
+        }
+
+        static bool ValidateCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors)
+        {
+            return true;
         }
     }
 }
