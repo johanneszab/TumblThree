@@ -1278,7 +1278,7 @@ namespace TumblThree.Presentation.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to Sets the number of concurrent processing blogs.
-        ///Setting this to 2 would proccess two blogs at a time..
+        ///Setting this to 2 would process two blogs at a time..
         /// </summary>
         public static string ToolTipBlogsDescription {
             get {
@@ -1723,7 +1723,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The vtt.tumblr.com host regularly closes connections if the number is to high..
+        ///   Looks up a localized string similar to The vt.tumblr.com host regularly closes connections if the number is too high..
         /// </summary>
         public static string ToolTipVideoConnectionsDescription {
             get {

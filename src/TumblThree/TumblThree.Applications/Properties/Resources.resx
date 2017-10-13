@@ -244,7 +244,7 @@
     <value>Id3: Year: {0}</value>
   </data>
   <data name="LimitExceeded" xml:space="preserve">
-    <value>Limit exceeded: {0}. You should lower the connections to the tumblr svc.</value>
+    <value>Limit exceeded: {0}. You should lower the connections to the tumblr api in the Settings-&gt;Connection pane.</value>
   </data>
   <data name="Link" xml:space="preserve">
     <value>Link: {0}</value>

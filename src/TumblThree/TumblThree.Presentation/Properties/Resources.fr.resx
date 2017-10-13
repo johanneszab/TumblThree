@@ -319,19 +319,22 @@
     <value>Authentication au réseau tumblr.com</value>
   </data>
   <data name="ToolTipAuthenticateDescription" xml:space="preserve">
-    <value>Ouvre le navigateur pour vous authentifier vous-même au site tumblr.com . Autorise le téléchargement des blogs privés. Le jeton d'accès est sauvaegardé une bonne fois pour toute.</value>
+    <value>Ouvre une fenêtre de navigateur pour vous authentifier sur le site tumblr.com.
+Le cookie avec vos informations d'identification de votre compte est sauvegardé et le processus d'authentification ne doit être effectué qu'une seule fois.</value>
   </data>
   <data name="ToolTipBlogs" xml:space="preserve">
     <value>Nombre de blogs téléchargés simultanés</value>
   </data>
   <data name="ToolTipBlogsDescription" xml:space="preserve">
-    <value>Réglez le nombre de téléchargements simultanés de blogs en même temps.</value>
+    <value>Définit le nombre de blogs de traitement simultanés.
+Mettre ceci à 2 traiterait deux blogs à la fois.</value>
   </data>
   <data name="ToolTipConnections" xml:space="preserve">
     <value>Nombre de connexions totales simultanés</value>
   </data>
   <data name="ToolTipConnectionsDescription" xml:space="preserve">
-    <value>Sets the Number of total simultaneous connections. The number is divided by the number of Parallel Blogs settings. 25/2 would open 12 connections per blog download.</value>
+    <value>Définit le nombre total de connexions simultanées.
+Le numéro est partagé entre tous les blogs qui téléchargent activement.</value>
   </data>
   <data name="Notes" xml:space="preserve">
     <value>Notes personnelles</value>
@@ -397,7 +400,7 @@
     <value>Nombre de types de publication téléchargés / total des types de publication</value>
   </data>
   <data name="ToolTipDetailsStatsDescription" xml:space="preserve">
-    <value>Check to download post type or skip during the backup</value>
+    <value>Cochez pour télécharger le type de message ou sauter pendant le téléchargement</value>
   </data>
   <data name="DownloadAudioMeta" xml:space="preserve">
     <value>Télécharger les métadonnées audio</value>
@@ -415,10 +418,11 @@
     <value>Télécharger des vidéos</value>
   </data>
   <data name="ToolTipDefaultSettingsForBlogs" xml:space="preserve">
-    <value>Sets the default settings for newly added blogs.</value>
+    <value>Définit les paramètres par défaut pour les blogs nouvellement ajoutés.</value>
   </data>
   <data name="ToolTipDefaultSettingsForBlogsDescription" xml:space="preserve">
-    <value>The backup uses indivual settings for each blog. To change them, select a blog in the main interface and select the Details window on the right hand side.</value>
+    <value>L'analyse / téléchargement utilise des paramètres individuels pour chaque blog.
+Pour les changer, sélectionnez blog (s) dans l'interface principale et sélectionnez l'onglet Détails sur le côté droit.</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Sauvegarder</value>
@@ -430,10 +434,12 @@
     <value>Télécharger la taille spécifiée même si elle n'est pas proposée</value>
   </data>
   <data name="ToolTipForceSize" xml:space="preserve">
-    <value>Download the specified resolution of images even if the size is not offered.</value>
+    <value>Télécharger la résolution spécifiée des images même si la taille n'est pas offerte.</value>
   </data>
   <data name="ToolTipForceSizeDescription" xml:space="preserve">
-    <value>If the crawler only finds lower sized images than specified, enabling this option will rename the url to the specified files size. Those files generally exist and sometimes offer a larger resolution or are just renamed smaller resolution files. It's safe to turn this on.</value>
+    <value>Si le moteur de balayage trouve uniquement des images de taille inférieure à celles spécifiées, l'activation de cette option renomme l'URL à la taille de fichier spécifiée.
+Ces fichiers existent généralement et offrent parfois une plus grande résolution ou sont simplement renommés fichiers de résolution plus petits.
+Il est sûr d'allumer cela.</value>
   </data>
   <data name="ProxyHost" xml:space="preserve">
     <value>Proxy HTTP:</value>
@@ -451,7 +457,8 @@
     <value>Limiter la bande passante des téléchargements</value>
   </data>
   <data name="ToolTipLimitBandwidthDescription" xml:space="preserve">
-    <value>Sets the maximum bandwidth available for the downloader in kbytes/s. 0 disables throttling.</value>
+    <value>Définit la bande passante maximale disponible pour le téléchargeur en kilo-octets / s.
+0 désactive l'étranglement.</value>
   </data>
   <data name="LimitScan" xml:space="preserve">
     <value>Limiter la bande passante de l'analyse</value>
@@ -463,13 +470,16 @@
     <value>Includes the scan bandwidth in the throttling</value>
   </data>
   <data name="ToolTipLimitScanDescription" xml:space="preserve">
-    <value>Since the data used for scanning is usually small, you should leave this off since the throttling algorithm is too slow to adjust and will negatively impact the performance.</value>
+    <value>Puisque les données utilisées pour la numérisation sont généralement petites,
+vous devriez laisser ceci puisque l'algorithme de limitation 
+est trop lent à ajuster et pourrait avoir un impact négatif sur les performances de l'analyse.</value>
   </data>
   <data name="ToolTipScan" xml:space="preserve">
-    <value>Number of connections used for each scan</value>
+    <value>Nombre de connexions utilisées pour chaque analyse</value>
   </data>
   <data name="ToolTipScanDescription" xml:space="preserve">
-    <value>Sets the number connections used for scanning. Since the data is usually small, you should leave this high.</value>
+    <value>Définit les connexions numériques utilisées pour la numérisation.
+Puisque les données sont généralement petites, vous devriez laisser ce haut.</value>
   </data>
   <data name="BandwidthRangeError" xml:space="preserve">
     <value>La valeur doit être comprise entre 0 et 9 000 000 000 000 000.</value>
@@ -496,16 +506,19 @@
     <value>Limiter les connexions au tumblr api.</value>
   </data>
   <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
-    <value>A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr api. A too small value will decrease the download speed.</value>
+    <value>Une valeur trop élevée ferme fortement les connexions (429 - Limite dépassée) apportées à l'api de tumblr.
+Une valeur trop petite diminue la vitesse de balayage.
+Définissez une paire nombre / heure.
+Note: Le tumblr api n'est utilisé que pour les téléchargements réguliers du blog de tumblr.</value>
   </data>
   <data name="ForceRescan" xml:space="preserve">
     <value>Forcer nouveau balayage</value>
   </data>
   <data name="ToolTipForceRescan" xml:space="preserve">
-    <value>Rescans the whole blog, not just new posts.</value>
+    <value>Rescans le blog entier, pas seulement de nouveaux messages.</value>
   </data>
   <data name="ToolTipForceRescanDescription" xml:space="preserve">
-    <value>Forces a complete scan using the Tumblr api.</value>
+    <value>Force un scan complet en utilisant l'API Tumblr.</value>
   </data>
   <data name="CheckForUpdates" xml:space="preserve">
     <value>Vérifier les mises à jour</value>
@@ -520,7 +533,8 @@
     <value>Checks the directory for already downloaded files.</value>
   </data>
   <data name="ToolTipCheckDirectoryForFilesDescription" xml:space="preserve">
-    <value>Checks the directory and the database for already downloaded files. Might negatively impact the download speed for large directories.</value>
+    <value>Checks the directory and the database for already downloaded files.
+Might negatively impact the download speed for large directories.</value>
   </data>
   <data name="DownloadUrlList" xml:space="preserve">
     <value>Download url list</value>
@@ -529,7 +543,7 @@
     <value>Télécharger liste d'url</value>
   </data>
   <data name="ToolTipDownloadUrlListDescription" xml:space="preserve">
-    <value>Downloads a url list of the binary files instead of the actual files</value>
+    <value>Télécharge une liste d'URL des fichiers binaires au lieu des fichiers réels</value>
   </data>
   <data name="DownloadAnswers" xml:space="preserve">
     <value>Télécharger les réponses</value>
@@ -553,7 +567,7 @@
     <value>Sauvegarder les réglages dans le répertoire du fichier exécutable au lieu de AppData.</value>
   </data>
   <data name="DownloadRebloggedPosts" xml:space="preserve">
-    <value>Download reblogged posts</value>
+    <value>Télécharger les posts reblogged</value>
   </data>
   <data name="ProxyPassword" xml:space="preserve">
     <value>Mot de passe du proxy:</value>
@@ -583,7 +597,8 @@
     <value>Messages par page</value>
   </data>
   <data name="ToolTipPageSizeDescription" xml:space="preserve">
-    <value>Sets the post per page (should be between 1-50, default 50). E.g. 50 means to scan 50 posts per page.</value>
+    <value>Définit le post par page (doit être compris entre 1 et 50, par défaut 50).
+Par exemple. 50 signifie numériser 50 posts par page.</value>
   </data>
   <data name="FullScreenMedia" xml:space="preserve">
     <value>Vue en plein écran</value>
@@ -592,10 +607,10 @@
     <value>Exporter blogs</value>
   </data>
   <data name="ToolTipExportBlogs" xml:space="preserve">
-    <value>Export all blog urls as text file</value>
+    <value>Exporter toutes les URL du blog en tant que fichier texte</value>
   </data>
   <data name="ToolTipExportBlogsDescription" xml:space="preserve">
-    <value>Saves all urls as a text file for exchange.</value>
+    <value>Enregistre toutes les URL en tant que fichier texte pour l'échange.</value>
   </data>
   <data name="DownloadFrom" xml:space="preserve">
     <value>Télécharger à partir de:</value>
@@ -631,20 +646,20 @@
     <value>Mot de passe:</value>
   </data>
   <data name="ToolTipPassword" xml:space="preserve">
-    <value>Password for password-protected blogs</value>
+    <value>Mot de passe pour les blogs protégés par mot de passe</value>
   </data>
   <data name="ToolTipPasswordDescription" xml:space="preserve">
-    <value>Caution: The password is stored in clear text in the blogs database.</value>
+    <value>Attention: Le mot de passe est stocké en texte clair dans la base de données des blogs.</value>
   </data>
-    <data name="Blogtype" xml:space="preserve">
+  <data name="Blogtype" xml:space="preserve">
     <value>Type</value>
   </data>
   <data name="ToolTipTags" xml:space="preserve">
-    <value>Download only tagged posts</value>
+    <value>Télécharger uniquement les articles étiquetés</value>
   </data>
   <data name="ToolTipTagsDescription" xml:space="preserve">
-    <value>Must be in a comma separated list without the leading hash (#) sign.
-E.g.  great big car, bears searches for great big cars and bears.</value>
+    <value>Doit être dans une liste séparée par des virgules sans le signe de hachage (#).
+Par exemple. grande voiture, les ours recherchent de grandes grosses voitures et des ours.</value>
   </data>
   <data name="BlogtypeAll" xml:space="preserve">
     <value>All</value>
@@ -674,18 +689,18 @@ E.g.  great big car, bears searches for great big cars and bears.</value>
     <value>blogs to the queue.</value>
   </data>
   <data name="ToolTipTimeout" xml:space="preserve">
-    <value>Timeout for web requests</value>
+    <value>Délai d'attente pour les demandes Web</value>
   </data>
   <data name="ToolTipTimeoutDescription" xml:space="preserve">
-    <value>The length of time, in seconds, until the request times out.</value>
+    <value>La durée, en secondes, jusqu'à ce que la demande expire.</value>
   </data>
   <data name="ConcurrentVideoConnections" xml:space="preserve">
     <value>Concurrent video connections:</value>
   </data>
   <data name="ToolTipVideoConnections" xml:space="preserve">
-    <value>Number of concurrent connections to the tumblr video host</value>
+    <value>Nombre de connexions simultanées à l'hôte vidéo tumblr</value>
   </data>
   <data name="ToolTipVideoConnectionsDescription" xml:space="preserve">
-    <value>The vt.tumblr.com host regularly closes connections if the number is too high.</value>
+    <value>L'hôte vt.tumblr.com ferme régulièrement les connexions si le numéro est trop élevé.</value>
   </data>
 </root>

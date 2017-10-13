@@ -319,19 +319,22 @@
     <value>Authentifizieren bei tumblr.com</value>
   </data>
   <data name="ToolTipAuthenticateDescription" xml:space="preserve">
-    <value>Öffnet ein Browserfenster zum Authentifizieren bei tumblr.com. Ermöglicht den Download von privaten blogs mit deinem Konto. Der access token des Kontos wird gespeichert um die wiederholte Anmeldung zu Ersparen.</value>
+    <value>Öffnet ein Browserfenster, um sich auf der Website tumblr.com zu authentifizieren.
+Der Cookie mit Ihren Anmeldedaten Ihres Kontos wird gespeichert und der Authentifizierungsprozess muss nur einmal durchgeführt werden.</value>
   </data>
   <data name="ToolTipBlogs" xml:space="preserve">
     <value>Nummer an gleichzeitig zu verarbeitende Blogs</value>
   </data>
   <data name="ToolTipBlogsDescription" xml:space="preserve">
-    <value>Legt fest wie viele Blogs gleichzeitig verarbeitet werden sollen. Bei einer Einstellung von 2 würden Dateien von zwei Blogs simultan geladen werden.</value>
+    <value>Legt die Anzahl der gleichzeitigen Verarbeitungsblogs fest.
+Wenn Sie diese Einstellung auf 2 setzen, werden zwei Blogs gleichzeitig verarbeitet.</value>
   </data>
   <data name="ToolTipConnections" xml:space="preserve">
     <value>Nummer an gleichzeitigen Verbindungen</value>
   </data>
   <data name="ToolTipConnectionsDescription" xml:space="preserve">
-    <value>Legt fest wie viele Verbindungen geöffnet werden sollen. Die Nummer von allen gleichzeitig aktiveren Blogsdownloads geteilt.</value>
+    <value>Legt fest wie viele Verbindungen geöffnet werden sollen.
+Die Nummer von allen gleichzeitig aktiveren Blogsdownloads geteilt.</value>
   </data>
   <data name="Notes" xml:space="preserve">
     <value>Notizen</value>
@@ -418,7 +421,8 @@
     <value>Einstellungen für neue Blogs.</value>
   </data>
   <data name="ToolTipDefaultSettingsForBlogsDescription" xml:space="preserve">
-    <value>Der Download nutzt individuelle Einstellungen für jeden Blog. Zum Ändern, im Hauptfenster ein Blog auswählen und das Detailsfenster auf der rechten Seite auswählen.</value>
+    <value>Der Scan / Download verwendet individuelle Einstellungen für jeden Blog.
+Um sie zu ändern, wählen Sie auf der Hauptoberfläche den Blog aus und klicken Sie auf der rechten Seite auf die Registerkarte Details.</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Speichern</value>
@@ -433,7 +437,10 @@
     <value>Lädt die ausgewählte Auflösung von Bildern auch wenn die Größe nicht angeboten wurde.</value>
   </data>
   <data name="ToolTipForceSizeDescription" xml:space="preserve">
-    <value>Falls der Crawler nur kleinere Auflösungen als angegeben findet bewirkt diese Option das die URLs auf die angegebene Auflösung umbennent werden. Die Dateien sind immer vorhanden und ermöglichen manchmal eine größere Auflösung oder sind bloß umbenannte kleinere Auflösungen. Es ist sicher dies zu aktivieren.</value>
+    <value>Falls der Crawler nur kleinere Auflösungen als angegeben findet
+bewirkt diese Option das die URLs auf die angegebene Auflösung umbennent werden.
+Die Dateien sind immer vorhanden und ermöglichen manchmal eine größere Auflösung
+oder sind bloß umbenannte kleinere Auflösungen. Es ist sicher dies zu aktivieren.</value>
   </data>
   <data name="ProxyHost" xml:space="preserve">
     <value>HTTP Proxy:</value>
@@ -451,7 +458,8 @@
     <value>Begrenzt die maximale Bandbreite</value>
   </data>
   <data name="ToolTipLimitBandwidthDescription" xml:space="preserve">
-    <value>Setzt die maximale Bandbreite in kbyes/s. 0 deaktiviert die Begrenzung.</value>
+    <value>Setzt die maximale Bandbreite in kbyes/s.
+0 deaktiviert die Begrenzung.</value>
   </data>
   <data name="LimitScan" xml:space="preserve">
     <value>Begrenzen der Scanbandbreite</value>
@@ -469,7 +477,8 @@
     <value>Anzahl der Scanverbindungen für jeden Scan</value>
   </data>
   <data name="ToolTipScanDescription" xml:space="preserve">
-    <value>Setzt die Anzahl der Scanverbindungen. Aufgrund der kleinen Datenmenge sollte diese Einstellung hochbleiben.</value>
+    <value>Setzt die Anzahl der Scanverbindungen.
+Aufgrund der kleinen Datenmenge sollte diese Einstellung hochbleiben.</value>
   </data>
   <data name="BandwidthRangeError" xml:space="preserve">
     <value>Der Wert muss zwischen 0 and 9.000.000.000.000.000 liegen.</value>
@@ -493,7 +502,10 @@
     <value>Begrenzt Verbindungen zur Tumblr API.</value>
   </data>
   <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
-    <value>Ein zu hoher Wert führt zu abgelehnten Verbindungen (429 -- Limit Exceeded) zur der Tumblr API. Ein zu kleiner Wert verringert die Downloadgeschwindigkeit.</value>
+    <value>Ein zu hoher Wert schließt die Verbindungen (429 - Limit Exceeded), die mit der tumblr api erstellt wurden, zwangsweise aus.
+Ein zu kleiner Wert verringert die Scangeschwindigkeit.
+Legen Sie ein Zahlen- / Zeitpaar fest.
+Hinweis: Die tumblr API wird nur für reguläre Tumblr-Blog-Downloads verwendet.</value>
   </data>
   <data name="CheckDirectoryForFiles" xml:space="preserve">
     <value>Prüfe Ordner auf Dateien</value>
@@ -502,7 +514,8 @@
     <value>Prüfe Ordner auf schon geladene Dateien</value>
   </data>
   <data name="ToolTipCheckDirectoryForFilesDescription" xml:space="preserve">
-    <value>Prüft die Datenbank und den Downloadordner auf schon geladene Dateien. Kann die Geschwindigkeit beeinflussen bei vielen Dateien.</value>
+    <value>Prüft die Datenbank und den Downloadordner auf schon geladene Dateien.
+Kann die Geschwindigkeit beeinflussen bei vielen Dateien.</value>
   </data>
   <data name="DownloadUrlList" xml:space="preserve">
     <value>Lade Urlliste</value>
@@ -565,7 +578,7 @@
     <value>Beiträge pro Seite</value>
   </data>
   <data name="ToolTipPageSizeDescription" xml:space="preserve">
-    <value>Setzt die Anzahl der Beiträge pro Seite (Zahl zwischen 1-50, standard 50).</value>
+    <value>Setzt die Anzahl der Beiträge pro Seite (Zahl zwischen 1-50, sSandard 50).</value>
   </data>
   <data name="Export" xml:space="preserve">
     <value>Exportiere Blogs</value>
@@ -580,13 +593,15 @@
     <value>Überprüft das gesamte Blog</value>
   </data>
   <data name="ToolTipForceRescanDescription" xml:space="preserve">
-    <value>Überprüft das gesamte Blog nach neuen Beiträgen, nicht nur neue Beiträge seit dem letzten Durchlauf</value>
+    <value>Überprüft das gesamte Blog nach neuen Beiträgen,
+nicht nur neue Beiträge seit dem letzten Durchlauf</value>
   </data>
   <data name="ToolTipDownloadPages" xml:space="preserve">
     <value>Lade nur bestimmte Seiten</value>
   </data>
   <data name="ToolTipDownloadPagesDescription" xml:space="preserve">
-    <value>Mögliche Notationen: 1 oder 1-3 oder 1,2,3. Leer bedeutet das gesamte Blog.</value>
+    <value>Mögliche Notationen: 1 oder 1-3 oder 1,2,3.
+Leer bedeutet das gesamte Blog.</value>
   </data>
   <data name="FullScreenMedia" xml:space="preserve">
     <value>Vollbildanschicht</value>
@@ -633,15 +648,15 @@
   <data name="ToolTipPasswordDescription" xml:space="preserve">
     <value>Achtung: Das Passwort wird in Klartext in der Blogdatenbank gespeichert.</value>
   </data>
-    <data name="Blogtype" xml:space="preserve">
+  <data name="Blogtype" xml:space="preserve">
     <value>Type</value>
   </data>
   <data name="ToolTipTags" xml:space="preserve">
-    <value>Download only tagged posts</value>
+    <value>Nur getaggte Posts herunterladen</value>
   </data>
   <data name="ToolTipTagsDescription" xml:space="preserve">
-    <value>Must be in a comma separated list without the leading hash (#) sign.
-E.g.  great big car, bears searches for great big cars and bears.</value>
+    <value>Muss in einer durch Kommata getrennten Liste ohne das führende Hash-Zeichen (#) stehen.
+Z.B. großes großes Auto, Bären sucht nach großen großen Autos und Bären.</value>
   </data>
   <data name="BlogtypeAll" xml:space="preserve">
     <value>All</value>
@@ -671,18 +686,18 @@ E.g.  great big car, bears searches for great big cars and bears.</value>
     <value>blogs to the queue.</value>
   </data>
   <data name="ToolTipTimeout" xml:space="preserve">
-    <value>Timeout for web requests</value>
+    <value>Timeout für Webanfragen</value>
   </data>
   <data name="ToolTipTimeoutDescription" xml:space="preserve">
-    <value>The length of time, in seconds, until the request times out.</value>
+    <value>Die Zeitspanne in Sekunden, bis die Anfrage abläuft.</value>
   </data>
   <data name="ConcurrentVideoConnections" xml:space="preserve">
     <value>Concurrent video connections:</value>
   </data>
   <data name="ToolTipVideoConnections" xml:space="preserve">
-    <value>Number of concurrent connections to the tumblr video host</value>
+    <value>Anzahl gleichzeitiger Verbindungen zum tumblr-Video-Host</value>
   </data>
   <data name="ToolTipVideoConnectionsDescription" xml:space="preserve">
-    <value>The vt.tumblr.com host regularly closes connections if the number is too high.</value>
+    <value>Der vt.tumblr.com-Host schließt regelmäßig Verbindungen, wenn die Nummer zu hoch ist.</value>
   </data>
 </root>

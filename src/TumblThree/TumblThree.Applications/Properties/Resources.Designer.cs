@@ -439,7 +439,7 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Limit exceeded: {0}. You should lower the connections to the tumblr svc..
+        ///   Looks up a localized string similar to Limit exceeded: {0}. You should lower the connections to the tumblr api in the Settings-&gt;Connection pane..
         /// </summary>
         public static string LimitExceeded {
             get {

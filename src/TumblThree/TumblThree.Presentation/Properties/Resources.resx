@@ -327,7 +327,7 @@ The cookie with your credentials of your account is saved and the authentication
   </data>
   <data name="ToolTipBlogsDescription" xml:space="preserve">
     <value>Sets the number of concurrent processing blogs.
-Setting this to 2 would proccess two blogs at a time.</value>
+Setting this to 2 would process two blogs at a time.</value>
   </data>
   <data name="ToolTipConnections" xml:space="preserve">
     <value>Number of total concurrent connections</value>
