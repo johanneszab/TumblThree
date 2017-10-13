@@ -26,10 +26,10 @@ namespace TumblThree.Applications.Properties
                 "1080", "480"
             };
 
-        private static readonly string[] tumblrHosts =
+        private static string[] tumblrHosts =
             new string[]
             {
-                        "media.tumblr.com"
+                        "data.tumblr.com"
             };
 
         public AppSettings()
@@ -250,9 +250,10 @@ namespace TumblThree.Applications.Properties
             get { return new ObservableCollection<string>(blogTypes); }
         }
 
-        public ObservableCollection<string> TumblrHosts
+        public string[] TumblrHosts
         {
-            get { return new ObservableCollection<string>(tumblrHosts); }
+            get { return tumblrHosts; }
+            set { tumblrHosts = value; }
         }
 
         ExtensionDataObject IExtensibleDataObject.ExtensionData { get; set; }

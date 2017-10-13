@@ -319,19 +319,22 @@
     <value>Авторизация на сайте Tumblr</value>
   </data>
   <data name="ToolTipAuthenticateDescription" xml:space="preserve">
-    <value>Открывает браузер для авторизации на сайте Tumblr. Позволяет скачивать приватные блоги, доступные из под Вашего аккаунта. Авторизация однократная, токен авторизации сохраняется и будет использоваться в дальнейшем.</value>
+    <value>Открывает окно браузера для аутентификации на сайте tumblr.com.
+Файл cookie с учетными данными вашей учетной записи сохраняется и процесс аутентификации должен выполняться только один раз.</value>
   </data>
   <data name="ToolTipBlogs" xml:space="preserve">
     <value>Количество одновременно скачиваемых блогов</value>
   </data>
   <data name="ToolTipBlogsDescription" xml:space="preserve">
-    <value>Устанавливает количество одновременно скачиваемых блогов. Например, при значении 2 одновременно будут скачиваться файлы из двух разных блогов в очереди.</value>
+    <value>Устанавливает количество одновременно работающих блогов.
+Установка этого параметра на 2 будет обрабатывать два блога за раз.</value>
   </data>
   <data name="ToolTipConnections" xml:space="preserve">
     <value>Количество одновременных соединений</value>
   </data>
   <data name="ToolTipConnectionsDescription" xml:space="preserve">
-    <value>Устанавливает количество одновременных соединений с сервером. Соединения равномерно распределяются между одновременно скачиваемыми блогами. Например, для сочетания 10/2 будут одновременно установлены по 5 соединений для 2 блогов.</value>
+    <value>Устанавливает количество общих одновременных подключений.
+Номер делится между всеми активными загрузками блогов.</value>
   </data>
   <data name="Notes" xml:space="preserve">
     <value>Примечания</value>
@@ -418,7 +421,8 @@
     <value>Устанавливает настройки по умолчанию для вновь добавляемых блогов.</value>
   </data>
   <data name="ToolTipDefaultSettingsForBlogsDescription" xml:space="preserve">
-    <value>При скачивании для каждого блога используются свои индивидуальные настройки. Чтобы поменять их, выберите блог(-и) в основном  окне и переключитесь на вкладку Подробности в правой части окна.</value>
+    <value>Сканирование / загрузка использует отдельные настройки для каждого блога.
+Чтобы изменить их, выберите блог (ы) в главном интерфейсе и перейдите на вкладку «Сведения» справа.</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Сохранить</value>
@@ -430,10 +434,13 @@
     <value>Download specified size even if it is not offered</value>
   </data>
   <data name="ToolTipForceSize" xml:space="preserve">
-    <value>Download the specified resolution of images even if the size is not offered.</value>
+    <value>Загрузите указанное разрешение изображений, 
+даже если размер не предлагается.</value>
   </data>
   <data name="ToolTipForceSizeDescription" xml:space="preserve">
-    <value>If the crawler only finds lower sized images than specified, enabling this option will rename the url to the specified files size. Those files generally exist and sometimes offer a larger resolution or are just renamed smaller resolution files. It's safe to turn this on.</value>
+    <value>Если искатель только находит изображения меньшего размера, чем указано, включение этой опции приведет к переименованию URL-адреса в указанный размер файлов.
+Эти файлы обычно существуют и иногда предлагают большее разрешение или просто переименованы в файлы меньшего разрешения.
+Безопасно включить это.</value>
   </data>
   <data name="ProxyHost" xml:space="preserve">
     <value>Прокси-сервер:</value>
@@ -451,7 +458,8 @@
     <value>Уменьшение пропускной способности загрузчика</value>
   </data>
   <data name="ToolTipLimitBandwidthDescription" xml:space="preserve">
-    <value>Устанавливает максимальную пропускную способность доступную для загрузчика в кбит/с. 0 отключает ограничение.</value>
+    <value>Устанавливает максимальную пропускную способность 
+доступную для загрузчика в кбит/с. 0 отключает ограничение.</value>
   </data>
   <data name="LimitScan" xml:space="preserve">
     <value>Limit the scan bandwidth</value>
@@ -463,13 +471,18 @@
     <value>Includes the scan bandwidth in the throttling</value>
   </data>
   <data name="ToolTipLimitScanDescription" xml:space="preserve">
-    <value>Since the data used for scanning is usually small, you should leave this off since the throttling algorithm is too slow to adjust and will negatively impact the performance.</value>
+    <value>Поскольку данные, используемые для сканирования, 
+обычно невелики, вы должны оставить это выключенным, 
+поскольку алгоритм дросселирования слишком медленный
+для настройки и будет отрицательно влиять на производительность.</value>
   </data>
   <data name="ToolTipScan" xml:space="preserve">
     <value>Количество соединений используемых для каждого сканирования</value>
   </data>
   <data name="ToolTipScanDescription" xml:space="preserve">
-    <value>Устанавливает количество соединений используемых для сканирования. Поскольку данные, как правило, невелики, вы должны не устанавливать это значение слишком большим.</value>
+    <value>Устанавливает количество соединений используемых для сканирования. 
+Поскольку данные, как правило, 
+невелики, вы должны не устанавливать это значение слишком большим.</value>
   </data>
   <data name="BandwidthRangeError" xml:space="preserve">
     <value>Значение должно быть между 0 и 9,000,000,000,000,000.</value>
@@ -496,7 +509,10 @@
     <value>Ограничить число подключений к Tumblr api.</value>
   </data>
   <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
-    <value>Слишком высокое значение принудительно закрывает соединения (429 -- максимум) через tumblr api. Слишком маленькое значение приведет к снижению скорости загрузки.</value>
+    <value>Слишком высокое значение будет принудительно закрывать соединения (429 - Limit Exceeded), сделанные в tumblr api.
+Слишком маленькое значение уменьшит скорость сканирования.
+Задайте пару число / время.
+Примечание: tumblr api используется только для регулярных загрузок блога tumblr.</value>
   </data>
   <data name="ForceRescan" xml:space="preserve">
     <value>Повторное сканирование</value>
@@ -520,7 +536,8 @@
     <value>Проверяет каталог для уже загруженных файлов.</value>
   </data>
   <data name="ToolTipCheckDirectoryForFilesDescription" xml:space="preserve">
-    <value>Проверяет каталог и базу на уже загруженные файлы. Может отрицательно сказаться на скорости загрузки для больших каталогов.</value>
+    <value>Проверяет каталог и базу на уже загруженные файлы. 
+Может отрицательно сказаться на скорости загрузки для больших каталогов.</value>
   </data>
   <data name="DownloadUrlList" xml:space="preserve">
     <value>Скачивать список URL</value>
@@ -529,7 +546,7 @@
     <value>Скачать список URL.</value>
   </data>
   <data name="ToolTipDownloadUrlListDescription" xml:space="preserve">
-    <value>Downloads a url list of the binary files instead of the actual files</value>
+    <value>Загружает URL-адрес двоичных файлов вместо фактических файлов</value>
   </data>
   <data name="DownloadAnswers" xml:space="preserve">
     <value>Скачивать посты с ответами</value>
@@ -598,19 +615,23 @@
     <value>Заполнять сообщения с этой даты</value>
   </data>
   <data name="ToolTipDownloadTagsFromDescription" xml:space="preserve">
-    <value>Должно быть в формате YYYYMMDD. Пустые средства - с мая 2007 года.</value>
+    <value>Должно быть в формате YYYYMMDD. 
+Пустые средства - с мая 2007 года.</value>
   </data>
   <data name="ToolTipDownloadTo" xml:space="preserve">
     <value>Заполнять сообщения на эту дату</value>
   </data>
   <data name="ToolTipDownloadTagsToDescription" xml:space="preserve">
-    <value>Должно быть в формате YYYYMMDD. Пустое означает сейчас.</value>
+    <value>Должно быть в формате YYYYMMDD. 
+Пустое означает сейчас.</value>
   </data>
   <data name="ToolTipDownloadFromDescription" xml:space="preserve">
-    <value>Должно быть в формате YYYYMMDD. Пустой означает с самого начала блога.</value>
+    <value>Должно быть в формате YYYYMMDD. 
+Пустой означает с самого начала блога.</value>
   </data>
   <data name="ToolTipDownloadToDescription" xml:space="preserve">
-    <value>Должно быть в формате YYYYMMDD. Пустое означает сейчас.</value>
+    <value>Должно быть в формате YYYYMMDD. 
+Пустое означает сейчас.</value>
   </data>
   <data name="ToolTipPageSizeTumblrSearch" xml:space="preserve">
     <value>Размер страницы</value>
@@ -622,20 +643,20 @@
     <value>Пароль:</value>
   </data>
   <data name="ToolTipPassword" xml:space="preserve">
-    <value>Password for password-protected blogs</value>
+    <value>Пароль для защищенных паролем блогов</value>
   </data>
   <data name="ToolTipPasswordDescription" xml:space="preserve">
-    <value>Caution: The password is stored in clear text in the blogs database.</value>
+    <value>Внимание: пароль хранится в текстовом виде в базе данных блогов.</value>
   </data>
-    <data name="Blogtype" xml:space="preserve">
+  <data name="Blogtype" xml:space="preserve">
     <value>Type</value>
   </data>
   <data name="ToolTipTags" xml:space="preserve">
-    <value>Download only tagged posts</value>
+    <value>Загрузка только отмеченных сообщений</value>
   </data>
   <data name="ToolTipTagsDescription" xml:space="preserve">
-    <value>Must be in a comma separated list without the leading hash (#) sign.
-E.g.  great big car, bears searches for great big cars and bears.</value>
+    <value>Должен находиться в списке, разделенном запятыми, без знака ведущего хэша (#).
+Например. большой большой автомобиль, медведи ищут большие большие машины и медведей.</value>
   </data>
   <data name="BlogtypeAll" xml:space="preserve">
     <value>All</value>
@@ -665,18 +686,25 @@ E.g.  great big car, bears searches for great big cars and bears.</value>
     <value>blogs to the queue.</value>
   </data>
   <data name="ToolTipTimeout" xml:space="preserve">
-    <value>Timeout for web requests</value>
+    <value>Тайм-аут для веб-запросов</value>
   </data>
   <data name="ToolTipTimeoutDescription" xml:space="preserve">
-    <value>The length of time, in seconds, until the request times out.</value>
+    <value>Продолжительность времени, в секундах, пока запрос не истечет.</value>
   </data>
   <data name="ConcurrentVideoConnections" xml:space="preserve">
     <value>Concurrent video connections:</value>
   </data>
   <data name="ToolTipVideoConnections" xml:space="preserve">
-    <value>Number of concurrent connections to the tumblr video host</value>
+    <value>Количество одновременных подключений к видеовходу tumblr</value>
   </data>
   <data name="ToolTipVideoConnectionsDescription" xml:space="preserve">
-    <value>The vt.tumblr.com host regularly closes connections if the number is too high.</value>
+    <value>Хост vt.tumblr.com регулярно закрывает соединения, 
+если число слишком велико.</value>
+  </data>
+  <data name="ToolTipExportBlogs" xml:space="preserve">
+    <value>Экспортировать все URL-адреса блога в виде текстового файла</value>
+  </data>
+  <data name="ToolTipExportBlogsDescription" xml:space="preserve">
+    <value>Сохраняет все URL-адреса в виде текстового файла для обмена.</value>
   </data>
 </root>

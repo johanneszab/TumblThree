@@ -327,7 +327,7 @@ The cookie with your credentials of your account is saved and the authentication
   </data>
   <data name="ToolTipBlogsDescription" xml:space="preserve">
     <value>Sets the number of concurrent processing blogs.
-Setting this to 2 would proccess two blogs at a time.</value>
+Setting this to 2 would process two blogs at a time.</value>
   </data>
   <data name="ToolTipConnections" xml:space="preserve">
     <value>Number of total concurrent connections</value>
@@ -505,10 +505,10 @@ Since the data is usually small, you should leave this high.</value>
     <value>Limit connections to the tumblr api.</value>
   </data>
   <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
-    <value>A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr api.
+    <value>A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr svc.
 A too small value will decrease the scanning speed.
 Set a number/time pair.
-Note: The tumblr api is only used for regular tumblr blog downloads.</value>
+Note: The tumblr svc is only used for regular tumblr blog downloads.</value>
   </data>
   <data name="ForceRescan" xml:space="preserve">
     <value>Force rescan</value>
@@ -517,7 +517,7 @@ Note: The tumblr api is only used for regular tumblr blog downloads.</value>
     <value>Rescans the whole blog, not just new posts.</value>
   </data>
   <data name="ToolTipForceRescanDescription" xml:space="preserve">
-    <value>Forces a complete scan using the Tumblr api.</value>
+    <value>Forces a complete scan using the Tumblr svc.</value>
   </data>
   <data name="CheckForUpdates" xml:space="preserve">
     <value>Check for Updates</value>

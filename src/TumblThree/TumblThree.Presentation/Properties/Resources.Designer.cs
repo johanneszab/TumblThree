@@ -1278,7 +1278,7 @@ namespace TumblThree.Presentation.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to Sets the number of concurrent processing blogs.
-        ///Setting this to 2 would proccess two blogs at a time..
+        ///Setting this to 2 would process two blogs at a time..
         /// </summary>
         public static string ToolTipBlogsDescription {
             get {
@@ -1479,7 +1479,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Forces a complete scan using the Tumblr api..
+        ///   Looks up a localized string similar to Forces a complete scan using the Tumblr svc..
         /// </summary>
         public static string ToolTipForceRescanDescription {
             get {
@@ -1536,10 +1536,10 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr api.
+        ///   Looks up a localized string similar to A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr svc.
         ///A too small value will decrease the scanning speed.
         ///Set a number/time pair.
-        ///Note: The tumblr api is only used for regular tumblr blog downloads..
+        ///Note: The tumblr svc is only used for regular tumblr blog downloads..
         /// </summary>
         public static string ToolTipLimitConnectionsDescription {
             get {
@@ -1723,7 +1723,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The vtt.tumblr.com host regularly closes connections if the number is to high..
+        ///   Looks up a localized string similar to The vt.tumblr.com host regularly closes connections if the number is too high..
         /// </summary>
         public static string ToolTipVideoConnectionsDescription {
             get {
