@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TumblThree.Applications.DataModels.TumblrSvcJson
 {
@@ -203,7 +204,7 @@ namespace TumblThree.Applications.DataModels.TumblrSvcJson
         public string high_res { get; set; }
     }
 
-    public class Post
+    public class Post : ICloneable
     {
         public string type { get; set; }
         public bool is_nsfw_based_on_score { get; set; }
@@ -298,6 +299,11 @@ namespace TumblThree.Applications.DataModels.TumblrSvcJson
         public List<Dialogue> dialogue { get; set; }
         public bool? is_anonymous { get; set; }
         public bool? is_submission { get; set; }
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
     }
 
     public class PixelbugUrl
