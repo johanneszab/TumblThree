@@ -329,7 +329,7 @@ namespace TumblThree.Applications.Crawler
 
         private bool PostWithinTimeSpan(XElement post)
         {
-            if (!string.IsNullOrEmpty(blog.DownloadFrom) && !string.IsNullOrEmpty(blog.DownloadTo))
+            if (!(string.IsNullOrEmpty(blog.DownloadFrom) && string.IsNullOrEmpty(blog.DownloadTo)))
             {
                 long downloadFromUnixTime = 0;
                 long downloadToUnixTime = long.MaxValue;
@@ -416,8 +416,9 @@ namespace TumblThree.Applications.Crawler
                             AddPhotoSetUrl(post);
                             if (post.Element("photo-caption") != null)
                             {
-                                post.Elements("photo-url").Remove();
-                                AddInlinePhotoUrl(post);
+                                var postCopy = new XElement(post);
+                                postCopy.Elements("photo-url").Remove();
+                                AddInlinePhotoUrl(postCopy);
                             }
                         }
                     }
@@ -464,10 +465,10 @@ namespace TumblThree.Applications.Crawler
                         {
                             if (post.Element("video-caption") != null)
                             {
-                                post.Elements("video-player").Remove();
-                                AddInlineVideoUrl(post);
+                                var postCopy = new XElement(post);
+                                postCopy.Elements("video-player").Remove();
+                                AddInlineVideoUrl(postCopy);
                             }
-
                         }
                     }
                 }
