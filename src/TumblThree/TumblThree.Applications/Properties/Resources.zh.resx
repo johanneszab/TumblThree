@@ -250,19 +250,19 @@
     <value>Link: {0}</value>
   </data>
   <data name="MaxBytePerSecond" xml:space="preserve">
-    <value>MaxBytesPerSecond必须为非负数</value>
+    <value>限速必须为非负数</value>
   </data>
   <data name="NewVersionAvailable" xml:space="preserve">
     <value>新版本可供下载：{0}</value>
   </data>
   <data name="NotLoggedIn" xml:space="preserve">
-    <value>您需要登录tumblr才能下载{0}。转到设置-&gt;授权。</value>
+    <value>您需要登录tumblr才能下载{0}。转到设置-授权。</value>
   </data>
   <data name="PasswordProtected" xml:space="preserve">
-    <value>Password protected blog: {0}. You need to enter the password in the Details.</value>
+    <value>该博客受密码保护：{0}。你需要在"详细"标签页输入密码。</value>
   </data>
   <data name="PasswordProtectedOrOffline" xml:space="preserve">
-    <value>Hidden password protected or offline blog detected: {0}. You need to enter the password in the Details.</value>
+    <value>该博客受隐藏密码保护或已离线：{0}。你需要在"详细"标签页输入密码。</value>
   </data>
   <data name="PhotoCaption" xml:space="preserve">
     <value>Photo Caption: {0}</value>
@@ -301,7 +301,7 @@
     <value>Reblog Url: {0}</value>
   </data>
   <data name="Summary" xml:space="preserve">
-    <value>概要: {0}</value>
+    <value>Summary: {0}</value>
   </data>
   <data name="Tags" xml:space="preserve">
     <value>Tags: {0}</value>

@@ -139,7 +139,7 @@
     <value>监视剪贴板</value>
   </data>
   <data name="Crawl" xml:space="preserve">
-    <value>下载</value>
+    <value>开始</value>
   </data>
   <data name="CrawlSelection" xml:space="preserve">
     <value>下载选择</value>
@@ -223,7 +223,7 @@
     <value>停止</value>
   </data>
   <data name="Tags" xml:space="preserve">
-    <value>标签</value>
+    <value>标签：</value>
   </data>
   <data name="UnknownError" xml:space="preserve">
     <value>应用程序未知错误</value>
@@ -235,10 +235,10 @@
     <value>图片分辨率 (px)</value>
   </data>
   <data name="ConcurrentBlogs" xml:space="preserve">
-    <value>并行博客数</value>
+    <value>并发博客数</value>
   </data>
   <data name="ConcurrentConnections" xml:space="preserve">
-    <value>并行连接数</value>
+    <value>并发连接数</value>
   </data>
   <data name="Online" xml:space="preserve">
     <value>在线</value>
@@ -319,22 +319,19 @@
     <value>登录tumblr并授权</value>
   </data>
   <data name="ToolTipAuthenticateDescription" xml:space="preserve">
-    <value>打开一个浏览器窗口来验证您的tumblr.com网站。
-保存您帐户凭据的cookie，验证过程只需执行一次。</value>
+    <value>打开一个浏览器窗口来登录tumblr并授权，使能够下载私密博客。授权信息将被保存故该操作仅需一次。</value>
   </data>
   <data name="ToolTipBlogs" xml:space="preserve">
     <value>同时处理的博客数量</value>
   </data>
   <data name="ToolTipBlogsDescription" xml:space="preserve">
-    <value>设置并发处理博客的数量。
-将此设置为2将一次处理两个博客。</value>
+    <value>设置同时处理的博客的数量。例如将此设置为'2'将同时从两个博客中下载数据。</value>
   </data>
   <data name="ToolTipConnections" xml:space="preserve">
     <value>同时处理的连接数量</value>
   </data>
   <data name="ToolTipConnectionsDescription" xml:space="preserve">
-    <value>设置并发连接数。
-所有积极下载博客之间共享此数字。</value>
+    <value>设置同时处理的连接的数量，将被均分给同时处理的博客。例如设置为'25'而并行博客数为'2'则每个博客将打开12条连接。</value>
   </data>
   <data name="Notes" xml:space="preserve">
     <value>备注</value>
@@ -346,10 +343,10 @@
     <value>限制带宽 (KB/s)</value>
   </data>
   <data name="EnableAutoDownload" xml:space="preserve">
-    <value>自动下载博客并添加</value>
+    <value>于</value>
   </data>
   <data name="Timer" xml:space="preserve">
-    <value>于时间 (时:分:秒)</value>
+    <value>(时:分:秒)开始下载并将</value>
   </data>
   <data name="SelectABlog" xml:space="preserve">
     <value>请选择一个博客</value>
@@ -421,8 +418,7 @@
     <value>为新添加的博客设置默认设置</value>
   </data>
   <data name="ToolTipDefaultSettingsForBlogsDescription" xml:space="preserve">
-    <value>扫描/下载使用每个博客的单独设置。
-要更改它们，请在主界面中选择博客，然后选择右侧的“详细信息”选项卡。</value>
+    <value>每个博客的设置都各自独立，若想修改已存在的博客设置，在主界面选中该博客后在右侧"详细"标签页修改。</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>保存</value>
@@ -437,11 +433,7 @@
     <value>即使tumblr未提供也强制下载指定分辨率的图片。</value>
   </data>
   <data name="ToolTipForceSizeDescription" xml:space="preserve">
-    <value>如果下载器只找到比指定分辨率更小的图片，
-启用这个选项将把url重命名为指定文件分辨率。
-通常能提供更大的分辨率，
-但也可能只是重新命名了较小分辨率的图片。
-打开较保险。</value>
+    <value>如果下载器只找到比指定分辨率更小的图片，启用这个选项将把url重命名为指定文件分辨率。通常能提供更大的分辨率，但也可能只是重新命名了较小分辨率的图片。打开较保险。</value>
   </data>
   <data name="ProxyHost" xml:space="preserve">
     <value>HTTP代理：</value>
@@ -459,8 +451,7 @@
     <value>限制下载器的速度</value>
   </data>
   <data name="ToolTipLimitBandwidthDescription" xml:space="preserve">
-    <value>以kbytes/s设置下载器可用的最大速度。
-设置为'0'即不限速。</value>
+    <value>以kbytes/s设置下载器可用的最大速度。设置为'0'即不限速。</value>
   </data>
   <data name="LimitScan" xml:space="preserve">
     <value>限制扫描速度</value>
@@ -472,15 +463,13 @@
     <value>将扫描也限制在上面的限速中。</value>
   </data>
   <data name="ToolTipLimitScanDescription" xml:space="preserve">
-    <value>鉴于用于扫描的数据使用量通常较小而限速算法反应较慢，
-开启此选项将降低性能。</value>
+    <value>鉴于用于扫描的数据使用量通常较小而限速算法反应较慢，开启此选项将降低性能。</value>
   </data>
   <data name="ToolTipScan" xml:space="preserve">
     <value>每个扫描使用的连接数</value>
   </data>
   <data name="ToolTipScanDescription" xml:space="preserve">
-    <value>设置每个扫描使用的连接数，
-鉴于数据通常较小，你应该留高一点。</value>
+    <value>设置每个扫描使用的连接数，鉴于数据通常较小，你应该留高一点。</value>
   </data>
   <data name="BandwidthRangeError" xml:space="preserve">
     <value>价值必须介于0至9,000,000,000,000,000之间。</value>
@@ -507,10 +496,7 @@
     <value>限制tumblr-api连接数</value>
   </data>
   <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
-    <value>一个太高的值将强制关闭连接（429 - 超出限制）到tumblr api。
-太小的值会降低扫描速度。
-设置一个数字/时间对。
-注意：tumblr api仅用于常规tumblr博客下载。</value>
+    <value>一个较高的值将会强制关闭(429-限制)与tumblr-api的连接，一个较小的值将降低下载速度。</value>
   </data>
   <data name="ForceRescan" xml:space="preserve">
     <value>强制重新扫描</value>
@@ -534,8 +520,7 @@
     <value>检查目录是否已存在相应文件</value>
   </data>
   <data name="ToolTipCheckDirectoryForFilesDescription" xml:space="preserve">
-    <value>检查目录和数据库是否已存在相应文件。
-对于大文件夹也许会降低下载速度。</value>
+    <value>检查目录和数据库是否已存在相应文件。对于大文件夹也许会降低下载速度。</value>
   </data>
   <data name="DownloadUrlList" xml:space="preserve">
     <value>生成下载地址</value>
@@ -592,15 +577,13 @@
     <value>下载特定页数</value>
   </data>
   <data name="ToolTipDownloadPagesDescription" xml:space="preserve">
-    <value>有效格式为：'1'或'1-3'或'1,2,3'。
-留空表示整个博客。</value>
+    <value>有效格式为：'1'或'1-3'或'1,2,3'。留空表示整个博客。</value>
   </data>
   <data name="ToolTipPageSize" xml:space="preserve">
     <value>每页帖数</value>
   </data>
   <data name="ToolTipPageSizeDescription" xml:space="preserve">
-    <value>设置每页帖数(应该在1-50之间，默认50)。
-例如'50'表示每页50条帖子。</value>
+    <value>设置每页帖数(应该在1-50之间，默认50)。例如'50'表示每页50条帖子。</value>
   </data>
   <data name="FullScreenMedia" xml:space="preserve">
     <value>全屏视图</value>
@@ -624,19 +607,16 @@
     <value>下载从此日期开始的帖子</value>
   </data>
   <data name="ToolTipDownloadTagsFromDescription" xml:space="preserve">
-    <value>必须为YYYYMMDD格式。
-留空表示2007年5月。</value>
+    <value>必须为YYYYMMDD格式。留空表示2007年5月。</value>
   </data>
   <data name="ToolTipDownloadTo" xml:space="preserve">
     <value>下载到此日期为止的帖子</value>
   </data>
   <data name="ToolTipDownloadTagsToDescription" xml:space="preserve">
-    <value>必须是YYYYMMDD格式。
-空意味着现在。</value>
+    <value>必须为YYYYMMDD格式。留空表示现在。</value>
   </data>
   <data name="ToolTipDownloadFromDescription" xml:space="preserve">
-    <value>必须为YYYYMMDD格式。
-留空表示从博客最早帖子开始。</value>
+    <value>必须为YYYYMMDD格式。留空表示从博客最早帖子开始。</value>
   </data>
   <data name="ToolTipDownloadToDescription" xml:space="preserve">
     <value>必须为YYYYMMDD格式。留空表示现在。</value>
@@ -645,30 +625,28 @@
     <value>每页帖数</value>
   </data>
   <data name="ToolTipPageSizeTumblrSearchDescription" xml:space="preserve">
-    <value>设置每页帖数。例如50表示每页50条帖子。</value>
+    <value>设置每页帖数。例如'50'表示每页50条帖子。</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>密码：</value>
   </data>
   <data name="ToolTipPassword" xml:space="preserve">
-    <value>密码保护的博客密码</value>
+    <value>有密码保护博客的密码</value>
   </data>
   <data name="ToolTipPasswordDescription" xml:space="preserve">
-    <value>注意：密码以博客数据库中的明文形式存储。</value>
+    <value>注意:密码在博客数据库中以明文保存。</value>
   </data>
   <data name="Blogtype" xml:space="preserve">
-    <value>Type</value>
+    <value>类型</value>
   </data>
   <data name="ToolTipTags" xml:space="preserve">
-    <value>只下载标记的帖子</value>
+    <value>仅下载有标签的帖子</value>
   </data>
   <data name="ToolTipTagsDescription" xml:space="preserve">
-    <value>必须是逗号分隔的列表，
-而不使用前导hash（＃）符号。
-例如。 伟大的大车，熊搜索伟大的大汽车和熊。</value>
+    <value>必须为以','分隔同时去掉'#'。例如'great big car, bears'搜索'great big cars'和'bears'。</value>
   </data>
   <data name="BlogtypeAll" xml:space="preserve">
-    <value>All</value>
+    <value>全部</value>
   </data>
   <data name="BlogtypeInstagram" xml:space="preserve">
     <value>Instagram</value>
@@ -692,21 +670,21 @@
     <value>Twitter</value>
   </data>
   <data name="AutoDownloadBlogs" xml:space="preserve">
-    <value>blogs to the queue.</value>
+    <value>博客添加到队列。</value>
   </data>
   <data name="ToolTipTimeout" xml:space="preserve">
-    <value>网路请求超时</value>
+    <value>请求超时</value>
   </data>
   <data name="ToolTipTimeoutDescription" xml:space="preserve">
-    <value>时间长度（以秒为单位），直到请求超时。</value>
+    <value>请求超时的时长(s)。</value>
   </data>
   <data name="ConcurrentVideoConnections" xml:space="preserve">
-    <value>并发视频连接</value>
+    <value>并发视频数</value>
   </data>
   <data name="ToolTipVideoConnections" xml:space="preserve">
-    <value>与tumblr视频主机的并发连接数</value>
+    <value>同时处理的与tumblr视频服务器(vt.tumblr.com)连接的数量</value>
   </data>
   <data name="ToolTipVideoConnectionsDescription" xml:space="preserve">
-    <value>如果号码太高，vt.tumblr.com主机会定期关闭连接。</value>
+    <value>连接数过大将导致tumblr视频服务器(vt.tumblr.com)关闭连接。</value>
   </data>
 </root>
