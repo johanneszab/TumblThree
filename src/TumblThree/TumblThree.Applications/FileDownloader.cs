@@ -210,9 +210,9 @@ namespace TumblThree.Applications
 
         public static async Task<bool> SaveStreamToDisk(Stream input, string destinationFileName, CancellationToken ct)
         {
-            using (var stream = new FileStream(destinationFileName, FileMode.OpenOrCreate, FileAccess.Write))
+            using (var stream = new FileStream(destinationFileName, FileMode.Create, FileAccess.Write, FileShare.Read, BufferSize, true))
             {
-                var buf = new byte[BufferSize];
+                var buf = new byte[4096];
                 int bytesRead;
                 while (0 < (bytesRead = await input.ReadAsync(buf, 0, buf.Length, ct)))
                 {

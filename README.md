@@ -62,33 +62,30 @@ Latest releases can be found [here](https://github.com/johanneszab/TumblThree/re
 
 ## Application Usage:
 
-* Usage
-  * extract the .zip file and run the application by double clicking TumblThree.exe. The application now comes as a zip file as some parts of it are modular .dll files like internationalization support.
-  * To use the application, simply copy the url of any tumblr.com blog you want to backup from into the textbox at the bottom. Afterwards, click on 'Add Blog' on the right of it.
-  * Alternatively, if you copy (ctrl-c) a whole _tumblr.com_ blog url from the address bar/text file, the clipboard monitor from TumblThree will detect it and automatically add the blog.
-  * To start the download process, click on 'Crawl'. The application will regularly check for (new) blogs in the queue and start processing them, until you stop the application by pressing 'Stop'. So, you can either add blogs to the queue via 'Add to Queue'/double click first and then click 'Crawl', or you start the download process first and add blogs to the queue afterwards.
-  * A light blue bar left to the blog in the queue indicates a actively downloaded blog.
-  * The blog manager on the left side also indicates the state of each blog. A red background shows an offline blog, a green background an actively crawled blog and a purple background an enqueue blog.
-  * You can set up more than one parallel download in the 'Settings'. Also, it is possible to change the download location and the sizes of the picture and video files to download. It is possible to setup a timer for automatic start of the download. 
-  * In the Details window you can view statistics of your blog and set blog specific options. You can choose here what kind of post type (photo, video, audio, text, conversation, quote, link) to download.
-  * For downloading only tagged posts, you'll have to do some steps:
-    1. Add the blog url.
-	2. Open the blog in the details tab, enter the tags in the Tags textbox in a comma separated list without the leading hash (#) sign. E.g. _great big car,bears_ would search for images that are tagged for either a _great big car_ or _bears_ or both.
-  * For downloading password protected blogs, you'll have to do some steps:
-    1. Add the blog url.
-	2. Open the blog in the details tab, enter the password in the Password textbox.
-  * For downloading hidden blogs (login required blogs), you have to do some steps:
-    1. Go to Settings, click the Authenticate button. Logon to tumblr using an account. The window/browser should automatically close after the login indicating a successful authentication. TumblThree will use the Internet Explorer cookies for authentication. Alternatively, you can also use the Internet Explorer directly for logging in to the Tumblr.com network.
-    2. Add the blog url.
-  * For downloading liked photos and videos, you'll have to do some steps:
-    1. Go to Settings, click the Authenticate button. Logon to tumblr using an account. The window/browser should automatically close after the login indicating a successful authentication. TumblThree will use the Internet Explorer cookies for authentication. Alternatively, you can also use the Internet Explorer directly for logging in to the Tumblr.com network.
-    2. Add the blog url including the liked/by string in the url (e.g. https://www.tumblr.com/liked/by/wallpaperfx/).
-  * For downloading photos and videos from the tumblr tag search, you'll have to do some steps:
-    1. Go to Settings, click the Authenticate button. Logon to tumblr using an account. The window/browser should automatically close after the login indicating a successful authentication. TumblThree will use the Internet Explorer cookies for authentication. Alternatively, you can also use the Internet Explorer directly for logging in to the Tumblr.com network.
-    2. Add the search url including your tags separated by plus signs (+) in the url (e.g. https://www.tumblr.com/tagged/my+special+tags).
-
-* Key Mappings
-
+* extract the .zip file and run the application by double clicking TumblThree.exe. The application now comes as a zip file as some parts of it are modular .dll files like internationalization support.
+* To use the application, simply copy the url of any tumblr.com blog you want to backup from into the textbox at the bottom. Afterwards, click on 'Add Blog' on the right of it.
+* Alternatively, if you copy (ctrl-c) a whole _tumblr.com_ blog url from the address bar/text file, the clipboard monitor from TumblThree will detect it and automatically add the blog.
+* To start the download process, click on 'Crawl'. The application will regularly check for (new) blogs in the queue and start processing them, until you stop the application by pressing 'Stop'. So, you can either add blogs to the queue via 'Add to Queue'/double click first and then click 'Crawl', or you start the download process first and add blogs to the queue afterwards.
+* A light blue bar left to the blog in the queue indicates a actively downloaded blog.
+* The blog manager on the left side also indicates the state of each blog. A red background shows an offline blog, a green background an actively crawled blog and a purple background an enqueue blog.
+* You can set up more than one parallel download in the 'Settings'. Also, it is possible to change the download location and the sizes of the picture and video files to download. It is possible to setup a timer for automatic start of the download. 
+* In the Details window you can view statistics of your blog and set blog specific options. You can choose here what kind of post type (photo, video, audio, text, conversation, quote, link) to download.
+* For downloading only tagged posts, you'll have to do some steps:
+  1. Add the blog url.
+  2. Open the blog in the details tab, enter the tags in the Tags textbox in a comma separated list without the leading hash (#) sign. E.g. _great big car,bears_ would search for images that are tagged for either a _great big car_ or _bears_ or both.
+* For downloading password protected blogs, you'll have to do some steps:
+  1. Add the blog url.
+  2. Open the blog in the details tab, enter the password in the Password textbox.
+* For downloading hidden blogs (login required blogs), you have to do some steps:
+  1. Go to Settings, click the Authenticate button. Logon to tumblr using an account. The window/browser should automatically close after the login indicating a successful authentication. TumblThree will use the Internet Explorer cookies for authentication. Alternatively, you can also use the Internet Explorer directly for logging in to the Tumblr.com network.
+  2. Add the blog url.
+* For downloading liked photos and videos, you'll have to do some steps:
+  1. Go to Settings, click the Authenticate button. Logon to tumblr using an account. The window/browser should automatically close after the login indicating a successful authentication. TumblThree will use the Internet Explorer cookies for authentication. Alternatively, you can also use the Internet Explorer directly for logging in to the Tumblr.com network.
+  2. Add the blog url including the liked/by string in the url (e.g. https://www.tumblr.com/liked/by/wallpaperfx/).
+* For downloading photos and videos from the tumblr tag search, you'll have to do some steps:
+  1. Go to Settings, click the Authenticate button. Logon to tumblr using an account. The window/browser should automatically close after the login indicating a successful authentication. TumblThree will use the Internet Explorer cookies for authentication. Alternatively, you can also use the Internet Explorer directly for logging in to the Tumblr.com network.
+  2. Add the search url including your tags separated by plus signs (+) in the url (e.g. https://www.tumblr.com/tagged/my+special+tags).
+* Key Mappings:
   * double click on a blog adds it to the queue
   * drag and drop of blogs from the manager (left side) to the queue.
   * space -- start crawl
@@ -97,12 +94,6 @@ Latest releases can be found [here](https://github.com/johanneszab/TumblThree/re
   * del -- remove blog from queuelist
   * shift-del -- remove blog from blogmanager.
   * ctrl-shift-g -- manually trigger the garbage collection
-	
-* Saved Settings
-
-  * Application settings are stored in _C:\\Users\\Username\\AppData\\Local\\TumblThree\\_. 
-  * You can use the _portable mode_ (settings->general) to stores the application settings in the same folder as the executable.
-  * For each blog there is also an index file in the download location (default: in the _.\\Blogs\\_ folder relative to the executable) named after the _blogname_.tumblr. Here are blog relative information stored like what files have been downloaded, the url of the blog and when it was added. This allows you to move your downloaded files (photos, videos, audio files) to a different location without interfering with the backup process.
 
 ## Getting Started:
 
@@ -121,9 +112,20 @@ Settings you might want to change if the download speed is not satisfactory:
 Most likely you don't have to change any of the other connection settings. In particular, settings you should never change, unless you're sure you know what you are doing:
 * General -> Limit Tumblr Api Connections: Leave this checkbox checked and do not change the corresponding values of 90 connections per 60 seconds. If you still change them, you might end up with offline blogs or missing downloads.
 
-## Current Limitations:
+## Further Insights:
 
-* The old datasets from TumblTwo and TumblOne are NOT compatible yet.
+* _Note:_ All the follwing files are stored in json format and can be opened in any editor.
+* Application settings are stored in _C:\\Users\\Username\\AppData\\Local\\TumblThree\\_. 
+* You can use the _portable mode_ (settings->general) to stores the application settings in the same folder as the executable.
+* For each blog there is also a database (serialied class) file in the _Index_ folder of the download location named after the _blogname_.tumblr. Here are blog relative information stored like what files have been downloaded, the url of the blog and when it was added. This allows you to move your downloaded files (photos, videos, audio files) to a different location without interfering with the download process.
+* Some settings aren't hooked up to the graphical user interfacae. It's possible to view all TumblThree settings by opening the settings.json in any editor located in _C:\\Users\\Username\\AppData\\Local\\TumblThree\\_. Their names should be self explainatory. Some notable settings to further fine tune the application include:
+  * BufferSize: Allows to set the buffer size for downloading binary files (photos, videos) in multiples of 4KB. The default is 2MB, thus the BufferSize has a value of 512. Increasing this value reduces disk fragmentation as more of the file is kept in the memory before it gets written out to the disk but increases the memory usage.
+  * MaxNumberOfRetries: Sets the maximum number of retries if a tumblr server forcefully closes the connection. This might regularily happen on the tumblr video host (vt.tumblr.com) if too many connections were opened in parallel. After the limit is exhausted, the file is left truncated, but is also not registered as a successful downloaded. Thus, the file can be resumed in the next crawl.
+  * TumblrHosts: Contains a list of hosts which is tried for downloading \_raw photos if the photo size is set to _raw_. If none of the hosts contains the \_raw version, the actually scanned host is tried with the next lower resolution (1028). 
+
+## Limitations:
+
+* The old datasets from TumblTwo and TumblOne are __not__ compatible.
 * No more support for Windows XP.
  
 ## How To Build The Source Code To Help Further Developing:
