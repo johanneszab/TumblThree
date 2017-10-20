@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ApplicationUpToDate" xml:space="preserve">
-    <value>Эта версия является актуальной</value>
+    <value>У Вас последня версия</value>
   </data>
   <data name="AudioCaption" xml:space="preserve">
     <value>Подпись аудиотрека: {0}</value>
@@ -157,7 +157,7 @@
     <value>Не удается загрузить файл в библиотеку: {0}</value>
   </data>
   <data name="CouldNotLoadQueuelist" xml:space="preserve">
-    <value>Не удаётся загрузить очередь закачек. Возможно, некоторые из блогов больше не существуют.</value>
+    <value>Не удаётся загрузить очередь закачек. Возможно, некоторые блоги больше не существуют.</value>
   </data>
   <data name="CouldNotOpenFiles" xml:space="preserve">
     <value>Не удаётся открыть файл.</value>
@@ -238,25 +238,25 @@
     <value>Id3: Год: {0}</value>
   </data>
   <data name="LimitExceeded" xml:space="preserve">
-    <value>Превышен лимит: {0}. Вы должны уменьшить количество соединений с tumblr api.</value>
+    <value>Превышен лимит: {0}. Вы должны уменьшить количество соединений с Tumblr API.</value>
   </data>
   <data name="Link" xml:space="preserve">
     <value>Ссылка: {0}</value>
   </data>
   <data name="MaxBytePerSecond" xml:space="preserve">
-    <value>MaxBytesPerSecond has to be &gt;0</value>
+    <value>MaxBytesPerSecond должно быть больше нуля</value>
   </data>
   <data name="NewVersionAvailable" xml:space="preserve">
-    <value>Новая версия приложения готова для загузки: {0}</value>
+    <value>Есть новая версия программы: {0}</value>
   </data>
   <data name="NotLoggedIn" xml:space="preserve">
-    <value>Вы должны залогинится в tumblr.com для загрузки {0}. Идите в Настройки-&gt;Авторизироваться.</value>
+    <value>Вы должны залогинится на Tumblr.com для загрузки {0}. Укажите логин в меню Настройки -&gt; Авторизироваться.</value>
   </data>
   <data name="PasswordProtected" xml:space="preserve">
-    <value>Password protected blog: {0}. You need to enter the password in the Details.</value>
+    <value>Доступ к блог защищён паролем: {0}. Введите пароль на вкладке Подробности справа.</value>
   </data>
   <data name="PasswordProtectedOrOffline" xml:space="preserve">
-    <value>Hidden password protected or offline blog detected: {0}. You need to enter the password in the Details.</value>
+    <value>Обнаружен защищённый паролем или недоступный блог: {0}. Введите пароль на вкладке Подробности справа.</value>
   </data>
   <data name="PhotoCaption" xml:space="preserve">
     <value>Подпись к фотографии: {0}</value>
@@ -271,16 +271,16 @@
     <value>Загрузка {0}.</value>
   </data>
   <data name="ProgressGetUrlLong" xml:space="preserve">
-    <value>Оценивается {0} ссылок на посты из {1}.</value>
+    <value>Оценивается {0} посты из {1} постов.</value>
   </data>
   <data name="ProgressGetUrlShort" xml:space="preserve">
     <value>Оценивается {0} блогов</value>
   </data>
   <data name="ProgressUniqueDownloads" xml:space="preserve">
-    <value>Определяются уникальные и удалаются дублирующиеся файлы...</value>
+    <value>Поиск уникальных и удаление дубликатов...</value>
   </data>
   <data name="Queuelist" xml:space="preserve">
-    <value>Список очереди</value>
+    <value>Очередь</value>
   </data>
   <data name="Quote" xml:space="preserve">
     <value>Цитата: {0}</value>
