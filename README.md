@@ -16,7 +16,7 @@ _Read this in other languages: [简体中文](https://github.com/Emphasia/TumblT
 * A clipboard monitor that detects *http(s):// .tumblr.com* urls in the clipboard (copy and paste) and automatically adds the blog to the bloglist.
 * A settings panel (change download location, turn preview off/on, define number of concurrent downloads, set the imagesize of downloaded pictures, set download defaults, enable portable mode, etc.).
 * Allows to set a proxy.
-* ~~A bandwidth throttler.~~ Currently broken.
+* A bandwidth throttler.
 * An option to download an url list instead of the actual files.
 * Set a start time for a automatic download (e.g. during nights).
 * Uses SSL instead of unsecure http connections.
