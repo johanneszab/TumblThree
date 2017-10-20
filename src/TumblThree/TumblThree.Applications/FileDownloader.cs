@@ -157,7 +157,7 @@ namespace TumblThree.Applications
                             {
                                 using (Stream throttledStream = GetStreamForDownload(responseStream))
                                 {
-                                    var buffer = new byte[bufferSize];
+                                    var buffer = new byte[4096];
                                     var bytesRead = 0;
                                     //Stopwatch sw = Stopwatch.StartNew();
 
