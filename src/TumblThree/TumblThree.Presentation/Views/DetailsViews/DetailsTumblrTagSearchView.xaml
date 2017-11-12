@@ -346,19 +346,12 @@
                     <TabItem Header="{x:Static p:Resources.Preview}">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="{StaticResource Layout.ColumnSpace}" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="{StaticResource Layout.ColumnSpace}" />
-                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="{StaticResource Layout.LargeRowSpace}" />
+                                <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
-                            <UserControl x:Name="Preview" Width="Auto" Height="Auto" Grid.ColumnSpan="5" Grid.Row="0" MouseDown="Preview_OnMouseDown">
+                            <UserControl x:Name="Preview" Width="Auto" Height="Auto" Grid.Column="0"  Grid.Row="0" MouseDown="Preview_OnMouseDown">
                                 <Grid>
                                     <VisualStateManager.VisualStateGroups>
                                         <VisualStateGroup x:Name="SwitchableStates">
@@ -402,7 +395,7 @@
                             </UserControl>
                         </Grid>
                     </TabItem>
-                    </TabControl>
+                </TabControl>
             </Grid>
         </ScrollViewer>
         <Border Height="21" Grid.Row="2" Background="{StaticResource DarkBackground}" BorderThickness="0">

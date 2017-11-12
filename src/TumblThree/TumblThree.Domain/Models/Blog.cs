@@ -65,6 +65,8 @@ namespace TumblThree.Domain.Models
         private bool downloadGfycat;
         private bool downloadImgur;
         private bool downloadWebmshare;
+        private GfycatTypes gfycatType;
+        private WebmshareTypes webmshareType;
         private string downloadPages;
         private int pageSize;
         private string downloadFrom;
@@ -490,10 +492,11 @@ namespace TumblThree.Domain.Models
         }
 
         [DataMember]
-        public GfycatTypes GfycatType { get; set; }
-
-        [DataMember]
-        public WebmshareTypes WebmshareType { get; set; }
+        public GfycatTypes GfycatType
+        {
+            get { return gfycatType; }
+            set { SetProperty(ref gfycatType, value); }
+        }
 
         [DataMember]
         public bool DownloadImgur
@@ -507,6 +510,13 @@ namespace TumblThree.Domain.Models
         {
             get { return downloadWebmshare; }
             set { SetProperty(ref downloadWebmshare, value); }
+        }
+
+        [DataMember]
+        public WebmshareTypes WebmshareType
+        {
+            get { return webmshareType; }
+            set { SetProperty(ref webmshareType, value); }
         }
 
         [DataMember]

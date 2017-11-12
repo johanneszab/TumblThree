@@ -825,7 +825,7 @@ namespace TumblThree.Applications.Crawler
                                         continue;
                                     }
                                     // TODO: postID
-                                    AddToDownloadList(new TumblrPost(PostTypes.Photo, imageUrl, Guid.NewGuid().ToString("N"),
+                                    AddToDownloadList(new TumblrPost(PostTypes.Video, imageUrl, Guid.NewGuid().ToString("N"),
                                         post.Attribute("unix-timestamp").Value));
                                 }
                             }
@@ -854,7 +854,7 @@ namespace TumblThree.Applications.Crawler
                                         continue;
                                     }
                                     // TODO: postID
-                                    AddToDownloadList(new TumblrPost(PostTypes.Photo, imageUrl, Guid.NewGuid().ToString("N"),
+                                    AddToDownloadList(new TumblrPost(PostTypes.Video, imageUrl, Guid.NewGuid().ToString("N"),
                                         post.Attribute("unix-timestamp").Value));
                                 }
                             }
