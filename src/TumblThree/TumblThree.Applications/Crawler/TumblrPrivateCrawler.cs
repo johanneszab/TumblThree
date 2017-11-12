@@ -28,8 +28,8 @@ namespace TumblThree.Applications.Crawler
         private string authentication = string.Empty;
 
         public TumblrPrivateCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
-            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, ISharedCookieService cookieService, IDownloader downloader, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
-            : base(shellService, ct, pt, progress, crawlerService, cookieService, downloader, producerConsumerCollection, blog)
+            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IDownloader downloader, IGfycatParser gfycatParser, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
+            : base(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, downloader, gfycatParser, producerConsumerCollection, blog)
         {
         }
 
@@ -152,7 +152,9 @@ namespace TumblThree.Applications.Crawler
             {
                 string url = "https://www.tumblr.com/blog_auth/" + blog.Name;
                 var headers = new Dictionary<string, string>();
-                HttpWebRequest request = CreatePostReqeust(url, url, headers);
+                HttpWebRequest request = webRequestFactory.CreatePostReqeust(url, url, headers);
+                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
+                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://" + blog.Name.Replace("+", "-") + ".tumblr.com"));
                 string requestBody = "password=" + blog.Password;
                 using (Stream postStream = await request.GetRequestStreamAsync())
                 {
@@ -162,7 +164,7 @@ namespace TumblThree.Applications.Crawler
                 }
 
                 requestRegistration = ct.Register(() => request.Abort());
-                return await ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
+                return await webRequestFactory.ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
             }
             finally
             {
@@ -184,7 +186,9 @@ namespace TumblThree.Applications.Crawler
                 string referer = "https://www.tumblr.com/blog_auth/" + blog.Name;
                 var headers = new Dictionary<string, string>();
                 headers.Add("DNT", "1");
-                HttpWebRequest request = CreatePostReqeust(url, referer, headers);
+                HttpWebRequest request = webRequestFactory.CreatePostReqeust(url, referer, headers);
+                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
+                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://" + blog.Name.Replace("+", "-") + ".tumblr.com"));
                 string requestBody = "auth=" + authentication;
                 using (Stream postStream = await request.GetRequestStreamAsync())
                 {
@@ -359,9 +363,11 @@ namespace TumblThree.Applications.Crawler
                 string url = @"https://www.tumblr.com/svc/indash_blog?tumblelog_name_or_id=" + blog.Name +
                     @"&post_id=&limit=" + limit + "&offset=" + offset + "&should_bypass_safemode=true";
                 string referer = @"https://www.tumblr.com/dashboard/blog/" + blog.Name;
-                HttpWebRequest request = CreateGetXhrReqeust(url, referer);
+                HttpWebRequest request = webRequestFactory.CreateGetXhrReqeust(url, referer);
+                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
+                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://" + blog.Name.Replace("+", "-") + ".tumblr.com"));
                 requestRegistration = ct.Register(() => request.Abort());
-                return await ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
+                return await webRequestFactory.ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
             }
             finally
             {

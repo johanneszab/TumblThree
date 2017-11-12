@@ -24,6 +24,8 @@ namespace TumblThree.Applications.Crawler
         protected readonly ICrawlerService crawlerService;
         protected readonly IProgress<DownloadProgress> progress;
         protected readonly ISharedCookieService cookieService;
+        protected readonly IWebRequestFactory webRequestFactory;
+        protected readonly IGfycatParser gfycatParser;
         protected readonly object lockObjectDb = new object();
         protected readonly object lockObjectDirectory = new object();
         protected readonly object lockObjectDownload = new object();
@@ -37,12 +39,14 @@ namespace TumblThree.Applications.Crawler
         protected List<string> tags = new List<string>();
         protected int numberOfPagesCrawled = 0;
 
-        protected AbstractCrawler(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, ICrawlerService crawlerService, ISharedCookieService cookieService, IDownloader downloader, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
+        protected AbstractCrawler(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IDownloader downloader, IGfycatParser gfycatParser, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
         {
             this.shellService = shellService;
             this.crawlerService = crawlerService;
+            this.webRequestFactory = webRequestFactory;
             this.cookieService = cookieService;
             this.downloader = downloader;
+            this.gfycatParser = gfycatParser;
             this.producerConsumerCollection = producerConsumerCollection;
             this.blog = blog;
             this.ct = ct;
@@ -77,120 +81,18 @@ namespace TumblThree.Applications.Crawler
             progress.Report(newProgress);
         }
 
-        protected HttpWebRequest CreateStubReqeust(string url)
-        {
-            var request = (HttpWebRequest)WebRequest.Create(url);
-            request.ProtocolVersion = HttpVersion.Version11;
-            request.UserAgent =
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
-            request.AllowAutoRedirect = true;
-            request.KeepAlive = true;
-            request.Pipelined = true;
-            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-            // Timeouts don't work with GetResponseAsync() as it internally uses BeginGetResponse.
-            // See docs: https://msdn.microsoft.com/en-us/library/system.net.httpwebrequest.timeout(v=vs.110).aspx
-            // Quote: The Timeout property has no effect on asynchronous requests made with the BeginGetResponse or BeginGetRequestStream method.
-            // TODO: Use HttpClient instead?
-            request.ReadWriteTimeout = shellService.Settings.TimeOut * 1000;
-            request.Timeout = shellService.Settings.TimeOut * 1000;
-            request.CookieContainer = new CookieContainer();
-            cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
-            cookieService.GetUriCookie(request.CookieContainer, new Uri("https://" + blog.Name.Replace("+", "-") + ".tumblr.com"));
-            ServicePointManager.DefaultConnectionLimit = 400;
-            request = SetWebRequestProxy(request, shellService.Settings);
-            return request;
-        }
-
-        protected HttpWebRequest CreateGetReqeust(string url)
-        {
-            HttpWebRequest request = CreateStubReqeust(url);
-            return request;
-        }
-
-        protected HttpWebRequest CreateGetXhrReqeust(string url, string referer = "")
-        {
-            HttpWebRequest request = CreateStubReqeust(url);
-            request.Method = "GET";
-            request.ContentType = "application/json";
-            request.Headers["X-Requested-With"] = "XMLHttpRequest";
-            request.Referer = referer;
-            return request;
-        }
-
-        protected HttpWebRequest CreatePostReqeust(string url, string referer = "", Dictionary<string, string> headers = null)
-        {
-            var request = CreateStubReqeust(url);
-            request.Method = "POST";
-            request.ContentType = "application/x-www-form-urlencoded";
-            request.Referer = referer;
-            if (headers == null)
-            {
-                return request;
-            }
-            foreach (KeyValuePair<string, string> header in headers)
-            {
-                request.Headers[header.Key] = header.Value;
-            }
-            return request;
-        }
-
-        protected HttpWebRequest CreatePostXhrReqeust(string url, string referer = "", Dictionary<string, string> headers = null)
-        {
-            var request = CreatePostReqeust(url, referer, headers);
-            request.Accept = "application/json, text/javascript, */*; q=0.01";
-            request.Headers["X-Requested-With"] = "XMLHttpRequest";
-            return request;
-        }
-
-        protected static HttpWebRequest SetWebRequestProxy(HttpWebRequest request, AppSettings settings)
-        {
-            if (!string.IsNullOrEmpty(settings.ProxyHost) && !string.IsNullOrEmpty(settings.ProxyPort))
-                request.Proxy = new WebProxy(settings.ProxyHost, int.Parse(settings.ProxyPort));
-            else
-                request.Proxy = null;
-
-            if (!string.IsNullOrEmpty(settings.ProxyUsername) && !string.IsNullOrEmpty(settings.ProxyPassword))
-                request.Proxy.Credentials = new NetworkCredential(settings.ProxyUsername, settings.ProxyPassword);
-            return request;
-        }
-
-        protected Stream GetStreamForApiRequest(Stream stream)
-        {
-            if (!shellService.Settings.LimitScanBandwidth || shellService.Settings.Bandwidth == 0)
-                return stream;
-            return new ThrottledStream(stream, (shellService.Settings.Bandwidth / shellService.Settings.ConcurrentConnections) * 1024);
-
-        }
-
         protected virtual async Task<string> RequestDataAsync(string url)
         {
             var requestRegistration = new CancellationTokenRegistration();
             try
             {
-                HttpWebRequest request = CreateGetReqeust(url);
+                HttpWebRequest request = webRequestFactory.CreateGetReqeust(url);
                 requestRegistration = ct.Register(() => request.Abort());
-                return await ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
+                return await webRequestFactory.ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
             }
             finally
             {
                 requestRegistration.Dispose();
-            }
-        }
-
-        protected async Task<string> ReadReqestToEnd(HttpWebRequest request)
-        {
-            using (var response = await request.GetResponseAsync() as HttpWebResponse)
-            {
-                using (var stream = GetStreamForApiRequest(response.GetResponseStream()))
-                {
-                    using (var buffer = new BufferedStream(stream))
-                    {
-                        using (var reader = new StreamReader(buffer))
-                        {
-                            return reader.ReadToEnd();
-                        }
-                    }
-                }
             }
         }
 

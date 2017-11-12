@@ -69,6 +69,10 @@
     <Compile Include="Controllers\ManagerController.cs" />
     <Compile Include="Controllers\ModuleController.cs" />
     <Compile Include="Controllers\QueueController.cs" />
+    <Compile Include="Crawler\GfycatParser.cs" />
+    <Compile Include="Crawler\IGfycatParser.cs" />
+    <Compile Include="Crawler\IWebRequestFactory.cs" />
+    <Compile Include="Crawler\WebRequestFactory.cs" />
     <Compile Include="DataModels\DownloadProgress.cs" />
     <Compile Include="ObjectModel\ObservableRangeCollection.cs" />
     <Compile Include="DataModels\TumblrSvcJson.cs" />

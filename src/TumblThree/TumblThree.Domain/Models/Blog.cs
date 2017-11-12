@@ -62,6 +62,9 @@ namespace TumblThree.Domain.Models
         private int downloadedPhotoMetas;
         private int downloadedVideoMetas;
         private int downloadedAudioMetas;
+        private bool downloadGfycat;
+        private bool downloadImgur;
+        private bool downloadWebmshare;
         private string downloadPages;
         private int pageSize;
         private string downloadFrom;
@@ -71,6 +74,7 @@ namespace TumblThree.Domain.Models
         private DateTime dateAdded;
         private DateTime lastCompleteCrawl;
         private bool online;
+        private int settingsTabIndex;
         private int progress;
         private int quotes;
         [DataMember(Name="Links")]
@@ -479,6 +483,33 @@ namespace TumblThree.Domain.Models
         }
 
         [DataMember]
+        public bool DownloadGfycat
+        {
+            get { return downloadGfycat; }
+            set { SetProperty(ref downloadGfycat, value); }
+        }
+
+        [DataMember]
+        public GfycatTypes GfycatType { get; set; }
+
+        [DataMember]
+        public WebmshareTypes WebmshareType { get; set; }
+
+        [DataMember]
+        public bool DownloadImgur
+        {
+            get { return downloadImgur; }
+            set { SetProperty(ref downloadImgur, value); }
+        }
+
+        [DataMember]
+        public bool DownloadWebmshare
+        {
+            get { return downloadWebmshare; }
+            set { SetProperty(ref downloadWebmshare, value); }
+        }
+
+        [DataMember]
         public string DownloadPages
         {
             get { return downloadPages; }
@@ -552,6 +583,13 @@ namespace TumblThree.Domain.Models
         {
             get { return online; }
             set { SetProperty(ref online, value); }
+        }
+
+        [DataMember]
+        public int SettingsTabIndex
+        {
+            get { return settingsTabIndex; }
+            set { SetProperty(ref settingsTabIndex, value); }
         }
 
         [DataMember]

@@ -702,4 +702,34 @@ E.g.  great big car, bears searches for great big cars and bears.</value>
   <data name="ToolTipVideoConnectionsDescription" xml:space="preserve">
     <value>The vt.tumblr.com host regularly closes connections if the number is too high.</value>
   </data>
+  <data name="DownloadSettings" xml:space="preserve">
+    <value>Download settings:</value>
+  </data>
+  <data name="DownloadGfycat" xml:space="preserve">
+    <value>Download gfycat</value>
+  </data>
+  <data name="DownloadWebmshare" xml:space="preserve">
+    <value>Download webmshare</value>
+  </data>
+  <data name="ToolTipDownloadGfycat" xml:space="preserve">
+    <value>Download linked gfycat.com files</value>
+  </data>
+  <data name="ToolTipDownloadGfycatDescription" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ToolTipDownloadWebmshare" xml:space="preserve">
+    <value>Download linked webmshare.com files</value>
+  </data>
+  <data name="ToolTipDownloadWebmshareDescription" xml:space="preserve">
+    <value />
+  </data>
+  <data name="DownloadImgur" xml:space="preserve">
+    <value>Download imgur</value>
+  </data>
+  <data name="ToolTipDownloadImgur" xml:space="preserve">
+    <value>Download linked imgur.com files</value>
+  </data>
+  <data name="ToolTipDownloadImgurDescription" xml:space="preserve">
+    <value />
+  </data>
 </root>

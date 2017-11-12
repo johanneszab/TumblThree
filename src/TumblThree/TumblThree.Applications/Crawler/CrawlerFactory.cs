@@ -45,18 +45,20 @@ namespace TumblThree.Applications.Crawler
         {
             BlockingCollection<TumblrPost> producerConsumerCollection = GetProducerConsumerCollection();
             IFiles files = LoadFiles(blog);
+            IWebRequestFactory webRequestFactory = GetWebRequestFactory();
+            IGfycatParser gfycatParser = GetGfycatParser(webRequestFactory, ct);
             switch (blogtype)
             {
                 case BlogTypes.tumblr:
-                    return new TumblrBlogCrawler(shellService, ct, pt, progress, crawlerService, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, files, producerConsumerCollection), producerConsumerCollection, blog);
+                    return new TumblrBlogCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, files, producerConsumerCollection), gfycatParser, producerConsumerCollection, blog);
                 case BlogTypes.tmblrpriv:
-                    return new TumblrPrivateCrawler(shellService, ct, pt, progress, crawlerService, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, files, producerConsumerCollection), producerConsumerCollection, blog);
+                    return new TumblrPrivateCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory ,cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, files, producerConsumerCollection), gfycatParser, producerConsumerCollection, blog);
                 case BlogTypes.tlb:
-                    return new TumblrLikedByCrawler(shellService, ct, pt, progress, crawlerService, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, files, producerConsumerCollection), producerConsumerCollection, blog);
+                    return new TumblrLikedByCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, files, producerConsumerCollection), gfycatParser, producerConsumerCollection, blog);
                 case BlogTypes.tumblrsearch:
-                    return new TumblrSearchCrawler(shellService, ct, pt, progress, crawlerService, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, files, producerConsumerCollection), producerConsumerCollection, blog);
+                    return new TumblrSearchCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, files, producerConsumerCollection), gfycatParser, producerConsumerCollection, blog);
                 case BlogTypes.tumblrtagsearch:
-                    return new TumblrTagSearchCrawler(shellService, ct, pt, progress, crawlerService, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, files, producerConsumerCollection), producerConsumerCollection, blog);
+                    return new TumblrTagSearchCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, files, producerConsumerCollection), gfycatParser, producerConsumerCollection, blog);
                 default:
                     throw new ArgumentException("Website is not supported!", "blogType");
             }
@@ -65,6 +67,16 @@ namespace TumblThree.Applications.Crawler
         private IFiles LoadFiles(IBlog blog)
         {
             return new Files().Load(blog.ChildId);
+        }
+
+        private IWebRequestFactory GetWebRequestFactory()
+        {
+            return new WebRequestFactory(settings, cookieService);
+        }
+
+        private IGfycatParser GetGfycatParser(IWebRequestFactory webRequestFactory, CancellationToken ct)
+        {
+            return new GfycatParser(settings, webRequestFactory, ct);
         }
 
         private FileDownloader GetFileDownloader(CancellationToken ct)

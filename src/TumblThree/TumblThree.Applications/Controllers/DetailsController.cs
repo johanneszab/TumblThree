@@ -173,6 +173,9 @@ namespace TumblThree.Applications.Controllers
                 ForceRescan = SetCheckBox(sharedBlogFiles, "ForceRescan"),
                 CheckDirectoryForFiles = SetCheckBox(sharedBlogFiles, "CheckDirectoryForFiles"),
                 DownloadUrlList = SetCheckBox(sharedBlogFiles, "DownloadUrlList"),
+                SettingsTabIndex = SetProperty<int>(sharedBlogFiles, "SettingsTabIndex"),
+                GfycatType = SetProperty<GfycatTypes>(sharedBlogFiles, "GfycatType"),
+                WebmshareType = SetProperty<WebmshareTypes>(sharedBlogFiles, "WebmshareType"),
                 Dirty = false
             };
         }

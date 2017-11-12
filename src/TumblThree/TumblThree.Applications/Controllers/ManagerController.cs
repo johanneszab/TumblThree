@@ -19,8 +19,6 @@ using TumblThree.Domain;
 using TumblThree.Domain.Models;
 using TumblThree.Domain.Queue;
 
-using Blog = TumblThree.Domain.Models.Blog;
-
 namespace TumblThree.Applications.Controllers
 {
     [Export]
