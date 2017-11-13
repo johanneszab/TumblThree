@@ -21,8 +21,8 @@ namespace TumblThree.Applications.Crawler
     public class TumblrLikedByCrawler : AbstractCrawler, ICrawler
     {
         public TumblrLikedByCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
-            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, ISharedCookieService cookieService, IDownloader downloader, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
-            : base(shellService, ct, pt, progress, crawlerService, cookieService, downloader, producerConsumerCollection, blog)
+            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IDownloader downloader, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
+            : base(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, downloader, producerConsumerCollection, blog)
         {
         }
 
@@ -94,7 +94,7 @@ namespace TumblThree.Applications.Crawler
 
             //if (!ct.IsCancellationRequested)
             //{
-            UpdateBlogStats();
+                UpdateBlogStats();
             //}
         }
 
@@ -145,7 +145,7 @@ namespace TumblThree.Applications.Crawler
                 {
                     string imageUrl = match.Groups[1].Value;
                     if (imageUrl.Contains("avatar") || imageUrl.Contains("previews"))
-                        continue;
+                        continue;                    
                     if (blog.SkipGif && imageUrl.EndsWith(".gif"))
                     {
                         continue;
@@ -174,7 +174,7 @@ namespace TumblThree.Applications.Crawler
                     else if (shellService.Settings.VideoSize == 480)
                     {
                         // TODO: add valid postID
-                        AddToDownloadList(new TumblrPost(PostTypes.Video,
+                        AddToDownloadList(new TumblrPost(PostTypes.Video, 
                             "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + "_480.mp4",
                             Guid.NewGuid().ToString("N")));
                     }

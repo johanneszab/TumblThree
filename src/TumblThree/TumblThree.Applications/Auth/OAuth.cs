@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 
-namespace TumblThree.Applications
+namespace TumblThree.Applications.Auth
 {
     /// <summary>
     ///     A class to manage OAuth interactions.  This works with

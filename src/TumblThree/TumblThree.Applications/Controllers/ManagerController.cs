@@ -5,22 +5,19 @@ using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Waf.Applications;
 using System.Windows;
 
-using TumblThree.Applications.Crawler;
 using TumblThree.Applications.DataModels;
+using TumblThree.Applications.Crawler;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Applications.ViewModels;
 using TumblThree.Domain;
 using TumblThree.Domain.Models;
 using TumblThree.Domain.Queue;
-
-using Blog = TumblThree.Domain.Models.Blog;
 
 namespace TumblThree.Applications.Controllers
 {
@@ -39,18 +36,20 @@ namespace TumblThree.Applications.Controllers
         private readonly DelegateCommand enqueueSelectedCommand;
         private readonly DelegateCommand listenClipboardCommand;
         private readonly AsyncDelegateCommand loadLibraryCommand;
+
         private readonly object lockObject = new object();
         private readonly IManagerService managerService;
         private readonly Lazy<ManagerViewModel> managerViewModel;
         private readonly DelegateCommand removeBlogCommand;
         private readonly ISelectionService selectionService;
         private readonly IShellService shellService;
+        private readonly ISettingsService settingsService;
         private readonly DelegateCommand showDetailsCommand;
         private readonly DelegateCommand showFilesCommand;
         private readonly DelegateCommand visitBlogCommand;
 
         [ImportingConstructor]
-        public ManagerController(IShellService shellService, ISelectionService selectionService, ICrawlerService crawlerService,
+        public ManagerController(IShellService shellService, ISelectionService selectionService, ICrawlerService crawlerService, ISettingsService settingsService,
             IManagerService managerService, ICrawlerFactory crawlerFactory, IBlogFactory blogFactory, Lazy<ManagerViewModel> managerViewModel)
         {
             this.shellService = shellService;
@@ -58,6 +57,7 @@ namespace TumblThree.Applications.Controllers
             this.crawlerService = crawlerService;
             this.managerService = managerService;
             this.managerViewModel = managerViewModel;
+            this.settingsService = settingsService;
             CrawlerFactory = crawlerFactory;
             BlogFactory = blogFactory;
             addBlogCommand = new AsyncDelegateCommand(AddBlog, CanAddBlog);
@@ -165,7 +165,7 @@ namespace TumblThree.Applications.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error("ManagerController:LoadLibrary: {0}", ex);
+                Logger.Verbose("ManagerController:LoadLibrary: {0}", ex);
                 shellService.ShowError(ex, Resources.CouldNotLoadLibrary, ex.Data["Filename"]);
             }
             Logger.Verbose("ManagerController.LoadLibrary:End");
@@ -312,7 +312,6 @@ namespace TumblThree.Applications.Controllers
                 QueueManager.RemoveItems(QueueManager.Items.Where(item => item.Blog.Equals(blog)));
             }
         }
-
         private bool CanShowFiles()
         {
             return ManagerViewModel.SelectedBlogFile != null;
@@ -364,10 +363,11 @@ namespace TumblThree.Applications.Controllers
                 return;
             }
 
-            TransferGlobalSettingsToBlog(blog);
+            blog = settingsService.TransferGlobalSettingsToBlog(blog);
             ICrawler crawler = CrawlerFactory.GetCrawler(blog.BlogType, new CancellationToken(), new PauseToken(), new Progress<DownloadProgress>(), shellService, crawlerService, blog);
             await crawler.IsBlogOnlineAsync();
             await crawler.UpdateMetaInformationAsync();
+
             lock (lockObject)
             {
                 if (managerService.BlogFiles.Any(blogs => blogs.Name.Equals(blog.Name) && blogs.BlogType.Equals(blog.BlogType)))
@@ -381,28 +381,6 @@ namespace TumblThree.Applications.Controllers
                     QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => managerService.BlogFiles.Add(blog)));
                 }
             }
-        }
-
-        private void TransferGlobalSettingsToBlog(IBlog blog)
-        {
-            blog.DownloadAudio = shellService.Settings.DownloadAudios;
-            blog.DownloadPhoto = shellService.Settings.DownloadImages;
-            blog.DownloadVideo = shellService.Settings.DownloadVideos;
-            blog.DownloadText = shellService.Settings.DownloadTexts;
-            blog.DownloadAnswer = shellService.Settings.DownloadAnswers;
-            blog.DownloadQuote = shellService.Settings.DownloadQuotes;
-            blog.DownloadConversation = shellService.Settings.DownloadConversations;
-            blog.DownloadLink = shellService.Settings.DownloadLinks;
-            blog.CreatePhotoMeta = shellService.Settings.CreateImageMeta;
-            blog.CreateVideoMeta = shellService.Settings.CreateVideoMeta;
-            blog.CreateAudioMeta = shellService.Settings.CreateAudioMeta;
-            blog.SkipGif = shellService.Settings.SkipGif;
-            blog.DownloadRebloggedPosts = shellService.Settings.DownloadRebloggedPosts;
-            blog.ForceSize = shellService.Settings.ForceSize;
-            blog.CheckDirectoryForFiles = shellService.Settings.CheckDirectoryForFiles;
-            blog.DownloadUrlList = shellService.Settings.DownloadUrlList;
-            blog.DownloadPages = shellService.Settings.DownloadPages;
-            blog.PageSize = shellService.Settings.PageSize;
         }
 
         private void OnClipboardContentChanged(object sender, EventArgs e)

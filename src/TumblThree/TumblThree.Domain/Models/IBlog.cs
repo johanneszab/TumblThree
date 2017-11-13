@@ -130,11 +130,23 @@ namespace TumblThree.Domain.Models
 
         string LastDownloadedVideo { get; set; }
 
+        bool DownloadGfycat { get; set; }
+
+        GfycatTypes GfycatType { get; set; }
+
+        bool DownloadImgur { get; set; }
+
+        bool DownloadWebmshare { get; set; }
+
+        WebmshareTypes WebmshareType { get; set; }
+
         BlogTypes BlogType { get; set; }
 
         DateTime DateAdded { get; set; }
 
         DateTime LastCompleteCrawl { get; set; }
+
+        int SettingsTabIndex { get; set; }
 
         bool Online { get; set; }
 

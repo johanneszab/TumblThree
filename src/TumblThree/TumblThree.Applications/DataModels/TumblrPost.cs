@@ -24,7 +24,7 @@ namespace TumblThree.Applications.DataModels
             this.PostType = postType;
             this.Url = url;
             this.Id = id;
-            this.Date = String.Empty;
+            this.Date = string.Empty;
         }
     }
 }

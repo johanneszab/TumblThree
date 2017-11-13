@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace TumblThree.Applications
+namespace TumblThree.Applications.Extensions
 {
     static class TaskTimeoutExtension
     {

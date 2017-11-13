@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using TumblThree.Applications.DataModels;
 using TumblThree.Applications.DataModels.TumblrSearchJson;
 using TumblThree.Applications.Downloader;
+using TumblThree.Applications.Extensions;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain;
@@ -27,8 +28,8 @@ namespace TumblThree.Applications.Crawler
         private string tumblrKey = String.Empty;
 
         public TumblrSearchCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
-            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, ISharedCookieService cookieService, IDownloader downloader, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
-            : base(shellService, ct, pt, progress, crawlerService, cookieService, downloader, producerConsumerCollection, blog)
+            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IDownloader downloader, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
+            : base(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, downloader, producerConsumerCollection, blog)
         {
         }
 
@@ -130,8 +131,9 @@ namespace TumblThree.Applications.Crawler
                 string url = "https://www.tumblr.com/search/" + blog.Name + "/post_page/" + pageNumber;
                 string referer = @"https://www.tumblr.com/search/" + blog.Name;
                 var headers = new Dictionary<string, string> { { "X-tumblr-form-key", tumblrKey }, { "DNT", "1" } };
-                HttpWebRequest request = CreatePostXhrReqeust(url, referer, headers);
-
+                HttpWebRequest request = webRequestFactory.CreatePostXhrReqeust(url, referer, headers);
+                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
+                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://" + blog.Name.Replace("+", "-") + ".tumblr.com"));
                 //Complete requestBody from webbrowser, searching for cars:
                 //q=cars&sort=top&post_view=masonry&blogs_before=8&num_blogs_shown=8&num_posts_shown=20&before=24&blog_page=2&safe_mode=true&post_page=2&filter_nsfw=true&filter_post_type=&next_ad_offset=0&ad_placement_id=0&more_posts=true
                 string requestBody = "q=" + blog.Name + "&sort=top&post_view=masonry&num_posts_shown=" + ((pageNumber - 1) * blog.PageSize) + "&before=" + ((pageNumber - 1) * blog.PageSize) + "&safe_mode=false&post_page=" + pageNumber + "&filter_nsfw=false&filter_post_type=&next_ad_offset=0&ad_placement_id=0&more_posts=true";
@@ -143,7 +145,7 @@ namespace TumblThree.Applications.Crawler
                 }
 
                 requestRegistration = ct.Register(() => request.Abort());
-                return await ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
+                return await webRequestFactory.ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
             }
             finally
             {
@@ -157,10 +159,12 @@ namespace TumblThree.Applications.Crawler
             try
             {
                 string url = "https://www.tumblr.com/search/" + blog.Name;
-                HttpWebRequest request = CreateGetReqeust(url);
+                HttpWebRequest request = webRequestFactory.CreateGetReqeust(url);
+                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
+                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://" + blog.Name.Replace("+", "-") + ".tumblr.com"));
 
                 requestRegistration = ct.Register(() => request.Abort());
-                return await ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
+                return await webRequestFactory.ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
             }
             finally
             {

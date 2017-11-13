@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 using TumblThree.Applications.DataModels;
 using TumblThree.Applications.Downloader;
+using TumblThree.Applications.Extensions;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain;
@@ -23,8 +24,8 @@ namespace TumblThree.Applications.Crawler
     public class TumblrTagSearchCrawler : AbstractCrawler, ICrawler
     {
         public TumblrTagSearchCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
-            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, ISharedCookieService cookieService, IDownloader downloader, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
-            : base(shellService, ct, pt, progress, crawlerService, cookieService, downloader, producerConsumerCollection, blog)
+            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IDownloader downloader, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
+            : base(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, downloader, producerConsumerCollection, blog)
         {
         }
 
@@ -159,10 +160,11 @@ namespace TumblThree.Applications.Crawler
             try
             {
                 string urlForGetRequest = "https://www.tumblr.com/tagged/" + blog.Name + "?before=" + pagination;
-                HttpWebRequest request = CreateGetReqeust(urlForGetRequest);
-
+                HttpWebRequest request = webRequestFactory.CreateGetReqeust(urlForGetRequest);
+                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
+                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://" + blog.Name.Replace("+", "-") + ".tumblr.com"));
                 requestRegistration = ct.Register(() => request.Abort());
-                return await ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
+                return await webRequestFactory.ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
             }
             finally
             {

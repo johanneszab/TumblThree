@@ -18,6 +18,7 @@ using TumblThree.Applications.Services;
 using TumblThree.Domain;
 using TumblThree.Domain.Models;
 using TumblThree.Applications.DataModels.TumblrSvcJson;
+using TumblThree.Applications.Extensions;
 
 namespace TumblThree.Applications.Crawler
 {
@@ -25,12 +26,17 @@ namespace TumblThree.Applications.Crawler
     [ExportMetadata("BlogType", BlogTypes.tmblrpriv)]
     public class TumblrBlogCrawler : AbstractCrawler, ICrawler
     {
+        private readonly IGfycatParser gfycatParser;
+        private readonly IWebmshareParser webmshareParser;
+
         private string authentication = string.Empty;
 
         public TumblrBlogCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
-            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, ISharedCookieService cookieService, IDownloader downloader, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
-            : base(shellService, ct, pt, progress, crawlerService, cookieService, downloader, producerConsumerCollection, blog)
+            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IDownloader downloader, IGfycatParser gfycatParser, IWebmshareParser webmshareParser, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
+            : base(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, downloader, producerConsumerCollection, blog)
         {
+            this.gfycatParser = gfycatParser;
+            this.webmshareParser = webmshareParser;
         }
 
         public override async Task IsBlogOnlineAsync()
@@ -131,9 +137,9 @@ namespace TumblThree.Applications.Crawler
 
         private async Task UpdateAuthentication()
         {
-            string document = await ThrottleAsync(Authenticate);
+            string document = await ThrottleAsync(Authenticate).TimeoutAfter(shellService.Settings.TimeOut);
             authentication = ExtractAuthenticationKey(document);
-            await UpdateCookieWithAuthentication();
+            await UpdateCookieWithAuthentication().TimeoutAfter(shellService.Settings.TimeOut);
         }
 
         private async Task<T> ThrottleAsync<T>(Func<Task<T>> method)
@@ -152,7 +158,9 @@ namespace TumblThree.Applications.Crawler
             {
                 string url = "https://www.tumblr.com/blog_auth/" + blog.Name;
                 var headers = new Dictionary<string, string>();
-                HttpWebRequest request = CreatePostReqeust(url, url, headers);
+                HttpWebRequest request = webRequestFactory.CreatePostReqeust(url, url, headers);
+                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
+                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://" + blog.Name.Replace("+", "-") + ".tumblr.com"));
                 string requestBody = "password=" + blog.Password;
                 using (Stream postStream = await request.GetRequestStreamAsync())
                 {
@@ -162,7 +170,7 @@ namespace TumblThree.Applications.Crawler
                 }
 
                 requestRegistration = ct.Register(() => request.Abort());
-                return await ReadReqestToEnd(request);
+                return await webRequestFactory.ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
             }
             finally
             {
@@ -184,7 +192,9 @@ namespace TumblThree.Applications.Crawler
                 string referer = "https://www.tumblr.com/blog_auth/" + blog.Name;
                 var headers = new Dictionary<string, string>();
                 headers.Add("DNT", "1");
-                HttpWebRequest request = CreatePostReqeust(url, referer, headers);
+                HttpWebRequest request = webRequestFactory.CreatePostReqeust(url, referer, headers);
+                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
+                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://" + blog.Name.Replace("+", "-") + ".tumblr.com"));
                 string requestBody = "auth=" + authentication;
                 using (Stream postStream = await request.GetRequestStreamAsync())
                 {
@@ -359,9 +369,11 @@ namespace TumblThree.Applications.Crawler
                 string url = @"https://www.tumblr.com/svc/indash_blog?tumblelog_name_or_id=" + blog.Name +
                     @"&post_id=&limit=" + limit + "&offset=" + offset + "&should_bypass_safemode=true";
                 string referer = @"https://www.tumblr.com/dashboard/blog/" + blog.Name;
-                HttpWebRequest request = CreateGetXhrReqeust(url, referer);
+                HttpWebRequest request = webRequestFactory.CreateGetXhrReqeust(url, referer);
+                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
+                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://" + blog.Name.Replace("+", "-") + ".tumblr.com"));
                 requestRegistration = ct.Register(() => request.Abort());
-                return await ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
+                return await webRequestFactory.ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
             }
             finally
             {
@@ -395,6 +407,7 @@ namespace TumblThree.Applications.Crawler
                     AddPhotoMetaUrlToDownloadList(response);
                     AddVideoMetaUrlToDownloadList(response);
                     AddAudioMetaUrlToDownloadList(response);
+                    await AddExternalPhotoUrlToDownloadList(response);
                 }
                 catch (NullReferenceException)
                 {
@@ -747,6 +760,97 @@ namespace TumblThree.Applications.Crawler
                             string postId = post.id;
                             string textBody = ParseAudioMeta(post);
                             AddToDownloadList(new TumblrPost(PostTypes.AudioMeta, textBody, postId));
+                        }
+                    }
+                }
+            }
+        }
+
+        private async Task AddExternalPhotoUrlToDownloadList(TumblrJson document)
+        {
+            if (blog.DownloadPhoto)
+            {
+                if (blog.DownloadImgur)
+                {
+                    foreach (Post post in document.response.posts)
+                    {
+                        if (!PostWithinTimeSpan(post))
+                            continue;
+                        if (!tags.Any() || post.tags.Intersect(tags, StringComparer.OrdinalIgnoreCase).Any())
+                        {
+                            if (CheckIfDownloadRebloggedPosts(post))
+                            {
+                                var regex =
+                                    new Regex("(http[A-Za-z0-9_/:.]*i.imgur.com[A-Za-z0-9_/:.]*(jpg|png|gif|gifv))");
+                                foreach (Match match in regex.Matches(post.ToString()))
+                                {
+                                    string imageUrl = match.Groups[1].Value;
+                                    if (blog.SkipGif && (imageUrl.EndsWith(".gif") || imageUrl.EndsWith(".gifv")))
+                                    {
+                                        continue;
+                                    }
+                                    // TODO: postID
+                                    AddToDownloadList(new TumblrPost(PostTypes.Photo, imageUrl, Guid.NewGuid().ToString("N"),
+                                        post.timestamp.ToString()));
+                                }
+                            }
+                        }
+                    }
+                }
+                if (blog.DownloadGfycat)
+                {
+                    foreach (Post post in document.response.posts)
+                    {
+                        if (!PostWithinTimeSpan(post))
+                            continue;
+                        if (!tags.Any() || post.tags.Intersect(tags, StringComparer.OrdinalIgnoreCase).Any())
+                        {
+                            if (CheckIfDownloadRebloggedPosts(post))
+                            {
+                                var regex =
+                                    new Regex("(http[A-Za-z0-9_/:.]*gfycat.com/([A-Za-z0-9_]*))");
+                                foreach (Match match in regex.Matches(post.ToString()))
+                                {
+                                    string gfyId = match.Groups[2].Value;
+                                    string imageUrl = gfycatParser.ParseGfycatCajaxResponse(await gfycatParser.RequestGfycatCajax(gfyId),
+                                        blog.GfycatType);
+                                    if (blog.SkipGif && (imageUrl.EndsWith(".gif") || imageUrl.EndsWith(".gifv")))
+                                    {
+                                        continue;
+                                    }
+                                    // TODO: postID
+                                    AddToDownloadList(new TumblrPost(PostTypes.Video, imageUrl, Guid.NewGuid().ToString("N"),
+                                        post.timestamp.ToString()));
+                                }
+                            }
+                        }
+                    }
+                }
+                if (blog.DownloadWebmshare)
+                {
+                    foreach (Post post in document.response.posts)
+                    {
+                        if (!PostWithinTimeSpan(post))
+                            continue;
+                        if (!tags.Any() || post.tags.Intersect(tags, StringComparer.OrdinalIgnoreCase).Any())
+                        {
+                            if (CheckIfDownloadRebloggedPosts(post))
+                            {
+                                var regex =
+                                    new Regex("(http[A-Za-z0-9_/:.]*webmshare.com/([A-Za-z0-9_]*))");
+                                foreach (Match match in regex.Matches(post.ToString()))
+                                {
+                                    string webmshareId = match.Groups[2].Value;
+                                    string imageUrl = webmshareParser.CreateWebmshareUrl(webmshareId, blog.WebmshareType);
+                                    if (blog.SkipGif && (imageUrl.EndsWith(".gif") || imageUrl.EndsWith(".gifv")))
+                                    {
+                                        continue;
+                                    }
+                                    // TODO: postID
+                                    AddToDownloadList(new TumblrPost(PostTypes.Video, imageUrl, Guid.NewGuid().ToString("N"),
+                                        post.timestamp.ToString()));
+                                }
+                            }
                         }
                     }
                 }

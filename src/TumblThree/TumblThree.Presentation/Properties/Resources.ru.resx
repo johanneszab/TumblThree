@@ -136,7 +136,7 @@
     <value>Очистить очередь</value>
   </data>
   <data name="ClipboardMonitor" xml:space="preserve">
-    <value>Брать из буфера</value>
+    <value>Из буфера</value>
   </data>
   <data name="Crawl" xml:space="preserve">
     <value>Выкачать</value>
@@ -193,7 +193,7 @@
     <value>Удалить блог</value>
   </data>
   <data name="RemoveFromQueue" xml:space="preserve">
-    <value>Убрать из очереди</value>
+    <value>Из очереди</value>
   </data>
   <data name="RemoveSelected" xml:space="preserve">
     <value>Удалить выбранное</value>
@@ -217,7 +217,7 @@
     <value>Показать подробную информацию</value>
   </data>
   <data name="ShowFiles" xml:space="preserve">
-    <value>Показать файлы</value>
+    <value>Загруженное</value>
   </data>
   <data name="Stop" xml:space="preserve">
     <value>Стоп</value>
@@ -382,7 +382,7 @@
     <value>Скачивать текстовые сообщения</value>
   </data>
   <data name="DetailsProgress" xml:space="preserve">
-    <value>{0} из {1}, дублирующихся файлов: {2}</value>
+    <value>{0} из {1}, дубликатов: {2}</value>
   </data>
   <data name="EnablePreview" xml:space="preserve">
     <value>Предварительный просмотр вкл/выкл</value>

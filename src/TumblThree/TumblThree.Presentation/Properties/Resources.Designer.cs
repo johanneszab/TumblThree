@@ -484,6 +484,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download gfycat.
+        /// </summary>
+        public static string DownloadGfycat {
+            get {
+                return ResourceManager.GetString("DownloadGfycat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Download image meta.
         /// </summary>
         public static string DownloadImageMeta {
@@ -498,6 +507,15 @@ namespace TumblThree.Presentation.Properties {
         public static string DownloadImages {
             get {
                 return ResourceManager.GetString("DownloadImages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download imgur.
+        /// </summary>
+        public static string DownloadImgur {
+            get {
+                return ResourceManager.GetString("DownloadImgur", resourceCulture);
             }
         }
         
@@ -610,6 +628,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download webmshare.
+        /// </summary>
+        public static string DownloadWebmshare {
+            get {
+                return ResourceManager.GetString("DownloadWebmshare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start download at.
         /// </summary>
         public static string EnableAutoDownload {
@@ -660,6 +687,15 @@ namespace TumblThree.Presentation.Properties {
         public static string Export {
             get {
                 return ResourceManager.GetString("Export", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to External:.
+        /// </summary>
+        public static string ExternalSettings {
+            get {
+                return ResourceManager.GetString("ExternalSettings", resourceCulture);
             }
         }
         
@@ -1380,6 +1416,42 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download linked gfycat.com files.
+        /// </summary>
+        public static string ToolTipDownloadGfycat {
+            get {
+                return ResourceManager.GetString("ToolTipDownloadGfycat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download externally hosted gfycat.com files.
+        /// </summary>
+        public static string ToolTipDownloadGfycatDescription {
+            get {
+                return ResourceManager.GetString("ToolTipDownloadGfycatDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download linked imgur.com files.
+        /// </summary>
+        public static string ToolTipDownloadImgur {
+            get {
+                return ResourceManager.GetString("ToolTipDownloadImgur", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download externally hosted imgur.com files.
+        /// </summary>
+        public static string ToolTipDownloadImgurDescription {
+            get {
+                return ResourceManager.GetString("ToolTipDownloadImgurDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Download only specific pages.
         /// </summary>
         public static string ToolTipDownloadPages {
@@ -1452,6 +1524,24 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download linked webmshare.com files.
+        /// </summary>
+        public static string ToolTipDownloadWebmshare {
+            get {
+                return ResourceManager.GetString("ToolTipDownloadWebmshare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download externally hosted webmshare.com files.
+        /// </summary>
+        public static string ToolTipDownloadWebmshareDescription {
+            get {
+                return ResourceManager.GetString("ToolTipDownloadWebmshareDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Export all blog urls as text file.
         /// </summary>
         public static string ToolTipExportBlogs {
@@ -1479,7 +1569,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Forces a complete scan using the Tumblr svc..
+        ///   Looks up a localized string similar to Forces a complete scan using the Tumblr api..
         /// </summary>
         public static string ToolTipForceRescanDescription {
             get {
@@ -1504,6 +1594,24 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipForceSizeDescription {
             get {
                 return ResourceManager.GetString("ToolTipForceSizeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File type to download.
+        /// </summary>
+        public static string ToolTipGfycatFiletype {
+            get {
+                return ResourceManager.GetString("ToolTipGfycatFiletype", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chose which file type you want to download.
+        /// </summary>
+        public static string ToolTipGfycatFiletypeDescription {
+            get {
+                return ResourceManager.GetString("ToolTipGfycatFiletypeDescription", resourceCulture);
             }
         }
         
@@ -1536,10 +1644,10 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr svc.
+        ///   Looks up a localized string similar to A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr api.
         ///A too small value will decrease the scanning speed.
         ///Set a number/time pair.
-        ///Note: The tumblr svc is only used for regular tumblr blog downloads..
+        ///Note: The tumblr api is only used for regular tumblr blog downloads..
         /// </summary>
         public static string ToolTipLimitConnectionsDescription {
             get {
@@ -1728,6 +1836,24 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipVideoConnectionsDescription {
             get {
                 return ResourceManager.GetString("ToolTipVideoConnectionsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File type to download.
+        /// </summary>
+        public static string ToolTipWebmshareFiletype {
+            get {
+                return ResourceManager.GetString("ToolTipWebmshareFiletype", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chose which file type you want to download.
+        /// </summary>
+        public static string ToolTipWebmshareFiletypeDescription {
+            get {
+                return ResourceManager.GetString("ToolTipWebmshareFiletypeDescription", resourceCulture);
             }
         }
         

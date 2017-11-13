@@ -4,10 +4,11 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
+using TumblThree.Applications.Extensions;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 
-namespace TumblThree.Applications
+namespace TumblThree.Applications.Downloader
 {
     public class FileDownloader
     {

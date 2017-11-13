@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Waf.Foundation;
 
+using TumblThree.Applications.Auth;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Views;
 

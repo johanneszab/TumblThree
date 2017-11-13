@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Waf.Foundation;
 
 using TumblThree.Applications;
+using TumblThree.Applications.Auth;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 

@@ -505,10 +505,10 @@ Since the data is usually small, you should leave this high.</value>
     <value>Limit connections to the tumblr api.</value>
   </data>
   <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
-    <value>A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr svc.
+    <value>A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr api.
 A too small value will decrease the scanning speed.
 Set a number/time pair.
-Note: The tumblr svc is only used for regular tumblr blog downloads.</value>
+Note: The tumblr api is only used for regular tumblr blog downloads.</value>
   </data>
   <data name="ForceRescan" xml:space="preserve">
     <value>Force rescan</value>
@@ -517,7 +517,7 @@ Note: The tumblr svc is only used for regular tumblr blog downloads.</value>
     <value>Rescans the whole blog, not just new posts.</value>
   </data>
   <data name="ToolTipForceRescanDescription" xml:space="preserve">
-    <value>Forces a complete scan using the Tumblr svc.</value>
+    <value>Forces a complete scan using the Tumblr api.</value>
   </data>
   <data name="CheckForUpdates" xml:space="preserve">
     <value>Check for Updates</value>
@@ -701,5 +701,47 @@ E.g.  great big car, bears searches for great big cars and bears.</value>
   </data>
   <data name="ToolTipVideoConnectionsDescription" xml:space="preserve">
     <value>The vt.tumblr.com host regularly closes connections if the number is too high.</value>
+  </data>
+  <data name="ExternalSettings" xml:space="preserve">
+    <value>External:</value>
+  </data>
+  <data name="DownloadGfycat" xml:space="preserve">
+    <value>Download gfycat</value>
+  </data>
+  <data name="DownloadWebmshare" xml:space="preserve">
+    <value>Download webmshare</value>
+  </data>
+  <data name="ToolTipDownloadGfycat" xml:space="preserve">
+    <value>Download linked gfycat.com files</value>
+  </data>
+  <data name="ToolTipDownloadGfycatDescription" xml:space="preserve">
+    <value>Download externally hosted gfycat.com files</value>
+  </data>
+  <data name="ToolTipDownloadWebmshare" xml:space="preserve">
+    <value>Download linked webmshare.com files</value>
+  </data>
+  <data name="ToolTipDownloadWebmshareDescription" xml:space="preserve">
+    <value>Download externally hosted webmshare.com files</value>
+  </data>
+  <data name="DownloadImgur" xml:space="preserve">
+    <value>Download imgur</value>
+  </data>
+  <data name="ToolTipDownloadImgur" xml:space="preserve">
+    <value>Download linked imgur.com files</value>
+  </data>
+  <data name="ToolTipDownloadImgurDescription" xml:space="preserve">
+    <value>Download externally hosted imgur.com files</value>
+  </data>
+  <data name="ToolTipGfycatFiletype" xml:space="preserve">
+    <value>File type to download</value>
+  </data>
+  <data name="ToolTipGfycatFiletypeDescription" xml:space="preserve">
+    <value>Chose which file type you want to download</value>
+  </data>
+  <data name="ToolTipWebmshareFiletype" xml:space="preserve">
+    <value>File type to download</value>
+  </data>
+  <data name="ToolTipWebmshareFiletypeDescription" xml:space="preserve">
+    <value>Chose which file type you want to download</value>
   </data>
 </root>
