@@ -13,6 +13,7 @@ using System.Xml.Linq;
 
 using TumblThree.Applications.DataModels;
 using TumblThree.Applications.Downloader;
+using TumblThree.Applications.Extensions;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain;
@@ -24,10 +25,15 @@ namespace TumblThree.Applications.Crawler
     [ExportMetadata("BlogType", BlogTypes.tumblr)]
     public class TumblrBlogCrawler : AbstractCrawler, ICrawler
     {
+        private readonly IGfycatParser gfycatParser;
+        private readonly IWebmshareParser webmshareParser;
+
         public TumblrBlogCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
-            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IDownloader downloader, IGfycatParser gfycatParser, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
-            : base(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, downloader, gfycatParser, producerConsumerCollection, blog)
+            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IDownloader downloader, IGfycatParser gfycatParser, IWebmshareParser webmshareParser, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
+            : base(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, downloader, producerConsumerCollection, blog)
         {
+            this.gfycatParser = gfycatParser;
+            this.webmshareParser = webmshareParser;
         }
 
         public override async Task IsBlogOnlineAsync()
@@ -848,7 +854,7 @@ namespace TumblThree.Applications.Crawler
                                 foreach (Match match in regex.Matches(post.Value))
                                 {
                                     string webmshareId = match.Groups[2].Value;
-                                    string imageUrl = gfycatParser.CreateWebmshareUrl(webmshareId, blog.WebmshareType);
+                                    string imageUrl = webmshareParser.CreateWebmshareUrl(webmshareId, blog.WebmshareType);
                                     if (blog.SkipGif && (imageUrl.EndsWith(".gif") || imageUrl.EndsWith(".gifv")))
                                     {
                                         continue;

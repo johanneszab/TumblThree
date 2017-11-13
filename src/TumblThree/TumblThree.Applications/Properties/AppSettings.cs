@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
 using System.Windows;
 
+using TumblThree.Domain.Models;
+
 namespace TumblThree.Applications.Properties
 {
     public sealed class AppSettings : IExtensibleDataObject
@@ -201,6 +203,21 @@ namespace TumblThree.Applications.Properties
 
         [DataMember]
         public bool DownloadRebloggedPosts { get; set; }
+
+        [DataMember]
+        public bool DownloadGfycat { get; set; }
+
+        [DataMember]
+        public GfycatTypes GfycatType { get; set; }
+
+        [DataMember]
+        public bool DownloadImgur { get; set; }
+
+        [DataMember]
+        public bool DownloadWebmshare { get; set; }
+
+        [DataMember]
+        public WebmshareTypes WebmshareType { get; set; }
 
         [DataMember]
         public bool AutoDownload { get; set; }

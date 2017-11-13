@@ -13,6 +13,7 @@ using System.Waf.Applications;
 using System.Windows;
 using System.Windows.Threading;
 
+using TumblThree.Applications;
 using TumblThree.Applications.Services;
 using TumblThree.Applications.ViewModels;
 using TumblThree.Domain;
@@ -69,7 +70,7 @@ namespace TumblThree.Presentation
                 moduleController.Run();
             }
 
-            Applications.QueueOnDispatcher.Initialize();
+            QueueOnDispatcher.Initialize();
         }
 
         protected override void OnExit(ExitEventArgs e)

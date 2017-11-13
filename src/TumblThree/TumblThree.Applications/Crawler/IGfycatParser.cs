@@ -9,7 +9,5 @@ namespace TumblThree.Applications.Crawler
         Task<string> RequestGfycatCajax(string gfyId);
 
         string ParseGfycatCajaxResponse(string result, GfycatTypes gfycatType);
-
-        string CreateWebmshareUrl(string webshareId, WebmshareTypes webmshareType);
     }
 }

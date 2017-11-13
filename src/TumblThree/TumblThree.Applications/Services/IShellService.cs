@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 
+using TumblThree.Applications.Auth;
 using TumblThree.Applications.Properties;
 
 namespace TumblThree.Applications.Services

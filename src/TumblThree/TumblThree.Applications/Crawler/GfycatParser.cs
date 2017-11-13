@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 
+using TumblThree.Applications.Extensions;
 using TumblThree.Applications.Properties;
 using TumblThree.Domain.Models;
 
@@ -72,23 +73,6 @@ namespace TumblThree.Applications.Crawler
                     break;
                 case GfycatTypes.Webp:
                     url = root.Element("gfyItem").Element("webpUrl").Value;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-            return url;
-        }
-
-        public string CreateWebmshareUrl(string webshareId, WebmshareTypes webmshareType)
-        {
-            string url;
-            switch (webmshareType)
-            {
-                case WebmshareTypes.Mp4:
-                    url = @"https://s1.webmshare.com/f/" + webshareId + ".mp4";
-                    break;
-                case WebmshareTypes.Webm:
-                    url = @"https://s1.webmshare.com/" + webshareId + ".webm";
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

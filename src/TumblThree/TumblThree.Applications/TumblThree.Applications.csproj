@@ -71,7 +71,9 @@
     <Compile Include="Controllers\QueueController.cs" />
     <Compile Include="Crawler\GfycatParser.cs" />
     <Compile Include="Crawler\IGfycatParser.cs" />
+    <Compile Include="Crawler\IWebmshareParser.cs" />
     <Compile Include="Crawler\IWebRequestFactory.cs" />
+    <Compile Include="Crawler\WebmshareParser.cs" />
     <Compile Include="Crawler\WebRequestFactory.cs" />
     <Compile Include="DataModels\DownloadProgress.cs" />
     <Compile Include="ObjectModel\ObservableRangeCollection.cs" />
@@ -90,12 +92,12 @@
     <Compile Include="Crawler\TumblrTagSearchCrawler.cs" />
     <Compile Include="Crawler\TumblrSearchCrawler.cs" />
     <Compile Include="Downloader\TumblrDownloader.cs" />
-    <Compile Include="FileDownloader.cs" />
+    <Compile Include="Downloader\FileDownloader.cs" />
     <Compile Include="QueueOnDispatcher.cs" />
     <Compile Include="Crawler\ICrawler.cs" />
     <Compile Include="Crawler\InstagramCrawler.cs" />
     <Compile Include="Crawler\TumblrBlogCrawler.cs" />
-    <Compile Include="OAuth.cs" />
+    <Compile Include="Auth\OAuth.cs" />
     <Compile Include="PauseTokenSource.cs" />
     <Compile Include="ProgressThrottler.cs" />
     <Compile Include="Properties\ManagerSettings.cs" />
@@ -128,7 +130,7 @@
     <Compile Include="Services\SharedCookieService.cs" />
     <Compile Include="Services\ShellService.cs" />
     <Compile Include="Services\ShellServiceExtensions.cs" />
-    <Compile Include="TaskTimeoutExtension.cs" />
+    <Compile Include="Extensions\TaskTimeoutExtension.cs" />
     <Compile Include="ThrottledStream.cs" />
     <Compile Include="ViewModels\DetailsViewModels\DetailsTumblrPrivateBlogViewModel.cs" />
     <Compile Include="ViewModels\DetailsViewModels\DetailsTumblrBlogViewModel.cs" />

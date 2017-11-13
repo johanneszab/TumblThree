@@ -12,6 +12,7 @@ using System.Web;
 
 using TumblThree.Applications.DataModels;
 using TumblThree.Applications.Downloader;
+using TumblThree.Applications.Extensions;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain.Models;
@@ -25,7 +26,6 @@ namespace TumblThree.Applications.Crawler
         protected readonly IProgress<DownloadProgress> progress;
         protected readonly ISharedCookieService cookieService;
         protected readonly IWebRequestFactory webRequestFactory;
-        protected readonly IGfycatParser gfycatParser;
         protected readonly object lockObjectDb = new object();
         protected readonly object lockObjectDirectory = new object();
         protected readonly object lockObjectDownload = new object();
@@ -39,14 +39,13 @@ namespace TumblThree.Applications.Crawler
         protected List<string> tags = new List<string>();
         protected int numberOfPagesCrawled = 0;
 
-        protected AbstractCrawler(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IDownloader downloader, IGfycatParser gfycatParser, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
+        protected AbstractCrawler(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IDownloader downloader, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
         {
             this.shellService = shellService;
             this.crawlerService = crawlerService;
             this.webRequestFactory = webRequestFactory;
             this.cookieService = cookieService;
             this.downloader = downloader;
-            this.gfycatParser = gfycatParser;
             this.producerConsumerCollection = producerConsumerCollection;
             this.blog = blog;
             this.ct = ct;

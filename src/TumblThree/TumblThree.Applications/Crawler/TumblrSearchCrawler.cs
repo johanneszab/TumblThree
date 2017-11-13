@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using TumblThree.Applications.DataModels;
 using TumblThree.Applications.DataModels.TumblrSearchJson;
 using TumblThree.Applications.Downloader;
+using TumblThree.Applications.Extensions;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain;
@@ -27,8 +28,8 @@ namespace TumblThree.Applications.Crawler
         private string tumblrKey = String.Empty;
 
         public TumblrSearchCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
-            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IDownloader downloader, IGfycatParser gfycatParser, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
-            : base(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, downloader, gfycatParser, producerConsumerCollection, blog)
+            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IDownloader downloader, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
+            : base(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, downloader, producerConsumerCollection, blog)
         {
         }
 
