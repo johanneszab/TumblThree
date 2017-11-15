@@ -58,6 +58,8 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Attributes\LocalizedDescriptionAttribute.cs" />
+    <Compile Include="Converter\EnumDescriptionTypeConverter.cs" />
     <Compile Include="JsonFormatter.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Models\DetailsBlog.cs" />

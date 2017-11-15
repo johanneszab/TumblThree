@@ -59,5 +59,77 @@ namespace TumblThree.Domain.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to gif.
+        /// </summary>
+        public static string gif {
+            get {
+                return ResourceManager.GetString("gif", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 2mb gif.
+        /// </summary>
+        public static string max2mbgif {
+            get {
+                return ResourceManager.GetString("max2mbgif", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 5mb gif.
+        /// </summary>
+        public static string max5mbgif {
+            get {
+                return ResourceManager.GetString("max5mbgif", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to mjpg.
+        /// </summary>
+        public static string mjpg {
+            get {
+                return ResourceManager.GetString("mjpg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to mp4.
+        /// </summary>
+        public static string mp4 {
+            get {
+                return ResourceManager.GetString("mp4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to poster.
+        /// </summary>
+        public static string poster {
+            get {
+                return ResourceManager.GetString("poster", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to webm.
+        /// </summary>
+        public static string webm {
+            get {
+                return ResourceManager.GetString("webm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to webp.
+        /// </summary>
+        public static string webp {
+            get {
+                return ResourceManager.GetString("webp", resourceCulture);
+            }
+        }
     }
 }

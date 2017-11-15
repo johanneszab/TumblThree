@@ -10,24 +10,9 @@
              xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:Models="clr-namespace:TumblThree.Domain.Models;assembly=TumblThree.Domain"
+             xmlns:Extensions="clr-namespace:TumblThree.Presentation.Extensions"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance dd:SampleDetailsViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="670" d:DesignWidth="400" Background="{StaticResource DefaultBackground}">
-    <UserControl.Resources>
-        <ObjectDataProvider MethodName="GetValues"
-        ObjectType="{x:Type sys:Enum}"
-        x:Key="GfycatTypes">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="Models:GfycatTypes" />
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
-        <ObjectDataProvider MethodName="GetValues"
-        ObjectType="{x:Type sys:Enum}"
-        x:Key="WebmshareTypes">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="Models:WebmshareTypes" />
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
-    </UserControl.Resources>
 
     <Grid>
         <Grid.Resources>
@@ -87,9 +72,6 @@
 
         <Label Content="{Binding BlogFile.Name}" BorderThickness="0,0,0,1"
                BorderBrush="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" Padding="15,7" Grid.Row="0">
-            <Label.Resources>
-                <sys:Int32 x:Key="multiSelection">1</sys:Int32>
-            </Label.Resources>
             <Label.ToolTip>
                 <ctrl:SuperToolTip Title="{Binding BlogFile.Name}"
                                    Description="{Binding BlogFile.Url}" />
@@ -113,9 +95,6 @@
 
         <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
             <Grid Margin="11">
-                <Grid.Resources>
-                    <sys:Int32 x:Key="duplicatesZero">0</sys:Int32>
-                </Grid.Resources>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
@@ -809,7 +788,6 @@
                                 <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
                                     <Setter Property="TextTrimming" Value="CharacterEllipsis" />
                                 </Style>
-                                <sys:Int32 x:Key="duplicatesZero">0</sys:Int32>
                             </Grid.Resources>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -856,8 +834,8 @@
                                 </CheckBox.ToolTip>
                             </CheckBox>
 
-                            <ComboBox Grid.Column="3" Grid.Row="2" Padding="0" 
-                                ItemsSource="{Binding Source={StaticResource GfycatTypes}}" SelectedValuePath="."
+                            <ComboBox Grid.Column="3" Grid.Row="2" Padding="5,0,5,0"
+                                ItemsSource="{Binding Source={Extensions:EnumBindingSource {x:Type Models:GfycatTypes}}}" SelectedValuePath="."
                                 SelectedValue="{Binding BlogFile.GfycatType}"
                                 SelectedItem="{Binding BlogFile.GfycatType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                                 <ComboBox.ToolTip>
@@ -877,24 +855,24 @@
                                 <CheckBox.ToolTip>
                                     <ToolTip>
                                         <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipWebmshareFiletype}" />
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadWebmshare}" />
                                             <TextBlock xml:space="preserve"
-                                                   Text="{x:Static p:Resources.ToolTipWebmshareFiletypeDescription}" />
+                                                   Text="{x:Static p:Resources.ToolTipDownloadWebmshareDescription}" />
                                         </StackPanel>
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
 
-                            <ComboBox Grid.Column="3" Grid.Row="4" Padding="0" 
-                                ItemsSource="{Binding Source={StaticResource WebmshareTypes}}" SelectedValuePath="."
+                            <ComboBox Grid.Column="3" Grid.Row="4" Padding="5,0,5,0" 
+                              ItemsSource="{Binding Source={Extensions:EnumBindingSource {x:Type Models:WebmshareTypes}}}" SelectedValuePath="."
                               SelectedValue="{Binding BlogFile.WebmshareType}"
                               SelectedItem="{Binding BlogFile.WebmshareType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                                 <ComboBox.ToolTip>
                                     <ToolTip>
                                         <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadWebmshare}" />
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipWebmshareFiletype}" />
                                             <TextBlock xml:space="preserve"
-                                                   Text="{x:Static p:Resources.ToolTipDownloadWebmshareDescription}" />
+                                                   Text="{x:Static p:Resources.ToolTipWebmshareFiletypeDescription}" />
                                         </StackPanel>
                                     </ToolTip>
                                 </ComboBox.ToolTip>

@@ -69,6 +69,10 @@
     <Compile Include="Controllers\ManagerController.cs" />
     <Compile Include="Controllers\ModuleController.cs" />
     <Compile Include="Controllers\QueueController.cs" />
+    <Compile Include="Crawler\IImgurParser.cs" />
+    <Compile Include="Crawler\ImgurParser.cs" />
+    <Compile Include="Crawler\ITumblrParser.cs" />
+    <Compile Include="Crawler\TumblrParser.cs" />
     <Compile Include="DataModels\DownloadProgress.cs" />
     <Compile Include="DataModels\TumblrSvcJson.cs" />
     <Compile Include="DataModels\TumblrPost.cs" />

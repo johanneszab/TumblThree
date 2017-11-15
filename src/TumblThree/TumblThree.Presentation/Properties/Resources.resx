@@ -364,7 +364,7 @@ The number is shared between all actively downloading blogs.</value>
     <value>Number of posts:</value>
   </data>
   <data name="Preview" xml:space="preserve">
-    <value>Preview:</value>
+    <value>Preview</value>
   </data>
   <data name="DownloadAudios" xml:space="preserve">
     <value>Download audio files</value>
@@ -388,7 +388,7 @@ The number is shared between all actively downloading blogs.</value>
     <value>Preview on/off</value>
   </data>
   <data name="BlogSettings" xml:space="preserve">
-    <value>Blog settings:</value>
+    <value>Blog settings</value>
   </data>
   <data name="GlobalSettings" xml:space="preserve">
     <value>Global settings:</value>
@@ -703,7 +703,7 @@ E.g.  great big car, bears searches for great big cars and bears.</value>
     <value>The vt.tumblr.com host regularly closes connections if the number is too high.</value>
   </data>
   <data name="ExternalSettings" xml:space="preserve">
-    <value>External:</value>
+    <value>External</value>
   </data>
   <data name="DownloadGfycat" xml:space="preserve">
     <value>Download gfycat</value>

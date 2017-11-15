@@ -133,7 +133,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Blog settings:.
+        ///   Looks up a localized string similar to Blog settings.
         /// </summary>
         public static string BlogSettings {
             get {
@@ -691,7 +691,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to External:.
+        ///   Looks up a localized string similar to External.
         /// </summary>
         public static string ExternalSettings {
             get {
@@ -997,7 +997,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Preview:.
+        ///   Looks up a localized string similar to Preview.
         /// </summary>
         public static string Preview {
             get {
