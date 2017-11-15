@@ -715,9 +715,9 @@
                             <CheckBox.ToolTip>
                                 <ToolTip>
                                     <StackPanel>
-                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipWebmshareFiletype}" />
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadWebmshare}" />
                                         <TextBlock xml:space="preserve"
-                                                   Text="{x:Static p:Resources.ToolTipWebmshareFiletypeDescription}" />
+                                                   Text="{x:Static p:Resources.ToolTipDownloadWebmshareDescription}" />
                                     </StackPanel>
                                 </ToolTip>
                             </CheckBox.ToolTip>
@@ -730,9 +730,9 @@
                             <ComboBox.ToolTip>
                                 <ToolTip>
                                     <StackPanel>
-                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadWebmshare}" />
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipWebmshareFiletype}" />
                                         <TextBlock xml:space="preserve"
-                                                   Text="{x:Static p:Resources.ToolTipDownloadWebmshareDescription}" />
+                                                   Text="{x:Static p:Resources.ToolTipWebmshareFiletypeDescription}" />
                                     </StackPanel>
                                 </ToolTip>
                             </ComboBox.ToolTip>

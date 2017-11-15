@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
@@ -24,6 +25,11 @@ namespace TumblThree.Applications.Crawler
             this.settings = settings;
             this.webRequestFactory = webRequestFactory;
             this.ct = ct;
+        }
+
+        public Regex GetGfycatUrlRegex()
+        {
+            return new Regex("(http[A-Za-z0-9_/:.]*gfycat.com/([A-Za-z0-9_]*))");
         }
 
         public virtual async Task<string> RequestGfycatCajax(string gfyId)

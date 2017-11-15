@@ -212,6 +212,7 @@
     <Compile Include="DesignData\SampleShellViewModel.cs" />
     <Compile Include="DesignData\SampleBlogFile.cs" />
     <Compile Include="DispatcherHelper.cs" />
+    <Compile Include="Extensions\EnumBindingSourceExtension.cs" />
     <Compile Include="Services\ClipboardService.cs" />
     <Compile Include="Services\EnvironmentService.cs" />
     <Compile Include="Services\PresentationService.cs" />

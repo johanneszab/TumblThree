@@ -71,8 +71,12 @@
     <Compile Include="Controllers\QueueController.cs" />
     <Compile Include="Crawler\GfycatParser.cs" />
     <Compile Include="Crawler\IGfycatParser.cs" />
+    <Compile Include="Crawler\IImgurParser.cs" />
+    <Compile Include="Crawler\ImgurParser.cs" />
+    <Compile Include="Crawler\ITumblrParser.cs" />
     <Compile Include="Crawler\IWebmshareParser.cs" />
     <Compile Include="Crawler\IWebRequestFactory.cs" />
+    <Compile Include="Crawler\TumblrParser.cs" />
     <Compile Include="Crawler\WebmshareParser.cs" />
     <Compile Include="Crawler\WebRequestFactory.cs" />
     <Compile Include="DataModels\DownloadProgress.cs" />

@@ -9,4 +9,8 @@
 
     <GridLength x:Key="Layout.LargeRowSpace">9</GridLength>
 
+    <Style TargetType="ComboBoxItem">
+        <Setter Property="Padding" Value="2"/>
+    </Style>
+
 </ResourceDictionary>
