@@ -76,7 +76,7 @@ namespace TumblThree.Applications.Crawler
                 {
                     try
                     {
-                        string document = await RequestDataAsync(blog.Url + "/page/" + crawlerNumber);
+                        string document = await RequestDataAsync(blog.Url + "/page/" + crawlerNumber, "https://www.tumblr.com/", "https://" + blog.Name.Replace("+", "-") + ".tumblr.com");
                         await AddUrlsToDownloadList(document, crawlerNumber);
                     }
                     catch
@@ -100,7 +100,7 @@ namespace TumblThree.Applications.Crawler
 
         private async Task<bool> CheckIfLoggedIn()
         {
-            string document = await RequestDataAsync(blog.Url + "/page/1");
+            string document = await RequestDataAsync(blog.Url + "/page/1", "https://www.tumblr.com/", "https://" + blog.Name.Replace("+", "-") + ".tumblr.com");
             return !document.Contains("<div class=\"signup_view account login\"");
         }
 
@@ -128,7 +128,7 @@ namespace TumblThree.Applications.Crawler
                 Interlocked.Increment(ref numberOfPagesCrawled);
                 UpdateProgressQueueInformation(Resources.ProgressGetUrlShort, numberOfPagesCrawled);
                 crawlerNumber += shellService.Settings.ConcurrentScans;
-                document = await RequestDataAsync(blog.Url + "/page/" + crawlerNumber);
+                document = await RequestDataAsync(blog.Url + "/page/" + crawlerNumber, "https://www.tumblr.com/", "https://" + blog.Name.Replace("+", "-") + ".tumblr.com");
                 if (document.Contains("<div class=\"no_posts_found\">"))
                 {
                     return;

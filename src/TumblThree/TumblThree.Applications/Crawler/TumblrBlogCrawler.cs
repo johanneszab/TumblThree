@@ -139,7 +139,7 @@ namespace TumblThree.Applications.Crawler
             UpdateProgressQueueInformation("");
         }
 
-        private new async Task<XDocument> RequestDataAsync(string url)
+        private async Task<XDocument> RequestDataAsync(string url)
         {
             var requestRegistration = new CancellationTokenRegistration();
             try
