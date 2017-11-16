@@ -376,7 +376,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Settings applied to each blog upon addition:.
+        ///   Looks up a localized string similar to These settings are applied to each blog upon addition:.
         /// </summary>
         public static string DefaultSettingsForBlogs {
             get {

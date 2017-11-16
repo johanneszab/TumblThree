@@ -250,6 +250,9 @@ namespace TumblThree.Applications.Properties
         public string ProxyPassword { get; set; }
 
         [DataMember]
+        public int SettingsTabIndex { get; set; }
+
+        [DataMember]
         public Dictionary<object, Tuple<int, double, Visibility>> ColumnSettings { get; set; }
 
         public ObservableCollection<string> ImageSizes

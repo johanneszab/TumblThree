@@ -412,7 +412,7 @@ The number is shared between all actively downloading blogs.</value>
     <value>Download video meta</value>
   </data>
   <data name="DefaultSettingsForBlogs" xml:space="preserve">
-    <value>Settings applied to each blog upon addition:</value>
+    <value>These settings are applied to each blog upon addition:</value>
   </data>
   <data name="DownloadVideosShort" xml:space="preserve">
     <value>Download videos</value>
