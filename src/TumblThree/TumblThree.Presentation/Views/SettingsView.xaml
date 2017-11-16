@@ -8,7 +8,7 @@
         xmlns:vm="clr-namespace:TumblThree.Applications.ViewModels;assembly=TumblThree.Applications"
         xmlns:Models="clr-namespace:TumblThree.Domain.Models;assembly=TumblThree.Domain"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        mc:Ignorable="d" Title="Settings" Height="620" Width="700"
+        mc:Ignorable="d" Title="Settings" Height="625" Width="700"
         d:DataContext="{d:DesignInstance vm:SettingsViewModel}">
     <Window.Resources>
         <ObjectDataProvider MethodName="GetValues"
@@ -33,7 +33,118 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <TabControl Grid.Row="0">
+            <TabControl Grid.Row="0" SelectedIndex="{Binding SettingsTabIndex}">
+                <TabItem Header="{x:Static p:Resources.General}">
+                    <Grid MinHeight="46" Height="Auto">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid Height="Auto" Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Label x:Name="downloadLocationLabel" Grid.Column="0" Content="{x:Static p:Resources.DownloadLocation}"
+                       HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10" MinWidth="140" />
+                            <TextBox x:Name="downloadLocationtextBox"
+                         Text="{Binding DownloadLocation, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                         Grid.Column="1" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center" />
+                            <Button x:Name="browseDownloadLocationButton" Content="{x:Static p:Resources.Browse}"
+                        Command="{Binding BrowseDownloadLocationCommand}" Grid.Column="2" HorizontalAlignment="Right"
+                        VerticalAlignment="Center" Margin="10" Height="26" MinWidth="75" />
+                        </Grid>
+                        <CheckBox x:Name="checkBoxEnablePreview" Content="{x:Static p:Resources.EnablePreview}"
+                              IsChecked="{Binding EnablePreview, Mode=TwoWay}" Grid.Column="0" Grid.Row="1" Margin="10" />
+                        <CheckBox x:Name="checkBoxCheckStatus" Content="{x:Static p:Resources.CheckStatus}"
+                              IsChecked="{Binding CheckOnlineStatusAtStartup, Mode=TwoWay}" Grid.Column="0" Grid.Row="2"
+                              Margin="10" />
+                        <CheckBox x:Name="checkBoxDeleteIndex" Content="{x:Static p:Resources.DeleteIndex}"
+                              IsChecked="{Binding DeleteOnlyIndex, Mode=TwoWay}" Grid.Column="0" Grid.Row="3" Margin="10" />
+                        <CheckBox x:Name="checkBoxRemoveIndex" Content="{x:Static p:Resources.RemoveIndex}"
+                              IsChecked="{Binding RemoveIndexAfterCrawl, Mode=TwoWay}" Grid.Column="0" Grid.Row="4"
+                              Margin="10" />
+                        <CheckBox x:Name="checkBoxPortableMode" Content="{x:Static p:Resources.PortableMode}"
+                        IsChecked="{Binding PortableMode, Mode=TwoWay}" Grid.Column="0" Grid.Row="5"
+                        Margin="10">
+                            <CheckBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipPortableMode}" />
+                                        <TextBlock Text="{x:Static p:Resources.ToolTipPortableModeDescription}" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </CheckBox.ToolTip>
+                        </CheckBox>
+                        <Grid MinHeight="46" Height="Auto" Grid.Row="6" HorizontalAlignment="Left">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox x:Name="autoDownloadEnableCheckBox" Grid.Column="0"
+                          Content="{x:Static p:Resources.EnableAutoDownload}" IsChecked="{Binding AutoDownload}"
+                          IsEnabled="True" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10" />
+                            <TextBox x:Name="autoDownloadSetTimerComboBox" Grid.Column="1" HorizontalAlignment="Left"
+                         VerticalAlignment="Center" MinWidth="60">
+                                <TextBox.Text>
+                                    <Binding Path="TimerInterval" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <vr:TimeSpanRule />
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
+                            <Label x:Name="autoDownloadTimerLabel" Grid.Column="2" Content="{x:Static p:Resources.Timer}"
+                       HorizontalAlignment="Left" VerticalAlignment="Center" />
+                            <ComboBox x:Name="autoDownloadChoseBlogsComboBox" Grid.Column="3"
+                          ItemsSource="{Binding ShellService.Settings.BlogTypes}" SelectedValuePath="."
+                          SelectedValue="{Binding BlogType}"
+                          SelectedItem="{Binding BlogType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                          HorizontalAlignment="Left" VerticalAlignment="Center" MinWidth="60" />
+                            <Label x:Name="autoDownloadBlogsLabel" Grid.Column="4" Content="{x:Static p:Resources.AutoDownloadBlogs}"
+                       HorizontalAlignment="Left" VerticalAlignment="Center" />
+                        </Grid>
+                        <Grid Grid.Row="7" Grid.ColumnSpan="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="buttonExportBlogs" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Margin="10"
+                        VerticalAlignment="Center" Content="{x:Static p:Resources.Export}"
+                        Command="{Binding ExportCommand}" IsEnabled="True" MinWidth="90">
+                                <Button.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipExportBlogs}" />
+                                            <TextBlock xml:space="preserve"
+                                           Text="{x:Static p:Resources.ToolTipExportBlogsDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </Button.ToolTip>
+                            </Button>
+                            <TextBox x:Name="exportLocationtextBox"
+                         Text="{Binding ExportLocation, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                         Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center" />
+                            <Button x:Name="browseExportLocationButton" Content="{x:Static p:Resources.Browse}"
+                        Command="{Binding BrowseExportLocationCommand}" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Right"
+                        VerticalAlignment="Center" Margin="10" Height="26" MinWidth="75" />
+                        </Grid>
+                    </Grid>
+                </TabItem>
                 <TabItem Header="{x:Static p:Resources.Connection}">
                     <Grid MinHeight="46" Height="Auto">
                         <Grid.ColumnDefinitions>
@@ -49,25 +160,8 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid MinHeight="46" Height="Auto" Grid.Row="0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <Label x:Name="downloadLocationLabel" Grid.Column="0" Content="{x:Static p:Resources.DownloadLocation}"
-                       HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10" MinWidth="140" />
-                            <TextBox x:Name="downloadLocationtextBox"
-                         Text="{Binding DownloadLocation, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                         Grid.Column="1" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center" />
-                            <Button x:Name="browseDownloadLocationButton" Content="{x:Static p:Resources.Browse}"
-                        Command="{Binding BrowseDownloadLocationCommand}" Grid.Column="2" HorizontalAlignment="Right"
-                        VerticalAlignment="Center" Margin="10" Height="26" MinWidth="75" />
-                        </Grid>
-                        <Grid MinHeight="46" Height="Auto" Grid.Row="1">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
@@ -91,7 +185,7 @@
                         Value="{Binding ConcurrentConnections, UpdateSourceTrigger=PropertyChanged}"
                         HorizontalAlignment="Stretch" VerticalAlignment="Center" Maximum="100" MinWidth="250" Minimum="1" />
                         </Grid>
-                        <Grid MinHeight="46" Height="Auto" Grid.Row="2">
+                        <Grid MinHeight="46" Height="Auto" Grid.Row="1">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
@@ -115,7 +209,7 @@
                         Value="{Binding ConcurrentVideoConnections, UpdateSourceTrigger=PropertyChanged}"
                         HorizontalAlignment="Stretch" VerticalAlignment="Center" Maximum="100" MinWidth="250" Minimum="1" />
                         </Grid>
-                        <Grid MinHeight="46" Height="Auto" Grid.Row="3">
+                        <Grid MinHeight="46" Height="Auto" Grid.Row="2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
@@ -138,7 +232,7 @@
                         Value="{Binding ConcurrentBlogs, UpdateSourceTrigger=PropertyChanged}"
                         HorizontalAlignment="Stretch" VerticalAlignment="Center" Maximum="40" MinWidth="250" Minimum="1" />
                         </Grid>
-                        <Grid MinHeight="46" Height="Auto" Grid.Row="4">
+                        <Grid MinHeight="46" Height="Auto" Grid.Row="3">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
@@ -182,7 +276,7 @@
                                 </TextBox.ToolTip>
                             </TextBox>
                         </Grid>
-                        <Grid MinHeight="46" Height="Auto" Grid.Row="5">
+                        <Grid MinHeight="46" Height="Auto" Grid.Row="4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
@@ -218,7 +312,7 @@
                                 </TextBox.Text>
                             </TextBox>
                         </Grid>
-                        <Grid MinHeight="46" Height="Auto" Grid.Row="6">
+                        <Grid MinHeight="46" Height="Auto" Grid.Row="5">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
@@ -261,7 +355,7 @@
                                 </TextBox.Text>
                             </TextBox>
                         </Grid>
-                        <Grid MinHeight="46" Height="Auto" Grid.Row="7" HorizontalAlignment="Left">
+                        <Grid MinHeight="46" Height="Auto" Grid.Row="6" HorizontalAlignment="Left">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
@@ -329,7 +423,7 @@
                                 </TextBox.Text>
                             </TextBox>
                         </Grid>
-                        <Grid MinHeight="46" Height="Auto" Grid.Row="8">
+                        <Grid MinHeight="46" Height="Auto" Grid.Row="7">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
@@ -348,7 +442,7 @@
                          Grid.Column="3" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center"
                          Margin="00,0,10,0" />
                         </Grid>
-                        <Grid MinHeight="46" Height="Auto" Grid.Row="9">
+                        <Grid MinHeight="46" Height="Auto" Grid.Row="8">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
@@ -386,37 +480,6 @@
                          Text="{Binding ProxyPassword, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                          Grid.Column="3" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center"
                          Margin="00,0,10,0" />
-                        </Grid>
-                        <Grid MinHeight="46" Height="Auto" Grid.Row="10" HorizontalAlignment="Left">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <CheckBox x:Name="autoDownloadEnableCheckBox" Grid.Column="0"
-                          Content="{x:Static p:Resources.EnableAutoDownload}" IsChecked="{Binding AutoDownload}"
-                          IsEnabled="True" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10" />
-                            <TextBox x:Name="autoDownloadSetTimerComboBox" Grid.Column="1" HorizontalAlignment="Left"
-                         VerticalAlignment="Center" MinWidth="60">
-                                <TextBox.Text>
-                                    <Binding Path="TimerInterval" UpdateSourceTrigger="PropertyChanged">
-                                        <Binding.ValidationRules>
-                                            <vr:TimeSpanRule />
-                                        </Binding.ValidationRules>
-                                    </Binding>
-                                </TextBox.Text>
-                            </TextBox>
-                            <Label x:Name="autoDownloadTimerLabel" Grid.Column="2" Content="{x:Static p:Resources.Timer}"
-                       HorizontalAlignment="Left" VerticalAlignment="Center" />
-                            <ComboBox x:Name="autoDownloadChoseBlogsComboBox" Grid.Column="3"
-                          ItemsSource="{Binding ShellService.Settings.BlogTypes}" SelectedValuePath="."
-                          SelectedValue="{Binding BlogType}"
-                          SelectedItem="{Binding BlogType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                          HorizontalAlignment="Left" VerticalAlignment="Center" MinWidth="60" />
-                            <Label x:Name="autoDownloadBlogsLabel" Grid.Column="4" Content="{x:Static p:Resources.AutoDownloadBlogs}"
-                       HorizontalAlignment="Left" VerticalAlignment="Center" />
                         </Grid>
                     </Grid>
                 </TabItem>
@@ -737,73 +800,6 @@
                                 </ToolTip>
                             </ComboBox.ToolTip>
                         </ComboBox>
-                    </Grid>
-                </TabItem>
-                <TabItem Header="{x:Static p:Resources.General}">
-                    <Grid MinHeight="46" Height="Auto">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <Label x:Name="globalLabel" Grid.Column="0" Grid.Row="0" Margin="5"
-                            Content="{x:Static p:Resources.GlobalSettings}" />
-                        <CheckBox x:Name="checkBoxEnablePreview" Content="{x:Static p:Resources.EnablePreview}"
-                              IsChecked="{Binding EnablePreview, Mode=TwoWay}" Grid.Column="0" Grid.Row="1" Margin="10" />
-                        <CheckBox x:Name="checkBoxCheckStatus" Content="{x:Static p:Resources.CheckStatus}"
-                              IsChecked="{Binding CheckOnlineStatusAtStartup, Mode=TwoWay}" Grid.Column="0" Grid.Row="2"
-                              Margin="10" />
-                        <CheckBox x:Name="checkBoxDeleteIndex" Content="{x:Static p:Resources.DeleteIndex}"
-                              IsChecked="{Binding DeleteOnlyIndex, Mode=TwoWay}" Grid.Column="0" Grid.Row="3" Margin="10" />
-                        <CheckBox x:Name="checkBoxRemoveIndex" Content="{x:Static p:Resources.RemoveIndex}"
-                              IsChecked="{Binding RemoveIndexAfterCrawl, Mode=TwoWay}" Grid.Column="0" Grid.Row="4"
-                              Margin="10" />
-                        <CheckBox x:Name="checkBoxPortableMode" Content="{x:Static p:Resources.PortableMode}"
-                        IsChecked="{Binding PortableMode, Mode=TwoWay}" Grid.Column="0" Grid.Row="5"
-                        Margin="10">
-                            <CheckBox.ToolTip>
-                                <ToolTip>
-                                    <StackPanel>
-                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipPortableMode}" />
-                                        <TextBlock Text="{x:Static p:Resources.ToolTipPortableModeDescription}" />
-                                    </StackPanel>
-                                </ToolTip>
-                            </CheckBox.ToolTip>
-                        </CheckBox>
-                        <Grid Grid.Row="6" Grid.ColumnSpan="2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <Button x:Name="buttonExportBlogs" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Margin="10"
-                        VerticalAlignment="Center" Content="{x:Static p:Resources.Export}"
-                        Command="{Binding ExportCommand}" IsEnabled="True" MinWidth="90">
-                                <Button.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipExportBlogs}" />
-                                            <TextBlock xml:space="preserve"
-                                           Text="{x:Static p:Resources.ToolTipExportBlogsDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </Button.ToolTip>
-                            </Button>
-                            <TextBox x:Name="exportLocationtextBox"
-                         Text="{Binding ExportLocation, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                         Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center" />
-                            <Button x:Name="browseExportLocationButton" Content="{x:Static p:Resources.Browse}"
-                        Command="{Binding BrowseExportLocationCommand}" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Right"
-                        VerticalAlignment="Center" Margin="10" Height="26" MinWidth="75" />
-                        </Grid>
                     </Grid>
                 </TabItem>
             </TabControl>

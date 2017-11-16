@@ -141,7 +141,7 @@
                 <Separator Grid.ColumnSpan="7" Grid.Column="0" Grid.Row="8" Margin="0" />
                 <TabControl Grid.Column="0" Grid.ColumnSpan="6" Grid.Row="10" SelectedIndex="{Binding BlogFile.SettingsTabIndex}" Background="{StaticResource DefaultBackground}">
                     <TabItem Header="{x:Static p:Resources.BlogSettings}">
-                        <Grid Margin="9">
+                        <Grid Margin="0">
                             <Grid.Resources>
                                 <Style TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
                                     <Setter Property="TextTrimming" Value="CharacterEllipsis" />

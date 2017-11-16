@@ -91,6 +91,7 @@ namespace TumblThree.Applications.ViewModels
         private int timeOut;
         private string timerInterval;
         private int videoSize;
+        private int settingsTabIndex;
 
         [ImportingConstructor]
         public SettingsViewModel(ISettingsView view, IShellService shellService, ICrawlerService crawlerService,
@@ -511,6 +512,12 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref timerInterval, value); }
         }
 
+        public int SettingsTabIndex
+        {
+            get { return settingsTabIndex; }
+            set { SetProperty(ref settingsTabIndex, value); }
+        }
+
         public void ShowDialog(object owner)
         {
             ViewCore.ShowDialog(owner);
@@ -681,6 +688,7 @@ namespace TumblThree.Applications.ViewModels
                 ProxyUsername = settings.ProxyUsername;
                 ProxyPassword = settings.ProxyPassword;
                 TimerInterval = settings.TimerInterval;
+                SettingsTabIndex = settings.SettingsTabIndex;
             }
             else
             {
@@ -743,6 +751,7 @@ namespace TumblThree.Applications.ViewModels
                 ProxyHost = string.Empty;
                 ProxyPort = string.Empty;
                 TimerInterval = "22:40:00";
+                SettingsTabIndex = 0;
             }
         }
 
@@ -829,6 +838,7 @@ namespace TumblThree.Applications.ViewModels
             settings.ProxyUsername = ProxyUsername;
             settings.ProxyPassword = ProxyPassword;
             settings.TimerInterval = TimerInterval;
+            settings.SettingsTabIndex = SettingsTabIndex;
         }
 
         private void FolderBrowserPropertyChanged(object sender, PropertyChangedEventArgs e)
