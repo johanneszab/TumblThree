@@ -2,7 +2,6 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -13,7 +12,6 @@ using System.Web;
 using TumblThree.Applications.DataModels;
 using TumblThree.Applications.Downloader;
 using TumblThree.Applications.Extensions;
-using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain.Models;
 
@@ -80,12 +78,16 @@ namespace TumblThree.Applications.Crawler
             progress.Report(newProgress);
         }
 
-        protected virtual async Task<string> RequestDataAsync(string url)
+        protected virtual async Task<string> RequestDataAsync(string url, params string[] cookieHosts)
         {
             var requestRegistration = new CancellationTokenRegistration();
             try
             {
                 HttpWebRequest request = webRequestFactory.CreateGetReqeust(url);
+                foreach (string cookieHost in cookieHosts)
+                {
+                    cookieService.GetUriCookie(request.CookieContainer, new Uri(cookieHost));
+                }
                 requestRegistration = ct.Register(() => request.Abort());
                 return await webRequestFactory.ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
             }

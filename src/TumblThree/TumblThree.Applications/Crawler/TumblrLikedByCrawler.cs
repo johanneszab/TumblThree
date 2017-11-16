@@ -76,7 +76,7 @@ namespace TumblThree.Applications.Crawler
                 {
                     try
                     {
-                        string document = await RequestDataAsync(blog.Url + "/page/" + crawlerNumber);
+                        string document = await RequestDataAsync(blog.Url + "/page/" + crawlerNumber, "https://www.tumblr.com/", "https://" + blog.Name.Replace("+", "-") + ".tumblr.com");
                         await AddUrlsToDownloadList(document, crawlerNumber);
                     }
                     catch
@@ -94,13 +94,13 @@ namespace TumblThree.Applications.Crawler
 
             //if (!ct.IsCancellationRequested)
             //{
-                UpdateBlogStats();
+            UpdateBlogStats();
             //}
         }
 
         private async Task<bool> CheckIfLoggedIn()
         {
-            string document = await RequestDataAsync(blog.Url + "/page/1");
+            string document = await RequestDataAsync(blog.Url + "/page/1", "https://www.tumblr.com/", "https://" + blog.Name.Replace("+", "-") + ".tumblr.com");
             return !document.Contains("<div class=\"signup_view account login\"");
         }
 
@@ -128,7 +128,7 @@ namespace TumblThree.Applications.Crawler
                 Interlocked.Increment(ref numberOfPagesCrawled);
                 UpdateProgressQueueInformation(Resources.ProgressGetUrlShort, numberOfPagesCrawled);
                 crawlerNumber += shellService.Settings.ConcurrentScans;
-                document = await RequestDataAsync(blog.Url + "/page/" + crawlerNumber);
+                document = await RequestDataAsync(blog.Url + "/page/" + crawlerNumber, "https://www.tumblr.com/", "https://" + blog.Name.Replace("+", "-") + ".tumblr.com");
                 if (document.Contains("<div class=\"no_posts_found\">"))
                 {
                     return;
@@ -145,7 +145,7 @@ namespace TumblThree.Applications.Crawler
                 {
                     string imageUrl = match.Groups[1].Value;
                     if (imageUrl.Contains("avatar") || imageUrl.Contains("previews"))
-                        continue;                    
+                        continue;
                     if (blog.SkipGif && imageUrl.EndsWith(".gif"))
                     {
                         continue;
@@ -174,7 +174,7 @@ namespace TumblThree.Applications.Crawler
                     else if (shellService.Settings.VideoSize == 480)
                     {
                         // TODO: add valid postID
-                        AddToDownloadList(new TumblrPost(PostTypes.Video, 
+                        AddToDownloadList(new TumblrPost(PostTypes.Video,
                             "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + "_480.mp4",
                             Guid.NewGuid().ToString("N")));
                     }
