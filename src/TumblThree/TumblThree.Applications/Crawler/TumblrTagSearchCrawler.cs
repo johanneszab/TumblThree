@@ -186,7 +186,7 @@ namespace TumblThree.Applications.Crawler
                 }
 
                 string document = await GetTaggedSearchPageAsync(pagination);
-                if (document.Contains("No posts found.")) // <div class="no_posts_found">
+                if (document.Contains("<div class=\"no_posts_found\""))
                 {
                     return;
                 }
@@ -248,7 +248,7 @@ namespace TumblThree.Applications.Crawler
         {
             if (blog.DownloadVideo)
             {
-                var regex = new Regex("\"(http[A-Za-z0-9_/:.]*.com/video_file/[A-Za-z0-9_/:.]*)\"");
+                var regex = new Regex("src=\"(http[A-Za-z0-9_/:.]*.com/video_file/[A-Za-z0-9_/:.]*)\"");
                 foreach (Match match in regex.Matches(document))
                 {
                     string videoUrl = match.Groups[1].Value;
