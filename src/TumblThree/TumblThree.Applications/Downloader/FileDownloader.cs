@@ -4,7 +4,6 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
-using TumblThree.Applications.Extensions;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 
@@ -122,7 +121,7 @@ namespace TumblThree.Applications.Downloader
             {
                 var fileInfo = new FileInfo(destinationPath);
                 totalBytesReceived = fileInfo.Length;
-                if (totalBytesReceived >= await CheckDownloadSizeAsync(url).TimeoutAfter(settings.TimeOut))
+                if (totalBytesReceived >= await CheckDownloadSizeAsync(url))
                     return true;
             }
             if (ct.IsCancellationRequested)
