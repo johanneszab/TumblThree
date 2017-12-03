@@ -114,8 +114,10 @@ namespace TumblThree.Domain.Models
             return blog;
         }
 
+        public enum PostType { Photo, Video }
+
         [DataMember]
-        public PostTypes States { get; set; }
+        public PostType States { get; set; }
 
         [DataMember]
         public string Version { get; set; }
@@ -661,7 +663,7 @@ namespace TumblThree.Domain.Models
             set
             {
                 SetProperty(ref lastDownloadedPhoto, value);
-                States = PostTypes.Photo;
+                States = PostType.Photo;
             }
         }
 
@@ -672,7 +674,7 @@ namespace TumblThree.Domain.Models
             set
             {
                 SetProperty(ref lastDownloadedVideo, value);
-                States = PostTypes.Video;
+                States = PostType.Video;
             }
         }
 

@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using TumblThree.Applications.DataModels;
+using TumblThree.Applications.DataModels.TumblrPosts;
 using TumblThree.Applications.Services;
 using TumblThree.Domain.Models;
 
@@ -54,7 +55,7 @@ namespace TumblThree.Applications.Downloader
             return url;
         }
 
-        protected override async Task<bool> DownloadPhotoAsync(TumblrPost downloadItem)
+        protected override async Task<bool> DownloadBinaryPost(TumblrPost downloadItem)
         {
             string url = Url(downloadItem);
 
@@ -66,10 +67,10 @@ namespace TumblThree.Applications.Downloader
             foreach (string host in shellService.Settings.TumblrHosts)
             {
                 url = BuildRawImageUrl(url, host);
-                if (await base.DownloadPhotoAsync(new TumblrPost(downloadItem.PostType, url, downloadItem.Id, downloadItem.Date)))
+                if (await base.DownloadBinaryPost(new PhotoPost(url, downloadItem.Id, downloadItem.Date)))
                     return true;
             }
-            return await base.DownloadPhotoAsync(downloadItem);
+            return await base.DownloadBinaryPost(downloadItem);
         }
 
         /// <summary>

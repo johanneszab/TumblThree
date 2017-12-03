@@ -73,7 +73,6 @@
     <Compile Include="Models\ICrawlerData.cs" />
     <Compile Include="Models\IFiles.cs" />
     <Compile Include="Models\PostCounter.cs" />
-    <Compile Include="Models\PostTypes.cs" />
     <Compile Include="Models\TumblrLikeByBlog.cs" />
     <Compile Include="Models\TumblrTagSearchBlog.cs" />
     <Compile Include="Models\TumblrSearchBlog.cs" />

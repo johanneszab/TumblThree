@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using TumblThree.Applications.DataModels;
+using TumblThree.Applications.DataModels.TumblrPosts;
 using TumblThree.Applications.Downloader;
 using TumblThree.Applications.Extensions;
 using TumblThree.Applications.Properties;
@@ -39,9 +40,9 @@ namespace TumblThree.Applications.Crawler
             await grabber;
 
             UpdateProgressQueueInformation(Resources.ProgressUniqueDownloads);
-            blog.DuplicatePhotos = DetermineDuplicates(PostTypes.Photo);
-            blog.DuplicateVideos = DetermineDuplicates(PostTypes.Video);
-            blog.DuplicateAudios = DetermineDuplicates(PostTypes.Audio);
+            blog.DuplicatePhotos = DetermineDuplicates<PhotoPost>();
+            blog.DuplicateVideos = DetermineDuplicates<VideoPost>();
+            blog.DuplicateAudios = DetermineDuplicates<AudioPost>();
             blog.TotalCount = (blog.TotalCount - blog.DuplicatePhotos - blog.DuplicateAudios - blog.DuplicateVideos);
 
             CleanCollectedBlogStatistics();
@@ -239,7 +240,7 @@ namespace TumblThree.Applications.Crawler
                     }
                     imageUrl = ResizeTumblrImageUrl(imageUrl);
                     // TODO: postID
-                    AddToDownloadList(new TumblrPost(PostTypes.Photo, imageUrl, Guid.NewGuid().ToString("N")));
+                    AddToDownloadList(new PhotoPost(imageUrl, Guid.NewGuid().ToString("N")));
                 }
             }
         }
@@ -256,12 +257,12 @@ namespace TumblThree.Applications.Crawler
                     if (shellService.Settings.VideoSize == 1080)
                     {
                         // TODO: postID
-                        AddToDownloadList(new TumblrPost(PostTypes.Video, videoUrl.Replace("/480", "") + ".mp4", Guid.NewGuid().ToString("N")));
+                        AddToDownloadList(new VideoPost(videoUrl.Replace("/480", "") + ".mp4", Guid.NewGuid().ToString("N")));
                     }
                     else if (shellService.Settings.VideoSize == 480)
                     {
                         // TODO: postID
-                        AddToDownloadList(new TumblrPost(PostTypes.Video,
+                        AddToDownloadList(new VideoPost(
                             "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + "_480.mp4",
                             Guid.NewGuid().ToString("N")));
                     }
