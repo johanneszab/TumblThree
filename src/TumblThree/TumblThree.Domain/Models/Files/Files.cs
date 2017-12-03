@@ -16,7 +16,7 @@ namespace TumblThree.Domain.Models
     public class Files : Model, IFiles
     {
         [DataMember(Name="Links")]
-        private List<string> links;
+        protected List<string> links;
 
         private object lockObjectProgress = new object();
         private object lockObjectDb = new object();
@@ -25,11 +25,10 @@ namespace TumblThree.Domain.Models
         {
         }
 
-        public Files(string name, string location, BlogTypes blogType) : this()
+        public Files(string name, string location)
         {
             Name = name;
             Location = location;
-            BlogType = blogType;
             Version = "1";
             links = new List<string>();
         }
@@ -49,7 +48,7 @@ namespace TumblThree.Domain.Models
         public IList<string> Links
         {
             get { return links; }
-            private set { }
+            protected set { }
         }
 
         public void AddFileToDb(string fileName)

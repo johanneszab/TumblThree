@@ -9,7 +9,7 @@ using TumblThree.Domain.Models;
 namespace TumblThree.Applications.ViewModels
 {
     [Export(typeof(IDetailsViewModel))]
-    [ExportMetadata("BlogType", BlogTypes.tumblr)]
+    [ExportMetadata("BlogType", typeof(TumblrBlog))]
     public class DetailsTumblrBlogViewModel : ViewModel<IDetailsView>, IDetailsViewModel
     {
         private readonly IClipboardService clipboardService;

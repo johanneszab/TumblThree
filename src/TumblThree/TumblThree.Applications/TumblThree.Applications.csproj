@@ -103,14 +103,13 @@
     <Compile Include="Downloader\IDownloader.cs" />
     <Compile Include="Crawler\AbstractCrawler.cs" />
     <Compile Include="Crawler\TumblrLikedByCrawler.cs" />
-    <Compile Include="Crawler\TumblrPrivateCrawler.cs" />
+    <Compile Include="Crawler\TumblrHiddenCrawler.cs" />
     <Compile Include="Crawler\TumblrTagSearchCrawler.cs" />
     <Compile Include="Crawler\TumblrSearchCrawler.cs" />
     <Compile Include="Downloader\TumblrDownloader.cs" />
     <Compile Include="Downloader\FileDownloader.cs" />
     <Compile Include="QueueOnDispatcher.cs" />
     <Compile Include="Crawler\ICrawler.cs" />
-    <Compile Include="Crawler\InstagramCrawler.cs" />
     <Compile Include="Crawler\TumblrBlogCrawler.cs" />
     <Compile Include="Auth\OAuth.cs" />
     <Compile Include="PauseTokenSource.cs" />
@@ -147,7 +146,7 @@
     <Compile Include="Services\ShellServiceExtensions.cs" />
     <Compile Include="Extensions\TaskTimeoutExtension.cs" />
     <Compile Include="ThrottledStream.cs" />
-    <Compile Include="ViewModels\DetailsViewModels\DetailsTumblrPrivateBlogViewModel.cs" />
+    <Compile Include="ViewModels\DetailsViewModels\DetailsTumblrHiddenBlogViewModel.cs" />
     <Compile Include="ViewModels\DetailsViewModels\DetailsTumblrBlogViewModel.cs" />
     <Compile Include="ViewModels\DetailsViewModels\DetailsTumblrLikedByViewModel.cs" />
     <Compile Include="ViewModels\DetailsViewModels\DetailsTumblrSearchViewModel.cs" />

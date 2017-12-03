@@ -23,7 +23,7 @@ using TumblThree.Domain.Models;
 namespace TumblThree.Applications.Crawler
 {
     [Export(typeof(ICrawler))]
-    [ExportMetadata("BlogType", BlogTypes.tumblr)]
+    [ExportMetadata("BlogType", typeof(TumblrBlog))]
     public class TumblrBlogCrawler : AbstractCrawler, ICrawler
     {
         private readonly IImgurParser imgurParser;

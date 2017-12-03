@@ -29,10 +29,10 @@ namespace TumblThree.Applications.Crawler
         [ImportMany(typeof(ICrawler))]
         private IEnumerable<Lazy<ICrawler, ICrawlerData>> DownloaderFactoryLazy { get; set; }
 
-        public ICrawler GetCrawler(BlogTypes blogtype)
+        public ICrawler GetCrawler(IBlog blog)
         {
             Lazy<ICrawler, ICrawlerData> downloader =
-                DownloaderFactoryLazy.FirstOrDefault(list => list.Metadata.BlogType == blogtype);
+                DownloaderFactoryLazy.FirstOrDefault(list => list.Metadata.BlogType.GetType() == blog.GetType());
 
             if (downloader != null)
             {
@@ -41,18 +41,18 @@ namespace TumblThree.Applications.Crawler
             throw new ArgumentException("Website is not supported!", "blogType");
         }
 
-        public ICrawler GetCrawler(BlogTypes blogtype, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, IShellService shellService, ICrawlerService crawlerService, IBlog blog)
+        public ICrawler GetCrawler(IBlog blog, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, IShellService shellService, ICrawlerService crawlerService)
         {
             BlockingCollection<TumblrPost> producerConsumerCollection = GetProducerConsumerCollection();
             IFiles files = LoadFiles(blog);
             IWebRequestFactory webRequestFactory = GetWebRequestFactory();
             IGfycatParser gfycatParser = GetGfycatParser(webRequestFactory, ct);
-            switch (blogtype)
+            switch (blog.BlogType)
             {
                 case BlogTypes.tumblr:
                     return new TumblrBlogCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, files, producerConsumerCollection), GetImgurParser(), gfycatParser, GetWebmshareParser(), producerConsumerCollection, blog);
                 case BlogTypes.tmblrpriv:
-                    return new TumblrPrivateCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory ,cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, files, producerConsumerCollection), GetImgurParser(), gfycatParser, GetWebmshareParser(), producerConsumerCollection, blog);
+                    return new TumblrHiddenCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory ,cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, files, producerConsumerCollection), GetImgurParser(), gfycatParser, GetWebmshareParser(), producerConsumerCollection, blog);
                 case BlogTypes.tlb:
                     return new TumblrLikedByCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, files, producerConsumerCollection), producerConsumerCollection, blog);
                 case BlogTypes.tumblrsearch:

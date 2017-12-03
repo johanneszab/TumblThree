@@ -183,7 +183,7 @@ namespace TumblThree.Applications.Controllers
                     QueueListItem nextQueueItem = queueList.First();
                     IBlog blog = nextQueueItem.Blog;
 
-                    ICrawler crawler = CrawlerFactory.GetCrawler(blog.BlogType, ct, pt, new Progress<DownloadProgress>(), shellService, crawlerService, blog);
+                    ICrawler crawler = CrawlerFactory.GetCrawler(blog, ct, pt, new Progress<DownloadProgress>(), shellService, crawlerService);
                     crawler.IsBlogOnlineAsync().Wait(4000);
 
                     if (crawlerService.ActiveItems.Any(item => item.Blog.Name.Equals(nextQueueItem.Blog.Name)))
@@ -218,7 +218,7 @@ namespace TumblThree.Applications.Controllers
             blog.Dirty = true;
             ProgressThrottler<DownloadProgress> progress = SetupThrottledQueueListProgress(queueListItem);
 
-            ICrawler crawler = CrawlerFactory.GetCrawler(blog.BlogType, ct, pt, progress, shellService, crawlerService, blog);
+            ICrawler crawler = CrawlerFactory.GetCrawler(blog, ct, pt, progress, shellService, crawlerService);
             await crawler.Crawl();
 
             if (ct.IsCancellationRequested)

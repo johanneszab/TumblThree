@@ -14,13 +14,13 @@ namespace TumblThree.Domain.Models
         public IBlog GetBlog(string blogUrl, string path)
         {
             if (Validator.IsValidTumblrUrl(blogUrl))
-                return Blog.Create(blogUrl, path, BlogTypes.tumblr);
+                return TumblrBlog.Create(blogUrl, path);
             if (Validator.IsValidTumblrLikedByUrl(blogUrl))
-                return TumblrLikeByBlog.Create(blogUrl, path, BlogTypes.tlb);
+                return TumblrLikedByBlog.Create(blogUrl, path);
             if (Validator.IsValidTumblrSearchUrl(blogUrl))
-                return TumblrSearchBlog.Create(blogUrl, path, BlogTypes.tumblrsearch);
+                return TumblrSearchBlog.Create(blogUrl, path);
             if (Validator.IsValidTumblrTagSearchUrl(blogUrl))
-                return TumblrTagSearchBlog.Create(blogUrl, path, BlogTypes.tumblrtagsearch);
+                return TumblrTagSearchBlog.Create(blogUrl, path);
             throw new ArgumentException("Website is not supported!", nameof(blogUrl));
         }
     }

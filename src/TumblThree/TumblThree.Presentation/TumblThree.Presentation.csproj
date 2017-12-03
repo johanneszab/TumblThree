@@ -109,7 +109,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\DetailsViews\DetailsTumblrPrivateBlogView.xaml">
+    <Page Include="Views\DetailsViews\DetailsTumblrHiddenBlogView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -219,8 +219,8 @@
     <Compile Include="ValidationRules\TimeSpanRule.cs" />
     <Compile Include="ValidationRules\BandwidthRangeRule.cs" />
     <Compile Include="ValidationRules\IntRangeRule.cs" />
-    <Compile Include="Views\DetailsViews\DetailsTumblrPrivateBlogView.xaml.cs">
-      <DependentUpon>DetailsTumblrPrivateBlogView.xaml</DependentUpon>
+    <Compile Include="Views\DetailsViews\DetailsTumblrHiddenBlogView.xaml.cs">
+      <DependentUpon>DetailsTumblrHiddenBlogView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DetailsViews\DetailsTumblrBlogView.xaml.cs">
       <DependentUpon>DetailsTumblrBlogView.xaml</DependentUpon>

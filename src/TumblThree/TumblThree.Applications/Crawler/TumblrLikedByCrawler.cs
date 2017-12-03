@@ -19,7 +19,7 @@ using TumblThree.Domain.Models;
 namespace TumblThree.Applications.Crawler
 {
     [Export(typeof(ICrawler))]
-    [ExportMetadata("BlogType", BlogTypes.tlb)]
+    [ExportMetadata("BlogType", typeof(TumblrLikedByBlog))]
     public class TumblrLikedByCrawler : AbstractCrawler, ICrawler
     {
         public TumblrLikedByCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,

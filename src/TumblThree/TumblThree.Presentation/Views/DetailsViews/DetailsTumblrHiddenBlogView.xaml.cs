@@ -11,18 +11,18 @@ namespace TumblThree.Presentation.Views
     /// <summary>
     ///     Interaction logic for QueueView.xaml
     /// </summary>
-    [Export("TumblrPrivateBlogView", typeof(IDetailsView))]
-    public partial class DetailsTumblrPrivateBlogView : IDetailsView
+    [Export("TumblrHiddenBlogView", typeof(IDetailsView))]
+    public partial class DetailsTumblrHiddenBlogView : IDetailsView
     {
-        private readonly Lazy<DetailsTumblrPrivateBlogViewModel> viewModel;
+        private readonly Lazy<DetailsTumblrHiddenBlogViewModel> viewModel;
 
-        public DetailsTumblrPrivateBlogView()
+        public DetailsTumblrHiddenBlogView()
         {
             InitializeComponent();
-            viewModel = new Lazy<DetailsTumblrPrivateBlogViewModel>(() => ViewHelper.GetViewModel<DetailsTumblrPrivateBlogViewModel>(this));
+            viewModel = new Lazy<DetailsTumblrHiddenBlogViewModel>(() => ViewHelper.GetViewModel<DetailsTumblrHiddenBlogViewModel>(this));
         }
 
-        private DetailsTumblrPrivateBlogViewModel ViewModel
+        private DetailsTumblrHiddenBlogViewModel ViewModel
         {
             get { return viewModel.Value; }
         }

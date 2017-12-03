@@ -24,8 +24,8 @@ using TumblThree.Applications.DataModels.TumblrPosts;
 namespace TumblThree.Applications.Crawler
 {
     [Export(typeof(ICrawler))]
-    [ExportMetadata("BlogType", BlogTypes.tmblrpriv)]
-    public class TumblrPrivateCrawler : AbstractCrawler, ICrawler
+    [ExportMetadata("BlogType", typeof(TumblrHiddenBlog))]
+    public class TumblrHiddenCrawler : AbstractCrawler, ICrawler
     {
         private readonly IImgurParser imgurParser;
         private readonly IGfycatParser gfycatParser;
@@ -33,7 +33,7 @@ namespace TumblThree.Applications.Crawler
 
         private string authentication = string.Empty;
 
-        public TumblrPrivateCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
+        public TumblrHiddenCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
             IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IDownloader downloader, IImgurParser imgurParser, IGfycatParser gfycatParser, IWebmshareParser webmshareParser, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
             : base(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, downloader, producerConsumerCollection, blog)
         {
@@ -58,7 +58,7 @@ namespace TumblThree.Applications.Crawler
                     var resp = (HttpWebResponse)webException.Response;
                     if (resp.StatusCode == HttpStatusCode.ServiceUnavailable)
                     {
-                        Logger.Error("TumblrPrivateCrawler:IsBlogOnlineAsync:WebException {0}", webException);
+                        Logger.Error("TumblrHiddenCrawler:IsBlogOnlineAsync:WebException {0}", webException);
                         shellService.ShowError(webException, Resources.NotLoggedIn, blog.Name);
                         blog.Online = true;
                         return;
@@ -69,13 +69,13 @@ namespace TumblThree.Applications.Crawler
                     var resp = (HttpWebResponse)webException.Response;
                     if ((int)resp.StatusCode == 429)
                     {
-                        Logger.Error("TumblrPrivateCrawler:IsBlogOnlineAsync:WebException {0}", webException);
+                        Logger.Error("TumblrHiddenCrawler:IsBlogOnlineAsync:WebException {0}", webException);
                         shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
                         blog.Online = true;
                         return;
                     }
                 }
-                Logger.Error("TumblrPrivateCrawler:IsBlogOnlineAsync:WebException {0}", webException);
+                Logger.Error("TumblrHiddenCrawler:IsBlogOnlineAsync:WebException {0}", webException);
                 shellService.ShowError(webException, Resources.PasswordProtectedOrOffline, blog.Name);
                 blog.Online = true;
                 return;
@@ -103,7 +103,7 @@ namespace TumblThree.Applications.Crawler
                 var webRespStatusCode = (int)((HttpWebResponse)webException?.Response).StatusCode;
                 if (webRespStatusCode == 503)
                 {
-                    Logger.Error("TumblrPrivateCrawler:GetUrlsAsync: {0}", "User not logged in");
+                    Logger.Error("TumblrHiddenCrawler:GetUrlsAsync: {0}", "User not logged in");
                     shellService.ShowError(new Exception("User not logged in"), Resources.NotLoggedIn, blog.Name);
                 }
             }
@@ -111,7 +111,7 @@ namespace TumblThree.Applications.Crawler
 
         public async Task Crawl()
         {
-            Logger.Verbose("TumblrPrivateCrawler.Crawl:Start");
+            Logger.Verbose("TumblrHiddenCrawler.Crawl:Start");
 
             Task grabber = GetUrlsAsync();
             Task<bool> download = downloader.DownloadBlogAsync();
@@ -260,7 +260,7 @@ namespace TumblThree.Applications.Crawler
 
             if (!await CheckIfLoggedIn())
             {
-                Logger.Error("TumblrPrivateCrawler:GetUrlsAsync: {0}", "User not logged in");
+                Logger.Error("TumblrHiddenCrawler:GetUrlsAsync: {0}", "User not logged in");
                 shellService.ShowError(new Exception("User not logged in"), Resources.NotLoggedIn, blog.Name);
                 producerConsumerCollection.CompleteAdding();
                 return;
@@ -289,7 +289,7 @@ namespace TumblThree.Applications.Crawler
                         if ((int)resp.StatusCode == 429)
                         {
                             // TODO: add retry logic?
-                            Logger.Error("TumblrPrivateCrawler:GetUrls:WebException {0}", webException);
+                            Logger.Error("TumblrHiddenCrawler:GetUrls:WebException {0}", webException);
                             shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
                         }
                     }
