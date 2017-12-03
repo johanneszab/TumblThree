@@ -39,6 +39,12 @@ namespace TumblThree.Applications.Services
             blog.DownloadFrom = shellService.Settings.DownloadFrom;
             blog.DownloadTo = shellService.Settings.DownloadTo;
             blog.Tags = shellService.Settings.Tags;
+            blog.DownloadImgur = shellService.Settings.DownloadImgur;
+            blog.DownloadGfycat = shellService.Settings.DownloadGfycat;
+            blog.DownloadWebmshare = shellService.Settings.DownloadWebmshare;
+            blog.GfycatType = shellService.Settings.GfycatType;
+            blog.WebmshareType = shellService.Settings.WebmshareType;
+            blog.DumpCrawlerData = shellService.Settings.DumpCrawlerData;
             return blog;
         }
     }

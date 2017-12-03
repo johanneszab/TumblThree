@@ -8,7 +8,7 @@
         xmlns:vm="clr-namespace:TumblThree.Applications.ViewModels;assembly=TumblThree.Applications"
         xmlns:Models="clr-namespace:TumblThree.Domain.Models;assembly=TumblThree.Domain"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        mc:Ignorable="d" Title="Settings" Height="625" Width="700"
+        mc:Ignorable="d" Title="Settings" Height="675" Width="720"
         d:DataContext="{d:DesignInstance vm:SettingsViewModel}">
     <Window.Resources>
         <ObjectDataProvider MethodName="GetValues"
@@ -506,6 +506,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Label x:Name="perBlogLabel" Grid.Column="0" Grid.Row="0" Margin="5"
                        Content="{x:Static p:Resources.DefaultSettingsForBlogs}">
@@ -710,6 +711,18 @@
                                         <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipForceSize}" />
                                         <TextBlock xml:space="preserve"
                                            Text="{x:Static p:Resources.ToolTipForceSizeDescription}" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </CheckBox.ToolTip>
+                        </CheckBox>
+                        <CheckBox x:Name="checkBoxDumpCrawlerData" Content="{x:Static p:Resources.DumpCrawlerData}"
+                          IsChecked="{Binding DumpCrawlerData, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="14" Margin="10">
+                            <CheckBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDumpCrawlerData}" />
+                                        <TextBlock xml:space="preserve"
+                                           Text="{x:Static p:Resources.ToolTipDumpCrawlerDataDescription}" />
                                     </StackPanel>
                                 </ToolTip>
                             </CheckBox.ToolTip>

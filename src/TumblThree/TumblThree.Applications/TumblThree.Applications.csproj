@@ -74,6 +74,9 @@
     <Compile Include="Crawler\ITumblrParser.cs" />
     <Compile Include="Crawler\TumblrParser.cs" />
     <Compile Include="DataModels\DownloadProgress.cs" />
+    <Compile Include="DataModels\TumblrCrawlerData\ITumblrCrawlerData.cs" />
+    <Compile Include="DataModels\TumblrCrawlerData\TumblrCrawlerJsonData.cs" />
+    <Compile Include="DataModels\TumblrCrawlerData\TumblrCrawlerXmlData.cs" />
     <Compile Include="DataModels\TumblrPosts\AnswerPost.cs" />
     <Compile Include="DataModels\TumblrPosts\AudioMetaPost.cs" />
     <Compile Include="DataModels\TumblrPosts\AudioPost.cs" />
@@ -93,6 +96,7 @@
     <Compile Include="Downloader\AbstractDownloader.cs" />
     <Compile Include="Crawler\CrawlerFactory.cs" />
     <Compile Include="Crawler\ICrawlerFactory.cs" />
+    <Compile Include="Downloader\ICrawlerDataDownloader.cs" />
     <Compile Include="Downloader\IDownloader.cs" />
     <Compile Include="Crawler\AbstractCrawler.cs" />
     <Compile Include="Crawler\TumblrLikedByCrawler.cs" />
@@ -104,6 +108,8 @@
     <Compile Include="Crawler\IGfycatParser.cs" />
     <Compile Include="Crawler\IWebmshareParser.cs" />
     <Compile Include="Crawler\IWebRequestFactory.cs" />
+    <Compile Include="Downloader\TumblrJsonDownloader.cs" />
+    <Compile Include="Downloader\TumblrXmlDownloader.cs" />
     <Compile Include="ObjectModel\ObservableRangeCollection.cs" />
     <Compile Include="QueueOnDispatcher.cs" />
     <Compile Include="Crawler\ICrawler.cs" />

@@ -496,16 +496,16 @@ Since the data is usually small, you should leave this high.</value>
     <value>per time interval (s):</value>
   </data>
   <data name="LimitConnections" xml:space="preserve">
-    <value>Limit Tumblr Svc Connections:</value>
+    <value>Limit Tumblr Svc Host Connections:</value>
   </data>
   <data name="MaxConnections" xml:space="preserve">
     <value>Number of connections:</value>
   </data>
   <data name="ToolTipLimitConnections" xml:space="preserve">
-    <value>Limit connections to the tumblr svc host.</value>
+    <value>Limit connections to the tumblr svc host</value>
   </data>
   <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
-    <value>A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr svc host.
+    <value>A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr svc host
 A too small value will decrease the scanning speed.
 Set a number/time pair.
 Note: The tumblr svc host is only used for tumblr blog downloads.</value>
@@ -743,5 +743,14 @@ E.g.  great big car, bears searches for great big cars and bears.</value>
   </data>
   <data name="ToolTipWebmshareFiletypeDescription" xml:space="preserve">
     <value>Chose which file type you want to download</value>
+  </data>
+  <data name="DumpCrawlerData" xml:space="preserve">
+    <value>Dump crawler data</value>
+  </data>
+  <data name="ToolTipDumpCrawlerData" xml:space="preserve">
+    <value>Dump the crawler data to disk.</value>
+  </data>
+  <data name="ToolTipDumpCrawlerDataDescription" xml:space="preserve">
+    <value>Writes the data gather from the crawler to disk, separated per post.</value>
   </data>
 </root>

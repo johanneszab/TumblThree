@@ -28,6 +28,7 @@ namespace TumblThree.Domain.Models
         private bool downloadAnswer;
         private bool downloadUrlList;
         private bool downloadVideo;
+        private bool dumpCrawlerData;
         private bool forceRescan = true;
         private bool forceSize;
         private string lastDownloadedPhoto;
@@ -190,6 +191,17 @@ namespace TumblThree.Domain.Models
             set
             {
                 SetProperty(ref downloadVideo, value);
+                Dirty = true;
+            }
+        }
+
+        [DataMember]
+        public bool DumpCrawlerData
+        {
+            get { return dumpCrawlerData; }
+            set
+            {
+                SetProperty(ref dumpCrawlerData, value);
                 Dirty = true;
             }
         }

@@ -98,7 +98,9 @@ namespace TumblThree.Domain.Models
 
         bool CreateAudioMeta { get; set; }
 
-        string DownloadPages{ get; set; }
+        bool DumpCrawlerData { get; set; }
+
+        string DownloadPages { get; set; }
 
         int PageSize { get; set; }
 

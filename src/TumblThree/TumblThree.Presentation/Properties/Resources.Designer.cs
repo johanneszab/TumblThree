@@ -637,6 +637,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dump crawler data.
+        /// </summary>
+        public static string DumpCrawlerData {
+            get {
+                return ResourceManager.GetString("DumpCrawlerData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start download at.
         /// </summary>
         public static string EnableAutoDownload {
@@ -817,7 +826,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Limit Tumblr Svc Connections:.
+        ///   Looks up a localized string similar to Limit Tumblr Svc Host Connections:.
         /// </summary>
         public static string LimitConnections {
             get {
@@ -1542,6 +1551,24 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dump the crawler data to disk..
+        /// </summary>
+        public static string ToolTipDumpCrawlerData {
+            get {
+                return ResourceManager.GetString("ToolTipDumpCrawlerData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Writes the data gather from the crawler to disk, separated per post..
+        /// </summary>
+        public static string ToolTipDumpCrawlerDataDescription {
+            get {
+                return ResourceManager.GetString("ToolTipDumpCrawlerDataDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Export all blog urls as text file.
         /// </summary>
         public static string ToolTipExportBlogs {
@@ -1635,7 +1662,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Limit connections to the tumblr svc host..
+        ///   Looks up a localized string similar to Limit connections to the tumblr svc host.
         /// </summary>
         public static string ToolTipLimitConnections {
             get {
@@ -1644,7 +1671,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr svc host.
+        ///   Looks up a localized string similar to A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr svc host
         ///A too small value will decrease the scanning speed.
         ///Set a number/time pair.
         ///Note: The tumblr svc host is only used for tumblr blog downloads..
