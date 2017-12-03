@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 
 using TumblThree.Applications.DataModels;
+using TumblThree.Applications.DataModels.TumblrCrawlerData;
 using TumblThree.Applications.DataModels.TumblrPosts;
 using TumblThree.Applications.Downloader;
 using TumblThree.Applications.Extensions;
@@ -29,14 +30,18 @@ namespace TumblThree.Applications.Crawler
         private readonly IImgurParser imgurParser;
         private readonly IGfycatParser gfycatParser;
         private readonly IWebmshareParser webmshareParser;
+        private readonly BlockingCollection<TumblrCrawlerXmlData> xmlQueue;
+        private readonly ICrawlerDataDownloader crawlerDataDownloader;
 
         public TumblrBlogCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
-            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IDownloader downloader, IImgurParser imgurParser, IGfycatParser gfycatParser, IWebmshareParser webmshareParser, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
+            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IDownloader downloader, ICrawlerDataDownloader crawlerDataDownloader, IImgurParser imgurParser, IGfycatParser gfycatParser, IWebmshareParser webmshareParser, BlockingCollection<TumblrPost> producerConsumerCollection, BlockingCollection<TumblrCrawlerXmlData> xmlQueue, IBlog blog)
             : base(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, downloader, producerConsumerCollection, blog)
         {
             this.imgurParser = imgurParser;
             this.gfycatParser = gfycatParser;
             this.webmshareParser = webmshareParser;
+            this.xmlQueue = xmlQueue;
+            this.crawlerDataDownloader = crawlerDataDownloader;
         }
 
         public override async Task IsBlogOnlineAsync()
@@ -111,7 +116,14 @@ namespace TumblThree.Applications.Crawler
             Logger.Verbose("TumblrBlogCrawler.Crawl:Start");
 
             Task<Tuple<ulong, bool>> grabber = GetUrlsAsync();
+
+            // FIXME: refactor downloader out of class
             Task<bool> download = downloader.DownloadBlogAsync();
+
+            Task crawlerDownloader = Task.CompletedTask;
+            if (blog.DumpCrawlerData)
+                crawlerDownloader = crawlerDataDownloader.DownloadCrawlerDataAsync();
+
             Tuple<ulong, bool> grabberResult = await grabber;
             bool apiLimitHit = grabberResult.Item2;
 
@@ -124,6 +136,7 @@ namespace TumblThree.Applications.Crawler
 
             CleanCollectedBlogStatistics();
 
+            await crawlerDownloader;
             bool finishedDownloading = await download;
 
             if (!ct.IsCancellationRequested)
@@ -329,6 +342,7 @@ namespace TumblThree.Applications.Crawler
             await Task.WhenAll(trackedTasks);
 
             producerConsumerCollection.CompleteAdding();
+            xmlQueue.CompleteAdding();
 
             //if (!ct.IsCancellationRequested && completeGrab)
             //{
@@ -375,6 +389,12 @@ namespace TumblThree.Applications.Crawler
                 return false;
             }
             return true;
+        }
+
+        private void AddToXmlQueue(TumblrCrawlerXmlData addToList)
+        {
+            if (blog.DumpCrawlerData)
+                xmlQueue.Add(addToList);
         }
 
         private async Task AddUrlsToDownloadList(XContainer document)
@@ -520,6 +540,7 @@ namespace TumblThree.Applications.Crawler
                         {
                             string textBody = ParseText(post);
                             AddToDownloadList(new TextPost(textBody, post.Attribute("id").Value));
+                            AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(post.Attribute("id").Value, ".txt"), post));
                         }
                     }
                 }
@@ -541,6 +562,7 @@ namespace TumblThree.Applications.Crawler
                         {
                             string textBody = ParseQuote(post);
                             AddToDownloadList(new QuotePost(textBody, post.Attribute("id").Value));
+                            AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(post.Attribute("id").Value, ".txt"), post));
                         }
                     }
                 }
@@ -562,6 +584,7 @@ namespace TumblThree.Applications.Crawler
                         {
                             string textBody = ParseLink(post);
                             AddToDownloadList(new LinkPost(textBody, post.Attribute("id").Value));
+                            AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(post.Attribute("id").Value, ".txt"), post));
                         }
                     }
                 }
@@ -583,6 +606,7 @@ namespace TumblThree.Applications.Crawler
                         {
                             string textBody = ParseConversation(post);
                             AddToDownloadList(new ConversationPost(textBody, post.Attribute("id").Value));
+                            AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(post.Attribute("id").Value, ".txt"), post));
                         }
                     }
                 }
@@ -604,6 +628,7 @@ namespace TumblThree.Applications.Crawler
                         {
                             string textBody = ParseAnswer(post);
                             AddToDownloadList(new AnswerPost(textBody, post.Attribute("id").Value));
+                            AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(post.Attribute("id").Value, ".txt"), post));
                         }
                     }
                 }
@@ -625,6 +650,7 @@ namespace TumblThree.Applications.Crawler
                         {
                             string textBody = ParsePhotoMeta(post);
                             AddToDownloadList(new PhotoMetaPost(textBody, post.Attribute("id").Value));
+                            AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(post.Attribute("id").Value, ".txt"), post));
                         }
                     }
                 }
@@ -646,6 +672,7 @@ namespace TumblThree.Applications.Crawler
                         {
                             string textBody = ParseVideoMeta(post);
                             AddToDownloadList(new VideoMetaPost(textBody, post.Attribute("id").Value));
+                            AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(post.Attribute("id").Value, ".txt"), post));
                         }
                     }
                 }
@@ -667,6 +694,7 @@ namespace TumblThree.Applications.Crawler
                         {
                             string textBody = ParseAudioMeta(post);
                             AddToDownloadList(new AudioMetaPost(textBody, post.Attribute("id").Value));
+                            AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(post.Attribute("id").Value, ".txt"), post));
                         }
                     }
                 }
@@ -696,6 +724,7 @@ namespace TumblThree.Applications.Crawler
                 }
                 imageUrl = ResizeTumblrImageUrl(imageUrl);
                 AddToDownloadList(new PhotoPost(imageUrl, post.Attribute("id").Value, post.Attribute("unix-timestamp").Value));
+                AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(imageUrl.Split('/').Last(), ".txt"), post));
             }
         }
 
@@ -714,6 +743,7 @@ namespace TumblThree.Applications.Crawler
                     AddToDownloadList(new VideoPost(
                         "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + "_480.mp4",
                         post.Attribute("id").Value, post.Attribute("unix-timestamp").Value));
+                    AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(videoUrl.Split('/').Last(), ".txt"), post));
                 }
             }
         }
@@ -726,6 +756,7 @@ namespace TumblThree.Applications.Crawler
                 return;
             }
             AddToDownloadList(new PhotoPost(imageUrl, post.Attribute("id").Value, post.Attribute("unix-timestamp").Value));
+            AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(imageUrl.Split('/').Last(), ".txt"), post));
         }
 
         private void AddPhotoSetUrl(XElement post)
@@ -740,6 +771,7 @@ namespace TumblThree.Applications.Crawler
                                             .Where(imageUrl => !blog.SkipGif || !imageUrl.EndsWith(".gif")))
             {
                 AddToDownloadList(new PhotoPost(imageUrl, post.Attribute("id").Value, post.Attribute("unix-timestamp").Value));
+                AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(imageUrl.Split('/').Last(), ".txt"), post));
             }
         }
 
@@ -756,6 +788,8 @@ namespace TumblThree.Applications.Crawler
                 AddToDownloadList(new VideoPost(
                     "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + ".mp4",
                     post.Attribute("id").Value, post.Attribute("unix-timestamp").Value));
+                AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(videoUrl.Split('/').Last(), ".txt"), post));
+
             }
             else if (shellService.Settings.VideoSize == 480)
             {
@@ -763,6 +797,8 @@ namespace TumblThree.Applications.Crawler
                 AddToDownloadList(new VideoPost(
                     "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + "_480.mp4",
                     post.Attribute("id").Value, post.Attribute("unix-timestamp").Value));
+                AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(videoUrl.Split('/').Last(), ".txt"), post));
+
             }
         }
 
@@ -777,6 +813,7 @@ namespace TumblThree.Applications.Crawler
                 audioUrl = audioUrl + ".mp3";
 
             AddToDownloadList(new AudioPost(WebUtility.UrlDecode(audioUrl), post.Attribute("id").Value, post.Attribute("unix-timestamp").Value));
+            AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(audioUrl.Split('/').Last(), ".txt"), post));
         }
 
         private async Task AddExternalPhotoUrlToDownloadList(XContainer document)
@@ -818,6 +855,7 @@ namespace TumblThree.Applications.Crawler
                             // TODO: postID
                             AddToDownloadList(new PhotoPost(imageUrl, imgurId,
                                 post.Attribute("unix-timestamp").Value));
+                            AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(imageUrl.Split('/').Last(), ".txt"), post));
                         }
                     }
                 }
@@ -848,6 +886,7 @@ namespace TumblThree.Applications.Crawler
                             // TODO: postID
                             AddToDownloadList(new VideoPost(videoUrl, gfyId,
                                 post.Attribute("unix-timestamp").Value));
+                            AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(videoUrl.Split('/').Last(), ".txt"), post));
                         }
                     }
                 }
@@ -877,6 +916,7 @@ namespace TumblThree.Applications.Crawler
                             // TODO: postID
                             AddToDownloadList(new PhotoPost(imageUrl, webmshareId,
                                 post.Attribute("unix-timestamp").Value));
+                            AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(imageUrl.Split('/').Last(), ".txt"), post));
                         }
                     }
                 }

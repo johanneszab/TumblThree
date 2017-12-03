@@ -202,6 +202,9 @@ namespace TumblThree.Applications.Properties
         public bool CreateAudioMeta { get; set; }
 
         [DataMember]
+        public bool DumpCrawlerData { get; set; }
+
+        [DataMember]
         public bool DownloadRebloggedPosts { get; set; }
 
         [DataMember]

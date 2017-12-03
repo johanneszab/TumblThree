@@ -637,6 +637,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dump crawler data.
+        /// </summary>
+        public static string DumpCrawlerData {
+            get {
+                return ResourceManager.GetString("DumpCrawlerData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start download at.
         /// </summary>
         public static string EnableAutoDownload {
@@ -1538,6 +1547,24 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipDownloadWebmshareDescription {
             get {
                 return ResourceManager.GetString("ToolTipDownloadWebmshareDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dump the crawler data to disk..
+        /// </summary>
+        public static string ToolTipDumpCrawlerData {
+            get {
+                return ResourceManager.GetString("ToolTipDumpCrawlerData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Writes the data gather from the crawler to disk, separated per post..
+        /// </summary>
+        public static string ToolTipDumpCrawlerDataDescription {
+            get {
+                return ResourceManager.GetString("ToolTipDumpCrawlerDataDescription", resourceCulture);
             }
         }
         

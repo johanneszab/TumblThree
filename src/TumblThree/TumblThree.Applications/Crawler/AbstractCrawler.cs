@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
-
 using TumblThree.Applications.DataModels;
 using TumblThree.Applications.DataModels.TumblrPosts;
 using TumblThree.Applications.Downloader;

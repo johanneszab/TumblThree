@@ -80,6 +80,9 @@
     <Compile Include="Crawler\WebmshareParser.cs" />
     <Compile Include="Crawler\WebRequestFactory.cs" />
     <Compile Include="DataModels\DownloadProgress.cs" />
+    <Compile Include="DataModels\TumblrCrawlerData\ITumblrCrawlerData.cs" />
+    <Compile Include="DataModels\TumblrCrawlerData\TumblrCrawlerJsonData.cs" />
+    <Compile Include="DataModels\TumblrCrawlerData\TumblrCrawlerXmlData.cs" />
     <Compile Include="DataModels\TumblrPosts\PhotoMetaPost.cs" />
     <Compile Include="DataModels\TumblrPosts\VideoMetaPost.cs" />
     <Compile Include="DataModels\TumblrPosts\AudioMetaPost.cs" />
@@ -91,6 +94,9 @@
     <Compile Include="DataModels\TumblrPosts\AnswerPost.cs" />
     <Compile Include="DataModels\TumblrPosts\VideoPost.cs" />
     <Compile Include="DataModels\TumblrPosts\PhotoPost.cs" />
+    <Compile Include="Downloader\ICrawlerDataDownloader.cs" />
+    <Compile Include="Downloader\TumblrJsonDownloader.cs" />
+    <Compile Include="Downloader\TumblrXmlDownloader.cs" />
     <Compile Include="ObjectModel\ObservableRangeCollection.cs" />
     <Compile Include="DataModels\TumblrSvcJson.cs" />
     <Compile Include="DataModels\TumblrPost.cs" />

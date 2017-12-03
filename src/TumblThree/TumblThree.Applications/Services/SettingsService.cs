@@ -44,6 +44,7 @@ namespace TumblThree.Applications.Services
             blog.DownloadWebmshare = shellService.Settings.DownloadWebmshare;
             blog.GfycatType = shellService.Settings.GfycatType;
             blog.WebmshareType = shellService.Settings.WebmshareType;
+            blog.DumpCrawlerData = shellService.Settings.DumpCrawlerData;
             return blog;
         }
     }

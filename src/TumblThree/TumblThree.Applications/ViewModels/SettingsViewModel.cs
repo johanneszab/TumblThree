@@ -43,6 +43,7 @@ namespace TumblThree.Applications.ViewModels
         private bool createAudioMeta;
         private bool createImageMeta;
         private bool createVideoMeta;
+        private bool dumpCrawlerData;
         private string downloadPages;
         private int pageSize;
         private string downloadFrom;
@@ -440,6 +441,12 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref createAudioMeta, value); }
         }
 
+        public bool DumpCrawlerData
+        {
+            get { return dumpCrawlerData; }
+            set { SetProperty(ref dumpCrawlerData, value); }
+        }
+
         public string DownloadPages
         {
             get { return downloadPages; }
@@ -667,6 +674,7 @@ namespace TumblThree.Applications.ViewModels
                 CreateImageMeta = settings.CreateImageMeta;
                 CreateVideoMeta = settings.CreateVideoMeta;
                 CreateAudioMeta = settings.CreateAudioMeta;
+                DumpCrawlerData = settings.DumpCrawlerData;
                 DownloadPages = settings.DownloadPages;
                 PageSize = settings.PageSize;
                 DownloadFrom = settings.DownloadFrom;
@@ -730,6 +738,7 @@ namespace TumblThree.Applications.ViewModels
                 CreateImageMeta = false;
                 CreateVideoMeta = false;
                 CreateAudioMeta = false;
+                DumpCrawlerData = false;
                 DownloadPages = string.Empty;
                 PageSize = 50;
                 DownloadFrom = string.Empty;
@@ -812,6 +821,7 @@ namespace TumblThree.Applications.ViewModels
             settings.CreateImageMeta = CreateImageMeta;
             settings.CreateVideoMeta = CreateVideoMeta;
             settings.CreateAudioMeta = CreateAudioMeta;
+            settings.DumpCrawlerData = DumpCrawlerData;
             settings.DownloadPages = DownloadPages;
             settings.PageSize = PageSize;
             settings.DownloadFrom = DownloadFrom;
