@@ -80,39 +80,13 @@ namespace TumblThree.Domain.Models
         private int progress;
         private int quotes;
         [DataMember(Name="Links")]
-        private List<string> links;
+        protected List<string> links;
         private int downloadedImages;
 
         private object lockObjectProgress = new object();
         private object lockObjectPostCount = new object();
         private object lockObjectDb = new object();
         private object lockObjectDirectory = new object();
-
-        public static Blog Create(string url, string location, BlogTypes blogType)
-        {
-            var blog = new Blog()
-            {
-                Url = ExtractUrl(url),
-                Name = ExtractName(url),
-                BlogType = blogType,
-                Location = location,
-                Version = "3",
-                DateAdded = DateTime.Now,
-                links = new List<string>()
-            };
-
-            Directory.CreateDirectory(location);
-            Directory.CreateDirectory(Path.Combine(Directory.GetParent(location).FullName, blog.Name));
-
-            blog.ChildId = Path.Combine(location, blog.Name + "_files." + blogType);
-            if (!File.Exists(blog.ChildId))
-            {
-                IFiles files = new Files(blog.Name, blog.Location, blog.BlogType);
-                files.Save();
-                files = null;
-            }
-            return blog;
-        }
 
         public enum PostType { Photo, Video }
 
@@ -653,7 +627,7 @@ namespace TumblThree.Domain.Models
         public List<string> Links
         {
             get { return links; }
-            private set { }
+            protected set { }
         }
 
         [DataMember]
@@ -808,7 +782,7 @@ namespace TumblThree.Domain.Models
                     FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
                     var serializer = new DataContractJsonSerializer(GetType());
-                    var blog = (Blog)serializer.ReadObject(stream);
+                    var blog = (IBlog)serializer.ReadObject(stream);
                     blog.Location = Path.Combine((Directory.GetParent(fileLocation).FullName));
                     blog.ChildId = Path.Combine(blog.Location, blog.Name + "_files." + blog.BlogType);
                     return blog;

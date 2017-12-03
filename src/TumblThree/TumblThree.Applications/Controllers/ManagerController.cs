@@ -156,8 +156,9 @@ namespace TumblThree.Applications.Controllers
                         {
                             foreach (IBlog blog in files)
                             {
-                                ICrawler crawler = CrawlerFactory.GetCrawler(blog.BlogType, new CancellationToken(), new PauseToken(), new Progress<DownloadProgress>(), shellService, crawlerService, blog);
-                                await crawler.IsBlogOnlineAsync();
+                                ICrawler downloader = CrawlerFactory.GetCrawler(blog, new CancellationToken(), new PauseToken(), new Progress<DownloadProgress>(), shellService,
+                                    crawlerService);
+                                await downloader.IsBlogOnlineAsync();
                             }
                         }
                     }
@@ -188,7 +189,17 @@ namespace TumblThree.Applications.Controllers
                 fileName => supportedFileTypes.Any(fileName.Contains) &&
                             !fileName.Contains("_files")))
             {
-                blogs.Add(new Blog().Load(filename));
+                //TODO: Refactor
+                if (filename.EndsWith(BlogTypes.tumblr.ToString()))
+                    blogs.Add(new TumblrBlog().Load(filename));
+                if (filename.EndsWith(BlogTypes.tmblrpriv.ToString()))
+                    blogs.Add(new TumblrHiddenBlog().Load(filename));
+                if (filename.EndsWith(BlogTypes.tlb.ToString()))
+                    blogs.Add(new TumblrLikedByBlog().Load(filename));
+                if (filename.EndsWith(BlogTypes.tumblrsearch.ToString()))
+                    blogs.Add(new TumblrSearchBlog().Load(filename));
+                if (filename.EndsWith(BlogTypes.tumblrtagsearch.ToString()))
+                    blogs.Add(new TumblrTagSearchBlog().Load(filename));
             }
             Logger.Verbose("ManagerController.GetFilesCore End");
 
@@ -364,8 +375,15 @@ namespace TumblThree.Applications.Controllers
             }
 
             blog = settingsService.TransferGlobalSettingsToBlog(blog);
-            ICrawler crawler = CrawlerFactory.GetCrawler(blog.BlogType, new CancellationToken(), new PauseToken(), new Progress<DownloadProgress>(), shellService, crawlerService, blog);
+            ICrawler crawler = CrawlerFactory.GetCrawler(blog, new CancellationToken(), new PauseToken(), new Progress<DownloadProgress>(), shellService, crawlerService);
             await crawler.IsBlogOnlineAsync();
+
+            if (CheckIfTumblrHiddenBlog(blog))
+            {
+                blog = PromoteTumblrBlogToHiddenBlog(blog);
+                crawler = CrawlerFactory.GetCrawler(blog, new CancellationToken(), new PauseToken(), new Progress<DownloadProgress>(), shellService, crawlerService);
+            }
+
             await crawler.UpdateMetaInformationAsync();
 
             lock (lockObject)
@@ -381,6 +399,24 @@ namespace TumblThree.Applications.Controllers
                     QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => managerService.BlogFiles.Add(blog)));
                 }
             }
+        }
+
+        private bool CheckIfTumblrHiddenBlog(IBlog blog)
+        {
+            if (blog.BlogType == BlogTypes.tumblr && !blog.Online)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private IBlog PromoteTumblrBlogToHiddenBlog(IBlog blog)
+        {
+            RemoveBlog(new[] { blog } );
+            blog = TumblrHiddenBlog.Create(blog.Url, Path.Combine(shellService.Settings.DownloadLocation, "Index"));
+            blog = settingsService.TransferGlobalSettingsToBlog(blog);
+            blog.Online = true;
+            return blog;
         }
 
         private void OnClipboardContentChanged(object sender, EventArgs e)

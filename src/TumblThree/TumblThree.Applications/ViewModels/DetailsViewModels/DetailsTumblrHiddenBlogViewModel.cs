@@ -10,7 +10,7 @@ namespace TumblThree.Applications.ViewModels
 {
     [Export(typeof(IDetailsViewModel))]
     [ExportMetadata("BlogType", BlogTypes.tmblrpriv)]
-    public class DetailsTumblrPrivateBlogViewModel : ViewModel<IDetailsView>, IDetailsViewModel
+    public class DetailsTumblrHiddenBlogViewModel : ViewModel<IDetailsView>, IDetailsViewModel
     {
         private readonly IClipboardService clipboardService;
         private readonly DelegateCommand copyUrlCommand;
@@ -18,7 +18,7 @@ namespace TumblThree.Applications.ViewModels
         private int count = 0;
 
         [ImportingConstructor]
-        public DetailsTumblrPrivateBlogViewModel([Import("TumblrPrivateBlogView", typeof(IDetailsView))]IDetailsView view, IClipboardService clipboardService) : base(view)
+        public DetailsTumblrHiddenBlogViewModel([Import("TumblrHiddenBlogView", typeof(IDetailsView))]IDetailsView view, IClipboardService clipboardService) : base(view)
         {
             this.clipboardService = clipboardService;
             copyUrlCommand = new DelegateCommand(CopyUrlToClipboard);

@@ -107,7 +107,6 @@
     <Compile Include="ObjectModel\ObservableRangeCollection.cs" />
     <Compile Include="QueueOnDispatcher.cs" />
     <Compile Include="Crawler\ICrawler.cs" />
-    <Compile Include="Crawler\InstagramCrawler.cs" />
     <Compile Include="Crawler\TumblrBlogCrawler.cs" />
     <Compile Include="Auth\OAuth.cs" />
     <Compile Include="PauseTokenSource.cs" />
@@ -144,7 +143,7 @@
     <Compile Include="Services\ShellServiceExtensions.cs" />
     <Compile Include="Extensions\TaskTimeoutExtension.cs" />
     <Compile Include="ThrottledStream.cs" />
-    <Compile Include="ViewModels\DetailsViewModels\DetailsTumblrPrivateBlogViewModel.cs" />
+    <Compile Include="ViewModels\DetailsViewModels\DetailsTumblrHiddenBlogViewModel.cs" />
     <Compile Include="ViewModels\DetailsViewModels\DetailsTumblrBlogViewModel.cs" />
     <Compile Include="ViewModels\DetailsViewModels\DetailsTumblrLikedByViewModel.cs" />
     <Compile Include="ViewModels\DetailsViewModels\DetailsTumblrSearchViewModel.cs" />

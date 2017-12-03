@@ -32,10 +32,10 @@ namespace TumblThree.Applications.Controllers
         [ImportMany(typeof(IDetailsViewModel))]
         private IEnumerable<Lazy<IDetailsViewModel, ICrawlerData>> ViewModelFactoryLazy { get; set; }
 
-        public Lazy<IDetailsViewModel> GetViewModel(BlogTypes blogtype)
+        public Lazy<IDetailsViewModel> GetViewModel(IBlog blog)
         {
             Lazy<IDetailsViewModel, ICrawlerData> viewModel =
-                ViewModelFactoryLazy.FirstOrDefault(list => list.Metadata.BlogType == blogtype);
+                ViewModelFactoryLazy.FirstOrDefault(list => list.Metadata.BlogType == blog.GetType());
 
             if (viewModel != null)
             {
@@ -77,13 +77,13 @@ namespace TumblThree.Applications.Controllers
         {
             if (blogFiles.Count == 0)
                 return;
-            if (blogFiles.Select(blog => blog.BlogType).Distinct().Count() < 2)
+            if (blogFiles.Select(blog => blog.GetType()).Distinct().Count() < 2)
             {
-                detailsViewModel = GetViewModel(blogFiles.FirstOrDefault().BlogType);
+                detailsViewModel = GetViewModel(blogFiles.FirstOrDefault());
             }
             else
             {
-                detailsViewModel = GetViewModel(BlogTypes.all);
+                detailsViewModel = GetViewModel(new Blog());
             }
             shellService.DetailsView = DetailsViewModel.View;
             shellService.UpdateDetailsView();
@@ -101,7 +101,7 @@ namespace TumblThree.Applications.Controllers
         public void Initialize()
         {
             ((INotifyCollectionChanged)selectionService.SelectedBlogFiles).CollectionChanged += SelectedBlogFilesCollectionChanged;
-            detailsViewModel = GetViewModel(BlogTypes.all);
+            detailsViewModel = GetViewModel(new Blog());
             shellService.DetailsView = DetailsViewModel.View;
         }
 

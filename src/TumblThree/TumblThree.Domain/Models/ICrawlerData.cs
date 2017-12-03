@@ -1,7 +1,9 @@
-﻿namespace TumblThree.Domain.Models
+﻿using System;
+
+namespace TumblThree.Domain.Models
 {
     public interface ICrawlerData
     {
-        BlogTypes BlogType { get; }
+        Type BlogType { get; }
     }
 }

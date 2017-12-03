@@ -24,7 +24,7 @@ using TumblThree.Applications.DataModels.TumblrPosts;
 namespace TumblThree.Applications.Crawler
 {
     [Export(typeof(ICrawler))]
-    [ExportMetadata("BlogType", BlogTypes.tmblrpriv)]
+    [ExportMetadata("BlogType", typeof(TumblrBlog))]
     public class TumblrBlogCrawler : AbstractCrawler, ICrawler
     {
         private readonly IImgurParser imgurParser;

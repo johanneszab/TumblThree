@@ -21,7 +21,7 @@ using TumblThree.Domain.Models;
 namespace TumblThree.Applications.Crawler
 {
     [Export(typeof(ICrawler))]
-    [ExportMetadata("BlogType", BlogTypes.tumblrtagsearch)]
+    [ExportMetadata("BlogType", typeof(TumblrTagSearchBlog))]
     public class TumblrTagSearchCrawler : AbstractCrawler, ICrawler
     {
         public TumblrTagSearchCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,

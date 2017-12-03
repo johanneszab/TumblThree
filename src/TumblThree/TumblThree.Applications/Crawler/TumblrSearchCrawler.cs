@@ -23,7 +23,7 @@ using TumblThree.Domain.Models;
 namespace TumblThree.Applications.Crawler
 {
     [Export(typeof(ICrawler))]
-    [ExportMetadata("BlogType", BlogTypes.tumblrsearch)]
+    [ExportMetadata("BlogType", typeof(TumblrSearchBlog))]
     public class TumblrSearchCrawler : AbstractCrawler, ICrawler
     {
         private string tumblrKey = String.Empty;
