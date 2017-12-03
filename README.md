@@ -40,7 +40,8 @@ _Read this in other languages: [简体中文](https://github.com/Emphasia/TumblT
 ### Liked/by backup/download:
 
 * A downloader for downloading "liked by" photos and videos instead of a tumblr blog (e.g. https://www.tumblr.com/liked/by/wallpaperfx/) (login required).
-* Download of \_raw image files (original/higher resolution pictures). 
+* Download of \_raw image files (original/higher resolution pictures).
+* Allows to download posts in a defined time span. 
 
 ### Tumblr search backup/download:
 
@@ -82,6 +83,8 @@ Latest releases can be found [here](https://github.com/johanneszab/TumblThree/re
 * For downloading liked photos and videos, you'll have to do some steps:
   1. Go to Settings, click the Authenticate button. Logon to tumblr using an account. The window/browser should automatically close after the login indicating a successful authentication. TumblThree will use the Internet Explorer cookies for authentication. Alternatively, you can also use the Internet Explorer directly for logging in to the Tumblr.com network.
   2. Add the blog url including the liked/by string in the url (e.g. https://www.tumblr.com/liked/by/wallpaperfx/).
+* For downloading photos and videos from the tumblr search, you'll have to do some steps:
+  1. Add the search url including your key words separated by plus signs (+) in the url (e.g. https://www.tumblr.com/search/my+special+tags).
 * For downloading photos and videos from the tumblr tag search, you'll have to do some steps:
   1. Go to Settings, click the Authenticate button. Logon to tumblr using an account. The window/browser should automatically close after the login indicating a successful authentication. TumblThree will use the Internet Explorer cookies for authentication. Alternatively, you can also use the Internet Explorer directly for logging in to the Tumblr.com network.
   2. Add the search url including your tags separated by plus signs (+) in the url (e.g. https://www.tumblr.com/tagged/my+special+tags).

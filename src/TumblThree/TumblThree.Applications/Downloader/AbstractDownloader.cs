@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using TumblThree.Applications.DataModels;
+using TumblThree.Applications.DataModels.TumblrPosts;
 using TumblThree.Applications.Extensions;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
@@ -29,6 +30,7 @@ namespace TumblThree.Applications.Downloader
         protected readonly CancellationToken ct;
         protected readonly PauseToken pt;
         protected readonly FileDownloader fileDownloader;
+        string[] suffixes = { ".jpg", ".jpeg", ".png" };
 
         protected AbstractDownloader(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, BlockingCollection<TumblrPost> producerConsumerCollection, FileDownloader fileDownloader, ICrawlerService crawlerService = null, IBlog blog = null, IFiles files = null)
         {
@@ -138,7 +140,7 @@ namespace TumblThree.Applications.Downloader
 
             foreach (TumblrPost downloadItem in producerConsumerCollection.GetConsumingEnumerable())
             {
-                if (downloadItem.PostType == PostTypes.Video)
+                if (downloadItem.GetType() == typeof(VideoPost))
                     await concurrentVideoConnectionsSemaphore.WaitAsync();
                 await concurrentConnectionsSemaphore.WaitAsync();
 
@@ -155,7 +157,11 @@ namespace TumblThree.Applications.Downloader
                 {
                     try { await DownloadPostAsync(downloadItem); }
                     catch {}
-                    finally { concurrentConnectionsSemaphore.Release(); concurrentVideoConnectionsSemaphore.Release(); }
+                    finally {
+                        concurrentConnectionsSemaphore.Release();
+                        if (downloadItem.GetType() == typeof(VideoPost))
+                            concurrentVideoConnectionsSemaphore.Release();
+                    }
                 })());
             }
             try { await Task.WhenAll(trackedTasks); }
@@ -171,47 +177,18 @@ namespace TumblThree.Applications.Downloader
 
         private async Task DownloadPostAsync(TumblrPost downloadItem)
         {
-            switch (downloadItem.PostType)
+            // TODO: Refactor, should be polymorphism
+            if (downloadItem.PostType == PostType.Binary)
             {
-                case PostTypes.Photo:
-                    await DownloadPhotoAsync(downloadItem);
-                    break;
-                case PostTypes.Video:
-                    await DownloadVideoAsync(downloadItem);
-                    break;
-                case PostTypes.Audio:
-                    await DownloadAudioAsync(downloadItem);
-                    break;
-                case PostTypes.Text:
-                    DownloadText(downloadItem);
-                    break;
-                case PostTypes.Quote:
-                    DownloadQuote(downloadItem);
-                    break;
-                case PostTypes.Link:
-                    DownloadLink(downloadItem);
-                    break;
-                case PostTypes.Conversation:
-                    DownloadConversation(downloadItem);
-                    break;
-                case PostTypes.Answer:
-                    DownloadAnswer(downloadItem);
-                    break;
-                case PostTypes.PhotoMeta:
-                    DownloadPhotoMeta(downloadItem);
-                    break;
-                case PostTypes.VideoMeta:
-                    DownloadVideoMeta(downloadItem);
-                    break;
-                case PostTypes.AudioMeta:
-                    DownloadAudioMeta(downloadItem);
-                    break;
-                default:
-                    break;
+                await DownloadBinaryPost(downloadItem);
             }
+            else
+            {
+                DownloadTextPost(downloadItem);
+            }            
         }
 
-        protected virtual async Task<bool> DownloadPhotoAsync(TumblrPost downloadItem)
+        protected virtual async Task<bool> DownloadBinaryPost(TumblrPost downloadItem)
         {
             string url = Url(downloadItem);
             if (!(files.CheckIfFileExistsInDB(url) || blog.CheckIfBlogShouldCheckDirectory(GetCoreImageUrl(url))))
@@ -219,16 +196,17 @@ namespace TumblThree.Applications.Downloader
                 string blogDownloadLocation = blog.DownloadLocation();
                 string fileName = FileName(downloadItem);
                 string fileLocation = FileLocation(blogDownloadLocation, fileName);
-                string fileLocationUrlList = FileLocationLocalized(blogDownloadLocation, Resources.FileNamePhotos);
+                string fileLocationUrlList = FileLocationLocalized(blogDownloadLocation, downloadItem.TextFileLocation);
                 DateTime postDate = PostDate(downloadItem);
                 UpdateProgressQueueInformation(Resources.ProgressDownloadImage, fileName);
                 if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url))
                 {
                     SetFileDate(fileLocation, postDate);
-                    UpdateBlogDB("DownloadedPhotos", fileName);
+                    UpdateBlogDB(downloadItem.DbType, fileName);
+                    //TODO: Refactor
                     if (shellService.Settings.EnablePreview)
                     {
-                        if (!fileName.EndsWith(".gif"))
+                        if (suffixes.Any(suffix => fileName.EndsWith(suffix)))
                         {
                             blog.LastDownloadedPhoto = Path.GetFullPath(fileLocation);
                         }
@@ -244,174 +222,18 @@ namespace TumblThree.Applications.Downloader
             return true;
         }
 
-        private async Task DownloadVideoAsync(TumblrPost downloadItem)
-        {
-            string url = Url(downloadItem);
-            if (!(files.CheckIfFileExistsInDB(url) || blog.CheckIfBlogShouldCheckDirectory(url)))
-            {
-                string blogDownloadLocation = blog.DownloadLocation();
-                string fileName = FileName(downloadItem);
-                string fileLocation = FileLocation(blogDownloadLocation, fileName);
-                string fileLocationUrlList = FileLocationLocalized(blogDownloadLocation, Resources.FileNameVideos);
-                DateTime postDate = PostDate(downloadItem);
-                UpdateProgressQueueInformation(Resources.ProgressDownloadImage, fileName);
-                if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url))
-                {
-                    SetFileDate(fileLocation, postDate);
-                    UpdateBlogDB("DownloadedVideos", fileName);
-                    if (shellService.Settings.EnablePreview)
-                    {
-                        blog.LastDownloadedVideo = Path.GetFullPath(fileLocation);
-                    }
-                }
-            }
-        }
-
-        private async Task DownloadAudioAsync(TumblrPost downloadItem)
-        {
-            string url = Url(downloadItem);
-            if (!(files.CheckIfFileExistsInDB(url) || blog.CheckIfBlogShouldCheckDirectory(url)))
-            {
-                string blogDownloadLocation = blog.DownloadLocation();
-                string fileName = FileName(downloadItem);
-                string fileLocation = FileLocation(blogDownloadLocation, fileName);
-                string fileLocationUrlList = FileLocationLocalized(blogDownloadLocation, Resources.FileNameAudios);
-                DateTime postDate = PostDate(downloadItem);
-                UpdateProgressQueueInformation(Resources.ProgressDownloadImage, fileName);
-                if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url))
-                {
-                    SetFileDate(fileLocation, postDate);
-                    UpdateBlogDB("DownloadedAudios", fileName);
-                }
-            }
-        }
-
-        private void DownloadText(TumblrPost downloadItem)
-        {
-            string postId = PostId(downloadItem);
-            if (!files.CheckIfFileExistsInDB(postId))
-            {
-                string url = Url(downloadItem);
-                string blogDownloadLocation = blog.DownloadLocation();
-                string fileLocation = FileLocationLocalized(blogDownloadLocation, Resources.FileNameTexts);
-                UpdateProgressQueueInformation(Resources.ProgressDownloadImage, postId);
-                if (AppendToTextFile(fileLocation, url))
-                {
-                    UpdateBlogDB("DownloadedTexts", postId);
-                }
-            }
-        }
-
-        private void DownloadQuote(TumblrPost downloadItem)
+        private void DownloadTextPost(TumblrPost downloadItem)
         {
             string postId = PostId(downloadItem);
             if (!files.CheckIfFileExistsInDB(postId))
             {
                 string blogDownloadLocation = blog.DownloadLocation();
                 string url = Url(downloadItem);
-                string fileLocation = FileLocationLocalized(blogDownloadLocation, Resources.FileNameQuotes);
+                string fileLocation = FileLocationLocalized(blogDownloadLocation, downloadItem.TextFileLocation);
                 UpdateProgressQueueInformation(Resources.ProgressDownloadImage, postId);
                 if (AppendToTextFile(fileLocation, url))
                 {
-                    UpdateBlogDB("DownloadedQuotes", postId);
-                }
-            }
-        }
-
-        private void DownloadLink(TumblrPost downloadItem)
-        {
-            string postId = PostId(downloadItem);
-            if (!files.CheckIfFileExistsInDB(postId))
-            {
-                string blogDownloadLocation = blog.DownloadLocation();
-                string url = Url(downloadItem);
-                string fileLocation = FileLocationLocalized(blogDownloadLocation, Resources.FileNameLinks);
-                UpdateProgressQueueInformation(Resources.ProgressDownloadImage, postId);
-                if (AppendToTextFile(fileLocation, url))
-                {
-                    UpdateBlogDB("DownloadedLinks", postId);
-                }
-            }
-        }
-
-        private void DownloadConversation(TumblrPost downloadItem)
-        {
-            string postId = PostId(downloadItem);
-            if (!files.CheckIfFileExistsInDB(postId))
-            {
-                string blogDownloadLocation = blog.DownloadLocation();
-                string url = Url(downloadItem);
-                string fileLocation = FileLocationLocalized(blogDownloadLocation, Resources.FileNameConversations);
-                UpdateProgressQueueInformation(Resources.ProgressDownloadImage, postId);
-                if (AppendToTextFile(fileLocation, url))
-                {
-                    UpdateBlogDB("DownloadedConversations", postId);
-                }
-            }
-        }
-
-        private void DownloadAnswer(TumblrPost downloadItem)
-        {
-            string postId = PostId(downloadItem);
-            if (!files.CheckIfFileExistsInDB(postId))
-            {
-                string blogDownloadLocation = blog.DownloadLocation();
-                string url = Url(downloadItem);
-                string fileLocation = FileLocationLocalized(blogDownloadLocation, Resources.FileNameAnswers);
-                UpdateProgressQueueInformation(Resources.ProgressDownloadImage, postId);
-                if (AppendToTextFile(fileLocation, url))
-                {
-                    UpdateBlogDB("DownloadedAnswers", postId);
-                }
-            }
-        }
-
-        private void DownloadPhotoMeta(TumblrPost downloadItem)
-        {
-
-            string postId = PostId(downloadItem);
-
-            if (!files.CheckIfFileExistsInDB(postId))
-            {
-                string blogDownloadLocation = blog.DownloadLocation();
-                string url = Url(downloadItem);
-                string fileLocation = FileLocationLocalized(blogDownloadLocation, Resources.FileNameMetaPhoto);
-                UpdateProgressQueueInformation(Resources.ProgressDownloadImage, postId);
-                if (AppendToTextFile(fileLocation, url))
-                {
-                    UpdateBlogDB("DownloadedPhotoMetas", postId);
-                }
-            }
-        }
-
-        private void DownloadVideoMeta(TumblrPost downloadItem)
-        {
-            string postId = PostId(downloadItem);
-            if (!files.CheckIfFileExistsInDB(postId))
-            {
-                string blogDownloadLocation = blog.DownloadLocation();
-                string url = Url(downloadItem);
-                string fileLocation = FileLocationLocalized(blogDownloadLocation, Resources.FileNameMetaVideo);
-                UpdateProgressQueueInformation(Resources.ProgressDownloadImage, postId);
-                if (AppendToTextFile(fileLocation, url))
-                {
-                    UpdateBlogDB("DownloadedVideoMetas", postId);
-                }
-            }
-        }
-
-        private void DownloadAudioMeta(TumblrPost downloadItem)
-        {
-            string postId = PostId(downloadItem);
-            if (!files.CheckIfFileExistsInDB(postId))
-            {
-                string blogDownloadLocation = blog.DownloadLocation();
-                string url = Url(downloadItem);
-                string fileLocation = FileLocationLocalized(blogDownloadLocation, Resources.FileNameMetaAudio);
-                UpdateProgressQueueInformation(Resources.ProgressDownloadImage, postId);
-                if (AppendToTextFile(fileLocation, url))
-                {
-                    UpdateBlogDB("DownloadedAudioMetas", postId);
+                    UpdateBlogDB(downloadItem.DbType, postId);
                 }
             }
         }

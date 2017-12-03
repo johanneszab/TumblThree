@@ -731,7 +731,7 @@ namespace TumblThree.Applications.ViewModels
                 CreateVideoMeta = false;
                 CreateAudioMeta = false;
                 DownloadPages = string.Empty;
-                PageSize = 50;
+                PageSize = 100;
                 DownloadFrom = string.Empty;
                 DownloadTo = string.Empty;
                 Tags = string.Empty;

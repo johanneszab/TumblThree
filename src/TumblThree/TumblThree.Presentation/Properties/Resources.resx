@@ -496,19 +496,19 @@ Since the data is usually small, you should leave this high.</value>
     <value>per time interval (s):</value>
   </data>
   <data name="LimitConnections" xml:space="preserve">
-    <value>Limit Tumblr Api Connections:</value>
+    <value>Limit Tumblr Svc Connections:</value>
   </data>
   <data name="MaxConnections" xml:space="preserve">
     <value>Number of connections:</value>
   </data>
   <data name="ToolTipLimitConnections" xml:space="preserve">
-    <value>Limit connections to the tumblr api.</value>
+    <value>Limit connections to the tumblr svc host.</value>
   </data>
   <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
-    <value>A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr api.
+    <value>A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr svc host.
 A too small value will decrease the scanning speed.
 Set a number/time pair.
-Note: The tumblr api is only used for regular tumblr blog downloads.</value>
+Note: The tumblr svc host is only used for tumblr blog downloads.</value>
   </data>
   <data name="ForceRescan" xml:space="preserve">
     <value>Force rescan</value>

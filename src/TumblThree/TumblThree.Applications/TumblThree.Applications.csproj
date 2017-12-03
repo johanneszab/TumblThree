@@ -74,6 +74,17 @@
     <Compile Include="Crawler\ITumblrParser.cs" />
     <Compile Include="Crawler\TumblrParser.cs" />
     <Compile Include="DataModels\DownloadProgress.cs" />
+    <Compile Include="DataModels\TumblrPosts\AnswerPost.cs" />
+    <Compile Include="DataModels\TumblrPosts\AudioMetaPost.cs" />
+    <Compile Include="DataModels\TumblrPosts\AudioPost.cs" />
+    <Compile Include="DataModels\TumblrPosts\ConversationPost.cs" />
+    <Compile Include="DataModels\TumblrPosts\LinkPost.cs" />
+    <Compile Include="DataModels\TumblrPosts\PhotoMetaPost.cs" />
+    <Compile Include="DataModels\TumblrPosts\PhotoPost.cs" />
+    <Compile Include="DataModels\TumblrPosts\QuotePost.cs" />
+    <Compile Include="DataModels\TumblrPosts\TextPost.cs" />
+    <Compile Include="DataModels\TumblrPosts\VideoMetaPost.cs" />
+    <Compile Include="DataModels\TumblrPosts\VideoPost.cs" />
     <Compile Include="DataModels\TumblrSvcJson.cs" />
     <Compile Include="DataModels\TumblrPost.cs" />
     <Compile Include="DataModels\TumblrSearchJson.cs" />

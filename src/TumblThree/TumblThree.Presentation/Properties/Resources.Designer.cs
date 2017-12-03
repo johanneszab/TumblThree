@@ -817,7 +817,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Limit Tumblr Api Connections:.
+        ///   Looks up a localized string similar to Limit Tumblr Svc Connections:.
         /// </summary>
         public static string LimitConnections {
             get {
@@ -1635,7 +1635,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Limit connections to the tumblr api..
+        ///   Looks up a localized string similar to Limit connections to the tumblr svc host..
         /// </summary>
         public static string ToolTipLimitConnections {
             get {
@@ -1644,10 +1644,10 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr api.
+        ///   Looks up a localized string similar to A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr svc host.
         ///A too small value will decrease the scanning speed.
         ///Set a number/time pair.
-        ///Note: The tumblr api is only used for regular tumblr blog downloads..
+        ///Note: The tumblr svc host is only used for tumblr blog downloads..
         /// </summary>
         public static string ToolTipLimitConnectionsDescription {
             get {
