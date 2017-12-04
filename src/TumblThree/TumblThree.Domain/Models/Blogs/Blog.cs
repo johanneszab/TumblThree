@@ -29,6 +29,7 @@ namespace TumblThree.Domain.Models
         private bool downloadUrlList;
         private bool downloadVideo;
         private bool dumpCrawlerData;
+        private string fileDownloadLocation;
         private bool forceRescan = true;
         private bool forceSize;
         private string lastDownloadedPhoto;
@@ -202,6 +203,17 @@ namespace TumblThree.Domain.Models
             set
             {
                 SetProperty(ref dumpCrawlerData, value);
+                Dirty = true;
+            }
+        }
+
+        [DataMember]
+        public string FileDownloadLocation
+        {
+            get { return fileDownloadLocation; }
+            set
+            {
+                SetProperty(ref fileDownloadLocation, value);
                 Dirty = true;
             }
         }
@@ -783,7 +795,9 @@ namespace TumblThree.Domain.Models
 
         public string DownloadLocation()
         {
-            return Path.Combine((Directory.GetParent(Location).FullName), Name);
+            if (string.IsNullOrWhiteSpace(FileDownloadLocation))
+                return Path.Combine((Directory.GetParent(Location).FullName), Name);
+            return FileDownloadLocation;
         }
 
         public IBlog Load(string fileLocation)

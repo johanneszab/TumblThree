@@ -330,11 +330,9 @@ namespace TumblThree.Applications.Controllers
 
         private void ShowFiles()
         {
-            string path = shellService.Settings.DownloadLocation;
-
             foreach (IBlog blog in selectionService.SelectedBlogFiles.ToArray())
             {
-                System.Diagnostics.Process.Start("explorer.exe", Path.Combine(path, blog.Name));
+                System.Diagnostics.Process.Start("explorer.exe", blog.DownloadLocation());
             }
         }
 
@@ -378,7 +376,7 @@ namespace TumblThree.Applications.Controllers
             ICrawler crawler = CrawlerFactory.GetCrawler(blog, new CancellationToken(), new PauseToken(), new Progress<DownloadProgress>(), shellService, crawlerService);
             await crawler.IsBlogOnlineAsync();
 
-            if (CheckIfTumblrPrivateBlog(blog))
+            if (CheckIfTumblrHiddenBlog(blog))
             {
                 blog = PromoteTumblrBlogToHiddenBlog(blog);
                 crawler = CrawlerFactory.GetCrawler(blog, new CancellationToken(), new PauseToken(), new Progress<DownloadProgress>(), shellService, crawlerService);
@@ -401,9 +399,9 @@ namespace TumblThree.Applications.Controllers
             }
         }
 
-        private bool CheckIfTumblrPrivateBlog(IBlog blog)
+        private bool CheckIfTumblrHiddenBlog(IBlog blog)
         {
-            if (blog.BlogType == BlogTypes.tumblr && !blog.Online)
+            if (blog.BlogType == BlogTypes.tmblrpriv && blog.Online)
             {
                 return true;
             }

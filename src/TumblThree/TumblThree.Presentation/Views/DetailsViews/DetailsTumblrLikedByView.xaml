@@ -178,6 +178,8 @@
                             <RowDefinition Height="{StaticResource Layout.RowSpace}" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{StaticResource Layout.RowSpace}" />
                             </Grid.RowDefinitions>
                     <Label Content="{x:Static p:Resources.Posts}" Grid.Column="0" Grid.ColumnSpan="2"
                            Grid.Row="0" />
@@ -298,13 +300,49 @@
                         </TextBox.ToolTip>
                     </TextBox>
 
+                        <Label Content="{x:Static p:Resources.FileDownloadLocation}" Grid.Column="0" Grid.Row="8" Margin="3,0,3,0" Padding="3,0,3,0">
+                            <Label.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipFileDownloadLocation}" />
+                                        <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipFileDownloadLocationDescription}" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </Label.ToolTip>
+                        </Label>
 
+                        <TextBox Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="8" Padding="0" 
+                                Text="{Binding BlogFile.FileDownloadLocation, Mode=TwoWay, ValidatesOnDataErrors=True}">
+                            <TextBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipFileDownloadLocation}" />
+                                        <TextBlock xml:space="preserve"
+                                                Text="{x:Static p:Resources.ToolTipFileDownloadLocationDescription}" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </TextBox.ToolTip>
+                        </TextBox>
+
+                        <Button x:Name="browseFileDownloadLocationButton" Content="{x:Static p:Resources.Browse}"
+                    Command="{Binding BrowseFileDownloadLocationCommand}" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="8" Margin="3,0,0,0" Padding="3,0,0,0">
+                            <Button.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipFileDownloadLocation}" />
+                                        <TextBlock xml:space="preserve"
+                                                Text="{x:Static p:Resources.ToolTipFileDownloadLocationDescription}" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </Button.ToolTip>
+                        </Button>
+                            
                     <CheckBox Content="{x:Static p:Resources.SkipGif}" IsChecked="{Binding BlogFile.SkipGif, Mode=TwoWay}"
-                        Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="8" Margin="3,0,0,0" Padding="3,0,0,0" />
+                        Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="10" Margin="3,0,0,0" Padding="3,0,0,0" />
 
                     <!--<CheckBox Content="{x:Static p:Resources.CheckDirectoryForFiles}"
                               IsChecked="{Binding BlogFile.CheckDirectoryForFiles, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2"
-                              Grid.Row="10" Margin="3,0,0,0" Padding="3,0,0,0">
+                              Grid.Row="12" Margin="3,0,0,0" Padding="3,0,0,0">
                         <CheckBox.ToolTip>
                             <ToolTip>
                                 <StackPanel>
@@ -318,7 +356,7 @@
                     </CheckBox>-->
                 
                     <CheckBox Content="{x:Static p:Resources.DownloadUrlList}"
-                              IsChecked="{Binding BlogFile.DownloadUrlList, Mode=TwoWay}" Grid.Column="0" Grid.Row="10" Grid.ColumnSpan="2"
+                              IsChecked="{Binding BlogFile.DownloadUrlList, Mode=TwoWay}" Grid.Column="0" Grid.Row="12" Grid.ColumnSpan="2"
                               Margin="3,0,0,0" Padding="3,0,0,0">
                         <CheckBox.ToolTip>
                             <ToolTip>
@@ -333,7 +371,7 @@
 
                         <CheckBox Content="{x:Static p:Resources.ForceSize}"
                               IsChecked="{Binding BlogFile.ForceSize, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="5"
-                              Grid.Row="12" Margin="3,0,0,0" Padding="3,0,0,0">
+                              Grid.Row="14" Margin="3,0,0,0" Padding="3,0,0,0">
                             <CheckBox.ToolTip>
                                 <ToolTip>
                                     <StackPanel>

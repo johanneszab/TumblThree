@@ -14,6 +14,7 @@ namespace TumblThree.Applications.ViewModels
     {
         private readonly IClipboardService clipboardService;
         private readonly DelegateCommand copyUrlCommand;
+        private readonly DelegateCommand browseFileDownloadLocationCommand;
         private IBlog blogFile;
         private int count = 0;
 
@@ -22,11 +23,17 @@ namespace TumblThree.Applications.ViewModels
         {
             this.clipboardService = clipboardService;
             copyUrlCommand = new DelegateCommand(CopyUrlToClipboard);
+            browseFileDownloadLocationCommand = new DelegateCommand(BrowseFileDownloadLocation);
         }
 
         public ICommand CopyUrlCommand
         {
             get { return copyUrlCommand; }
+        }
+
+        public ICommand BrowseFileDownloadLocationCommand
+        {
+            get { return browseFileDownloadLocationCommand; }
         }
 
         public IBlog BlogFile
@@ -46,6 +53,15 @@ namespace TumblThree.Applications.ViewModels
             if (BlogFile != null)
             {
                 clipboardService.SetText(BlogFile.Url);
+            }
+        }
+
+        private void BrowseFileDownloadLocation()
+        {
+            var dialog = new System.Windows.Forms.FolderBrowserDialog { SelectedPath = BlogFile.FileDownloadLocation };
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                BlogFile.FileDownloadLocation = dialog.SelectedPath;
             }
         }
     }

@@ -12,7 +12,7 @@
              xmlns:Models="clr-namespace:TumblThree.Domain.Models;assembly=TumblThree.Domain"
              xmlns:Extensions="clr-namespace:TumblThree.Presentation.Extensions"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance dd:SampleDetailsViewModel, IsDesignTimeCreatable=True}"
-             d:DesignHeight="670" d:DesignWidth="400" Background="{StaticResource DefaultBackground}">
+             d:DesignHeight="700" d:DesignWidth="400" Background="{StaticResource DefaultBackground}">
 
     <Grid>
         <Grid.Resources>
@@ -158,6 +158,8 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="{StaticResource Layout.RowSpace}" />
                                 <RowDefinition Height="Auto" />
@@ -716,17 +718,54 @@
                                 </TextBox.ToolTip>
                             </TextBox>
 
+                            <Label Content="{x:Static p:Resources.FileDownloadLocation}" Grid.Column="0" Grid.Row="32" Margin="3,0,3,0" Padding="3,0,3,0">
+                                <Label.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipFileDownloadLocation}" />
+                                            <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipFileDownloadLocationDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </Label.ToolTip>
+                            </Label>
+
+                            <TextBox Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="32" Padding="0" 
+                                 Text="{Binding BlogFile.FileDownloadLocation, Mode=TwoWay, ValidatesOnDataErrors=True}">
+                                <TextBox.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipFileDownloadLocation}" />
+                                            <TextBlock xml:space="preserve"
+                                                   Text="{x:Static p:Resources.ToolTipFileDownloadLocationDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </TextBox.ToolTip>
+                            </TextBox>
+
+                            <Button x:Name="browseFileDownloadLocationButton" Content="{x:Static p:Resources.Browse}"
+                        Command="{Binding BrowseFileDownloadLocationCommand}" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="32" Margin="3,0,0,0" Padding="3,0,0,0">
+                                <Button.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipFileDownloadLocation}" />
+                                            <TextBlock xml:space="preserve"
+                                                   Text="{x:Static p:Resources.ToolTipFileDownloadLocationDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </Button.ToolTip>
+                            </Button>
+
                             <CheckBox Content="{x:Static p:Resources.SkipGif}" IsChecked="{Binding BlogFile.SkipGif, Mode=TwoWay}"
-                                  Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="32" Margin="3,0,0,0" Padding="3,0,0,0" />
+                                  Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="34" Margin="3,0,0,0" Padding="3,0,0,0" />
 
                             <CheckBox Content="{x:Static p:Resources.DownloadRebloggedPosts}"
-                                  IsChecked="{Binding BlogFile.DownloadRebloggedPosts, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="34"
+                                  IsChecked="{Binding BlogFile.DownloadRebloggedPosts, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="36"
                                   Margin="3,0,0,0" Padding="3,0,0,0">
                             </CheckBox>
 
                             <!--<CheckBox Content="{x:Static p:Resources.CheckDirectoryForFiles}"
                                   IsChecked="{Binding BlogFile.CheckDirectoryForFiles, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2"
-                                  Grid.Row="34" Margin="3,0,0,0" Padding="3,0,0,0">
+                                  Grid.Row="36" Margin="3,0,0,0" Padding="3,0,0,0">
                             <CheckBox.ToolTip>
                                 <ToolTip>
                                     <StackPanel>
@@ -740,7 +779,7 @@
                         </CheckBox>-->
 
                             <CheckBox Content="{x:Static p:Resources.DownloadUrlList}"
-                                  IsChecked="{Binding BlogFile.DownloadUrlList, Mode=TwoWay}" Grid.Column="0" Grid.Row="36" Grid.ColumnSpan="2"
+                                  IsChecked="{Binding BlogFile.DownloadUrlList, Mode=TwoWay}" Grid.Column="0" Grid.Row="38" Grid.ColumnSpan="2"
                                   Margin="3,0,0,0" Padding="3,0,0,0">
                                 <CheckBox.ToolTip>
                                     <ToolTip>
@@ -755,7 +794,7 @@
 
                             <CheckBox Content="{x:Static p:Resources.ForceSize}"
                                   IsChecked="{Binding BlogFile.ForceSize, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="5"
-                                  Grid.Row="38" Margin="3,0,0,0" Padding="3,0,0,0">
+                                  Grid.Row="40" Margin="3,0,0,0" Padding="3,0,0,0">
                                 <CheckBox.ToolTip>
                                     <ToolTip>
                                         <StackPanel>
@@ -769,7 +808,7 @@
 
                             <CheckBox Content="{x:Static p:Resources.DumpCrawlerData}"
                                   IsChecked="{Binding BlogFile.DumpCrawlerData, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="5"
-                                  Grid.Row="40" Margin="3,0,0,0" Padding="3,0,0,0">
+                                  Grid.Row="42" Margin="3,0,0,0" Padding="3,0,0,0">
                                 <CheckBox.ToolTip>
                                     <ToolTip>
                                         <StackPanel>
@@ -783,7 +822,7 @@
 
                             <CheckBox Content="{x:Static p:Resources.ForceRescan}"
                                   IsChecked="{Binding BlogFile.ForceRescan, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="5"
-                                  Grid.Row="42" Margin="3,0,0,0" Padding="3,0,0,0">
+                                  Grid.Row="44" Margin="3,0,0,0" Padding="3,0,0,0">
                                 <CheckBox.ToolTip>
                                     <ToolTip>
                                         <StackPanel>

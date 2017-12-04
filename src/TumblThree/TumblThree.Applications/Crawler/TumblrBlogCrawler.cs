@@ -75,9 +75,56 @@ namespace TumblThree.Applications.Crawler
                         return;
                     }
                 }
+                if (webException.Status == WebExceptionStatus.ProtocolError && webException.Response != null)
+                {
+                    var resp = (HttpWebResponse)webException.Response;
+                    if (resp.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        // Either a offline or hidden blog, thus, check the website
+                        await IsBlogHiddenAsync();
+                        blog.Online = true;
+                        blog.BlogType = BlogTypes.tmblrpriv;
+                        return;
+                    }
+                }
                 blog.Online = false;
             }
         }
+
+        private async Task IsBlogHiddenAsync()
+        {
+            try
+            {
+                string document = await base.RequestDataAsync(blog.Url);
+            }
+            catch (WebException webException)
+            {
+                Logger.Error("TumblrBlogCrawler:IsBlogHiddenAsync:WebException {0}", webException);
+                shellService.ShowError(webException, Resources.BlogIsOffline, blog.Name);
+                blog.Online = false;
+                return;
+            }
+        }
+
+        private void CheckIfPasswordProtecedBlog(string document)
+        {
+            if (Regex.IsMatch(document, "<form id=\"auth_password\" method=\"post\">"))
+            {
+                Logger.Error("TumblrBlogCrawler:IsBlogOnlineAsync:PasswordProtectedBlog {0}", Resources.PasswordProtected, blog.Name);
+                shellService.ShowError(new WebException(), Resources.PasswordProtected, blog.Name);
+            }
+        }
+
+        private void CheckIfHiddenBlog(string document)
+        {
+            if (Regex.IsMatch(document, "/login_required/"))
+            {
+                Logger.Error("TumblrBlogCrawler:IsBlogOnlineAsync:NotLoggedIn {0}", Resources.NotLoggedIn, blog.Name);
+                shellService.ShowError(new WebException(), Resources.NotLoggedIn, blog.Name);
+                blog.Online = false;
+            }
+        }
+
 
         public override async Task UpdateMetaInformationAsync()
         {

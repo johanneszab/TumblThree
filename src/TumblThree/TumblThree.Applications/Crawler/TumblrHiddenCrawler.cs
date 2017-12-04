@@ -72,6 +72,17 @@ namespace TumblThree.Applications.Crawler
                 if (webException.Status == WebExceptionStatus.ProtocolError && webException.Response != null)
                 {
                     var resp = (HttpWebResponse)webException.Response;
+                    if (resp.StatusCode == HttpStatusCode.NotFound)
+                    {
+                        Logger.Error("TumblrBlogCrawler:IsBlogOnlineAsync:WebException {0}", webException);
+                        shellService.ShowError(webException, Resources.BlogIsOffline, blog.Name);
+                        blog.Online = false;
+                        return;
+                    }
+                }
+                if (webException.Status == WebExceptionStatus.ProtocolError && webException.Response != null)
+                {
+                    var resp = (HttpWebResponse)webException.Response;
                     if ((int)resp.StatusCode == 429)
                     {
                         Logger.Error("TumblrHiddenCrawler:IsBlogOnlineAsync:WebException {0}", webException);

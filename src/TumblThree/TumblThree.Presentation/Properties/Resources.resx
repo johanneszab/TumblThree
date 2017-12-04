@@ -753,4 +753,13 @@ E.g.  great big car, bears searches for great big cars and bears.</value>
   <data name="ToolTipDumpCrawlerDataDescription" xml:space="preserve">
     <value>Writes the data gather from the crawler to disk, separated per post.</value>
   </data>
+  <data name="FileDownloadLocation" xml:space="preserve">
+    <value>Download location</value>
+  </data>
+  <data name="ToolTipFileDownloadLocation" xml:space="preserve">
+    <value>Overrides the default download location</value>
+  </data>
+  <data name="ToolTipFileDownloadLocationDescription" xml:space="preserve">
+    <value>If not empty, all files are downloaded in the specified folder</value>
+  </data>
 </root>
