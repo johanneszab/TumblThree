@@ -80,29 +80,32 @@ namespace TumblThree.Applications.Crawler
                     var resp = (HttpWebResponse)webException.Response;
                     if (resp.StatusCode == HttpStatusCode.NotFound)
                     {
-                        // Either a offline or hidden blog, thus, check the website
-                        await IsBlogHiddenAsync();
-                        blog.Online = true;
-                        blog.BlogType = BlogTypes.tmblrpriv;
-                        return;
+                        // Either a offline or hidden blog, thus, checking the website
+                        if (await IsBlogHiddenAsync())
+                        {
+                            blog.Online = true;
+                            blog.BlogType = BlogTypes.tmblrpriv;
+                            return;
+                        }
                     }
                 }
                 blog.Online = false;
             }
         }
 
-        private async Task IsBlogHiddenAsync()
+        private async Task<bool> IsBlogHiddenAsync()
         {
             try
             {
                 string document = await base.RequestDataAsync(blog.Url);
+                return true;
             }
             catch (WebException webException)
             {
                 Logger.Error("TumblrBlogCrawler:IsBlogHiddenAsync:WebException {0}", webException);
                 shellService.ShowError(webException, Resources.BlogIsOffline, blog.Name);
                 blog.Online = false;
-                return;
+                return false;
             }
         }
 
