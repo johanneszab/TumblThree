@@ -709,6 +709,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download location.
+        /// </summary>
+        public static string FileDownloadLocation {
+            get {
+                return ResourceManager.GetString("FileDownloadLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Force rescan.
         /// </summary>
         public static string ForceRescan {
@@ -1583,6 +1592,24 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipExportBlogsDescription {
             get {
                 return ResourceManager.GetString("ToolTipExportBlogsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Overrides the default download location.
+        /// </summary>
+        public static string ToolTipFileDownloadLocation {
+            get {
+                return ResourceManager.GetString("ToolTipFileDownloadLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If not empty, all files are downloaded in the specified folder.
+        /// </summary>
+        public static string ToolTipFileDownloadLocationDescription {
+            get {
+                return ResourceManager.GetString("ToolTipFileDownloadLocationDescription", resourceCulture);
             }
         }
         

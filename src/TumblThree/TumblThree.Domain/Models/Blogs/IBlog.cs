@@ -100,6 +100,8 @@ namespace TumblThree.Domain.Models
 
         bool DumpCrawlerData { get; set; }
 
+        string FileDownloadLocation { get; set; }
+
         string DownloadPages { get; set; }
 
         int PageSize { get; set; }

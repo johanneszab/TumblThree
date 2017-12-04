@@ -330,11 +330,9 @@ namespace TumblThree.Applications.Controllers
 
         private void ShowFiles()
         {
-            string path = shellService.Settings.DownloadLocation;
-
             foreach (IBlog blog in selectionService.SelectedBlogFiles.ToArray())
             {
-                System.Diagnostics.Process.Start("explorer.exe", Path.Combine(path, blog.Name));
+                System.Diagnostics.Process.Start("explorer.exe", blog.DownloadLocation());
             }
         }
 
@@ -375,15 +373,9 @@ namespace TumblThree.Applications.Controllers
             }
 
             blog = settingsService.TransferGlobalSettingsToBlog(blog);
+
             ICrawler crawler = CrawlerFactory.GetCrawler(blog, new CancellationToken(), new PauseToken(), new Progress<DownloadProgress>(), shellService, crawlerService);
             await crawler.IsBlogOnlineAsync();
-
-            if (CheckIfTumblrHiddenBlog(blog))
-            {
-                blog = PromoteTumblrBlogToHiddenBlog(blog);
-                crawler = CrawlerFactory.GetCrawler(blog, new CancellationToken(), new PauseToken(), new Progress<DownloadProgress>(), shellService, crawlerService);
-            }
-
             await crawler.UpdateMetaInformationAsync();
 
             lock (lockObject)
@@ -399,24 +391,6 @@ namespace TumblThree.Applications.Controllers
                     QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => managerService.BlogFiles.Add(blog)));
                 }
             }
-        }
-
-        private bool CheckIfTumblrHiddenBlog(IBlog blog)
-        {
-            if (blog.BlogType == BlogTypes.tumblr && !blog.Online)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        private IBlog PromoteTumblrBlogToHiddenBlog(IBlog blog)
-        {
-            RemoveBlog(new[] { blog } );
-            blog = TumblrHiddenBlog.Create(blog.Url, Path.Combine(shellService.Settings.DownloadLocation, "Index"));
-            blog = settingsService.TransferGlobalSettingsToBlog(blog);
-            blog.Online = true;
-            return blog;
         }
 
         private void OnClipboardContentChanged(object sender, EventArgs e)
