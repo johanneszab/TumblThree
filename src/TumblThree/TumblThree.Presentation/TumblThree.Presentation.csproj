@@ -137,7 +137,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\DetailsAllView.xaml">
+    <Page Include="Views\DetailsViews\DetailsAllView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -240,7 +240,7 @@
     <Compile Include="Views\AboutView.xaml.cs">
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DetailsAllView.xaml.cs">
+    <Compile Include="Views\DetailsViews\DetailsAllView.xaml.cs">
       <DependentUpon>DetailsAllView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CrawlerView.xaml.cs">

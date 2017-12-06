@@ -115,6 +115,7 @@ namespace TumblThree.Applications.Controllers
             }
 
             await LoadLibrary();
+            await LoadDatabasesGloballyAsync();
         }
 
         public void Shutdown()
@@ -144,7 +145,7 @@ namespace TumblThree.Applications.Controllers
                 if (Directory.Exists(path))
                 {
                     {
-                        IReadOnlyList<IBlog> files = await GetFilesAsync(path);
+                        IReadOnlyList<IBlog> files = await GetIBlogsAsync(path);
                         foreach (IBlog file in files)
                         {
                             managerService.BlogFiles.Add(file);
@@ -157,7 +158,7 @@ namespace TumblThree.Applications.Controllers
                             foreach (IBlog blog in files)
                             {
                                 ICrawler downloader = CrawlerFactory.GetCrawler(blog, new CancellationToken(), new PauseToken(), new Progress<DownloadProgress>(), shellService,
-                                    crawlerService);
+                                    crawlerService, managerService);
                                 await downloader.IsBlogOnlineAsync();
                             }
                         }
@@ -172,12 +173,13 @@ namespace TumblThree.Applications.Controllers
             Logger.Verbose("ManagerController.LoadLibrary:End");
         }
 
-        private Task<IReadOnlyList<IBlog>> GetFilesAsync(string directory)
+        //TODO: Refactor and extract blog loading.
+        private Task<IReadOnlyList<IBlog>> GetIBlogsAsync(string directory)
         {
-            return Task.Run(() => GetFilesCore(directory));
+            return Task.Run(() => GetIBlogsCore(directory));
         }
 
-        private IReadOnlyList<IBlog> GetFilesCore(string directory)
+        private IReadOnlyList<IBlog> GetIBlogsCore(string directory)
         {
             Logger.Verbose("ManagerController:GetFilesCore Start");
 
@@ -204,6 +206,62 @@ namespace TumblThree.Applications.Controllers
             Logger.Verbose("ManagerController.GetFilesCore End");
 
             return blogs;
+        }
+
+        private Task<IReadOnlyList<IFiles>> GetIFilesAsync(string directory)
+        {
+            return Task.Run(() => GetIFilesCore(directory));
+        }
+
+        private IReadOnlyList<IFiles> GetIFilesCore(string directory)
+        {
+            Logger.Verbose("ManagerController:GetFilesCore Start");
+
+            var blogs = new List<IFiles>();
+
+            string[] supportedFileTypes = Enum.GetNames(typeof(BlogTypes)).ToArray();
+
+            foreach (string filename in Directory.GetFiles(directory, "*").Where(
+                fileName => supportedFileTypes.Any(fileName.Contains) &&
+                            fileName.Contains("_files")))
+            {
+                //TODO: Refactor
+                if (filename.EndsWith(BlogTypes.tumblr.ToString()))
+                    blogs.Add(new Files().Load(filename));
+            }
+            Logger.Verbose("ManagerController.GetFilesCore End");
+
+            return blogs;
+        }
+
+        private async Task LoadDatabasesGloballyAsync()
+        {
+            if (shellService.Settings.LoadAllDatabases)
+            {
+                Logger.Verbose("ManagerController.LoadDatabasesGloballyAsync:Start");
+                managerService.Databases.Clear();
+                string path = Path.Combine(shellService.Settings.DownloadLocation, "Index");
+
+                try
+                {
+                    if (Directory.Exists(path))
+                    {
+                        {
+                            IReadOnlyList<IFiles> databases = await GetIFilesAsync(path);
+                            foreach (IFiles database in databases)
+                            {
+                                managerService.Databases.Add(database);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.Verbose("ManagerController:LoadDatabasesGloballyAsync: {0}", ex);
+                    shellService.ShowError(ex, Resources.CouldNotLoadLibrary, ex.Data["Filename"]);
+                }
+                Logger.Verbose("ManagerController.LoadDatabasesGloballyAsync:End");
+            }
         }
 
         private bool CanLoadLibrary()
@@ -373,13 +431,13 @@ namespace TumblThree.Applications.Controllers
             }
 
             blog = settingsService.TransferGlobalSettingsToBlog(blog);
-            ICrawler crawler = CrawlerFactory.GetCrawler(blog, new CancellationToken(), new PauseToken(), new Progress<DownloadProgress>(), shellService, crawlerService);
+            ICrawler crawler = CrawlerFactory.GetCrawler(blog, new CancellationToken(), new PauseToken(), new Progress<DownloadProgress>(), shellService, crawlerService, managerService);
             await crawler.IsBlogOnlineAsync();
 
             if (CheckIfTumblrHiddenBlog(blog))
             {
                 blog = PromoteTumblrBlogToHiddenBlog(blog);
-                crawler = CrawlerFactory.GetCrawler(blog, new CancellationToken(), new PauseToken(), new Progress<DownloadProgress>(), shellService, crawlerService);
+                crawler = CrawlerFactory.GetCrawler(blog, new CancellationToken(), new PauseToken(), new Progress<DownloadProgress>(), shellService, crawlerService, managerService);
             }
 
             await crawler.UpdateMetaInformationAsync();
@@ -394,9 +452,16 @@ namespace TumblThree.Applications.Controllers
 
                 if (blog.Save())
                 {
-                    QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => managerService.BlogFiles.Add(blog)));
+                    AddToManager(blog);
                 }
             }
+        }
+
+        private void AddToManager(IBlog blog)
+        {
+            QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => managerService.BlogFiles.Add(blog)));
+            if (shellService.Settings.LoadAllDatabases)            
+                managerService.Databases.Add(new Files().Load(blog.ChildId));
         }
 
         private bool CheckIfTumblrHiddenBlog(IBlog blog)

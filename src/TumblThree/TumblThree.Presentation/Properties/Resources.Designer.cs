@@ -853,6 +853,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check for file existence globally across all loaded blogs.
+        /// </summary>
+        public static string LoadAllDatabases {
+            get {
+                return ResourceManager.GetString("LoadAllDatabases", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Number of connections:.
         /// </summary>
         public static string MaxConnections {
@@ -1725,6 +1734,27 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipLimitScanDescription {
             get {
                 return ResourceManager.GetString("ToolTipLimitScanDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to During an active crawl each file is checked globally if it already exists instead of blog wise..
+        /// </summary>
+        public static string ToolTipLoadAllDatabases {
+            get {
+                return ResourceManager.GetString("ToolTipLoadAllDatabases", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When crawling a blog, all posts are compared against each other before downloading to prevent the download of duplicate binary files.
+        ///This is done blog wise. Enabling this options will compare each file globally.
+        ///Activation will increase the memory usage during operation based on the amount of already downloaded content.
+        ///Requires a restart..
+        /// </summary>
+        public static string ToolTipLoadAllDatabasesDescription {
+            get {
+                return ResourceManager.GetString("ToolTipLoadAllDatabasesDescription", resourceCulture);
             }
         }
         

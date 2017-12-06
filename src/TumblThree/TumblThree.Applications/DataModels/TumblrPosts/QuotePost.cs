@@ -11,7 +11,7 @@ namespace TumblThree.Applications.DataModels.TumblrPosts
             TextFileLocation = Resources.FileNameQuotes;
         }
 
-        public QuotePost(string url, string id) : base(url, id, string.Empty)
+        public QuotePost(string url, string id) : this(url, id, string.Empty)
         {
         }
     }

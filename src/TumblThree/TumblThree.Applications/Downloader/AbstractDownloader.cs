@@ -23,6 +23,7 @@ namespace TumblThree.Applications.Downloader
         protected readonly IBlog blog;
         protected readonly IFiles files;
         protected readonly ICrawlerService crawlerService;
+        private readonly IManagerService managerService;
         protected readonly IProgress<DownloadProgress> progress;
         protected readonly object lockObjectDownload = new object();
         protected readonly BlockingCollection<TumblrPost> producerConsumerCollection;
@@ -32,10 +33,11 @@ namespace TumblThree.Applications.Downloader
         protected readonly FileDownloader fileDownloader;
         string[] suffixes = { ".jpg", ".jpeg", ".png" };
 
-        protected AbstractDownloader(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, BlockingCollection<TumblrPost> producerConsumerCollection, FileDownloader fileDownloader, ICrawlerService crawlerService = null, IBlog blog = null, IFiles files = null)
+        protected AbstractDownloader(IShellService shellService, IManagerService managerService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, BlockingCollection<TumblrPost> producerConsumerCollection, FileDownloader fileDownloader, ICrawlerService crawlerService = null, IBlog blog = null, IFiles files = null)
         {
             this.shellService = shellService;
             this.crawlerService = crawlerService;
+            this.managerService = managerService;
             this.blog = blog;
             this.files = files;
             this.ct = ct;
@@ -191,7 +193,7 @@ namespace TumblThree.Applications.Downloader
         protected virtual async Task<bool> DownloadBinaryPost(TumblrPost downloadItem)
         {
             string url = Url(downloadItem);
-            if (!(files.CheckIfFileExistsInDB(url) || blog.CheckIfBlogShouldCheckDirectory(GetCoreImageUrl(url))))
+            if (!CheckIfFileExistsInDB(url))
             {
                 string blogDownloadLocation = blog.DownloadLocation();
                 string fileName = FileName(downloadItem);
@@ -222,10 +224,26 @@ namespace TumblThree.Applications.Downloader
             return true;
         }
 
+        private bool CheckIfFileExistsInDB(string url)
+        {
+            if (shellService.Settings.LoadAllDatabases)
+            {
+                if (managerService.CheckIfFileExistsInDB(url))
+                    return true;
+            }
+            else
+            {
+                if (files.CheckIfFileExistsInDB(url) || blog.CheckIfBlogShouldCheckDirectory(GetCoreImageUrl(url)))
+                    return true;
+            }
+            return false;
+        }
+
+
         private void DownloadTextPost(TumblrPost downloadItem)
         {
             string postId = PostId(downloadItem);
-            if (!files.CheckIfFileExistsInDB(postId))
+            if (!CheckIfFileExistsInDB(postId))
             {
                 string blogDownloadLocation = blog.DownloadLocation();
                 string url = Url(downloadItem);

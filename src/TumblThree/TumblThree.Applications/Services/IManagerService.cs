@@ -7,5 +7,9 @@ namespace TumblThree.Applications.Services
     public interface IManagerService
     {
         ObservableCollection<IBlog> BlogFiles { get; }
+
+        ObservableCollection<IFiles> Databases { get; }
+
+        bool CheckIfFileExistsInDB(string url);
     }
 }

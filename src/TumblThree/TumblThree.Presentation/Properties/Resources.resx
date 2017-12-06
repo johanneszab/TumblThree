@@ -762,4 +762,16 @@ E.g.  great big car, bears searches for great big cars and bears.</value>
   <data name="ToolTipFileDownloadLocationDescription" xml:space="preserve">
     <value>If not empty, all files are downloaded in the specified folder</value>
   </data>
+  <data name="LoadAllDatabases" xml:space="preserve">
+    <value>Check for file existence globally across all loaded blogs</value>
+  </data>
+  <data name="ToolTipLoadAllDatabases" xml:space="preserve">
+    <value>During an active crawl each file is checked globally if it already exists instead of blog wise.</value>
+  </data>
+  <data name="ToolTipLoadAllDatabasesDescription" xml:space="preserve">
+    <value>When crawling a blog, all posts are compared against each other before downloading to prevent the download of duplicate binary files.
+This is done blog wise. Enabling this options will compare each file globally.
+Activation will increase the memory usage during operation based on the amount of already downloaded content.
+Requires a restart.</value>
+  </data>
 </root>

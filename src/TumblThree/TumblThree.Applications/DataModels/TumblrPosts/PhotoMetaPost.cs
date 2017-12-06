@@ -11,7 +11,7 @@ namespace TumblThree.Applications.DataModels.TumblrPosts
             TextFileLocation = Resources.FileNameMetaPhoto;
         }
 
-        public PhotoMetaPost(string url, string id) : base(url, id, string.Empty)
+        public PhotoMetaPost(string url, string id) : this(url, id, string.Empty)
         {
         }
     }

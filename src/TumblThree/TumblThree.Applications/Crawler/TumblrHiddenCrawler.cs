@@ -521,10 +521,10 @@ namespace TumblThree.Applications.Crawler
 
         private void AddInlinePhotoUrl(Post post)
         {
-            if (post.body == null)
+            if (post.post_html == null)
                 return;
             var regex = new Regex("\"(http[A-Za-z0-9_/:.]*media.tumblr.com[A-Za-z0-9_/:.]*(jpg|png|gif))\"");
-            foreach (Match match in regex.Matches(post.body))
+            foreach (Match match in regex.Matches(post.post_html))
             {
                 string postId = post.id;
 
@@ -590,10 +590,10 @@ namespace TumblThree.Applications.Crawler
 
         private void AddInlineVideoUrl(Post post)
         {
-            if (post.body == null)
+            if (post.post_html == null)
                 return;
             var regex = new Regex("\"(http[A-Za-z0-9_/:.]*.com/video_file/[A-Za-z0-9_/:.]*)\"");
-            foreach (Match match in regex.Matches(post.body))
+            foreach (Match match in regex.Matches(post.post_html))
             {
                 string videoUrl = match.Groups[1].Value;
                 if (shellService.Settings.VideoSize == 1080)

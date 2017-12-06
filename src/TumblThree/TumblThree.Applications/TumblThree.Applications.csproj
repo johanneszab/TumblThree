@@ -99,7 +99,7 @@
     <Compile Include="Downloader\TumblrXmlDownloader.cs" />
     <Compile Include="ObjectModel\ObservableRangeCollection.cs" />
     <Compile Include="DataModels\TumblrSvcJson.cs" />
-    <Compile Include="DataModels\TumblrPost.cs" />
+    <Compile Include="DataModels\TumblrPosts\TumblrPost.cs" />
     <Compile Include="DataModels\TumblrSearchJson.cs" />
     <Compile Include="Data\StringListConverter.cs" />
     <Compile Include="Data\SupportedFileTypes.cs" />
@@ -160,7 +160,7 @@
     <Compile Include="ViewModels\FullScreenMediaViewModel.cs" />
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\CrawlerViewModel.cs" />
-    <Compile Include="ViewModels\DetailsAllViewModel.cs" />
+    <Compile Include="ViewModels\DetailsViewModels\DetailsAllViewModel.cs" />
     <Compile Include="ViewModels\IDetailsViewModel.cs" />
     <Compile Include="ViewModels\ManagerViewModel.cs" />
     <Compile Include="ViewModels\QueueViewModel.cs" />

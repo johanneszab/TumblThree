@@ -48,6 +48,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid Height="Auto" Grid.Row="0">
                             <Grid.ColumnDefinitions>
@@ -86,7 +87,19 @@
                                 </ToolTip>
                             </CheckBox.ToolTip>
                         </CheckBox>
-                        <Grid MinHeight="46" Height="Auto" Grid.Row="6" HorizontalAlignment="Left">
+                        <CheckBox x:Name="checkBoxLoadAllDatabases" Content="{x:Static p:Resources.LoadAllDatabases}"
+                        IsChecked="{Binding LoadAllDatabases, Mode=TwoWay}" Grid.Column="0" Grid.Row="6"
+                        Margin="10">
+                            <CheckBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipLoadAllDatabases}" />
+                                        <TextBlock Text="{x:Static p:Resources.ToolTipLoadAllDatabasesDescription}" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </CheckBox.ToolTip>
+                        </CheckBox>
+                        <Grid MinHeight="46" Height="Auto" Grid.Row="7" HorizontalAlignment="Left">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
@@ -117,7 +130,7 @@
                             <Label x:Name="autoDownloadBlogsLabel" Grid.Column="4" Content="{x:Static p:Resources.AutoDownloadBlogs}"
                        HorizontalAlignment="Left" VerticalAlignment="Center" />
                         </Grid>
-                        <Grid Grid.Row="7" Grid.ColumnSpan="2">
+                        <Grid Grid.Row="8" Grid.ColumnSpan="2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />

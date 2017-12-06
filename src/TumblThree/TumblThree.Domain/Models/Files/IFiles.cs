@@ -5,6 +5,10 @@ namespace TumblThree.Domain.Models
 {
     public interface IFiles : INotifyPropertyChanged
     {
+        string Name { get; }
+
+        BlogTypes BlogType { get; }
+
         IList<string> Links { get; }
 
         void AddFileToDb(string fileName);
