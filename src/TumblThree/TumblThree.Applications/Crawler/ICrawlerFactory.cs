@@ -11,6 +11,6 @@ namespace TumblThree.Applications.Crawler
     {
         ICrawler GetCrawler(IBlog blog);
 
-        ICrawler GetCrawler(IBlog blog, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, IShellService shellService, ICrawlerService crawlerService);
+        ICrawler GetCrawler(IBlog blog, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, IShellService shellService, ICrawlerService crawlerService, IManagerService managerService);
     }
 }

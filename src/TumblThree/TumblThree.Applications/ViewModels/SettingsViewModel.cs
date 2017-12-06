@@ -76,6 +76,7 @@ namespace TumblThree.Applications.ViewModels
         private int concurrentVideoConnections;
         private int concurrentScans;
         private bool portableMode;
+        private bool loadAllDatabases;
         private string proxyHost;
         private string proxyPort;
         private string proxyUsername;
@@ -349,6 +350,12 @@ namespace TumblThree.Applications.ViewModels
         {
             get { return portableMode; }
             set { SetProperty(ref portableMode, value); }
+        }
+
+        public bool LoadAllDatabases
+        {
+            get { return loadAllDatabases; }
+            set { SetProperty(ref loadAllDatabases, value); }
         }
 
         public string ProxyHost
@@ -691,6 +698,7 @@ namespace TumblThree.Applications.ViewModels
                 CheckDirectoryForFiles = settings.CheckDirectoryForFiles;
                 DownloadUrlList = settings.DownloadUrlList;
                 PortableMode = settings.PortableMode;
+                LoadAllDatabases = settings.LoadAllDatabases;
                 ProxyHost = settings.ProxyHost;
                 ProxyPort = settings.ProxyPort;
                 ProxyUsername = settings.ProxyUsername;
@@ -755,6 +763,7 @@ namespace TumblThree.Applications.ViewModels
                 CheckDirectoryForFiles = false;
                 DownloadUrlList = false;
                 PortableMode = false;
+                LoadAllDatabases = false;
                 ProxyHost = string.Empty;
                 ProxyPort = string.Empty;
                 ProxyHost = string.Empty;
@@ -843,6 +852,7 @@ namespace TumblThree.Applications.ViewModels
             settings.CheckDirectoryForFiles = CheckDirectoryForFiles;
             settings.DownloadUrlList = DownloadUrlList;
             settings.PortableMode = PortableMode;
+            settings.LoadAllDatabases = LoadAllDatabases;
             settings.ProxyHost = ProxyHost;
             settings.ProxyPort = ProxyPort;
             settings.ProxyUsername = ProxyUsername;

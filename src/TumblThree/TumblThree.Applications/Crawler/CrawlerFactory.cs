@@ -42,30 +42,34 @@ namespace TumblThree.Applications.Crawler
             throw new ArgumentException("Website is not supported!", "blogType");
         }
 
-        public ICrawler GetCrawler(IBlog blog, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, IShellService shellService, ICrawlerService crawlerService)
+        public ICrawler GetCrawler(IBlog blog, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, IShellService shellService, ICrawlerService crawlerService, IManagerService managerService)
         {
             BlockingCollection<TumblrPost> producerConsumerCollection = GetProducerConsumerCollection();
-            IFiles files = LoadFiles(blog);
+            IFiles files = LoadFiles(blog, managerService);
             IWebRequestFactory webRequestFactory = GetWebRequestFactory();
             IGfycatParser gfycatParser = GetGfycatParser(webRequestFactory, ct);
             switch (blog.BlogType)
             {
               case BlogTypes.tumblr:
                     BlockingCollection<TumblrCrawlerJsonData> jsonQueue = GetJsonQueue();
-                    return new TumblrBlogCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory ,cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, files, producerConsumerCollection), GetTumblrJsonDownloader(shellService, ct, pt, jsonQueue, crawlerService, blog), GetImgurParser(), gfycatParser, GetWebmshareParser(), producerConsumerCollection, jsonQueue, blog);
+                    return new TumblrBlogCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory ,cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, managerService, blog, files, producerConsumerCollection), GetTumblrJsonDownloader(shellService, ct, pt, jsonQueue, crawlerService, blog), GetImgurParser(), gfycatParser, GetWebmshareParser(), producerConsumerCollection, jsonQueue, blog);
                 case BlogTypes.tlb:
-                    return new TumblrLikedByCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, files, producerConsumerCollection), producerConsumerCollection, blog);
+                    return new TumblrLikedByCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, managerService, blog, files, producerConsumerCollection), producerConsumerCollection, blog);
                 case BlogTypes.tumblrsearch:
-                    return new TumblrSearchCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, files, producerConsumerCollection), producerConsumerCollection, blog);
+                    return new TumblrSearchCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, managerService, blog, files, producerConsumerCollection), producerConsumerCollection, blog);
                 case BlogTypes.tumblrtagsearch:
-                    return new TumblrTagSearchCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, blog, files, producerConsumerCollection), producerConsumerCollection, blog);
+                    return new TumblrTagSearchCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, managerService, blog, files, producerConsumerCollection), producerConsumerCollection, blog);
                 default:
                     throw new ArgumentException("Website is not supported!", "blogType");
             }
         }
 
-        private IFiles LoadFiles(IBlog blog)
+        private IFiles LoadFiles(IBlog blog, IManagerService managerService)
         {
+            if (settings.LoadAllDatabases)
+            {
+                return managerService.Databases.Where(file => file.Name.Equals(blog.Name) && file.BlogType.Equals(blog.BlogType)).FirstOrDefault();
+            }
             return new Files().Load(blog.ChildId);
         }
 
@@ -98,9 +102,9 @@ namespace TumblThree.Applications.Crawler
             return new BlogService(blog, files);
         }
 
-        private TumblrDownloader GetTumblrDownloader(CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, IShellService shellService, ICrawlerService crawlerService, IBlog blog, IFiles files, BlockingCollection<TumblrPost> producerConsumerCollection)
+        private TumblrDownloader GetTumblrDownloader(CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, IShellService shellService, ICrawlerService crawlerService, IManagerService managerService, IBlog blog, IFiles files, BlockingCollection<TumblrPost> producerConsumerCollection)
         {
-            return new TumblrDownloader(shellService, ct, pt, progress, producerConsumerCollection, GetFileDownloader(ct), crawlerService, blog, files);
+            return new TumblrDownloader(shellService, managerService, ct, pt, progress, producerConsumerCollection, GetFileDownloader(ct), crawlerService, blog, files);
         }
 
         private TumblrJsonDownloader GetTumblrJsonDownloader(IShellService shellService, CancellationToken ct, PauseToken pt, BlockingCollection<TumblrCrawlerJsonData> jsonQueue, ICrawlerService crawlerService, IBlog blog)

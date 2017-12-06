@@ -7,11 +7,11 @@ namespace TumblThree.Applications.DataModels.TumblrPosts
         public LinkPost(string url, string id, string date) : base(url, id, date)
         {
             PostType = PostType.Text;
-            DbType = "DownloadedPhotos";
+            DbType = "DownloadedLinks";
             TextFileLocation = Resources.FileNamePhotos;
         }
 
-        public LinkPost(string url, string id) : base(url, id, string.Empty)
+        public LinkPost(string url, string id) : this(url, id, string.Empty)
         {
         }
     }

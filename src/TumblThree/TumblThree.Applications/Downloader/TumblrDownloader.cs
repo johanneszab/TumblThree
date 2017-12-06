@@ -18,8 +18,8 @@ namespace TumblThree.Applications.Downloader
         protected List<string> tags = new List<string>();
         protected int numberOfPagesCrawled = 0;
 
-        public TumblrDownloader(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, BlockingCollection<TumblrPost> producerConsumerCollection, FileDownloader fileDownloader, ICrawlerService crawlerService, IBlog blog, IFiles files)
-            : base(shellService, ct, pt, progress, producerConsumerCollection, fileDownloader, crawlerService, blog, files)
+        public TumblrDownloader(IShellService shellService, IManagerService managerService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, BlockingCollection<TumblrPost> producerConsumerCollection, FileDownloader fileDownloader, ICrawlerService crawlerService, IBlog blog, IFiles files)
+            : base(shellService, managerService, ct, pt, progress, producerConsumerCollection, fileDownloader, crawlerService, blog, files)
         {
         }
 
@@ -57,6 +57,8 @@ namespace TumblThree.Applications.Downloader
 
         protected override async Task<bool> DownloadBinaryPost(TumblrPost downloadItem)
         {
+            if (!(downloadItem is PhotoPost))
+                return await base.DownloadBinaryPost(downloadItem);
             string url = Url(downloadItem);
 
             if (blog.ForceSize)

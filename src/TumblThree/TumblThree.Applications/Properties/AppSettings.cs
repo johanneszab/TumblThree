@@ -241,6 +241,9 @@ namespace TumblThree.Applications.Properties
         public bool PortableMode { get; set; }
 
         [DataMember]
+        public bool LoadAllDatabases { get; set; }
+
+        [DataMember]
         public string ProxyHost { get; set; }
 
         [DataMember]
@@ -340,6 +343,7 @@ namespace TumblThree.Applications.Properties
             CheckDirectoryForFiles = false;
             DownloadUrlList = false;
             PortableMode = false;
+            LoadAllDatabases = false;
             ProxyHost = string.Empty;
             ProxyPort = string.Empty;
             ProxyUsername = string.Empty;
