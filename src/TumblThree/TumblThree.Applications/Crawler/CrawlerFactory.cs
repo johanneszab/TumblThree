@@ -47,12 +47,13 @@ namespace TumblThree.Applications.Crawler
             BlockingCollection<TumblrPost> producerConsumerCollection = GetProducerConsumerCollection();
             IFiles files = LoadFiles(blog, managerService);
             IWebRequestFactory webRequestFactory = GetWebRequestFactory();
+            IImgurParser imgurParser = GetImgurParser(webRequestFactory, ct);
             IGfycatParser gfycatParser = GetGfycatParser(webRequestFactory, ct);
             switch (blog.BlogType)
             {
               case BlogTypes.tumblr:
                     BlockingCollection<TumblrCrawlerJsonData> jsonQueue = GetJsonQueue();
-                    return new TumblrBlogCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory ,cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, managerService, blog, files, producerConsumerCollection), GetTumblrJsonDownloader(shellService, ct, pt, jsonQueue, crawlerService, blog), GetImgurParser(), gfycatParser, GetWebmshareParser(), producerConsumerCollection, jsonQueue, blog);
+                    return new TumblrBlogCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory ,cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, managerService, blog, files, producerConsumerCollection), GetTumblrJsonDownloader(shellService, ct, pt, jsonQueue, crawlerService, blog), imgurParser, gfycatParser, GetWebmshareParser(), producerConsumerCollection, jsonQueue, blog);
                 case BlogTypes.tlb:
                     return new TumblrLikedByCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, managerService, blog, files, producerConsumerCollection), producerConsumerCollection, blog);
                 case BlogTypes.tumblrsearch:
@@ -77,9 +78,9 @@ namespace TumblThree.Applications.Crawler
         {
             return new WebRequestFactory(settings, cookieService);
         }
-        private IImgurParser GetImgurParser()
+        private IImgurParser GetImgurParser(IWebRequestFactory webRequestFactory, CancellationToken ct)
         {
-            return new ImgurParser();
+            return new ImgurParser(settings, webRequestFactory, ct);
         }
 
         private IGfycatParser GetGfycatParser(IWebRequestFactory webRequestFactory, CancellationToken ct)

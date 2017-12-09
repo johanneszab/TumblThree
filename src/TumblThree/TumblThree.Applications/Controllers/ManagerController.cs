@@ -226,8 +226,7 @@ namespace TumblThree.Applications.Controllers
                             fileName.Contains("_files")))
             {
                 //TODO: Refactor
-                if (filename.EndsWith(BlogTypes.tumblr.ToString()))
-                    blogs.Add(new Files().Load(filename));
+                blogs.Add(new Files().Load(filename));
             }
             Logger.Verbose("ManagerController.GetFilesCore End");
 

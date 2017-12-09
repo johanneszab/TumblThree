@@ -81,8 +81,10 @@
     <Compile Include="DataModels\TumblrPosts\AudioMetaPost.cs" />
     <Compile Include="DataModels\TumblrPosts\AudioPost.cs" />
     <Compile Include="DataModels\TumblrPosts\ConversationPost.cs" />
+    <Compile Include="DataModels\TumblrPosts\ExternalVideoPost.cs" />
     <Compile Include="DataModels\TumblrPosts\LinkPost.cs" />
     <Compile Include="DataModels\TumblrPosts\PhotoMetaPost.cs" />
+    <Compile Include="DataModels\TumblrPosts\ExternalPhotoPost.cs" />
     <Compile Include="DataModels\TumblrPosts\PhotoPost.cs" />
     <Compile Include="DataModels\TumblrPosts\QuotePost.cs" />
     <Compile Include="DataModels\TumblrPosts\TextPost.cs" />
