@@ -84,6 +84,8 @@
     <Compile Include="DataModels\TumblrCrawlerData\TumblrCrawlerJsonData.cs" />
     <Compile Include="DataModels\TumblrCrawlerData\TumblrCrawlerXmlData.cs" />
     <Compile Include="DataModels\TumblrPosts\PhotoMetaPost.cs" />
+    <Compile Include="DataModels\TumblrPosts\ExternalVideoPost.cs" />
+    <Compile Include="DataModels\TumblrPosts\ExternalPhotoPost.cs" />
     <Compile Include="DataModels\TumblrPosts\VideoMetaPost.cs" />
     <Compile Include="DataModels\TumblrPosts\AudioMetaPost.cs" />
     <Compile Include="DataModels\TumblrPosts\ConversationPost.cs" />

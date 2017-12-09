@@ -521,10 +521,10 @@ namespace TumblThree.Applications.Crawler
 
         private void AddInlinePhotoUrl(Post post)
         {
-            if (post.post_html == null)
+            if (post.caption == null)
                 return;
             var regex = new Regex("\"(http[A-Za-z0-9_/:.]*media.tumblr.com[A-Za-z0-9_/:.]*(jpg|png|gif))\"");
-            foreach (Match match in regex.Matches(post.post_html))
+            foreach (Match match in regex.Matches(post.caption))
             {
                 string postId = post.id;
 
@@ -536,7 +536,7 @@ namespace TumblThree.Applications.Crawler
                     continue;
                 }
                 AddToDownloadList(new PhotoPost(imageUrl, postId, post.timestamp.ToString()));
-                AddToJsonQueue(new TumblrCrawlerJsonData(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
+                //AddToJsonQueue(new TumblrCrawlerJsonData(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
             }
         }
 
@@ -574,6 +574,8 @@ namespace TumblThree.Applications.Crawler
 
         private void AddVideoUrl(Post post)
         {
+            if (post.video_url == null)
+                return;
             string postId = post.id;
             string videoUrl = post.video_url;
 
@@ -590,23 +592,23 @@ namespace TumblThree.Applications.Crawler
 
         private void AddInlineVideoUrl(Post post)
         {
-            if (post.post_html == null)
+            if (post.caption == null)
                 return;
             var regex = new Regex("\"(http[A-Za-z0-9_/:.]*.com/video_file/[A-Za-z0-9_/:.]*)\"");
-            foreach (Match match in regex.Matches(post.post_html))
+            foreach (Match match in regex.Matches(post.caption))
             {
                 string videoUrl = match.Groups[1].Value;
                 if (shellService.Settings.VideoSize == 1080)
                 {
                     AddToDownloadList(new VideoPost(videoUrl.Replace("/480", "") + ".mp4", post.id, post.timestamp.ToString()));
-                    AddToJsonQueue(new TumblrCrawlerJsonData(Path.ChangeExtension(videoUrl.Split('/').Last(), ".json"), post));
+                    //AddToJsonQueue(new TumblrCrawlerJsonData(Path.ChangeExtension(videoUrl.Split('/').Last(), ".json"), post));
                 }
                 else if (shellService.Settings.VideoSize == 480)
                 {
                     AddToDownloadList(new VideoPost(
                         "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + "_480.mp4",
                         post.id, post.timestamp.ToString()));
-                    AddToJsonQueue(new TumblrCrawlerJsonData(Path.ChangeExtension(videoUrl.Split('/').Last(), ".json"), post));
+                    //AddToJsonQueue(new TumblrCrawlerJsonData(Path.ChangeExtension(videoUrl.Split('/').Last(), ".json"), post));
                 }
             }
         }
@@ -815,7 +817,7 @@ namespace TumblThree.Applications.Crawler
         {
             if (blog.DownloadImgur)
             {
-                DownloadImgur(document);
+                await DownloadImgur(document);
             }
             if (blog.DownloadGfycat)
             {
@@ -827,7 +829,7 @@ namespace TumblThree.Applications.Crawler
             }
         }
 
-        private void DownloadImgur(TumblrJson document)
+        private async Task DownloadImgur(TumblrJson document)
         {
             foreach (Post post in document.response.posts)
             {
@@ -837,8 +839,9 @@ namespace TumblThree.Applications.Crawler
                 {
                     if (CheckIfDownloadRebloggedPosts(post))
                     {
-                        Regex regex = imgurParser.GetImgurUrlRegex();
-                        foreach (Match match in regex.Matches(post.ToString()))
+                        // single linked images
+                        Regex regex = imgurParser.GetImgurImageRegex();
+                        foreach (Match match in regex.Matches(post.caption))
                         {
                             string imageUrl = match.Groups[1].Value;
                             string imgurId = match.Groups[2].Value;
@@ -846,10 +849,37 @@ namespace TumblThree.Applications.Crawler
                             {
                                 continue;
                             }
-                            // TODO: postID
-                            AddToDownloadList(new PhotoPost(imageUrl, Guid.NewGuid().ToString("N"),
+                            AddToDownloadList(new ExternalPhotoPost(imageUrl, imgurId,
                                 post.timestamp.ToString()));
                             AddToJsonQueue(new TumblrCrawlerJsonData(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
+                        }
+
+                        // album urls
+                        regex = imgurParser.GetImgurAlbumRegex();
+                        foreach (Match match in regex.Matches(post.caption))
+                        {
+                            string albumUrl = match.Groups[1].Value;
+                            string imgurId = match.Groups[2].Value;
+                            string album = await imgurParser.RequestImgurAlbumSite(albumUrl);
+
+                            Regex hashRegex = imgurParser.GetImgurAlbumHashRegex();
+                            var hashMatches = hashRegex.Matches(album);
+                            var hashes = hashMatches.Cast<Match>().Select(hashMatch => hashMatch.Groups[1].Value).ToList();
+
+                            Regex extRegex = imgurParser.GetImgurAlbumExtRegex();
+                            var extMatches = extRegex.Matches(album);
+                            var exts = extMatches.Cast<Match>().Select(extMatch => extMatch.Groups[1].Value).ToList();
+
+                            var imageUrls = hashes.Zip(exts, (hash, ext) => "https://i.imgur.com/" + hash + ext);
+
+                            foreach (string imageUrl in imageUrls)
+                            {
+                                if (blog.SkipGif && (imageUrl.EndsWith(".gif") || imageUrl.EndsWith(".gifv")))
+                                    continue;
+                                AddToDownloadList(new ExternalPhotoPost(imageUrl, imgurId,
+                                    post.timestamp.ToString()));
+                                AddToJsonQueue(new TumblrCrawlerJsonData(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
+                            }
                         }
                     }
                 }
@@ -867,7 +897,7 @@ namespace TumblThree.Applications.Crawler
                     if (CheckIfDownloadRebloggedPosts(post))
                     {
                         Regex regex = gfycatParser.GetGfycatUrlRegex();
-                        foreach (Match match in regex.Matches(post.ToString()))
+                        foreach (Match match in regex.Matches(post.caption))
                         {
                             string gfyId = match.Groups[2].Value;
                             string videoUrl = gfycatParser.ParseGfycatCajaxResponse(await gfycatParser.RequestGfycatCajax(gfyId),
@@ -897,7 +927,7 @@ namespace TumblThree.Applications.Crawler
                     if (CheckIfDownloadRebloggedPosts(post))
                     {
                         var regex = webmshareParser.GetWebmshareUrlRegex();
-                        foreach (Match match in regex.Matches(post.ToString()))
+                        foreach (Match match in regex.Matches(post.caption))
                         {
                             string webmshareId = match.Groups[2].Value;
                             string imageUrl = webmshareParser.CreateWebmshareUrl(webmshareId, blog.WebmshareType);
@@ -976,7 +1006,7 @@ namespace TumblThree.Applications.Crawler
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Summary, post.summary) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Link, post.post_html) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Link, post.caption) +
                    Environment.NewLine + post.body +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Tags,

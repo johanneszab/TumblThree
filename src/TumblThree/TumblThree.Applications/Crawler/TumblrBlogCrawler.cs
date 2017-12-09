@@ -774,7 +774,7 @@ namespace TumblThree.Applications.Crawler
                 }
                 imageUrl = ResizeTumblrImageUrl(imageUrl);
                 AddToDownloadList(new PhotoPost(imageUrl, post.Attribute("id").Value, post.Attribute("unix-timestamp").Value));
-                AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(imageUrl.Split('/').Last(), ".xml"), post));
+                //AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(imageUrl.Split('/').Last(), ".xml"), post));
             }
         }
 
@@ -787,7 +787,7 @@ namespace TumblThree.Applications.Crawler
                 if (shellService.Settings.VideoSize == 1080)
                 {
                     AddToDownloadList(new VideoPost(videoUrl.Replace("/480", "") + ".mp4", post.Attribute("id").Value, post.Attribute("unix-timestamp").Value));
-                    AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(videoUrl.Split('/').Last(), ".xml"), post));
+                    //AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(videoUrl.Split('/').Last(), ".xml"), post));
 
                 }
                 else if (shellService.Settings.VideoSize == 480)
@@ -795,7 +795,7 @@ namespace TumblThree.Applications.Crawler
                     AddToDownloadList(new VideoPost(
                         "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + "_480.mp4",
                         post.Attribute("id").Value, post.Attribute("unix-timestamp").Value));
-                    AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(videoUrl.Split('/').Last(), ".xml"), post));
+                    //AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(videoUrl.Split('/').Last(), ".xml"), post));
                 }
             }
         }
@@ -872,7 +872,7 @@ namespace TumblThree.Applications.Crawler
         {
             if (blog.DownloadImgur)
             {
-                DownloadImgur(document);
+                await DownloadImgur(document);
             }
             if (blog.DownloadGfycat)
             {
@@ -884,7 +884,7 @@ namespace TumblThree.Applications.Crawler
             }
         }
 
-        private void DownloadImgur(XContainer document)
+        private async Task DownloadImgur(XContainer document)
         {
             foreach (XElement post in document.Descendants("post"))
             {
@@ -895,7 +895,8 @@ namespace TumblThree.Applications.Crawler
                 {
                     if (CheckIfDownloadRebloggedPosts(post))
                     {
-                        Regex regex = imgurParser.GetImgurUrlRegex();
+                        // single linked images
+                        Regex regex = imgurParser.GetImgurImageRegex();
                         foreach (Match match in regex.Matches(post.Value))
                         {
                             string imageUrl = match.Groups[1].Value;
@@ -904,9 +905,37 @@ namespace TumblThree.Applications.Crawler
                             {
                                 continue;
                             }
-                            AddToDownloadList(new PhotoPost(imageUrl, imgurId,
+                            AddToDownloadList(new ExternalPhotoPost(imageUrl, imgurId,
                                 post.Attribute("unix-timestamp").Value));
                             AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(imageUrl.Split('/').Last(), ".xml"), post));
+                        }
+
+                        // album urls
+                        regex = imgurParser.GetImgurAlbumRegex();
+                        foreach (Match match in regex.Matches(post.Value))
+                        {
+                            string albumUrl = match.Groups[1].Value;
+                            string imgurId = match.Groups[2].Value;
+                            string album = await imgurParser.RequestImgurAlbumSite(albumUrl);
+
+                            Regex hashRegex = imgurParser.GetImgurAlbumHashRegex();
+                            var hashMatches = hashRegex.Matches(album);
+                            var hashes = hashMatches.Cast<Match>().Select(hashMatch => hashMatch.Groups[1].Value).ToList();
+
+                            Regex extRegex = imgurParser.GetImgurAlbumExtRegex();
+                            var extMatches = extRegex.Matches(album);
+                            var exts = extMatches.Cast<Match>().Select(extMatch => extMatch.Groups[1].Value).ToList();
+
+                            var imageUrls = hashes.Zip(exts, (hash, ext) => "https://i.imgur.com/" + hash + ext);
+
+                            foreach (string imageUrl in imageUrls)
+                            {
+                                if (blog.SkipGif && (imageUrl.EndsWith(".gif") || imageUrl.EndsWith(".gifv")))
+                                    continue;
+                                AddToDownloadList(new ExternalPhotoPost(imageUrl, imgurId,
+                                    post.Attribute("unix-timestamp").Value));
+                                AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(imageUrl.Split('/').Last(), ".xml"), post));
+                            }
                         }
                     }
                 }
@@ -934,7 +963,7 @@ namespace TumblThree.Applications.Crawler
                             {
                                 continue;
                             }
-                            AddToDownloadList(new VideoPost(videoUrl, gfyId,
+                            AddToDownloadList(new ExternalVideoPost(videoUrl, gfyId,
                                 post.Attribute("unix-timestamp").Value));
                             AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(videoUrl.Split('/').Last(), ".xml"), post));
                         }
@@ -963,7 +992,7 @@ namespace TumblThree.Applications.Crawler
                             {
                                 continue;
                             }
-                            AddToDownloadList(new PhotoPost(imageUrl, webmshareId,
+                            AddToDownloadList(new ExternalVideoPost(imageUrl, webmshareId,
                                 post.Attribute("unix-timestamp").Value));
                             AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(imageUrl.Split('/').Last(), ".xml"), post));
                         }
