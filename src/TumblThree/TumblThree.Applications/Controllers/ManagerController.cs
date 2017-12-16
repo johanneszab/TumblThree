@@ -241,10 +241,10 @@ namespace TumblThree.Applications.Controllers
 
         private async Task LoadAllDatabases()
         {
+            Logger.Verbose("ManagerController.LoadDatabasesGloballyAsync:Start");
+            managerService.Databases.Clear();
             if (shellService.Settings.LoadAllDatabases)
             {
-                Logger.Verbose("ManagerController.LoadDatabasesGloballyAsync:Start");
-                managerService.Databases.Clear();
                 string path = Path.Combine(shellService.Settings.DownloadLocation, "Index");
 
                 try
@@ -436,10 +436,7 @@ namespace TumblThree.Applications.Controllers
                 return;
             }
 
-            if (await TumblrBlogDetector.IsTumblrBlog(blog.Url))
-            {
-                blog = settingsService.TransferGlobalSettingsToBlog(blog);
-            }
+            await TumblrBlogDetector.IsTumblrBlog(blog.Url);
 
             lock (lockObject)
             {
@@ -454,6 +451,8 @@ namespace TumblThree.Applications.Controllers
                     AddToManager(blog);
                 }
             }
+
+            blog = settingsService.TransferGlobalSettingsToBlog(blog);
             ICrawler crawler = CrawlerFactory.GetCrawler(blog, new CancellationToken(), new PauseToken(), new Progress<DownloadProgress>(), shellService, crawlerService, managerService);
             await crawler.UpdateMetaInformationAsync();
         }
@@ -481,9 +480,16 @@ namespace TumblThree.Applications.Controllers
             var semaphoreSlim = new SemaphoreSlim(25);
             IEnumerable<Task> tasks = urls.Select(async url =>
             {
-                await semaphoreSlim.WaitAsync();
-                await AddBlogAsync(url);
-                semaphoreSlim.Release();
+                try
+                {
+                    await semaphoreSlim.WaitAsync();
+                    await AddBlogAsync(url);
+                }
+                catch { }
+                finally
+                {
+                    semaphoreSlim.Release();
+                }
             });
             await Task.WhenAll(tasks);
         }

@@ -785,15 +785,25 @@ namespace TumblThree.Applications.ViewModels
         {
             CrawlerService.Timeconstraint.SetRate(((double)MaxConnections / (double)ConnectionTimeInterval));
 
-            if (loadAllDatabasesChanged)
+            if (loadAllDatabasesChanged && downloadLocationChanged)
             {
-                CrawlerService.StopCommand.Execute(null);
+                if (CrawlerService.StopCommand.CanExecute(null))
+                    CrawlerService.StopCommand.Execute(null);
+                CrawlerService.LoadLibraryCommand.Execute(null);
                 CrawlerService.LoadAllDatabasesCommand.Execute(null);
             }
-
-            if (!CrawlerService.IsCrawl && downloadLocationChanged)
+            else if (downloadLocationChanged)
             {
+                if (CrawlerService.StopCommand.CanExecute(null))
+                    CrawlerService.StopCommand.Execute(null);
                 CrawlerService.LoadLibraryCommand.Execute(null);
+                CrawlerService.LoadAllDatabasesCommand.Execute(null);
+            }
+            else if (loadAllDatabasesChanged)
+            {
+                if (CrawlerService.StopCommand.CanExecute(null))
+                    CrawlerService.StopCommand.Execute(null);
+                CrawlerService.LoadAllDatabasesCommand.Execute(null);
             }
         }
 
