@@ -73,9 +73,11 @@
     <Compile Include="Crawler\IGfycatParser.cs" />
     <Compile Include="Crawler\IImgurParser.cs" />
     <Compile Include="Crawler\ImgurParser.cs" />
+    <Compile Include="Crawler\ITumblrBlogDetector.cs" />
     <Compile Include="Crawler\ITumblrParser.cs" />
     <Compile Include="Crawler\IWebmshareParser.cs" />
     <Compile Include="Crawler\IWebRequestFactory.cs" />
+    <Compile Include="Crawler\TumblrBlogDetector.cs" />
     <Compile Include="Crawler\TumblrParser.cs" />
     <Compile Include="Crawler\WebmshareParser.cs" />
     <Compile Include="Crawler\WebRequestFactory.cs" />

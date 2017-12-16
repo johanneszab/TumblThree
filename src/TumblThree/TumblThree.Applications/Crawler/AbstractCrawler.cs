@@ -12,7 +12,9 @@ using TumblThree.Applications.DataModels;
 using TumblThree.Applications.DataModels.TumblrPosts;
 using TumblThree.Applications.Downloader;
 using TumblThree.Applications.Extensions;
+using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
+using TumblThree.Domain;
 using TumblThree.Domain.Models;
 
 namespace TumblThree.Applications.Crawler
@@ -20,7 +22,6 @@ namespace TumblThree.Applications.Crawler
     public abstract class AbstractCrawler
     {
         protected readonly IBlog blog;
-        protected readonly ICrawlerService crawlerService;
         protected readonly IProgress<DownloadProgress> progress;
         protected readonly ISharedCookieService cookieService;
         protected readonly IWebRequestFactory webRequestFactory;
@@ -30,24 +31,19 @@ namespace TumblThree.Applications.Crawler
         protected readonly object lockObjectProgress = new object();
         protected readonly IShellService shellService;
         protected readonly CancellationToken ct;
-        protected readonly PauseToken pt;
-        protected readonly IDownloader downloader;
         protected readonly BlockingCollection<TumblrPost> producerConsumerCollection;
         protected ConcurrentBag<TumblrPost> statisticsBag = new ConcurrentBag<TumblrPost>();
         protected List<string> tags = new List<string>();
         protected int numberOfPagesCrawled = 0;
 
-        protected AbstractCrawler(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IDownloader downloader, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
+        protected AbstractCrawler(IShellService shellService, CancellationToken ct,IProgress<DownloadProgress> progress, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
         {
             this.shellService = shellService;
-            this.crawlerService = crawlerService;
             this.webRequestFactory = webRequestFactory;
             this.cookieService = cookieService;
-            this.downloader = downloader;
             this.producerConsumerCollection = producerConsumerCollection;
             this.blog = blog;
             this.ct = ct;
-            this.pt = pt;
             this.progress = progress;
         }
 
@@ -63,8 +59,10 @@ namespace TumblThree.Applications.Crawler
                 await RequestDataAsync(blog.Url);
                 blog.Online = true;
             }
-            catch (WebException)
+            catch (WebException webException)
             {
+                Logger.Error("TumblrBlogCrawler:IsBlogOnlineAsync:WebException {0}", webException);
+                shellService.ShowError(webException, Resources.BlogIsOffline, blog.Name);
                 blog.Online = false;
             }
         }

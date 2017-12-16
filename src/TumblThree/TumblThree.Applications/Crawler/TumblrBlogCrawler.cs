@@ -27,6 +27,9 @@ namespace TumblThree.Applications.Crawler
     [ExportMetadata("BlogType", typeof(TumblrBlog))]
     public class TumblrBlogCrawler : AbstractCrawler, ICrawler
     {
+        private readonly ICrawlerService crawlerService;
+        private readonly IDownloader downloader;
+        private readonly PauseToken pt;
         private readonly IImgurParser imgurParser;
         private readonly IGfycatParser gfycatParser;
         private readonly IWebmshareParser webmshareParser;
@@ -35,8 +38,11 @@ namespace TumblThree.Applications.Crawler
 
         public TumblrBlogCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
             IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IDownloader downloader, ICrawlerDataDownloader crawlerDataDownloader, IImgurParser imgurParser, IGfycatParser gfycatParser, IWebmshareParser webmshareParser, BlockingCollection<TumblrPost> producerConsumerCollection, BlockingCollection<TumblrCrawlerXmlData> xmlQueue, IBlog blog)
-            : base(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, downloader, producerConsumerCollection, blog)
+            : base(shellService, ct, progress, webRequestFactory, cookieService, producerConsumerCollection, blog)
         {
+            this.crawlerService = crawlerService;
+            this.downloader = downloader;
+            this.pt = pt;
             this.imgurParser = imgurParser;
             this.gfycatParser = gfycatParser;
             this.webmshareParser = webmshareParser;
@@ -75,59 +81,11 @@ namespace TumblThree.Applications.Crawler
                         return;
                     }
                 }
-                if (webException.Status == WebExceptionStatus.ProtocolError && webException.Response != null)
-                {
-                    var resp = (HttpWebResponse)webException.Response;
-                    if (resp.StatusCode == HttpStatusCode.NotFound)
-                    {
-                        // Either a offline or hidden blog, thus, checking the website
-                        if (await IsBlogHiddenAsync())
-                        {
-                            blog.Online = true;
-                            blog.BlogType = BlogTypes.tmblrpriv;
-                            return;
-                        }
-                    }
-                }
-                blog.Online = false;
-            }
-        }
-
-        private async Task<bool> IsBlogHiddenAsync()
-        {
-            try
-            {
-                string document = await base.RequestDataAsync(blog.Url);
-                return true;
-            }
-            catch (WebException webException)
-            {
-                Logger.Error("TumblrBlogCrawler:IsBlogHiddenAsync:WebException {0}", webException);
+                Logger.Error("TumblrBlogCrawler:IsBlogOnlineAsync:WebException {0}", webException);
                 shellService.ShowError(webException, Resources.BlogIsOffline, blog.Name);
                 blog.Online = false;
-                return false;
             }
         }
-
-        private void CheckIfPasswordProtecedBlog(string document)
-        {
-            if (Regex.IsMatch(document, "<form id=\"auth_password\" method=\"post\">"))
-            {
-                Logger.Error("TumblrBlogCrawler:IsBlogOnlineAsync:PasswordProtectedBlog {0}", Resources.PasswordProtected, blog.Name);
-                shellService.ShowError(new WebException(), Resources.PasswordProtected, blog.Name);
-            }
-        }
-
-        private void CheckIfHiddenBlog(string document)
-        {
-            if (Regex.IsMatch(document, "/login_required/"))
-            {
-                Logger.Error("TumblrBlogCrawler:IsBlogOnlineAsync:NotLoggedIn {0}", Resources.NotLoggedIn, blog.Name);
-                shellService.ShowError(new WebException(), Resources.NotLoggedIn, blog.Name);
-                blog.Online = false;
-            }
-        }
-
 
         public override async Task UpdateMetaInformationAsync()
         {
@@ -394,10 +352,7 @@ namespace TumblThree.Applications.Crawler
             producerConsumerCollection.CompleteAdding();
             xmlQueue.CompleteAdding();
 
-            //if (!ct.IsCancellationRequested && completeGrab)
-            //{
-                UpdateBlogStats();
-            //}
+            UpdateBlogStats();
 
             return new Tuple<ulong, bool>(highestId, apiLimitHit);
         }

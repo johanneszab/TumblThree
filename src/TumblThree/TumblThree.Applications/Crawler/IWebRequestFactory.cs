@@ -15,6 +15,8 @@ namespace TumblThree.Applications.Crawler
 
         HttpWebRequest CreatePostXhrReqeust(string url, string referer = "", Dictionary<string, string> headers = null);
 
+        Task<bool> RemotePageIsValid(string url);
+
         Task<string> ReadReqestToEnd(HttpWebRequest request);
 
         Stream GetStreamForApiRequest(Stream stream);

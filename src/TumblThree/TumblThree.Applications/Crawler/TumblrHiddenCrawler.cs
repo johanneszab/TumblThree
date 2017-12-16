@@ -28,6 +28,9 @@ namespace TumblThree.Applications.Crawler
     [ExportMetadata("BlogType", typeof(TumblrHiddenBlog))]
     public class TumblrHiddenCrawler : AbstractCrawler, ICrawler
     {
+        private readonly ICrawlerService crawlerService;
+        private readonly IDownloader downloader;
+        private readonly PauseToken pt;
         private readonly IImgurParser imgurParser;
         private readonly IGfycatParser gfycatParser;
         private readonly IWebmshareParser webmshareParser;
@@ -38,8 +41,11 @@ namespace TumblThree.Applications.Crawler
 
         public TumblrHiddenCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
             IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IDownloader downloader, ICrawlerDataDownloader crawlerDataDownloader, IImgurParser imgurParser, IGfycatParser gfycatParser, IWebmshareParser webmshareParser, BlockingCollection<TumblrPost> producerConsumerCollection, BlockingCollection<TumblrCrawlerJsonData> jsonQueue, IBlog blog)
-            : base(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, downloader, producerConsumerCollection, blog)
+            : base(shellService, ct, progress, webRequestFactory, cookieService, producerConsumerCollection, blog)
         {
+            this.crawlerService = crawlerService;
+            this.downloader = downloader;
+            this.pt = pt;
             this.imgurParser = imgurParser;
             this.gfycatParser = gfycatParser;
             this.webmshareParser = webmshareParser;
@@ -91,10 +97,6 @@ namespace TumblThree.Applications.Crawler
                         return;
                     }
                 }
-                Logger.Error("TumblrHiddenCrawler:IsBlogOnlineAsync:WebException {0}", webException);
-                shellService.ShowError(webException, Resources.PasswordProtectedOrOffline, blog.Name);
-                blog.Online = true;
-                return;
             }
         }
 
@@ -328,10 +330,7 @@ namespace TumblThree.Applications.Crawler
             jsonQueue.CompleteAdding();
             producerConsumerCollection.CompleteAdding();
 
-            //if (!ct.IsCancellationRequested)
-            //{
             UpdateBlogStats();
-            //}
         }
 
         private bool PostWithinTimeSpan(Post post)

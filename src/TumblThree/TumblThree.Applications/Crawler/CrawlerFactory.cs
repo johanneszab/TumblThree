@@ -79,7 +79,7 @@ namespace TumblThree.Applications.Crawler
 
         private IWebRequestFactory GetWebRequestFactory()
         {
-            return new WebRequestFactory(settings, cookieService);
+            return new WebRequestFactory(settings);
         }
         private IImgurParser GetImgurParser(IWebRequestFactory webRequestFactory, CancellationToken ct)
         {

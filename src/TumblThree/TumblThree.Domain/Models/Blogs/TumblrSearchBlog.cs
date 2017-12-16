@@ -16,6 +16,7 @@ namespace TumblThree.Domain.Models
                 Name = ExtractName(url),
                 BlogType = BlogTypes.tumblrsearch,
                 Location = location,
+                Online = true,
                 Version = "3",
                 DateAdded = DateTime.Now,
                 PageSize = 20,

@@ -22,10 +22,15 @@ namespace TumblThree.Applications.Crawler
     [ExportMetadata("BlogType", typeof(TumblrLikedByBlog))]
     public class TumblrLikedByCrawler : AbstractCrawler, ICrawler
     {
+        private readonly IDownloader downloader;
+        private readonly PauseToken pt;
+
         public TumblrLikedByCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
             IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IDownloader downloader, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
-            : base(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, downloader, producerConsumerCollection, blog)
+            : base(shellService, ct, progress, webRequestFactory, cookieService, producerConsumerCollection, blog)
         {
+            this.downloader = downloader;
+            this.pt = pt;
         }
 
         public async Task Crawl()
@@ -96,10 +101,7 @@ namespace TumblThree.Applications.Crawler
 
             producerConsumerCollection.CompleteAdding();
 
-            //if (!ct.IsCancellationRequested)
-            //{
-                UpdateBlogStats();
-            //}
+            UpdateBlogStats();
         }
 
         private long CreateStartPagination()
@@ -164,11 +166,10 @@ namespace TumblThree.Applications.Crawler
             //
             // <div id="pagination" class="pagination "><a id="previous_page_link" href="/liked/by/wallpaperfx/page/3/-1457140452" class="previous button chrome">Previous</a>
             // <a id="next_page_link" href="/liked/by/wallpaperfx/page/5/1457139681" class="next button chrome blue">Next</a></div></div>
+
             long unixTime = 0;
-            //int pageNumber = 1;
             var pagination = "(id=\"next_page_link\" href=\"[A-Za-z0-9_/:.]+/([0-9]+)/([A-Za-z0-9]+))\"";
             long.TryParse(Regex.Match(document, pagination).Groups[3].Value, out unixTime);
-            //int.TryParse(Regex.Match(document, pagination).Groups[2].Value, out pageNumber);
             return unixTime;
         }
 
