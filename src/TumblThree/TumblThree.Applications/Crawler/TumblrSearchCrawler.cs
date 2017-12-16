@@ -26,12 +26,16 @@ namespace TumblThree.Applications.Crawler
     [ExportMetadata("BlogType", typeof(TumblrSearchBlog))]
     public class TumblrSearchCrawler : AbstractCrawler, ICrawler
     {
+        private readonly IDownloader downloader;
+        private readonly PauseToken pt;
         private string tumblrKey = String.Empty;
 
         public TumblrSearchCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
             IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IDownloader downloader, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
-            : base(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, downloader, producerConsumerCollection, blog)
+            : base(shellService, ct, progress, webRequestFactory, cookieService, producerConsumerCollection, blog)
         {
+            this.downloader = downloader;
+            this.pt = pt;
         }
 
         public async Task Crawl()
@@ -98,10 +102,7 @@ namespace TumblThree.Applications.Crawler
 
             producerConsumerCollection.CompleteAdding();
 
-            //if (!ct.IsCancellationRequested)
-            //{
             UpdateBlogStats();
-            //}
         }
 
         private async Task UpdateTumblrKey()

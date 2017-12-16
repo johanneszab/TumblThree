@@ -28,6 +28,9 @@ namespace TumblThree.Applications.Crawler
     [ExportMetadata("BlogType", typeof(TumblrHiddenBlog))]
     public class TumblrBlogCrawler : AbstractCrawler, ICrawler
     {
+        private readonly ICrawlerService crawlerService;
+        private readonly IDownloader downloader;
+        private readonly PauseToken pt;
         private readonly IImgurParser imgurParser;
         private readonly IGfycatParser gfycatParser;
         private readonly IWebmshareParser webmshareParser;
@@ -38,8 +41,11 @@ namespace TumblThree.Applications.Crawler
 
         public TumblrBlogCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
             IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IDownloader downloader, ICrawlerDataDownloader crawlerDataDownloader, IImgurParser imgurParser, IGfycatParser gfycatParser, IWebmshareParser webmshareParser, BlockingCollection<TumblrPost> producerConsumerCollection, BlockingCollection<TumblrCrawlerJsonData> jsonQueue, IBlog blog)
-            : base(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, downloader, producerConsumerCollection, blog)
+            : base(shellService, ct, progress, webRequestFactory, cookieService, producerConsumerCollection, blog)
         {
+            this.crawlerService = crawlerService;
+            this.downloader = downloader;
+            this.pt = pt;
             this.imgurParser = imgurParser;
             this.gfycatParser = gfycatParser;
             this.webmshareParser = webmshareParser;
@@ -91,10 +97,6 @@ namespace TumblThree.Applications.Crawler
                         return;
                     }
                 }
-                Logger.Error("TumblrBlogCrawler:IsBlogOnlineAsync:WebException {0}", webException);
-                shellService.ShowError(webException, Resources.PasswordProtectedOrOffline, blog.Name);
-                blog.Online = true;
-                return;
             }
         }
 
@@ -328,10 +330,7 @@ namespace TumblThree.Applications.Crawler
             jsonQueue.CompleteAdding();
             producerConsumerCollection.CompleteAdding();
 
-            //if (!ct.IsCancellationRequested)
-            //{
             UpdateBlogStats();
-            //}
         }
 
         private bool PostWithinTimeSpan(Post post)
@@ -536,6 +535,7 @@ namespace TumblThree.Applications.Crawler
                     continue;
                 }
                 AddToDownloadList(new PhotoPost(imageUrl, postId, post.timestamp.ToString()));
+                //AddToJsonQueue(new TumblrCrawlerJsonData(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
             }
         }
 
@@ -600,12 +600,14 @@ namespace TumblThree.Applications.Crawler
                 if (shellService.Settings.VideoSize == 1080)
                 {
                     AddToDownloadList(new VideoPost(videoUrl.Replace("/480", "") + ".mp4", post.id, post.timestamp.ToString()));
+                    //AddToJsonQueue(new TumblrCrawlerJsonData(Path.ChangeExtension(videoUrl.Split('/').Last(), ".json"), post));
                 }
                 else if (shellService.Settings.VideoSize == 480)
                 {
                     AddToDownloadList(new VideoPost(
                         "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + "_480.mp4",
                         post.id, post.timestamp.ToString()));
+                    //AddToJsonQueue(new TumblrCrawlerJsonData(Path.ChangeExtension(videoUrl.Split('/').Last(), ".json"), post));
                 }
             }
         }
@@ -903,7 +905,8 @@ namespace TumblThree.Applications.Crawler
                             {
                                 continue;
                             }
-                            AddToDownloadList(new ExternalVideoPost(videoUrl, gfyId,
+                            // TODO: postID
+                            AddToDownloadList(new VideoPost(videoUrl, gfyId,
                                 post.timestamp.ToString()));
                             AddToJsonQueue(new TumblrCrawlerJsonData(Path.ChangeExtension(videoUrl.Split('/').Last(), ".json"), post));
                         }
@@ -931,7 +934,8 @@ namespace TumblThree.Applications.Crawler
                             {
                                 continue;
                             }
-                            AddToDownloadList(new ExternalVideoPost(imageUrl, webmshareId,
+                            // TODO: postID
+                            AddToDownloadList(new VideoPost(imageUrl, webmshareId,
                                 post.timestamp.ToString()));
                             AddToJsonQueue(new TumblrCrawlerJsonData(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
                         }

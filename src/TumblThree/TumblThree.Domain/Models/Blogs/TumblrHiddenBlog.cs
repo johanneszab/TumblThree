@@ -16,6 +16,7 @@ namespace TumblThree.Domain.Models
                 Name = ExtractName(url),
                 BlogType = BlogTypes.tmblrpriv,
                 Location = location,
+                Online = true,
                 Version = "3",
                 DateAdded = DateTime.Now,
                 links = new List<string>()

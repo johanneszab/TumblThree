@@ -11,6 +11,14 @@ namespace TumblThree.Domain.Models
         {
         }
 
+        public bool IsValidTumblrBlogUrl(string blogUrl)
+        {
+            return Validator.IsValidTumblrUrl(blogUrl)
+                || Validator.IsValidTumblrLikedByUrl(blogUrl)
+                || Validator.IsValidTumblrSearchUrl(blogUrl)
+                || Validator.IsValidTumblrTagSearchUrl(blogUrl);
+        }
+
         public IBlog GetBlog(string blogUrl, string path)
         {
             if (Validator.IsValidTumblrUrl(blogUrl))

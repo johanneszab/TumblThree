@@ -14,13 +14,11 @@ namespace TumblThree.Applications.Crawler
     public class WebRequestFactory : IWebRequestFactory
     {
         private readonly AppSettings settings;
-        private readonly ISharedCookieService cookieService;
 
         [ImportingConstructor]
-        public WebRequestFactory(AppSettings settings, ISharedCookieService cookieService)
+        public WebRequestFactory(AppSettings settings)
         {
             this.settings = settings;
-            this.cookieService = cookieService;
         }
 
         public HttpWebRequest CreateGetReqeust(string url)
@@ -62,6 +60,16 @@ namespace TumblThree.Applications.Crawler
             request.Accept = "application/json, text/javascript, */*; q=0.01";
             request.Headers["X-Requested-With"] = "XMLHttpRequest";
             return request;
+        }
+
+        public async Task<bool> RemotePageIsValid(string url)
+        {
+            HttpWebRequest request = CreateStubReqeust(url);
+            request.Method = "HEAD";
+            request.AllowAutoRedirect = false;
+            var response = await request.GetResponseAsync() as HttpWebResponse;
+            response.Close();
+            return (response.StatusCode == HttpStatusCode.OK);
         }
 
         public async Task<string> ReadReqestToEnd(HttpWebRequest request)

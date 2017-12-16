@@ -771,7 +771,6 @@ E.g.  great big car, bears searches for great big cars and bears.</value>
   <data name="ToolTipLoadAllDatabasesDescription" xml:space="preserve">
     <value>When crawling a blog, all posts are compared against each other before downloading to prevent the download of duplicate binary files.
 This is done blog wise. Enabling this options will compare each file globally.
-Activation will increase the memory usage during operation based on the amount of already downloaded content.
-Requires a restart.</value>
+Activation will increase the memory usage during operation based on the amount of already downloaded content.</value>
   </data>
 </root>

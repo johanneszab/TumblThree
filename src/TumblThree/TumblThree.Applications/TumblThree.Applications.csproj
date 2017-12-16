@@ -71,6 +71,7 @@
     <Compile Include="Controllers\QueueController.cs" />
     <Compile Include="Crawler\IImgurParser.cs" />
     <Compile Include="Crawler\ImgurParser.cs" />
+    <Compile Include="Crawler\ITumblrBlogDetector.cs" />
     <Compile Include="Crawler\ITumblrParser.cs" />
     <Compile Include="Crawler\TumblrParser.cs" />
     <Compile Include="DataModels\DownloadProgress.cs" />
@@ -151,6 +152,7 @@
     <Compile Include="Services\ShellServiceExtensions.cs" />
     <Compile Include="Extensions\TaskTimeoutExtension.cs" />
     <Compile Include="ThrottledStream.cs" />
+    <Compile Include="Crawler\TumblrBlogDetector.cs" />
     <Compile Include="ViewModels\DetailsViewModels\DetailsTumblrHiddenBlogViewModel.cs" />
     <Compile Include="ViewModels\DetailsViewModels\DetailsTumblrBlogViewModel.cs" />
     <Compile Include="ViewModels\DetailsViewModels\DetailsTumblrLikedByViewModel.cs" />

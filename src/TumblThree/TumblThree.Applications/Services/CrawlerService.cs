@@ -20,6 +20,7 @@ namespace TumblThree.Applications.Services
         private ICommand crawlCommand;
         private ICommand enqueueSelectedCommand;
         private ICommand loadLibraryCommand;
+        private ICommand loadAllDatabasesCommand;
         private bool isCrawl;
         private bool isPaused;
         private bool isTimerSet;
@@ -91,6 +92,12 @@ namespace TumblThree.Applications.Services
         {
             get { return loadLibraryCommand; }
             set { SetProperty(ref loadLibraryCommand, value); }
+        }
+
+        public ICommand LoadAllDatabasesCommand
+        {
+            get { return loadAllDatabasesCommand; }
+            set { SetProperty(ref loadAllDatabasesCommand, value); }
         }
 
         public ICommand RemoveBlogFromQueueCommand

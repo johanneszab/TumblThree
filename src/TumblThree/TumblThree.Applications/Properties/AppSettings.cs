@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
 using System.Runtime.Serialization;
 using System.Windows;
 
@@ -8,6 +9,7 @@ using TumblThree.Domain.Models;
 
 namespace TumblThree.Applications.Properties
 {
+    [Export(typeof(AppSettings))]
     public sealed class AppSettings : IExtensibleDataObject
     {
         private static readonly string[] blogTypes =

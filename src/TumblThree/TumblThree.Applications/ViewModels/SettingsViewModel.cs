@@ -776,15 +776,22 @@ namespace TumblThree.Applications.ViewModels
         private void Save()
         {
             bool downloadLocationChanged = DownloadLocationChanged();
+            bool loadAllDatabasesChanged = LoadAllDatabasesChanged();
             SaveSettings();
-            ApplySettings(downloadLocationChanged);
+            ApplySettings(downloadLocationChanged, loadAllDatabasesChanged);
         }
 
-        private void ApplySettings(bool downloadLocationChanged)
+        private void ApplySettings(bool downloadLocationChanged, bool loadAllDatabasesChanged)
         {
             CrawlerService.Timeconstraint.SetRate(((double)MaxConnections / (double)ConnectionTimeInterval));
 
-            if (!CrawlerService.IsCrawl && !downloadLocationChanged)
+            if (loadAllDatabasesChanged)
+            {
+                CrawlerService.StopCommand.Execute(null);
+                CrawlerService.LoadAllDatabasesCommand.Execute(null);
+            }
+
+            if (!CrawlerService.IsCrawl && downloadLocationChanged)
             {
                 CrawlerService.LoadLibraryCommand.Execute(null);
             }
@@ -792,7 +799,12 @@ namespace TumblThree.Applications.ViewModels
 
         private bool DownloadLocationChanged()
         {
-            return settings.DownloadLocation.Equals(DownloadLocation);
+            return !settings.DownloadLocation.Equals(DownloadLocation);
+        }
+
+        private bool LoadAllDatabasesChanged()
+        {
+            return !settings.LoadAllDatabases.Equals(LoadAllDatabases);
         }
 
         private void SaveSettings()

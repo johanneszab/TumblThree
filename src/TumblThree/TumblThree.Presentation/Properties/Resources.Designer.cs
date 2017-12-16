@@ -1749,8 +1749,7 @@ namespace TumblThree.Presentation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to When crawling a blog, all posts are compared against each other before downloading to prevent the download of duplicate binary files.
         ///This is done blog wise. Enabling this options will compare each file globally.
-        ///Activation will increase the memory usage during operation based on the amount of already downloaded content.
-        ///Requires a restart..
+        ///Activation will increase the memory usage during operation based on the amount of already downloaded content..
         /// </summary>
         public static string ToolTipLoadAllDatabasesDescription {
             get {
