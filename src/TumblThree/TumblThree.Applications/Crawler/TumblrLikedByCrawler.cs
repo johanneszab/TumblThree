@@ -88,6 +88,11 @@ namespace TumblThree.Applications.Crawler
                     {
                         await AddUrlsToDownloadList(pagination, crawlerNumber);
                     }
+                    catch (TimeoutException timeoutException)
+                    {
+                        Logger.Error("TumblrBlogCrawler:GetUrls:WebException {0}", timeoutException);
+                        shellService.ShowError(timeoutException, Resources.TimeoutReached, Resources.Crawling, blog.Name);
+                    }
                     catch
                     {
                     }

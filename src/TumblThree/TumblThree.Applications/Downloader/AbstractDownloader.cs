@@ -90,6 +90,12 @@ namespace TumblThree.Applications.Downloader
                 }
                 return false;
             }
+            catch (TimeoutException timeoutException)
+            {
+                Logger.Error("AbstractDownloader:DownloadBinaryFile {0}", timeoutException);
+                shellService.ShowError(timeoutException, Resources.TimeoutReached, Resources.Downloading, blog.Name);
+                return false;
+            }
             catch
             {
                 return false;

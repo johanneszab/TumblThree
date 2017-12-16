@@ -250,11 +250,20 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Crawler Thread encountered an error..
+        ///   Looks up a localized string similar to The crawler thread encountered an error..
         /// </summary>
         public static string CrawlerError {
             get {
                 return ResourceManager.GetString("CrawlerError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to crawling.
+        /// </summary>
+        public static string Crawling {
+            get {
+                return ResourceManager.GetString("Crawling", resourceCulture);
             }
         }
         
@@ -273,6 +282,15 @@ namespace TumblThree.Applications.Properties {
         public static string DiskFull {
             get {
                 return ResourceManager.GetString("DiskFull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to downloading.
+        /// </summary>
+        public static string Downloading {
+            get {
+                return ResourceManager.GetString("Downloading", resourceCulture);
             }
         }
         
@@ -624,6 +642,15 @@ namespace TumblThree.Applications.Properties {
         public static string Tags {
             get {
                 return ResourceManager.GetString("Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A connection timout occured during {0} of {1}..
+        /// </summary>
+        public static string TimeoutReached {
+            get {
+                return ResourceManager.GetString("TimeoutReached", resourceCulture);
             }
         }
         

@@ -316,6 +316,11 @@ namespace TumblThree.Applications.Crawler
                             shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
                         }
                     }
+                    catch (TimeoutException timeoutException)
+                    {
+                        Logger.Error("TumblrBlogCrawler:GetUrls:WebException {0}", timeoutException);
+                        shellService.ShowError(timeoutException, Resources.TimeoutReached, Resources.Crawling, blog.Name);
+                    }
                     catch
                     {
                     }
