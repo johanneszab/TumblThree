@@ -70,7 +70,7 @@ namespace TumblThree.Applications.Downloader
             catch (IOException ex) when ((ex.HResult & 0xFFFF) == 0x27 || (ex.HResult & 0xFFFF) == 0x70)
             {
                 // Disk Full, HRESULT: ‭-2147024784‬ == 0xFFFFFFFF80070070
-                Logger.Error("Downloader:DownloadBinaryFile: {0}", ex);
+                Logger.Error("AbstractDownloader:DownloadBinaryFile: {0}", ex);
                 shellService.ShowError(ex, Resources.DiskFull);
                 crawlerService.StopCommand.Execute(null);
                 return false;
@@ -88,6 +88,12 @@ namespace TumblThree.Applications.Downloader
                     try { File.Delete(fileLocation); } // could be open again in a different thread
                     catch { }
                 }
+                return false;
+            }
+            catch (TimeoutException timeoutException)
+            {
+                Logger.Error("AbstractDownloader:DownloadBinaryFile {0}", timeoutException);
+                shellService.ShowError(timeoutException, Resources.TimeoutReached, Resources.Downloading, blog.Name);
                 return false;
             }
             catch

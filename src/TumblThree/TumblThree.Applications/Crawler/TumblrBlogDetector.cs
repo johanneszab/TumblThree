@@ -38,7 +38,7 @@ namespace TumblThree.Applications.Crawler
         private async Task<string> GetUrlRedirection(string url)
         {
             HttpWebRequest request = webRequestFactory.CreateGetReqeust(url);
-            request.Method = "HEAD";
+            request.Method = "GET";
             string location;
             using (var response = await request.GetResponseAsync() as HttpWebResponse)
             {
