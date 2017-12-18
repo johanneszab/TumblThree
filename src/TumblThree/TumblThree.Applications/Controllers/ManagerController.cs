@@ -385,6 +385,11 @@ namespace TumblThree.Applications.Controllers
                 }
 
                 managerService.BlogFiles.Remove(blog);
+                if (shellService.Settings.LoadAllDatabases)
+                {
+                    managerService.Databases.Remove(managerService.Databases
+                                  .FirstOrDefault(db => db.Name.Equals(blog.Name) && db.BlogType.Equals(blog.BlogType)));
+                }
                 QueueManager.RemoveItems(QueueManager.Items.Where(item => item.Blog.Equals(blog)));
             }
         }
