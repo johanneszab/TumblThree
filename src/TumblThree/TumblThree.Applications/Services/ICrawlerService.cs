@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Waf.Foundation;
 using System.Windows.Input;
 
@@ -50,6 +51,8 @@ namespace TumblThree.Applications.Services
         RateLimiter Timeconstraint { get; set; }
 
         Timer Timer { get; set; }
+
+        TaskCompletionSource<bool> DatabasesLoaded { get; set; }
 
         void AddActiveItems(QueueListItem itemToAdd);
 

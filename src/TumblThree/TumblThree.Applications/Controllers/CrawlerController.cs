@@ -152,6 +152,8 @@ namespace TumblThree.Applications.Controllers
             pauseCommand.RaiseCanExecuteChanged();
             stopCommand.RaiseCanExecuteChanged();
 
+            await crawlerService.DatabasesLoaded.Task;
+
             for (var i = 0; i < shellService.Settings.ConcurrentBlogs; i++)
             {
                 runningTasks.Add(Task.Run(() => RunCrawlerTasks(cancellation.Token, pause.Token)));

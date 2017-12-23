@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Waf.Applications;
 using System.Windows.Input;
 
@@ -784,6 +785,7 @@ namespace TumblThree.Applications.ViewModels
         private void ApplySettings(bool downloadLocationChanged, bool loadAllDatabasesChanged)
         {
             CrawlerService.Timeconstraint.SetRate(((double)MaxConnections / (double)ConnectionTimeInterval));
+            CrawlerService.DatabasesLoaded = new TaskCompletionSource<bool>();
 
             if (loadAllDatabasesChanged && downloadLocationChanged)
             {

@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel.Composition;
+using System.Threading.Tasks;
 using System.Waf.Foundation;
 using System.Windows.Input;
 
@@ -24,6 +25,7 @@ namespace TumblThree.Applications.Services
         private bool isCrawl;
         private bool isPaused;
         private bool isTimerSet;
+        private TaskCompletionSource<bool> databasesLoaded;
         private ICommand listenClipboardCommand;
         private string newBlogUrl;
         private ICommand pauseCommand;
@@ -44,6 +46,7 @@ namespace TumblThree.Applications.Services
 
             activeItems = new ObservableCollection<QueueListItem>();
             readonlyActiveItems = new ReadOnlyObservableList<QueueListItem>(activeItems);
+            databasesLoaded = new TaskCompletionSource<bool>();
             activeItems.CollectionChanged += ActiveItemsCollectionChanged;
         }
 
@@ -51,6 +54,12 @@ namespace TumblThree.Applications.Services
         {
             get { return isTimerSet; }
             set { SetProperty(ref isTimerSet, value); }
+        }
+
+        public TaskCompletionSource<bool> DatabasesLoaded
+        {
+            get { return databasesLoaded; }
+            set { SetProperty(ref databasesLoaded, value); }
         }
 
         public System.Threading.Timer Timer

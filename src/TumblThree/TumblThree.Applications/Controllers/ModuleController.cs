@@ -104,7 +104,7 @@ namespace TumblThree.Applications.Controllers
 
             ManagerController.QueueManager = queueManager;
             ManagerController.ManagerSettings = managerSettings;
-            ManagerController.BlogManagerFinishedLoading += OnBlogManagerFinishedLoading;
+            ManagerController.BlogManagerFinishedLoadingLibrary += OnBlogManagerFinishedLoadingLibrary;
             Task managerControllerInit = ManagerController.Initialize();
             QueueController.QueueSettings = queueSettings;
             QueueController.QueueManager = queueManager;
@@ -145,7 +145,7 @@ namespace TumblThree.Applications.Controllers
             }
         }
 
-        private void OnBlogManagerFinishedLoading(object sender, EventArgs e)
+        private void OnBlogManagerFinishedLoadingLibrary(object sender, EventArgs e)
         {
             QueueController.LoadQueue();
         }

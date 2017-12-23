@@ -26,7 +26,9 @@ namespace TumblThree.Applications.Controllers
     {
         #region Delegates
 
-        public delegate void BlogManagerFinishedLoadingHandler(object sender, EventArgs e);
+        public delegate void BlogManagerFinishedLoadingLibraryHandler(object sender, EventArgs e);
+
+        public delegate void BlogManagerFinishedLoadingDatabasesHandler(object sender, EventArgs e);
 
         #endregion
 
@@ -89,7 +91,9 @@ namespace TumblThree.Applications.Controllers
 
         public ITumblrBlogDetector TumblrBlogDetector { get; set; }
 
-        public event BlogManagerFinishedLoadingHandler BlogManagerFinishedLoading;
+        public event BlogManagerFinishedLoadingLibraryHandler BlogManagerFinishedLoadingLibrary;
+
+        public event BlogManagerFinishedLoadingDatabasesHandler BlogManaerFinishedLoadingDatabases;
 
         public async Task Initialize()
         {
@@ -121,11 +125,17 @@ namespace TumblThree.Applications.Controllers
             }
 
             await LoadLibrary();
-            await LoadAllDatabases();
+            Task loadAllDatabasesTask = LoadAllDatabases();
+            Task checkBlogOnlineStatusTask = CheckBlogsOnlineStatus();
         }
 
         public void Shutdown()
         {
+        }
+
+        private void OnBlogManagerFinishedLoadingDatabases(object sender, EventArgs e)
+        {
+            crawlerService.DatabasesLoaded.SetResult(true);
         }
 
         private void QueueItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -157,17 +167,7 @@ namespace TumblThree.Applications.Controllers
                             managerService.BlogFiles.Add(file);
                         }
 
-                        BlogManagerFinishedLoading?.Invoke(this, EventArgs.Empty);
-
-                        if (shellService.Settings.CheckOnlineStatusAtStartup)
-                        {
-                            foreach (IBlog blog in files)
-                            {
-                                ICrawler downloader = CrawlerFactory.GetCrawler(blog, new CancellationToken(), new PauseToken(), new Progress<DownloadProgress>(), shellService,
-                                    crawlerService, managerService);
-                                await downloader.IsBlogOnlineAsync();
-                            }
-                        }
+                        BlogManagerFinishedLoadingLibrary?.Invoke(this, EventArgs.Empty);
                     }
                 }
             }
@@ -177,6 +177,19 @@ namespace TumblThree.Applications.Controllers
                 shellService.ShowError(ex, Resources.CouldNotLoadLibrary, ex.Data["Filename"]);
             }
             Logger.Verbose("ManagerController.LoadLibrary:End");
+        }
+
+        private async Task CheckBlogsOnlineStatus()
+        {
+            if (shellService.Settings.CheckOnlineStatusAtStartup)
+            {
+                foreach (IBlog blog in managerService.BlogFiles)
+                {
+                    ICrawler downloader = CrawlerFactory.GetCrawler(blog, new CancellationToken(), new PauseToken(), new Progress<DownloadProgress>(), shellService,
+                        crawlerService, managerService);
+                    await downloader.IsBlogOnlineAsync();
+                }
+            }
         }
 
         //TODO: Refactor and extract blog loading.
@@ -265,8 +278,9 @@ namespace TumblThree.Applications.Controllers
                     Logger.Verbose("ManagerController:LoadDatabasesGloballyAsync: {0}", ex);
                     shellService.ShowError(ex, Resources.CouldNotLoadLibrary, ex.Data["Filename"]);
                 }
-                Logger.Verbose("ManagerController.LoadDatabasesGloballyAsync:End");
             }
+            BlogManaerFinishedLoadingDatabases?.Invoke(this, EventArgs.Empty);
+            Logger.Verbose("ManagerController.LoadDatabasesGloballyAsync:End");
         }
 
         private bool CanLoadLibrary()
