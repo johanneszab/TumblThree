@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Waf.Foundation;
 using System.Windows.Input;
 
@@ -75,6 +76,9 @@ namespace TumblThree.Presentation.DesignData
         public Guava.RateLimiter.RateLimiter Timeconstraint { get; set; }
 
         public Timer Timer { get; set; }
+
+        public TaskCompletionSource<bool> DatabasesLoaded { get; set; }
+
 
         public void SetActiveBlogFiles(IEnumerable<IBlog> blogFilesToAdd)
         {
