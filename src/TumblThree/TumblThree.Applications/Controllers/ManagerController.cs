@@ -183,12 +183,17 @@ namespace TumblThree.Applications.Controllers
         {
             if (shellService.Settings.CheckOnlineStatusAtStartup)
             {
-                foreach (IBlog blog in managerService.BlogFiles)
+                await Task.Run(async () =>
                 {
-                    ICrawler downloader = CrawlerFactory.GetCrawler(blog, new CancellationToken(), new PauseToken(), new Progress<DownloadProgress>(), shellService,
-                        crawlerService, managerService);
-                    await downloader.IsBlogOnlineAsync();
-                }
+                    IEnumerable<IBlog> blogs = managerService.BlogFiles;
+                    foreach (IBlog blog in blogs)
+                    {
+                        ICrawler crawler = CrawlerFactory.GetCrawler(blog, new CancellationToken(), new PauseToken(),
+                            new Progress<DownloadProgress>(), shellService,
+                            crawlerService, managerService);
+                        await crawler.IsBlogOnlineAsync();
+                    }
+                });
             }
         }
 
@@ -255,7 +260,7 @@ namespace TumblThree.Applications.Controllers
         private async Task LoadAllDatabases()
         {
             Logger.Verbose("ManagerController.LoadDatabasesGloballyAsync:Start");
-            managerService.Databases.Clear();
+            managerService.ClearDatabases();
             if (shellService.Settings.LoadAllDatabases)
             {
                 string path = Path.Combine(shellService.Settings.DownloadLocation, "Index");
@@ -268,7 +273,7 @@ namespace TumblThree.Applications.Controllers
                             IReadOnlyList<IFiles> databases = await GetIFilesAsync(path);
                             foreach (IFiles database in databases)
                             {
-                                managerService.Databases.Add(database);
+                                managerService.AddDatabase(database);
                             }
                         }
                     }
@@ -401,7 +406,7 @@ namespace TumblThree.Applications.Controllers
                 managerService.BlogFiles.Remove(blog);
                 if (shellService.Settings.LoadAllDatabases)
                 {
-                    managerService.Databases.Remove(managerService.Databases
+                    managerService.RemoveDatabase(managerService.Databases
                                   .FirstOrDefault(db => db.Name.Equals(blog.Name) && db.BlogType.Equals(blog.BlogType)));
                 }
                 QueueManager.RemoveItems(QueueManager.Items.Where(item => item.Blog.Equals(blog)));
@@ -480,7 +485,7 @@ namespace TumblThree.Applications.Controllers
         {
             QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => managerService.BlogFiles.Add(blog)));
             if (shellService.Settings.LoadAllDatabases)            
-                managerService.Databases.Add(new Files().Load(blog.ChildId));
+                managerService.AddDatabase(new Files().Load(blog.ChildId));
         }
 
         private void OnClipboardContentChanged(object sender, EventArgs e)

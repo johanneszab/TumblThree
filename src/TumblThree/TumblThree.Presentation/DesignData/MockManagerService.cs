@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -11,13 +12,11 @@ namespace TumblThree.Presentation.DesignData
     {
         private readonly ObservableCollection<IBlog> blogFiles;
         private readonly ObservableCollection<IBlog> innerBlogFiles;
-        private readonly ObservableCollection<IFiles> databases;
 
         public MockManagerService()
         {
             innerBlogFiles = new ObservableCollection<IBlog>();
             blogFiles = new ObservableCollection<IBlog>(innerBlogFiles);
-            databases = new ObservableCollection<IFiles>();
         }
 
         public ObservableCollection<IBlog> BlogFiles
@@ -25,10 +24,7 @@ namespace TumblThree.Presentation.DesignData
             get { return blogFiles; }
         }
 
-        public ObservableCollection<IFiles> Databases
-        {
-            get { return databases; }
-        }
+        public IEnumerable<IFiles> Databases { get; }
 
         public void SetBlogFiles(IEnumerable<IBlog> blogFilesToAdd)
         {
@@ -39,6 +35,21 @@ namespace TumblThree.Presentation.DesignData
         public bool CheckIfFileExistsInDB(string url)
         {
             return false;
+        }
+
+        public void AddDatabase(IFiles database)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveDatabase(IFiles database)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ClearDatabases()
+        {
+            throw new NotImplementedException();
         }
     }
 }

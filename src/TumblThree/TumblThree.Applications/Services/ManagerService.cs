@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Waf.Foundation;
@@ -11,14 +12,15 @@ namespace TumblThree.Applications.Services
     internal class ManagerService : Model, IManagerService
     {
         private readonly ObservableCollection<IBlog> blogFiles;
-        private readonly ObservableCollection<IFiles> databases;
-        private readonly Object checkFilesLock = new Object();
+        private readonly IList<IFiles> databases;
+        private readonly object checkFilesLock = new object();
+        private readonly object databasesLock = new object();
 
         [ImportingConstructor]
         public ManagerService()
         {
             blogFiles = new ObservableCollection<IBlog>();
-            databases = new ObservableCollection<IFiles>();
+            databases = new List<IFiles>();
         }
 
         public ObservableCollection<IBlog> BlogFiles
@@ -26,7 +28,7 @@ namespace TumblThree.Applications.Services
             get { return blogFiles; }
         }
 
-        public ObservableCollection<IFiles> Databases
+        public IEnumerable<IFiles> Databases
         {
             get { return databases; }
         }
@@ -35,12 +37,36 @@ namespace TumblThree.Applications.Services
         {
             lock (checkFilesLock)
             {
-                foreach (var db in databases)
+                foreach (IFiles db in databases)
                 {
                     if (db.CheckIfFileExistsInDB(url))
                         return true;
                 }
                 return false;
+            }
+        }
+
+        public void RemoveDatabase(IFiles database)
+        {
+            lock (databasesLock)
+            {
+                databases.Remove(database);
+            }
+        }
+
+        public void AddDatabase(IFiles database)
+        {
+            lock (databasesLock)
+            {
+                databases.Add(database);
+            }
+        }
+
+        public void ClearDatabases()
+        {
+            lock (databasesLock)
+            {
+                databases.Clear();
             }
         }
     }
