@@ -19,6 +19,7 @@ _Read this in other languages: [简体中文](https://github.com/Emphasia/TumblT
 * A bandwidth throttler.
 * An option to download an url list instead of the actual files.
 * Set a start time for a automatic download (e.g. during nights).
+* An option to skip the download of a file if it has already been downloaded in any loaded blog before.
 * Uses SSL instead of unsecure http connections.
 * Preview of photos & videos.
 * Taskbar buttons and key bindings.
@@ -28,7 +29,8 @@ _Read this in other languages: [简体中文](https://github.com/Emphasia/TumblT
 * Download of photo, video (only tumblr.com hosted), text, audio, quote, conversation, link and question posts.
 * Download meta information for photo, video and audio posts.
 * Downloads inlined photos and videos (e.g. photos embedded in question&answer posts).
-* Download of \_raw image files (original/higher resolution pictures). 
+* Download of \_raw image files (original/higher resolution pictures).
+* Support for downloading Imgur.com, Gfycat.com and Webmshare.com linked files in tumblr posts.
 * Download of safe mode blogs.
 * Allows to download only original content of the blog and skip reblogged posts.
 * Can download only tagged posts.
@@ -83,6 +85,9 @@ Latest releases can be found [here](https://github.com/johanneszab/TumblThree/re
 * For downloading liked photos and videos, you'll have to do some steps:
   1. Go to Settings, click the Authenticate button. Logon to tumblr using an account. The window/browser should automatically close after the login indicating a successful authentication. TumblThree will use the Internet Explorer cookies for authentication. Alternatively, you can also use the Internet Explorer directly for logging in to the Tumblr.com network.
   2. Add the blog url including the liked/by string in the url (e.g. https://www.tumblr.com/liked/by/wallpaperfx/).
+  3. For downloading your own likes, make sure you've (temporarily) enabled the following options in your blogs settings (i.e. https://www.tumblr.com/settings/blog/_yourblogname_):
+      * Likes -> Share posts you like (to enable the publicly visible liked/by page)
+      * Visibility -> _blog_ is explicit (to see/download NSFW likes)
 * For downloading photos and videos from the tumblr search, you'll have to do some steps:
   1. Add the search url including your key words separated by plus signs (+) in the url (e.g. https://www.tumblr.com/search/my+special+tags).
 * For downloading photos and videos from the tumblr tag search, you'll have to do some steps:
@@ -109,11 +114,11 @@ The default settings should cover most users. You should only have to change the
     *  _Force Rescan_: Force Rescan always crawls the whole blog and not just new posts which were added after the last successful crawl. The statistics of a blog (total posts, number of post, number of duplicates) currently can only be updated if the whole blog is crawled. Thus, disabling this might result in downloading "more" posts than displayed in TumblThree. If you don't matter if about the displayed blog statistics, turning Force Rescan off will decrease the scanning time since already downloaded posts are skipped in the scanning.
 
 Settings you might want to change if the download speed is not satisfactory:
-* General -> Parallel connections: Specifies the number of connections used for downloading posts. The number is shared between all actively downloading blogs. __Note:__ If you only download video blogs, you might want to decrease the number of parallel connections to eight or below, depending on your internet connection speed. Otherwise you might end up with incomplete files as the tumblr servers regularly close all open connections if there are too many open. For small files (images) this generally isn't an issue.
-* General -> Parallel Blogs: Number of blogs to download in parallel.
+* Connection -> Concurrent connections: Specifies the number of connections used for downloading posts. The number is shared between all actively downloading blogs. __Note:__ If you only download video blogs, you might want to decrease the number of parallel connections to eight or below, depending on your internet connection speed. Otherwise you might end up with incomplete files as the tumblr servers regularly close all open connections if there are too many open. For small files (images) this generally isn't an issue.
+* Connection -> Concurrent blogs: Number of blogs to download in parallel.
 
 Most likely you don't have to change any of the other connection settings. In particular, settings you should never change, unless you're sure you know what you are doing:
-* General -> Limit Tumblr Api Connections: Leave this checkbox checked and do not change the corresponding values of 90 connections per 60 seconds. If you still change them, you might end up with offline blogs or missing downloads.
+* Connection -> Limit Tumblr Api Connections: Leave this checkbox checked and do not change the corresponding values of 90 connections per 60 seconds. If you still change them, you might end up with offline blogs or missing downloads.
 
 ## Further Insights:
 
