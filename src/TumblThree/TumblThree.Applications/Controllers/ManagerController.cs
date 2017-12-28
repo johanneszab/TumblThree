@@ -126,7 +126,7 @@ namespace TumblThree.Applications.Controllers
                 shellService.ClipboardMonitor.OnClipboardContentChanged += OnClipboardContentChanged;
             }
 
-            await LoadLibrary();
+            Task loadLibraryTask = LoadLibrary();
             Task loadAllDatabasesTask = LoadAllDatabases();
             Task checkBlogOnlineStatusTask = CheckBlogsOnlineStatus();
         }
