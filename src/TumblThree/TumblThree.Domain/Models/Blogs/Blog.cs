@@ -82,7 +82,7 @@ namespace TumblThree.Domain.Models
         private int progress;
         private int quotes;
         [DataMember(Name="Links")]
-        protected List<string> links;
+        private List<string> links = new List<string>();
         private int downloadedImages;
 
         private object lockObjectProgress = new object();

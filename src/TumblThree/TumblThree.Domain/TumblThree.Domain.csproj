@@ -82,8 +82,9 @@
     <Compile Include="Models\IBlogFactory.cs" />
     <Compile Include="Models\ICrawlerData.cs" />
     <Compile Include="Models\Files\IFiles.cs" />
+    <Compile Include="Models\IUrlValidator.cs" />
     <Compile Include="Models\PostCounter.cs" />
-    <Compile Include="Models\Validator.cs" />
+    <Compile Include="Models\UrlValidator.cs" />
     <Compile Include="Models\WebmshareTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

@@ -10,16 +10,15 @@ namespace TumblThree.Domain.Models
     {
         public static Blog Create(string url, string location)
         {
-            var blog = new TumblrHiddenBlog()
+            var blog = new TumblrBlog()
             {
                 Url = ExtractUrl(url),
                 Name = ExtractName(url),
-                BlogType = BlogTypes.tmblrpriv,
+                BlogType = BlogTypes.tumblr,
                 Location = location,
                 Online = true,
                 Version = "3",
                 DateAdded = DateTime.Now,
-                links = new List<string>()
             };
 
             Directory.CreateDirectory(location);
@@ -28,11 +27,21 @@ namespace TumblThree.Domain.Models
             blog.ChildId = Path.Combine(location, blog.Name + "_files." + blog.BlogType);
             if (!File.Exists(blog.ChildId))
             {
-                IFiles files = new TumblrHiddenBlogFiles(blog.Name, blog.Location);
+                IFiles files = new TumblrBlogFiles(blog.Name, blog.Location);
                 files.Save();
                 files = null;
             }
             return blog;
+        }
+
+        protected static new string ExtractName(string url)
+        {
+            return url.Split('/')[5];
+        }
+
+        protected static new string ExtractUrl(string url)
+        {
+            return "https://" + ExtractName(url) + ".tumblr.com/";
         }
     }
 }

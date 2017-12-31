@@ -6,28 +6,36 @@ namespace TumblThree.Domain.Models
     [Export(typeof(IBlogFactory))]
     public class BlogFactory : IBlogFactory
     {
+        IUrlValidator urlValidator;
+
         [ImportingConstructor]
-        internal BlogFactory()
+        internal BlogFactory(IUrlValidator urlValidator)
         {
+            this.urlValidator = urlValidator;
         }
 
         public bool IsValidTumblrBlogUrl(string blogUrl)
         {
-            return Validator.IsValidTumblrUrl(blogUrl)
-                || Validator.IsValidTumblrLikedByUrl(blogUrl)
-                || Validator.IsValidTumblrSearchUrl(blogUrl)
-                || Validator.IsValidTumblrTagSearchUrl(blogUrl);
+            blogUrl = urlValidator.AddHttpsProtocol(blogUrl);
+            return urlValidator.IsValidTumblrUrl(blogUrl)
+                || urlValidator.IsValidTumblrHiddenUrl(blogUrl)
+                || urlValidator.IsValidTumblrLikedByUrl(blogUrl)
+                || urlValidator.IsValidTumblrSearchUrl(blogUrl)
+                || urlValidator.IsValidTumblrTagSearchUrl(blogUrl);
         }
 
         public IBlog GetBlog(string blogUrl, string path)
         {
-            if (Validator.IsValidTumblrUrl(blogUrl))
+            blogUrl = urlValidator.AddHttpsProtocol(blogUrl);
+            if (urlValidator.IsValidTumblrUrl(blogUrl))
                 return TumblrBlog.Create(blogUrl, path);
-            if (Validator.IsValidTumblrLikedByUrl(blogUrl))
+            if (urlValidator.IsValidTumblrHiddenUrl(blogUrl))
+                return TumblrHiddenBlog.Create(blogUrl, path);
+            if (urlValidator.IsValidTumblrLikedByUrl(blogUrl))
                 return TumblrLikedByBlog.Create(blogUrl, path);
-            if (Validator.IsValidTumblrSearchUrl(blogUrl))
+            if (urlValidator.IsValidTumblrSearchUrl(blogUrl))
                 return TumblrSearchBlog.Create(blogUrl, path);
-            if (Validator.IsValidTumblrTagSearchUrl(blogUrl))
+            if (urlValidator.IsValidTumblrTagSearchUrl(blogUrl))
                 return TumblrTagSearchBlog.Create(blogUrl, path);
             throw new ArgumentException("Website is not supported!", nameof(blogUrl));
         }

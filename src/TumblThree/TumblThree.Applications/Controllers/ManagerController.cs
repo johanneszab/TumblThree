@@ -119,6 +119,7 @@ namespace TumblThree.Applications.Controllers
             ManagerViewModel.QueueItems = QueueManager.Items;
             QueueManager.Items.CollectionChanged += QueueItemsCollectionChanged;
             ManagerViewModel.QueueItems.CollectionChanged += ManagerViewModel.QueueItemsCollectionChanged;
+            BlogManaerFinishedLoadingDatabases += OnBlogManagerFinishedLoadingDatabases;
 
             shellService.ContentView = ManagerViewModel.View;
 
