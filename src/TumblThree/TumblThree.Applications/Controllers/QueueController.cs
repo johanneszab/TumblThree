@@ -39,8 +39,7 @@ namespace TumblThree.Applications.Controllers
 
         [ImportingConstructor]
         public QueueController(IFileDialogService fileDialogService, IShellService shellService, IDetailsService detailsService,
-            IManagerService managerService,
-            ICrawlerService crawlerService, Lazy<QueueViewModel> queueViewModel)
+            IManagerService managerService, ICrawlerService crawlerService, Lazy<QueueViewModel> queueViewModel)
         {
             this.fileDialogService = fileDialogService;
             this.shellService = shellService;

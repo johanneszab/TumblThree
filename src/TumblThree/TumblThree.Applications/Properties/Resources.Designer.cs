@@ -666,6 +666,15 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Text file.
+        /// </summary>
+        public static string Textfile {
+            get {
+                return ResourceManager.GetString("Textfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to A connection timout occured during {0} of {1}..
         /// </summary>
         public static string TimeoutReached {

@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Waf.Applications;
+using System.Waf.Applications.Services;
 using System.Windows.Input;
-
-using TumblThree.Applications.DataModels;
+using TumblThree.Applications.Data;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Applications.Views;
@@ -23,14 +21,16 @@ namespace TumblThree.Applications.ViewModels
     [Export]
     public class SettingsViewModel : ViewModel<ISettingsView>
     {
+        private readonly IFolderBrowserDialog folderBrowserDialog;
+        private readonly IFileDialogService fileDialogService;
         private readonly DelegateCommand authenticateCommand;
         private readonly ExportFactory<AuthenticateViewModel> authenticateViewModelFactory;
         private readonly DelegateCommand browseDownloadLocationCommand;
         private readonly DelegateCommand enableAutoDownloadCommand;
-        private readonly FolderBrowserDataModel folderBrowser;
         private readonly DelegateCommand exportCommand;
         private readonly DelegateCommand browseExportLocationCommand;
         private readonly DelegateCommand saveCommand;
+        private readonly FileType bloglistExportFileType;
 
         private readonly AppSettings settings;
         private string apiKey;
@@ -99,26 +99,28 @@ namespace TumblThree.Applications.ViewModels
 
         [ImportingConstructor]
         public SettingsViewModel(ISettingsView view, IShellService shellService, ICrawlerService crawlerService,
-            IManagerService managerService, ExportFactory<AuthenticateViewModel> authenticateViewModelFactory)
+            IManagerService managerService, IFolderBrowserDialog folderBrowserDialog, IFileDialogService fileDialogService,
+            ExportFactory<AuthenticateViewModel> authenticateViewModelFactory)
             : base(view)
         {
+            this.folderBrowserDialog = folderBrowserDialog;
+            this.fileDialogService = fileDialogService;
             ShellService = shellService;
             settings = ShellService.Settings;
             CrawlerService = crawlerService;
             ManagerService = managerService;
             this.authenticateViewModelFactory = authenticateViewModelFactory;
-            folderBrowser = new FolderBrowserDataModel();
             browseDownloadLocationCommand = new DelegateCommand(BrowseDownloadLocation);
             browseExportLocationCommand = new DelegateCommand(BrowseExportLocation);
             authenticateCommand = new DelegateCommand(Authenticate);
             saveCommand = new DelegateCommand(Save);
             enableAutoDownloadCommand = new DelegateCommand(EnableAutoDownload);
             exportCommand = new DelegateCommand(ExportBlogs);
+            bloglistExportFileType = new FileType(Resources.Textfile, SupportedFileTypes.BloglistExportFileType);
 
             Load();
             view.Closed += ViewClosed;
 
-            folderBrowser.PropertyChanged += FolderBrowserPropertyChanged;
         }
 
         public IShellService ShellService { get; }
@@ -126,11 +128,6 @@ namespace TumblThree.Applications.ViewModels
         public ICrawlerService CrawlerService { get; }
 
         public IManagerService ManagerService { get; }
-
-        public FolderBrowserDataModel FolderBrowser
-        {
-            get { return folderBrowser; }
-        }
 
         public ICommand BrowseDownloadLocationCommand
         {
@@ -601,26 +598,21 @@ namespace TumblThree.Applications.ViewModels
 
         private void BrowseDownloadLocation()
         {
-            var dialog = new System.Windows.Forms.FolderBrowserDialog { SelectedPath = DownloadLocation };
-            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                DownloadLocation = dialog.SelectedPath;
-            }
+            folderBrowserDialog.SelectedPath = DownloadLocation;
+            folderBrowserDialog.ShowNewFolderButton = true;
+            if (folderBrowserDialog.ShowDialog() == true)
+                DownloadLocation = folderBrowserDialog.SelectedPath;
         }
 
         private void BrowseExportLocation()
         {
-            var dialog = new System.Windows.Forms.SaveFileDialog
+            FileDialogResult result = fileDialogService.ShowSaveFileDialog(ShellService.ShellView, bloglistExportFileType, ExportLocation);
+            if (!result.IsValid)
             {
-                FileName = exportLocation,
-                Filter = string.Format(CultureInfo.CurrentCulture, Resources.ExportFileFilter),
-                DefaultExt = string.Format(CultureInfo.CurrentCulture, Resources.ExportFileFilterExtension),
-                AddExtension = true
-            };
-            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                ExportLocation = dialog.FileName;
+                return;
             }
+
+            ExportLocation = result.FileName;
         }
 
         private void Authenticate()
@@ -893,14 +885,6 @@ namespace TumblThree.Applications.ViewModels
             settings.ProxyPassword = ProxyPassword;
             settings.TimerInterval = TimerInterval;
             settings.SettingsTabIndex = SettingsTabIndex;
-        }
-
-        private void FolderBrowserPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(FolderBrowserDataModel.BlogPath))
-            {
-                settings.DownloadLocation = e.PropertyName;
-            }
         }
     }
 }
