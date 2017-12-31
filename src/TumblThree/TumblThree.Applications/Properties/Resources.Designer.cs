@@ -277,6 +277,26 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you really want to delete the following blog indices including all downloaded files?
+        ///{0}..
+        /// </summary>
+        public static string DeleteBlogsAndFilesDialog {
+            get {
+                return ResourceManager.GetString("DeleteBlogsAndFilesDialog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you really want to delete the following blog indices?
+        ///{0}..
+        /// </summary>
+        public static string DeleteBlogsDialog {
+            get {
+                return ResourceManager.GetString("DeleteBlogsDialog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There is not enough space on the disk..
         /// </summary>
         public static string DiskFull {

@@ -421,6 +421,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Display confirmation dialogs?.
+        /// </summary>
+        public static string DisplayConfirmationDialog {
+            get {
+                return ResourceManager.GetString("DisplayConfirmationDialog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Download answer posts.
         /// </summary>
         public static string DownloadAnswers {

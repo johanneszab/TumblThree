@@ -189,6 +189,14 @@
   <data name="Date" xml:space="preserve">
     <value>Date: {0}</value>
   </data>
+  <data name="DeleteBlogsAndFilesDialog" xml:space="preserve">
+    <value>Do you really want to delete the following blog indices including all downloaded files?
+{0}.</value>
+  </data>
+  <data name="DeleteBlogsDialog" xml:space="preserve">
+    <value>Do you really want to delete the following blog indices?
+{0}.</value>
+  </data>
   <data name="DiskFull" xml:space="preserve">
     <value>There is not enough space on the disk.</value>
   </data>

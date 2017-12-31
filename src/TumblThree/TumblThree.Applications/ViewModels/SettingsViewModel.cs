@@ -90,6 +90,7 @@ namespace TumblThree.Applications.ViewModels
         private bool removeIndexAfterCrawl;
         private string secretKey;
         private bool showPicturePreview;
+        private bool displayConfirmationDialog;
         private bool skipGif;
         private int timeOut;
         private string timerInterval;
@@ -291,6 +292,12 @@ namespace TumblThree.Applications.ViewModels
         {
             get { return showPicturePreview; }
             set { SetProperty(ref showPicturePreview, value); }
+        }
+
+        public bool DisplayConfirmationDialog
+        {
+            get { return displayConfirmationDialog; }
+            set { SetProperty(ref displayConfirmationDialog, value); }
         }
 
         public bool DeleteOnlyIndex
@@ -666,6 +673,7 @@ namespace TumblThree.Applications.ViewModels
                 Bandwidth = settings.Bandwidth;
                 CheckClipboard = settings.CheckClipboard;
                 ShowPicturePreview = settings.ShowPicturePreview;
+                DisplayConfirmationDialog = settings.DisplayConfirmationDialog;
                 DeleteOnlyIndex = settings.DeleteOnlyIndex;
                 CheckOnlineStatusAtStartup = settings.CheckOnlineStatusAtStartup;
                 SkipGif = settings.SkipGif;
@@ -731,6 +739,7 @@ namespace TumblThree.Applications.ViewModels
                 BlogType = "None";
                 CheckClipboard = true;
                 ShowPicturePreview = true;
+                DisplayConfirmationDialog = false;
                 DeleteOnlyIndex = true;
                 CheckOnlineStatusAtStartup = false;
                 SkipGif = false;
@@ -838,6 +847,7 @@ namespace TumblThree.Applications.ViewModels
             settings.BlogType = BlogType;
             settings.CheckClipboard = CheckClipboard;
             settings.ShowPicturePreview = ShowPicturePreview;
+            settings.DisplayConfirmationDialog = DisplayConfirmationDialog;
             settings.DeleteOnlyIndex = DeleteOnlyIndex;
             settings.CheckOnlineStatusAtStartup = CheckOnlineStatusAtStartup;
             settings.SkipGif = SkipGif;
