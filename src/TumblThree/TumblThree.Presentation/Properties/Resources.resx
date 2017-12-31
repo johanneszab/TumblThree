@@ -773,4 +773,7 @@ E.g.  great big car, bears searches for great big cars and bears.</value>
 This is done blog wise. Enabling this options will compare each file globally.
 Activation will increase the memory usage during operation based on the amount of already downloaded content.</value>
   </data>
+  <data name="DisplayConfirmationDialog" xml:space="preserve">
+    <value>Display confirmation dialogs?</value>
+  </data>
 </root>

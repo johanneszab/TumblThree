@@ -141,6 +141,9 @@ namespace TumblThree.Applications.Properties
         public bool ShowPicturePreview { get; set; }
 
         [DataMember]
+        public bool DisplayConfirmationDialog { get; set; }
+
+        [DataMember]
         public bool DeleteOnlyIndex { get; set; }
 
         [DataMember]
@@ -321,6 +324,7 @@ namespace TumblThree.Applications.Properties
             BlogType = "None";
             CheckClipboard = true;
             ShowPicturePreview = true;
+            DisplayConfirmationDialog = false;
             DeleteOnlyIndex = true;
             CheckOnlineStatusAtStartup = false;
             SkipGif = false;

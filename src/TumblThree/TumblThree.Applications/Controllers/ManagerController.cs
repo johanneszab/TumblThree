@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Waf.Applications;
 using System.Windows;
+using System.Waf.Applications.Services;
 
 using TumblThree.Applications.DataModels;
 using TumblThree.Applications.Crawler;
@@ -48,13 +49,14 @@ namespace TumblThree.Applications.Controllers
         private readonly ISelectionService selectionService;
         private readonly IShellService shellService;
         private readonly ISettingsService settingsService;
+        private readonly IMessageService messageService;
         private readonly DelegateCommand showDetailsCommand;
         private readonly DelegateCommand showFilesCommand;
         private readonly DelegateCommand visitBlogCommand;
 
         [ImportingConstructor]
         public ManagerController(IShellService shellService, ISelectionService selectionService, ICrawlerService crawlerService, ISettingsService settingsService,
-            IManagerService managerService, ICrawlerFactory crawlerFactory, IBlogFactory blogFactory, ITumblrBlogDetector tumblrBlogDetector, Lazy<ManagerViewModel> managerViewModel)
+            IManagerService managerService, ICrawlerFactory crawlerFactory, IBlogFactory blogFactory, ITumblrBlogDetector tumblrBlogDetector, IMessageService messageService, Lazy<ManagerViewModel> managerViewModel)
         {
             this.shellService = shellService;
             this.selectionService = selectionService;
@@ -62,6 +64,7 @@ namespace TumblThree.Applications.Controllers
             this.managerService = managerService;
             this.managerViewModel = managerViewModel;
             this.settingsService = settingsService;
+            this.messageService = messageService;
             CrawlerFactory = crawlerFactory;
             BlogFactory = blogFactory;
             TumblrBlogDetector = tumblrBlogDetector;
@@ -129,6 +132,8 @@ namespace TumblThree.Applications.Controllers
             Task loadLibraryTask = LoadLibrary();
             Task loadAllDatabasesTask = LoadAllDatabases();
             Task checkBlogOnlineStatusTask = CheckBlogsOnlineStatus();
+
+            await Task.WhenAll(loadLibraryTask, loadAllDatabasesTask, checkBlogOnlineStatusTask);
         }
 
         public void Shutdown()
@@ -361,7 +366,8 @@ namespace TumblThree.Applications.Controllers
 
         private async Task AddBlog()
         {
-            await AddBlogAsync(null);
+            try { await AddBlogAsync(null); }
+            catch { }
         }
 
         private bool CanRemoveBlog()
@@ -372,6 +378,19 @@ namespace TumblThree.Applications.Controllers
         private void RemoveBlog()
         {
             IBlog[] blogs = selectionService.SelectedBlogFiles.ToArray();
+
+            if (shellService.Settings.DisplayConfirmationDialog)
+            {
+                string blogNames = string.Join(", ", blogs.Select(blog => blog.Name));
+                string message = string.Empty;
+                if (shellService.Settings.DeleteOnlyIndex)
+                    message = string.Format(Resources.DeleteBlogsDialog, blogNames);
+                else
+                    message = string.Format(Resources.DeleteBlogsAndFilesDialog, blogNames);
+                if (!messageService.ShowYesNoQuestion(this, message))
+                    return;
+            }
+
             RemoveBlog(blogs);
         }
 
