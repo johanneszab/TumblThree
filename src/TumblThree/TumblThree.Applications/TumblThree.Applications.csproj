@@ -126,8 +126,6 @@
     <Compile Include="ProgressThrottler.cs" />
     <Compile Include="Properties\ManagerSettings.cs" />
     <Compile Include="Properties\QueueSettings.cs" />
-    <Compile Include="DataModels\FolderBrowserDataModel.cs" />
-    <Compile Include="DataModels\FolderItem.cs" />
     <Compile Include="Properties\AppSettings.cs" />
     <Compile Include="Services\ApplicationBusyContext.cs" />
     <Compile Include="Services\ApplicationUpdateService.cs" />
@@ -140,6 +138,7 @@
     <Compile Include="Services\ICrawlerService.cs" />
     <Compile Include="Services\IEnvironmentService.cs" />
     <Compile Include="Services\IDetailsService.cs" />
+    <Compile Include="Services\IFolderBrowserDialog.cs" />
     <Compile Include="Services\IManagerService.cs" />
     <Compile Include="Services\IPresentationService.cs" />
     <Compile Include="Services\ISelectionService.cs" />
@@ -155,6 +154,7 @@
     <Compile Include="Services\ShellService.cs" />
     <Compile Include="Services\ShellServiceExtensions.cs" />
     <Compile Include="Extensions\TaskTimeoutExtension.cs" />
+    <Compile Include="Services\WindowsFormsFolderBrowserDialog.cs" />
     <Compile Include="ThrottledStream.cs" />
     <Compile Include="ViewModels\DetailsViewModels\DetailsTumblrHiddenBlogViewModel.cs" />
     <Compile Include="ViewModels\DetailsViewModels\DetailsTumblrBlogViewModel.cs" />
@@ -198,6 +198,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.ar.resx" />
     <EmbeddedResource Include="Properties\Resources.de.resx" />

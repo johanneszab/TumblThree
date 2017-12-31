@@ -320,6 +320,9 @@
   <data name="Tags" xml:space="preserve">
     <value>Tags: {0}</value>
   </data>
+  <data name="Textfile" xml:space="preserve">
+    <value>Text file</value>
+  </data>
   <data name="TimeoutReached" xml:space="preserve">
     <value>A connection timout occured during {0} of {1}.</value>
   </data>
