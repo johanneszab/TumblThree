@@ -20,7 +20,6 @@ namespace TumblThree.Domain.Models
                 Version = "3",
                 DateAdded = DateTime.Now,
                 PageSize = 20,
-                links = new List<string>()
             };
 
             Directory.CreateDirectory(location);

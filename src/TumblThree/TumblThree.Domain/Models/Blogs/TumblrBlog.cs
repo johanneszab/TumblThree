@@ -19,7 +19,6 @@ namespace TumblThree.Domain.Models
                 Online = true,
                 Version = "3",
                 DateAdded = DateTime.Now,
-                links = new List<string>()
             };
 
             Directory.CreateDirectory(location);

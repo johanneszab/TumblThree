@@ -19,7 +19,6 @@ namespace TumblThree.Domain.Models
                 Online = true,
                 Version = "3",
                 DateAdded = DateTime.Now,
-                links = new List<string>()
             };
 
             Directory.CreateDirectory(location);
@@ -33,6 +32,16 @@ namespace TumblThree.Domain.Models
                 files = null;
             }
             return blog;
+        }
+
+        protected static new string ExtractName(string url)
+        {
+            return url.Split('/')[5];
+        }
+
+        protected static new string ExtractUrl(string url)
+        {
+            return "https://" + ExtractName(url) + ".tumblr.com/";
         }
     }
 }
