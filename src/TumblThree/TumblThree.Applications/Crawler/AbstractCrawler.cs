@@ -31,17 +31,17 @@ namespace TumblThree.Applications.Crawler
         protected readonly object lockObjectProgress = new object();
         protected readonly IShellService shellService;
         protected readonly CancellationToken ct;
-        protected readonly BlockingCollection<TumblrPost> producerConsumerCollection;
+        protected readonly IPostQueue<TumblrPost> postQueue;
         protected ConcurrentBag<TumblrPost> statisticsBag = new ConcurrentBag<TumblrPost>();
         protected List<string> tags = new List<string>();
         protected int numberOfPagesCrawled = 0;
 
-        protected AbstractCrawler(IShellService shellService, CancellationToken ct,IProgress<DownloadProgress> progress, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
+        protected AbstractCrawler(IShellService shellService, CancellationToken ct,IProgress<DownloadProgress> progress, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IPostQueue<TumblrPost> postQueue, IBlog blog)
         {
             this.shellService = shellService;
             this.webRequestFactory = webRequestFactory;
             this.cookieService = cookieService;
-            this.producerConsumerCollection = producerConsumerCollection;
+            this.postQueue = postQueue;
             this.blog = blog;
             this.ct = ct;
             this.progress = progress;
@@ -149,7 +149,7 @@ namespace TumblThree.Applications.Crawler
 
         protected void AddToDownloadList(TumblrPost addToList)
         {
-            producerConsumerCollection.Add(addToList);
+            postQueue.Add(addToList);
             statisticsBag.Add(addToList);
         }
 

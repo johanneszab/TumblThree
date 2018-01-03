@@ -16,6 +16,7 @@ using TumblThree.Applications.DataModels.TumblrCrawlerData;
 using TumblThree.Applications.DataModels.TumblrPosts;
 using TumblThree.Applications.Downloader;
 using TumblThree.Applications.Extensions;
+using TumblThree.Applications.Parser;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain;
@@ -30,19 +31,24 @@ namespace TumblThree.Applications.Crawler
         private readonly ICrawlerService crawlerService;
         private readonly IDownloader downloader;
         private readonly PauseToken pt;
+        private readonly ITumblrXmlToTextParser tumblrXmlParser;
         private readonly IImgurParser imgurParser;
         private readonly IGfycatParser gfycatParser;
         private readonly IWebmshareParser webmshareParser;
-        private readonly BlockingCollection<TumblrCrawlerXmlData> xmlQueue;
+        private readonly IPostQueue<TumblrCrawlerXmlData> xmlQueue;
         private readonly ICrawlerDataDownloader crawlerDataDownloader;
 
-        public TumblrBlogCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
-            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IDownloader downloader, ICrawlerDataDownloader crawlerDataDownloader, IImgurParser imgurParser, IGfycatParser gfycatParser, IWebmshareParser webmshareParser, BlockingCollection<TumblrPost> producerConsumerCollection, BlockingCollection<TumblrCrawlerXmlData> xmlQueue, IBlog blog)
-            : base(shellService, ct, progress, webRequestFactory, cookieService, producerConsumerCollection, blog)
+        public TumblrBlogCrawler(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress,
+            ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService,
+            IDownloader downloader, ICrawlerDataDownloader crawlerDataDownloader, ITumblrXmlToTextParser tumblrXmlParser, IImgurParser imgurParser, IGfycatParser gfycatParser,
+            IWebmshareParser webmshareParser, IPostQueue<TumblrPost> postQueue,
+            IPostQueue<TumblrCrawlerXmlData> xmlQueue, IBlog blog)
+            : base(shellService, ct, progress, webRequestFactory, cookieService, postQueue, blog)
         {
             this.crawlerService = crawlerService;
             this.downloader = downloader;
             this.pt = pt;
+            this.tumblrXmlParser = tumblrXmlParser;
             this.imgurParser = imgurParser;
             this.gfycatParser = gfycatParser;
             this.webmshareParser = webmshareParser;
@@ -354,7 +360,7 @@ namespace TumblThree.Applications.Crawler
             }
             await Task.WhenAll(trackedTasks);
 
-            producerConsumerCollection.CompleteAdding();
+            postQueue.CompleteAdding();
             xmlQueue.CompleteAdding();
 
             UpdateBlogStats();
@@ -548,7 +554,7 @@ namespace TumblThree.Applications.Crawler
                     {
                         if (CheckIfDownloadRebloggedPosts(post))
                         {
-                            string textBody = ParseText(post);
+                            string textBody = tumblrXmlParser.ParseText(post);
                             AddToDownloadList(new TextPost(textBody, post.Attribute("id").Value));
                             AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(post.Attribute("id").Value, ".xml"), post));
                         }
@@ -570,7 +576,7 @@ namespace TumblThree.Applications.Crawler
                     {
                         if (CheckIfDownloadRebloggedPosts(post))
                         {
-                            string textBody = ParseQuote(post);
+                            string textBody = tumblrXmlParser.ParseQuote(post);
                             AddToDownloadList(new QuotePost(textBody, post.Attribute("id").Value));
                             AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(post.Attribute("id").Value, ".xml"), post));
                         }
@@ -592,7 +598,7 @@ namespace TumblThree.Applications.Crawler
                     {
                         if (CheckIfDownloadRebloggedPosts(post))
                         {
-                            string textBody = ParseLink(post);
+                            string textBody = tumblrXmlParser.ParseLink(post);
                             AddToDownloadList(new LinkPost(textBody, post.Attribute("id").Value));
                             AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(post.Attribute("id").Value, ".xml"), post));
                         }
@@ -614,7 +620,7 @@ namespace TumblThree.Applications.Crawler
                     {
                         if (CheckIfDownloadRebloggedPosts(post))
                         {
-                            string textBody = ParseConversation(post);
+                            string textBody = tumblrXmlParser.ParseConversation(post);
                             AddToDownloadList(new ConversationPost(textBody, post.Attribute("id").Value));
                             AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(post.Attribute("id").Value, ".xml"), post));
                         }
@@ -636,7 +642,7 @@ namespace TumblThree.Applications.Crawler
                     {
                         if (CheckIfDownloadRebloggedPosts(post))
                         {
-                            string textBody = ParseAnswer(post);
+                            string textBody = tumblrXmlParser.ParseAnswer(post);
                             AddToDownloadList(new AnswerPost(textBody, post.Attribute("id").Value));
                             AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(post.Attribute("id").Value, ".xml"), post));
                         }
@@ -658,7 +664,7 @@ namespace TumblThree.Applications.Crawler
                     {
                         if (CheckIfDownloadRebloggedPosts(post))
                         {
-                            string textBody = ParsePhotoMeta(post);
+                            string textBody = tumblrXmlParser.ParsePhotoMeta(post);
                             AddToDownloadList(new PhotoMetaPost(textBody, post.Attribute("id").Value));
                             AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(post.Attribute("id").Value, ".xml"), post));
                         }
@@ -680,7 +686,7 @@ namespace TumblThree.Applications.Crawler
                     {
                         if (CheckIfDownloadRebloggedPosts(post))
                         {
-                            string textBody = ParseVideoMeta(post);
+                            string textBody = tumblrXmlParser.ParseVideoMeta(post);
                             AddToDownloadList(new VideoMetaPost(textBody, post.Attribute("id").Value));
                             AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(post.Attribute("id").Value, ".xml"), post));
                         }
@@ -702,7 +708,7 @@ namespace TumblThree.Applications.Crawler
                     {
                         if (CheckIfDownloadRebloggedPosts(post))
                         {
-                            string textBody = ParseAudioMeta(post);
+                            string textBody = tumblrXmlParser.ParseAudioMeta(post);
                             AddToDownloadList(new AudioMetaPost(textBody, post.Attribute("id").Value));
                             AddToXmlQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(post.Attribute("id").Value, ".xml"), post));
                         }
@@ -959,46 +965,6 @@ namespace TumblThree.Applications.Crawler
                     }
                 }
             }
-        }
-
-        private static string ParsePhotoMeta(XElement post)
-        {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.Attribute("reblogged-from-url")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.Attribute("reblogged-from-name")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.PhotoUrl, post.Element("photo-url").Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.PhotoCaption, post.Element("photo-caption")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) + Environment.NewLine;
-        }
-
-        private static string ParseVideoMeta(XElement post)
-        {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.Attribute("reblogged-from-url")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.Attribute("reblogged-from-name")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.VideoPlayer, post.Element("video-player")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) + Environment.NewLine;
-        }
-
-        private static string ParseAudioMeta(XElement post)
-        {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.Attribute("reblogged-from-url")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.Attribute("reblogged-from-name")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.AudioCaption, post.Element("audio-caption")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Artist, post.Element("id3-artist")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Title, post.Element("id3-title")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Track, post.Element("id3-track")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Album, post.Element("id3-album")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Id3Year, post.Element("id3-year")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) + Environment.NewLine;
-        }
-
-        private static string ParseConversation(XElement post)
-        {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.Attribute("reblogged-from-url")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.Attribute("reblogged-from-name")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Conversation, post.Element("conversation-text")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) + Environment.NewLine;
-        }
-
-        private static string ParseLink(XElement post)
-        {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.Attribute("reblogged-from-url")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.Attribute("reblogged-from-name")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Link, post.Element("link-text")?.Value) + Environment.NewLine + post.Element("link-url")?.Value + Environment.NewLine + post.Element("link-description")?.Value + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) + Environment.NewLine;
-        }
-
-        private static string ParseQuote(XElement post)
-        {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.Attribute("reblogged-from-url")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.Attribute("reblogged-from-name")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Quote, post.Element("quote-text")?.Value) + Environment.NewLine + post.Element("quote-source")?.Value + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) + Environment.NewLine;
-        }
-
-        private static string ParseText(XElement post)
-        {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.Attribute("reblogged-from-url")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.Attribute("reblogged-from-name")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Title, post.Element("regular-title")?.Value) + Environment.NewLine + post.Element("regular-body")?.Value + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) + Environment.NewLine;
-        }
-
-        private static string ParseAnswer(XElement post)
-        {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Attribute("id").Value) + ", " + string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Attribute("date-gmt").Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.Attribute("url-with-slug")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.Attribute("reblog-key")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.Attribute("reblogged-from-url")?.Value) + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.Attribute("reblogged-from-name")?.Value) + Environment.NewLine + post.Element("question")?.Value + Environment.NewLine + post.Element("answer")?.Value + Environment.NewLine + string.Format(CultureInfo.CurrentCulture, Resources.Tags, string.Join(", ", post.Elements("tag")?.Select(x => x.Value).ToArray())) + Environment.NewLine;
         }
     }
 }

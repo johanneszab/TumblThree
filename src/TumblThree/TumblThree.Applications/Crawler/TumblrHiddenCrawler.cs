@@ -19,6 +19,7 @@ using TumblThree.Domain;
 using TumblThree.Domain.Models;
 using TumblThree.Applications.DataModels.TumblrSvcJson;
 using TumblThree.Applications.Extensions;
+using TumblThree.Applications.Parser;
 using TumblThree.Applications.DataModels.TumblrPosts;
 using TumblThree.Applications.DataModels.TumblrCrawlerData;
 
@@ -31,21 +32,26 @@ namespace TumblThree.Applications.Crawler
         private readonly ICrawlerService crawlerService;
         private readonly IDownloader downloader;
         private readonly PauseToken pt;
+        private readonly ITumblrJsonToTextParser tumblrJsonParser;
         private readonly IImgurParser imgurParser;
         private readonly IGfycatParser gfycatParser;
         private readonly IWebmshareParser webmshareParser;
-        private readonly BlockingCollection<TumblrCrawlerJsonData> jsonQueue;
+        private readonly IPostQueue<TumblrCrawlerJsonData> jsonQueue;
         private readonly ICrawlerDataDownloader crawlerDataDownloader;
 
         private string authentication = string.Empty;
 
-        public TumblrHiddenCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
-            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IDownloader downloader, ICrawlerDataDownloader crawlerDataDownloader, IImgurParser imgurParser, IGfycatParser gfycatParser, IWebmshareParser webmshareParser, BlockingCollection<TumblrPost> producerConsumerCollection, BlockingCollection<TumblrCrawlerJsonData> jsonQueue, IBlog blog)
-            : base(shellService, ct, progress, webRequestFactory, cookieService, producerConsumerCollection, blog)
+        public TumblrHiddenCrawler(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress,
+            ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IDownloader downloader,
+            ICrawlerDataDownloader crawlerDataDownloader, ITumblrJsonToTextParser tumblrJsonParser, IImgurParser imgurParser,
+            IGfycatParser gfycatParser, IWebmshareParser webmshareParser, IPostQueue<TumblrPost> postQueue,
+            IPostQueue<TumblrCrawlerJsonData> jsonQueue, IBlog blog)
+            : base(shellService, ct, progress, webRequestFactory, cookieService, postQueue, blog)
         {
             this.crawlerService = crawlerService;
             this.downloader = downloader;
             this.pt = pt;
+            this.tumblrJsonParser = tumblrJsonParser;
             this.imgurParser = imgurParser;
             this.gfycatParser = gfycatParser;
             this.webmshareParser = webmshareParser;
@@ -285,7 +291,7 @@ namespace TumblThree.Applications.Crawler
             {
                 Logger.Error("TumblrHiddenCrawler:GetUrlsAsync: {0}", "User not logged in");
                 shellService.ShowError(new Exception("User not logged in"), Resources.NotLoggedIn, blog.Name);
-                producerConsumerCollection.CompleteAdding();
+                postQueue.CompleteAdding();
                 return;
             }
 
@@ -333,7 +339,7 @@ namespace TumblThree.Applications.Crawler
             await Task.WhenAll(trackedTasks);
 
             jsonQueue.CompleteAdding();
-            producerConsumerCollection.CompleteAdding();
+            postQueue.CompleteAdding();
 
             UpdateBlogStats();
         }
@@ -654,7 +660,7 @@ namespace TumblThree.Applications.Crawler
                         if (CheckIfDownloadRebloggedPosts(post))
                         {
                             string postId = post.id;
-                            string textBody = ParseText(post);
+                            string textBody = tumblrJsonParser.ParseText(post);
                             AddToDownloadList(new TextPost(textBody, postId, post.timestamp.ToString()));
                             AddToJsonQueue(new TumblrCrawlerJsonData(Path.ChangeExtension(postId, ".json"), post));
                         }
@@ -676,7 +682,7 @@ namespace TumblThree.Applications.Crawler
                         if (CheckIfDownloadRebloggedPosts(post))
                         {
                             string postId = post.id;
-                            string textBody = ParseQuote(post);
+                            string textBody = tumblrJsonParser.ParseQuote(post);
                             AddToDownloadList(new QuotePost(textBody, postId, post.timestamp.ToString()));
                             AddToJsonQueue(new TumblrCrawlerJsonData(Path.ChangeExtension(postId, ".json"), post));
                         }
@@ -698,7 +704,7 @@ namespace TumblThree.Applications.Crawler
                         if (CheckIfDownloadRebloggedPosts(post))
                         {
                             string postId = post.id;
-                            string textBody = ParseLink(post);
+                            string textBody = tumblrJsonParser.ParseLink(post);
                             AddToDownloadList(new LinkPost(textBody, postId, post.timestamp.ToString()));
                             AddToJsonQueue(new TumblrCrawlerJsonData(Path.ChangeExtension(postId, ".json"), post));
                         }
@@ -720,7 +726,7 @@ namespace TumblThree.Applications.Crawler
                         if (CheckIfDownloadRebloggedPosts(post))
                         {
                             string postId = post.id;
-                            string textBody = ParseConversation(post);
+                            string textBody = tumblrJsonParser.ParseConversation(post);
                             AddToDownloadList(new ConversationPost(textBody, postId, post.timestamp.ToString()));
                             AddToJsonQueue(new TumblrCrawlerJsonData(Path.ChangeExtension(postId, ".json"), post));
                         }
@@ -742,7 +748,7 @@ namespace TumblThree.Applications.Crawler
                         if (CheckIfDownloadRebloggedPosts(post))
                         {
                             string postId = post.id;
-                            string textBody = ParseAnswer(post);
+                            string textBody = tumblrJsonParser.ParseAnswer(post);
                             AddToDownloadList(new AnswerPost(textBody, postId, post.timestamp.ToString()));
                             AddToJsonQueue(new TumblrCrawlerJsonData(Path.ChangeExtension(postId, ".json"), post));
                         }
@@ -764,7 +770,7 @@ namespace TumblThree.Applications.Crawler
                         if (CheckIfDownloadRebloggedPosts(post))
                         {
                             string postId = post.id;
-                            string textBody = ParsePhotoMeta(post);
+                            string textBody = tumblrJsonParser.ParsePhotoMeta(post);
                             AddToDownloadList(new PhotoMetaPost(textBody, postId));
                             AddToJsonQueue(new TumblrCrawlerJsonData(Path.ChangeExtension(postId, ".json"), post));
                         }
@@ -786,7 +792,7 @@ namespace TumblThree.Applications.Crawler
                         if (CheckIfDownloadRebloggedPosts(post))
                         {
                             string postId = post.id;
-                            string textBody = ParseVideoMeta(post);
+                            string textBody = tumblrJsonParser.ParseVideoMeta(post);
                             AddToDownloadList(new VideoMetaPost(textBody, postId));
                             AddToJsonQueue(new TumblrCrawlerJsonData(Path.ChangeExtension(postId, ".json"), post));
                         }
@@ -808,7 +814,7 @@ namespace TumblThree.Applications.Crawler
                         if (CheckIfDownloadRebloggedPosts(post))
                         {
                             string postId = post.id;
-                            string textBody = ParseAudioMeta(post);
+                            string textBody = tumblrJsonParser.ParseAudioMeta(post);
                             AddToDownloadList(new AudioMetaPost(textBody, postId));
                             AddToJsonQueue(new TumblrCrawlerJsonData(Path.ChangeExtension(postId, ".json"), post));
                         }
@@ -947,197 +953,6 @@ namespace TumblThree.Applications.Crawler
                     }
                 }
             }
-        }
-
-        private static string ParseText(Post post)
-        {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) + ", " +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.slug) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.reblog_key) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.reblogged_from_url) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Summary, post.summary) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Title, post.title) +
-                   Environment.NewLine + post.body +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Tags,
-                       string.Join(", ", post.tags.ToArray())) +
-                   Environment.NewLine;
-        }
-
-        private static string ParseQuote(Post post)
-        {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) + ", " +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.slug) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.reblog_key) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.reblogged_from_url) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Summary, post.summary) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Quote, post.text) +
-                   Environment.NewLine + post.body +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Tags,
-                       string.Join(", ", post.tags.ToArray())) +
-                   Environment.NewLine;
-        }
-
-        private static string ParseLink(Post post)
-        {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) + ", " +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.slug) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.reblog_key) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.reblogged_from_url) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Summary, post.summary) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Link, post.caption) +
-                   Environment.NewLine + post.body +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Tags,
-                       string.Join(", ", post.tags.ToArray())) +
-                   Environment.NewLine;
-        }
-
-        private static string ParseConversation(Post post)
-        {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) + ", " +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.slug) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.reblog_key) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.reblogged_from_url) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Summary, post.summary) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Quote, post.dialogue.Select(dialogue => new { dialogue.name, dialogue.phrase })) +
-                   Environment.NewLine + post.body +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Tags,
-                       string.Join(", ", post.tags.ToArray())) +
-                   Environment.NewLine;
-        }
-
-        private static string ParseAnswer(Post post)
-        {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) + ", " +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.slug) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.reblog_key) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.reblogged_from_url) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Summary, post.summary) +
-                   Environment.NewLine +
-                   post.question +
-                   Environment.NewLine +
-                   post.answer +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Tags,
-                       string.Join(", ", post.tags.ToArray())) +
-                   Environment.NewLine;
-        }
-
-        private static string ParsePhotoMeta(Post post)
-        {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) + ", " +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.slug) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.reblog_key) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.reblogged_from_url) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Summary, post.summary) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.PhotoUrl, post.photos.Select(photo => photo.original_size.url).FirstOrDefault()) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.PhotoCaption, post.trail.Select(trail => trail.content_raw).FirstOrDefault()) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Tags,
-                       string.Join(", ", post.tags.ToArray())) +
-                   Environment.NewLine;
-        }
-
-        private static string ParseVideoMeta(Post post)
-        {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) + ", " +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.slug) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.reblog_key) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.reblogged_from_url) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Summary, post.summary) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Tags,
-                       string.Join(", ", post.tags.ToArray())) +
-                   Environment.NewLine;
-        }
-
-        private static string ParseAudioMeta(Post post)
-        {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) + ", " +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.slug) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.reblog_key) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.reblogged_from_url) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Summary, post.summary) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.AudioCaption, post.trail.Select(trail => trail.content_raw).FirstOrDefault()) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Id3Artist, post.artist) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Id3Title, post.title) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Id3Track, post.track) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Id3Album, post.album) +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Id3Track, post.year) +
-                   Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Tags,
-                       string.Join(", ", post.tags.ToArray())) +
-                   Environment.NewLine;
         }
     }
 }

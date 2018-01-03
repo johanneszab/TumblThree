@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
+using TumblThree.Applications.DataModels;
 using TumblThree.Applications.DataModels.TumblrCrawlerData;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
@@ -19,12 +20,12 @@ namespace TumblThree.Applications.Downloader
     {
         protected readonly IBlog blog;
         protected readonly ICrawlerService crawlerService;
-        protected readonly BlockingCollection<TumblrCrawlerXmlData> xmlQueue;
+        protected readonly IPostQueue<TumblrCrawlerXmlData> xmlQueue;
         protected readonly IShellService shellService;
         protected readonly CancellationToken ct;
         protected readonly PauseToken pt;
 
-        public TumblrXmlDownloader(IShellService shellService, CancellationToken ct, PauseToken pt, BlockingCollection<TumblrCrawlerXmlData> xmlQueue, ICrawlerService crawlerService, IBlog blog)
+        public TumblrXmlDownloader(IShellService shellService, CancellationToken ct, PauseToken pt, IPostQueue<TumblrCrawlerXmlData> xmlQueue, ICrawlerService crawlerService, IBlog blog)
         {
             this.shellService = shellService;
             this.crawlerService = crawlerService;
