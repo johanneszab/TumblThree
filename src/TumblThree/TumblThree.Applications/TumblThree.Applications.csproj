@@ -69,12 +69,14 @@
     <Compile Include="Controllers\ManagerController.cs" />
     <Compile Include="Controllers\ModuleController.cs" />
     <Compile Include="Controllers\QueueController.cs" />
-    <Compile Include="Crawler\IImgurParser.cs" />
-    <Compile Include="Crawler\ImgurParser.cs" />
+    <Compile Include="Parser\IImgurParser.cs" />
+    <Compile Include="Parser\ImgurParser.cs" />
     <Compile Include="Crawler\ITumblrBlogDetector.cs" />
-    <Compile Include="Crawler\ITumblrParser.cs" />
-    <Compile Include="Crawler\TumblrParser.cs" />
+    <Compile Include="Parser\ITumblrParser.cs" />
+    <Compile Include="Parser\TumblrParser.cs" />
     <Compile Include="DataModels\DownloadProgress.cs" />
+    <Compile Include="DataModels\IPostQueue.cs" />
+    <Compile Include="DataModels\PostQueue.cs" />
     <Compile Include="DataModels\TumblrCrawlerData\ITumblrCrawlerData.cs" />
     <Compile Include="DataModels\TumblrCrawlerData\TumblrCrawlerJsonData.cs" />
     <Compile Include="DataModels\TumblrCrawlerData\TumblrCrawlerXmlData.cs" />
@@ -107,13 +109,17 @@
     <Compile Include="Crawler\TumblrSearchCrawler.cs" />
     <Compile Include="Downloader\TumblrDownloader.cs" />
     <Compile Include="Downloader\FileDownloader.cs" />
-    <Compile Include="Crawler\GfycatParser.cs" />
-    <Compile Include="Crawler\IGfycatParser.cs" />
-    <Compile Include="Crawler\IWebmshareParser.cs" />
-    <Compile Include="Crawler\IWebRequestFactory.cs" />
+    <Compile Include="Parser\GfycatParser.cs" />
+    <Compile Include="Parser\IGfycatParser.cs" />
+    <Compile Include="Parser\IWebmshareParser.cs" />
+    <Compile Include="Downloader\IWebRequestFactory.cs" />
     <Compile Include="Downloader\TumblrJsonDownloader.cs" />
     <Compile Include="Downloader\TumblrXmlDownloader.cs" />
     <Compile Include="ObjectModel\ObservableRangeCollection.cs" />
+    <Compile Include="Parser\ITumblrJsonToText.cs" />
+    <Compile Include="Parser\ITumblrXmlToText.cs" />
+    <Compile Include="Parser\TumblrJsonToText.cs" />
+    <Compile Include="Parser\TumblrXmlToText.cs" />
     <Compile Include="QueueOnDispatcher.cs" />
     <Compile Include="Crawler\ICrawler.cs" />
     <Compile Include="Crawler\TumblrBlogCrawler.cs" />
@@ -177,8 +183,8 @@
     <Compile Include="Views\IAuthenticateView.cs" />
     <Compile Include="Views\ISettingsView.cs" />
     <Compile Include="Views\IShellView.cs" />
-    <Compile Include="Crawler\WebRequestFactory.cs" />
-    <Compile Include="Crawler\WebmshareParser.cs" />
+    <Compile Include="Downloader\WebRequestFactory.cs" />
+    <Compile Include="Parser\WebmshareParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

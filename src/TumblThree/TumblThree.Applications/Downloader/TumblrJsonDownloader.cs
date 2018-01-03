@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
+using TumblThree.Applications.DataModels;
 using TumblThree.Applications.DataModels.TumblrCrawlerData;
 using TumblThree.Applications.DataModels.TumblrSvcJson;
 using TumblThree.Applications.Properties;
@@ -21,12 +22,12 @@ namespace TumblThree.Applications.Downloader
     {
         protected readonly IBlog blog;
         protected readonly ICrawlerService crawlerService;
-        protected readonly BlockingCollection<TumblrCrawlerJsonData> jsonQueue;
+        protected readonly IPostQueue<TumblrCrawlerJsonData> jsonQueue;
         protected readonly IShellService shellService;
         protected readonly CancellationToken ct;
         protected readonly PauseToken pt;
 
-        public TumblrJsonDownloader(IShellService shellService, CancellationToken ct, PauseToken pt, BlockingCollection<TumblrCrawlerJsonData> jsonQueue, ICrawlerService crawlerService, IBlog blog)
+        public TumblrJsonDownloader(IShellService shellService, CancellationToken ct, PauseToken pt, IPostQueue<TumblrCrawlerJsonData> jsonQueue, ICrawlerService crawlerService, IBlog blog)
         {
             this.shellService = shellService;
             this.crawlerService = crawlerService;

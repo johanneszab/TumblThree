@@ -18,8 +18,8 @@ namespace TumblThree.Applications.Downloader
         protected List<string> tags = new List<string>();
         protected int numberOfPagesCrawled = 0;
 
-        public TumblrDownloader(IShellService shellService, IManagerService managerService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, BlockingCollection<TumblrPost> producerConsumerCollection, FileDownloader fileDownloader, ICrawlerService crawlerService, IBlog blog, IFiles files)
-            : base(shellService, managerService, ct, pt, progress, producerConsumerCollection, fileDownloader, crawlerService, blog, files)
+        public TumblrDownloader(IShellService shellService, IManagerService managerService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, IPostQueue<TumblrPost> postQueue, FileDownloader fileDownloader, ICrawlerService crawlerService, IBlog blog, IFiles files)
+            : base(shellService, managerService, ct, pt, progress, postQueue, fileDownloader, crawlerService, blog, files)
         {
         }
 

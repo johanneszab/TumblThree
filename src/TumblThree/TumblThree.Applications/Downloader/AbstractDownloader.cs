@@ -26,14 +26,14 @@ namespace TumblThree.Applications.Downloader
         private readonly IManagerService managerService;
         protected readonly IProgress<DownloadProgress> progress;
         protected readonly object lockObjectDownload = new object();
-        protected readonly BlockingCollection<TumblrPost> producerConsumerCollection;
+        protected readonly IPostQueue<TumblrPost> postQueue;
         protected readonly IShellService shellService;
         protected readonly CancellationToken ct;
         protected readonly PauseToken pt;
         protected readonly FileDownloader fileDownloader;
         string[] suffixes = { ".jpg", ".jpeg", ".png" };
 
-        protected AbstractDownloader(IShellService shellService, IManagerService managerService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, BlockingCollection<TumblrPost> producerConsumerCollection, FileDownloader fileDownloader, ICrawlerService crawlerService = null, IBlog blog = null, IFiles files = null)
+        protected AbstractDownloader(IShellService shellService, IManagerService managerService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, IPostQueue<TumblrPost> postQueue, FileDownloader fileDownloader, ICrawlerService crawlerService = null, IBlog blog = null, IFiles files = null)
         {
             this.shellService = shellService;
             this.crawlerService = crawlerService;
@@ -43,7 +43,7 @@ namespace TumblThree.Applications.Downloader
             this.ct = ct;
             this.pt = pt;
             this.progress = progress;
-            this.producerConsumerCollection = producerConsumerCollection;
+            this.postQueue = postQueue;
             this.fileDownloader = fileDownloader;
         }
 
@@ -146,7 +146,7 @@ namespace TumblThree.Applications.Downloader
 
             blog.CreateDataFolder();
 
-            foreach (TumblrPost downloadItem in producerConsumerCollection.GetConsumingEnumerable())
+            foreach (TumblrPost downloadItem in postQueue.GetConsumingEnumerable())
             {
                 if (downloadItem.GetType() == typeof(VideoPost))
                     await concurrentVideoConnectionsSemaphore.WaitAsync();

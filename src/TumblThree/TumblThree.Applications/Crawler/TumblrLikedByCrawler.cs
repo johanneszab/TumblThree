@@ -26,8 +26,8 @@ namespace TumblThree.Applications.Crawler
         private readonly PauseToken pt;
 
         public TumblrLikedByCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
-            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IDownloader downloader, BlockingCollection<TumblrPost> producerConsumerCollection, IBlog blog)
-            : base(shellService, ct, progress, webRequestFactory, cookieService, producerConsumerCollection, blog)
+            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IDownloader downloader, IPostQueue<TumblrPost> postQueue, IBlog blog)
+            : base(shellService, ct, progress, webRequestFactory, cookieService, postQueue, blog)
         {
             this.downloader = downloader;
             this.pt = pt;
@@ -71,7 +71,7 @@ namespace TumblThree.Applications.Crawler
             {
                 Logger.Error("TumblrLikedByCrawler:GetUrlsAsync: {0}", "User not logged in");
                 shellService.ShowError(new Exception("User not logged in"), Resources.NotLoggedIn, blog.Name);
-                producerConsumerCollection.CompleteAdding();
+                postQueue.CompleteAdding();
                 return;
             }
 
@@ -104,7 +104,7 @@ namespace TumblThree.Applications.Crawler
             }
             await Task.WhenAll(trackedTasks);
 
-            producerConsumerCollection.CompleteAdding();
+            postQueue.CompleteAdding();
 
             UpdateBlogStats();
         }
