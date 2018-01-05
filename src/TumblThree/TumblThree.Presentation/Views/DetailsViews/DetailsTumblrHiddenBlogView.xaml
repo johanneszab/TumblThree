@@ -12,7 +12,7 @@
              xmlns:Models="clr-namespace:TumblThree.Domain.Models;assembly=TumblThree.Domain"
              xmlns:Extensions="clr-namespace:TumblThree.Presentation.Extensions"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance dd:SampleDetailsViewModel, IsDesignTimeCreatable=True}"
-             d:DesignHeight="700" d:DesignWidth="400" Background="{StaticResource DefaultBackground}">
+             d:DesignHeight="720" d:DesignWidth="400" Background="{StaticResource DefaultBackground}">
 
     <Grid>
         <Grid.Resources>
@@ -160,6 +160,8 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{StaticResource Layout.RowSpace}" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="{StaticResource Layout.RowSpace}" />
                             <RowDefinition Height="Auto" />
@@ -757,17 +759,27 @@
                             </Button.ToolTip>
                         </Button>
 
-                        <CheckBox Content="{x:Static p:Resources.SkipGif}" IsChecked="{Binding BlogFile.SkipGif, Mode=TwoWay}"
-                                Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="34" Margin="3,0,0,0" Padding="3,0,0,0" />
-
-                        <CheckBox Content="{x:Static p:Resources.DownloadRebloggedPosts}"
-                                  IsChecked="{Binding BlogFile.DownloadRebloggedPosts, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="36"
+                            <Label Content="{x:Static p:Resources.MetadataFormat}" Grid.Column="0" Grid.Row="34"
                                   Margin="3,0,0,0" Padding="3,0,0,0">
-                        </CheckBox>
+                            </Label>
 
-                        <!--<CheckBox Content="{x:Static p:Resources.CheckDirectoryForFiles}"
+                            <ComboBox Grid.Column="1" Grid.Row="34" Padding="5,0,5,0"
+                                ItemsSource="{Binding Source={Extensions:EnumBindingSource {x:Type Models:MetadataType}}}" SelectedValuePath="."
+                                SelectedValue="{Binding BlogFile.MetadataFormat}"
+                                SelectedItem="{Binding BlogFile.MetadataFormat, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                            </ComboBox>
+
+                            <CheckBox Content="{x:Static p:Resources.SkipGif}" IsChecked="{Binding BlogFile.SkipGif, Mode=TwoWay}"
+                                  Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="36" Margin="3,0,0,0" Padding="3,0,0,0" />
+
+                            <CheckBox Content="{x:Static p:Resources.DownloadRebloggedPosts}"
+                                  IsChecked="{Binding BlogFile.DownloadRebloggedPosts, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="38"
+                                  Margin="3,0,0,0" Padding="3,0,0,0">
+                            </CheckBox>
+
+                            <!--<CheckBox Content="{x:Static p:Resources.CheckDirectoryForFiles}"
                                   IsChecked="{Binding BlogFile.CheckDirectoryForFiles, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2"
-                                  Grid.Row="36" Margin="3,0,0,0" Padding="3,0,0,0">
+                                  Grid.Row="38" Margin="3,0,0,0" Padding="3,0,0,0">
                             <CheckBox.ToolTip>
                                 <ToolTip>
                                     <StackPanel>
@@ -780,37 +792,37 @@
                             </CheckBox.ToolTip>
                         </CheckBox>-->
 
-                        <CheckBox Content="{x:Static p:Resources.DownloadUrlList}"
-                                  IsChecked="{Binding BlogFile.DownloadUrlList, Mode=TwoWay}" Grid.Column="0" Grid.Row="38" Grid.ColumnSpan="2"
+                            <CheckBox Content="{x:Static p:Resources.DownloadUrlList}"
+                                  IsChecked="{Binding BlogFile.DownloadUrlList, Mode=TwoWay}" Grid.Column="0" Grid.Row="40" Grid.ColumnSpan="2"
                                   Margin="3,0,0,0" Padding="3,0,0,0">
-                            <CheckBox.ToolTip>
-                                <ToolTip>
-                                    <StackPanel>
-                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadUrlList}" />
-                                        <TextBlock xml:space="preserve"
+                                <CheckBox.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadUrlList}" />
+                                            <TextBlock xml:space="preserve"
                                                    Text="{x:Static p:Resources.ToolTipDownloadUrlListDescription}" />
-                                    </StackPanel>
-                                </ToolTip>
-                            </CheckBox.ToolTip>
-                        </CheckBox>
+                                        </StackPanel>
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
 
-                        <CheckBox Content="{x:Static p:Resources.ForceSize}"
+                            <CheckBox Content="{x:Static p:Resources.ForceSize}"
                                   IsChecked="{Binding BlogFile.ForceSize, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="5"
-                                  Grid.Row="40" Margin="3,0,0,0" Padding="3,0,0,0">
-                            <CheckBox.ToolTip>
-                                <ToolTip>
-                                    <StackPanel>
-                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipForceSize}" />
-                                        <TextBlock xml:space="preserve"
+                                  Grid.Row="42" Margin="3,0,0,0" Padding="3,0,0,0">
+                                <CheckBox.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipForceSize}" />
+                                            <TextBlock xml:space="preserve"
                                                    Text="{x:Static p:Resources.ToolTipForceSizeDescription}" />
-                                    </StackPanel>
-                                </ToolTip>
-                            </CheckBox.ToolTip>
-                        </CheckBox>
+                                        </StackPanel>
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
 
                             <CheckBox Content="{x:Static p:Resources.DumpCrawlerData}"
                                   IsChecked="{Binding BlogFile.DumpCrawlerData, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="5"
-                                  Grid.Row="42" Margin="3,0,0,0" Padding="3,0,0,0">
+                                  Grid.Row="44" Margin="3,0,0,0" Padding="3,0,0,0">
                                 <CheckBox.ToolTip>
                                     <ToolTip>
                                         <StackPanel>
@@ -824,7 +836,7 @@
 
                             <CheckBox Content="{x:Static p:Resources.ForceRescan}"
                                   IsChecked="{Binding BlogFile.ForceRescan, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="5"
-                                  Grid.Row="44" Margin="3,0,0,0" Padding="3,0,0,0">
+                                  Grid.Row="46" Margin="3,0,0,0" Padding="3,0,0,0">
                                 <CheckBox.ToolTip>
                                     <ToolTip>
                                         <StackPanel>
@@ -835,7 +847,7 @@
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
-                    </Grid>
+                        </Grid>
                     </TabItem>
                     <TabItem Header="{x:Static p:Resources.ExternalSettings}">
                         <Grid Margin="0">

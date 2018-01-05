@@ -776,4 +776,7 @@ Activation will increase the memory usage during operation based on the amount o
   <data name="DisplayConfirmationDialog" xml:space="preserve">
     <value>Display confirmation dialogs?</value>
   </data>
+  <data name="MetadataFormat" xml:space="preserve">
+    <value>Metadata format</value>
+  </data>
 </root>

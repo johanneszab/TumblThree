@@ -72,6 +72,7 @@
     <Compile Include="Models\Files\TumblrHiddenBlogFiles.cs" />
     <Compile Include="Models\Files\TumblrBlogFiles.cs" />
     <Compile Include="Models\Files\Files.cs" />
+    <Compile Include="Models\MetadataType.cs" />
     <Compile Include="Models\GfycatType.cs" />
     <Compile Include="Models\Blogs\IBlog.cs" />
     <Compile Include="Models\IBlogFactory.cs" />

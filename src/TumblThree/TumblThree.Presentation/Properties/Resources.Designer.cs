@@ -880,6 +880,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Metadata format.
+        /// </summary>
+        public static string MetadataFormat {
+            get {
+                return ResourceManager.GetString("MetadataFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string Name {

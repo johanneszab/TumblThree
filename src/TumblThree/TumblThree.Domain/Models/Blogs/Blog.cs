@@ -64,6 +64,7 @@ namespace TumblThree.Domain.Models
         private int downloadedPhotoMetas;
         private int downloadedVideoMetas;
         private int downloadedAudioMetas;
+        private MetadataType metadataFormat;
         private bool downloadGfycat;
         private bool downloadImgur;
         private bool downloadWebmshare;
@@ -482,6 +483,13 @@ namespace TumblThree.Domain.Models
         {
             get { return downloadedAudioMetas; }
             set { SetProperty(ref downloadedAudioMetas, value); }
+        }
+
+        [DataMember]
+        public MetadataType MetadataFormat
+        {
+            get { return metadataFormat; }
+            set { SetProperty(ref metadataFormat, value); }
         }
 
         [DataMember]

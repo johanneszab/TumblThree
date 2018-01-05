@@ -207,6 +207,9 @@ namespace TumblThree.Applications.Properties
         public bool CreateAudioMeta { get; set; }
 
         [DataMember]
+        public MetadataType MetadataFormat { get; set; }
+
+        [DataMember]
         public bool DumpCrawlerData { get; set; }
 
         [DataMember]
@@ -341,6 +344,7 @@ namespace TumblThree.Applications.Properties
             CreateImageMeta = false;
             CreateVideoMeta = false;
             CreateAudioMeta = false;
+            MetadataFormat = MetadataType.Text;
             PageSize = 50;
             DownloadRebloggedPosts = true;
             AutoDownload = false;

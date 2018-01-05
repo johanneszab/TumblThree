@@ -70,6 +70,15 @@ namespace TumblThree.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to json.
+        /// </summary>
+        public static string json {
+            get {
+                return ResourceManager.GetString("json", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 2mb gif.
         /// </summary>
         public static string max2mbgif {
@@ -115,6 +124,15 @@ namespace TumblThree.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to text.
+        /// </summary>
+        public static string text {
+            get {
+                return ResourceManager.GetString("text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to webm.
         /// </summary>
         public static string webm {
@@ -129,6 +147,15 @@ namespace TumblThree.Domain.Properties {
         public static string webp {
             get {
                 return ResourceManager.GetString("webp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to xml.
+        /// </summary>
+        public static string xml {
+            get {
+                return ResourceManager.GetString("xml", resourceCulture);
             }
         }
     }
