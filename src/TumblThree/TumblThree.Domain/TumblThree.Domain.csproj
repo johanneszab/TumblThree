@@ -83,6 +83,7 @@
     <Compile Include="Models\ICrawlerData.cs" />
     <Compile Include="Models\Files\IFiles.cs" />
     <Compile Include="Models\IUrlValidator.cs" />
+    <Compile Include="Models\MetadataType.cs" />
     <Compile Include="Models\PostCounter.cs" />
     <Compile Include="Models\UrlValidator.cs" />
     <Compile Include="Models\WebmshareTypes.cs" />

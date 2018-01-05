@@ -8,7 +8,7 @@
         xmlns:vm="clr-namespace:TumblThree.Applications.ViewModels;assembly=TumblThree.Applications"
         xmlns:Models="clr-namespace:TumblThree.Domain.Models;assembly=TumblThree.Domain"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        mc:Ignorable="d" Title="Settings" Height="675" Width="720"
+        mc:Ignorable="d" Title="Settings" Height="710" Width="720"
         d:DataContext="{d:DesignInstance vm:SettingsViewModel}">
     <Window.Resources>
         <ObjectDataProvider MethodName="GetValues"
@@ -23,6 +23,13 @@
         x:Key="WebmshareTypes">
             <ObjectDataProvider.MethodParameters>
                 <x:Type TypeName="Models:WebmshareTypes" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider MethodName="GetValues"
+        ObjectType="{x:Type sys:Enum}"
+        x:Key="MetadataType">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="Models:MetadataType" />
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
     </Window.Resources>
@@ -525,6 +532,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Label x:Name="perBlogLabel" Grid.Column="0" Grid.Row="0" Margin="5"
                        Content="{x:Static p:Resources.DefaultSettingsForBlogs}">
@@ -567,7 +575,14 @@
                           IsChecked="{Binding DownloadAnswers, Mode=TwoWay}" Grid.Column="0" Grid.Row="8" Margin="10" />
                         <CheckBox x:Name="checkBoxDownloadRebloggedPosts" Content="{x:Static p:Resources.DownloadRebloggedPosts}"
                           IsChecked="{Binding DownloadRebloggedPosts, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="9" Margin="10" />
-                        <Label Grid.Column="0" Grid.Row="10" Content="{x:Static p:Resources.DownloadPages}"
+                        <Label Grid.Column="0" Grid.Row="10" x:Name="metadataFormatLabel" Content="{x:Static p:Resources.MetadataFormat}"
+                       VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10" />
+                        <ComboBox x:Name="metadataFormatComboBox" Grid.Column="1" Grid.Row="10" Margin="5" 
+                          ItemsSource="{Binding Source={StaticResource MetadataType}}" SelectedValuePath="."
+                          SelectedValue="{Binding MetadataFormat}"
+                          SelectedItem="{Binding MetadataFormat, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                          HorizontalAlignment="Stretch" VerticalAlignment="Center" MinWidth="40" />
+                        <Label Grid.Column="0" Grid.Row="11" Content="{x:Static p:Resources.DownloadPages}"
                        HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10" >
                             <Label.ToolTip>
                                 <ToolTip>
@@ -581,7 +596,7 @@
                         </Label>
                         <TextBox 
                          Text="{Binding DownloadPages, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                         Grid.Column="1" Grid.Row="10" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center" >
+                         Grid.Column="1" Grid.Row="11" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center" >
                             <TextBox.ToolTip>
                                 <ToolTip>
                                     <StackPanel>
@@ -592,7 +607,7 @@
                                 </ToolTip>
                             </TextBox.ToolTip>
                         </TextBox>
-                        <Label Grid.Column="2" Grid.Row="10" Content="{x:Static p:Resources.PageSize}"
+                        <Label Grid.Column="2" Grid.Row="11" Content="{x:Static p:Resources.PageSize}"
                        HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10" >
                             <Label.ToolTip>
                                 <ToolTip>
@@ -605,7 +620,7 @@
                             </Label.ToolTip>
                         </Label>
                         <TextBox Text="{Binding PageSize, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                         Grid.Column="3" Grid.Row="10" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center"
+                         Grid.Column="3" Grid.Row="11" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center"
                          Margin="00,0,10,0" >
                             <TextBox.ToolTip>
                                 <ToolTip>
@@ -617,7 +632,7 @@
                                 </ToolTip>
                             </TextBox.ToolTip>
                         </TextBox>
-                        <Label Grid.Column="0" Grid.Row="11" Content="{x:Static p:Resources.DownloadFrom}"
+                        <Label Grid.Column="0" Grid.Row="12" Content="{x:Static p:Resources.DownloadFrom}"
                        HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10" >
                             <Label.ToolTip>
                                 <ToolTip>
@@ -631,7 +646,7 @@
                         </Label>
                         <TextBox 
                          Text="{Binding DownloadFrom, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                         Grid.Column="1" Grid.Row="11" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center" >
+                         Grid.Column="1" Grid.Row="12" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center" >
                             <TextBox.ToolTip>
                                 <ToolTip>
                                     <StackPanel>
@@ -642,7 +657,7 @@
                                 </ToolTip>
                             </TextBox.ToolTip>
                         </TextBox>
-                        <Label Grid.Column="2" Grid.Row="11" Content="{x:Static p:Resources.DownloadTo}"
+                        <Label Grid.Column="2" Grid.Row="12" Content="{x:Static p:Resources.DownloadTo}"
                        HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10" >
                             <Label.ToolTip>
                                 <ToolTip>
@@ -655,7 +670,7 @@
                             </Label.ToolTip>
                         </Label>
                         <TextBox Text="{Binding DownloadTo, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                         Grid.Column="3" Grid.Row="11" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center"
+                         Grid.Column="3" Grid.Row="12" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center"
                          Margin="00,0,10,0" >
                             <TextBox.ToolTip>
                                 <ToolTip>
@@ -669,7 +684,7 @@
                         </TextBox>
                         <!--<CheckBox x:Name="checkBoxCheckDirectoryForFiles"
                           Content="{x:Static p:Resources.CheckDirectoryForFiles}"
-                          IsChecked="{Binding CheckDirectoryForFiles, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="11"
+                          IsChecked="{Binding CheckDirectoryForFiles, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="12"
                           Margin="10">
                             <CheckBox.ToolTip>
                                 <ToolTip>
@@ -683,7 +698,7 @@
                             </CheckBox.ToolTip>
                         </CheckBox>-->
                         <CheckBox x:Name="checkBoxDownloadUrlList" Content="{x:Static p:Resources.DownloadUrlList}"
-                          IsChecked="{Binding DownloadUrlList, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="12" Margin="10">
+                          IsChecked="{Binding DownloadUrlList, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="13" Margin="10">
                             <CheckBox.ToolTip>
                                 <ToolTip>
                                     <StackPanel>
@@ -694,7 +709,7 @@
                                 </ToolTip>
                             </CheckBox.ToolTip>
                         </CheckBox>
-                        <Label Grid.Column="2" Grid.Row="12" Content="{x:Static p:Resources.Tags}"
+                        <Label Grid.Column="2" Grid.Row="13" Content="{x:Static p:Resources.Tags}"
                        HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10" >
                             <Label.ToolTip>
                                 <ToolTip>
@@ -707,7 +722,7 @@
                             </Label.ToolTip>
                         </Label>
                         <TextBox Text="{Binding Tags, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                         Grid.Column="3" Grid.Row="12" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center"
+                         Grid.Column="3" Grid.Row="13" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center"
                          Margin="00,0,10,0" >
                             <TextBox.ToolTip>
                                 <ToolTip>
@@ -720,9 +735,9 @@
                             </TextBox.ToolTip>
                         </TextBox>
                         <CheckBox x:Name="checkBoxSkipGif" Content="{x:Static p:Resources.SkipGif}"
-                          IsChecked="{Binding SkipGif, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="13" Margin="10" />
+                          IsChecked="{Binding SkipGif, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="14" Margin="10" />
                         <CheckBox x:Name="checkBoxForceSize" Content="{x:Static p:Resources.ForceSize}"
-                          IsChecked="{Binding ForceSize, Mode=TwoWay}" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="13" Margin="10">
+                          IsChecked="{Binding ForceSize, Mode=TwoWay}" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="14" Margin="10">
                             <CheckBox.ToolTip>
                                 <ToolTip>
                                     <StackPanel>
@@ -734,7 +749,7 @@
                             </CheckBox.ToolTip>
                         </CheckBox>
                         <CheckBox x:Name="checkBoxDumpCrawlerData" Content="{x:Static p:Resources.DumpCrawlerData}"
-                          IsChecked="{Binding DumpCrawlerData, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="14" Margin="10">
+                          IsChecked="{Binding DumpCrawlerData, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="15" Margin="10">
                             <CheckBox.ToolTip>
                                 <ToolTip>
                                     <StackPanel>

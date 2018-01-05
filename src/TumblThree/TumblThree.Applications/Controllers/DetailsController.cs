@@ -176,6 +176,7 @@ namespace TumblThree.Applications.Controllers
                 SettingsTabIndex = SetProperty<int>(sharedBlogFiles, "SettingsTabIndex"),
                 GfycatType = SetProperty<GfycatTypes>(sharedBlogFiles, "GfycatType"),
                 WebmshareType = SetProperty<WebmshareTypes>(sharedBlogFiles, "WebmshareType"),
+                MetadataFormat = SetProperty<MetadataType>(sharedBlogFiles, "MetadataFormat"),
                 DumpCrawlerData = SetCheckBox(sharedBlogFiles, "DumpCrawlerData"),
                 FileDownloadLocation = SetProperty<string>(sharedBlogFiles, "FileDownloadLocation"),
                 Dirty = false

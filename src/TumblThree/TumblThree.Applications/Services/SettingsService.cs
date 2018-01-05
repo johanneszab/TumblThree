@@ -29,6 +29,7 @@ namespace TumblThree.Applications.Services
             blog.CreatePhotoMeta = shellService.Settings.CreateImageMeta;
             blog.CreateVideoMeta = shellService.Settings.CreateVideoMeta;
             blog.CreateAudioMeta = shellService.Settings.CreateAudioMeta;
+            blog.MetadataFormat = shellService.Settings.MetadataFormat;
             blog.SkipGif = shellService.Settings.SkipGif;
             blog.DownloadRebloggedPosts = shellService.Settings.DownloadRebloggedPosts;
             blog.ForceSize = shellService.Settings.ForceSize;

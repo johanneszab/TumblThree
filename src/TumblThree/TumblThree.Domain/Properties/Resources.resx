@@ -120,6 +120,9 @@
   <data name="gif" xml:space="preserve">
     <value>gif</value>
   </data>
+  <data name="json" xml:space="preserve">
+    <value>json</value>
+  </data>
   <data name="max2mbgif" xml:space="preserve">
     <value>2mb gif</value>
   </data>
@@ -135,10 +138,16 @@
   <data name="poster" xml:space="preserve">
     <value>poster</value>
   </data>
+  <data name="text" xml:space="preserve">
+    <value>text</value>
+  </data>
   <data name="webm" xml:space="preserve">
     <value>webm</value>
   </data>
   <data name="webp" xml:space="preserve">
     <value>webp</value>
+  </data>
+  <data name="xml" xml:space="preserve">
+    <value>xml</value>
   </data>
 </root>

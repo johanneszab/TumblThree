@@ -7,378 +7,378 @@ namespace TumblThree.Applications.DataModels.TumblrApiJson
     [DataContract]
     public class TumblrApiJson
     {
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public Tumblelog tumblelog { get; set; }
 
-        [DataMember(Name = "posts-start")]
+        [DataMember(Name = "posts-start", EmitDefaultValue = false)]
         public int posts_start { get; set; }
 
-        [DataMember(Name = "posts-total")]
+        [DataMember(Name = "posts-total", EmitDefaultValue = false)]
         public int posts_total { get; set; }
 
-        [DataMember(Name = "posts-type")]
+        [DataMember(Name = "posts-type", EmitDefaultValue = false)]
         public bool posts_type { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public List<Post> posts { get; set; }
     }
 
     [DataContract]
     public class Tumblelog
     {
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string title { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string description { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string name { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string timezone { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public bool cname { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public List<object> feeds { get; set; }
     }
 
     [DataContract]
     public class Tumblelog2
     {
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string title { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string name { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public bool cname { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string url { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string timezone { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string avatar_url_16 { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string avatar_url_24 { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string avatar_url_30 { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string avatar_url_40 { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string avatar_url_48 { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string avatar_url_64 { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string avatar_url_96 { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string avatar_url_128 { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string avatar_url_512 { get; set; }
     }
 
     [DataContract]
     public class Conversation
     {
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string name { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string label { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string phrase { get; set; }
     }
 
     [DataContract]
     public class Photo
     {
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string offset { get; set; }
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string caption { get; set; }
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public int width { get; set; }
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public int height { get; set; }
 
-        [DataMember(Name = "photo-url-1280")]
+        [DataMember(Name = "photo-url-1280", EmitDefaultValue = false)]
         public string photo_url_1280 { get; set; }
 
-        [DataMember(Name = "photo-url-500")]
+        [DataMember(Name = "photo-url-500", EmitDefaultValue = false)]
         public string photo_url_500 { get; set; }
 
-        [DataMember(Name = "photo-url-400")]
+        [DataMember(Name = "photo-url-400", EmitDefaultValue = false)]
         public string photo_url_400 { get; set; }
 
-        [DataMember(Name = "photo-url-250")]
+        [DataMember(Name = "photo-url-250", EmitDefaultValue = false)]
         public string photo_url_250 { get; set; }
 
-        [DataMember(Name = "photo-url-100")]
+        [DataMember(Name = "photo-url-100", EmitDefaultValue = false)]
         public string photo_url_100 { get; set; }
 
-        [DataMember(Name = "photo-url-75")]
+        [DataMember(Name = "photo-url-75", EmitDefaultValue = false)]
         public string photo_url_75 { get; set; }
     }
 
     [DataContract]
     public class Post : ICloneable
     {
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string id { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string url { get; set; }
 
-        [DataMember(Name = "url-with-slug")]
+        [DataMember(Name = "url-with-slug", EmitDefaultValue = false)]
         public string url_with_slug { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string type { get; set; }
 
-        [DataMember(Name = "date-gmt")]
+        [DataMember(Name = "date-gmt", EmitDefaultValue = false)]
         public string date_gmt { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string date { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public int bookmarklet { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public int mobile { get; set; }
 
-        [DataMember(Name = "feed-item")]
+        [DataMember(Name = "feed-item", EmitDefaultValue = false)]
         public string feed_item { get; set; }
 
-        [DataMember(Name = "from-feed-id")]
+        [DataMember(Name = "from-feed-id", EmitDefaultValue = false)]
         public int from_feed_id { get; set; }
 
-        [DataMember(Name = "unix-timestamp")]
+        [DataMember(Name = "unix-timestamp", EmitDefaultValue = false)]
         public int unix_timestamp { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string format { get; set; }
 
-        [DataMember(Name = "reblog-key")]
+        [DataMember(Name = "reblog-key", EmitDefaultValue = false)]
         public string reblog_key { get; set; }
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string slug { get; set; }
 
-        [DataMember(Name = "is-submission")]
+        [DataMember(Name = "is-submission", EmitDefaultValue = false)]
         public bool is_submission { get; set; }
 
-        [DataMember(Name = "like-button")]
+        [DataMember(Name = "like-button", EmitDefaultValue = false)]
         public string like_button { get; set; }
 
-        [DataMember(Name = "reblog-button")]
+        [DataMember(Name = "reblog-button", EmitDefaultValue = false)]
         public string reblog_button { get; set; }
 
-        [DataMember(Name = "note-count")]
+        [DataMember(Name = "note-count", EmitDefaultValue = false)]
         public string note_count { get; set; }
 
-        [DataMember(Name = "reblogged-from-url")]
+        [DataMember(Name = "reblogged-from-url", EmitDefaultValue = false)]
         public string reblogged_from_url { get; set; }
 
-        [DataMember(Name = "reblogged-from-name")]
+        [DataMember(Name = "reblogged-from-name", EmitDefaultValue = false)]
         public string reblogged_from_name { get; set; }
 
-        [DataMember(Name = "reblogged-from-title")]
+        [DataMember(Name = "reblogged-from-title", EmitDefaultValue = false)]
         public string reblogged_from_title { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string reblogged_from_avatar_url_16 { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string reblogged_from_avatar_url_24 { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string reblogged_from_avatar_url_30 { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string reblogged_from_avatar_url_40 { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string reblogged_from_avatar_url_48 { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string reblogged_from_avatar_url_64 { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string reblogged_from_avatar_url_96 { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string reblogged_from_avatar_url_128 { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string reblogged_from_avatar_url_512 { get; set; }
 
-        [DataMember(Name = "reblogged-root-url")]
+        [DataMember(Name = "reblogged-root-url", EmitDefaultValue = false)]
         public string reblogged_root_url { get; set; }
 
-        [DataMember(Name = "reblogged-root-name")]
+        [DataMember(Name = "reblogged-root-name", EmitDefaultValue = false)]
         public string reblogged_root_name { get; set; }
 
-        [DataMember(Name = "reblogged-root-title")]
+        [DataMember(Name = "reblogged-root-title", EmitDefaultValue = false)]
         public string reblogged_root_title { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string reblogged_root_avatar_url_16 { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string reblogged_root_avatar_url_24 { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string reblogged_root_avatar_url_30 { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string reblogged_root_avatar_url_40 { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string reblogged_root_avatar_url_48 { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string reblogged_root_avatar_url_64 { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string reblogged_root_avatar_url_96 { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string reblogged_root_avatar_url_128 { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string reblogged_root_avatar_url_512 { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public Tumblelog2 tumblelog { get; set; }
 
-        [DataMember(Name = "quote-text")]
+        [DataMember(Name = "quote-text", EmitDefaultValue = false)]
         public string quote_text { get; set; }
 
-        [DataMember(Name = "quote-source")]
+        [DataMember(Name = "quote-source", EmitDefaultValue = false)]
         public string quote_source { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public List<string> tags { get; set; }
 
-        [DataMember(Name = "photo-caption")]
+        [DataMember(Name = "photo-caption", EmitDefaultValue = false)]
         public string photo_caption { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public int? width { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public int? height { get; set; }
 
-        [DataMember(Name = "photo-url-1280")]
+        [DataMember(Name = "photo-url-1280", EmitDefaultValue = false)]
         public string photo_url_1280 { get; set; }
 
-        [DataMember(Name = "photo-url-500")]
+        [DataMember(Name = "photo-url-500", EmitDefaultValue = false)]
         public string photo_url_500 { get; set; }
 
-        [DataMember(Name = "photo-url-400")]
+        [DataMember(Name = "photo-url-400", EmitDefaultValue = false)]
         public string photo_url_400 { get; set; }
 
-        [DataMember(Name = "photo-url-250")]
+        [DataMember(Name = "photo-url-250", EmitDefaultValue = false)]
         public string photo_url_250 { get; set; }
 
-        [DataMember(Name = "photo-url-100")]
+        [DataMember(Name = "photo-url-100", EmitDefaultValue = false)]
         public string photo_url_100 { get; set; }
 
-        [DataMember(Name = "photo-url-75")]
+        [DataMember(Name = "photo-url-75", EmitDefaultValue = false)]
         public string photo_url_75 { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public List<Photo> photos { get; set; }
 
-        [DataMember(Name = "photo-link-url")]
+        [DataMember(Name = "photo-link-url", EmitDefaultValue = false)]
         public string photo_link_url { get; set; }
 
-        [DataMember(Name = "id3-artist")]
+        [DataMember(Name = "id3-artist", EmitDefaultValue = false)]
         public string id3_artist { get; set; }
 
-        [DataMember(Name = "id3-album")]
+        [DataMember(Name = "id3-album", EmitDefaultValue = false)]
         public string id3_album { get; set; }
 
-        [DataMember(Name = "id3-year")]
+        [DataMember(Name = "id3-year", EmitDefaultValue = false)]
         public string id3_year { get; set; }
 
-        [DataMember(Name = "id3-track")]
+        [DataMember(Name = "id3-track", EmitDefaultValue = false)]
         public string id3_track { get; set; }
 
-        [DataMember(Name = "id3-title")]
+        [DataMember(Name = "id3-title", EmitDefaultValue = false)]
         public string id3_title { get; set; }
 
-        [DataMember(Name = "audio-caption")]
+        [DataMember(Name = "audio-caption", EmitDefaultValue = false)]
         public string audio_caption { get; set; }
 
-        [DataMember(Name = "audio-player")]
+        [DataMember(Name = "audio-player", EmitDefaultValue = false)]
         public string audio_player { get; set; }
 
-        [DataMember(Name = "audio-embed")]
+        [DataMember(Name = "audio-embed", EmitDefaultValue = false)]
         public string audio_embed { get; set; }
 
-        [DataMember(Name = "audio-plays")]
+        [DataMember(Name = "audio-plays", EmitDefaultValue = false)]
         public int? audio_plays { get; set; }
 
-        [DataMember(Name = "regular-title")]        
+        [DataMember(Name = "regular-title", EmitDefaultValue = false)]
         public string regular_title { get; set; }
 
-        [DataMember(Name = "regular-body")]
+        [DataMember(Name = "regular-body", EmitDefaultValue = false)]
         public string regular_body { get; set; }
 
-        [DataMember(Name = "link-text")]
+        [DataMember(Name = "link-text", EmitDefaultValue = false)]
         public string link_text { get; set; }
 
-        [DataMember(Name = "link-url")]
+        [DataMember(Name = "link-url", EmitDefaultValue = false)]
         public string link_url { get; set; }
 
-        [DataMember(Name = "link-description")]
+        [DataMember(Name = "link-description", EmitDefaultValue = false)]
         public string link_description { get; set; }
 
-        [DataMember(Name = "conversation-title")]
+        [DataMember(Name = "conversation-title", EmitDefaultValue = false)]
         public string conversation_title { get; set; }
 
-        [DataMember(Name = "conversation-text")]
+        [DataMember(Name = "conversation-text", EmitDefaultValue = false)]
         public string conversation_text { get; set; }
 
-        [DataMember(Name = "video-caption")]
+        [DataMember(Name = "video-caption", EmitDefaultValue = false)]
         public string video_caption { get; set; }
 
-        [DataMember(Name = "video-source")]
+        [DataMember(Name = "video-source", EmitDefaultValue = false)]
         public string video_source { get; set; }
 
-        [DataMember(Name = "video-player")]
+        [DataMember(Name = "video-player", EmitDefaultValue = false)]
         public string video_player { get; set; }
 
-        [DataMember(Name = "video-player-500")]
+        [DataMember(Name = "video-player-500", EmitDefaultValue = false)]
         public string video_player_500 { get; set; }
 
-        [DataMember(Name = "video-player-250")]
+        [DataMember(Name = "video-player-250", EmitDefaultValue = false)]
         public string video_player_250 { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public List<Conversation> conversation { get; set; }
 
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string submitter { get; set; }
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string question { get; set; }
-        [DataMember]
+        [DataMember(EmitDefaultValue = false)]
         public string answer { get; set; }
 
         public object Clone()
@@ -386,7 +386,7 @@ namespace TumblThree.Applications.DataModels.TumblrApiJson
             return this.MemberwiseClone();
         }
 
-        [OnDeserializing()]
+        [OnDeserializing]
         internal void OnDeserializingMethod(StreamingContext context)
         {
             Initialize();

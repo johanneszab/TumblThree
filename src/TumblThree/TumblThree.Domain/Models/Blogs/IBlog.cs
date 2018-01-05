@@ -98,6 +98,8 @@ namespace TumblThree.Domain.Models
 
         bool CreateAudioMeta { get; set; }
 
+        MetadataType MetadataFormat { get; set; }
+
         bool DumpCrawlerData { get; set; }
 
         string FileDownloadLocation { get; set; }

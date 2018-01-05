@@ -85,6 +85,7 @@ namespace TumblThree.Applications.ViewModels
         private bool downloadGfycat;
         private bool downloadImgur;
         private bool downloadWebmshare;
+        private MetadataType metadataFormat;
         private GfycatTypes gfycatType;
         private WebmshareTypes webmshareType;
         private bool removeIndexAfterCrawl;
@@ -453,6 +454,12 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref createAudioMeta, value); }
         }
 
+        public MetadataType MetadataFormat
+        {
+            get { return metadataFormat; }
+            set { SetProperty(ref metadataFormat, value); }
+        }
+
         public bool DumpCrawlerData
         {
             get { return dumpCrawlerData; }
@@ -682,6 +689,7 @@ namespace TumblThree.Applications.ViewModels
                 CreateImageMeta = settings.CreateImageMeta;
                 CreateVideoMeta = settings.CreateVideoMeta;
                 CreateAudioMeta = settings.CreateAudioMeta;
+                MetadataFormat = settings.MetadataFormat;
                 DumpCrawlerData = settings.DumpCrawlerData;
                 DownloadPages = settings.DownloadPages;
                 PageSize = settings.PageSize;
@@ -748,6 +756,7 @@ namespace TumblThree.Applications.ViewModels
                 CreateImageMeta = false;
                 CreateVideoMeta = false;
                 CreateAudioMeta = false;
+                MetadataFormat = MetadataType.Text;
                 DumpCrawlerData = false;
                 DownloadPages = string.Empty;
                 PageSize = 100;
@@ -856,6 +865,7 @@ namespace TumblThree.Applications.ViewModels
             settings.CreateImageMeta = CreateImageMeta;
             settings.CreateVideoMeta = CreateVideoMeta;
             settings.CreateAudioMeta = CreateAudioMeta;
+            settings.MetadataFormat = MetadataFormat;
             settings.DumpCrawlerData = DumpCrawlerData;
             settings.DownloadPages = DownloadPages;
             settings.PageSize = PageSize;

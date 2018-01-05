@@ -75,6 +75,7 @@
     <Compile Include="Crawler\ITumblrBlogDetector.cs" />
     <Compile Include="Parser\ITumblrParser.cs" />
     <Compile Include="Parser\ITumblrToTextParser.cs" />
+    <Compile Include="Parser\TumblrApiJsonToJson.cs" />
     <Compile Include="Parser\TumblrApiJsonToText.cs" />
     <Compile Include="Parser\TumblrParser.cs" />
     <Compile Include="DataModels\DownloadProgress.cs" />

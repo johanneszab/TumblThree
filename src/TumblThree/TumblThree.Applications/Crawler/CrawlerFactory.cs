@@ -55,7 +55,7 @@ namespace TumblThree.Applications.Crawler
                     IImgurParser imgurParser = GetImgurParser(webRequestFactory, ct);
                     IGfycatParser gfycatParser = GetGfycatParser(webRequestFactory, ct);
                     IPostQueue<TumblrCrawlerData<DataModels.TumblrSvcJson.Post>> jsonSvcQueue = GetJsonQueue<DataModels.TumblrSvcJson.Post>();
-                    return new TumblrBlogCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, managerService, blog, files, postQueue), GetTumblrJsonDownloader(shellService, ct, pt, jsonSvcQueue, crawlerService, blog), GetTumblrSvcJsonToTextParser(), imgurParser, gfycatParser, GetWebmshareParser(), postQueue, jsonSvcQueue, blog);
+                    return new TumblrBlogCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, managerService, blog, files, postQueue), GetTumblrJsonDownloader(shellService, ct, pt, jsonSvcQueue, crawlerService, blog), GetTumblrSvcJsonToTextParser(blog), imgurParser, gfycatParser, GetWebmshareParser(), postQueue, jsonSvcQueue, blog);
                 case BlogTypes.tlb:
                     return new TumblrLikedByCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, managerService, blog, files, postQueue), postQueue, blog);
                 case BlogTypes.tumblrsearch:
@@ -130,12 +130,20 @@ namespace TumblThree.Applications.Crawler
             return new TumblrApiXmlToTextParser();
         }
 
-        private ITumblrToTextParser<DataModels.TumblrApiJson.Post> GetTumblrApiJsonToTextParser()
+        private ITumblrToTextParser<DataModels.TumblrApiJson.Post> GetTumblrApiJsonToTextParser(IBlog blog)
         {
-            return new TumblrApiJsonToTextParser<DataModels.TumblrApiJson.Post>();
+            switch (blog.MetadataFormat)
+            {
+                case MetadataType.Text:
+                    return new TumblrApiJsonToTextParser<DataModels.TumblrApiJson.Post>();
+                case MetadataType.Json:
+                    return new TumblrApiJsonToJsonParser<DataModels.TumblrApiJson.Post>();
+                default:
+                    throw new ArgumentException("Website is not supported!", "blogType");
+            }
         }
 
-        private ITumblrToTextParser<DataModels.TumblrSvcJson.Post> GetTumblrSvcJsonToTextParser()
+        private ITumblrToTextParser<DataModels.TumblrSvcJson.Post> GetTumblrSvcJsonToTextParser(IBlog blog)
         {
             return new TumblrSvcJsonToTextParser<DataModels.TumblrSvcJson.Post>();
         }
