@@ -2,7 +2,7 @@
 
 namespace TumblThree.Applications.Parser
 {
-    public interface ITumblrXmlToTextParser
+    public interface ITumblrApiXmlToTextParser
     {
         string ParseAnswer(XElement post);
         string ParseAudioMeta(XElement post);

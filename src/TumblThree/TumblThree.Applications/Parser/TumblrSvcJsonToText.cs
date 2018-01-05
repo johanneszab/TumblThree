@@ -6,9 +6,9 @@ using TumblThree.Applications.Properties;
 
 namespace TumblThree.Applications.Parser
 {
-    public class TumblrJsonToTextParser : ITumblrJsonToTextParser
+    public class TumblrSvcJsonToTextParser<T> : ITumblrToTextParser<T> where T : Post
     {
-        public string ParseText(Post post)
+        public string ParseText(T post)
         {
             return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) + ", " +
                    string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
@@ -31,7 +31,7 @@ namespace TumblThree.Applications.Parser
                    Environment.NewLine;
         }
 
-        public string ParseQuote(Post post)
+        public string ParseQuote(T post)
         {
             return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) + ", " +
                    string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
@@ -54,7 +54,7 @@ namespace TumblThree.Applications.Parser
                    Environment.NewLine;
         }
 
-        public string ParseLink(Post post)
+        public string ParseLink(T post)
         {
             return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) + ", " +
                    string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
@@ -77,7 +77,7 @@ namespace TumblThree.Applications.Parser
                    Environment.NewLine;
         }
 
-        public string ParseConversation(Post post)
+        public string ParseConversation(T post)
         {
             return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) + ", " +
                    string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
@@ -100,7 +100,7 @@ namespace TumblThree.Applications.Parser
                    Environment.NewLine;
         }
 
-        public string ParseAnswer(Post post)
+        public string ParseAnswer(T post)
         {
             return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) + ", " +
                    string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
@@ -124,7 +124,7 @@ namespace TumblThree.Applications.Parser
                    Environment.NewLine;
         }
 
-        public string ParsePhotoMeta(Post post)
+        public string ParsePhotoMeta(T post)
         {
             return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) + ", " +
                    string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
@@ -148,7 +148,7 @@ namespace TumblThree.Applications.Parser
                    Environment.NewLine;
         }
 
-        public string ParseVideoMeta(Post post)
+        public string ParseVideoMeta(T post)
         {
             return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) + ", " +
                    string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
@@ -168,7 +168,7 @@ namespace TumblThree.Applications.Parser
                    Environment.NewLine;
         }
 
-        public string ParseAudioMeta(Post post)
+        public string ParseAudioMeta(T post)
         {
             return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) + ", " +
                    string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +

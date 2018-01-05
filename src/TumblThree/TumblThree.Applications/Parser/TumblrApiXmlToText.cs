@@ -6,7 +6,7 @@ using TumblThree.Applications.Properties;
 
 namespace TumblThree.Applications.Parser
 {
-    public class TumblrXmlToTextParser : ITumblrXmlToTextParser
+    public class TumblrApiXmlToTextParser : ITumblrApiXmlToTextParser
     {
         public string ParsePhotoMeta(XElement post)
         {

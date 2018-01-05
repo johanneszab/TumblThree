@@ -1,14 +1,14 @@
-﻿using System.Xml.Linq;
+﻿using TumblThree.Applications.DataModels.TumblrApiJson;
 
 namespace TumblThree.Applications.DataModels.TumblrCrawlerData
 {
-    public class TumblrCrawlerXmlData : ITumblrCrawlerData
+    public class TumblrCrawlerData<T> : ITumblrCrawlerData
     {
-        public XContainer Data { get; protected set; }
+        public T Data { get; protected set; }
 
         public string Filename { get; protected set; }
 
-        public TumblrCrawlerXmlData(string filename, XContainer data)
+        public TumblrCrawlerData(string filename, T data)
         {
             this.Filename = filename;
             this.Data = data;

@@ -8,7 +8,7 @@ namespace TumblThree.Applications.DataModels.TumblrPosts
         {
             PostType = PostType.Text;
             DbType = "DownloadedLinks";
-            TextFileLocation = Resources.FileNamePhotos;
+            TextFileLocation = Resources.FileNameLinks;
         }
 
         public LinkPost(string url, string id) : this(url, id, string.Empty)

@@ -332,7 +332,13 @@
   <data name="UrlWithSlug" xml:space="preserve">
     <value>Url with slug: {0}</value>
   </data>
+  <data name="VideoCaption" xml:space="preserve">
+    <value>Video Caption: {0}</value>
+  </data>
   <data name="VideoPlayer" xml:space="preserve">
     <value>Video Player: {0}</value>
+  </data>
+  <data name="VideoSource" xml:space="preserve">
+    <value>Video Source: {0}</value>
   </data>
 </root>
