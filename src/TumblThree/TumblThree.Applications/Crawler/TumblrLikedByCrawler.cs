@@ -25,8 +25,9 @@ namespace TumblThree.Applications.Crawler
         private readonly IDownloader downloader;
         private readonly PauseToken pt;
 
-        public TumblrLikedByCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
-            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IDownloader downloader, IPostQueue<TumblrPost> postQueue, IBlog blog)
+        public TumblrLikedByCrawler(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress,
+            ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IDownloader downloader,
+            IPostQueue<TumblrPost> postQueue, IBlog blog)
             : base(shellService, ct, progress, webRequestFactory, cookieService, postQueue, blog)
         {
             this.downloader = downloader;

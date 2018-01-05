@@ -30,8 +30,9 @@ namespace TumblThree.Applications.Crawler
         private readonly PauseToken pt;
         private string tumblrKey = String.Empty;
 
-        public TumblrSearchCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
-            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IDownloader downloader, IPostQueue<TumblrPost> postQueue, IBlog blog)
+        public TumblrSearchCrawler(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress,
+            ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IDownloader downloader,
+            IPostQueue<TumblrPost> postQueue, IBlog blog)
             : base(shellService, ct, progress, webRequestFactory, cookieService, postQueue, blog)
         {
             this.downloader = downloader;

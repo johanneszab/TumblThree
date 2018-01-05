@@ -702,11 +702,29 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Video Caption: {0}.
+        /// </summary>
+        public static string VideoCaption {
+            get {
+                return ResourceManager.GetString("VideoCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Video Player: {0}.
         /// </summary>
         public static string VideoPlayer {
             get {
                 return ResourceManager.GetString("VideoPlayer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Video Source: {0}.
+        /// </summary>
+        public static string VideoSource {
+            get {
+                return ResourceManager.GetString("VideoSource", resourceCulture);
             }
         }
     }

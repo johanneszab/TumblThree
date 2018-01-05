@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
+using TumblThree.Applications.DataModels;
 using TumblThree.Applications.DataModels.TumblrCrawlerData;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
@@ -19,12 +20,12 @@ namespace TumblThree.Applications.Downloader
     {
         protected readonly IBlog blog;
         protected readonly ICrawlerService crawlerService;
-        protected readonly BlockingCollection<TumblrCrawlerXmlData> xmlQueue;
+        protected readonly IPostQueue<TumblrCrawlerData<XDocument>> xmlQueue;
         protected readonly IShellService shellService;
         protected readonly CancellationToken ct;
         protected readonly PauseToken pt;
 
-        public TumblrXmlDownloader(IShellService shellService, CancellationToken ct, PauseToken pt, BlockingCollection<TumblrCrawlerXmlData> xmlQueue, ICrawlerService crawlerService, IBlog blog)
+        public TumblrXmlDownloader(IShellService shellService, CancellationToken ct, PauseToken pt, IPostQueue<TumblrCrawlerData<XDocument>> xmlQueue, ICrawlerService crawlerService, IBlog blog)
         {
             this.shellService = shellService;
             this.crawlerService = crawlerService;
@@ -39,7 +40,7 @@ namespace TumblThree.Applications.Downloader
             var trackedTasks = new List<Task>();
             blog.CreateDataFolder();
 
-            foreach (TumblrCrawlerXmlData downloadItem in xmlQueue.GetConsumingEnumerable())
+            foreach (TumblrCrawlerData<XDocument> downloadItem in xmlQueue.GetConsumingEnumerable())
             {
                 if (ct.IsCancellationRequested)
                 {
@@ -61,7 +62,7 @@ namespace TumblThree.Applications.Downloader
         }
 
 
-        private async Task DownloadTextPost(TumblrCrawlerXmlData crawlerData)
+        private async Task DownloadTextPost(TumblrCrawlerData<XDocument> crawlerData)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string fileLocation = FileLocation(blogDownloadLocation, crawlerData.Filename);

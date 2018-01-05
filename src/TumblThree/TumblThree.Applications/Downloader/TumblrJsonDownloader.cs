@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Json;
@@ -7,10 +6,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
-using System.Xml.Linq;
 using TumblThree.Applications.DataModels;
 using TumblThree.Applications.DataModels.TumblrCrawlerData;
-using TumblThree.Applications.DataModels.TumblrSvcJson;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain;
@@ -18,16 +15,16 @@ using TumblThree.Domain.Models;
 
 namespace TumblThree.Applications.Downloader
 {
-    public class TumblrJsonDownloader : ICrawlerDataDownloader
+    public class TumblrJsonDownloader<T> : ICrawlerDataDownloader
     {
         protected readonly IBlog blog;
         protected readonly ICrawlerService crawlerService;
-        protected readonly IPostQueue<TumblrCrawlerJsonData> jsonQueue;
+        protected readonly IPostQueue<TumblrCrawlerData<T>> jsonQueue;
         protected readonly IShellService shellService;
         protected readonly CancellationToken ct;
         protected readonly PauseToken pt;
 
-        public TumblrJsonDownloader(IShellService shellService, CancellationToken ct, PauseToken pt, IPostQueue<TumblrCrawlerJsonData> jsonQueue, ICrawlerService crawlerService, IBlog blog)
+        public TumblrJsonDownloader(IShellService shellService, CancellationToken ct, PauseToken pt, IPostQueue<TumblrCrawlerData<T>> jsonQueue, ICrawlerService crawlerService, IBlog blog)
         {
             this.shellService = shellService;
             this.crawlerService = crawlerService;
@@ -42,7 +39,7 @@ namespace TumblThree.Applications.Downloader
             var trackedTasks = new List<Task>();
             blog.CreateDataFolder();
 
-            foreach (TumblrCrawlerJsonData downloadItem in jsonQueue.GetConsumingEnumerable())
+            foreach (TumblrCrawlerData<T> downloadItem in jsonQueue.GetConsumingEnumerable())
             {
                 if (ct.IsCancellationRequested)
                 {
@@ -63,15 +60,14 @@ namespace TumblThree.Applications.Downloader
             catch { }
         }
 
-
-        private async Task DownloadTextPost(TumblrCrawlerJsonData crawlerData)
+        private async Task DownloadTextPost(TumblrCrawlerData<T> crawlerData)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string fileLocation = FileLocation(blogDownloadLocation, crawlerData.Filename);
             await AppendToTextFile(fileLocation, crawlerData.Data);
         }
 
-        private async Task AppendToTextFile(string fileLocation, Post data)
+        private async Task AppendToTextFile(string fileLocation, T data)
         {
             try
             {
