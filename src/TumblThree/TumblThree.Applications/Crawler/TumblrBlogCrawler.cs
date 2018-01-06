@@ -61,7 +61,7 @@ namespace TumblThree.Applications.Crawler
         {
             try
             {
-                await GetApiPageAsync(1);
+                await GetApiPageAsync(0);
                 blog.Online = true;
             }
             catch (WebException webException)
@@ -115,7 +115,7 @@ namespace TumblThree.Applications.Crawler
         {
             if (blog.Online)
             {
-                string document = await GetApiPageAsync(1);
+                string document = await GetApiPageAsync(0);
                 var response = ConvertJsonToClass<TumblrApiJson>(document);
 
                 blog.Title =  response.tumblelog?.title;
@@ -229,7 +229,7 @@ namespace TumblThree.Applications.Crawler
 
         private async Task UpdateTotalPostCount()
         {
-            string document = await GetApiPageAsync(1);
+            string document = await GetApiPageAsync(0);
             var response = ConvertJsonToClass<TumblrApiJson>(document);
             int totalPosts = response.posts_total;
             blog.Posts = totalPosts;
@@ -255,11 +255,11 @@ namespace TumblThree.Applications.Crawler
 
         private async Task<ulong> GetHighestPostId()
         {
-            string document = await GetApiPageAsync(1);
+            string document = await GetApiPageAsync(0);
             var response = ConvertJsonToClass<TumblrApiJson>(document);
 
             ulong highestId;
-            ulong.TryParse(response.posts.FirstOrDefault().id, out highestId);
+            ulong.TryParse(response.posts.FirstOrDefault()?.id, out highestId);
             return highestId;
         }
 
