@@ -49,18 +49,21 @@ namespace TumblThree.Applications.Controllers
         private readonly IShellService shellService;
         private readonly ISettingsService settingsService;
         private readonly IMessageService messageService;
+        private readonly IClipboardService clipboardService;
         private readonly DelegateCommand showDetailsCommand;
         private readonly DelegateCommand showFilesCommand;
         private readonly DelegateCommand visitBlogCommand;
+        private readonly DelegateCommand copyUrlCommand;
 
         [ImportingConstructor]
-        public ManagerController(IShellService shellService, ISelectionService selectionService, ICrawlerService crawlerService, ISettingsService settingsService,
-            IManagerService managerService, ICrawlerFactory crawlerFactory, IBlogFactory blogFactory, ITumblrBlogDetector tumblrBlogDetector, IMessageService messageService, Lazy<ManagerViewModel> managerViewModel)
+        public ManagerController(IShellService shellService, ISelectionService selectionService, ICrawlerService crawlerService, ISettingsService settingsService, IClipboardService clipboardService,
+                                IManagerService managerService, ICrawlerFactory crawlerFactory, IBlogFactory blogFactory, ITumblrBlogDetector tumblrBlogDetector, IMessageService messageService, Lazy<ManagerViewModel> managerViewModel)
         {
             this.shellService = shellService;
             this.selectionService = selectionService;
             this.crawlerService = crawlerService;
             this.managerService = managerService;
+            this.clipboardService = clipboardService;
             this.managerViewModel = managerViewModel;
             this.settingsService = settingsService;
             this.messageService = messageService;
@@ -77,6 +80,7 @@ namespace TumblThree.Applications.Controllers
             listenClipboardCommand = new DelegateCommand(ListenClipboard);
             autoDownloadCommand = new DelegateCommand(EnqueueAutoDownload, CanEnqueueAutoDownload);
             showDetailsCommand = new DelegateCommand(ShowDetailsCommand);
+            copyUrlCommand = new DelegateCommand(CopyUrl, CanCopyUrl);
         }
 
         private ManagerViewModel ManagerViewModel
@@ -113,6 +117,7 @@ namespace TumblThree.Applications.Controllers
             ManagerViewModel.ShowFilesCommand = showFilesCommand;
             ManagerViewModel.VisitBlogCommand = visitBlogCommand;
             ManagerViewModel.ShowDetailsCommand = showDetailsCommand;
+            ManagerViewModel.CopyUrlCommand = copyUrlCommand;
 
             ManagerViewModel.PropertyChanged += ManagerViewModelPropertyChanged;
 
@@ -461,6 +466,18 @@ namespace TumblThree.Applications.Controllers
         private void ShowDetailsCommand()
         {
             shellService.ShowDetailsView();
+        }
+
+        private void CopyUrl()
+        {
+            var urls = selectionService.SelectedBlogFiles.Select(blog => blog.Url).ToList();
+            urls.Sort();
+            clipboardService.SetText(String.Join(Environment.NewLine, urls));
+        }
+
+        private bool CanCopyUrl()
+        {
+            return ManagerViewModel.SelectedBlogFile != null;
         }
 
         private async Task AddBlogAsync(string blogUrl)

@@ -594,6 +594,15 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} already downloaded, skipping ...
+        /// </summary>
+        public static string ProgressSkipFile {
+            get {
+                return ResourceManager.GetString("ProgressSkipFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Calculating unique downloads, removing duplicates ....
         /// </summary>
         public static string ProgressUniqueDownloads {

@@ -296,6 +296,9 @@
   <data name="ProgressGetUrlShort" xml:space="preserve">
     <value>Evaluated {0} tumblr blog sites.</value>
   </data>
+  <data name="ProgressSkipFile" xml:space="preserve">
+    <value>{0} already downloaded, skipping ..</value>
+  </data>
   <data name="ProgressUniqueDownloads" xml:space="preserve">
     <value>Calculating unique downloads, removing duplicates ...</value>
   </data>

@@ -8,7 +8,7 @@
              xmlns:dd="clr-namespace:TumblThree.Presentation.DesignData"
              xmlns:datagrid="http://schemas.microsoft.com/wpf/2008/toolkit"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance dd:SampleManagerViewModel, IsDesignTimeCreatable=True}"
-             d:DesignHeight="300" d:DesignWidth="600"
+             d:DesignHeight="300" d:DesignWidth="1200"
              Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
 
     <Grid>
@@ -61,6 +61,8 @@
                                           Header="{x:Static p:Resources.ShowFiles}" />
                                 <MenuItem Command="{Binding VisitBlogCommand}"
                                           Header="{x:Static p:Resources.VisitBlog}" />
+                                <MenuItem Command="{Binding CopyUrlCommand}"
+                                          Header="{x:Static p:Resources.CopyUrl}" />
                             </ContextMenu>
                         </Setter.Value>
                     </Setter>

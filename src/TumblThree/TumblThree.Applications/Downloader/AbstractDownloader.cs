@@ -227,6 +227,11 @@ namespace TumblThree.Applications.Downloader
                 }
                 return false;
             }
+            else
+            {
+                string fileName = FileName(downloadItem);
+                UpdateProgressQueueInformation(Resources.ProgressSkipFile, fileName);
+            }
             return true;
         }
 
@@ -259,6 +264,10 @@ namespace TumblThree.Applications.Downloader
                 {
                     UpdateBlogDB(downloadItem.DbType, postId);
                 }
+            }
+            else
+            {
+                UpdateProgressQueueInformation(Resources.ProgressSkipFile, postId);
             }
         }
 
