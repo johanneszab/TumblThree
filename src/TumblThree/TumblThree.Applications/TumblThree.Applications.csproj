@@ -120,6 +120,7 @@
     <Compile Include="Downloader\TumblrXmlDownloader.cs" />
     <Compile Include="ObjectModel\ObservableRangeCollection.cs" />
     <Compile Include="Parser\ITumblrApiXmlToText.cs" />
+    <Compile Include="Parser\TumblrSvcJsonToJson.cs" />
     <Compile Include="Parser\TumblrSvcJsonToText.cs" />
     <Compile Include="Parser\TumblrApiXmlToText.cs" />
     <Compile Include="QueueOnDispatcher.cs" />

@@ -145,7 +145,15 @@ namespace TumblThree.Applications.Crawler
 
         private ITumblrToTextParser<DataModels.TumblrSvcJson.Post> GetTumblrSvcJsonToTextParser(IBlog blog)
         {
-            return new TumblrSvcJsonToTextParser<DataModels.TumblrSvcJson.Post>();
+            switch (blog.MetadataFormat)
+            {
+                case MetadataType.Text:
+                    return new TumblrSvcJsonToTextParser<DataModels.TumblrSvcJson.Post>();
+                case MetadataType.Json:
+                    return new TumblrSvcJsonToJsonParser<DataModels.TumblrSvcJson.Post>();
+                default:
+                    throw new ArgumentException("Website is not supported!", "blogType");
+            }
         }
 
         private IPostQueue<TumblrCrawlerData<XDocument>> GetApiXmlQueue()
