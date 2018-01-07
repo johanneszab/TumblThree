@@ -55,14 +55,14 @@
                                           Header="{x:Static p:Resources.EnqueueSelection}"
                                           InputGestureText="{x:Static p:Resources.ShiftReturn}" />
                                 <Separator />
+                                <MenuItem Command="{Binding CopyUrlCommand}"
+                                          Header="{x:Static p:Resources.CopyUrl}" />
+                                <MenuItem Command="{Binding VisitBlogCommand}"
+                                          Header="{x:Static p:Resources.VisitBlog}" />
                                 <MenuItem Command="{Binding ShowDetailsCommand}"
                                           Header="{x:Static p:Resources.ShowDetails}" />
                                 <MenuItem Command="{Binding ShowFilesCommand}"
                                           Header="{x:Static p:Resources.ShowFiles}" />
-                                <MenuItem Command="{Binding VisitBlogCommand}"
-                                          Header="{x:Static p:Resources.VisitBlog}" />
-                                <MenuItem Command="{Binding CopyUrlCommand}"
-                                          Header="{x:Static p:Resources.CopyUrl}" />
                             </ContextMenu>
                         </Setter.Value>
                     </Setter>

@@ -39,7 +39,7 @@ namespace TumblThree.Applications.DataModels.TumblrApiJson
         public string timezone { get; set; }
 
         [DataMember(EmitDefaultValue = false)]
-        public bool cname { get; set; }
+        public object cname { get; set; }
 
         [DataMember(EmitDefaultValue = false)]
         public List<object> feeds { get; set; }
@@ -55,7 +55,7 @@ namespace TumblThree.Applications.DataModels.TumblrApiJson
         public string name { get; set; }
 
         [DataMember(EmitDefaultValue = false)]
-        public bool cname { get; set; }
+        public object cname { get; set; }
 
         [DataMember(EmitDefaultValue = false)]
         public string url { get; set; }
@@ -157,10 +157,10 @@ namespace TumblThree.Applications.DataModels.TumblrApiJson
         public string date { get; set; }
 
         [DataMember(EmitDefaultValue = false)]
-        public int bookmarklet { get; set; }
+        public int? bookmarklet { get; set; }
 
         [DataMember(EmitDefaultValue = false)]
-        public int mobile { get; set; }
+        public int? mobile { get; set; }
 
         [DataMember(Name = "feed-item", EmitDefaultValue = false)]
         public string feed_item { get; set; }

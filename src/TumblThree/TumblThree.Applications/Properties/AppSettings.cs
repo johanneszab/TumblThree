@@ -108,6 +108,9 @@ namespace TumblThree.Applications.Properties
         public int TimeOut { get; set; }
 
         [DataMember]
+        public double ProgessUpdateInterval { get; set; }
+
+        [DataMember]
         public bool LimitConnections { get; set; }
 
         [DataMember]
@@ -320,6 +323,7 @@ namespace TumblThree.Applications.Properties
             MaxConnections = 90;
             ConnectionTimeInterval = 60;
             MaxNumberOfRetries = 10;
+            ProgessUpdateInterval = 200;
             Bandwidth = 0;
             BufferSize = 512;
             ImageSize = "raw";

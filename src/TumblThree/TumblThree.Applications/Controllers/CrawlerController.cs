@@ -241,7 +241,7 @@ namespace TumblThree.Applications.Controllers
         private ProgressThrottler<DataModels.DownloadProgress> SetupThrottledQueueListProgress(QueueListItem queueListItem)
         {
             var progressHandler = new Progress<DataModels.DownloadProgress>(value => { queueListItem.Progress = value.Progress; });
-            return new ProgressThrottler<DataModels.DownloadProgress>(progressHandler);
+            return new ProgressThrottler<DataModels.DownloadProgress>(progressHandler, shellService.Settings.ProgessUpdateInterval);
         }
     }
 }

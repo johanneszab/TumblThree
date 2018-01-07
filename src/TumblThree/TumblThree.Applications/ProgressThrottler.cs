@@ -8,9 +8,9 @@ namespace TumblThree.Applications
         private readonly IProgress<T> _progress;
         bool reportProgressAfterThrottling = true;
 
-        public ProgressThrottler(IProgress<T> progress)
+        public ProgressThrottler(IProgress<T> progress, double interval)
         {
-            var resettimer = new Timer { Interval = 200 };
+            var resettimer = new Timer { Interval = interval };
             resettimer.Elapsed += resettimer_Elapsed;
             resettimer.Start();
 
