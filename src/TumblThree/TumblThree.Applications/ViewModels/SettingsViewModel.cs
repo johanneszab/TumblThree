@@ -794,10 +794,10 @@ namespace TumblThree.Applications.ViewModels
         private void ApplySettings(bool downloadLocationChanged, bool loadAllDatabasesChanged)
         {
             CrawlerService.Timeconstraint.SetRate(((double)MaxConnections / (double)ConnectionTimeInterval));
-            CrawlerService.DatabasesLoaded = new TaskCompletionSource<bool>();
 
             if (loadAllDatabasesChanged && downloadLocationChanged)
             {
+                CrawlerService.DatabasesLoaded = new TaskCompletionSource<bool>();
                 if (CrawlerService.StopCommand.CanExecute(null))
                     CrawlerService.StopCommand.Execute(null);
                 CrawlerService.LoadLibraryCommand.Execute(null);
@@ -805,6 +805,7 @@ namespace TumblThree.Applications.ViewModels
             }
             else if (downloadLocationChanged)
             {
+                CrawlerService.DatabasesLoaded = new TaskCompletionSource<bool>();
                 if (CrawlerService.StopCommand.CanExecute(null))
                     CrawlerService.StopCommand.Execute(null);
                 CrawlerService.LoadLibraryCommand.Execute(null);
@@ -812,6 +813,7 @@ namespace TumblThree.Applications.ViewModels
             }
             else if (loadAllDatabasesChanged)
             {
+                CrawlerService.DatabasesLoaded = new TaskCompletionSource<bool>();
                 if (CrawlerService.StopCommand.CanExecute(null))
                     CrawlerService.StopCommand.Execute(null);
                 CrawlerService.LoadAllDatabasesCommand.Execute(null);
