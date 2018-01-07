@@ -22,6 +22,7 @@ using TumblThree.Applications.Extensions;
 using TumblThree.Applications.Parser;
 using TumblThree.Applications.DataModels.TumblrPosts;
 using TumblThree.Applications.DataModels.TumblrCrawlerData;
+using System.Runtime.Serialization.Json;
 
 namespace TumblThree.Applications.Crawler
 {
@@ -130,6 +131,22 @@ namespace TumblThree.Applications.Crawler
                     Logger.Error("TumblrBlogCrawler:GetUrlsAsync: {0}", "User not logged in");
                     shellService.ShowError(new Exception("User not logged in"), Resources.NotLoggedIn, blog.Name);
                 }
+            }
+        }
+
+        public new static T ConvertJsonToClass<T>(string json) where T : new()
+        {
+            try
+            {
+                using (MemoryStream ms = new MemoryStream(Encoding.Unicode.GetBytes(json)))
+                {
+                    DataContractJsonSerializer serializer = new DataContractJsonSerializer((typeof(T)));
+                    return (T)serializer.ReadObject(ms);
+                }
+            }
+            catch (System.Runtime.Serialization.SerializationException)
+            {
+                return new T();
             }
         }
 

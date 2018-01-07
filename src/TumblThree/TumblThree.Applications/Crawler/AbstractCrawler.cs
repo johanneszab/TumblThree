@@ -153,10 +153,17 @@ namespace TumblThree.Applications.Crawler
             statisticsBag.Add(addToList);
         }
 
-        public static T ConvertJsonToClass<T>(string json)
+        public static T ConvertJsonToClass<T>(string json) where T : new()
         {
-            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-            return serializer.Deserialize<T>(json);
+            try
+            {
+                var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+                return serializer.Deserialize<T>(json);
+            }
+            catch (InvalidOperationException)
+            {
+                return new T();
+            }
         }
 
         protected string ImageSize()

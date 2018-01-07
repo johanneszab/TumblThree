@@ -279,10 +279,10 @@ namespace TumblThree.Applications.DataModels.TumblrApiJson
         public string photo_caption { get; set; }
 
         [DataMember(EmitDefaultValue = false)]
-        public int? width { get; set; }
+        public object width { get; set; }
 
         [DataMember(EmitDefaultValue = false)]
-        public int? height { get; set; }
+        public object height { get; set; }
 
         [DataMember(Name = "photo-url-1280", EmitDefaultValue = false)]
         public string photo_url_1280 { get; set; }
@@ -335,7 +335,7 @@ namespace TumblThree.Applications.DataModels.TumblrApiJson
         [DataMember(Name = "audio-plays", EmitDefaultValue = false)]
         public int? audio_plays { get; set; }
 
-        [DataMember(Name = "regular-title", EmitDefaultValue = false)]
+        [DataMember(Name = "regular-title", EmitDefaultValue = false)]        
         public string regular_title { get; set; }
 
         [DataMember(Name = "regular-body", EmitDefaultValue = false)]
