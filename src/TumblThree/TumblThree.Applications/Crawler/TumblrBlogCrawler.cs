@@ -124,12 +124,19 @@ namespace TumblThree.Applications.Crawler
             }
         }
 
-        public new static T ConvertJsonToClass<T>(string json)
+        public new static T ConvertJsonToClass<T>(string json) where T : new()
         {
-            using (MemoryStream ms = new MemoryStream(Encoding.Unicode.GetBytes(json)))
+            try
             {
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer((typeof(T)));
-                return (T)serializer.ReadObject(ms);
+                using (MemoryStream ms = new MemoryStream(Encoding.Unicode.GetBytes(json)))
+                {
+                    DataContractJsonSerializer serializer = new DataContractJsonSerializer((typeof(T)));
+                    return (T)serializer.ReadObject(ms);
+                }
+            }
+            catch (System.Runtime.Serialization.SerializationException)
+            {
+                return new T();
             }
         }
 
@@ -259,7 +266,7 @@ namespace TumblThree.Applications.Crawler
             var response = ConvertJsonToClass<TumblrApiJson>(document);
 
             ulong highestId;
-            ulong.TryParse(response.posts.FirstOrDefault()?.id, out highestId);
+            ulong.TryParse(response.posts?.FirstOrDefault()?.id, out highestId);
             return highestId;
         }
 
