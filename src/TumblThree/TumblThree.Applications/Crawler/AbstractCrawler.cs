@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Script.Serialization;
 using TumblThree.Applications.DataModels;
 using TumblThree.Applications.DataModels.TumblrPosts;
 using TumblThree.Applications.Downloader;
@@ -69,7 +70,7 @@ namespace TumblThree.Applications.Crawler
 
         public void UpdateProgressQueueInformation(string format, params object[] args)
         {
-            var newProgress = new DataModels.DownloadProgress
+            DownloadProgress newProgress = new DataModels.DownloadProgress
             {
                 Progress = string.Format(CultureInfo.CurrentCulture, format, args)
             };
@@ -78,7 +79,7 @@ namespace TumblThree.Applications.Crawler
 
         protected virtual async Task<string> RequestDataAsync(string url, params string[] cookieHosts)
         {
-            var requestRegistration = new CancellationTokenRegistration();
+            CancellationTokenRegistration requestRegistration = new CancellationTokenRegistration();
             try
             {
                 HttpWebRequest request = webRequestFactory.CreateGetReqeust(url);
@@ -97,7 +98,7 @@ namespace TumblThree.Applications.Crawler
 
         protected static string UrlEncode(IDictionary<string, string> parameters)
         {
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             foreach (KeyValuePair<string, string> val in parameters)
             {
                 sb.AppendFormat("{0}={1}&", val.Key, HttpUtility.UrlEncode(val.Value));
@@ -112,8 +113,10 @@ namespace TumblThree.Applications.Crawler
             {
                 int totalPosts = blog.Posts;
                 if (!TestRange(blog.PageSize, 1, 50))
-                    blog.PageSize = 50;
-                int totalPages = (totalPosts / blog.PageSize) + 1;
+                {
+	                blog.PageSize = 50;
+                }
+	            int totalPages = totalPosts / blog.PageSize + 1;
 
                 return Enumerable.Range(0, totalPages);
             }
@@ -122,7 +125,7 @@ namespace TumblThree.Applications.Crawler
 
         protected static bool TestRange(int numberToCheck, int bottom, int top)
         {
-            return (numberToCheck >= bottom && numberToCheck <= top);
+            return (numberToCheck >= bottom) && (numberToCheck <= top);
         }
 
         protected static IEnumerable<int> RangeToSequence(string input)
@@ -157,7 +160,7 @@ namespace TumblThree.Applications.Crawler
         {
             try
             {
-                var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+                JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
                 return serializer.Deserialize<T>(json);
             }
             catch (InvalidOperationException)
@@ -169,13 +172,15 @@ namespace TumblThree.Applications.Crawler
         protected string ImageSize()
         {
             if (shellService.Settings.ImageSize == "raw")
-                return "1280";
-            return shellService.Settings.ImageSize;
+            {
+	            return "1280";
+            }
+	        return shellService.Settings.ImageSize;
         }
 
         protected string ResizeTumblrImageUrl(string imageUrl)
         {
-            var sb = new StringBuilder(imageUrl);
+            StringBuilder sb = new StringBuilder(imageUrl);
             return sb
                 .Replace("_raw", "_" + ImageSize())
                 .Replace("_1280", "_" + ImageSize())

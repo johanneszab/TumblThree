@@ -13,7 +13,7 @@ namespace TumblThree.Presentation.ValidationRules
             {
                 long temp = long.Parse((string)value);
 
-                if (temp >= 0 && temp <= (long.MaxValue / 1024))
+                if ((temp >= 0) && (temp <= long.MaxValue / 1024))
                 {
                     return new ValidationResult(true, null);
                 }

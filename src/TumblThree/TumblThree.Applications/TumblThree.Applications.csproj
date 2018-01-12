@@ -77,11 +77,13 @@
     <Compile Include="Parser\IImgurParser.cs" />
     <Compile Include="Parser\ImgurParser.cs" />
     <Compile Include="Crawler\ITumblrBlogDetector.cs" />
+    <Compile Include="Parser\IMixtapeParser.cs" />
     <Compile Include="Parser\ITumblrParser.cs" />
     <Compile Include="Parser\ITumblrToText.cs" />
     <Compile Include="Parser\IWebmshareParser.cs" />
     <Compile Include="Downloader\IWebRequestFactory.cs" />
     <Compile Include="Crawler\TumblrBlogDetector.cs" />
+    <Compile Include="Parser\MixtapeParser.cs" />
     <Compile Include="Parser\TumblrSvcJsonToJson.cs" />
     <Compile Include="Parser\TumblrApiJsonToJson.cs" />
     <Compile Include="Parser\TumblrParser.cs" />

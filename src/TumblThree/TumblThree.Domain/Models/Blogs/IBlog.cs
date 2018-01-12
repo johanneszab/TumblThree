@@ -146,6 +146,10 @@ namespace TumblThree.Domain.Models
 
         WebmshareTypes WebmshareType { get; set; }
 
+        bool DownloadMixtape { get; set; }
+
+        MixtapeTypes MixtapeType { get; set; }
+
         BlogTypes BlogType { get; set; }
 
         DateTime DateAdded { get; set; }

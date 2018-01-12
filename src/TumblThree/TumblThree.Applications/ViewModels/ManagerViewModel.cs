@@ -52,24 +52,15 @@ namespace TumblThree.Applications.ViewModels
             ShellService.Closing += ViewClosed;
         }
 
-        public ISelectionService SelectionService
-        {
-            get { return selectionService.Value; }
-        }
+        public ISelectionService SelectionService => selectionService.Value;
 
-        public IShellService ShellService { get; }
+	    public IShellService ShellService { get; }
 
-        public ICrawlerService CrawlerService
-        {
-            get { return crawlerService.Value; }
-        }
+        public ICrawlerService CrawlerService => crawlerService.Value;
 
-        public IManagerService ManagerService
-        {
-            get { return managerService.Value; }
-        }
+	    public IManagerService ManagerService => managerService.Value;
 
-        public ICommand ShowFilesCommand
+	    public ICommand ShowFilesCommand
         {
             get { return showFilesCommand; }
             set { SetProperty(ref showFilesCommand, value); }

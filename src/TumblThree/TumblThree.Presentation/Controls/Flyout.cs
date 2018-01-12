@@ -46,8 +46,8 @@ namespace TumblThree.Presentation.Controls
         protected override void OnOpened(EventArgs e)
         {
             base.OnOpened(e);
-            var target = (FrameworkElement)PlacementTarget;
-            var child = (FrameworkElement)Child;
+            FrameworkElement target = (FrameworkElement)PlacementTarget;
+            FrameworkElement child = (FrameworkElement)Child;
 
             if (HorizontalFlyoutAlignment == HorizontalFlyoutAlignment.Left)
             {
@@ -77,12 +77,12 @@ namespace TumblThree.Presentation.Controls
             {
                 if (!SystemParameters.MenuDropAlignment)
                 {
-                    SetBaseHorizontalOffset((target.ActualWidth / 2) - (child.ActualWidth / 2) + HorizontalOffset);
+                    SetBaseHorizontalOffset(target.ActualWidth / 2 - child.ActualWidth / 2 + HorizontalOffset);
                 }
                 else
                 {
                     // Handedness = right handed; shows the context menus on the left side
-                    SetBaseHorizontalOffset((-target.ActualWidth / 2) + (child.ActualWidth / 2) + HorizontalOffset);
+                    SetBaseHorizontalOffset(-target.ActualWidth / 2 + child.ActualWidth / 2 + HorizontalOffset);
                 }
             }
 
@@ -116,8 +116,8 @@ namespace TumblThree.Presentation.Controls
 
         private static object IsOpenCoerceValueCallback(DependencyObject d, object baseValue)
         {
-            var flyout = (Flyout)d;
-            if (flyout.closedStopwatch.IsRunning && flyout.closedStopwatch.ElapsedMilliseconds < 200)
+            Flyout flyout = (Flyout)d;
+            if (flyout.closedStopwatch.IsRunning && (flyout.closedStopwatch.ElapsedMilliseconds < 200))
             {
                 return DependencyProperty.UnsetValue;
             }

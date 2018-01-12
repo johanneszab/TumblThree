@@ -10,7 +10,7 @@ namespace TumblThree.Domain.Models
     {
         public static Blog Create(string url, string location)
         {
-            var blog = new TumblrTagSearchBlog()
+            TumblrTagSearchBlog blog = new TumblrTagSearchBlog()
             {
                 Url = ExtractUrl(url),
                 Name = ExtractName(url),
@@ -34,17 +34,19 @@ namespace TumblThree.Domain.Models
             return blog;
         }
 
-        protected static new string ExtractName(string url)
+        protected new static string ExtractName(string url)
         {
             return url.Split('/')[4].Replace("-", "+");
         }
 
-        protected static new string ExtractUrl(string url)
+        protected new static string ExtractUrl(string url)
         {
             if (url.StartsWith("http://"))
-                url = url.Insert(4, "s");
-            int blogNameLength = url.Split('/')[4].Length;
-            var urlLength = 30;
+            {
+	            url = url.Insert(4, "s");
+            }
+	        int blogNameLength = url.Split('/')[4].Length;
+            int urlLength = 30;
             return url.Substring(0, blogNameLength + urlLength);
         }
     }

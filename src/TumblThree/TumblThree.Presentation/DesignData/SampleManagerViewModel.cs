@@ -16,7 +16,7 @@ namespace TumblThree.Presentation.DesignData
             new Lazy<ISelectionService>(() => new MockSelectionService()), null,
             new Lazy<IManagerService>(() => new MockManagerService()))
         {
-            var blogFiles = new[]
+            Blog[] blogFiles = new[]
             {
                 new Blog
                 {

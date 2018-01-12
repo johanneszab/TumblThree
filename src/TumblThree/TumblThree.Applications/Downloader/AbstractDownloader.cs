@@ -31,7 +31,7 @@ namespace TumblThree.Applications.Downloader
         protected readonly CancellationToken ct;
         protected readonly PauseToken pt;
         protected readonly FileDownloader fileDownloader;
-        string[] suffixes = { ".jpg", ".jpeg", ".png" };
+	    private string[] suffixes = { ".jpg", ".jpeg", ".png" };
 
         protected AbstractDownloader(IShellService shellService, IManagerService managerService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, IPostQueue<TumblrPost> postQueue, FileDownloader fileDownloader, ICrawlerService crawlerService = null, IBlog blog = null, IFiles files = null)
         {
@@ -49,7 +49,7 @@ namespace TumblThree.Applications.Downloader
 
         public void UpdateProgressQueueInformation(string format, params object[] args)
         {
-            var newProgress = new DataModels.DownloadProgress
+            DownloadProgress newProgress = new DataModels.DownloadProgress
             {
                 Progress = string.Format(CultureInfo.CurrentCulture, format, args)
             };
@@ -67,7 +67,7 @@ namespace TumblThree.Applications.Downloader
             {
                 return await fileDownloader.DownloadFileWithResumeAsync(url, fileLocation).TimeoutAfter(shellService.Settings.TimeOut);
             }
-            catch (IOException ex) when ((ex.HResult & 0xFFFF) == 0x27 || (ex.HResult & 0xFFFF) == 0x70)
+            catch (IOException ex) when (((ex.HResult & 0xFFFF) == 0x27) || ((ex.HResult & 0xFFFF) == 0x70))
             {
                 // Disk Full, HRESULT: ‭-2147024784‬ == 0xFFFFFFFF80070070
                 Logger.Error("AbstractDownloader:DownloadBinaryFile: {0}", ex);
@@ -80,10 +80,10 @@ namespace TumblThree.Applications.Downloader
                 // The process cannot access the file because it is being used by another process.", HRESULT: -2147024864 == 0xFFFFFFFF80070020
                 return true;
             }
-            catch (WebException webException) when ((webException.Response != null))
+            catch (WebException webException) when (webException.Response != null)
             {
-                var webRespStatusCode = (int)((HttpWebResponse)webException?.Response).StatusCode;
-                if (webRespStatusCode >= 400 && webRespStatusCode < 600) // removes inaccessible files: http status codes 400 to 599
+                int webRespStatusCode = (int)((HttpWebResponse)webException?.Response).StatusCode;
+                if ((webRespStatusCode >= 400) && (webRespStatusCode < 600)) // removes inaccessible files: http status codes 400 to 599
                 {
                     try { File.Delete(fileLocation); } // could be open again in a different thread
                     catch { }
@@ -117,14 +117,14 @@ namespace TumblThree.Applications.Downloader
             {
                 lock (lockObjectDownload)
                 {
-                    using (var sw = new StreamWriter(fileLocation, true))
+                    using (StreamWriter sw = new StreamWriter(fileLocation, true))
                     {
                         sw.WriteLine(text);
                     }
                 }
                 return true;
             }
-            catch (IOException ex) when ((ex.HResult & 0xFFFF) == 0x27 || (ex.HResult & 0xFFFF) == 0x70)
+            catch (IOException ex) when (((ex.HResult & 0xFFFF) == 0x27) || ((ex.HResult & 0xFFFF) == 0x70))
             {
                 Logger.Error("Downloader:AppendToTextFile: {0}", ex);
                 shellService.ShowError(ex, Resources.DiskFull);
@@ -139,18 +139,20 @@ namespace TumblThree.Applications.Downloader
 
         public virtual async Task<bool> DownloadBlogAsync()
         {
-            var concurrentConnectionsSemaphore = new SemaphoreSlim(shellService.Settings.ConcurrentConnections / crawlerService.ActiveItems.Count);
-            var concurrentVideoConnectionsSemaphore = new SemaphoreSlim(shellService.Settings.ConcurrentVideoConnections / crawlerService.ActiveItems.Count);
-            var trackedTasks = new List<Task>();
-            var completeDownload = true;
+            SemaphoreSlim concurrentConnectionsSemaphore = new SemaphoreSlim(shellService.Settings.ConcurrentConnections / crawlerService.ActiveItems.Count);
+            SemaphoreSlim concurrentVideoConnectionsSemaphore = new SemaphoreSlim(shellService.Settings.ConcurrentVideoConnections / crawlerService.ActiveItems.Count);
+            List<Task> trackedTasks = new List<Task>();
+            bool completeDownload = true;
 
             blog.CreateDataFolder();
 
             foreach (TumblrPost downloadItem in postQueue.GetConsumingEnumerable())
             {
                 if (downloadItem.GetType() == typeof(VideoPost))
-                    await concurrentVideoConnectionsSemaphore.WaitAsync();
-                await concurrentConnectionsSemaphore.WaitAsync();
+                {
+	                await concurrentVideoConnectionsSemaphore.WaitAsync();
+                }
+	            await concurrentConnectionsSemaphore.WaitAsync();
 
                 if (ct.IsCancellationRequested)
                 {
@@ -168,7 +170,9 @@ namespace TumblThree.Applications.Downloader
                     finally {
                         concurrentConnectionsSemaphore.Release();
                         if (downloadItem.GetType() == typeof(VideoPost))
-                            concurrentVideoConnectionsSemaphore.Release();
+                        {
+	                        concurrentVideoConnectionsSemaphore.Release();
+                        }
                     }
                 })());
             }
@@ -240,12 +244,16 @@ namespace TumblThree.Applications.Downloader
             if (shellService.Settings.LoadAllDatabases)
             {
                 if (managerService.CheckIfFileExistsInDB(url))
-                    return true;
+                {
+	                return true;
+                }
             }
             else
             {
                 if (files.CheckIfFileExistsInDB(url) || blog.CheckIfBlogShouldCheckDirectory(GetCoreImageUrl(url)))
-                    return true;
+                {
+	                return true;
+                }
             }
             return false;
         }
@@ -315,7 +323,7 @@ namespace TumblThree.Applications.Downloader
         {
             if (!string.IsNullOrEmpty(downloadItem.Date))
             {
-                var epoch = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+                DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
                 DateTime postDate = epoch.AddSeconds(Convert.ToDouble(downloadItem.Date)).ToLocalTime();
                 return postDate;
             }

@@ -9,7 +9,7 @@ using System.Text;
 using System.Waf.Applications;
 using System.Waf.Applications.Services;
 using System.Waf.Foundation;
-
+using System.Xml;
 using TumblThree.Applications.Data;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
@@ -60,12 +60,9 @@ namespace TumblThree.Applications.Controllers
 
         public QueueManager QueueManager { get; set; }
 
-        private QueueViewModel QueueViewModel
-        {
-            get { return queueViewModel.Value; }
-        }
+        private QueueViewModel QueueViewModel => queueViewModel.Value;
 
-        public void Initialize()
+	    public void Initialize()
         {
             QueueViewModel.QueueManager = QueueManager;
             QueueViewModel.RemoveSelectedCommand = removeSelectedCommand;
@@ -142,9 +139,9 @@ namespace TumblThree.Applications.Controllers
 
             try
             {
-                using (var stream = new FileStream(queuelistFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (FileStream stream = new FileStream(queuelistFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    var serializer = new DataContractJsonSerializer(typeof(QueueSettings));
+                    DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(QueueSettings));
                     queueList = (QueueSettings)serializer.ReadObject(stream);
                 }
             }
@@ -179,7 +176,7 @@ namespace TumblThree.Applications.Controllers
                 return;
             }
 
-            var queueList = new QueueSettings();
+            QueueSettings queueList = new QueueSettings();
             queueList.ReplaceAll(QueueManager.Items.Select(item => item.Blog.Name).ToList(),
                 QueueManager.Items.Select(item => item.Blog.BlogType).ToList());
 
@@ -189,13 +186,13 @@ namespace TumblThree.Applications.Controllers
                 string name = Path.GetFileNameWithoutExtension(result.FileName);
 
                 using (
-                    var stream = new FileStream(Path.Combine(targetFolder, name) + ".que", FileMode.Create, FileAccess.Write,
+                    FileStream stream = new FileStream(Path.Combine(targetFolder, name) + ".que", FileMode.Create, FileAccess.Write,
                         FileShare.None))
                 {
-                    using (var writer = JsonReaderWriterFactory.CreateJsonWriter(
+                    using (XmlDictionaryWriter writer = JsonReaderWriterFactory.CreateJsonWriter(
                         stream, Encoding.UTF8, true, true, "  "))
                     {
-                        var serializer = new DataContractJsonSerializer(typeof(QueueSettings));
+                        DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(QueueSettings));
                         serializer.WriteObject(writer, queueList);
                         writer.Flush();
                     }

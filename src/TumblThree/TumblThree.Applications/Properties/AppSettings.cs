@@ -13,25 +13,21 @@ namespace TumblThree.Applications.Properties
     public sealed class AppSettings : IExtensibleDataObject
     {
         private static readonly string[] blogTypes =
-            new string[]
             {
                 Resources.BlogTypesNone, Resources.BlogTypesAll, Resources.BlogTypesOnceFinished, Resources.BlogTypesNeverFinished
             };
 
         private static readonly string[] imageSizes =
-            new string[]
             {
                 "raw", "1280", "500", "400", "250", "100", "75"
             };
 
         private static readonly string[] videoSizes =
-            new string[]
             {
                 "1080", "480"
             };
 
         private static string[] tumblrHosts =
-            new string[]
             {
                         "data.tumblr.com"
             };
@@ -233,6 +229,12 @@ namespace TumblThree.Applications.Properties
         [DataMember]
         public WebmshareTypes WebmshareType { get; set; }
 
+	    [DataMember]
+	    public bool DownloadMixtape { get; set; }
+
+	    [DataMember]
+	    public MixtapeTypes MixtapeType { get; set; }
+
         [DataMember]
         public bool AutoDownload { get; set; }
 
@@ -272,22 +274,13 @@ namespace TumblThree.Applications.Properties
         [DataMember]
         public Dictionary<object, Tuple<int, double, Visibility>> ColumnSettings { get; set; }
 
-        public ObservableCollection<string> ImageSizes
-        {
-            get { return new ObservableCollection<string>(imageSizes); }
-        }
+        public ObservableCollection<string> ImageSizes => new ObservableCollection<string>(imageSizes);
 
-        public ObservableCollection<string> VideoSizes
-        {
-            get { return new ObservableCollection<string>(videoSizes); }
-        }
+	    public ObservableCollection<string> VideoSizes => new ObservableCollection<string>(videoSizes);
 
-        public ObservableCollection<string> BlogTypes
-        {
-            get { return new ObservableCollection<string>(blogTypes); }
-        }
+	    public ObservableCollection<string> BlogTypes => new ObservableCollection<string>(blogTypes);
 
-        public string[] TumblrHosts
+	    public string[] TumblrHosts
         {
             get { return tumblrHosts; }
             set { tumblrHosts = value; }

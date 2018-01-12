@@ -50,7 +50,7 @@ namespace TumblThree.Applications.Parser
 
         private string GetPostAsString(T post)
         {
-            var postCopy = (Post)post.Clone();
+            Post postCopy = (Post)post.Clone();
             postCopy.tumblelog = new Tumblelog2();
             postCopy.reblogged_from_avatar_url_128 = null;
             postCopy.reblogged_from_avatar_url_16 = null;

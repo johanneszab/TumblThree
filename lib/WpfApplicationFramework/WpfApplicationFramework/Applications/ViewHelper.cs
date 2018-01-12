@@ -22,7 +22,7 @@ namespace System.Waf.Applications
             object dataContext = view.DataContext;
             // When the DataContext is null then it might be that the ViewModel hasn't set it yet.
             // Enforce it by executing the event queue of the Dispatcher.
-            if (dataContext == null && SynchronizationContext.Current is DispatcherSynchronizationContext)
+            if ((dataContext == null) && SynchronizationContext.Current is DispatcherSynchronizationContext)
             {
                 DispatcherHelper.DoEvents();
                 dataContext = view.DataContext;

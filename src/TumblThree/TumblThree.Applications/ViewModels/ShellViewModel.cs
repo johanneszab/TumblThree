@@ -51,9 +51,9 @@ namespace TumblThree.Applications.ViewModels
             view.Closed += ViewClosed;
 
             // Restore the window size when the values are valid.
-            if (settings.Left >= 0 && settings.Top >= 0 && settings.Width > 0 && settings.Height > 0
-                && settings.Left + settings.Width <= view.VirtualScreenWidth
-                && settings.Top + settings.Height <= view.VirtualScreenHeight)
+            if ((settings.Left >= 0) && (settings.Top >= 0) && (settings.Width > 0) && (settings.Height > 0)
+                && (settings.Left + settings.Width <= view.VirtualScreenWidth)
+                && (settings.Top + settings.Height <= view.VirtualScreenHeight))
             {
                 view.Left = settings.Left;
                 view.Top = settings.Top;
@@ -64,51 +64,27 @@ namespace TumblThree.Applications.ViewModels
             view.IsMaximized = settings.IsMaximized;
         }
 
-        public string Title
-        {
-            get { return ApplicationInfo.ProductName; }
-        }
+        public string Title => ApplicationInfo.ProductName;
 
-        public IShellService ShellService { get; }
+	    public IShellService ShellService { get; }
 
         public ICrawlerService CrawlerService { get; }
 
-        public IReadOnlyList<Tuple<Exception, string>> Errors
-        {
-            get { return errors; }
-        }
+        public IReadOnlyList<Tuple<Exception, string>> Errors => errors;
 
-        public Tuple<Exception, string> LastError
-        {
-            get { return errors.LastOrDefault(); }
-        }
+	    public Tuple<Exception, string> LastError => errors.LastOrDefault();
 
-        public ICommand ExitCommand
-        {
-            get { return exitCommand; }
-        }
+	    public ICommand ExitCommand => exitCommand;
 
-        public ICommand CloseErrorCommand
-        {
-            get { return closeErrorCommand; }
-        }
+	    public ICommand CloseErrorCommand => closeErrorCommand;
 
-        public ICommand GarbageCollectorCommand
-        {
-            get { return garbageCollectorCommand; }
-        }
+	    public ICommand GarbageCollectorCommand => garbageCollectorCommand;
 
-        public ICommand ShowSettingsCommand
-        {
-            get { return showSettingsCommand; }
-        }
+	    public ICommand ShowSettingsCommand => showSettingsCommand;
 
-        public ICommand ShowAboutCommand
-        {
-            get { return showAboutCommand; }
-        }
+	    public ICommand ShowAboutCommand => showAboutCommand;
 
-        public object DetailsView
+	    public object DetailsView
         {
             get { return detailsView; }
             private set { SetProperty(ref detailsView, value); }
@@ -162,12 +138,12 @@ namespace TumblThree.Applications.ViewModels
 
         public void ShowError(Exception exception, string message)
         {
-            var errorMessage = new Tuple<Exception, string>(exception, message);
+            Tuple<Exception, string> errorMessage = new Tuple<Exception, string>(exception, message);
             if (
                 !errors.Any(
                     error =>
-                        (error.Item1?.ToString() ?? "null") == (errorMessage.Item1?.ToString() ?? "null") &&
-                        error.Item2 == errorMessage.Item2))
+                        ((error.Item1?.ToString() ?? "null") == (errorMessage.Item1?.ToString() ?? "null")) &&
+                        (error.Item2 == errorMessage.Item2)))
             {
                 errors.Add(errorMessage);
             }

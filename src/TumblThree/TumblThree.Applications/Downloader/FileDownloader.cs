@@ -27,7 +27,7 @@ namespace TumblThree.Applications.Downloader
 
         private HttpWebRequest CreateWebReqeust(string url)
         {
-            var request = (HttpWebRequest)WebRequest.Create(url);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "GET";
             request.ProtocolVersion = HttpVersion.Version11;
             request.UserAgent =
@@ -54,20 +54,26 @@ namespace TumblThree.Applications.Downloader
         private static HttpWebRequest SetWebRequestProxy(HttpWebRequest request, AppSettings settings)
         {
             if (!string.IsNullOrEmpty(settings.ProxyHost) && !string.IsNullOrEmpty(settings.ProxyPort))
-                request.Proxy = new WebProxy(settings.ProxyHost, int.Parse(settings.ProxyPort));
+            {
+	            request.Proxy = new WebProxy(settings.ProxyHost, int.Parse(settings.ProxyPort));
+            }
             else
-                request.Proxy = null;
+            {
+	            request.Proxy = null;
+            }
 
-            if (!string.IsNullOrEmpty(settings.ProxyUsername) && !string.IsNullOrEmpty(settings.ProxyPassword))
-                request.Proxy.Credentials = new NetworkCredential(settings.ProxyUsername, settings.ProxyPassword);
-            return request;
+	        if (!string.IsNullOrEmpty(settings.ProxyUsername) && !string.IsNullOrEmpty(settings.ProxyPassword))
+	        {
+		        request.Proxy.Credentials = new NetworkCredential(settings.ProxyUsername, settings.ProxyPassword);
+	        }
+	        return request;
         }
 
         public async Task<Stream> ReadFromUrlIntoStream(string url)
         {
             HttpWebRequest request = CreateWebReqeust(url);
 
-            using (var response = await request.GetResponseAsync() as HttpWebResponse)
+            using (HttpWebResponse response = await request.GetResponseAsync() as HttpWebResponse)
             {
                 if (HttpStatusCode.OK == response.StatusCode)
                 {
@@ -83,7 +89,7 @@ namespace TumblThree.Applications.Downloader
 
         private async Task<long> CheckDownloadSizeAsync(string url)
         {
-            var requestRegistration = new CancellationTokenRegistration();
+            CancellationTokenRegistration requestRegistration = new CancellationTokenRegistration();
             try
             {
                 HttpWebRequest request = CreateWebReqeust(url);
@@ -104,8 +110,10 @@ namespace TumblThree.Applications.Downloader
         protected Stream GetStreamForDownload(Stream stream)
         {
             if (settings.Bandwidth == 0)
-                return stream;
-            return new ThrottledStream(stream, (settings.Bandwidth / settings.ConcurrentConnections) * 1024);
+            {
+	            return stream;
+            }
+	        return new ThrottledStream(stream, settings.Bandwidth / settings.ConcurrentConnections * 1024);
         }
 
         // TODO: Needs a complete rewrite. Also a append/cache function for resuming incomplete files on the disk.
@@ -114,22 +122,26 @@ namespace TumblThree.Applications.Downloader
         public async Task<bool> DownloadFileWithResumeAsync(string url, string destinationPath)
         {
             long totalBytesReceived = 0;
-            var attemptCount = 0;
+            int attemptCount = 0;
             int bufferSize = settings.BufferSize * 4096;
 
             if (File.Exists(destinationPath))
             {
-                var fileInfo = new FileInfo(destinationPath);
+                FileInfo fileInfo = new FileInfo(destinationPath);
                 totalBytesReceived = fileInfo.Length;
                 if (totalBytesReceived >= await CheckDownloadSizeAsync(url))
-                    return true;
+                {
+	                return true;
+                }
             }
             if (ct.IsCancellationRequested)
-                return false;
+            {
+	            return false;
+            }
 
-            FileMode fileMode = totalBytesReceived > 0 ? FileMode.Append : FileMode.Create;
+	        FileMode fileMode = totalBytesReceived > 0 ? FileMode.Append : FileMode.Create;
 
-            using (var fileStream = new FileStream(destinationPath, fileMode, FileAccess.Write, FileShare.Read, bufferSize, true))
+            using (FileStream fileStream = new FileStream(destinationPath, fileMode, FileAccess.Write, FileShare.Read, bufferSize, true))
             {
                 while (true)
                 {
@@ -140,7 +152,7 @@ namespace TumblThree.Applications.Downloader
                         return false;
                     }
 
-                    var requestRegistration = new CancellationTokenRegistration();
+                    CancellationTokenRegistration requestRegistration = new CancellationTokenRegistration();
 
                     try
                     {
@@ -157,8 +169,8 @@ namespace TumblThree.Applications.Downloader
                             {
                                 using (Stream throttledStream = GetStreamForDownload(responseStream))
                                 {
-                                    var buffer = new byte[4096];
-                                    var bytesRead = 0;
+                                    byte[] buffer = new byte[4096];
+                                    int bytesRead = 0;
                                     //Stopwatch sw = Stopwatch.StartNew();
 
                                     while ((bytesRead = await throttledStream.ReadAsync(buffer, 0, buffer.Length, ct)) > 0)
@@ -182,7 +194,7 @@ namespace TumblThree.Applications.Downloader
                     {
                         // file in use
                         long win32ErrorCode = ioException.HResult & 0xFFFF;
-                        if (win32ErrorCode == 0x21 || win32ErrorCode == 0x20)
+                        if ((win32ErrorCode == 0x21) || (win32ErrorCode == 0x20))
                         {
                             return false;
                         }
@@ -210,9 +222,9 @@ namespace TumblThree.Applications.Downloader
 
         public static async Task<bool> SaveStreamToDisk(Stream input, string destinationFileName, CancellationToken ct)
         {
-            using (var stream = new FileStream(destinationFileName, FileMode.Create, FileAccess.Write, FileShare.Read, BufferSize, true))
+            using (FileStream stream = new FileStream(destinationFileName, FileMode.Create, FileAccess.Write, FileShare.Read, BufferSize, true))
             {
-                var buf = new byte[4096];
+                byte[] buf = new byte[4096];
                 int bytesRead;
                 while (0 < (bytesRead = await input.ReadAsync(buf, 0, buf.Length, ct)))
                 {
@@ -252,14 +264,8 @@ namespace TumblThree.Applications.Downloader
 
         public long BytesReceived { get; private set; }
         public long TotalBytesToReceive { get; private set; }
-        public float ProgressPercentage
-        {
-            get
-            {
-                return ((float)BytesReceived / (float)TotalBytesToReceive) * 100;
-            }
-        }
-        public float CurrentSpeed { get; private set; } // in bytes
+        public float ProgressPercentage => (float)BytesReceived / (float)TotalBytesToReceive * 100;
+	    public float CurrentSpeed { get; private set; } // in bytes
         public TimeSpan TimeLeft
         {
             get

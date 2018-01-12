@@ -12,10 +12,16 @@ namespace TumblThree.Applications.ObjectModel
         /// </summary> 
         public void AddRange(IEnumerable<T> collection)
         {
-            if (collection == null) throw new ArgumentNullException("collection");
+            if (collection == null)
+            {
+	            throw new ArgumentNullException("collection");
+            }
 
-            foreach (var i in collection) Items.Add(i);
-            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+	        foreach (T i in collection)
+	        {
+		        Items.Add(i);
+	        }
+	        OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
         /// <summary> 
@@ -23,10 +29,16 @@ namespace TumblThree.Applications.ObjectModel
         /// </summary> 
         public void RemoveRange(IEnumerable<T> collection)
         {
-            if (collection == null) throw new ArgumentNullException("collection");
+            if (collection == null)
+            {
+	            throw new ArgumentNullException("collection");
+            }
 
-            foreach (var i in collection) Items.Remove(i);
-            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+	        foreach (T i in collection)
+	        {
+		        Items.Remove(i);
+	        }
+	        OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
         /// <summary> 
@@ -42,11 +54,17 @@ namespace TumblThree.Applications.ObjectModel
         /// </summary> 
         public void ReplaceRange(IEnumerable<T> collection)
         {
-            if (collection == null) throw new ArgumentNullException("collection");
+            if (collection == null)
+            {
+	            throw new ArgumentNullException("collection");
+            }
 
-            Items.Clear();
-            foreach (var i in collection) Items.Add(i);
-            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+	        Items.Clear();
+            foreach (T i in collection)
+            {
+	            Items.Add(i);
+            }
+	        OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
         /// <summary> 

@@ -6,7 +6,7 @@ namespace TumblThree.Applications
     {
         internal static readonly TaskCompletionSource<bool> s_completedTcs;
         private readonly object m_lockObject = new object();
-        bool m_paused = false; // could use m_resumeRequest as flag too
+	    private bool m_paused; // could use m_resumeRequest as flag too
         private TaskCompletionSource<bool> m_pauseResponse;
         private TaskCompletionSource<bool> m_resumeRequest;
 
@@ -21,16 +21,15 @@ namespace TumblThree.Applications
             get
             {
                 lock (m_lockObject)
-                    return m_paused;
+                {
+	                return m_paused;
+                }
             }
         }
 
-        public PauseToken Token
-        {
-            get { return new PauseToken(this); }
-        }
+        public PauseToken Token => new PauseToken(this);
 
-        public void Pause()
+	    public void Pause()
         {
             lock (m_lockObject)
             {
@@ -46,7 +45,7 @@ namespace TumblThree.Applications
 
         public void Resume()
         {
-            TaskCompletionSource<bool> resumeRequest = null;
+            TaskCompletionSource<bool> resumeRequest;
 
             lock (m_lockObject)
             {
@@ -67,7 +66,7 @@ namespace TumblThree.Applications
 
         public Task PauseWithResponseAsync()
         {
-            Task responseTask = null;
+            Task responseTask;
 
             lock (m_lockObject)
             {
@@ -86,8 +85,8 @@ namespace TumblThree.Applications
 
         public Task WaitWhilePausedWithResponseAsyc()
         {
-            Task resumeTask = null;
-            TaskCompletionSource<bool> response = null;
+            Task resumeTask;
+            TaskCompletionSource<bool> response;
 
             lock (m_lockObject)
             {
@@ -113,12 +112,9 @@ namespace TumblThree.Applications
             m_source = source;
         }
 
-        public bool IsPaused
-        {
-            get { return m_source != null && m_source.IsPaused; }
-        }
+        public bool IsPaused => (m_source != null) && m_source.IsPaused;
 
-        public Task WaitWhilePausedWithResponseAsyc()
+	    public Task WaitWhilePausedWithResponseAsyc()
         {
             return IsPaused
                 ? m_source.WaitWhilePausedWithResponseAsyc()

@@ -36,7 +36,7 @@ namespace TumblThree.Applications.Downloader
 
         public virtual async Task DownloadCrawlerDataAsync()
         {
-            var trackedTasks = new List<Task>();
+            List<Task> trackedTasks = new List<Task>();
             blog.CreateDataFolder();
 
             foreach (TumblrCrawlerData<T> downloadItem in jsonQueue.GetConsumingEnumerable())
@@ -71,18 +71,18 @@ namespace TumblThree.Applications.Downloader
         {
             try
             {
-                using (var stream = new FileStream(fileLocation, FileMode.Create, FileAccess.Write))
+                using (FileStream stream = new FileStream(fileLocation, FileMode.Create, FileAccess.Write))
                 {
                     using (XmlDictionaryWriter writer = JsonReaderWriterFactory.CreateJsonWriter(
                         stream, Encoding.UTF8, true, true, "  "))
                     {
-                        var serializer = new DataContractJsonSerializer(data.GetType());
+                        DataContractJsonSerializer serializer = new DataContractJsonSerializer(data.GetType());
                         serializer.WriteObject(writer, data);
                         await writer.FlushAsync();
                     }
                 }
             }
-            catch (IOException ex) when ((ex.HResult & 0xFFFF) == 0x27 || (ex.HResult & 0xFFFF) == 0x70)
+            catch (IOException ex) when (((ex.HResult & 0xFFFF) == 0x27) || ((ex.HResult & 0xFFFF) == 0x70))
             {
                 Logger.Error("TumblrJsonDownloader:AppendToTextFile: {0}", ex);
                 shellService.ShowError(ex, Resources.DiskFull);

@@ -68,8 +68,10 @@ namespace TumblThree.Domain.Models
         private bool downloadGfycat;
         private bool downloadImgur;
         private bool downloadWebmshare;
+	    private bool downloadMixtape;
         private GfycatTypes gfycatType;
         private WebmshareTypes webmshareType;
+	    private MixtapeTypes mixtapeType;
         private string downloadPages;
         private int pageSize;
         private string downloadFrom;
@@ -519,6 +521,12 @@ namespace TumblThree.Domain.Models
             get { return downloadWebmshare; }
             set { SetProperty(ref downloadWebmshare, value); }
         }
+	    [DataMember]
+	    public bool DownloadMixtape
+	    {
+		    get { return downloadMixtape; }
+		    set { SetProperty(ref downloadMixtape, value); }
+	    }
 
         [DataMember]
         public WebmshareTypes WebmshareType
@@ -526,6 +534,13 @@ namespace TumblThree.Domain.Models
             get { return webmshareType; }
             set { SetProperty(ref webmshareType, value); }
         }
+
+	    [DataMember]
+	    public MixtapeTypes MixtapeType
+	    {
+		    get { return mixtapeType; }
+		    set { SetProperty(ref mixtapeType, value); }
+	    }
 
         [DataMember]
         public string DownloadPages
@@ -740,7 +755,7 @@ namespace TumblThree.Domain.Models
             lock (lockObjectPostCount)
             {
                 PropertyInfo property = typeof(IBlog).GetProperty(propertyName);
-                var postCounter = (int)property.GetValue(this);
+                int postCounter = (int)property.GetValue(this);
                 postCounter++;
                 property.SetValue(this, postCounter, null);
             }
@@ -804,20 +819,22 @@ namespace TumblThree.Domain.Models
         public string DownloadLocation()
         {
             if (string.IsNullOrWhiteSpace(FileDownloadLocation))
-                return Path.Combine((Directory.GetParent(Location).FullName), Name);
-            return FileDownloadLocation;
+            {
+	            return Path.Combine(Directory.GetParent(Location).FullName, Name);
+            }
+	        return FileDownloadLocation;
         }
 
         public IBlog Load(string fileLocation)
         {
             try
             {
-                using (var stream = new FileStream(fileLocation,
+                using (FileStream stream = new FileStream(fileLocation,
                     FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    var serializer = new DataContractJsonSerializer(GetType());
-                    var blog = (IBlog)serializer.ReadObject(stream);
-                    blog.Location = Path.Combine((Directory.GetParent(fileLocation).FullName));
+                    DataContractJsonSerializer serializer = new DataContractJsonSerializer(GetType());
+                    IBlog blog = (IBlog)serializer.ReadObject(stream);
+                    blog.Location = Path.Combine(Directory.GetParent(fileLocation).FullName);
                     blog.ChildId = Path.Combine(blog.Location, blog.Name + "_files." + blog.BlogType);
                     return blog;
                 }
@@ -852,12 +869,12 @@ namespace TumblThree.Domain.Models
 
             if (File.Exists(currentIndex))
             {
-                using (var stream = new FileStream(newIndex, FileMode.Create, FileAccess.Write))
+                using (FileStream stream = new FileStream(newIndex, FileMode.Create, FileAccess.Write))
                 {
                     using (XmlDictionaryWriter writer = JsonReaderWriterFactory.CreateJsonWriter(
                         stream, Encoding.UTF8, true, true, "  "))
                     {
-                        var serializer = new DataContractJsonSerializer(GetType());
+                        DataContractJsonSerializer serializer = new DataContractJsonSerializer(GetType());
                         serializer.WriteObject(writer, this);
                         writer.Flush();
                     }
@@ -867,12 +884,12 @@ namespace TumblThree.Domain.Models
             }
             else
             {
-                using (var stream = new FileStream(currentIndex, FileMode.Create, FileAccess.Write))
+                using (FileStream stream = new FileStream(currentIndex, FileMode.Create, FileAccess.Write))
                 {
                     using (XmlDictionaryWriter writer = JsonReaderWriterFactory.CreateJsonWriter(
                         stream, Encoding.UTF8, true, true, "  "))
                     {
-                        var serializer = new DataContractJsonSerializer(GetType());
+                        DataContractJsonSerializer serializer = new DataContractJsonSerializer(GetType());
                         serializer.WriteObject(writer, this);
                         writer.Flush();
                     }
@@ -901,7 +918,7 @@ namespace TumblThree.Domain.Models
 
         protected static string ExtractUrl(string url)
         {
-            return ("https://" + ExtractSubDomain(url) + ".tumblr.com/");
+            return "https://" + ExtractSubDomain(url) + ".tumblr.com/";
         }
 
         [OnDeserialized]

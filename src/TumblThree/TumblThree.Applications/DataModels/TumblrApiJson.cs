@@ -383,7 +383,7 @@ namespace TumblThree.Applications.DataModels.TumblrApiJson
 
         public object Clone()
         {
-            return this.MemberwiseClone();
+            return MemberwiseClone();
         }
 
         [OnDeserializing]

@@ -547,6 +547,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download mixtape.
+        /// </summary>
+        public static string DownloadMixtape {
+            get {
+                return ResourceManager.GetString("DownloadMixtape", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Download Now.
         /// </summary>
         public static string DownloadNow {
@@ -1497,6 +1506,24 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download linked Mixtape.moe files.
+        /// </summary>
+        public static string ToolTipDownloadMixtape {
+            get {
+                return ResourceManager.GetString("ToolTipDownloadMixtape", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download externally hosted Mixtape.moe files.
+        /// </summary>
+        public static string ToolTipDownloadMixtapeDescription {
+            get {
+                return ResourceManager.GetString("ToolTipDownloadMixtapeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Download only specific pages.
         /// </summary>
         public static string ToolTipDownloadPages {
@@ -1772,6 +1799,24 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipLoadAllDatabasesDescription {
             get {
                 return ResourceManager.GetString("ToolTipLoadAllDatabasesDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File type to download.
+        /// </summary>
+        public static string ToolTipMixtapeFiletype {
+            get {
+                return ResourceManager.GetString("ToolTipMixtapeFiletype", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chose which file type you want to download.
+        /// </summary>
+        public static string ToolTipMixtapeFiletypeDescription {
+            get {
+                return ResourceManager.GetString("ToolTipMixtapeFiletypeDescription", resourceCulture);
             }
         }
         

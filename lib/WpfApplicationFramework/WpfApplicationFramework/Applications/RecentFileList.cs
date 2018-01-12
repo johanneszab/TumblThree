@@ -142,7 +142,7 @@ namespace System.Waf.Applications
             if (reader == null) { throw new ArgumentNullException("reader"); }
 
             reader.ReadToDescendant("RecentFile");
-            while (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "RecentFile")
+            while ((reader.MoveToContent() == XmlNodeType.Element) && (reader.LocalName == "RecentFile"))
             {
                 RecentFile recentFile = new RecentFile();
                 ((IXmlSerializable)recentFile).ReadXml(reader);

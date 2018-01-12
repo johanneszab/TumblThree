@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Security;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using System.Waf;
@@ -48,7 +49,7 @@ namespace TumblThree.Presentation
             catalog.Catalogs.Add(new AssemblyCatalog(typeof(App).Assembly));
 
             container = new CompositionContainer(catalog, CompositionOptions.DisableSilentRejection);
-            var batch = new CompositionBatch();
+            CompositionBatch batch = new CompositionBatch();
             batch.AddExportedValue(container);
             container.Compose(batch);
 
@@ -82,7 +83,7 @@ namespace TumblThree.Presentation
             }
 
             // Wait until all registered tasks are finished
-            var shellService = container.GetExportedValue<IShellService>();
+            IShellService shellService = container.GetExportedValue<IShellService>();
             Task[] tasksToWait = shellService.TasksToCompleteBeforeShutdown.ToArray();
             while (tasksToWait.Any(t => !t.IsCompleted && !t.IsCanceled && !t.IsFaulted))
             {
@@ -134,17 +135,17 @@ namespace TumblThree.Presentation
             }
         }
 
-        void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+	    private void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            var comException = e.Exception as System.Runtime.InteropServices.COMException;
+            COMException comException = e.Exception as System.Runtime.InteropServices.COMException;
 
-            if (comException != null && comException.ErrorCode == -2147221040)
+            if ((comException != null) && (comException.ErrorCode == -2147221040))
             {
                 e.Handled = true;
             }
         }
 
-        static bool ValidateCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors)
+	    private static bool ValidateCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors)
         {
             return true;
         }

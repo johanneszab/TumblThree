@@ -84,9 +84,12 @@ namespace TumblThree.Applications.ViewModels
         private bool downloadGfycat;
         private bool downloadImgur;
         private bool downloadWebmshare;
+	    private bool downloadMixtape;
+		
         private MetadataType metadataFormat;
         private GfycatTypes gfycatType;
         private WebmshareTypes webmshareType;
+	    private MixtapeTypes mixtapeType;
         private bool removeIndexAfterCrawl;
         private string secretKey;
         private bool showPicturePreview;
@@ -129,37 +132,19 @@ namespace TumblThree.Applications.ViewModels
 
         public IManagerService ManagerService { get; }
 
-        public ICommand BrowseDownloadLocationCommand
-        {
-            get { return browseDownloadLocationCommand; }
-        }
+        public ICommand BrowseDownloadLocationCommand => browseDownloadLocationCommand;
 
-        public ICommand AuthenticateCommand
-        {
-            get { return authenticateCommand; }
-        }
+	    public ICommand AuthenticateCommand => authenticateCommand;
 
-        public ICommand SaveCommand
-        {
-            get { return saveCommand; }
-        }
+	    public ICommand SaveCommand => saveCommand;
 
-        public ICommand EnableAutoDownloadCommand
-        {
-            get { return enableAutoDownloadCommand; }
-        }
+	    public ICommand EnableAutoDownloadCommand => enableAutoDownloadCommand;
 
-        public ICommand ExportCommand
-        {
-            get { return exportCommand; }
-        }
+	    public ICommand ExportCommand => exportCommand;
 
-        public ICommand BrowseExportLocationCommand
-        {
-            get { return browseExportLocationCommand; }
-        }
+	    public ICommand BrowseExportLocationCommand => browseExportLocationCommand;
 
-        public string OAuthToken
+	    public string OAuthToken
         {
             get { return oauthToken; }
             set { SetProperty(ref oauthToken, value); }
@@ -519,6 +504,18 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref webmshareType, value); }
         }
 
+	    public bool DownloadMixtape
+	    {
+		    get { return downloadMixtape; }
+		    set { SetProperty(ref downloadMixtape, value); }
+	    }
+
+	    public MixtapeTypes MixtapeType
+	    {
+		    get { return mixtapeType; }
+		    set { SetProperty(ref mixtapeType, value); }
+	    }
+
         public string Tags
         {
             get { return tags; }
@@ -607,7 +604,9 @@ namespace TumblThree.Applications.ViewModels
             folderBrowserDialog.SelectedPath = DownloadLocation;
             folderBrowserDialog.ShowNewFolderButton = true;
             if (folderBrowserDialog.ShowDialog() == true)
-                DownloadLocation = folderBrowserDialog.SelectedPath;
+            {
+	            DownloadLocation = folderBrowserDialog.SelectedPath;
+            }
         }
 
         private void BrowseExportLocation()
@@ -625,7 +624,7 @@ namespace TumblThree.Applications.ViewModels
         {
             try
             {
-                var url = @"https://www.tumblr.com/login";
+                string url = @"https://www.tumblr.com/login";
                 ShellService.Settings.OAuthCallbackUrl = "https://www.tumblr.com/dashboard";
 
                 AuthenticateViewModel authenticateViewModel = authenticateViewModelFactory.CreateExport().Value;
@@ -698,6 +697,7 @@ namespace TumblThree.Applications.ViewModels
                 DownloadImgur = settings.DownloadImgur;
                 DownloadGfycat = settings.DownloadGfycat;
                 DownloadWebmshare = settings.DownloadWebmshare;
+	            DownloadMixtape = settings.DownloadMixtape;
                 GfycatType = settings.GfycatType;
                 WebmshareType = settings.WebmshareType;
                 DownloadRebloggedPosts = settings.DownloadRebloggedPosts;
@@ -793,30 +793,36 @@ namespace TumblThree.Applications.ViewModels
 
         private void ApplySettings(bool downloadLocationChanged, bool loadAllDatabasesChanged)
         {
-            CrawlerService.Timeconstraint.SetRate(((double)MaxConnections / (double)ConnectionTimeInterval));
+            CrawlerService.Timeconstraint.SetRate((double)MaxConnections / (double)ConnectionTimeInterval);
 
             if (loadAllDatabasesChanged && downloadLocationChanged)
             {
                 CrawlerService.DatabasesLoaded = new TaskCompletionSource<bool>();
                 if (CrawlerService.StopCommand.CanExecute(null))
-                    CrawlerService.StopCommand.Execute(null);
-                CrawlerService.LoadLibraryCommand.Execute(null);
+                {
+	                CrawlerService.StopCommand.Execute(null);
+                }
+	            CrawlerService.LoadLibraryCommand.Execute(null);
                 CrawlerService.LoadAllDatabasesCommand.Execute(null);
             }
             else if (downloadLocationChanged)
             {
                 CrawlerService.DatabasesLoaded = new TaskCompletionSource<bool>();
                 if (CrawlerService.StopCommand.CanExecute(null))
-                    CrawlerService.StopCommand.Execute(null);
-                CrawlerService.LoadLibraryCommand.Execute(null);
+                {
+	                CrawlerService.StopCommand.Execute(null);
+                }
+	            CrawlerService.LoadLibraryCommand.Execute(null);
                 CrawlerService.LoadAllDatabasesCommand.Execute(null);
             }
             else if (loadAllDatabasesChanged)
             {
                 CrawlerService.DatabasesLoaded = new TaskCompletionSource<bool>();
                 if (CrawlerService.StopCommand.CanExecute(null))
-                    CrawlerService.StopCommand.Execute(null);
-                CrawlerService.LoadAllDatabasesCommand.Execute(null);
+                {
+	                CrawlerService.StopCommand.Execute(null);
+                }
+	            CrawlerService.LoadAllDatabasesCommand.Execute(null);
             }
         }
 
@@ -884,8 +890,10 @@ namespace TumblThree.Applications.ViewModels
             settings.DownloadImgur = DownloadImgur;
             settings.DownloadGfycat = DownloadGfycat;
             settings.DownloadWebmshare = DownloadWebmshare;
+	        settings.DownloadMixtape = DownloadMixtape;
             settings.GfycatType = GfycatType;
             settings.WebmshareType = WebmshareType;
+	        settings.MixtapeType = MixtapeType;
             settings.CheckDirectoryForFiles = CheckDirectoryForFiles;
             settings.DownloadUrlList = DownloadUrlList;
             settings.PortableMode = PortableMode;

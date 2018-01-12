@@ -34,47 +34,23 @@ namespace TumblThree.Applications.ViewModels
             this.applicationUpdateService = applicationUpdateService;
         }
 
-        public ICommand ShowWebsiteCommand
-        {
-            get { return showWebsiteCommand; }
-        }
+        public ICommand ShowWebsiteCommand => showWebsiteCommand;
 
-        public ICommand CheckForUpdatesCommand
-        {
-            get { return checkForUpdatesCommand; }
-        }
+	    public ICommand CheckForUpdatesCommand => checkForUpdatesCommand;
 
-        public ICommand DownloadCommand
-        {
-            get { return downloadCommand; }
-        }
+	    public ICommand DownloadCommand => downloadCommand;
 
-        public string ProductName
-        {
-            get { return ApplicationInfo.ProductName; }
-        }
+	    public string ProductName => ApplicationInfo.ProductName;
 
-        public string Version
-        {
-            get { return ApplicationInfo.Version; }
-        }
+	    public string Version => ApplicationInfo.Version;
 
-        public string OSVersion
-        {
-            get { return Environment.OSVersion.ToString(); }
-        }
+	    public string OSVersion => Environment.OSVersion.ToString();
 
-        public string NetVersion
-        {
-            get { return Environment.Version.ToString(); }
-        }
+	    public string NetVersion => Environment.Version.ToString();
 
-        public bool Is64BitProcess
-        {
-            get { return Environment.Is64BitProcess; }
-        }
+	    public bool Is64BitProcess => Environment.Is64BitProcess;
 
-        public bool IsCheckInProgress
+	    public bool IsCheckInProgress
         {
             get { return isCheckInProgress; }
             set { SetProperty(ref isCheckInProgress, value); }
@@ -99,7 +75,7 @@ namespace TumblThree.Applications.ViewModels
 
         private void ShowWebsite(object parameter)
         {
-            var url = (string)parameter;
+            string url = (string)parameter;
             try
             {
                 Process.Start(url);

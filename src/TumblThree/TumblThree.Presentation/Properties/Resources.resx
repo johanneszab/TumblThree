@@ -711,6 +711,9 @@ E.g.  great big car, bears searches for great big cars and bears.</value>
   <data name="DownloadWebmshare" xml:space="preserve">
     <value>Download webmshare</value>
   </data>
+  <data name="DownloadMixtape" xml:space="preserve">
+    <value>Download mixtape</value>
+  </data>
   <data name="ToolTipDownloadGfycat" xml:space="preserve">
     <value>Download linked gfycat.com files</value>
   </data>
@@ -722,6 +725,12 @@ E.g.  great big car, bears searches for great big cars and bears.</value>
   </data>
   <data name="ToolTipDownloadWebmshareDescription" xml:space="preserve">
     <value>Download externally hosted webmshare.com files</value>
+  </data>
+  <data name="ToolTipDownloadMixtape" xml:space="preserve">
+    <value>Download linked Mixtape.moe files</value>
+  </data>
+  <data name="ToolTipDownloadMixtapeDescription" xml:space="preserve">
+    <value>Download externally hosted Mixtape.moe files</value>
   </data>
   <data name="DownloadImgur" xml:space="preserve">
     <value>Download imgur</value>
@@ -744,6 +753,14 @@ E.g.  great big car, bears searches for great big cars and bears.</value>
   <data name="ToolTipWebmshareFiletypeDescription" xml:space="preserve">
     <value>Chose which file type you want to download</value>
   </data>
+
+  <data name="ToolTipMixtapeFiletype" xml:space="preserve">
+    <value>File type to download</value>
+  </data>
+  <data name="ToolTipMixtapeFiletypeDescription" xml:space="preserve">
+    <value>Chose which file type you want to download</value>
+  </data>
+
   <data name="DumpCrawlerData" xml:space="preserve">
     <value>Dump crawler data</value>
   </data>

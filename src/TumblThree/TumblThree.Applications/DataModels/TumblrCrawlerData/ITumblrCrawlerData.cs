@@ -1,6 +1,6 @@
 ﻿namespace TumblThree.Applications.DataModels.TumblrCrawlerData
 {
-    interface ITumblrCrawlerData
+	internal interface ITumblrCrawlerData
     {
 
     }

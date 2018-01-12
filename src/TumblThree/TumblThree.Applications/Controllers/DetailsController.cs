@@ -12,7 +12,7 @@ using TumblThree.Domain.Queue;
 
 namespace TumblThree.Applications.Controllers
 {
-    [Export, Export(typeof(IDetailsService))]
+    [Export][Export(typeof(IDetailsService))]
     internal class DetailsController : IDetailsService
     {
         private readonly HashSet<IBlog> blogsToSave;
@@ -46,15 +46,9 @@ namespace TumblThree.Applications.Controllers
 
         public QueueManager QueueManager { get; set; }
 
-        private IDetailsViewModel DetailsViewModel
-        {
-            get
-            {
-                return detailsViewModel.Value;
-            }
-        }
+        private IDetailsViewModel DetailsViewModel => detailsViewModel.Value;
 
-        public void SelectBlogFiles(IReadOnlyList<IBlog> blogFiles)
+	    public void SelectBlogFiles(IReadOnlyList<IBlog> blogFiles)
         {
             UpdateViewModelBasedOnSelection(blogFiles);
 
@@ -76,8 +70,10 @@ namespace TumblThree.Applications.Controllers
         private void UpdateViewModelBasedOnSelection(IReadOnlyList<IBlog> blogFiles)
         {
             if (blogFiles.Count == 0)
-                return;
-            if (blogFiles.Select(blog => blog.GetType()).Distinct().Count() < 2)
+            {
+	            return;
+            }
+	        if (blogFiles.Select(blog => blog.GetType()).Distinct().Count() < 2)
             {
                 detailsViewModel = GetViewModel(blogFiles.FirstOrDefault());
             }
@@ -186,13 +182,15 @@ namespace TumblThree.Applications.Controllers
         private static T SetProperty<T>(IReadOnlyCollection<IBlog> blogs, string propertyName) where T: IConvertible
         {
             PropertyInfo property = typeof(IBlog).GetProperty(propertyName);
-            var value = (T)property.GetValue(blogs.FirstOrDefault());
+            T value = (T)property.GetValue(blogs.FirstOrDefault());
             if (value != null)
             {
                 bool equal = blogs.All(blog => property.GetValue(blog)?.Equals(value) ?? false);
                 if (equal)
-                    return value;
-                return default(T);
+                {
+	                return value;
+                }
+	            return default(T);
             }
             return default(T);
         }
@@ -203,10 +201,14 @@ namespace TumblThree.Applications.Controllers
             int numberOfBlogs = blogs.Count;
             int checkedBlogs = blogs.Select(blog => (bool)property.GetValue(blog)).Count(state => state);
             if (checkedBlogs == numberOfBlogs)
-                return true;
-            if (checkedBlogs == 0)
-                return false;
-            //return null; // three-state checkbox for the details view?
+            {
+	            return true;
+            }
+	        if (checkedBlogs == 0)
+	        {
+		        return false;
+	        }
+	        //return null; // three-state checkbox for the details view?
             return false;
         }
 

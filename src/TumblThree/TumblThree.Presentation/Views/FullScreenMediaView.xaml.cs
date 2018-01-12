@@ -12,7 +12,7 @@ namespace TumblThree.Presentation.Views
     /// <summary>
     ///     Interaction logic for FullScreenMediaView.xaml
     /// </summary>
-    [Export(typeof(IFullScreenMediaView)), PartCreationPolicy(CreationPolicy.NonShared)]
+    [Export(typeof(IFullScreenMediaView))][PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class FullScreenMediaView : Window, IFullScreenMediaView
     {
         private readonly Lazy<FullScreenMediaViewModel> viewModel;
@@ -21,7 +21,7 @@ namespace TumblThree.Presentation.Views
         {
             InitializeComponent();
             viewModel = new Lazy<FullScreenMediaViewModel>(() => ViewHelper.GetViewModel<FullScreenMediaViewModel>(this));
-            this.PreviewKeyDown += new KeyEventHandler(HandleEsc);
+            PreviewKeyDown += new KeyEventHandler(HandleEsc);
         }
 
         private FullScreenMediaViewModel ViewModel
@@ -38,12 +38,14 @@ namespace TumblThree.Presentation.Views
         private void HandleEsc(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
-                Close();
+            {
+	            Close();
+            }
         }
 
         private void UIElement_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            this.Close();
+            Close();
         }
     }
 }

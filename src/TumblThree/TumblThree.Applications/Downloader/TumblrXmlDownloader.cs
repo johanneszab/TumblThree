@@ -37,7 +37,7 @@ namespace TumblThree.Applications.Downloader
 
         public virtual async Task DownloadCrawlerDataAsync()
         {
-            var trackedTasks = new List<Task>();
+            List<Task> trackedTasks = new List<Task>();
             blog.CreateDataFolder();
 
             foreach (TumblrCrawlerData<XDocument> downloadItem in xmlQueue.GetConsumingEnumerable())
@@ -73,12 +73,12 @@ namespace TumblThree.Applications.Downloader
         {
             try
             {
-                using (var sw = new StreamWriter(fileLocation, true))
+                using (StreamWriter sw = new StreamWriter(fileLocation, true))
                 {
                     await sw.WriteAsync(PrettyXml(data));
                 }
             }
-            catch (IOException ex) when ((ex.HResult & 0xFFFF) == 0x27 || (ex.HResult & 0xFFFF) == 0x70)
+            catch (IOException ex) when (((ex.HResult & 0xFFFF) == 0x27) || ((ex.HResult & 0xFFFF) == 0x70))
             {
                 Logger.Error("TumblrXmlDownloader:AppendToTextFile: {0}", ex);
                 shellService.ShowError(ex, Resources.DiskFull);
@@ -89,16 +89,16 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        static string PrettyXml(XContainer xml)
+	    private static string PrettyXml(XContainer xml)
         {
-            var stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = new StringBuilder();
 
-            var settings = new XmlWriterSettings();
+            XmlWriterSettings settings = new XmlWriterSettings();
             settings.OmitXmlDeclaration = true;
             settings.Indent = true;
             settings.NewLineOnAttributes = true;
 
-            using (var xmlWriter = XmlWriter.Create(stringBuilder, settings))
+            using (XmlWriter xmlWriter = XmlWriter.Create(stringBuilder, settings))
             {
                 xml.WriteTo(xmlWriter);
             }

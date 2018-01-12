@@ -18,9 +18,9 @@
 
         public TumblrPost(string url, string id, string date)
         {
-            this.Url = url;
-            this.Id = id;
-            this.Date = date;
+            Url = url;
+            Id = id;
+            Date = date;
         }
     }
 }

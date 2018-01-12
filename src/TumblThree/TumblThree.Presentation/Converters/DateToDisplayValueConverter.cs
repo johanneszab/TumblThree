@@ -8,7 +8,7 @@ namespace TumblThree.Presentation.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var date = (DateTime)value;
+            DateTime date = (DateTime)value;
             return date != DateTime.MinValue ? (object)date : "";
         }
 

@@ -7,7 +7,7 @@ using TumblThree.Applications.Services;
 namespace TumblThree.Applications.Crawler
 {
     [Export(typeof(ITumblrBlogDetector))]
-    class TumblrBlogDetector : ITumblrBlogDetector
+    internal class TumblrBlogDetector : ITumblrBlogDetector
     {
         private readonly IWebRequestFactory webRequestFactory;
         private readonly IShellService shellService;
@@ -23,16 +23,20 @@ namespace TumblThree.Applications.Crawler
         {
             string location = await GetUrlRedirection(url).TimeoutAfter(shellService.Settings.TimeOut); ;
             if (location.Contains("login_required"))
-                return false;
-            return true;
+            {
+	            return false;
+            }
+	        return true;
         }
 
         public async Task<bool> IsHiddenTumblrBlog(string url)
         {
             string location = await GetUrlRedirection(url).TimeoutAfter(shellService.Settings.TimeOut); ;
             if (location.Contains("login_required"))
-                return true;
-            return false;
+            {
+	            return true;
+            }
+	        return false;
         }
 
         private async Task<string> GetUrlRedirection(string url)
@@ -40,7 +44,7 @@ namespace TumblThree.Applications.Crawler
             HttpWebRequest request = webRequestFactory.CreateGetReqeust(url);
             request.Method = "GET";
             string location;
-            using (var response = await request.GetResponseAsync() as HttpWebResponse)
+            using (HttpWebResponse response = await request.GetResponseAsync() as HttpWebResponse)
             {
                 location = response.ResponseUri.ToString();
             }

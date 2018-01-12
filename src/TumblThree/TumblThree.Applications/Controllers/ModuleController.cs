@@ -13,7 +13,7 @@ using TumblThree.Domain.Queue;
 
 namespace TumblThree.Applications.Controllers
 {
-    [Export(typeof(IModuleController)), Export]
+    [Export(typeof(IModuleController))][Export]
     internal class ModuleController : IModuleController
     {
         private const string appSettingsFileName = "Settings.json";
@@ -50,37 +50,19 @@ namespace TumblThree.Applications.Controllers
             queueManager = new QueueManager();
         }
 
-        private ShellService ShellService
-        {
-            get { return shellService.Value; }
-        }
+        private ShellService ShellService => shellService.Value;
 
-        private ManagerController ManagerController
-        {
-            get { return managerController.Value; }
-        }
+	    private ManagerController ManagerController => managerController.Value;
 
-        private QueueController QueueController
-        {
-            get { return queueController.Value; }
-        }
+	    private QueueController QueueController => queueController.Value;
 
-        private DetailsController DetailsController
-        {
-            get { return detailsController.Value; }
-        }
+	    private DetailsController DetailsController => detailsController.Value;
 
-        private CrawlerController CrawlerController
-        {
-            get { return crawlerController.Value; }
-        }
+	    private CrawlerController CrawlerController => crawlerController.Value;
 
-        private ShellViewModel ShellViewModel
-        {
-            get { return shellViewModel.Value; }
-        }
+	    private ShellViewModel ShellViewModel => shellViewModel.Value;
 
-        public void Initialize()
+	    public void Initialize()
         {
             if (CheckIfPortableMode(appSettingsFileName))
             {
@@ -193,7 +175,9 @@ namespace TumblThree.Applications.Controllers
         private void UpdateDetailsView()
         {
             if (!ShellViewModel.IsQueueViewVisible)
-                ShellViewModel.IsDetailsViewVisible = true;
+            {
+	            ShellViewModel.IsDetailsViewVisible = true;
+            }
         }
     }
 }
