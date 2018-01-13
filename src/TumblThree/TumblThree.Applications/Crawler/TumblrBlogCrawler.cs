@@ -22,6 +22,7 @@ using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain;
 using TumblThree.Domain.Models;
+using CG.Web.MegaApiClient;
 
 namespace TumblThree.Applications.Crawler
 {
@@ -37,13 +38,14 @@ namespace TumblThree.Applications.Crawler
         private readonly IGfycatParser gfycatParser;
         private readonly IWebmshareParser webmshareParser;
 	    private readonly IMixtapeParser mixtapeParser;
+	    private readonly IMegaParser megaParser;
         private readonly IPostQueue<TumblrCrawlerData<Post>> jsonQueue;
         private readonly ICrawlerDataDownloader crawlerDataDownloader;
 
         public TumblrBlogCrawler(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress,
             ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService,
             IDownloader downloader, ICrawlerDataDownloader crawlerDataDownloader, ITumblrToTextParser<Post> tumblrJsonParser, IImgurParser imgurParser, IGfycatParser gfycatParser,
-            IWebmshareParser webmshareParser, IMixtapeParser mixtapeParser,IPostQueue<TumblrPost> postQueue,
+            IWebmshareParser webmshareParser, IMixtapeParser mixtapeParser, IMegaParser megaParser,IPostQueue<TumblrPost> postQueue,
             IPostQueue<TumblrCrawlerData<Post>> jsonQueue, IBlog blog)
             : base(shellService, ct, progress, webRequestFactory, cookieService, postQueue, blog)
         {
@@ -55,6 +57,7 @@ namespace TumblThree.Applications.Crawler
             this.gfycatParser = gfycatParser;
             this.webmshareParser = webmshareParser;
 			this.mixtapeParser = mixtapeParser;
+	        this.megaParser = megaParser;
             this.jsonQueue = jsonQueue;
             this.crawlerDataDownloader = crawlerDataDownloader;
         }
@@ -104,7 +107,7 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException)
             {
-                int webRespStatusCode = (int)((HttpWebResponse)webException?.Response).StatusCode;
+                int webRespStatusCode = (int)((HttpWebResponse)webException.Response).StatusCode;
                 if (webRespStatusCode == 429)
                 {
                     Logger.Error("TumblrBlogCrawler:UpdateMetaInformationAsync:WebException {0}", webException);
@@ -228,7 +231,7 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException)
             {
-                int webRespStatusCode = (int)((HttpWebResponse)webException?.Response).StatusCode;
+                int webRespStatusCode = (int)((HttpWebResponse)webException.Response).StatusCode;
                 if (webRespStatusCode == 429)
                 {
                     Logger.Error("TumblrBlogCrawler:UpdateTotalPostCountAsync:WebException {0}", webException);
@@ -254,7 +257,7 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException)
             {
-                int webRespStatusCode = (int)((HttpWebResponse)webException?.Response).StatusCode;
+                int webRespStatusCode = (int)((HttpWebResponse)webException.Response).StatusCode;
                 if (webRespStatusCode == 429)
                 {
                     Logger.Error("TumblrBlogCrawler:GetHighestPostIdAsync:WebException {0}", webException);
@@ -322,7 +325,7 @@ namespace TumblThree.Applications.Crawler
                     }
                     catch (WebException webException) when (webException.Response != null)
                     {
-                        int webRespStatusCode = (int)((HttpWebResponse)webException?.Response).StatusCode;
+                        int webRespStatusCode = (int)((HttpWebResponse)webException.Response).StatusCode;
                         if (webRespStatusCode == 429)
                         {
                             apiLimitHit = true;
@@ -375,7 +378,7 @@ namespace TumblThree.Applications.Crawler
                         DateTimeStyles.None);
                     downloadToUnixTime = new DateTimeOffset(downloadTo).ToUnixTimeSeconds();
                 }
-                long postTime = 0;
+                long postTime;
                 postTime = post.unix_timestamp;
                 if ((downloadFromUnixTime >= postTime) || (postTime >= downloadToUnixTime))
                 {
@@ -387,8 +390,8 @@ namespace TumblThree.Applications.Crawler
 
         private bool CheckPostAge(TumblrApiJson response)
         {
-            ulong highestPostId = 0;
-            ulong.TryParse(response.posts.FirstOrDefault().id,
+            ulong highestPostId;
+            ulong.TryParse(response.posts.FirstOrDefault()?.id,
                 out highestPostId);
 
             if (highestPostId < GetLastPostId())
@@ -744,21 +747,13 @@ namespace TumblThree.Applications.Crawler
 
         private string ParseImageUrl(Post post)
         {
-            string imageUrl = (string)post.GetType().GetProperty("photo_url_" + ImageSize()).GetValue(post, null);
-            if (imageUrl == null)
-            {
-	            imageUrl = post.photo_url_1280;
-            }
+            string imageUrl = (string)post.GetType().GetProperty("photo_url_" + ImageSize())?.GetValue(post, null) ?? post.photo_url_1280;
 	        return imageUrl;
         }
 
         private string ParseImageUrl(Photo post)
         {
-            string imageUrl = (string)post.GetType().GetProperty("photo_url_" + ImageSize()).GetValue(post, null);
-            if (imageUrl == null)
-            {
-	            imageUrl = post.photo_url_1280;
-            }
+            string imageUrl = (string)post.GetType().GetProperty("photo_url_" + ImageSize())?.GetValue(post, null) ?? post.photo_url_1280;
 	        return imageUrl;
         }
 
@@ -889,6 +884,10 @@ namespace TumblThree.Applications.Crawler
 	        if (blog.DownloadMixtape)
 	        {
 		        AddMixtapeUrl(document);
+	        }
+	        if (blog.DownloadMega)
+	        {
+		        AddMegaUrl(document);
 	        }
         }
 
@@ -1043,5 +1042,31 @@ namespace TumblThree.Applications.Crawler
                 }
             }
         }
+
+	    private void AddMegaUrl(TumblrApiJson document)
+	    {
+		    foreach (Post post in document.posts)
+		    {
+			    if (!PostWithinTimeSpan(post))
+			    {
+				    continue;
+			    }
+			    if (!tags.Any() || post.tags.Any(x => tags.Contains(x, StringComparer.OrdinalIgnoreCase)))
+			    {
+				    if (CheckIfDownloadRebloggedPosts(post))
+				    {
+					    Regex regex = megaParser.GetMegaUrlRegex();
+					    foreach (Match match in regex.Matches(InlineSearch(post)))
+					    {
+						    //todo:find a better way to clean mega urls. 
+						    string url = match.Groups[0].Value.Split('\"').First();
+
+						    AddToDownloadList(new ExternalVideoPost(url, string.Empty,post.unix_timestamp.ToString(),UrlType.Mega));
+						    AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(url, ".json"), post));
+					    }
+				    }
+			    }
+		    }
+	    }
     }
 }

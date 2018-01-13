@@ -235,6 +235,12 @@ namespace TumblThree.Applications.Properties
 	    [DataMember]
 	    public MixtapeTypes MixtapeType { get; set; }
 
+	    [DataMember]
+	    public bool DownloadMega { get; set; }
+
+	    [DataMember]
+	    public MegaTypes MegaType { get; set; }
+
         [DataMember]
         public bool AutoDownload { get; set; }
 

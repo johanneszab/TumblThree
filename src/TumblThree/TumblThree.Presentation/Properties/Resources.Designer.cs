@@ -1506,6 +1506,24 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download linked mega files.
+        /// </summary>
+        public static string ToolTipDownloadMega {
+            get {
+                return ResourceManager.GetString("ToolTipDownloadMega", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download externally hosted mega files.
+        /// </summary>
+        public static string ToolTipDownloadMegaDescription {
+            get {
+                return ResourceManager.GetString("ToolTipDownloadMegaDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Download linked Mixtape.moe files.
         /// </summary>
         public static string ToolTipDownloadMixtape {
@@ -1515,7 +1533,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download externally hosted Mixtape.moe files.
+        ///   Looks up a localized string similar to Download externally hosted mega files.
         /// </summary>
         public static string ToolTipDownloadMixtapeDescription {
             get {
@@ -1799,6 +1817,24 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipLoadAllDatabasesDescription {
             get {
                 return ResourceManager.GetString("ToolTipLoadAllDatabasesDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File type to download.
+        /// </summary>
+        public static string ToolTipMegaFiletype {
+            get {
+                return ResourceManager.GetString("ToolTipMegaFiletype", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chose which file type you want to download.
+        /// </summary>
+        public static string ToolTipMegaFiletypeDescription {
+            get {
+                return ResourceManager.GetString("ToolTipMegaFiletypeDescription", resourceCulture);
             }
         }
         

@@ -150,6 +150,10 @@ namespace TumblThree.Domain.Models
 
         MixtapeTypes MixtapeType { get; set; }
 
+	    bool DownloadMega { get; set; }
+
+	    MegaTypes MegaType { get; set; }
+
         BlogTypes BlogType { get; set; }
 
         DateTime DateAdded { get; set; }

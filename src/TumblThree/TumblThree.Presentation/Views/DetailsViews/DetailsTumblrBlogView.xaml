@@ -868,6 +868,7 @@
                                 <RowDefinition Height="{StaticResource Layout.RowSpace}" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="{StaticResource Layout.RowSpace}" />
                             </Grid.RowDefinitions>
                             <CheckBox Content="{x:Static p:Resources.DownloadImgur}"
@@ -941,6 +942,20 @@
                                 </CheckBox.ToolTip>
                             </CheckBox>
 
+                            <CheckBox Content="Download MEGA"
+                                      IsChecked="{Binding BlogFile.DownloadMega, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="6"
+                                      Margin="3,0,0,0" Padding="3,0,0,0">
+                                <CheckBox.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadMega}" />
+                                            <TextBlock xml:space="preserve"
+                                                       Text="{x:Static p:Resources.ToolTipDownloadMegaDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+
                             <ComboBox Grid.Column="3" Grid.Row="4" Padding="5,0,5,0" 
                               ItemsSource="{Binding Source={Extensions:EnumBindingSource {x:Type Models:WebmshareTypes}}}" SelectedValuePath="."
                               SelectedValue="{Binding BlogFile.WebmshareType}"
@@ -965,6 +980,20 @@
                                             <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipMixtapeFiletype}" />
                                             <TextBlock xml:space="preserve"
                                                        Text="{x:Static p:Resources.ToolTipMixtapeFiletypeDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </ComboBox.ToolTip>
+                            </ComboBox>
+                            <ComboBox Grid.Column="3" Grid.Row="6" Padding="5,0,5,0" 
+                                      ItemsSource="{Binding Source={Extensions:EnumBindingSource {x:Type Models:MegaTypes}}}" SelectedValuePath="."
+                                      SelectedValue="{Binding BlogFile.MegaType}"
+                                      SelectedItem="{Binding BlogFile.MegaType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                <ComboBox.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipMegaFiletype}" />
+                                            <TextBlock xml:space="preserve"
+                                                       Text="{x:Static p:Resources.ToolTipMegaFiletypeDescription}" />
                                         </StackPanel>
                                     </ToolTip>
                                 </ComboBox.ToolTip>

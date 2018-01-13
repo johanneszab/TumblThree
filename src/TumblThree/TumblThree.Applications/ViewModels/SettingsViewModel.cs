@@ -85,11 +85,13 @@ namespace TumblThree.Applications.ViewModels
         private bool downloadImgur;
         private bool downloadWebmshare;
 	    private bool downloadMixtape;
+	    private bool downloadMega;
 		
         private MetadataType metadataFormat;
         private GfycatTypes gfycatType;
         private WebmshareTypes webmshareType;
 	    private MixtapeTypes mixtapeType;
+	    private MegaTypes megaType;
         private bool removeIndexAfterCrawl;
         private string secretKey;
         private bool showPicturePreview;
@@ -516,6 +518,18 @@ namespace TumblThree.Applications.ViewModels
 		    set { SetProperty(ref mixtapeType, value); }
 	    }
 
+	    public bool DownloadMega
+	    {
+		    get { return downloadMega; }
+		    set { SetProperty(ref downloadMega, value); }
+	    }
+
+	    public MegaTypes MegaType
+	    {
+		    get { return megaType; }
+		    set { SetProperty(ref megaType, value); }
+	    }
+
         public string Tags
         {
             get { return tags; }
@@ -698,8 +712,11 @@ namespace TumblThree.Applications.ViewModels
                 DownloadGfycat = settings.DownloadGfycat;
                 DownloadWebmshare = settings.DownloadWebmshare;
 	            DownloadMixtape = settings.DownloadMixtape;
+	            DownloadMega = settings.DownloadMega;
                 GfycatType = settings.GfycatType;
                 WebmshareType = settings.WebmshareType;
+	            MixtapeType = settings.MixtapeType;
+	            MegaType = settings.MegaType;
                 DownloadRebloggedPosts = settings.DownloadRebloggedPosts;
                 AutoDownload = settings.AutoDownload;
                 ForceSize = settings.ForceSize;
@@ -891,9 +908,11 @@ namespace TumblThree.Applications.ViewModels
             settings.DownloadGfycat = DownloadGfycat;
             settings.DownloadWebmshare = DownloadWebmshare;
 	        settings.DownloadMixtape = DownloadMixtape;
+	        settings.DownloadMega = DownloadMega;
             settings.GfycatType = GfycatType;
             settings.WebmshareType = WebmshareType;
 	        settings.MixtapeType = MixtapeType;
+	        settings.MegaType = MegaType;
             settings.CheckDirectoryForFiles = CheckDirectoryForFiles;
             settings.DownloadUrlList = DownloadUrlList;
             settings.PortableMode = PortableMode;

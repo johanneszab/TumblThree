@@ -730,7 +730,13 @@ E.g.  great big car, bears searches for great big cars and bears.</value>
     <value>Download linked Mixtape.moe files</value>
   </data>
   <data name="ToolTipDownloadMixtapeDescription" xml:space="preserve">
-    <value>Download externally hosted Mixtape.moe files</value>
+    <value>Download externally hosted mega files</value>
+  </data>
+  <data name="ToolTipDownloadMega" xml:space="preserve">
+    <value>Download linked mega files</value>
+  </data>
+  <data name="ToolTipDownloadMegaDescription" xml:space="preserve">
+    <value>Download externally hosted mega files</value>
   </data>
   <data name="DownloadImgur" xml:space="preserve">
     <value>Download imgur</value>
@@ -758,6 +764,13 @@ E.g.  great big car, bears searches for great big cars and bears.</value>
     <value>File type to download</value>
   </data>
   <data name="ToolTipMixtapeFiletypeDescription" xml:space="preserve">
+    <value>Chose which file type you want to download</value>
+  </data>
+
+  <data name="ToolTipMegaFiletype" xml:space="preserve">
+    <value>File type to download</value>
+  </data>
+  <data name="ToolTipMegaFiletypeDescription" xml:space="preserve">
     <value>Chose which file type you want to download</value>
   </data>
 

@@ -1,26 +1,39 @@
 ﻿namespace TumblThree.Applications.DataModels
 {
-    public enum PostType { Binary, Text }
+	public enum PostType
+	{
+		Binary,
+		Text
+	}
 
-    public abstract class TumblrPost
-    {
-        public PostType PostType { get; protected set; }
+	public enum UrlType
+	{
+		none,
+		Mega
+	}
 
-        public string Url { get; }
+	public abstract class TumblrPost
+	{
+		public PostType PostType { get; protected set; }
 
-        public string Id { get; }
+		public string Url { get; }
 
-        public string Date { get; }
+		public UrlType urltype { get; protected set;}
 
-        public string DbType { get; protected set; }
+		public string Id { get; }
 
-        public string TextFileLocation { get; protected set; }
+		public string Date { get; }
 
-        public TumblrPost(string url, string id, string date)
-        {
-            Url = url;
-            Id = id;
-            Date = date;
-        }
-    }
+		public string DbType { get; protected set; }
+
+		public string TextFileLocation { get; protected set; }
+
+		public TumblrPost(string url, string id, string date, UrlType utype)
+		{
+			Url = url;
+			Id = id;
+			Date = date;
+			urltype = utype;
+		}
+	}
 }

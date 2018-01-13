@@ -69,9 +69,12 @@ namespace TumblThree.Domain.Models
         private bool downloadImgur;
         private bool downloadWebmshare;
 	    private bool downloadMixtape;
+	    private bool downloadMega;
         private GfycatTypes gfycatType;
         private WebmshareTypes webmshareType;
 	    private MixtapeTypes mixtapeType;
+	    private MegaTypes megaType;
+
         private string downloadPages;
         private int pageSize;
         private string downloadFrom;
@@ -541,7 +544,19 @@ namespace TumblThree.Domain.Models
 		    get { return mixtapeType; }
 		    set { SetProperty(ref mixtapeType, value); }
 	    }
+	    [DataMember]
+	    public bool DownloadMega
+	    {
+		    get { return downloadMega; }
+		    set { SetProperty(ref downloadMega, value); }
+	    }
 
+	    [DataMember]
+	    public MegaTypes MegaType
+	    {
+		    get { return megaType; }
+		    set { SetProperty(ref megaType, value); }
+	    }
         [DataMember]
         public string DownloadPages
         {
@@ -755,9 +770,12 @@ namespace TumblThree.Domain.Models
             lock (lockObjectPostCount)
             {
                 PropertyInfo property = typeof(IBlog).GetProperty(propertyName);
-                int postCounter = (int)property.GetValue(this);
-                postCounter++;
-                property.SetValue(this, postCounter, null);
+	            if (property != null)
+	            {
+		            int postCounter = (int)property.GetValue(this);
+		            postCounter++;
+		            property.SetValue(this, postCounter, null);
+	            }
             }
 
         }
@@ -899,16 +917,17 @@ namespace TumblThree.Domain.Models
 
         protected static string ExtractSubDomain(string url)
         {
-            string[] source = url.Split(new char[] { '.' });
-            if ((source.Count<string>() >= 3) && source[0].StartsWith("http://", true, null))
+            string[] source = url.Split('.');
+            if ((source.Length >= 3) && source[0].StartsWith("http://", true, null))
             {
                 return source[0].Replace("http://", string.Empty);
             }
-            else if ((source.Count<string>() >= 3) && source[0].StartsWith("https://", true, null))
-            {
-                return source[0].Replace("https://", string.Empty);
-            }
-            return null;
+
+	        if ((source.Length >= 3) && source[0].StartsWith("https://", true, null))
+	        {
+		        return source[0].Replace("https://", string.Empty);
+	        }
+	        return null;
         }
 
         protected static string ExtractName(string url)

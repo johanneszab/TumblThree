@@ -4,7 +4,7 @@ namespace TumblThree.Applications.DataModels.TumblrPosts
 {
     public class PhotoPost : TumblrPost
     {
-        public PhotoPost(string url, string id, string date) : base(url, id, date)
+        public PhotoPost(string url, string id, string date,UrlType utype=UrlType.none) : base(url, id, date,utype)
         {
             PostType = PostType.Binary;
             DbType = "DownloadedPhotos";
