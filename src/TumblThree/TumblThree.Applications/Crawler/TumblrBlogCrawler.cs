@@ -999,6 +999,7 @@ namespace TumblThree.Applications.Crawler
                         foreach (Match match in regex.Matches(InlineSearch(post)))
                         {
                             string webmshareId = match.Groups[2].Value;
+	                       
                             string imageUrl = webmshareParser.CreateWebmshareUrl(webmshareId, blog.WebmshareType);
                             if (blog.SkipGif && (imageUrl.EndsWith(".gif") || imageUrl.EndsWith(".gifv")))
                             {
@@ -1061,7 +1062,7 @@ namespace TumblThree.Applications.Crawler
 						    //todo:find a better way to clean mega urls. 
 						    string url = match.Groups[0].Value.Split('\"').First();
 
-						    AddToDownloadList(new ExternalVideoPost(url, string.Empty,post.unix_timestamp.ToString(),UrlType.Mega));
+						    AddToDownloadList(new ExternalVideoPost(url, string.Empty,post.unix_timestamp.ToString()));
 						    AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(url, ".json"), post));
 					    }
 				    }

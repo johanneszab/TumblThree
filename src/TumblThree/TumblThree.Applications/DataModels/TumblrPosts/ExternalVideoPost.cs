@@ -4,7 +4,7 @@ namespace TumblThree.Applications.DataModels.TumblrPosts
 {
     public class ExternalVideoPost : TumblrPost
     {
-        public ExternalVideoPost(string url, string id, string date, UrlType utype=UrlType.none) : base(url, id, date,utype)
+        public ExternalVideoPost(string url, string id, string date) : base(url, id, date)
         {
             PostType = PostType.Binary;
             DbType = "DownloadedVideos";

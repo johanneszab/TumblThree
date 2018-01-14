@@ -4,7 +4,7 @@ namespace TumblThree.Applications.DataModels.TumblrPosts
 {
     public class PhotoMetaPost : TumblrPost
     {
-        public PhotoMetaPost(string url, string id, string date,UrlType utype=UrlType.none) : base(url, id, date,utype)
+        public PhotoMetaPost(string url, string id, string date) : base(url, id, date)
         {
             PostType = PostType.Text;
             DbType = "DownloadedPhotoMetas";

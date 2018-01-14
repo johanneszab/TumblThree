@@ -114,7 +114,6 @@
     <Compile Include="Crawler\TumblrBlogDetector.cs" />
     <Compile Include="Parser\MegaParser.cs" />
     <Compile Include="Parser\MixtapeParser.cs" />
-    <Compile Include="Parser\ProgressionStream.cs" />
     <Compile Include="Parser\TumblrSvcJsonToJson.cs" />
     <Compile Include="Parser\TumblrApiJsonToJson.cs" />
     <Compile Include="Parser\TumblrParser.cs" />

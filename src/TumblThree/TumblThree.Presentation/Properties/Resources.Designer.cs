@@ -554,7 +554,15 @@ namespace TumblThree.Presentation.Properties {
                 return ResourceManager.GetString("DownloadMixtape", resourceCulture);
             }
         }
-        
+
+	    /// <summary>
+	    ///   Looks up a localized string similar to Download mixtape.
+	    /// </summary>
+	    public static string DownloadMega {
+		    get {
+			    return ResourceManager.GetString("DownloadMega", resourceCulture);
+		    }
+	    }     
         /// <summary>
         ///   Looks up a localized string similar to Download Now.
         /// </summary>
@@ -653,7 +661,8 @@ namespace TumblThree.Presentation.Properties {
                 return ResourceManager.GetString("DownloadWebmshare", resourceCulture);
             }
         }
-        
+
+	   
         /// <summary>
         ///   Looks up a localized string similar to Dump crawler data.
         /// </summary>
