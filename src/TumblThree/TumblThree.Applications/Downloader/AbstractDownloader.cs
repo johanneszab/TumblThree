@@ -309,7 +309,6 @@ namespace TumblThree.Applications.Downloader
 
 				if (url.Contains("https://drive.google.com/"))
 				{
-					Console.Write("url:" + url + "\n");
 					UserCredential credentials = Authenticate();
 					DriveService service = OpenService(credentials);
 					RequestInfo(service, url, blogDownloadLocation + "\\");
@@ -449,19 +448,31 @@ namespace TumblThree.Applications.Downloader
 
 		public UserCredential Authenticate()
 		{
+			Console.Write("2"+"\n");
 			string settingsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), System.Waf.Applications.ApplicationInfo.Company, System.Waf.Applications.ApplicationInfo.ProductName, "Settings");
 			string portablePath = Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
 			string currentFolder = settingsPath ?? portablePath;
 			string credentialsFolder = Path.Combine(currentFolder, "credential");
+			string GoogleTokenPath = Path.Combine(credentialsFolder, "google_secret.json");
+			
+			Console.Write("token"+GoogleTokenPath+"\n");
+			if (!System.IO.File.Exists(GoogleTokenPath))
+			{
+				StreamWriter GoogleTokenFile = new StreamWriter(GoogleTokenPath);
+				string info = "{\"installed\":{\"client_id\":\"137806895872-pqf0ebihtgtho6jhdiichgjhc2cql2ep.apps.googleusercontent.com\",\"project_id\":\"oceanic-guard-192311\",\"auth_uri\":\"https://accounts.google.com/o/oauth2/auth\",\"token_uri\":\"https://accounts.google.com/o/oauth2/token\",\"auth_provider_x509_cert_url\":\"https://www.googleapis.com/oauth2/v1/certs\",\"client_secret\":\"br7VoHXdA9v8uSOzJ_Tcvq1c\",\"redirect_uris\":[\"urn:ietf:wg:oauth:2.0:oob\",\"http://localhost\"]}}";
+				GoogleTokenFile.WriteLine(info);
+				GoogleTokenFile.Close();
+			}
+			Console.Write("1"+"\n");
 
-			return Authenticate(credentialsFolder);
+			return Authenticate(credentialsFolder,GoogleTokenPath);
 		}
 
-		public UserCredential Authenticate(string credentialsFolder)
+		public UserCredential Authenticate(string credentialsFolder,string tokenPath)
 		{
 			UserCredential credentials;
 
-			using (FileStream stream = new FileStream(Path.Combine(credentialsFolder, "google_secret.json"), FileMode.Open, FileAccess.Read))
+			using (FileStream stream = new FileStream(tokenPath, FileMode.Open, FileAccess.Read))
 			{
 				// Delete credentials cache at folder debug/bin/credentials after changes here
 				credentials = GoogleWebAuthorizationBroker.AuthorizeAsync(
