@@ -9,10 +9,10 @@ namespace TumblThree.Applications.Crawler
     {
         public Regex GetMixtapeUrlRegex()
         {
-            return new Regex("(http[A-Za-z0-9_/:.]*mixtape.moe/([A-Za-z0-9_]*))");
+            return new Regex("(http[A-Za-z0-9_/:.]*mixtape.moe/(.*))");
         }
 
-        public string CreateMixtapeUrl(string mixtapeId, MixtapeTypes mixtapeType)
+        public string CreateMixtapeUrl(string mixtapeId, string fullurl,MixtapeTypes mixtapeType)
         {
             string url;
             switch (mixtapeType)
@@ -23,6 +23,10 @@ namespace TumblThree.Applications.Crawler
                 case MixtapeTypes.Webm:
                     url = @"https://my.mixtape.moe/" + mixtapeId + ".webm";
                     break;
+	            case MixtapeTypes.Any:
+		            url = fullurl;
+
+		            break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }

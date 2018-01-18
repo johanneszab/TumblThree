@@ -1,12 +1,18 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using CG.Web.MegaApiClient;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Drive.v3;
+using Google.Apis.Drive.v3.Data;
+using Google.Apis.Services;
+using Google.Apis.Util.Store;
 using TumblThree.Applications.DataModels;
 using TumblThree.Applications.DataModels.TumblrPosts;
 using TumblThree.Applications.Extensions;
@@ -14,8 +20,7 @@ using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain;
 using TumblThree.Domain.Models;
-using CG.Web.MegaApiClient;
-using System.Text.RegularExpressions;
+using File = Google.Apis.Drive.v3.Data.File;
 
 namespace TumblThree.Applications.Downloader
 {
@@ -32,7 +37,7 @@ namespace TumblThree.Applications.Downloader
 		protected readonly CancellationToken ct;
 		protected readonly PauseToken pt;
 		protected readonly FileDownloader fileDownloader;
-		private double p;
+
 		private string[] suffixes = {".jpg", ".jpeg", ".png"};
 
 		protected AbstractDownloader(IShellService shellService, IManagerService managerService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, IPostQueue<TumblrPost> postQueue, FileDownloader fileDownloader, ICrawlerService crawlerService = null, IBlog blog = null, IFiles files = null)
@@ -84,12 +89,12 @@ namespace TumblThree.Applications.Downloader
 			}
 			catch (WebException webException) when (webException.Response != null)
 			{
-				int webRespStatusCode = (int) ((HttpWebResponse) webException?.Response).StatusCode;
+				int webRespStatusCode = (int) ((HttpWebResponse) webException.Response).StatusCode;
 				if ((webRespStatusCode >= 400) && (webRespStatusCode < 600)) // removes inaccessible files: http status codes 400 to 599
 				{
 					try
 					{
-						File.Delete(fileLocation);
+						System.IO.File.Delete(fileLocation);
 					} // could be open again in a different thread
 					catch
 					{
@@ -228,19 +233,18 @@ namespace TumblThree.Applications.Downloader
 		protected virtual async Task<bool> DownloadBinaryPost(TumblrPost downloadItem)
 		{
 			string url = Url(downloadItem);
-			
+
 			if (!CheckIfFileExistsInDB(url))
 			{
 				string blogDownloadLocation = blog.DownloadLocation();
 				string fileLocationUrlList = FileLocationLocalized(blogDownloadLocation, downloadItem.TextFileLocation);
 				DateTime postDate = PostDate(downloadItem);
-				
-				
-				string fileName = url.Contains("https://mega.nz/#") ? "mega":FileName(downloadItem);
-				bool isMega = fileName == "mega";
-				string fileLocation =isMega ? "mega" :FileLocation(blogDownloadLocation, fileName);
 
-				if (isMega)
+
+				string fileName = FileName(downloadItem);
+				string fileLocation = FileLocation(blogDownloadLocation, fileName);
+
+				if (url.Contains("https://mega.nz/#"))
 				{
 					Uri link = new Uri(url);
 
@@ -262,7 +266,7 @@ namespace TumblThree.Applications.Downloader
 					{
 						case Crawler.MegaLinkType.Single:
 							INodeInfo nodeInfo = client.GetNodeFromLink(link);
-							fileName= nodeInfo.Name;
+							fileName = nodeInfo.Name;
 							fileLocation = FileLocation(blogDownloadLocation, fileName);
 
 							UpdateProgressQueueInformation(Resources.ProgressDownloadImage, fileName);
@@ -271,9 +275,10 @@ namespace TumblThree.Applications.Downloader
 								updateBlog(fileLocation, postDate, downloadItem, fileName);
 								return true;
 							}
+
 							client.Logout();
 							return false;
-														
+
 
 						case Crawler.MegaLinkType.Folder:
 							//If the link is a folder, download all files from it.
@@ -292,9 +297,7 @@ namespace TumblThree.Applications.Downloader
 								if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url, node))
 								{
 									updateBlog(fileLocation, postDate, downloadItem, fileName);
-									
 								}
-								
 							}
 
 							client.Logout();
@@ -304,11 +307,19 @@ namespace TumblThree.Applications.Downloader
 					}
 				}
 
+				if (url.Contains("https://drive.google.com/"))
+				{
+					Console.Write("url:" + url + "\n");
+					UserCredential credentials = Authenticate();
+					DriveService service = OpenService(credentials);
+					RequestInfo(service, url, blogDownloadLocation + "\\");
+				}
+
 				UpdateProgressQueueInformation(Resources.ProgressDownloadImage, fileName);
 				if (await DownloadBinaryFile(fileLocation, fileLocationUrlList, url))
 				{
 					updateBlog(fileLocation, postDate, downloadItem, fileName);
-					
+
 					return true;
 				}
 
@@ -362,7 +373,6 @@ namespace TumblThree.Applications.Downloader
 			return false;
 		}
 
-
 		private void DownloadTextPost(TumblrPost downloadItem)
 		{
 			string postId = PostId(downloadItem);
@@ -394,7 +404,7 @@ namespace TumblThree.Applications.Downloader
 		{
 			if (!blog.DownloadUrlList)
 			{
-				File.SetLastWriteTime(fileLocation, postDate);
+				System.IO.File.SetLastWriteTime(fileLocation, postDate);
 			}
 		}
 
@@ -407,7 +417,6 @@ namespace TumblThree.Applications.Downloader
 		{
 			return downloadItem.Url.Split('/').Last();
 		}
-
 
 		protected static string FileLocation(string blogDownloadLocation, string fileName)
 		{
@@ -435,5 +444,142 @@ namespace TumblThree.Applications.Downloader
 
 			return DateTime.Now;
 		}
+
+		#region GoogleAPIUtils
+
+		public UserCredential Authenticate()
+		{
+			string settingsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), System.Waf.Applications.ApplicationInfo.Company, System.Waf.Applications.ApplicationInfo.ProductName, "Settings");
+			string portablePath = Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
+			string currentFolder = settingsPath ?? portablePath;
+			string credentialsFolder = Path.Combine(currentFolder, "credential");
+
+			return Authenticate(credentialsFolder);
+		}
+
+		public UserCredential Authenticate(string credentialsFolder)
+		{
+			UserCredential credentials;
+
+			using (FileStream stream = new FileStream(Path.Combine(credentialsFolder, "google_secret.json"), FileMode.Open, FileAccess.Read))
+			{
+				// Delete credentials cache at folder debug/bin/credentials after changes here
+				credentials = GoogleWebAuthorizationBroker.AuthorizeAsync(
+					GoogleClientSecrets.Load(stream).Secrets,
+					new[]
+					{
+						DriveService.Scope.Drive,
+						DriveService.Scope.DriveAppdata,
+						DriveService.Scope.DriveFile,
+						DriveService.Scope.DriveMetadata,
+						DriveService.Scope.DriveScripts,
+						//Google.Apis.Drive.v3.DriveService.Scope.DriveReadonly,
+						DriveService.Scope.DrivePhotosReadonly
+					},
+					"user",
+					CancellationToken.None,
+					new FileDataStore(credentialsFolder, true)).Result;
+			}
+
+			return credentials;
+		}
+
+		public DriveService OpenService(UserCredential credentials)
+		{
+			return new DriveService(new BaseClientService.Initializer()
+			{
+				HttpClientInitializer = credentials
+			});
+		}
+
+		public string getIdFromUrl(string url)
+		{
+			string id = "";
+			string[] parts = url.Split('/');
+
+			if (url.IndexOf("?id=") >= 0)
+			{
+				id = (parts[3].Split('=')[1].Replace("&usp", ""));
+				return id;
+			}
+
+			string[] tempid = parts[5].Split('/');
+
+			List<string> sortList = tempid.OrderBy(a => a).ToList();
+			id = sortList[0];
+			return id;
+		}
+
+		public File RequestInfo(DriveService service, string url, string path)
+		{
+			try
+			{
+				string fileId = getIdFromUrl(url);
+				FilesResource.GetRequest request = service.Files.Get(fileId);
+				File file = request.Execute();
+				downloadFile(service, file, path + "\\");
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine("An error occurred: " + e.Message);
+			}
+
+			return null;
+		}
+
+		public void downloadFile(DriveService service, File FileResource, string path)
+		{
+			if (FileResource.MimeType != "application/vnd.google-apps.folder")
+			{
+				MemoryStream stream = new MemoryStream();
+
+				service.Files.Get(FileResource.Id).Download(stream);
+
+				FileStream file = new FileStream(path + @"/" + FileResource.Name, FileMode.Create, FileAccess.Write);
+				stream.WriteTo(file);
+				file.Close();
+			}
+			else
+			{
+				string NewPath = path + @"/" + FileResource.Name;
+
+				Directory.CreateDirectory(NewPath);
+				List<File> SubFolderItems = IterateFolder(service, FileResource.Id);
+
+				foreach (File Item in SubFolderItems)
+				{
+					downloadFile(service, Item, NewPath);
+				}
+			}
+		}
+
+		public List<File> IterateFolder(DriveService service, string folderId)
+		{
+			List<File> TList = new List<File>();
+			FilesResource.ListRequest request = service.Files.List();
+			request.Q = $"'{folderId}' in parents";
+
+			do
+			{
+				try
+				{
+					FileList children = request.Execute();
+
+					foreach (File child in children.Files)
+						TList.Add(service.Files.Get(child.Id).Execute());
+
+					request.PageToken = children.NextPageToken;
+				}
+				catch (Exception e)
+				{
+					Console.Write("An error occured:" + e.Message);
+					request.PageToken = null;
+				}
+			} while (!string.IsNullOrEmpty(request.PageToken));
+
+			return TList;
+		}
+
+		#endregion
 	}
 }

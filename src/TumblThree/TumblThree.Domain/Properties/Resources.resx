@@ -135,6 +135,9 @@
   <data name="mp4" xml:space="preserve">
     <value>mp4</value>
   </data>
+  <data name="any" xml:space="preserve">
+    <value>*.*</value>
+  </data>
   <data name="poster" xml:space="preserve">
     <value>poster</value>
   </data>

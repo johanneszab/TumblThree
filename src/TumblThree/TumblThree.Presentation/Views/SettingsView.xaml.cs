@@ -42,5 +42,10 @@ namespace TumblThree.Presentation.Views
 		{
 
 		}
+
+		private void CheckBox_Checked_1(object sender, RoutedEventArgs e)
+		{
+
+		}
 	}
 }

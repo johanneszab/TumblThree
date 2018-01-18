@@ -16,7 +16,19 @@ namespace TumblThree.Applications.Crawler
 	        
 		}
 
-
+		public string CreateMegaUrl(string id, string fullurl,MegaTypes type)
+		{
+			string url;
+			switch ( type)
+			{
+				case MegaTypes.Any:
+					url = fullurl;
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+			return url;
+		}
 
 
 

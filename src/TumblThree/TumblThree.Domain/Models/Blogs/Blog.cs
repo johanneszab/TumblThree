@@ -65,15 +65,27 @@ namespace TumblThree.Domain.Models
         private int downloadedVideoMetas;
         private int downloadedAudioMetas;
         private MetadataType metadataFormat;
+		//parsers
         private bool downloadGfycat;
         private bool downloadImgur;
         private bool downloadWebmshare;
 	    private bool downloadMixtape;
 	    private bool downloadMega;
+	    private bool downloadGoogleDrive;
+	    private bool downloadUguu;
+	    private bool downloadSafeMoe;
+	    private bool downloadLoliSafe;
+	    private bool downloadCatBox;
+		//parserTypes
+	    private MegaTypes megaType;
         private GfycatTypes gfycatType;
         private WebmshareTypes webmshareType;
 	    private MixtapeTypes mixtapeType;
-	    private MegaTypes megaType;
+	    private GoogleDriveTypes googledriveType;
+	    private UguuTypes uguuType;
+	    private SafeMoeTypes safemoeType;
+	    private LoliSafeTypes lolisafeType;
+	    private CatBoxTypes catboxType;
 
         private string downloadPages;
         private int pageSize;
@@ -552,11 +564,74 @@ namespace TumblThree.Domain.Models
 	    }
 
 	    [DataMember]
+	    public bool DownloadGoogleDrive
+	    {
+		    get { return downloadGoogleDrive; }
+		    set { SetProperty(ref downloadGoogleDrive, value); }
+	    }
+	    [DataMember]
+	    public bool DownloadUguu
+	    {
+		    get { return downloadUguu; }
+		    set { SetProperty(ref downloadUguu, value); }
+	    }
+	    [DataMember]
+	    public bool DownloadSafeMoe
+	    {
+		    get { return downloadSafeMoe; }
+		    set { SetProperty(ref downloadSafeMoe, value); }
+	    }
+	    [DataMember]
+	    public bool DownloadLoliSafe
+	    {
+		    get { return downloadLoliSafe; }
+		    set { SetProperty(ref downloadLoliSafe, value); }
+	    }
+	    [DataMember]
+	    public bool DownloadCatBox
+	    {
+		    get { return downloadCatBox; }
+		    set { SetProperty(ref downloadCatBox, value); }
+	    }
+
+	    [DataMember]
 	    public MegaTypes MegaType
 	    {
 		    get { return megaType; }
 		    set { SetProperty(ref megaType, value); }
 	    }
+
+	    [DataMember]
+	    public GoogleDriveTypes GoogleDriveType
+	    {
+		    get { return googledriveType; }
+		    set { SetProperty(ref googledriveType, value); }
+	    }
+	    [DataMember]
+	    public UguuTypes UguuType
+	    {
+		    get { return uguuType; }
+		    set { SetProperty(ref uguuType, value); }
+	    }
+	    [DataMember]
+	    public SafeMoeTypes SafeMoeType
+	    {
+		    get { return safemoeType; }
+		    set { SetProperty(ref safemoeType, value); }
+	    }
+	    [DataMember]
+	    public LoliSafeTypes LoliSafeType
+	    {
+		    get { return lolisafeType; }
+		    set { SetProperty(ref lolisafeType, value); }
+	    }
+	    [DataMember]
+	    public CatBoxTypes CatBoxType
+	    {
+		    get { return catboxType; }
+		    set { SetProperty(ref catboxType, value); }
+	    }
+
         [DataMember]
         public string DownloadPages
         {

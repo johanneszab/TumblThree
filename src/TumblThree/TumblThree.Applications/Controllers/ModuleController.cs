@@ -19,6 +19,8 @@ namespace TumblThree.Applications.Controllers
         private const string appSettingsFileName = "Settings.json";
         private const string managerSettingsFileName = "Manager.json";
         private const string queueSettingsFileName = "Queuelist.json";
+
+
         private readonly Lazy<CrawlerController> crawlerController;
         private readonly Lazy<DetailsController> detailsController;
         private readonly IEnvironmentService environmentService;
@@ -32,6 +34,7 @@ namespace TumblThree.Applications.Controllers
         private AppSettings appSettings;
         private ManagerSettings managerSettings;
         private QueueSettings queueSettings;
+
 
         [ImportingConstructor]
         public ModuleController(Lazy<ShellService> shellService, IEnvironmentService environmentService,
@@ -69,12 +72,14 @@ namespace TumblThree.Applications.Controllers
                 appSettings = LoadSettings<AppSettings>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, appSettingsFileName));
                 queueSettings = LoadSettings<QueueSettings>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, queueSettingsFileName));
                 managerSettings = LoadSettings<ManagerSettings>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, managerSettingsFileName));
+				
             }
             else
             {
                 appSettings = LoadSettings<AppSettings>(Path.Combine(environmentService.AppSettingsPath, appSettingsFileName));
                 queueSettings = LoadSettings<QueueSettings>(Path.Combine(environmentService.AppSettingsPath, queueSettingsFileName));
                 managerSettings = LoadSettings<ManagerSettings>(Path.Combine(environmentService.AppSettingsPath, managerSettingsFileName));
+	            
             }
 
             ShellService.Settings = appSettings;
@@ -118,12 +123,14 @@ namespace TumblThree.Applications.Controllers
                 SaveSettings(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, appSettingsFileName), appSettings);
                 SaveSettings(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, queueSettingsFileName), queueSettings);
                 SaveSettings(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, managerSettingsFileName), managerSettings);
+	            
             }
             else
             {
                 SaveSettings(Path.Combine(environmentService.AppSettingsPath, appSettingsFileName), appSettings);
                 SaveSettings(Path.Combine(environmentService.AppSettingsPath, queueSettingsFileName), queueSettings);
                 SaveSettings(Path.Combine(environmentService.AppSettingsPath, managerSettingsFileName), managerSettings);
+	            
             }
         }
 

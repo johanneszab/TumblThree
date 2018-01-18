@@ -19,7 +19,7 @@ namespace TumblThree.Applications.Crawler
 		Regex GetMegaUrlRegex();
 
 
-
+		string CreateMegaUrl(string id, string fullurl,MegaTypes type);
 		
 	}
 }

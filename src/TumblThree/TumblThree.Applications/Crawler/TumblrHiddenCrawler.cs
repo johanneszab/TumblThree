@@ -1011,8 +1011,9 @@ namespace TumblThree.Applications.Crawler
                         Regex regex = webmshareParser.GetWebmshareUrlRegex();
                         foreach (Match match in regex.Matches(post.caption))
                         {
+	                        string url = match.Groups[0].Value.Split('\"').First();
                             string webmshareId = match.Groups[2].Value;
-                            string imageUrl = webmshareParser.CreateWebmshareUrl(webmshareId, blog.WebmshareType);
+                            string imageUrl = webmshareParser.CreateWebmshareUrl(webmshareId, url,blog.WebmshareType);
                             if (blog.SkipGif && (imageUrl.EndsWith(".gif") || imageUrl.EndsWith(".gifv")))
                             {
                                 continue;

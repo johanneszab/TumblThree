@@ -54,7 +54,9 @@ namespace TumblThree.Applications.Crawler
             {
                 case BlogTypes.tumblr:
                     IPostQueue<TumblrCrawlerData<DataModels.TumblrApiJson.Post>> jsonApiQueue = GetJsonQueue<DataModels.TumblrApiJson.Post>();
-                    return new TumblrBlogCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, managerService, blog, files, postQueue), GetTumblrJsonDownloader(shellService, ct, pt, jsonApiQueue, crawlerService, blog), GetTumblrApiJsonToTextParser(blog), imgurParser, gfycatParser, GetWebmshareParser(), GetMixtapeParser(), GetMegaParser(),postQueue, jsonApiQueue, blog);
+                    return new TumblrBlogCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, 
+	                    crawlerService, managerService, blog, files, postQueue), GetTumblrJsonDownloader(shellService, ct, pt, jsonApiQueue, crawlerService, blog), 
+	                    GetTumblrApiJsonToTextParser(blog), imgurParser, gfycatParser, GetWebmshareParser(), GetMixtapeParser(), GetMegaParser(), GetGoogleDriveParser(),GetUguuParser(),GetSafeMoeParser(),GetLoliSafeParser(),GetCatBoxParser(),postQueue, jsonApiQueue, blog);
                 case BlogTypes.tmblrpriv:
                     IPostQueue<TumblrCrawlerData<DataModels.TumblrSvcJson.Post>> jsonSvcQueue = GetJsonQueue<DataModels.TumblrSvcJson.Post>();
                     return new TumblrHiddenCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory ,cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, managerService, blog, files, postQueue), GetTumblrJsonDownloader(shellService, ct, pt, jsonSvcQueue, crawlerService, blog), GetTumblrSvcJsonToTextParser(blog), imgurParser, gfycatParser, GetWebmshareParser(),postQueue, jsonSvcQueue, blog);
@@ -108,6 +110,26 @@ namespace TumblThree.Applications.Crawler
 		    return new MegaParser();
 	    }
 
+	    private IGoogleDriveParser GetGoogleDriveParser()
+	    {
+		    return new GoogleDriveParser();
+	    }
+	    private IUguuParser GetUguuParser()
+	    {
+		    return new UguuParser();
+	    }
+	    private ISafeMoeParser GetSafeMoeParser()
+	    {
+		    return new SafeMoeParser();
+	    }
+	    private ILoliSafeParser GetLoliSafeParser()
+	    {
+		    return new LoliSafeParser();
+	    }
+	    private ICatBoxParser GetCatBoxParser()
+	    {
+		    return new CatBoxParser();
+	    }
         private FileDownloader GetFileDownloader(CancellationToken ct)
         {
             return new FileDownloader(settings, ct, cookieService);

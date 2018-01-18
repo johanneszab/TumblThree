@@ -123,7 +123,7 @@ namespace TumblThree.Applications.Downloader
 		// TODO: Needs a complete rewrite. Also a append/cache function for resuming incomplete files on the disk.
 		// Should be in separated class with support for events for downloadspeed, is resumable file?, etc.
 		// Should check if file is complete, else it will trigger an WebException -- 416 requested range not satisfiable at every request 
-		public async Task<bool> DownloadFileWithResumeAsync(string url, string destinationPath,INode node=null)
+		public async Task<bool> DownloadFileWithResumeAsync(string url, string destinationPath, INode node = null)
 		{
 			long totalBytesReceived = 0;
 			int attemptCount = 0;
@@ -134,7 +134,11 @@ namespace TumblThree.Applications.Downloader
 				//temporary method for checking downloaded file
 				if (url.Contains("https://mega.nz/#"))
 				{
-					
+					return true;
+				}
+
+				if (url.Contains("https://drive.google.com/"))
+				{
 					return true;
 				}
 
@@ -174,35 +178,32 @@ namespace TumblThree.Applications.Downloader
 							client.LoginAnonymous();
 							Uri link = new Uri(url);
 
-													
+
 							Stream stream = node != null ? client.Download(node) : client.Download(link);
 
 							long totalBytesToReceive;
-							
+
 							totalBytesToReceive = totalBytesReceived + stream.Length;
 
-								
+
 							using (Stream throttledStream = GetStreamForDownload(stream))
 							{
 								byte[] buffer = new byte[4096];
 								int bytesRead;
-										
+
 
 								while ((bytesRead = await throttledStream.ReadAsync(buffer, 0, buffer.Length, ct)) > 0)
 								{
 									await fileStream.WriteAsync(buffer, 0, bytesRead);
 									totalBytesReceived += bytesRead;
-
 								}
 							}
-														
-							if (totalBytesReceived >= totalBytesToReceive)break;
+
+							if (totalBytesReceived >= totalBytesToReceive) break;
 							//client.Logout();
-
 						}
-						else
+						else 
 						{
-
 							HttpWebRequest request = CreateWebReqeust(url);
 							requestRegistration = ct.Register(() => request.Abort());
 							request.AddRange(totalBytesReceived);
@@ -238,7 +239,6 @@ namespace TumblThree.Applications.Downloader
 								break;
 							}
 						}
-
 					}
 					catch (IOException ioException)
 					{
