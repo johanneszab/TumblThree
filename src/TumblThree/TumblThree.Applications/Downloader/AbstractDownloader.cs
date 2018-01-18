@@ -448,14 +448,12 @@ namespace TumblThree.Applications.Downloader
 
 		public UserCredential Authenticate()
 		{
-			Console.Write("2"+"\n");
 			string settingsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), System.Waf.Applications.ApplicationInfo.Company, System.Waf.Applications.ApplicationInfo.ProductName, "Settings");
 			string portablePath = Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
 			string currentFolder = settingsPath ?? portablePath;
 			string credentialsFolder = Path.Combine(currentFolder, "credential");
 			string GoogleTokenPath = Path.Combine(credentialsFolder, "google_secret.json");
 			
-			Console.Write("token"+GoogleTokenPath+"\n");
 			if (!System.IO.File.Exists(GoogleTokenPath))
 			{
 				StreamWriter GoogleTokenFile = new StreamWriter(GoogleTokenPath);
@@ -463,7 +461,6 @@ namespace TumblThree.Applications.Downloader
 				GoogleTokenFile.WriteLine(info);
 				GoogleTokenFile.Close();
 			}
-			Console.Write("1"+"\n");
 
 			return Authenticate(credentialsFolder,GoogleTokenPath);
 		}
