@@ -76,12 +76,12 @@ namespace TumblThree.Domain.Models
         {
             try
             {
-                using (var stream = new FileStream(fileLocation,
+                using (FileStream stream = new FileStream(fileLocation,
                     FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    var serializer = new DataContractJsonSerializer(GetType());
-                    var file = (Files)serializer.ReadObject(stream);
-                    file.Location = Path.Combine((Directory.GetParent(fileLocation).FullName));
+                    DataContractJsonSerializer serializer = new DataContractJsonSerializer(GetType());
+                    Files file = (Files)serializer.ReadObject(stream);
+                    file.Location = Path.Combine(Directory.GetParent(fileLocation).FullName);
                     return file;
                 }
             }
@@ -102,12 +102,12 @@ namespace TumblThree.Domain.Models
             {
                 if (File.Exists(currentIndex))
                 {
-                    using (var stream = new FileStream(newIndex, FileMode.Create, FileAccess.Write))
+                    using (FileStream stream = new FileStream(newIndex, FileMode.Create, FileAccess.Write))
                     {
                         using (XmlDictionaryWriter writer = JsonReaderWriterFactory.CreateJsonWriter(
                             stream, Encoding.UTF8, true, true, "  "))
                         {
-                            var serializer = new DataContractJsonSerializer(GetType());
+                            DataContractJsonSerializer serializer = new DataContractJsonSerializer(GetType());
                             serializer.WriteObject(writer, this);
                             writer.Flush();
                         }
@@ -117,12 +117,12 @@ namespace TumblThree.Domain.Models
                 }
                 else
                 {
-                    using (var stream = new FileStream(currentIndex, FileMode.Create, FileAccess.Write))
+                    using (FileStream stream = new FileStream(currentIndex, FileMode.Create, FileAccess.Write))
                     {
                         using (XmlDictionaryWriter writer = JsonReaderWriterFactory.CreateJsonWriter(
                             stream, Encoding.UTF8, true, true, "  "))
                         {
-                            var serializer = new DataContractJsonSerializer(GetType());
+                            DataContractJsonSerializer serializer = new DataContractJsonSerializer(GetType());
                             serializer.WriteObject(writer, this);
                             writer.Flush();
                         }

@@ -81,12 +81,29 @@ namespace TumblThree.Applications.ViewModels
         private string proxyPort;
         private string proxyUsername;
         private string proxyPassword;
+
         private bool downloadGfycat;
         private bool downloadImgur;
         private bool downloadWebmshare;
+	    private bool downloadMixtape;
+	    private bool downloadMega;
+	    private bool downloadGoogleDrive;
+	    private bool downloadUguu;
+	    private bool downloadSafeMoe;
+	    private bool downloadLoliSafe;
+	    private bool downloadCatBox;
+
         private MetadataType metadataFormat;
         private GfycatTypes gfycatType;
         private WebmshareTypes webmshareType;
+	    private MixtapeTypes mixtapeType;
+	    private MegaTypes megaType;
+	    private GoogleDriveTypes googleDriveType;
+	    private UguuTypes uguuType;
+	    private SafeMoeTypes safeMoeType;
+	    private LoliSafeTypes loliSafeType;
+	    private CatBoxTypes catBoxType;
+
         private bool removeIndexAfterCrawl;
         private string secretKey;
         private bool showPicturePreview;
@@ -129,37 +146,19 @@ namespace TumblThree.Applications.ViewModels
 
         public IManagerService ManagerService { get; }
 
-        public ICommand BrowseDownloadLocationCommand
-        {
-            get { return browseDownloadLocationCommand; }
-        }
+        public ICommand BrowseDownloadLocationCommand => browseDownloadLocationCommand;
 
-        public ICommand AuthenticateCommand
-        {
-            get { return authenticateCommand; }
-        }
+	    public ICommand AuthenticateCommand => authenticateCommand;
 
-        public ICommand SaveCommand
-        {
-            get { return saveCommand; }
-        }
+	    public ICommand SaveCommand => saveCommand;
 
-        public ICommand EnableAutoDownloadCommand
-        {
-            get { return enableAutoDownloadCommand; }
-        }
+	    public ICommand EnableAutoDownloadCommand => enableAutoDownloadCommand;
 
-        public ICommand ExportCommand
-        {
-            get { return exportCommand; }
-        }
+	    public ICommand ExportCommand => exportCommand;
 
-        public ICommand BrowseExportLocationCommand
-        {
-            get { return browseExportLocationCommand; }
-        }
+	    public ICommand BrowseExportLocationCommand => browseExportLocationCommand;
 
-        public string OAuthToken
+	    public string OAuthToken
         {
             get { return oauthToken; }
             set { SetProperty(ref oauthToken, value); }
@@ -519,6 +518,86 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref webmshareType, value); }
         }
 
+	    public bool DownloadMixtape
+	    {
+		    get { return downloadMixtape; }
+		    set { SetProperty(ref downloadMixtape, value); }
+	    }
+
+	    public MixtapeTypes MixtapeType
+	    {
+		    get { return mixtapeType; }
+		    set { SetProperty(ref mixtapeType, value); }
+	    }
+
+	    public bool DownloadMega
+	    {
+		    get { return downloadMega; }
+		    set { SetProperty(ref downloadMega, value); }
+	    }
+
+	    public MegaTypes MegaType
+	    {
+		    get { return megaType; }
+		    set { SetProperty(ref megaType, value); }
+	    }
+
+	    public bool DownloadGoogleDrive
+	    {
+		    get { return downloadGoogleDrive; }
+		    set { SetProperty(ref downloadGoogleDrive, value); }
+	    }
+
+	    public GoogleDriveTypes GoogleDriveType
+	    {
+		    get { return googleDriveType; }
+		    set { SetProperty(ref googleDriveType, value); }
+	    }
+
+	    public bool DownloadUguu
+	    {
+		    get { return downloadUguu; }
+		    set { SetProperty(ref downloadUguu, value); }
+	    }
+
+	    public UguuTypes UguuType
+	    {
+		    get { return uguuType; }
+		    set { SetProperty(ref uguuType, value); }
+	    }
+	    public bool DownloadSafeMoe
+	    {
+		    get { return downloadSafeMoe; }
+		    set { SetProperty(ref downloadSafeMoe, value); }
+	    }
+
+	    public SafeMoeTypes SafeMoeType
+	    {
+		    get { return safeMoeType; }
+		    set { SetProperty(ref safeMoeType, value); }
+	    }
+	    public bool DownloadLoliSafe
+	    {
+		    get { return downloadLoliSafe; }
+		    set { SetProperty(ref downloadLoliSafe, value); }
+	    }
+
+	    public LoliSafeTypes LoliSafeType
+	    {
+		    get { return loliSafeType; }
+		    set { SetProperty(ref loliSafeType, value); }
+	    }
+	    public bool DownloadCatBox
+	    {
+		    get { return downloadCatBox; }
+		    set { SetProperty(ref downloadCatBox, value); }
+	    }
+
+	    public CatBoxTypes CatBoxType
+	    {
+		    get { return catBoxType; }
+		    set { SetProperty(ref catBoxType, value); }
+	    }
         public string Tags
         {
             get { return tags; }
@@ -607,7 +686,9 @@ namespace TumblThree.Applications.ViewModels
             folderBrowserDialog.SelectedPath = DownloadLocation;
             folderBrowserDialog.ShowNewFolderButton = true;
             if (folderBrowserDialog.ShowDialog() == true)
-                DownloadLocation = folderBrowserDialog.SelectedPath;
+            {
+	            DownloadLocation = folderBrowserDialog.SelectedPath;
+            }
         }
 
         private void BrowseExportLocation()
@@ -625,9 +706,9 @@ namespace TumblThree.Applications.ViewModels
         {
             try
             {
-                var url = @"https://www.tumblr.com/login";
+                string url = @"https://www.tumblr.com/login";
                 ShellService.Settings.OAuthCallbackUrl = "https://www.tumblr.com/dashboard";
-
+	            
                 AuthenticateViewModel authenticateViewModel = authenticateViewModelFactory.CreateExport().Value;
                 authenticateViewModel.AddUrl(url);
                 authenticateViewModel.ShowDialog(ShellService.ShellView);
@@ -698,8 +779,24 @@ namespace TumblThree.Applications.ViewModels
                 DownloadImgur = settings.DownloadImgur;
                 DownloadGfycat = settings.DownloadGfycat;
                 DownloadWebmshare = settings.DownloadWebmshare;
+	            DownloadMixtape = settings.DownloadMixtape;
+	            DownloadMega = settings.DownloadMega;
+	            DownloadGoogleDrive = settings.DownloadGoogleDrive;
+	            DownloadUguu = settings.DownloadUguu;
+	            DownloadSafeMoe = settings.DownloadSafeMoe;
+	            DownloadLoliSafe = settings.DownloadLoliSafe;
+	            DownloadCatBox = settings.DownloadCatBox;
+
                 GfycatType = settings.GfycatType;
                 WebmshareType = settings.WebmshareType;
+	            MixtapeType = settings.MixtapeType;
+	            MegaType = settings.MegaType;
+	            GoogleDriveType = settings.GoogleDriveType;
+	            UguuType = settings.UguuType;
+	            SafeMoeType = settings.SafeMoeType;
+	            LoliSafeType = settings.LoliSafeType;
+	            CatBoxType = settings.CatBoxType;
+
                 DownloadRebloggedPosts = settings.DownloadRebloggedPosts;
                 AutoDownload = settings.AutoDownload;
                 ForceSize = settings.ForceSize;
@@ -766,7 +863,16 @@ namespace TumblThree.Applications.ViewModels
                 DownloadGfycat = false;
                 DownloadWebmshare = false;
                 GfycatType = GfycatTypes.Mp4;
-                WebmshareType = WebmshareTypes.Mp4;
+                WebmshareType = WebmshareTypes.Webm;
+	            MixtapeType = MixtapeTypes.Any;
+	            GoogleDriveType = GoogleDriveTypes.Any;
+	            MegaType = MegaTypes.Any;
+	            UguuType = UguuTypes.Any;
+	            SafeMoeType = SafeMoeTypes.Any;
+	            LoliSafeType = LoliSafeTypes.Any;
+	            CatBoxType = CatBoxTypes.Any;
+
+
                 DownloadRebloggedPosts = true;
                 AutoDownload = false;
                 ForceSize = false;
@@ -793,30 +899,36 @@ namespace TumblThree.Applications.ViewModels
 
         private void ApplySettings(bool downloadLocationChanged, bool loadAllDatabasesChanged)
         {
-            CrawlerService.Timeconstraint.SetRate(((double)MaxConnections / (double)ConnectionTimeInterval));
+            CrawlerService.Timeconstraint.SetRate((double)MaxConnections / (double)ConnectionTimeInterval);
 
             if (loadAllDatabasesChanged && downloadLocationChanged)
             {
                 CrawlerService.DatabasesLoaded = new TaskCompletionSource<bool>();
                 if (CrawlerService.StopCommand.CanExecute(null))
-                    CrawlerService.StopCommand.Execute(null);
-                CrawlerService.LoadLibraryCommand.Execute(null);
+                {
+	                CrawlerService.StopCommand.Execute(null);
+                }
+	            CrawlerService.LoadLibraryCommand.Execute(null);
                 CrawlerService.LoadAllDatabasesCommand.Execute(null);
             }
             else if (downloadLocationChanged)
             {
                 CrawlerService.DatabasesLoaded = new TaskCompletionSource<bool>();
                 if (CrawlerService.StopCommand.CanExecute(null))
-                    CrawlerService.StopCommand.Execute(null);
-                CrawlerService.LoadLibraryCommand.Execute(null);
+                {
+	                CrawlerService.StopCommand.Execute(null);
+                }
+	            CrawlerService.LoadLibraryCommand.Execute(null);
                 CrawlerService.LoadAllDatabasesCommand.Execute(null);
             }
             else if (loadAllDatabasesChanged)
             {
                 CrawlerService.DatabasesLoaded = new TaskCompletionSource<bool>();
                 if (CrawlerService.StopCommand.CanExecute(null))
-                    CrawlerService.StopCommand.Execute(null);
-                CrawlerService.LoadAllDatabasesCommand.Execute(null);
+                {
+	                CrawlerService.StopCommand.Execute(null);
+                }
+	            CrawlerService.LoadAllDatabasesCommand.Execute(null);
             }
         }
 
@@ -881,11 +993,30 @@ namespace TumblThree.Applications.ViewModels
             settings.OAuthCallbackUrl = OAuthCallbackUrl;
             settings.AutoDownload = AutoDownload;
             settings.ForceSize = ForceSize;
+
             settings.DownloadImgur = DownloadImgur;
             settings.DownloadGfycat = DownloadGfycat;
             settings.DownloadWebmshare = DownloadWebmshare;
+	        settings.DownloadMixtape = DownloadMixtape;
+	        settings.DownloadMega = DownloadMega;
+	        settings.DownloadGoogleDrive = DownloadGoogleDrive;
+	        settings.DownloadUguu = DownloadUguu;
+	        settings.DownloadSafeMoe = DownloadSafeMoe;
+	        settings.DownloadLoliSafe = DownloadLoliSafe;
+	        settings.DownloadCatBox = DownloadCatBox;
+	        
+
             settings.GfycatType = GfycatType;
             settings.WebmshareType = WebmshareType;
+	        settings.MixtapeType = MixtapeType;
+	        settings.MegaType = MegaType;
+	        settings.GoogleDriveType = GoogleDriveType;
+	        settings.UguuType = UguuType;
+	        settings.SafeMoeType = SafeMoeType;
+	        settings.LoliSafeType = LoliSafeType;
+	        settings.CatBoxType = CatBoxType;
+	        
+
             settings.CheckDirectoryForFiles = CheckDirectoryForFiles;
             settings.DownloadUrlList = DownloadUrlList;
             settings.PortableMode = PortableMode;

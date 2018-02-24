@@ -11,7 +11,7 @@ using TumblThree.Domain.Queue;
 
 namespace TumblThree.Applications.Services
 {
-    [Export(typeof(ICrawlerService)), Export]
+    [Export(typeof(ICrawlerService))][Export]
     public class CrawlerService : Model, ICrawlerService
     {
         private readonly ObservableCollection<QueueListItem> activeItems;
@@ -68,12 +68,9 @@ namespace TumblThree.Applications.Services
             set { SetProperty(ref timer, value); }
         }
 
-        public IReadOnlyObservableList<QueueListItem> ActiveItems
-        {
-            get { return readonlyActiveItems; }
-        }
+        public IReadOnlyObservableList<QueueListItem> ActiveItems => readonlyActiveItems;
 
-        public ICommand AddBlogCommand
+	    public ICommand AddBlogCommand
         {
             get { return addBlogCommand; }
             set { SetProperty(ref addBlogCommand, value); }

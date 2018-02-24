@@ -49,7 +49,7 @@ namespace TumblThree.Applications.Crawler
             blog.DuplicatePhotos = DetermineDuplicates<PhotoPost>();
             blog.DuplicateVideos = DetermineDuplicates<VideoPost>();
             blog.DuplicateAudios = DetermineDuplicates<AudioPost>();
-            blog.TotalCount = (blog.TotalCount - blog.DuplicatePhotos - blog.DuplicateAudios - blog.DuplicateVideos);
+            blog.TotalCount = blog.TotalCount - blog.DuplicatePhotos - blog.DuplicateAudios - blog.DuplicateVideos;
 
             CleanCollectedBlogStatistics();
 
@@ -67,8 +67,8 @@ namespace TumblThree.Applications.Crawler
 
         private async Task GetUrlsAsync()
         {
-            var semaphoreSlim = new SemaphoreSlim(shellService.Settings.ConcurrentScans);
-            var trackedTasks = new List<Task>();
+            SemaphoreSlim semaphoreSlim = new SemaphoreSlim(shellService.Settings.ConcurrentScans);
+            List<Task> trackedTasks = new List<Task>();
 
             if (!await CheckIfLoggedIn())
             {
@@ -93,8 +93,8 @@ namespace TumblThree.Applications.Crawler
 
                     try
                     {
-                        long pagination = DateTimeOffset.Now.ToUnixTimeSeconds() - (crawlerNumber * crawlerTimeOffset);
-                        long nextCrawlersPagination = DateTimeOffset.Now.ToUnixTimeSeconds() - ((crawlerNumber + 1) * crawlerTimeOffset);
+                        long pagination = DateTimeOffset.Now.ToUnixTimeSeconds() - crawlerNumber * crawlerTimeOffset;
+                        long nextCrawlersPagination = DateTimeOffset.Now.ToUnixTimeSeconds() - (crawlerNumber + 1) * crawlerTimeOffset;
                         await AddUrlsToDownloadList(pagination, nextCrawlersPagination);
                     }
                     catch (TimeoutException timeoutException)
@@ -123,17 +123,17 @@ namespace TumblThree.Applications.Crawler
             long tagsIntroduced = 1178470824; // Unix time of 05/06/2007 @ 5:00pm (UTC)
             if (!string.IsNullOrEmpty(blog.DownloadFrom))
             {
-                var downloadFrom = DateTime.ParseExact(blog.DownloadFrom, "yyyyMMdd", CultureInfo.InvariantCulture,
+                DateTime downloadFrom = DateTime.ParseExact(blog.DownloadFrom, "yyyyMMdd", CultureInfo.InvariantCulture,
                     DateTimeStyles.None);
-                var dateTimeOffset = new DateTimeOffset(downloadFrom);
+                DateTimeOffset dateTimeOffset = new DateTimeOffset(downloadFrom);
                 tagsIntroduced = dateTimeOffset.ToUnixTimeSeconds();
             }
             long unixTimeNow = DateTimeOffset.Now.ToUnixTimeSeconds();
             if (!string.IsNullOrEmpty(blog.DownloadTo))
             {
-                var downloadTo = DateTime.ParseExact(blog.DownloadTo, "yyyyMMdd", CultureInfo.InvariantCulture,
+                DateTime downloadTo = DateTime.ParseExact(blog.DownloadTo, "yyyyMMdd", CultureInfo.InvariantCulture,
                     DateTimeStyles.None);
-                var dateTimeOffset = new DateTimeOffset(downloadTo);
+                DateTimeOffset dateTimeOffset = new DateTimeOffset(downloadTo);
                 unixTimeNow = dateTimeOffset.ToUnixTimeSeconds();
             }
             long tagsLifeTime = unixTimeNow - tagsIntroduced;
@@ -165,7 +165,7 @@ namespace TumblThree.Applications.Crawler
 
         protected virtual async Task<string> RequestGetAsync(long pagination)
         {
-            var requestRegistration = new CancellationTokenRegistration();
+            CancellationTokenRegistration requestRegistration = new CancellationTokenRegistration();
             try
             {
                 string urlForGetRequest = "https://www.tumblr.com/tagged/" + blog.Name + "?before=" + pagination;
@@ -213,9 +213,13 @@ namespace TumblThree.Applications.Crawler
                 UpdateProgressQueueInformation(Resources.ProgressGetUrlShort, numberOfPagesCrawled);
                 pagination = ExtractNextPageLink(document);
                 if (pagination < nextCrawlersPagination)
-                    return;
-                if (!CheckIfWithinTimespan(pagination))
-                    return;
+                {
+	                return;
+                }
+	            if (!CheckIfWithinTimespan(pagination))
+	            {
+		            return;
+	            }
             }
         }
 
@@ -223,11 +227,13 @@ namespace TumblThree.Applications.Crawler
         {
             if (!string.IsNullOrEmpty(blog.DownloadFrom))
             {
-                var downloadFrom = DateTime.ParseExact(blog.DownloadFrom, "yyyyMMdd", CultureInfo.InvariantCulture,
+                DateTime downloadFrom = DateTime.ParseExact(blog.DownloadFrom, "yyyyMMdd", CultureInfo.InvariantCulture,
                     DateTimeStyles.None);
-                var dateTimeOffset = new DateTimeOffset(downloadFrom);
+                DateTimeOffset dateTimeOffset = new DateTimeOffset(downloadFrom);
                 if (pagination < dateTimeOffset.ToUnixTimeSeconds())
-                    return false;
+                {
+	                return false;
+                }
             }
             return true;
         }
@@ -236,13 +242,15 @@ namespace TumblThree.Applications.Crawler
         {
             if (blog.DownloadPhoto)
             {
-                var regex = new Regex("src=\"(http[A-Za-z0-9_/:.]*media.tumblr.com[A-Za-z0-9_/:.]*(jpg|png|gif))\"");
+                Regex regex = new Regex("src=\"(http[A-Za-z0-9_/:.]*media.tumblr.com[A-Za-z0-9_/:.]*(jpg|png|gif))\"");
                 foreach (Match match in regex.Matches(document))
                 {
                     string imageUrl = match.Groups[1].Value;
                     if (imageUrl.Contains("avatar") || imageUrl.Contains("previews"))
-                        continue;
-                    if (blog.SkipGif && imageUrl.EndsWith(".gif"))
+                    {
+	                    continue;
+                    }
+	                if (blog.SkipGif && imageUrl.EndsWith(".gif"))
                     {
                         continue;
                     }
@@ -257,7 +265,7 @@ namespace TumblThree.Applications.Crawler
         {
             if (blog.DownloadVideo)
             {
-                var regex = new Regex("src=\"(http[A-Za-z0-9_/:.]*.com/video_file/[A-Za-z0-9_/:.]*)\"");
+                Regex regex = new Regex("src=\"(http[A-Za-z0-9_/:.]*.com/video_file/[A-Za-z0-9_/:.]*)\"");
                 foreach (Match match in regex.Matches(document))
                 {
                     string videoUrl = match.Groups[1].Value;

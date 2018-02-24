@@ -538,7 +538,7 @@ namespace TumblThree.Applications.DataModels.TumblrSvcJson
 
         public object Clone()
         {
-            return this.MemberwiseClone();
+            return MemberwiseClone();
         }
 
         [OnDeserializing]

@@ -46,9 +46,9 @@ namespace System.Waf.Applications
             Assembly entryAssembly = Assembly.GetEntryAssembly();
             if (entryAssembly != null)
             {
-                AssemblyProductAttribute attribute = ((AssemblyProductAttribute)Attribute.GetCustomAttribute(
-                    entryAssembly, typeof(AssemblyProductAttribute)));
-                return (attribute != null) ? attribute.Product : "";
+                AssemblyProductAttribute attribute = (AssemblyProductAttribute)Attribute.GetCustomAttribute(
+	                entryAssembly, typeof(AssemblyProductAttribute));
+                return attribute != null ? attribute.Product : "";
             }
             return "";
         }
@@ -68,9 +68,9 @@ namespace System.Waf.Applications
             Assembly entryAssembly = Assembly.GetEntryAssembly();
             if (entryAssembly != null)
             {
-                AssemblyCompanyAttribute attribute = ((AssemblyCompanyAttribute)Attribute.GetCustomAttribute(
-                    entryAssembly, typeof(AssemblyCompanyAttribute)));
-                return (attribute != null) ? attribute.Company : "";
+                AssemblyCompanyAttribute attribute = (AssemblyCompanyAttribute)Attribute.GetCustomAttribute(
+	                entryAssembly, typeof(AssemblyCompanyAttribute));
+                return attribute != null ? attribute.Company : "";
             }
             return "";
         }

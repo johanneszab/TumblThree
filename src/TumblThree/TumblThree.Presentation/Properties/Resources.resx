@@ -705,12 +705,37 @@ E.g.  great big car, bears searches for great big cars and bears.</value>
   <data name="ExternalSettings" xml:space="preserve">
     <value>External</value>
   </data>
+  <data name="DownloadImgur" xml:space="preserve">
+    <value>Download imgur</value>
+  </data>
   <data name="DownloadGfycat" xml:space="preserve">
     <value>Download gfycat</value>
   </data>
   <data name="DownloadWebmshare" xml:space="preserve">
     <value>Download webmshare</value>
   </data>
+  <data name="DownloadMixtape" xml:space="preserve">
+    <value>Download mixtape</value>
+  </data>
+  <data name="DownloadMega" xml:space="preserve">
+    <value>Download mega</value>
+  </data>
+  <data name="DownloadGoogleDrive" xml:space="preserve">
+    <value>Download GoogleDrive</value>
+  </data>
+  <data name="DownloadUguu" xml:space="preserve">
+    <value>Download Uguu</value>
+  </data>
+  <data name="DownloadSafeMoe" xml:space="preserve">
+    <value>Download SafeMoe</value>
+  </data>
+  <data name="DownloadLoliSafe" xml:space="preserve">
+    <value>Download LoliSafe</value>
+  </data>
+  <data name="DownloadCatBox" xml:space="preserve">
+    <value>Download CatBox</value>
+  </data>
+
   <data name="ToolTipDownloadGfycat" xml:space="preserve">
     <value>Download linked gfycat.com files</value>
   </data>
@@ -723,9 +748,51 @@ E.g.  great big car, bears searches for great big cars and bears.</value>
   <data name="ToolTipDownloadWebmshareDescription" xml:space="preserve">
     <value>Download externally hosted webmshare.com files</value>
   </data>
-  <data name="DownloadImgur" xml:space="preserve">
-    <value>Download imgur</value>
+  <data name="ToolTipDownloadMixtape" xml:space="preserve">
+    <value>Download linked Mixtape.moe files</value>
   </data>
+  <data name="ToolTipDownloadMixtapeDescription" xml:space="preserve">
+    <value>Download externally hosted mega files</value>
+  </data>
+  <data name="ToolTipDownloadMega" xml:space="preserve">
+    <value>Download linked mega files</value>
+  </data>
+  <data name="ToolTipDownloadMegaDescription" xml:space="preserve">
+    <value>Download externally hosted mega files</value>
+  </data>
+
+  <data name="ToolTipDownloadGoogleDrive" xml:space="preserve">
+    <value>Download linked GoogleDrive files</value>
+  </data>
+  <data name="ToolTipDownloadGoogleDriveDescription" xml:space="preserve">
+    <value>Download externally hosted GoogleDrive files</value>
+  </data>
+  <data name="ToolTipDownloadUguu" xml:space="preserve">
+    <value>Download linked Uguu files</value>
+  </data>
+  <data name="ToolTipDownloadUguuDescription" xml:space="preserve">
+    <value>Download externally hosted Uguu files</value>
+  </data>
+  <data name="ToolTipDownloadSafeMoe" xml:space="preserve">
+    <value>Download linked SafeMoe files</value>
+  </data>
+  <data name="ToolTipDownloadSafeMoeDescription" xml:space="preserve">
+    <value>Download externally hosted SafeMoe files</value>
+  </data>
+  <data name="ToolTipDownloadLoliSafe" xml:space="preserve">
+    <value>Download linked LoliSafe files</value>
+  </data>
+  <data name="ToolTipDownloadLoliSafeDescription" xml:space="preserve">
+    <value>Download externally hosted LoliSafe files</value>
+  </data>
+  <data name="ToolTipDownloadCatBox" xml:space="preserve">
+    <value>Download linked CatBox files</value>
+  </data>
+  <data name="ToolTipDownloadCatBoxDescription" xml:space="preserve">
+    <value>Download externally hosted CatBox files</value>
+  </data>
+
+
   <data name="ToolTipDownloadImgur" xml:space="preserve">
     <value>Download linked imgur.com files</value>
   </data>
@@ -744,6 +811,49 @@ E.g.  great big car, bears searches for great big cars and bears.</value>
   <data name="ToolTipWebmshareFiletypeDescription" xml:space="preserve">
     <value>Chose which file type you want to download</value>
   </data>
+  <data name="ToolTipMixtapeFiletype" xml:space="preserve">
+    <value>File type to download</value>
+  </data>
+  <data name="ToolTipMixtapeFiletypeDescription" xml:space="preserve">
+    <value>Chose which file type you want to download</value>
+  </data>
+  <data name="ToolTipGoogleDriveFiletype" xml:space="preserve">
+    <value>File type to download</value>
+  </data>
+  <data name="ToolTipGoogleDriveFiletypeDescription" xml:space="preserve">
+    <value>Chose which file type you want to download</value>
+  </data>
+  <data name="ToolTipMegaFiletype" xml:space="preserve">
+    <value>File type to download</value>
+  </data>
+  <data name="ToolTipMegaFiletypeDescription" xml:space="preserve">
+    <value>Chose which file type you want to download</value>
+  </data>
+  <data name="ToolTipUguuFiletype" xml:space="preserve">
+    <value>File type to download</value>
+  </data>
+  <data name="ToolTipUguuFiletypeDescription" xml:space="preserve">
+    <value>Chose which file type you want to download</value>
+  </data>
+  <data name="ToolTipSafeMoeFiletype" xml:space="preserve">
+    <value>File type to download</value>
+  </data>
+  <data name="ToolTipSafeMoeFiletypeDescription" xml:space="preserve">
+    <value>Chose which file type you want to download</value>
+  </data>
+  <data name="ToolTipLoliSafeFiletype" xml:space="preserve">
+    <value>File type to download</value>
+  </data>
+  <data name="ToolTipLoliSafeFiletypeDescription" xml:space="preserve">
+    <value>Chose which file type you want to download</value>
+  </data>
+  <data name="ToolTipCatBoxFiletype" xml:space="preserve">
+    <value>File type to download</value>
+  </data>
+  <data name="ToolTipCatBoxFiletypeDescription" xml:space="preserve">
+    <value>Chose which file type you want to download</value>
+  </data>
+
   <data name="DumpCrawlerData" xml:space="preserve">
     <value>Dump crawler data</value>
   </data>

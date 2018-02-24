@@ -36,7 +36,7 @@ namespace TumblThree.Applications.Services
             lock (lockObjectPostCount)
             {
                 PropertyInfo property = typeof(IBlog).GetProperty(propertyName);
-                var postCounter = (int)property.GetValue(blog);
+                int postCounter = (int)property.GetValue(blog);
                 postCounter++;
                 property.SetValue(blog, postCounter, null);
             }

@@ -47,10 +47,62 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Google.Apis, Version=1.32.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.1.32.0\lib\net45\Google.Apis.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Google.Apis.Auth, Version=1.32.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Auth.1.32.0\lib\net45\Google.Apis.Auth.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Google.Apis.Auth.PlatformServices, Version=1.32.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Auth.1.32.0\lib\net45\Google.Apis.Auth.PlatformServices.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Google.Apis.Core, Version=1.32.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Core.1.32.0\lib\net45\Google.Apis.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Google.Apis.Drive.v3, Version=1.32.0.1100, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Drive.v3.1.32.0.1100\lib\net45\Google.Apis.Drive.v3.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Google.Apis.PlatformServices, Version=1.32.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.1.32.0\lib\net45\Google.Apis.PlatformServices.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MegaApiClient, Version=1.6.1.368, Culture=neutral, PublicKeyToken=0480d311efbeb4e2, processorArchitecture=MSIL">
+      <HintPath>..\packages\MegaApiClient.1.6.1\lib\net46\MegaApiClient.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Net.Http, Version=4.1.1.2, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.4.3.3\lib\net46\System.Net.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security.Cryptography.Algorithms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Algorithms.4.3.1\lib\net46\System.Security.Cryptography.Algorithms.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Encoding, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Encoding.4.3.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Primitives.4.3.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.X509Certificates, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.X509Certificates.4.3.2\lib\net46\System.Security.Cryptography.X509Certificates.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
@@ -72,20 +124,34 @@
     <Compile Include="DataModels\TumblrApiJson.cs" />
     <Compile Include="DataModels\TumblrCrawlerData\TumblrCrawlerData.cs" />
     <Compile Include="Downloader\TumblrJsonDownloader.cs" />
+    <Compile Include="Parser\CatBoxParser.cs" />
     <Compile Include="Parser\GfycatParser.cs" />
+    <Compile Include="Parser\GoogleDriveParser.cs" />
+    <Compile Include="Parser\ICatBoxParser.cs" />
     <Compile Include="Parser\IGfycatParser.cs" />
+    <Compile Include="Parser\IGoogleDriveParser.cs" />
     <Compile Include="Parser\IImgurParser.cs" />
+    <Compile Include="Parser\ILoliSafeParser.cs" />
+    <Compile Include="Parser\IMegaParser.cs" />
     <Compile Include="Parser\ImgurParser.cs" />
     <Compile Include="Crawler\ITumblrBlogDetector.cs" />
+    <Compile Include="Parser\IMixtapeParser.cs" />
+    <Compile Include="Parser\ISafeMoeParser.cs" />
     <Compile Include="Parser\ITumblrParser.cs" />
     <Compile Include="Parser\ITumblrToText.cs" />
+    <Compile Include="Parser\IUguuParser.cs" />
     <Compile Include="Parser\IWebmshareParser.cs" />
     <Compile Include="Downloader\IWebRequestFactory.cs" />
     <Compile Include="Crawler\TumblrBlogDetector.cs" />
+    <Compile Include="Parser\LoliSafeParser.cs" />
+    <Compile Include="Parser\MegaParser.cs" />
+    <Compile Include="Parser\MixtapeParser.cs" />
+    <Compile Include="Parser\SafeMoeParser.cs" />
     <Compile Include="Parser\TumblrSvcJsonToJson.cs" />
     <Compile Include="Parser\TumblrApiJsonToJson.cs" />
     <Compile Include="Parser\TumblrParser.cs" />
     <Compile Include="Parser\TumblrApiJsonToText.cs" />
+    <Compile Include="Parser\UguuParser.cs" />
     <Compile Include="Parser\WebmshareParser.cs" />
     <Compile Include="Downloader\WebRequestFactory.cs" />
     <Compile Include="DataModels\DownloadProgress.cs" />
@@ -231,6 +297,7 @@
     <EmbeddedResource Include="Properties\Resources.vi.resx" />
     <EmbeddedResource Include="Properties\Resources.zh.resx" />
     <None Include="App.config" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

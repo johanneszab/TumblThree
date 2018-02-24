@@ -10,7 +10,7 @@ namespace TumblThree.Presentation.Controls
 {
     public class SearchableTextBlock : TextBlock
     {
-        public static new readonly DependencyProperty TextProperty =
+        public new static readonly DependencyProperty TextProperty =
             DependencyProperty.Register(nameof(Text), typeof(string), typeof(SearchableTextBlock),
                 new FrameworkPropertyMetadata(string.Empty, ControlPropertyChangedCallback));
 
@@ -62,7 +62,7 @@ namespace TumblThree.Presentation.Controls
 
             Brush highlightBackground = HighlightBackground;
             Inlines.Clear();
-            var isHighlight = false;
+            bool isHighlight = false;
             foreach (string textPart in newTextParts)
             {
                 if (!string.IsNullOrEmpty(textPart))
@@ -93,8 +93,8 @@ namespace TumblThree.Presentation.Controls
                 return new[] { text };
             }
 
-            var textParts = new List<string>();
-            var index = 0;
+            List<string> textParts = new List<string>();
+            int index = 0;
             StringComparison comparisonType = IsMatchCase
                 ? StringComparison.CurrentCulture
                 : StringComparison.CurrentCultureIgnoreCase;
@@ -105,7 +105,7 @@ namespace TumblThree.Presentation.Controls
                 {
                     break;
                 }
-                textParts.Add(text.Substring(index, (position - index)));
+                textParts.Add(text.Substring(index, position - index));
                 textParts.Add(text.Substring(position, searchText.Length));
                 index = position + searchText.Length;
             }

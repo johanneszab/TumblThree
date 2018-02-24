@@ -10,8 +10,8 @@ namespace TumblThree.Applications.DataModels.TumblrCrawlerData
 
         public TumblrCrawlerData(string filename, T data)
         {
-            this.Filename = filename;
-            this.Data = data;
+            Filename = filename;
+            Data = data;
         }
     }
 }

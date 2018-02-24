@@ -15,6 +15,7 @@
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>4f614796</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -62,6 +63,7 @@
     <Compile Include="Converter\EnumDescriptionTypeConverter.cs" />
     <Compile Include="JsonFormatter.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="Models\CatboxTypes.cs" />
     <Compile Include="Models\DetailsBlog.cs" />
     <Compile Include="Models\Blogs\Blog.cs" />
     <Compile Include="Models\BlogFactory.cs" />
@@ -72,6 +74,9 @@
     <Compile Include="Models\Files\TumblrHiddenBlogFiles.cs" />
     <Compile Include="Models\Files\TumblrBlogFiles.cs" />
     <Compile Include="Models\Files\Files.cs" />
+    <Compile Include="Models\GoogleDriveTypes.cs" />
+    <Compile Include="Models\LoliSafeTypes.cs" />
+    <Compile Include="Models\MegaTypes.cs" />
     <Compile Include="Models\MetadataType.cs" />
     <Compile Include="Models\GfycatType.cs" />
     <Compile Include="Models\Blogs\IBlog.cs" />
@@ -79,12 +84,15 @@
     <Compile Include="Models\ICrawlerData.cs" />
     <Compile Include="Models\Files\IFiles.cs" />
     <Compile Include="Models\IUrlValidator.cs" />
+    <Compile Include="Models\MixtapeTypes.cs" />
     <Compile Include="Models\PostCounter.cs" />
     <Compile Include="Models\Blogs\TumblrHiddenBlog.cs" />
     <Compile Include="Models\Blogs\TumblrBlog.cs" />
     <Compile Include="Models\Blogs\TumblrLikedByBlog.cs" />
     <Compile Include="Models\Blogs\TumblrTagSearchBlog.cs" />
     <Compile Include="Models\Blogs\TumblrSearchBlog.cs" />
+    <Compile Include="Models\SafeMoeTypes.cs" />
+    <Compile Include="Models\UguuTypes.cs" />
     <Compile Include="Models\UrlValidator.cs" />
     <Compile Include="Models\WebmshareTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -105,6 +113,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="App.config" />
     <None Include="Properties\Settings.settings">

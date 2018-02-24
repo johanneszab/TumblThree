@@ -58,7 +58,7 @@ namespace System.Waf.Applications.Services
             if (fileExtensions == null) { throw new ArgumentNullException("fileExtensions"); }
             foreach (string fileExtension in fileExtensions)
             {
-                if (string.IsNullOrEmpty(fileExtension) || fileExtension[0] != '.') 
+                if (string.IsNullOrEmpty(fileExtension) || (fileExtension[0] != '.')) 
                 { 
                     throw new ArgumentException("The argument fileExtension must start with the '.' character."); 
                 }

@@ -11,7 +11,7 @@ namespace TumblThree.Presentation.Views
     /// <summary>
     ///     Interaction logic for SettingsView.xaml
     /// </summary>
-    [Export(typeof(ISettingsView)), PartCreationPolicy(CreationPolicy.NonShared)]
+    [Export(typeof(ISettingsView))][PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class SettingsView : Window, ISettingsView
     {
         private readonly Lazy<SettingsViewModel> viewModel;
@@ -37,5 +37,15 @@ namespace TumblThree.Presentation.Views
         {
             Close();
         }
-    }
+
+		private void CheckBox_Checked(object sender, RoutedEventArgs e)
+		{
+
+		}
+
+		private void CheckBox_Checked_1(object sender, RoutedEventArgs e)
+		{
+
+		}
+	}
 }

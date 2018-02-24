@@ -9,6 +9,8 @@ namespace TumblThree.Domain.Models
     [TypeConverter(typeof(EnumDescriptionTypeConverter))]
     public enum WebmshareTypes
     {
+	    [LocalizedDescription("any", typeof(Resources))]
+	    Any,
         [LocalizedDescription("mp4", typeof(Resources))]
         Mp4,
         [LocalizedDescription("webm", typeof(Resources))]

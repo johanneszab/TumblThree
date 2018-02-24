@@ -10,7 +10,7 @@ namespace TumblThree.Presentation.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var itemsCount = (int)value;
+            int itemsCount = (int)value;
             if (itemsCount == 1)
             {
                 return Resources.OneItem;

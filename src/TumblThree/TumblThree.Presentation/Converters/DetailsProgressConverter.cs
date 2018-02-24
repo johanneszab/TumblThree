@@ -24,8 +24,8 @@ namespace TumblThree.Presentation.Converters
                 return DependencyProperty.UnsetValue;
             }
 
-            var downloaded = (int)values[0];
-            var total = (int)values[1];
+            int downloaded = (int)values[0];
+            int total = (int)values[1];
             int duplicates = System.Convert.ToInt32(values[2]);
 
             //if (downloaded == 0)

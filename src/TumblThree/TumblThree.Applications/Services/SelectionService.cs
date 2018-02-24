@@ -8,7 +8,7 @@ using TumblThree.Domain.Models;
 
 namespace TumblThree.Applications.Services
 {
-    [Export, Export(typeof(ISelectionService))]
+    [Export][Export(typeof(ISelectionService))]
     internal class SelectionService : Model, ISelectionService
     {
         private readonly ObservableRangeCollection<IBlog> selectedBlogFiles;
@@ -19,12 +19,9 @@ namespace TumblThree.Applications.Services
             selectedBlogFiles = new ObservableRangeCollection<IBlog>();
         }
 
-        public IList<IBlog> SelectedBlogFiles
-        {
-            get { return selectedBlogFiles; }
-        }
+        public IList<IBlog> SelectedBlogFiles => selectedBlogFiles;
 
-        public void AddRange(IEnumerable<IBlog> collection)
+	    public void AddRange(IEnumerable<IBlog> collection)
         {
             selectedBlogFiles.AddRange(collection);
         }

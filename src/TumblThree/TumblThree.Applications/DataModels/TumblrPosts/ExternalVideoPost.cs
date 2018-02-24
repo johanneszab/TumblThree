@@ -14,5 +14,9 @@ namespace TumblThree.Applications.DataModels.TumblrPosts
         public ExternalVideoPost(string url, string id) : this(url, id, string.Empty)
         {
         }
+
+	    public ExternalVideoPost(string url) : this(url,string.Empty)
+	    {
+	    }
     }
 }

@@ -12,7 +12,7 @@ namespace TumblThree.Presentation.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            var crawlingQueuelistItem = (ReadOnlyObservableList<QueueListItem>)values[0];
+            ReadOnlyObservableList<QueueListItem> crawlingQueuelistItem = (ReadOnlyObservableList<QueueListItem>)values[0];
 
             return string.Join(" - ", crawlingQueuelistItem.Select(x => x.Blog.Name).ToArray());
         }

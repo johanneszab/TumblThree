@@ -758,22 +758,19 @@
                             </Button>
 
                             <Label Content="{x:Static p:Resources.MetadataFormat}" Grid.Column="0" Grid.Row="34"
-                                  Margin="3,0,0,0" Padding="3,0,0,0">
-                            </Label>
+                                  Margin="3,0,0,0" Padding="3,0,0,0" />
 
                             <ComboBox Grid.Column="1" Grid.Row="34" Padding="5,0,5,0"
                                 ItemsSource="{Binding Source={Extensions:EnumBindingSource {x:Type Models:MetadataType}}}" SelectedValuePath="."
                                 SelectedValue="{Binding BlogFile.MetadataFormat}"
-                                SelectedItem="{Binding BlogFile.MetadataFormat, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                            </ComboBox>
+                                SelectedItem="{Binding BlogFile.MetadataFormat, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
                             <CheckBox Content="{x:Static p:Resources.SkipGif}" IsChecked="{Binding BlogFile.SkipGif, Mode=TwoWay}"
                                   Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="36" Margin="3,0,0,0" Padding="3,0,0,0" />
 
                             <CheckBox Content="{x:Static p:Resources.DownloadRebloggedPosts}"
                                   IsChecked="{Binding BlogFile.DownloadRebloggedPosts, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="38"
-                                  Margin="3,0,0,0" Padding="3,0,0,0">
-                            </CheckBox>
+                                  Margin="3,0,0,0" Padding="3,0,0,0" />
 
                             <!--<CheckBox Content="{x:Static p:Resources.CheckDirectoryForFiles}"
                                   IsChecked="{Binding BlogFile.CheckDirectoryForFiles, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2"

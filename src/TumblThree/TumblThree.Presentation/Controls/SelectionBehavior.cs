@@ -34,7 +34,7 @@ namespace TumblThree.Presentation.Controls
 
         private static void SyncSelectedItemsPropertyChanged(DependencyObject element, DependencyPropertyChangedEventArgs e)
         {
-            var selector = element as Selector;
+            Selector selector = element as Selector;
             if (selector == null)
             {
                 throw new ArgumentException("The attached property SelectedItems can only be used with a Selector.",
@@ -64,7 +64,7 @@ namespace TumblThree.Presentation.Controls
                     multiSelector.SelectedItems.Add(item);
                 }
 
-                var observableList = list as INotifyCollectionChanged;
+                INotifyCollectionChanged observableList = list as INotifyCollectionChanged;
                 if (observableList == null)
                 {
                     return;
@@ -123,7 +123,7 @@ namespace TumblThree.Presentation.Controls
                 else if (e.Action == NotifyCollectionChangedAction.Reset)
                 {
                     multiSelector.SelectedItems.Clear();
-                    foreach (var item in (IEnumerable)sender)
+                    foreach (object item in (IEnumerable)sender)
                     {
                         multiSelector.SelectedItems.Add(item);
                     }
@@ -141,7 +141,7 @@ namespace TumblThree.Presentation.Controls
 
         private static void SelectorSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var selector = (Selector)sender;
+            Selector selector = (Selector)sender;
             if (selectorsThatAreUpdating.Contains(selector))
             {
                 return;

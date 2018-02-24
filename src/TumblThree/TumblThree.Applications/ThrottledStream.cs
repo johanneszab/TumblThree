@@ -13,8 +13,8 @@ namespace TumblThree.Applications
     public class ThrottledStream : Stream
     {
         private readonly Stream parent;
-        readonly System.Timers.Timer resettimer;
-        readonly AutoResetEvent wh = new AutoResetEvent(true);
+	    private readonly System.Timers.Timer resettimer;
+	    private readonly AutoResetEvent wh = new AutoResetEvent(true);
         private long maxBytesPerSecond;
         private static long processed;
 
@@ -51,27 +51,15 @@ namespace TumblThree.Applications
             }
         }
 
-        public override bool CanRead
-        {
-            get { return parent.CanRead; }
-        }
+        public override bool CanRead => parent.CanRead;
 
-        public override bool CanSeek
-        {
-            get { return parent.CanSeek; }
-        }
+	    public override bool CanSeek => parent.CanSeek;
 
-        public override bool CanWrite
-        {
-            get { return parent.CanWrite; }
-        }
+	    public override bool CanWrite => parent.CanWrite;
 
-        public override long Length
-        {
-            get { return parent.Length; }
-        }
+	    public override long Length => parent.Length;
 
-        public override long Position
+	    public override long Position
         {
             get { return parent.Position; }
             set { parent.Position = value; }

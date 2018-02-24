@@ -10,7 +10,7 @@ namespace TumblThree.Presentation.DesignData
     {
         public SampleDetailsViewModel() : base(new MockDetailsView(), null)
         {
-            var BlogFile = new[]
+            Blog[] BlogFile = new[]
             {
                 new Blog
                 {

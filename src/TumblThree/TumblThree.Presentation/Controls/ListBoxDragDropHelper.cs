@@ -44,7 +44,7 @@ namespace TumblThree.Presentation.Controls
             listBox.PreviewDragOver += ListBoxPreviewDragOver;
             listBox.Drop += ListBoxDrop;
 
-            var listboxItemStyle = new Style(typeof(ListBoxItem), listBox.ItemContainerStyle);
+            Style listboxItemStyle = new Style(typeof(ListBoxItem), listBox.ItemContainerStyle);
             listboxItemStyle.Setters.Add(new EventSetter(UIElement.PreviewMouseLeftButtonDownEvent,
                 (MouseButtonEventHandler)ListBoxItemPreviewMouseLeftButtonDown));
             listboxItemStyle.Setters.Add(new EventSetter(UIElement.PreviewMouseMoveEvent,
@@ -73,16 +73,16 @@ namespace TumblThree.Presentation.Controls
 
         private void ListBoxItemPreviewMouseMove(object sender, MouseEventArgs e)
         {
-            if (moveItemsAction != null && e.LeftButton == MouseButtonState.Pressed && startPoint != null)
+            if ((moveItemsAction != null) && (e.LeftButton == MouseButtonState.Pressed) && (startPoint != null))
             {
                 Point position = e.GetPosition(null);
-                if (Math.Abs(position.X - startPoint.Value.X) < SystemParameters.MinimumHorizontalDragDistance
-                    && Math.Abs(position.Y - startPoint.Value.Y) < SystemParameters.MinimumVerticalDragDistance)
+                if ((Math.Abs(position.X - startPoint.Value.X) < SystemParameters.MinimumHorizontalDragDistance)
+                    && (Math.Abs(position.Y - startPoint.Value.Y) < SystemParameters.MinimumVerticalDragDistance))
                 {
                     return;
                 }
 
-                var target = (ListBoxItem)sender;
+                ListBoxItem target = (ListBoxItem)sender;
                 List<TItem> items = listBox.Items.Cast<TItem>().ToList();
                 TItem[] selectedItems = listBox.SelectedItems.Cast<TItem>().OrderBy(x => items.IndexOf(x)).ToArray();
 
@@ -109,7 +109,7 @@ namespace TumblThree.Presentation.Controls
 
         private void ThrottledAutoScroll()
         {
-            var scrollViewer = FindVisualChild<ScrollViewer>(listBox);
+            ScrollViewer scrollViewer = FindVisualChild<ScrollViewer>(listBox);
             const double tolerance = 15;
             const double offset = 3;
             double delta = 0;
@@ -137,9 +137,9 @@ namespace TumblThree.Presentation.Controls
                 return;
             }
 
-            var target = (ListBoxItem)sender;
-            if (dragSource != null
-                && dragSource.TranslatePoint(new Point(), listBox).Y > target.TranslatePoint(new Point(), listBox).Y)
+            ListBoxItem target = (ListBoxItem)sender;
+            if ((dragSource != null)
+                && (dragSource.TranslatePoint(new Point(), listBox).Y > target.TranslatePoint(new Point(), listBox).Y))
             {
                 insertMarkerAdorner.ShowMarker(target, false);
             }
@@ -209,14 +209,14 @@ namespace TumblThree.Presentation.Controls
             {
                 return false;
             }
-            var items = e.Data.GetData(typeof(TItem[])) as TItem[];
-            return items != null && items.Any();
+            TItem[] items = e.Data.GetData(typeof(TItem[])) as TItem[];
+            return (items != null) && items.Any();
         }
 
         private bool CanInsertItems(DragEventArgs e)
         {
             IEnumerable items = tryGetInsertItemsAction(e);
-            return items != null && items.Cast<object>().Any();
+            return (items != null) && items.Cast<object>().Any();
         }
 
         private void SelectItems(int index, int count)
@@ -231,7 +231,7 @@ namespace TumblThree.Presentation.Controls
 
         private void FocusSelectedItem()
         {
-            if (Keyboard.FocusedElement == listBox && listBox.SelectedItems.Count > 1)
+            if ((Keyboard.FocusedElement == listBox) && (listBox.SelectedItems.Count > 1))
             {
                 // This happens when moving multiple items at once. If we set the focus now then it clears the selection.
                 return;
@@ -239,7 +239,7 @@ namespace TumblThree.Presentation.Controls
 
             listBox.Dispatcher.InvokeAsync(() =>
             {
-                var listBoxItem = (ListBoxItem)listBox.ItemContainerGenerator.ContainerFromItem(listBox.SelectedItem);
+                ListBoxItem listBoxItem = (ListBoxItem)listBox.ItemContainerGenerator.ContainerFromItem(listBox.SelectedItem);
                 if (listBoxItem != null)
                 {
                     listBoxItem.Focus();
@@ -249,7 +249,7 @@ namespace TumblThree.Presentation.Controls
 
         private static TChild FindVisualChild<TChild>(DependencyObject obj) where TChild : DependencyObject
         {
-            for (var i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
             {
                 DependencyObject child = VisualTreeHelper.GetChild(obj, i);
                 if (child is TChild)
@@ -258,7 +258,7 @@ namespace TumblThree.Presentation.Controls
                 }
                 else
                 {
-                    var childOfChild = FindVisualChild<TChild>(child);
+                    TChild childOfChild = FindVisualChild<TChild>(child);
                     if (childOfChild != null)
                     {
                         return childOfChild;
