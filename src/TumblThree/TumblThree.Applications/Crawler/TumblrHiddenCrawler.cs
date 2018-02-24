@@ -503,7 +503,7 @@ namespace TumblThree.Applications.Crawler
         {
             if (!blog.DownloadRebloggedPosts)
             {
-                if (post.reblogged_from_url == null)
+                if (post.reblogged_from_tumblr_url == null)
                 {
 	                return true;
                 }
