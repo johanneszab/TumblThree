@@ -30,7 +30,7 @@ namespace TumblThree.Domain.Models
         private bool downloadVideo;
         private bool dumpCrawlerData;
         private string fileDownloadLocation;
-        private bool forceRescan = true;
+        private bool forceRescan;
         private bool forceSize;
         private string lastDownloadedPhoto;
         private string lastDownloadedVideo;

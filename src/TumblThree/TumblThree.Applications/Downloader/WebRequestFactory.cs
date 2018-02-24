@@ -125,11 +125,6 @@ namespace TumblThree.Applications.Crawler
             {
 	            request.Proxy = new WebProxy(settings.ProxyHost, int.Parse(settings.ProxyPort));
             }
-            else
-            {
-	            request.Proxy = null;
-            }
-
 	        if (!string.IsNullOrEmpty(settings.ProxyUsername) && !string.IsNullOrEmpty(settings.ProxyPassword))
 	        {
 		        request.Proxy.Credentials = new NetworkCredential(settings.ProxyUsername, settings.ProxyPassword);

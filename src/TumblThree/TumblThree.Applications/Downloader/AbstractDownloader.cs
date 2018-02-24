@@ -20,7 +20,7 @@ using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain;
 using TumblThree.Domain.Models;
-using File = Google.Apis.Drive.v3.Data.File;
+using GoogleFile = Google.Apis.Drive.v3.Data.File;
 
 namespace TumblThree.Applications.Downloader
 {
@@ -518,13 +518,13 @@ namespace TumblThree.Applications.Downloader
 			return id;
 		}
 
-		public File RequestInfo(DriveService service, string url, string path)
+		public GoogleFile RequestInfo(DriveService service, string url, string path)
 		{
 			try
 			{
 				string fileId = getIdFromUrl(url);
 				FilesResource.GetRequest request = service.Files.Get(fileId);
-				File file = request.Execute();
+                GoogleFile file = request.Execute();
 				downloadFile(service, file, path + "\\");
 			}
 			catch (Exception e)
@@ -535,7 +535,7 @@ namespace TumblThree.Applications.Downloader
 			return null;
 		}
 
-		public void downloadFile(DriveService service, File FileResource, string path)
+		public void downloadFile(DriveService service, GoogleFile FileResource, string path)
 		{
 			if (FileResource.MimeType != "application/vnd.google-apps.folder")
 			{
@@ -552,18 +552,18 @@ namespace TumblThree.Applications.Downloader
 				string NewPath = path + @"/" + FileResource.Name;
 
 				Directory.CreateDirectory(NewPath);
-				List<File> SubFolderItems = IterateFolder(service, FileResource.Id);
+				List<GoogleFile> SubFolderItems = IterateFolder(service, FileResource.Id);
 
-				foreach (File Item in SubFolderItems)
+				foreach (GoogleFile Item in SubFolderItems)
 				{
 					downloadFile(service, Item, NewPath);
 				}
 			}
 		}
 
-		public List<File> IterateFolder(DriveService service, string folderId)
+		public List<GoogleFile> IterateFolder(DriveService service, string folderId)
 		{
-			List<File> TList = new List<File>();
+			List<GoogleFile> TList = new List<GoogleFile>();
 			FilesResource.ListRequest request = service.Files.List();
 			request.Q = $"'{folderId}' in parents";
 
@@ -573,7 +573,7 @@ namespace TumblThree.Applications.Downloader
 				{
 					FileList children = request.Execute();
 
-					foreach (File child in children.Files)
+					foreach (GoogleFile child in children.Files)
 						TList.Add(service.Files.Get(child.Id).Execute());
 
 					request.PageToken = children.NextPageToken;
