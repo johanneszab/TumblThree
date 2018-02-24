@@ -721,21 +721,20 @@ E.g.  great big car, bears searches for great big cars and bears.</value>
     <value>Download mega</value>
   </data>
   <data name="DownloadGoogleDrive" xml:space="preserve">
-    <value>Download GoogleDrive</value>
+    <value>Download google drive</value>
   </data>
   <data name="DownloadUguu" xml:space="preserve">
-    <value>Download Uguu</value>
+    <value>Download uguu</value>
   </data>
   <data name="DownloadSafeMoe" xml:space="preserve">
-    <value>Download SafeMoe</value>
+    <value>Download safemoe</value>
   </data>
   <data name="DownloadLoliSafe" xml:space="preserve">
-    <value>Download LoliSafe</value>
+    <value>Download lolisafe</value>
   </data>
   <data name="DownloadCatBox" xml:space="preserve">
-    <value>Download CatBox</value>
+    <value>Download catbox</value>
   </data>
-
   <data name="ToolTipDownloadGfycat" xml:space="preserve">
     <value>Download linked gfycat.com files</value>
   </data>
@@ -752,7 +751,7 @@ E.g.  great big car, bears searches for great big cars and bears.</value>
     <value>Download linked Mixtape.moe files</value>
   </data>
   <data name="ToolTipDownloadMixtapeDescription" xml:space="preserve">
-    <value>Download externally hosted mega files</value>
+    <value>Download externally hosted Mixtape.moe files</value>
   </data>
   <data name="ToolTipDownloadMega" xml:space="preserve">
     <value>Download linked mega files</value>
@@ -760,7 +759,6 @@ E.g.  great big car, bears searches for great big cars and bears.</value>
   <data name="ToolTipDownloadMegaDescription" xml:space="preserve">
     <value>Download externally hosted mega files</value>
   </data>
-
   <data name="ToolTipDownloadGoogleDrive" xml:space="preserve">
     <value>Download linked GoogleDrive files</value>
   </data>
@@ -791,8 +789,6 @@ E.g.  great big car, bears searches for great big cars and bears.</value>
   <data name="ToolTipDownloadCatBoxDescription" xml:space="preserve">
     <value>Download externally hosted CatBox files</value>
   </data>
-
-
   <data name="ToolTipDownloadImgur" xml:space="preserve">
     <value>Download linked imgur.com files</value>
   </data>
@@ -853,7 +849,6 @@ E.g.  great big car, bears searches for great big cars and bears.</value>
   <data name="ToolTipCatBoxFiletypeDescription" xml:space="preserve">
     <value>Chose which file type you want to download</value>
   </data>
-
   <data name="DumpCrawlerData" xml:space="preserve">
     <value>Dump crawler data</value>
   </data>

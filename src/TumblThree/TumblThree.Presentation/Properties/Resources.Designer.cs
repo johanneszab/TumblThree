@@ -457,7 +457,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download CatBox.
+        ///   Looks up a localized string similar to Download catbox.
         /// </summary>
         public static string DownloadCatBox {
             get {
@@ -511,7 +511,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download GoogleDrive.
+        ///   Looks up a localized string similar to Download google drive.
         /// </summary>
         public static string DownloadGoogleDrive {
             get {
@@ -565,7 +565,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download LoliSafe.
+        ///   Looks up a localized string similar to Download lolisafe.
         /// </summary>
         public static string DownloadLoliSafe {
             get {
@@ -628,7 +628,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download SafeMoe.
+        ///   Looks up a localized string similar to Download safemoe.
         /// </summary>
         public static string DownloadSafeMoe {
             get {
@@ -655,7 +655,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download Uguu.
+        ///   Looks up a localized string similar to Download uguu.
         /// </summary>
         public static string DownloadUguu {
             get {
@@ -1659,7 +1659,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download externally hosted mega files.
+        ///   Looks up a localized string similar to Download externally hosted Mixtape.moe files.
         /// </summary>
         public static string ToolTipDownloadMixtapeDescription {
             get {

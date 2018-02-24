@@ -21,7 +21,6 @@ using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain;
 using TumblThree.Domain.Models;
-using CG.Web.MegaApiClient;
 
 namespace TumblThree.Applications.Crawler
 {
@@ -1077,7 +1076,7 @@ namespace TumblThree.Applications.Crawler
 							{
 								string temp = match.Groups[0].ToString();
 								string id = match.Groups[2].Value;
-								string url =temp.Split('\"').First();
+								string url = temp.Split('\"').First();
 
 								string imageUrl = mixtapeParser.CreateMixtapeUrl(id, url, blog.MixtapeType);
 								if (blog.SkipGif && imageUrl.EndsWith(".gif"))
@@ -1118,7 +1117,7 @@ namespace TumblThree.Applications.Crawler
 							{
 								string temp = match.Groups[0].ToString();
 								string id = match.Groups[2].Value;
-								string url =temp.Split('\"').First();
+								string url = temp.Split('\"').First();
 
 								string imageUrl = megaParser.CreateMegaUrl(id, url, blog.MegaType);
 								if (blog.SkipGif && imageUrl.EndsWith(".gif"))

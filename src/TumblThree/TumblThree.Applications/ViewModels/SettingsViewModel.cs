@@ -872,7 +872,6 @@ namespace TumblThree.Applications.ViewModels
 	            LoliSafeType = LoliSafeTypes.Any;
 	            CatBoxType = CatBoxTypes.Any;
 
-
                 DownloadRebloggedPosts = true;
                 AutoDownload = false;
                 ForceSize = false;
@@ -1003,8 +1002,7 @@ namespace TumblThree.Applications.ViewModels
 	        settings.DownloadUguu = DownloadUguu;
 	        settings.DownloadSafeMoe = DownloadSafeMoe;
 	        settings.DownloadLoliSafe = DownloadLoliSafe;
-	        settings.DownloadCatBox = DownloadCatBox;
-	        
+	        settings.DownloadCatBox = DownloadCatBox;	        
 
             settings.GfycatType = GfycatType;
             settings.WebmshareType = WebmshareType;
@@ -1016,7 +1014,6 @@ namespace TumblThree.Applications.ViewModels
 	        settings.LoliSafeType = LoliSafeType;
 	        settings.CatBoxType = CatBoxType;
 	        
-
             settings.CheckDirectoryForFiles = CheckDirectoryForFiles;
             settings.DownloadUrlList = DownloadUrlList;
             settings.PortableMode = PortableMode;
