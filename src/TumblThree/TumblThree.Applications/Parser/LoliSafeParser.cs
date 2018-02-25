@@ -12,7 +12,7 @@ namespace TumblThree.Applications.Parser
 			return new Regex("(http[A-Za-z0-9_/:.]*loli.temel.me/(.*))");
 		}
 
-		public string CreateLoliSafeUrl(string id, string fullurl,LoliSafeTypes type)
+		public string CreateLoliSafeUrl(string id, string fullurl, LoliSafeTypes type)
 		{
 			string url;
 			switch ( type)

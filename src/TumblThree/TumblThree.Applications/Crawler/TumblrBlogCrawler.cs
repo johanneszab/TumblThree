@@ -36,8 +36,6 @@ namespace TumblThree.Applications.Crawler
 		private readonly IGfycatParser gfycatParser;
 		private readonly IWebmshareParser webmshareParser;
 		private readonly IMixtapeParser mixtapeParser;
-		private readonly IMegaParser megaParser;
-		private readonly IGoogleDriveParser googledriveParser;
 		private readonly IUguuParser uguuParser;
 		private readonly ISafeMoeParser safemoeParser;
 		private readonly ILoliSafeParser lolisafeParser;
@@ -47,10 +45,10 @@ namespace TumblThree.Applications.Crawler
 
 		public TumblrBlogCrawler(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress,
 			ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService,
-			IDownloader downloader, ICrawlerDataDownloader crawlerDataDownloader, ITumblrToTextParser<Post> tumblrJsonParser, IImgurParser imgurParser, IGfycatParser gfycatParser,
-			IWebmshareParser webmshareParser, IMixtapeParser mixtapeParser, IMegaParser megaParser, IGoogleDriveParser googledriveParser, IUguuParser uguuParser,
-			ISafeMoeParser safemoeParser, ILoliSafeParser lolisafeParser, ICatBoxParser catboxParser, IPostQueue<TumblrPost> postQueue,
-			IPostQueue<TumblrCrawlerData<Post>> jsonQueue, IBlog blog)
+			IDownloader downloader, ICrawlerDataDownloader crawlerDataDownloader, ITumblrToTextParser<Post> tumblrJsonParser, 
+            IImgurParser imgurParser, IGfycatParser gfycatParser, IWebmshareParser webmshareParser, IMixtapeParser mixtapeParser,
+            IUguuParser uguuParser, ISafeMoeParser safemoeParser, ILoliSafeParser lolisafeParser, ICatBoxParser catboxParser,
+            IPostQueue<TumblrPost> postQueue, IPostQueue<TumblrCrawlerData<Post>> jsonQueue, IBlog blog)
 			: base(shellService, ct, progress, webRequestFactory, cookieService, postQueue, blog)
 		{
 			this.crawlerService = crawlerService;
@@ -61,8 +59,6 @@ namespace TumblThree.Applications.Crawler
 			this.gfycatParser = gfycatParser;
 			this.webmshareParser = webmshareParser;
 			this.mixtapeParser = mixtapeParser;
-			this.megaParser = megaParser;
-			this.googledriveParser = googledriveParser;
 			this.uguuParser = uguuParser;
 			this.safemoeParser = safemoeParser;
 			this.lolisafeParser = lolisafeParser;
@@ -911,10 +907,6 @@ namespace TumblThree.Applications.Crawler
 
 			if (blog.DownloadMixtape) AddMixtapeUrl(document);
 
-			if (blog.DownloadMega) await AddMegaUrl(document);
-
-			if (blog.DownloadGoogleDrive) AddGoogleDriveUrl(document);
-
 			if (blog.DownloadUguu) AddUguuUrl(document);
 
 			if (blog.DownloadSafeMoe) AddSafeMoeUrl(document);
@@ -1096,91 +1088,6 @@ namespace TumblThree.Applications.Crawler
 			}
 		}
 
-		private async Task AddMegaUrl(TumblrApiJson document)
-		{
-			foreach (Post post in document.posts)
-			{
-				if (!PostWithinTimeSpan(post))
-				{
-					continue;
-				}
-
-				if (!tags.Any() || post.tags.Any(x => tags.Contains(x, StringComparer.OrdinalIgnoreCase)))
-				{
-					if (CheckIfDownloadRebloggedPosts(post))
-					{
-						Regex regex = megaParser.GetMegaUrlRegex();
-						string[] parts = InlineSearch(post).Split(new string[] { "href=" }, StringSplitOptions.RemoveEmptyEntries);
-						foreach (string part in parts)
-						{
-							foreach (Match match in regex.Matches(part))
-							{
-								string temp = match.Groups[0].ToString();
-								string id = match.Groups[2].Value;
-								string url = temp.Split('\"').First();
-
-                                var list = await megaParser.GetUrls(url);
-
-                                var urls = list.Take(list.Count() / 2);
-                                var names = list.Skip(list.Count() / 2);
-
-                                var urlsNames = urls.Zip(names, (urlname, name) => new { Url = urlname, Name = name });
-                                foreach (var urlName in urlsNames)
-                                {
-                                    if (blog.SkipGif && urlName.Url.EndsWith(".gif"))
-                                    {
-                                        continue;
-                                    }
-
-                                    AddToDownloadList(new ExternalVideoPost(urlName.Url, urlName.Name, post.unix_timestamp.ToString()));
-                                }
-							}
-						}
-					}
-				}
-			}
-		}
-
-		private void AddGoogleDriveUrl(TumblrApiJson document)
-		{
-		
-			foreach (Post post in document.posts)
-			{
-				if (!PostWithinTimeSpan(post))
-				{
-					continue;
-				}
-
-				if (!tags.Any() || post.tags.Any(x => tags.Contains(x, StringComparer.OrdinalIgnoreCase)))
-				{
-					if (CheckIfDownloadRebloggedPosts(post))
-					{
-						Regex regex = googledriveParser.GetGoogleDriveUrlRegex();
-						string[] parts = InlineSearch(post).Split(new string[] { "href=" }, StringSplitOptions.RemoveEmptyEntries);
-						foreach (string part in parts)
-						{
-							foreach (Match match in regex.Matches(part))
-							{
-								string temp = match.Groups[0].ToString();
-								string id = match.Groups[2].Value;
-								string url =temp.Split('\"').First();
-
-								string imageUrl = googledriveParser.CreateGoogleDriveUrl(id, url, blog.GoogleDriveType);
-								if (blog.SkipGif && imageUrl.EndsWith(".gif"))
-								{
-									continue;
-								}
-
-								AddToDownloadList(new ExternalVideoPost(imageUrl, string.Empty, post.unix_timestamp.ToString()));
-								AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(url, ".json"), post));
-
-							}
-						}
-					}
-				}
-			}
-		}
-
 		private void AddUguuUrl(TumblrApiJson document)
 		{
 			foreach (Post post in document.posts)
@@ -1203,7 +1110,7 @@ namespace TumblThree.Applications.Crawler
 							{
 								string temp = match.Groups[0].ToString();
 								string id = match.Groups[2].Value;
-								string url =temp.Split('\"').First();
+								string url = temp.Split('\"').First();
 
 
 								string imageUrl = uguuParser.CreateUguuUrl(id, url, blog.UguuType);
@@ -1246,7 +1153,7 @@ namespace TumblThree.Applications.Crawler
 							{
 								string temp = match.Groups[0].ToString();
 								string id = match.Groups[2].Value;
-								string url =temp.Split('\"').First();
+								string url = temp.Split('\"').First();
 
 
 								string imageUrl = safemoeParser.CreateSafeMoeUrl(id, url, blog.SafeMoeType);
@@ -1289,7 +1196,7 @@ namespace TumblThree.Applications.Crawler
 							{
 								string temp = match.Groups[0].ToString();
 								string id = match.Groups[2].Value;
-								string url =temp.Split('\"').First();
+								string url = temp.Split('\"').First();
 
 								string imageUrl = lolisafeParser.CreateLoliSafeUrl(id, url, blog.LoliSafeType);
 								if (blog.SkipGif && imageUrl.EndsWith(".gif"))
@@ -1325,13 +1232,12 @@ namespace TumblThree.Applications.Crawler
 						Regex regex = catboxParser.GetCatBoxUrlRegex();
 						string[] parts = InlineSearch(post).Split(new string[] { "href=" }, StringSplitOptions.RemoveEmptyEntries);
 						foreach (string part in parts)
-						{
-							
+						{						
 							foreach (Match match in regex.Matches(part))
 							{
 								string temp = match.Groups[0].ToString();
 								string id = match.Groups[2].Value;
-								string url =temp.Split('\"').First();
+								string url = temp.Split('\"').First();
 
 								string imageUrl = catboxParser.CreateCatBoxUrl(id, url, blog.CatBoxType);
 								if (blog.SkipGif && imageUrl.EndsWith(".gif"))

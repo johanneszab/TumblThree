@@ -77,11 +77,9 @@ namespace TumblThree.Domain.Models
 	    private bool downloadLoliSafe;
 	    private bool downloadCatBox;
 		//parserTypes
-	    private MegaTypes megaType;
         private GfycatTypes gfycatType;
         private WebmshareTypes webmshareType;
 	    private MixtapeTypes mixtapeType;
-	    private GoogleDriveTypes googledriveType;
 	    private UguuTypes uguuType;
 	    private SafeMoeTypes safemoeType;
 	    private LoliSafeTypes lolisafeType;
@@ -594,19 +592,6 @@ namespace TumblThree.Domain.Models
 		    set { SetProperty(ref downloadCatBox, value); }
 	    }
 
-	    [DataMember]
-	    public MegaTypes MegaType
-	    {
-		    get { return megaType; }
-		    set { SetProperty(ref megaType, value); }
-	    }
-
-	    [DataMember]
-	    public GoogleDriveTypes GoogleDriveType
-	    {
-		    get { return googledriveType; }
-		    set { SetProperty(ref googledriveType, value); }
-	    }
 	    [DataMember]
 	    public UguuTypes UguuType
 	    {

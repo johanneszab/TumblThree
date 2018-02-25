@@ -149,14 +149,6 @@ namespace TumblThree.Domain.Models
         bool DownloadMixtape { get; set; }
 
         MixtapeTypes MixtapeType { get; set; }
-
-	    bool DownloadMega { get; set; }
-
-	    MegaTypes MegaType { get; set; }
-
-	    bool DownloadGoogleDrive { get; set; }
-
-	    GoogleDriveTypes GoogleDriveType { get; set; }
 		
 	    bool DownloadUguu { get; set; }
 

@@ -86,8 +86,6 @@ namespace TumblThree.Applications.ViewModels
         private bool downloadImgur;
         private bool downloadWebmshare;
 	    private bool downloadMixtape;
-	    private bool downloadMega;
-	    private bool downloadGoogleDrive;
 	    private bool downloadUguu;
 	    private bool downloadSafeMoe;
 	    private bool downloadLoliSafe;
@@ -97,8 +95,6 @@ namespace TumblThree.Applications.ViewModels
         private GfycatTypes gfycatType;
         private WebmshareTypes webmshareType;
 	    private MixtapeTypes mixtapeType;
-	    private MegaTypes megaType;
-	    private GoogleDriveTypes googleDriveType;
 	    private UguuTypes uguuType;
 	    private SafeMoeTypes safeMoeType;
 	    private LoliSafeTypes loliSafeType;
@@ -530,30 +526,6 @@ namespace TumblThree.Applications.ViewModels
 		    set { SetProperty(ref mixtapeType, value); }
 	    }
 
-	    public bool DownloadMega
-	    {
-		    get { return downloadMega; }
-		    set { SetProperty(ref downloadMega, value); }
-	    }
-
-	    public MegaTypes MegaType
-	    {
-		    get { return megaType; }
-		    set { SetProperty(ref megaType, value); }
-	    }
-
-	    public bool DownloadGoogleDrive
-	    {
-		    get { return downloadGoogleDrive; }
-		    set { SetProperty(ref downloadGoogleDrive, value); }
-	    }
-
-	    public GoogleDriveTypes GoogleDriveType
-	    {
-		    get { return googleDriveType; }
-		    set { SetProperty(ref googleDriveType, value); }
-	    }
-
 	    public bool DownloadUguu
 	    {
 		    get { return downloadUguu; }
@@ -780,8 +752,6 @@ namespace TumblThree.Applications.ViewModels
                 DownloadGfycat = settings.DownloadGfycat;
                 DownloadWebmshare = settings.DownloadWebmshare;
 	            DownloadMixtape = settings.DownloadMixtape;
-	            DownloadMega = settings.DownloadMega;
-	            DownloadGoogleDrive = settings.DownloadGoogleDrive;
 	            DownloadUguu = settings.DownloadUguu;
 	            DownloadSafeMoe = settings.DownloadSafeMoe;
 	            DownloadLoliSafe = settings.DownloadLoliSafe;
@@ -790,8 +760,6 @@ namespace TumblThree.Applications.ViewModels
                 GfycatType = settings.GfycatType;
                 WebmshareType = settings.WebmshareType;
 	            MixtapeType = settings.MixtapeType;
-	            MegaType = settings.MegaType;
-	            GoogleDriveType = settings.GoogleDriveType;
 	            UguuType = settings.UguuType;
 	            SafeMoeType = settings.SafeMoeType;
 	            LoliSafeType = settings.LoliSafeType;
@@ -865,8 +833,6 @@ namespace TumblThree.Applications.ViewModels
                 GfycatType = GfycatTypes.Mp4;
                 WebmshareType = WebmshareTypes.Webm;
 	            MixtapeType = MixtapeTypes.Any;
-	            GoogleDriveType = GoogleDriveTypes.Any;
-	            MegaType = MegaTypes.Any;
 	            UguuType = UguuTypes.Any;
 	            SafeMoeType = SafeMoeTypes.Any;
 	            LoliSafeType = LoliSafeTypes.Any;
@@ -997,8 +963,6 @@ namespace TumblThree.Applications.ViewModels
             settings.DownloadGfycat = DownloadGfycat;
             settings.DownloadWebmshare = DownloadWebmshare;
 	        settings.DownloadMixtape = DownloadMixtape;
-	        settings.DownloadMega = DownloadMega;
-	        settings.DownloadGoogleDrive = DownloadGoogleDrive;
 	        settings.DownloadUguu = DownloadUguu;
 	        settings.DownloadSafeMoe = DownloadSafeMoe;
 	        settings.DownloadLoliSafe = DownloadLoliSafe;
@@ -1007,8 +971,6 @@ namespace TumblThree.Applications.ViewModels
             settings.GfycatType = GfycatType;
             settings.WebmshareType = WebmshareType;
 	        settings.MixtapeType = MixtapeType;
-	        settings.MegaType = MegaType;
-	        settings.GoogleDriveType = GoogleDriveType;
 	        settings.UguuType = UguuType;
 	        settings.SafeMoeType = SafeMoeType;
 	        settings.LoliSafeType = LoliSafeType;

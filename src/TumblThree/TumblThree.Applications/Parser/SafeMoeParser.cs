@@ -12,7 +12,7 @@ namespace TumblThree.Applications.Parser
 			return new Regex("(http[A-Za-z0-9_/:.]*a.safe.moe/(.*))");
 		}
 
-		public string CreateSafeMoeUrl(string id, string fullurl,SafeMoeTypes type)
+		public string CreateSafeMoeUrl(string id, string fullurl, SafeMoeTypes type)
 		{
 			string url;
 			switch ( type)

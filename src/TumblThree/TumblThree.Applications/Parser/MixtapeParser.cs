@@ -12,7 +12,7 @@ namespace TumblThree.Applications.Crawler
             return new Regex("(http[A-Za-z0-9_/:.]*mixtape.moe/(.*))");
         }
 
-        public string CreateMixtapeUrl(string mixtapeId, string fullurl,MixtapeTypes mixtapeType)
+        public string CreateMixtapeUrl(string mixtapeId, string fullurl, MixtapeTypes mixtapeType)
         {
             string url;
             switch (mixtapeType)

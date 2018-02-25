@@ -1,5 +1,4 @@
-﻿using CG.Web.MegaApiClient;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -57,10 +56,10 @@ namespace TumblThree.Applications.Crawler
                     IPostQueue<TumblrCrawlerData<DataModels.TumblrApiJson.Post>> jsonApiQueue = GetJsonQueue<DataModels.TumblrApiJson.Post>();
                     return new TumblrBlogCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, 
 	                    crawlerService, managerService, blog, files, postQueue), GetTumblrJsonDownloader(shellService, ct, pt, jsonApiQueue, crawlerService, blog), 
-	                    GetTumblrApiJsonToTextParser(blog), imgurParser, gfycatParser, GetWebmshareParser(), GetMixtapeParser(), GetMegaParser(), GetGoogleDriveParser(),GetUguuParser(),GetSafeMoeParser(),GetLoliSafeParser(),GetCatBoxParser(),postQueue, jsonApiQueue, blog);
+	                    GetTumblrApiJsonToTextParser(blog), imgurParser, gfycatParser, GetWebmshareParser(), GetMixtapeParser(), GetUguuParser(), GetSafeMoeParser(), GetLoliSafeParser(), GetCatBoxParser(), postQueue, jsonApiQueue, blog);
                 case BlogTypes.tmblrpriv:
                     IPostQueue<TumblrCrawlerData<DataModels.TumblrSvcJson.Post>> jsonSvcQueue = GetJsonQueue<DataModels.TumblrSvcJson.Post>();
-                    return new TumblrHiddenCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory ,cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, managerService, blog, files, postQueue), GetTumblrJsonDownloader(shellService, ct, pt, jsonSvcQueue, crawlerService, blog), GetTumblrSvcJsonToTextParser(blog), imgurParser, gfycatParser, GetWebmshareParser(), GetMixtapeParser(), GetMegaParser(), GetGoogleDriveParser(), GetUguuParser(), GetSafeMoeParser(), GetLoliSafeParser(), GetCatBoxParser(),postQueue, jsonSvcQueue, blog);
+                    return new TumblrHiddenCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory ,cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, managerService, blog, files, postQueue), GetTumblrJsonDownloader(shellService, ct, pt, jsonSvcQueue, crawlerService, blog), GetTumblrSvcJsonToTextParser(blog), imgurParser, gfycatParser, GetWebmshareParser(), GetMixtapeParser(), GetUguuParser(), GetSafeMoeParser(), GetLoliSafeParser(), GetCatBoxParser(),postQueue, jsonSvcQueue, blog);
                 case BlogTypes.tlb:
                     return new TumblrLikedByCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, managerService, blog, files, postQueue), postQueue, blog);
                 case BlogTypes.tumblrsearch:
@@ -106,16 +105,6 @@ namespace TumblThree.Applications.Crawler
             return new MixtapeParser();
         }
 
-	    private IMegaParser GetMegaParser()
-	    {
-            return new MegaParser(new MegaApiClient());
-	    }
-
-	    private IGoogleDriveParser GetGoogleDriveParser()
-	    {
-		    return new GoogleDriveParser();
-	    }
-
         private IUguuParser GetUguuParser()
 	    {
 		    return new UguuParser();
@@ -144,20 +133,10 @@ namespace TumblThree.Applications.Crawler
         {
             return new BlogService(blog, files);
         }
-    
-        private IGoogleDriveDownloader GetGoogleDriveDownloader()
-        {
-            return new GoogleDriveDownloader();
-        }
-
-        private IMegaDownloader GetMegaDownloader()
-        {
-            return new MegaDownloader(new MegaApiClient());
-        }
 
         private TumblrDownloader GetTumblrDownloader(CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, IShellService shellService, ICrawlerService crawlerService, IManagerService managerService, IBlog blog, IFiles files, IPostQueue<TumblrPost> postQueue)
         {
-            return new TumblrDownloader(shellService, managerService, ct, pt, progress, postQueue, GetFileDownloader(ct), GetGoogleDriveDownloader(), GetMegaDownloader(), crawlerService, blog, files);
+            return new TumblrDownloader(shellService, managerService, ct, pt, progress, postQueue, GetFileDownloader(ct), crawlerService, blog, files);
         }
 
         private TumblrXmlDownloader GetTumblrXmlDownloader(IShellService shellService, CancellationToken ct, PauseToken pt, IPostQueue<TumblrCrawlerData<XDocument>> xmlQueue, ICrawlerService crawlerService, IBlog blog)

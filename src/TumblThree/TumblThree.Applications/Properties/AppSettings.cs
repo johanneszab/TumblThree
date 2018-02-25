@@ -235,18 +235,6 @@ namespace TumblThree.Applications.Properties
 		public MixtapeTypes MixtapeType { get; set; }
 
 		[DataMember]
-		public bool DownloadMega { get; set; }
-
-		[DataMember]
-		public MegaTypes MegaType { get; set; }
-
-		[DataMember]
-		public bool DownloadGoogleDrive { get; set; }
-
-		[DataMember]
-		public GoogleDriveTypes GoogleDriveType { get; set; }
-
-		[DataMember]
 		public bool DownloadUguu { get; set; }
 
 		[DataMember]

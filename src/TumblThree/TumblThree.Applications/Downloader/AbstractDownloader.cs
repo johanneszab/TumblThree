@@ -330,7 +330,7 @@ namespace TumblThree.Applications.Downloader
 
 		protected static string FileLocation(string blogDownloadLocation, string fileName)
 		{
-			return Path.Combine(blogDownloadLocation, fileName);
+		    return Path.Combine(blogDownloadLocation, fileName);
 		}
 
 		protected static string FileLocationLocalized(string blogDownloadLocation, string fileName)

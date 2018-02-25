@@ -45,9 +45,7 @@ namespace TumblThree.Applications.Services
             blog.DownloadWebmshare = shellService.Settings.DownloadWebmshare;
             blog.GfycatType = shellService.Settings.GfycatType;
             blog.WebmshareType = shellService.Settings.WebmshareType;
-            blog.MegaType = shellService.Settings.MegaType;
             blog.MixtapeType = shellService.Settings.MixtapeType;
-            blog.GoogleDriveType = shellService.Settings.GoogleDriveType;
             blog.UguuType = shellService.Settings.UguuType;
             blog.SafeMoeType = shellService.Settings.SafeMoeType;
             blog.LoliSafeType = shellService.Settings.LoliSafeType;

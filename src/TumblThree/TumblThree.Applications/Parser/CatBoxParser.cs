@@ -12,7 +12,7 @@ namespace TumblThree.Applications.Parser
 			return new Regex("(http[A-Za-z0-9_/:.]*files.catbox.moe/(.*))");
 		}
 
-		public string CreateCatBoxUrl(string id, string fullurl,CatBoxTypes type)
+		public string CreateCatBoxUrl(string id, string fullurl, CatBoxTypes type)
 		{
 			string url;
 			switch ( type)

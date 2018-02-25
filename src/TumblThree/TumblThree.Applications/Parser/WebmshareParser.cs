@@ -13,7 +13,7 @@ namespace TumblThree.Applications.Crawler
             return new Regex("(http[A-Za-z0-9_/:.]*webmshare.com/([A-Za-z0-9_]*))");
         }
 
-        public string CreateWebmshareUrl(string webshareId, string fullurl,WebmshareTypes webmshareType)
+        public string CreateWebmshareUrl(string webshareId, string fullurl, WebmshareTypes webmshareType)
         {
             string url="";
             switch (webmshareType)

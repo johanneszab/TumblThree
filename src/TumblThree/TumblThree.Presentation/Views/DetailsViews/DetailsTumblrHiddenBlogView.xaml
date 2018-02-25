@@ -879,10 +879,6 @@
                                 <RowDefinition Height="{StaticResource Layout.RowSpace}" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="{StaticResource Layout.RowSpace}" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
                             </Grid.RowDefinitions>
                             <CheckBox Content="{x:Static p:Resources.DownloadImgur}"
                                   IsChecked="{Binding BlogFile.DownloadImgur, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"
@@ -981,62 +977,8 @@
                                     </ToolTip>
                                 </ComboBox.ToolTip>
                             </ComboBox>
-                            <CheckBox Content="{x:Static p:Resources.DownloadMega}"
-                                      IsChecked="{Binding BlogFile.DownloadMega, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="8"
-                                      Margin="3,0,0,0" Padding="3,0,0,0">
-                                <CheckBox.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadMega}" />
-                                            <TextBlock xml:space="preserve"
-                                                       Text="{x:Static p:Resources.ToolTipDownloadMegaDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </CheckBox.ToolTip>
-                            </CheckBox>
-                            <ComboBox Grid.Column="3" Grid.Row="8" Padding="5,0,5,0" 
-                                      ItemsSource="{Binding Source={Extensions:EnumBindingSource {x:Type Models:MegaTypes}}}" SelectedValuePath="."
-                                      SelectedValue="{Binding BlogFile.MegaType}"
-                                      SelectedItem="{Binding BlogFile.MegaType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                                <ComboBox.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipMegaFiletype}" />
-                                            <TextBlock xml:space="preserve"
-                                                       Text="{x:Static p:Resources.ToolTipMegaFiletypeDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </ComboBox.ToolTip>
-                            </ComboBox>
-                            <CheckBox Content="{x:Static p:Resources.DownloadGoogleDrive}"
-                                      IsChecked="{Binding BlogFile.DownloadGoogleDrive, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="10"
-                                      Margin="3,0,0,0" Padding="3,0,0,0">
-                                <CheckBox.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadGoogleDrive}" />
-                                            <TextBlock xml:space="preserve"
-                                                       Text="{x:Static p:Resources.ToolTipDownloadGoogleDriveDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </CheckBox.ToolTip>
-                            </CheckBox>
-                            <ComboBox Grid.Column="3" Grid.Row="10" Padding="5,0,5,0" 
-                                      ItemsSource="{Binding Source={Extensions:EnumBindingSource {x:Type Models:GoogleDriveTypes}}}" SelectedValuePath="."
-                                      SelectedValue="{Binding BlogFile.GoogleDriveType}"
-                                      SelectedItem="{Binding BlogFile.GoogleDriveType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                                <ComboBox.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipGoogleDriveFiletype}" />
-                                            <TextBlock xml:space="preserve"
-                                                       Text="{x:Static p:Resources.ToolTipGoogleDriveFiletypeDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </ComboBox.ToolTip>
-                            </ComboBox>
                             <CheckBox Content="{x:Static p:Resources.DownloadUguu}"
-                                      IsChecked="{Binding BlogFile.DownloadUguu, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="12"
+                                      IsChecked="{Binding BlogFile.DownloadUguu, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="8"
                                       Margin="3,0,0,0" Padding="3,0,0,0">
                                 <CheckBox.ToolTip>
                                     <ToolTip>
@@ -1048,7 +990,7 @@
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
-                            <ComboBox Grid.Column="3" Grid.Row="12" Padding="5,0,5,0" 
+                            <ComboBox Grid.Column="3" Grid.Row="8" Padding="5,0,5,0" 
                                       ItemsSource="{Binding Source={Extensions:EnumBindingSource {x:Type Models:UguuTypes}}}" SelectedValuePath="."
                                       SelectedValue="{Binding BlogFile.UguuType}"
                                       SelectedItem="{Binding BlogFile.UguuType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
@@ -1063,7 +1005,7 @@
                                 </ComboBox.ToolTip>
                             </ComboBox>
                             <CheckBox Content="{x:Static p:Resources.DownloadSafeMoe}"
-                                      IsChecked="{Binding BlogFile.DownloadSafeMoe, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="14"
+                                      IsChecked="{Binding BlogFile.DownloadSafeMoe, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="10"
                                       Margin="3,0,0,0" Padding="3,0,0,0">
                                 <CheckBox.ToolTip>
                                     <ToolTip>
@@ -1075,7 +1017,7 @@
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
-                            <ComboBox Grid.Column="3" Grid.Row="14" Padding="5,0,5,0" 
+                            <ComboBox Grid.Column="3" Grid.Row="10" Padding="5,0,5,0" 
                                       ItemsSource="{Binding Source={Extensions:EnumBindingSource {x:Type Models:SafeMoeTypes}}}" SelectedValuePath="."
                                       SelectedValue="{Binding BlogFile.SafeMoeType}"
                                       SelectedItem="{Binding BlogFile.SafeMoeType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
@@ -1090,7 +1032,7 @@
                                 </ComboBox.ToolTip>
                             </ComboBox>
                             <CheckBox Content="{x:Static p:Resources.DownloadLoliSafe}"
-                                      IsChecked="{Binding BlogFile.DownloadLoliSafe, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="16"
+                                      IsChecked="{Binding BlogFile.DownloadLoliSafe, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="12"
                                       Margin="3,0,0,0" Padding="3,0,0,0">
                                 <CheckBox.ToolTip>
                                     <ToolTip>
@@ -1102,7 +1044,7 @@
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
-                            <ComboBox Grid.Column="3" Grid.Row="16" Padding="5,0,5,0" 
+                            <ComboBox Grid.Column="3" Grid.Row="12" Padding="5,0,5,0" 
                                       ItemsSource="{Binding Source={Extensions:EnumBindingSource {x:Type Models:LoliSafeTypes}}}" SelectedValuePath="."
                                       SelectedValue="{Binding BlogFile.LoliSafeType}"
                                       SelectedItem="{Binding BlogFile.LoliSafeType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
@@ -1117,7 +1059,7 @@
                                 </ComboBox.ToolTip>
                             </ComboBox>
                             <CheckBox Content="{x:Static p:Resources.DownloadCatBox}"
-                                      IsChecked="{Binding BlogFile.DownloadCatBox, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="18"
+                                      IsChecked="{Binding BlogFile.DownloadCatBox, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="14"
                                       Margin="3,0,0,0" Padding="3,0,0,0">
                                 <CheckBox.ToolTip>
                                     <ToolTip>
@@ -1129,7 +1071,7 @@
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
-                            <ComboBox Grid.Column="3" Grid.Row="18" Padding="5,0,5,0" 
+                            <ComboBox Grid.Column="3" Grid.Row="14" Padding="5,0,5,0" 
                                       ItemsSource="{Binding Source={Extensions:EnumBindingSource {x:Type Models:CatBoxTypes}}}" SelectedValuePath="."
                                       SelectedValue="{Binding BlogFile.CatBoxType}"
                                       SelectedItem="{Binding BlogFile.CatBoxType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">

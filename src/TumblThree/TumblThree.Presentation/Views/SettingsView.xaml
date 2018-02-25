@@ -836,8 +836,6 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <CheckBox Content="{x:Static p:Resources.DownloadImgur}"
                                   IsChecked="{Binding DownloadImgur, Mode=TwoWay}" Grid.Column="0" Grid.Row="0"
@@ -938,66 +936,9 @@
                                 </ToolTip>
                             </ComboBox.ToolTip>
                         </ComboBox>
-                        
-                        <CheckBox Content="{x:Static p:Resources.DownloadMega}"
-                                  IsChecked="{Binding DownloadMega, Mode=TwoWay}" Grid.Column="0" Grid.Row="4"
-                                  Margin="10" >
-                            <CheckBox.ToolTip>
-                                <ToolTip>
-                                    <StackPanel>
-                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadMega}" />
-                                        <TextBlock xml:space="preserve"
-                                                   Text="{x:Static p:Resources.ToolTipDownloadMegaDescription}" />
-                                    </StackPanel>
-                                </ToolTip>
-                            </CheckBox.ToolTip>
-                        </CheckBox>
-
-                        <ComboBox Grid.Column="2" Grid.Row="4" Margin="5"
-                                  ItemsSource="{Binding Source={StaticResource MegaTypes}}" SelectedValuePath="."
-                                  SelectedValue="{Binding MegaType}"
-                                  SelectedItem="{Binding MegaType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                            <ComboBox.ToolTip>
-                                <ToolTip>
-                                    <StackPanel>
-                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipMegaFiletype}" />
-                                        <TextBlock xml:space="preserve"
-                                                   Text="{x:Static p:Resources.ToolTipMegaFiletypeDescription}" />
-                                    </StackPanel>
-                                </ToolTip>
-                            </ComboBox.ToolTip>
-                        </ComboBox>
-                        <CheckBox Content="{x:Static p:Resources.DownloadGoogleDrive}"
-                                  IsChecked="{Binding DownloadGoogleDrive, Mode=TwoWay}" Grid.Column="0" Grid.Row="5"
-                                  Margin="10" >
-                            <CheckBox.ToolTip>
-                                <ToolTip>
-                                    <StackPanel>
-                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadGoogleDrive}" />
-                                        <TextBlock xml:space="preserve"
-                                                   Text="{x:Static p:Resources.ToolTipDownloadGoogleDriveDescription}" />
-                                    </StackPanel>
-                                </ToolTip>
-                            </CheckBox.ToolTip>
-                        </CheckBox>
-
-                        <ComboBox Grid.Column="2" Grid.Row="5" Margin="5"
-                                  ItemsSource="{Binding Source={StaticResource GoogleDriveTypes}}" SelectedValuePath="."
-                                  SelectedValue="{Binding GoogleDriveType}"
-                                  SelectedItem="{Binding GoogleDriveType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                            <ComboBox.ToolTip>
-                                <ToolTip>
-                                    <StackPanel>
-                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipGoogleDriveFiletype}" />
-                                        <TextBlock xml:space="preserve"
-                                                   Text="{x:Static p:Resources.ToolTipGoogleDriveFiletypeDescription}" />
-                                    </StackPanel>
-                                </ToolTip>
-                            </ComboBox.ToolTip>
-                        </ComboBox>
 
                         <CheckBox Content="{x:Static p:Resources.DownloadUguu}"
-                                  IsChecked="{Binding DownloadUguu, Mode=TwoWay}" Grid.Column="0" Grid.Row="6"
+                                  IsChecked="{Binding DownloadUguu, Mode=TwoWay}" Grid.Column="0" Grid.Row="4"
                                   Margin="10">
                             <CheckBox.ToolTip>
                                 <ToolTip>
@@ -1009,7 +950,7 @@
                                 </ToolTip>
                             </CheckBox.ToolTip>
                         </CheckBox>
-                        <ComboBox Grid.Column="2" Grid.Row="6" Margin="5"
+                        <ComboBox Grid.Column="2" Grid.Row="4" Margin="5"
                                   ItemsSource="{Binding Source={StaticResource UguuTypes}}" SelectedValuePath="."
                                   SelectedValue="{Binding UguuType}"
                                   SelectedItem="{Binding UguuType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
@@ -1025,7 +966,7 @@
                         </ComboBox>
 
                         <CheckBox Content="{x:Static p:Resources.DownloadSafeMoe}"
-                                  IsChecked="{Binding DownloadSafeMoe, Mode=TwoWay}" Grid.Column="0" Grid.Row="7"
+                                  IsChecked="{Binding DownloadSafeMoe, Mode=TwoWay}" Grid.Column="0" Grid.Row="5"
                                   Margin="10" >
                             <CheckBox.ToolTip>
                                 <ToolTip>
@@ -1038,7 +979,7 @@
                             </CheckBox.ToolTip>
                         </CheckBox>
                         
-                        <ComboBox Grid.Column="2" Grid.Row="7" Margin="5"
+                        <ComboBox Grid.Column="2" Grid.Row="5" Margin="5"
                                   ItemsSource="{Binding Source={StaticResource SafeMoeTypes}}" SelectedValuePath="."
                                   SelectedValue="{Binding SafeMoeType}"
                                   SelectedItem="{Binding SafeMoeType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
@@ -1053,7 +994,7 @@
                             </ComboBox.ToolTip>
                         </ComboBox>
                         <CheckBox Content="{x:Static p:Resources.DownloadLoliSafe}"
-                                  IsChecked="{Binding DownloadLoliSafe, Mode=TwoWay}" Grid.Column="0" Grid.Row="8"
+                                  IsChecked="{Binding DownloadLoliSafe, Mode=TwoWay}" Grid.Column="0" Grid.Row="6"
                                   Margin="10" >
                             <CheckBox.ToolTip>
                                 <ToolTip>
@@ -1065,7 +1006,7 @@
                                 </ToolTip>
                             </CheckBox.ToolTip>
                         </CheckBox>
-                        <ComboBox Grid.Column="2" Grid.Row="8" Margin="5"
+                        <ComboBox Grid.Column="2" Grid.Row="6" Margin="5"
                                   ItemsSource="{Binding Source={StaticResource LoliSafeTypes}}" SelectedValuePath="."
                                   SelectedValue="{Binding LoliSafeType}"
                                   SelectedItem="{Binding LoliSafeType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
@@ -1081,7 +1022,7 @@
                         </ComboBox>
                         
                         <CheckBox Content="{x:Static p:Resources.DownloadCatBox}"
-                                  IsChecked="{Binding DownloadCatBox, Mode=TwoWay}" Grid.Column="0" Grid.Row="9"
+                                  IsChecked="{Binding DownloadCatBox, Mode=TwoWay}" Grid.Column="0" Grid.Row="7"
                                   Margin="10" >
                             <CheckBox.ToolTip>
                                 <ToolTip>
@@ -1094,7 +1035,7 @@
                             </CheckBox.ToolTip>
                         </CheckBox>
                         
-                        <ComboBox Grid.Column="2" Grid.Row="9" Margin="5"
+                        <ComboBox Grid.Column="2" Grid.Row="7" Margin="5"
                                   ItemsSource="{Binding Source={StaticResource CatBoxTypes}}" SelectedValuePath="."
                                   SelectedValue="{Binding CatBoxType}"
                                   SelectedItem="{Binding CatBoxType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
