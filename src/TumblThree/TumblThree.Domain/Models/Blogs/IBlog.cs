@@ -146,6 +146,26 @@ namespace TumblThree.Domain.Models
 
         WebmshareTypes WebmshareType { get; set; }
 
+        bool DownloadMixtape { get; set; }
+
+        MixtapeTypes MixtapeType { get; set; }
+
+        bool DownloadUguu { get; set; }
+
+        UguuTypes UguuType { get; set; }
+
+        bool DownloadSafeMoe { get; set; }
+
+        SafeMoeTypes SafeMoeType { get; set; }
+
+        bool DownloadLoliSafe { get; set; }
+
+        LoliSafeTypes LoliSafeType { get; set; }
+
+        bool DownloadCatBox { get; set; }
+
+        CatBoxTypes CatBoxType { get; set; }
+
         BlogTypes BlogType { get; set; }
 
         DateTime DateAdded { get; set; }

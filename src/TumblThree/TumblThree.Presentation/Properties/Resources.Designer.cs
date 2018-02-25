@@ -457,6 +457,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download catbox.
+        /// </summary>
+        public static string DownloadCatBox {
+            get {
+                return ResourceManager.GetString("DownloadCatBox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Download conversation posts.
         /// </summary>
         public static string DownloadConversations {
@@ -547,6 +556,24 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download lolisafe.
+        /// </summary>
+        public static string DownloadLoliSafe {
+            get {
+                return ResourceManager.GetString("DownloadLoliSafe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download mixtape.
+        /// </summary>
+        public static string DownloadMixtape {
+            get {
+                return ResourceManager.GetString("DownloadMixtape", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Download Now.
         /// </summary>
         public static string DownloadNow {
@@ -583,6 +610,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download safemoe.
+        /// </summary>
+        public static string DownloadSafeMoe {
+            get {
+                return ResourceManager.GetString("DownloadSafeMoe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Download text posts.
         /// </summary>
         public static string DownloadTexts {
@@ -597,6 +633,15 @@ namespace TumblThree.Presentation.Properties {
         public static string DownloadTo {
             get {
                 return ResourceManager.GetString("DownloadTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download uguu.
+        /// </summary>
+        public static string DownloadUguu {
+            get {
+                return ResourceManager.GetString("DownloadUguu", resourceCulture);
             }
         }
         
@@ -844,7 +889,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Limit Tumblr Svc Host Connections:.
+        ///   Looks up a localized string similar to Limit Tumblr Svc Connections:.
         /// </summary>
         public static string LimitConnections {
             get {
@@ -1368,6 +1413,24 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File type to download.
+        /// </summary>
+        public static string ToolTipCatBoxFiletype {
+            get {
+                return ResourceManager.GetString("ToolTipCatBoxFiletype", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chose which file type you want to download.
+        /// </summary>
+        public static string ToolTipCatBoxFiletypeDescription {
+            get {
+                return ResourceManager.GetString("ToolTipCatBoxFiletypeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Checks the directory for already downloaded files..
         /// </summary>
         public static string ToolTipCheckDirectoryForFiles {
@@ -1443,6 +1506,24 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download linked CatBox files.
+        /// </summary>
+        public static string ToolTipDownloadCatBox {
+            get {
+                return ResourceManager.GetString("ToolTipDownloadCatBox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download externally hosted CatBox files.
+        /// </summary>
+        public static string ToolTipDownloadCatBoxDescription {
+            get {
+                return ResourceManager.GetString("ToolTipDownloadCatBoxDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Crawl posts from this date.
         /// </summary>
         public static string ToolTipDownloadFrom {
@@ -1497,6 +1578,42 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Download linked LoliSafe files.
+        /// </summary>
+        public static string ToolTipDownloadLoliSafe {
+            get {
+                return ResourceManager.GetString("ToolTipDownloadLoliSafe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download externally hosted LoliSafe files.
+        /// </summary>
+        public static string ToolTipDownloadLoliSafeDescription {
+            get {
+                return ResourceManager.GetString("ToolTipDownloadLoliSafeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download linked Mixtape.moe files.
+        /// </summary>
+        public static string ToolTipDownloadMixtape {
+            get {
+                return ResourceManager.GetString("ToolTipDownloadMixtape", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download externally hosted Mixtape.moe files.
+        /// </summary>
+        public static string ToolTipDownloadMixtapeDescription {
+            get {
+                return ResourceManager.GetString("ToolTipDownloadMixtapeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Download only specific pages.
         /// </summary>
         public static string ToolTipDownloadPages {
@@ -1511,6 +1628,24 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipDownloadPagesDescription {
             get {
                 return ResourceManager.GetString("ToolTipDownloadPagesDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download linked SafeMoe files.
+        /// </summary>
+        public static string ToolTipDownloadSafeMoe {
+            get {
+                return ResourceManager.GetString("ToolTipDownloadSafeMoe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download externally hosted SafeMoe files.
+        /// </summary>
+        public static string ToolTipDownloadSafeMoeDescription {
+            get {
+                return ResourceManager.GetString("ToolTipDownloadSafeMoeDescription", resourceCulture);
             }
         }
         
@@ -1547,6 +1682,24 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipDownloadToDescription {
             get {
                 return ResourceManager.GetString("ToolTipDownloadToDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download linked Uguu files.
+        /// </summary>
+        public static string ToolTipDownloadUguu {
+            get {
+                return ResourceManager.GetString("ToolTipDownloadUguu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download externally hosted Uguu files.
+        /// </summary>
+        public static string ToolTipDownloadUguuDescription {
+            get {
+                return ResourceManager.GetString("ToolTipDownloadUguuDescription", resourceCulture);
             }
         }
         
@@ -1716,7 +1869,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Limit connections to the tumblr svc host.
+        ///   Looks up a localized string similar to Limit connections to the tumblr svc..
         /// </summary>
         public static string ToolTipLimitConnections {
             get {
@@ -1725,10 +1878,10 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr svc host
+        ///   Looks up a localized string similar to A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr svc.
         ///A too small value will decrease the scanning speed.
         ///Set a number/time pair.
-        ///Note: The tumblr svc host is only used for tumblr blog downloads..
+        ///Note: The tumblr svc is only used for regular tumblr blog downloads..
         /// </summary>
         public static string ToolTipLimitConnectionsDescription {
             get {
@@ -1772,6 +1925,42 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipLoadAllDatabasesDescription {
             get {
                 return ResourceManager.GetString("ToolTipLoadAllDatabasesDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File type to download.
+        /// </summary>
+        public static string ToolTipLoliSafeFiletype {
+            get {
+                return ResourceManager.GetString("ToolTipLoliSafeFiletype", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chose which file type you want to download.
+        /// </summary>
+        public static string ToolTipLoliSafeFiletypeDescription {
+            get {
+                return ResourceManager.GetString("ToolTipLoliSafeFiletypeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File type to download.
+        /// </summary>
+        public static string ToolTipMixtapeFiletype {
+            get {
+                return ResourceManager.GetString("ToolTipMixtapeFiletype", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chose which file type you want to download.
+        /// </summary>
+        public static string ToolTipMixtapeFiletypeDescription {
+            get {
+                return ResourceManager.GetString("ToolTipMixtapeFiletypeDescription", resourceCulture);
             }
         }
         
@@ -1867,6 +2056,24 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File type to download.
+        /// </summary>
+        public static string ToolTipSafeMoeFiletype {
+            get {
+                return ResourceManager.GetString("ToolTipSafeMoeFiletype", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chose which file type you want to download.
+        /// </summary>
+        public static string ToolTipSafeMoeFiletypeDescription {
+            get {
+                return ResourceManager.GetString("ToolTipSafeMoeFiletypeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Number of connections used for each scan.
         /// </summary>
         public static string ToolTipScan {
@@ -1919,6 +2126,24 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipTimeoutDescription {
             get {
                 return ResourceManager.GetString("ToolTipTimeoutDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File type to download.
+        /// </summary>
+        public static string ToolTipUguuFiletype {
+            get {
+                return ResourceManager.GetString("ToolTipUguuFiletype", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chose which file type you want to download.
+        /// </summary>
+        public static string ToolTipUguuFiletypeDescription {
+            get {
+                return ResourceManager.GetString("ToolTipUguuFiletypeDescription", resourceCulture);
             }
         }
         

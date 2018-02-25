@@ -8,6 +8,6 @@ namespace TumblThree.Applications.Crawler
     {
         Regex GetWebmshareUrlRegex();
 
-        string CreateWebmshareUrl(string webshareId, WebmshareTypes webmshareType);
+        string CreateWebmshareUrl(string webshareId, string detectedUrl, WebmshareTypes webmshareType);
     }
 }

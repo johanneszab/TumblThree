@@ -12,7 +12,7 @@
              xmlns:Models="clr-namespace:TumblThree.Domain.Models;assembly=TumblThree.Domain"
              xmlns:Extensions="clr-namespace:TumblThree.Presentation.Extensions"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance dd:SampleDetailsViewModel, IsDesignTimeCreatable=True}"
-             d:DesignHeight="700" d:DesignWidth="400" Background="{StaticResource DefaultBackground}">
+             d:DesignHeight="720" d:DesignWidth="400" Background="{StaticResource DefaultBackground}">
 
     <Grid>
         <Grid.Resources>
@@ -150,69 +150,68 @@
                                 </Style>
                                 <sys:Int32 x:Key="duplicatesZero">0</sys:Int32>
                             </Grid.Resources>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="{StaticResource Layout.ColumnSpace}" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="{StaticResource Layout.ColumnSpace}" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
-                            </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="{StaticResource Layout.ColumnSpace}" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="{StaticResource Layout.ColumnSpace}" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
 
-                            <Label Content="{x:Static p:Resources.Posts}" Grid.Column="0" Grid.ColumnSpan="2"
+                        <Label Content="{x:Static p:Resources.Posts}" Grid.Column="0" Grid.ColumnSpan="2"
                            Grid.Row="0" />
-                            <Label Content="{Binding BlogFile.Posts, Converter={StaticResource IntToDisplayValueConverter}}"
+                        <Label Content="{Binding BlogFile.Posts, Converter={StaticResource IntToDisplayValueConverter}}"
                                Margin="3,0,0,0" Grid.Column="1" Grid.Row="0" />
 
                             <CheckBox Content="{x:Static p:Resources.DownloadImages}"
@@ -347,435 +346,432 @@
                                 </Label.ToolTip>
                             </Label>
 
-                            <CheckBox Content="{x:Static p:Resources.DownloadConversations}"
+                        <CheckBox Content="{x:Static p:Resources.DownloadConversations}"
                                   IsChecked="{Binding BlogFile.DownloadConversation, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2"
                                   Grid.Row="10" Margin="3,0,0,0" Padding="3,0,0,0">
-                                <CheckBox.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDetailsStats}" />
-                                            <TextBlock xml:space="preserve"
+                            <CheckBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDetailsStats}" />
+                                        <TextBlock xml:space="preserve"
                                                    Text="{x:Static p:Resources.ToolTipDetailsStatsDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </CheckBox.ToolTip>
-                            </CheckBox>
+                                    </StackPanel>
+                                </ToolTip>
+                            </CheckBox.ToolTip>
+                        </CheckBox>
 
-                            <Label Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="10" Padding="0" Margin="3,0,0,0" >
-                                <Label.Content>
-                                    <MultiBinding Converter="{StaticResource DetailsProgressConverter}">
-                                        <Binding Path="BlogFile.DownloadedConversations" />
-                                        <Binding Path="BlogFile.Conversations" />
-                                        <Binding Source="{StaticResource duplicatesZero}" />
-                                    </MultiBinding>
-                                </Label.Content>
-                                <Label.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDetailsStats}" />
-                                            <TextBlock xml:space="preserve"
+                        <Label Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="10" Padding="0" Margin="3,0,0,0" >
+                            <Label.Content>
+                                <MultiBinding Converter="{StaticResource DetailsProgressConverter}">
+                                    <Binding Path="BlogFile.DownloadedConversations" />
+                                    <Binding Path="BlogFile.Conversations" />
+                                    <Binding Source="{StaticResource duplicatesZero}" />
+                                </MultiBinding>
+                            </Label.Content>
+                            <Label.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDetailsStats}" />
+                                        <TextBlock xml:space="preserve"
                                                    Text="{x:Static p:Resources.ToolTipDetailsStatsDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </Label.ToolTip>
-                            </Label>
+                                    </StackPanel>
+                                </ToolTip>
+                            </Label.ToolTip>
+                        </Label>
 
-                            <CheckBox Content="{x:Static p:Resources.DownloadQuotes}"
+                        <CheckBox Content="{x:Static p:Resources.DownloadQuotes}"
                                   IsChecked="{Binding BlogFile.DownloadQuote, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="12"
                                   Margin="3,0,0,0" Padding="3,0,0,0">
-                                <CheckBox.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDetailsStats}" />
-                                            <TextBlock xml:space="preserve"
+                            <CheckBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDetailsStats}" />
+                                        <TextBlock xml:space="preserve"
                                                    Text="{x:Static p:Resources.ToolTipDetailsStatsDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </CheckBox.ToolTip>
-                            </CheckBox>
+                                    </StackPanel>
+                                </ToolTip>
+                            </CheckBox.ToolTip>
+                        </CheckBox>
 
-                            <Label Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="12" Padding="0" Margin="3,0,0,0" >
-                                <Label.Content>
-                                    <MultiBinding Converter="{StaticResource DetailsProgressConverter}">
-                                        <Binding Path="BlogFile.DownloadedQuotes" />
-                                        <Binding Path="BlogFile.Quotes" />
-                                        <Binding Source="{StaticResource duplicatesZero}" />
-                                    </MultiBinding>
-                                </Label.Content>
-                                <Label.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDetailsStats}" />
-                                            <TextBlock xml:space="preserve"
+                        <Label Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="12" Padding="0" Margin="3,0,0,0" >
+                            <Label.Content>
+                                <MultiBinding Converter="{StaticResource DetailsProgressConverter}">
+                                    <Binding Path="BlogFile.DownloadedQuotes" />
+                                    <Binding Path="BlogFile.Quotes" />
+                                    <Binding Source="{StaticResource duplicatesZero}" />
+                                </MultiBinding>
+                            </Label.Content>
+                            <Label.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDetailsStats}" />
+                                        <TextBlock xml:space="preserve"
                                                    Text="{x:Static p:Resources.ToolTipDetailsStatsDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </Label.ToolTip>
-                            </Label>
+                                    </StackPanel>
+                                </ToolTip>
+                            </Label.ToolTip>
+                        </Label>
 
-                            <CheckBox Content="{x:Static p:Resources.DownloadLinks}"
+                        <CheckBox Content="{x:Static p:Resources.DownloadLinks}"
                                   IsChecked="{Binding BlogFile.DownloadLink, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="14"
                                   Margin="3,0,0,0" Padding="3,0,0,0">
-                                <CheckBox.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDetailsStats}" />
-                                            <TextBlock xml:space="preserve"
+                            <CheckBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDetailsStats}" />
+                                        <TextBlock xml:space="preserve"
                                                    Text="{x:Static p:Resources.ToolTipDetailsStatsDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </CheckBox.ToolTip>
-                            </CheckBox>
+                                    </StackPanel>
+                                </ToolTip>
+                            </CheckBox.ToolTip>
+                        </CheckBox>
 
-                            <Label Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="14" Padding="0" Margin="3,0,0,0" >
-                                <Label.Content>
-                                    <MultiBinding Converter="{StaticResource DetailsProgressConverter}">
-                                        <Binding Path="BlogFile.DownloadedLinks" />
-                                        <Binding Path="BlogFile.NumberOfLinks" />
-                                        <Binding Source="{StaticResource duplicatesZero}" />
-                                    </MultiBinding>
-                                </Label.Content>
-                                <Label.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDetailsStats}" />
-                                            <TextBlock xml:space="preserve"
+                        <Label Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="14" Padding="0" Margin="3,0,0,0" >
+                            <Label.Content>
+                                <MultiBinding Converter="{StaticResource DetailsProgressConverter}">
+                                    <Binding Path="BlogFile.DownloadedLinks" />
+                                    <Binding Path="BlogFile.NumberOfLinks" />
+                                    <Binding Source="{StaticResource duplicatesZero}" />
+                                </MultiBinding>
+                            </Label.Content>
+                            <Label.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDetailsStats}" />
+                                        <TextBlock xml:space="preserve"
                                                    Text="{x:Static p:Resources.ToolTipDetailsStatsDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </Label.ToolTip>
-                            </Label>
+                                    </StackPanel>
+                                </ToolTip>
+                            </Label.ToolTip>
+                        </Label>
 
-                            <CheckBox Content="{x:Static p:Resources.DownloadAnswers}"
+                        <CheckBox Content="{x:Static p:Resources.DownloadAnswers}"
                                   IsChecked="{Binding BlogFile.DownloadAnswer, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="16"
                                   Margin="3,0,0,0" Padding="3,0,0,0">
-                                <CheckBox.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDetailsStats}" />
-                                            <TextBlock xml:space="preserve"
+                            <CheckBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDetailsStats}" />
+                                        <TextBlock xml:space="preserve"
                                                    Text="{x:Static p:Resources.ToolTipDetailsStatsDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </CheckBox.ToolTip>
-                            </CheckBox>
+                                    </StackPanel>
+                                </ToolTip>
+                            </CheckBox.ToolTip>
+                        </CheckBox>
 
-                            <Label Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="16" Padding="0" Margin="3,0,0,0" >
-                                <Label.Content>
-                                    <MultiBinding Converter="{StaticResource DetailsProgressConverter}">
-                                        <Binding Path="BlogFile.DownloadedAnswers" />
-                                        <Binding Path="BlogFile.Answers" />
-                                        <Binding Source="{StaticResource duplicatesZero}" />
-                                    </MultiBinding>
-                                </Label.Content>
-                                <Label.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDetailsStats}" />
-                                            <TextBlock xml:space="preserve"
+                        <Label Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="16" Padding="0" Margin="3,0,0,0" >
+                            <Label.Content>
+                                <MultiBinding Converter="{StaticResource DetailsProgressConverter}">
+                                    <Binding Path="BlogFile.DownloadedAnswers" />
+                                    <Binding Path="BlogFile.Answers" />
+                                    <Binding Source="{StaticResource duplicatesZero}" />
+                                </MultiBinding>
+                            </Label.Content>
+                            <Label.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDetailsStats}" />
+                                        <TextBlock xml:space="preserve"
                                                    Text="{x:Static p:Resources.ToolTipDetailsStatsDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </Label.ToolTip>
-                            </Label>
+                                    </StackPanel>
+                                </ToolTip>
+                            </Label.ToolTip>
+                        </Label>
 
-                            <CheckBox Content="{x:Static p:Resources.DownloadImageMeta}"
+                        <CheckBox Content="{x:Static p:Resources.DownloadImageMeta}"
                                   IsChecked="{Binding BlogFile.CreatePhotoMeta, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="18"
                                   Margin="3,0,0,0" Padding="3,0,0,0">
-                                <CheckBox.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDetailsStats}" />
-                                            <TextBlock xml:space="preserve"
+                            <CheckBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDetailsStats}" />
+                                        <TextBlock xml:space="preserve"
                                                    Text="{x:Static p:Resources.ToolTipDetailsStatsDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </CheckBox.ToolTip>
-                            </CheckBox>
+                                    </StackPanel>
+                                </ToolTip>
+                            </CheckBox.ToolTip>
+                        </CheckBox>
 
-                            <Label Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="18" Padding="0" Margin="3,0,0,0" >
-                                <Label.Content>
-                                    <MultiBinding Converter="{StaticResource DetailsProgressConverter}">
-                                        <Binding Path="BlogFile.DownloadedPhotoMetas" />
-                                        <Binding Path="BlogFile.PhotoMetas" />
-                                        <Binding Source="{StaticResource duplicatesZero}" />
-                                    </MultiBinding>
-                                </Label.Content>
-                                <Label.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDetailsStats}" />
-                                            <TextBlock xml:space="preserve"
+                        <Label Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="18" Padding="0" Margin="3,0,0,0" >
+                            <Label.Content>
+                                <MultiBinding Converter="{StaticResource DetailsProgressConverter}">
+                                    <Binding Path="BlogFile.DownloadedPhotoMetas" />
+                                    <Binding Path="BlogFile.PhotoMetas" />
+                                    <Binding Source="{StaticResource duplicatesZero}" />
+                                </MultiBinding>
+                            </Label.Content>
+                            <Label.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDetailsStats}" />
+                                        <TextBlock xml:space="preserve"
                                                    Text="{x:Static p:Resources.ToolTipDetailsStatsDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </Label.ToolTip>
-                            </Label>
+                                    </StackPanel>
+                                </ToolTip>
+                            </Label.ToolTip>
+                        </Label>
 
-                            <CheckBox Content="{x:Static p:Resources.DownloadVideoMeta}"
+                        <CheckBox Content="{x:Static p:Resources.DownloadVideoMeta}"
                                   IsChecked="{Binding BlogFile.CreateVideoMeta, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="20"
                                   Margin="3,0,0,0" Padding="3,0,0,0">
-                                <CheckBox.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDetailsStats}" />
-                                            <TextBlock xml:space="preserve"
+                            <CheckBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDetailsStats}" />
+                                        <TextBlock xml:space="preserve"
                                                    Text="{x:Static p:Resources.ToolTipDetailsStatsDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </CheckBox.ToolTip>
-                            </CheckBox>
+                                    </StackPanel>
+                                </ToolTip>
+                            </CheckBox.ToolTip>
+                        </CheckBox>
 
-                            <Label Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="20" Padding="0" Margin="3,0,0,0" >
-                                <Label.Content>
-                                    <MultiBinding Converter="{StaticResource DetailsProgressConverter}">
-                                        <Binding Path="BlogFile.DownloadedVideoMetas" />
-                                        <Binding Path="BlogFile.VideoMetas" />
-                                        <Binding Source="{StaticResource duplicatesZero}" />
-                                    </MultiBinding>
-                                </Label.Content>
-                                <Label.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDetailsStats}" />
-                                            <TextBlock xml:space="preserve"
+                        <Label Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="20" Padding="0" Margin="3,0,0,0" >
+                            <Label.Content>
+                                <MultiBinding Converter="{StaticResource DetailsProgressConverter}">
+                                    <Binding Path="BlogFile.DownloadedVideoMetas" />
+                                    <Binding Path="BlogFile.VideoMetas" />
+                                    <Binding Source="{StaticResource duplicatesZero}" />
+                                </MultiBinding>
+                            </Label.Content>
+                            <Label.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDetailsStats}" />
+                                        <TextBlock xml:space="preserve"
                                                    Text="{x:Static p:Resources.ToolTipDetailsStatsDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </Label.ToolTip>
-                            </Label>
+                                    </StackPanel>
+                                </ToolTip>
+                            </Label.ToolTip>
+                        </Label>
 
-                            <CheckBox Content="{x:Static p:Resources.DownloadAudioMeta}"
+                        <CheckBox Content="{x:Static p:Resources.DownloadAudioMeta}"
                                   IsChecked="{Binding BlogFile.CreateAudioMeta, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="22"
                                   Margin="3,0,0,0" Padding="3,0,0,0">
-                                <CheckBox.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDetailsStats}" />
-                                            <TextBlock xml:space="preserve"
+                            <CheckBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDetailsStats}" />
+                                        <TextBlock xml:space="preserve"
                                                    Text="{x:Static p:Resources.ToolTipDetailsStatsDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </CheckBox.ToolTip>
-                            </CheckBox>
+                                    </StackPanel>
+                                </ToolTip>
+                            </CheckBox.ToolTip>
+                        </CheckBox>
 
-                            <Label Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="22" Padding="0" Margin="3,0,0,0" >
-                                <Label.Content>
-                                    <MultiBinding Converter="{StaticResource DetailsProgressConverter}">
-                                        <Binding Path="BlogFile.DownloadedAudioMetas" />
-                                        <Binding Path="BlogFile.AudioMetas" />
-                                        <Binding Source="{StaticResource duplicatesZero}" />
-                                    </MultiBinding>
-                                </Label.Content>
-                                <Label.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDetailsStats}" />
-                                            <TextBlock xml:space="preserve"
+                        <Label Grid.Column="3" Grid.ColumnSpan="3" Grid.Row="22" Padding="0" Margin="3,0,0,0" >
+                            <Label.Content>
+                                <MultiBinding Converter="{StaticResource DetailsProgressConverter}">
+                                    <Binding Path="BlogFile.DownloadedAudioMetas" />
+                                    <Binding Path="BlogFile.AudioMetas" />
+                                    <Binding Source="{StaticResource duplicatesZero}" />
+                                </MultiBinding>
+                            </Label.Content>
+                            <Label.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDetailsStats}" />
+                                        <TextBlock xml:space="preserve"
                                                    Text="{x:Static p:Resources.ToolTipDetailsStatsDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </Label.ToolTip>
-                            </Label>
+                                    </StackPanel>
+                                </ToolTip>
+                            </Label.ToolTip>
+                        </Label>
 
-                            <Label Content="{x:Static p:Resources.DownloadPages}" Grid.Column="0" Grid.Row="24" Margin="3,0,3,0" Padding="3,0,3,0">
-                                <Label.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadPages}" />
-                                            <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipDownloadPagesDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </Label.ToolTip>
-                            </Label>
+                        <Label Content="{x:Static p:Resources.DownloadPages}" Grid.Column="0" Grid.Row="24" Margin="3,0,3,0" Padding="3,0,3,0">
+                            <Label.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadPages}" />
+                                        <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipDownloadPagesDescription}" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </Label.ToolTip>
+                        </Label>
 
-                            <TextBox Grid.Column="1" Grid.Row="24" Padding="0" 
+                        <TextBox Grid.Column="1" Grid.Row="24" Padding="0" 
                                  Text="{Binding BlogFile.DownloadPages, Mode=TwoWay, ValidatesOnDataErrors=True}">
-                                <TextBox.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadPages}" />
-                                            <TextBlock xml:space="preserve"
+                            <TextBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadPages}" />
+                                        <TextBlock xml:space="preserve"
                                                    Text="{x:Static p:Resources.ToolTipDownloadPagesDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </TextBox.ToolTip>
-                            </TextBox>
+                                    </StackPanel>
+                                </ToolTip>
+                            </TextBox.ToolTip>
+                        </TextBox>
 
-                            <Label Content="{x:Static p:Resources.PageSize}" Grid.Column="3" Grid.Row="24" Margin="3,0,3,0" Padding="3,0,3,0">
-                                <Label.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipPageSize}" />
-                                            <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipPageSizeDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </Label.ToolTip>
-                            </Label>
+                        <Label Content="{x:Static p:Resources.PageSize}" Grid.Column="3" Grid.Row="24" Margin="3,0,3,0" Padding="3,0,3,0">
+                            <Label.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipPageSize}" />
+                                        <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipPageSizeDescription}" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </Label.ToolTip>
+                        </Label>
 
-                            <TextBox Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="24" Padding="0" 
+                        <TextBox Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="24" Padding="0" 
                                  Text="{Binding BlogFile.PageSize, Mode=TwoWay, ValidatesOnDataErrors=True}">
-                                <TextBox.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipPageSize}" />
-                                            <TextBlock xml:space="preserve"
+                            <TextBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipPageSize}" />
+                                        <TextBlock xml:space="preserve"
                                                    Text="{x:Static p:Resources.ToolTipPageSizeDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </TextBox.ToolTip>
-                            </TextBox>
+                                    </StackPanel>
+                                </ToolTip>
+                            </TextBox.ToolTip>
+                        </TextBox>
 
-                            <Label Content="{x:Static p:Resources.DownloadFrom}" Grid.Column="0" Grid.Row="26" Margin="3,0,3,0" Padding="3,0,3,0">
-                                <Label.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadFrom}" />
-                                            <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipDownloadFromDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </Label.ToolTip>
-                            </Label>
+                        <Label Content="{x:Static p:Resources.DownloadFrom}" Grid.Column="0" Grid.Row="26" Margin="3,0,3,0" Padding="3,0,3,0">
+                            <Label.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadFrom}" />
+                                        <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipDownloadFromDescription}" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </Label.ToolTip>
+                        </Label>
 
-                            <TextBox Grid.Column="1" Grid.Row="26" Padding="0" 
+                        <TextBox Grid.Column="1" Grid.Row="26" Padding="0" 
                                  Text="{Binding BlogFile.DownloadFrom, Mode=TwoWay, ValidatesOnDataErrors=True}">
-                                <TextBox.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadFrom}" />
-                                            <TextBlock xml:space="preserve"
+                            <TextBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadFrom}" />
+                                        <TextBlock xml:space="preserve"
                                                    Text="{x:Static p:Resources.ToolTipDownloadFromDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </TextBox.ToolTip>
-                            </TextBox>
+                                    </StackPanel>
+                                </ToolTip>
+                            </TextBox.ToolTip>
+                        </TextBox>
 
-                            <Label Content="{x:Static p:Resources.DownloadTo}" Grid.Column="3" Grid.Row="26" Margin="3,0,3,0" Padding="3,0,3,0">
-                                <Label.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadTo}" />
-                                            <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipDownloadToDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </Label.ToolTip>
-                            </Label>
+                        <Label Content="{x:Static p:Resources.DownloadTo}" Grid.Column="3" Grid.Row="26" Margin="3,0,3,0" Padding="3,0,3,0">
+                            <Label.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadTo}" />
+                                        <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipDownloadToDescription}" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </Label.ToolTip>
+                        </Label>
 
-                            <TextBox Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="26" Padding="0" 
+                        <TextBox Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="26" Padding="0" 
                                  Text="{Binding BlogFile.DownloadTo, Mode=TwoWay, ValidatesOnDataErrors=True}">
-                                <TextBox.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadTo}" />
-                                            <TextBlock xml:space="preserve"
+                            <TextBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadTo}" />
+                                        <TextBlock xml:space="preserve"
                                                    Text="{x:Static p:Resources.ToolTipDownloadToDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </TextBox.ToolTip>
-                            </TextBox>
+                                    </StackPanel>
+                                </ToolTip>
+                            </TextBox.ToolTip>
+                        </TextBox>
 
-                            <Label Content="{x:Static p:Resources.Password}" Grid.Column="0" Grid.Row="28" Margin="3,0,3,0" Padding="3,0,3,0">
-                                <Label.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipPassword}" />
-                                            <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipPasswordDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </Label.ToolTip>
-                            </Label>
+                        <Label Content="{x:Static p:Resources.Password}" Grid.Column="0" Grid.Row="28" Margin="3,0,3,0" Padding="3,0,3,0">
+                            <Label.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipPassword}" />
+                                        <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipPasswordDescription}" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </Label.ToolTip>
+                        </Label>
 
-                            <TextBox Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="28" Padding="0" 
+                        <TextBox Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="28" Padding="0" 
                                  Text="{Binding BlogFile.Password, Mode=TwoWay, ValidatesOnDataErrors=True}">
-                                <TextBox.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipPassword}" />
-                                            <TextBlock xml:space="preserve"
+                            <TextBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipPassword}" />
+                                        <TextBlock xml:space="preserve"
                                                    Text="{x:Static p:Resources.ToolTipPasswordDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </TextBox.ToolTip>
-                            </TextBox>
+                                    </StackPanel>
+                                </ToolTip>
+                            </TextBox.ToolTip>
+                        </TextBox>
 
-                            <Label Content="{x:Static p:Resources.Tags}" Grid.Column="0" Grid.Row="30" Margin="3,0,3,0" Padding="3,0,3,0">
-                                <Label.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipTags}" />
-                                            <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipTagsDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </Label.ToolTip>
-                            </Label>
+                        <Label Content="{x:Static p:Resources.Tags}" Grid.Column="0" Grid.Row="30" Margin="3,0,3,0" Padding="3,0,3,0">
+                            <Label.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipTags}" />
+                                        <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipTagsDescription}" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </Label.ToolTip>
+                        </Label>
 
-                            <TextBox Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="30" Padding="0" 
+                        <TextBox Grid.Column="1" Grid.ColumnSpan="5" Grid.Row="30" Padding="0" 
                                  Text="{Binding BlogFile.Tags, Mode=TwoWay, ValidatesOnDataErrors=True}">
-                                <TextBox.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipTags}" />
-                                            <TextBlock xml:space="preserve"
+                            <TextBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipTags}" />
+                                        <TextBlock xml:space="preserve"
                                                    Text="{x:Static p:Resources.ToolTipTagsDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </TextBox.ToolTip>
-                            </TextBox>
+                                    </StackPanel>
+                                </ToolTip>
+                            </TextBox.ToolTip>
+                        </TextBox>
 
-                            <Label Content="{x:Static p:Resources.FileDownloadLocation}" Grid.Column="0" Grid.Row="32" Margin="3,0,3,0" Padding="3,0,3,0">
-                                <Label.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipFileDownloadLocation}" />
-                                            <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipFileDownloadLocationDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </Label.ToolTip>
-                            </Label>
+                        <Label Content="{x:Static p:Resources.FileDownloadLocation}" Grid.Column="0" Grid.Row="32" Margin="3,0,3,0" Padding="3,0,3,0">
+                            <Label.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipFileDownloadLocation}" />
+                                        <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipFileDownloadLocationDescription}" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </Label.ToolTip>
+                        </Label>
 
-                            <TextBox Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="32" Padding="0" 
+                        <TextBox Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="32" Padding="0" 
                                 Text="{Binding BlogFile.FileDownloadLocation, Mode=TwoWay, ValidatesOnDataErrors=True}">
-                                <TextBox.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipFileDownloadLocation}" />
-                                            <TextBlock xml:space="preserve"
+                            <TextBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipFileDownloadLocation}" />
+                                        <TextBlock xml:space="preserve"
                                                 Text="{x:Static p:Resources.ToolTipFileDownloadLocationDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </TextBox.ToolTip>
-                            </TextBox>
+                                    </StackPanel>
+                                </ToolTip>
+                            </TextBox.ToolTip>
+                        </TextBox>
 
-                            <Button x:Name="browseFileDownloadLocationButton" Content="{x:Static p:Resources.Browse}"
+                        <Button x:Name="browseFileDownloadLocationButton" Content="{x:Static p:Resources.Browse}"
                     Command="{Binding BrowseFileDownloadLocationCommand}" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="32" Margin="3,0,0,0" Padding="3,0,0,0">
-                                <Button.ToolTip>
-                                    <ToolTip>
-                                        <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipFileDownloadLocation}" />
-                                            <TextBlock xml:space="preserve"
+                            <Button.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipFileDownloadLocation}" />
+                                        <TextBlock xml:space="preserve"
                                                 Text="{x:Static p:Resources.ToolTipFileDownloadLocationDescription}" />
-                                        </StackPanel>
-                                    </ToolTip>
-                                </Button.ToolTip>
-                            </Button>
+                                    </StackPanel>
+                                </ToolTip>
+                            </Button.ToolTip>
+                        </Button>
 
                             <Label Content="{x:Static p:Resources.MetadataFormat}" Grid.Column="0" Grid.Row="34"
-                                  Margin="3,0,0,0" Padding="3,0,0,0">
-                            </Label>
+                                  Margin="3,0,0,0" Padding="3,0,0,0" />
 
                             <ComboBox Grid.Column="1" Grid.Row="34" Padding="5,0,5,0"
                                 ItemsSource="{Binding Source={Extensions:EnumBindingSource {x:Type Models:MetadataType}}}" SelectedValuePath="."
                                 SelectedValue="{Binding BlogFile.MetadataFormat}"
-                                SelectedItem="{Binding BlogFile.MetadataFormat, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                            </ComboBox>
+                                SelectedItem="{Binding BlogFile.MetadataFormat, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
                             <CheckBox Content="{x:Static p:Resources.SkipGif}" IsChecked="{Binding BlogFile.SkipGif, Mode=TwoWay}"
                                   Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="36" Margin="3,0,0,0" Padding="3,0,0,0" />
 
                             <CheckBox Content="{x:Static p:Resources.DownloadRebloggedPosts}"
                                   IsChecked="{Binding BlogFile.DownloadRebloggedPosts, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="38"
-                                  Margin="3,0,0,0" Padding="3,0,0,0">
-                            </CheckBox>
+                                  Margin="3,0,0,0" Padding="3,0,0,0" />
 
                             <!--<CheckBox Content="{x:Static p:Resources.CheckDirectoryForFiles}"
                                   IsChecked="{Binding BlogFile.CheckDirectoryForFiles, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2"
@@ -872,6 +868,16 @@
                                 <RowDefinition Height="{StaticResource Layout.RowSpace}" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
                             </Grid.RowDefinitions>
                             <CheckBox Content="{x:Static p:Resources.DownloadImgur}"
                                   IsChecked="{Binding BlogFile.DownloadImgur, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"
@@ -929,7 +935,6 @@
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
-
                             <ComboBox Grid.Column="3" Grid.Row="4" Padding="5,0,5,0" 
                               ItemsSource="{Binding Source={Extensions:EnumBindingSource {x:Type Models:WebmshareTypes}}}" SelectedValuePath="."
                               SelectedValue="{Binding BlogFile.WebmshareType}"
@@ -940,6 +945,141 @@
                                             <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipWebmshareFiletype}" />
                                             <TextBlock xml:space="preserve"
                                                    Text="{x:Static p:Resources.ToolTipWebmshareFiletypeDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </ComboBox.ToolTip>
+                            </ComboBox>
+                            <CheckBox Content="{x:Static p:Resources.DownloadMixtape}"
+                                      IsChecked="{Binding BlogFile.DownloadMixtape, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="6"
+                                      Margin="3,0,0,0" Padding="3,0,0,0">
+                                <CheckBox.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadMixtape}" />
+                                            <TextBlock xml:space="preserve"
+                                                       Text="{x:Static p:Resources.ToolTipDownloadMixtapeDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                            <ComboBox Grid.Column="3" Grid.Row="6" Padding="5,0,5,0" 
+                                      ItemsSource="{Binding Source={Extensions:EnumBindingSource {x:Type Models:MixtapeTypes}}}" SelectedValuePath="."
+                                      SelectedValue="{Binding BlogFile.MixtapeType}"
+                                      SelectedItem="{Binding BlogFile.MixtapeType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                <ComboBox.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipMixtapeFiletype}" />
+                                            <TextBlock xml:space="preserve"
+                                                       Text="{x:Static p:Resources.ToolTipMixtapeFiletypeDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </ComboBox.ToolTip>
+                            </ComboBox>
+                            <CheckBox Content="{x:Static p:Resources.DownloadUguu}"
+                                      IsChecked="{Binding BlogFile.DownloadUguu, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="8"
+                                      Margin="3,0,0,0" Padding="3,0,0,0">
+                                <CheckBox.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadUguu}" />
+                                            <TextBlock xml:space="preserve"
+                                                       Text="{x:Static p:Resources.ToolTipDownloadUguuDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                            <ComboBox Grid.Column="3" Grid.Row="8" Padding="5,0,5,0" 
+                                      ItemsSource="{Binding Source={Extensions:EnumBindingSource {x:Type Models:UguuTypes}}}" SelectedValuePath="."
+                                      SelectedValue="{Binding BlogFile.UguuType}"
+                                      SelectedItem="{Binding BlogFile.UguuType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                <ComboBox.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipUguuFiletype}" />
+                                            <TextBlock xml:space="preserve"
+                                                       Text="{x:Static p:Resources.ToolTipUguuFiletypeDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </ComboBox.ToolTip>
+                            </ComboBox>
+                            <CheckBox Content="{x:Static p:Resources.DownloadSafeMoe}"
+                                      IsChecked="{Binding BlogFile.DownloadSafeMoe, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="10"
+                                      Margin="3,0,0,0" Padding="3,0,0,0">
+                                <CheckBox.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadSafeMoe}" />
+                                            <TextBlock xml:space="preserve"
+                                                       Text="{x:Static p:Resources.ToolTipDownloadSafeMoeDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                            <ComboBox Grid.Column="3" Grid.Row="10" Padding="5,0,5,0" 
+                                      ItemsSource="{Binding Source={Extensions:EnumBindingSource {x:Type Models:SafeMoeTypes}}}" SelectedValuePath="."
+                                      SelectedValue="{Binding BlogFile.SafeMoeType}"
+                                      SelectedItem="{Binding BlogFile.SafeMoeType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                <ComboBox.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipSafeMoeFiletype}" />
+                                            <TextBlock xml:space="preserve"
+                                                       Text="{x:Static p:Resources.ToolTipSafeMoeFiletypeDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </ComboBox.ToolTip>
+                            </ComboBox>
+                            <CheckBox Content="{x:Static p:Resources.DownloadLoliSafe}"
+                                      IsChecked="{Binding BlogFile.DownloadLoliSafe, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="12"
+                                      Margin="3,0,0,0" Padding="3,0,0,0">
+                                <CheckBox.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadLoliSafe}" />
+                                            <TextBlock xml:space="preserve"
+                                                       Text="{x:Static p:Resources.ToolTipDownloadLoliSafeDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                            <ComboBox Grid.Column="3" Grid.Row="12" Padding="5,0,5,0" 
+                                      ItemsSource="{Binding Source={Extensions:EnumBindingSource {x:Type Models:LoliSafeTypes}}}" SelectedValuePath="."
+                                      SelectedValue="{Binding BlogFile.LoliSafeType}"
+                                      SelectedItem="{Binding BlogFile.LoliSafeType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                <ComboBox.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipLoliSafeFiletype}" />
+                                            <TextBlock xml:space="preserve"
+                                                       Text="{x:Static p:Resources.ToolTipLoliSafeFiletypeDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </ComboBox.ToolTip>
+                            </ComboBox>
+                            <CheckBox Content="{x:Static p:Resources.DownloadCatBox}"
+                                      IsChecked="{Binding BlogFile.DownloadCatBox, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="14"
+                                      Margin="3,0,0,0" Padding="3,0,0,0">
+                                <CheckBox.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadCatBox}" />
+                                            <TextBlock xml:space="preserve"
+                                                       Text="{x:Static p:Resources.ToolTipDownloadCatBoxDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                            <ComboBox Grid.Column="3" Grid.Row="14" Padding="5,0,5,0" 
+                                      ItemsSource="{Binding Source={Extensions:EnumBindingSource {x:Type Models:CatBoxTypes}}}" SelectedValuePath="."
+                                      SelectedValue="{Binding BlogFile.CatBoxType}"
+                                      SelectedItem="{Binding BlogFile.CatBoxType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                <ComboBox.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipCatBoxFiletype}" />
+                                            <TextBlock xml:space="preserve"
+                                                       Text="{x:Static p:Resources.ToolTipCatBoxFiletypeDescription}" />
                                         </StackPanel>
                                     </ToolTip>
                                 </ComboBox.ToolTip>

@@ -43,8 +43,18 @@ namespace TumblThree.Applications.Services
             blog.DownloadImgur = shellService.Settings.DownloadImgur;
             blog.DownloadGfycat = shellService.Settings.DownloadGfycat;
             blog.DownloadWebmshare = shellService.Settings.DownloadWebmshare;
+            blog.DownloadMixtape = shellService.Settings.DownloadMixtape;
+            blog.DownloadUguu = shellService.Settings.DownloadUguu;
+            blog.DownloadSafeMoe = shellService.Settings.DownloadSafeMoe;
+            blog.DownloadLoliSafe = shellService.Settings.DownloadLoliSafe;
+            blog.DownloadCatBox = shellService.Settings.DownloadCatBox;
             blog.GfycatType = shellService.Settings.GfycatType;
             blog.WebmshareType = shellService.Settings.WebmshareType;
+            blog.MixtapeType = shellService.Settings.MixtapeType;
+            blog.UguuType = shellService.Settings.UguuType;
+            blog.SafeMoeType = shellService.Settings.SafeMoeType;
+            blog.LoliSafeType = shellService.Settings.LoliSafeType;
+            blog.CatBoxType = shellService.Settings.CatBoxType;
             blog.DumpCrawlerData = shellService.Settings.DumpCrawlerData;
             return blog;
         }

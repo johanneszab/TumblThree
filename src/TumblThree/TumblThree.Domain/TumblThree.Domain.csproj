@@ -67,6 +67,7 @@
     <Compile Include="Models\Blogs\TumblrLikedByBlog.cs" />
     <Compile Include="Models\Blogs\TumblrSearchBlog.cs" />
     <Compile Include="Models\Blogs\TumblrTagSearchBlog.cs" />
+    <Compile Include="Models\CatboxTypes.cs" />
     <Compile Include="Models\DetailsBlog.cs" />
     <Compile Include="Models\Blogs\Blog.cs" />
     <Compile Include="Models\BlogFactory.cs" />
@@ -83,8 +84,12 @@
     <Compile Include="Models\ICrawlerData.cs" />
     <Compile Include="Models\Files\IFiles.cs" />
     <Compile Include="Models\IUrlValidator.cs" />
+    <Compile Include="Models\LoliSafeTypes.cs" />
     <Compile Include="Models\MetadataType.cs" />
+    <Compile Include="Models\MixtapeTypes.cs" />
     <Compile Include="Models\PostCounter.cs" />
+    <Compile Include="Models\SafeMoeTypes.cs" />
+    <Compile Include="Models\UguuTypes.cs" />
     <Compile Include="Models\UrlValidator.cs" />
     <Compile Include="Models\WebmshareTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

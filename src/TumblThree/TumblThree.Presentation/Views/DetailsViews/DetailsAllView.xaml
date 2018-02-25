@@ -758,22 +758,19 @@
                             </Button>
 
                             <Label Content="{x:Static p:Resources.MetadataFormat}" Grid.Column="0" Grid.Row="34"
-                                  Margin="3,0,0,0" Padding="3,0,0,0">
-                            </Label>
+                                  Margin="3,0,0,0" Padding="3,0,0,0" />
 
                             <ComboBox Grid.Column="1" Grid.Row="34" Padding="5,0,5,0"
                                 ItemsSource="{Binding Source={Extensions:EnumBindingSource {x:Type Models:MetadataType}}}" SelectedValuePath="."
                                 SelectedValue="{Binding BlogFile.MetadataFormat}"
-                                SelectedItem="{Binding BlogFile.MetadataFormat, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                            </ComboBox>
+                                SelectedItem="{Binding BlogFile.MetadataFormat, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
                             <CheckBox Content="{x:Static p:Resources.SkipGif}" IsChecked="{Binding BlogFile.SkipGif, Mode=TwoWay}"
                                   Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="36" Margin="3,0,0,0" Padding="3,0,0,0" />
 
                             <CheckBox Content="{x:Static p:Resources.DownloadRebloggedPosts}"
                                   IsChecked="{Binding BlogFile.DownloadRebloggedPosts, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="38"
-                                  Margin="3,0,0,0" Padding="3,0,0,0">
-                            </CheckBox>
+                                  Margin="3,0,0,0" Padding="3,0,0,0" />
 
                             <!--<CheckBox Content="{x:Static p:Resources.CheckDirectoryForFiles}"
                                   IsChecked="{Binding BlogFile.CheckDirectoryForFiles, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2"
@@ -870,6 +867,16 @@
                                 <RowDefinition Height="{StaticResource Layout.RowSpace}" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="{StaticResource Layout.RowSpace}" />
                             </Grid.RowDefinitions>
                             <CheckBox Content="{x:Static p:Resources.DownloadImgur}"
                                   IsChecked="{Binding BlogFile.DownloadImgur, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"
@@ -927,7 +934,6 @@
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
-
                             <ComboBox Grid.Column="3" Grid.Row="4" Padding="5,0,5,0" 
                               ItemsSource="{Binding Source={Extensions:EnumBindingSource {x:Type Models:WebmshareTypes}}}" SelectedValuePath="."
                               SelectedValue="{Binding BlogFile.WebmshareType}"
@@ -938,6 +944,141 @@
                                             <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipWebmshareFiletype}" />
                                             <TextBlock xml:space="preserve"
                                                    Text="{x:Static p:Resources.ToolTipWebmshareFiletypeDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </ComboBox.ToolTip>
+                            </ComboBox>
+                            <CheckBox Content="{x:Static p:Resources.DownloadMixtape}"
+                                      IsChecked="{Binding BlogFile.DownloadMixtape, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="6"
+                                      Margin="3,0,0,0" Padding="3,0,0,0">
+                                <CheckBox.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadMixtape}" />
+                                            <TextBlock xml:space="preserve"
+                                                       Text="{x:Static p:Resources.ToolTipDownloadMixtapeDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                            <ComboBox Grid.Column="3" Grid.Row="6" Padding="5,0,5,0" 
+                                      ItemsSource="{Binding Source={Extensions:EnumBindingSource {x:Type Models:MixtapeTypes}}}" SelectedValuePath="."
+                                      SelectedValue="{Binding BlogFile.MixtapeType}"
+                                      SelectedItem="{Binding BlogFile.MixtapeType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                <ComboBox.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipMixtapeFiletype}" />
+                                            <TextBlock xml:space="preserve"
+                                                       Text="{x:Static p:Resources.ToolTipMixtapeFiletypeDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </ComboBox.ToolTip>
+                            </ComboBox>
+                            <CheckBox Content="{x:Static p:Resources.DownloadUguu}"
+                                      IsChecked="{Binding BlogFile.DownloadUguu, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="8"
+                                      Margin="3,0,0,0" Padding="3,0,0,0">
+                                <CheckBox.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadUguu}" />
+                                            <TextBlock xml:space="preserve"
+                                                       Text="{x:Static p:Resources.ToolTipDownloadUguuDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                            <ComboBox Grid.Column="3" Grid.Row="8" Padding="5,0,5,0" 
+                                      ItemsSource="{Binding Source={Extensions:EnumBindingSource {x:Type Models:UguuTypes}}}" SelectedValuePath="."
+                                      SelectedValue="{Binding BlogFile.UguuType}"
+                                      SelectedItem="{Binding BlogFile.UguuType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                <ComboBox.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipUguuFiletype}" />
+                                            <TextBlock xml:space="preserve"
+                                                       Text="{x:Static p:Resources.ToolTipUguuFiletypeDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </ComboBox.ToolTip>
+                            </ComboBox>
+                            <CheckBox Content="{x:Static p:Resources.DownloadSafeMoe}"
+                                      IsChecked="{Binding BlogFile.DownloadSafeMoe, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="10"
+                                      Margin="3,0,0,0" Padding="3,0,0,0">
+                                <CheckBox.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadSafeMoe}" />
+                                            <TextBlock xml:space="preserve"
+                                                       Text="{x:Static p:Resources.ToolTipDownloadSafeMoeDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                            <ComboBox Grid.Column="3" Grid.Row="10" Padding="5,0,5,0" 
+                                      ItemsSource="{Binding Source={Extensions:EnumBindingSource {x:Type Models:SafeMoeTypes}}}" SelectedValuePath="."
+                                      SelectedValue="{Binding BlogFile.SafeMoeType}"
+                                      SelectedItem="{Binding BlogFile.SafeMoeType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                <ComboBox.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipSafeMoeFiletype}" />
+                                            <TextBlock xml:space="preserve"
+                                                       Text="{x:Static p:Resources.ToolTipSafeMoeFiletypeDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </ComboBox.ToolTip>
+                            </ComboBox>
+                            <CheckBox Content="{x:Static p:Resources.DownloadLoliSafe}"
+                                      IsChecked="{Binding BlogFile.DownloadLoliSafe, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="12"
+                                      Margin="3,0,0,0" Padding="3,0,0,0">
+                                <CheckBox.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadLoliSafe}" />
+                                            <TextBlock xml:space="preserve"
+                                                       Text="{x:Static p:Resources.ToolTipDownloadLoliSafeDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                            <ComboBox Grid.Column="3" Grid.Row="12" Padding="5,0,5,0" 
+                                      ItemsSource="{Binding Source={Extensions:EnumBindingSource {x:Type Models:LoliSafeTypes}}}" SelectedValuePath="."
+                                      SelectedValue="{Binding BlogFile.LoliSafeType}"
+                                      SelectedItem="{Binding BlogFile.LoliSafeType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                <ComboBox.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipLoliSafeFiletype}" />
+                                            <TextBlock xml:space="preserve"
+                                                       Text="{x:Static p:Resources.ToolTipLoliSafeFiletypeDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </ComboBox.ToolTip>
+                            </ComboBox>
+                            <CheckBox Content="{x:Static p:Resources.DownloadCatBox}"
+                                      IsChecked="{Binding BlogFile.DownloadCatBox, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="14"
+                                      Margin="3,0,0,0" Padding="3,0,0,0">
+                                <CheckBox.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadCatBox}" />
+                                            <TextBlock xml:space="preserve"
+                                                       Text="{x:Static p:Resources.ToolTipDownloadCatBoxDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                            <ComboBox Grid.Column="3" Grid.Row="14" Padding="5,0,5,0" 
+                                      ItemsSource="{Binding Source={Extensions:EnumBindingSource {x:Type Models:CatBoxTypes}}}" SelectedValuePath="."
+                                      SelectedValue="{Binding BlogFile.CatBoxType}"
+                                      SelectedItem="{Binding BlogFile.CatBoxType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                <ComboBox.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipCatBoxFiletype}" />
+                                            <TextBlock xml:space="preserve"
+                                                       Text="{x:Static p:Resources.ToolTipCatBoxFiletypeDescription}" />
                                         </StackPanel>
                                     </ToolTip>
                                 </ComboBox.ToolTip>

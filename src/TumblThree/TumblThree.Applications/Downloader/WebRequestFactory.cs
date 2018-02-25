@@ -122,12 +122,13 @@ namespace TumblThree.Applications.Crawler
         private static HttpWebRequest SetWebRequestProxy(HttpWebRequest request, AppSettings settings)
         {
             if (!string.IsNullOrEmpty(settings.ProxyHost) && !string.IsNullOrEmpty(settings.ProxyPort))
+            {
                 request.Proxy = new WebProxy(settings.ProxyHost, int.Parse(settings.ProxyPort));
-            else
-                request.Proxy = null;
-
+            }
             if (!string.IsNullOrEmpty(settings.ProxyUsername) && !string.IsNullOrEmpty(settings.ProxyPassword))
+            {
                 request.Proxy.Credentials = new NetworkCredential(settings.ProxyUsername, settings.ProxyPassword);
+            }
             return request;
         }
     }

@@ -61,6 +61,15 @@ namespace TumblThree.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to any.
+        /// </summary>
+        public static string any {
+            get {
+                return ResourceManager.GetString("any", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to gif.
         /// </summary>
         public static string gif {

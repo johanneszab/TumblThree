@@ -496,19 +496,19 @@ Since the data is usually small, you should leave this high.</value>
     <value>per time interval (s):</value>
   </data>
   <data name="LimitConnections" xml:space="preserve">
-    <value>Limit Tumblr Svc Host Connections:</value>
+    <value>Limit Tumblr Svc Connections:</value>
   </data>
   <data name="MaxConnections" xml:space="preserve">
     <value>Number of connections:</value>
   </data>
   <data name="ToolTipLimitConnections" xml:space="preserve">
-    <value>Limit connections to the tumblr svc host</value>
+    <value>Limit connections to the tumblr svc.</value>
   </data>
   <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
-    <value>A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr svc host
+    <value>A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr svc.
 A too small value will decrease the scanning speed.
 Set a number/time pair.
-Note: The tumblr svc host is only used for tumblr blog downloads.</value>
+Note: The tumblr svc is only used for regular tumblr blog downloads.</value>
   </data>
   <data name="ForceRescan" xml:space="preserve">
     <value>Force rescan</value>
@@ -778,5 +778,80 @@ Activation will increase the memory usage during operation based on the amount o
   </data>
   <data name="MetadataFormat" xml:space="preserve">
     <value>Metadata format</value>
+  </data>
+  <data name="DownloadCatBox" xml:space="preserve">
+    <value>Download catbox</value>
+  </data>
+  <data name="DownloadLoliSafe" xml:space="preserve">
+    <value>Download lolisafe</value>
+  </data>
+  <data name="DownloadMixtape" xml:space="preserve">
+    <value>Download mixtape</value>
+  </data>
+  <data name="DownloadSafeMoe" xml:space="preserve">
+    <value>Download safemoe</value>
+  </data>
+  <data name="DownloadUguu" xml:space="preserve">
+    <value>Download uguu</value>
+  </data>
+  <data name="ToolTipCatBoxFiletype" xml:space="preserve">
+    <value>File type to download</value>
+  </data>
+  <data name="ToolTipCatBoxFiletypeDescription" xml:space="preserve">
+    <value>Chose which file type you want to download</value>
+  </data>
+  <data name="ToolTipDownloadCatBox" xml:space="preserve">
+    <value>Download linked CatBox files</value>
+  </data>
+  <data name="ToolTipDownloadCatBoxDescription" xml:space="preserve">
+    <value>Download externally hosted CatBox files</value>
+  </data>
+  <data name="ToolTipDownloadLoliSafe" xml:space="preserve">
+    <value>Download linked LoliSafe files</value>
+  </data>
+  <data name="ToolTipDownloadLoliSafeDescription" xml:space="preserve">
+    <value>Download externally hosted LoliSafe files</value>
+  </data>
+  <data name="ToolTipDownloadMixtape" xml:space="preserve">
+    <value>Download linked Mixtape.moe files</value>
+  </data>
+  <data name="ToolTipDownloadMixtapeDescription" xml:space="preserve">
+    <value>Download externally hosted Mixtape.moe files</value>
+  </data>
+  <data name="ToolTipDownloadSafeMoe" xml:space="preserve">
+    <value>Download linked SafeMoe files</value>
+  </data>
+  <data name="ToolTipDownloadSafeMoeDescription" xml:space="preserve">
+    <value>Download externally hosted SafeMoe files</value>
+  </data>
+  <data name="ToolTipDownloadUguu" xml:space="preserve">
+    <value>Download linked Uguu files</value>
+  </data>
+  <data name="ToolTipDownloadUguuDescription" xml:space="preserve">
+    <value>Download externally hosted Uguu files</value>
+  </data>
+  <data name="ToolTipLoliSafeFiletype" xml:space="preserve">
+    <value>File type to download</value>
+  </data>
+  <data name="ToolTipLoliSafeFiletypeDescription" xml:space="preserve">
+    <value>Chose which file type you want to download</value>
+  </data>
+  <data name="ToolTipMixtapeFiletype" xml:space="preserve">
+    <value>File type to download</value>
+  </data>
+  <data name="ToolTipMixtapeFiletypeDescription" xml:space="preserve">
+    <value>Chose which file type you want to download</value>
+  </data>
+  <data name="ToolTipSafeMoeFiletype" xml:space="preserve">
+    <value>File type to download</value>
+  </data>
+  <data name="ToolTipSafeMoeFiletypeDescription" xml:space="preserve">
+    <value>Chose which file type you want to download</value>
+  </data>
+  <data name="ToolTipUguuFiletype" xml:space="preserve">
+    <value>File type to download</value>
+  </data>
+  <data name="ToolTipUguuFiletypeDescription" xml:space="preserve">
+    <value>Chose which file type you want to download</value>
   </data>
 </root>

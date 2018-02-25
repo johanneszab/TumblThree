@@ -234,6 +234,36 @@ namespace TumblThree.Applications.Properties
         public WebmshareTypes WebmshareType { get; set; }
 
         [DataMember]
+        public bool DownloadMixtape { get; set; }
+
+        [DataMember]
+        public MixtapeTypes MixtapeType { get; set; }
+
+        [DataMember]
+        public bool DownloadUguu { get; set; }
+
+        [DataMember]
+        public UguuTypes UguuType { get; set; }
+
+        [DataMember]
+        public bool DownloadSafeMoe { get; set; }
+
+        [DataMember]
+        public SafeMoeTypes SafeMoeType { get; set; }
+
+        [DataMember]
+        public bool DownloadLoliSafe { get; set; }
+
+        [DataMember]
+        public LoliSafeTypes LoliSafeType { get; set; }
+
+        [DataMember]
+        public bool DownloadCatBox { get; set; }
+
+        [DataMember]
+        public CatBoxTypes CatBoxType { get; set; }
+
+        [DataMember]
         public bool AutoDownload { get; set; }
 
         [DataMember]

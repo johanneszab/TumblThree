@@ -30,7 +30,7 @@ namespace TumblThree.Domain.Models
         private bool downloadVideo;
         private bool dumpCrawlerData;
         private string fileDownloadLocation;
-        private bool forceRescan = true;
+        private bool forceRescan;
         private bool forceSize;
         private string lastDownloadedPhoto;
         private string lastDownloadedVideo;
@@ -68,8 +68,18 @@ namespace TumblThree.Domain.Models
         private bool downloadGfycat;
         private bool downloadImgur;
         private bool downloadWebmshare;
+        private bool downloadMixtape;
+        private bool downloadUguu;
+        private bool downloadSafeMoe;
+        private bool downloadLoliSafe;
+        private bool downloadCatBox;
         private GfycatTypes gfycatType;
         private WebmshareTypes webmshareType;
+        private MixtapeTypes mixtapeType;
+        private UguuTypes uguuType;
+        private SafeMoeTypes safemoeType;
+        private LoliSafeTypes lolisafeType;
+        private CatBoxTypes catboxType;
         private string downloadPages;
         private int pageSize;
         private string downloadFrom;
@@ -493,6 +503,13 @@ namespace TumblThree.Domain.Models
         }
 
         [DataMember]
+        public bool DownloadImgur
+        {
+            get { return downloadImgur; }
+            set { SetProperty(ref downloadImgur, value); }
+        }
+
+        [DataMember]
         public bool DownloadGfycat
         {
             get { return downloadGfycat; }
@@ -507,13 +524,6 @@ namespace TumblThree.Domain.Models
         }
 
         [DataMember]
-        public bool DownloadImgur
-        {
-            get { return downloadImgur; }
-            set { SetProperty(ref downloadImgur, value); }
-        }
-
-        [DataMember]
         public bool DownloadWebmshare
         {
             get { return downloadWebmshare; }
@@ -525,6 +535,76 @@ namespace TumblThree.Domain.Models
         {
             get { return webmshareType; }
             set { SetProperty(ref webmshareType, value); }
+        }
+
+        [DataMember]
+        public bool DownloadMixtape
+        {
+            get { return downloadMixtape; }
+            set { SetProperty(ref downloadMixtape, value); }
+        }
+
+        [DataMember]
+        public MixtapeTypes MixtapeType
+        {
+            get { return mixtapeType; }
+            set { SetProperty(ref mixtapeType, value); }
+        }
+
+        [DataMember]
+        public bool DownloadUguu
+        {
+            get { return downloadUguu; }
+            set { SetProperty(ref downloadUguu, value); }
+        }
+
+        [DataMember]
+        public UguuTypes UguuType
+        {
+            get { return uguuType; }
+            set { SetProperty(ref uguuType, value); }
+        }
+
+        [DataMember]
+        public bool DownloadSafeMoe
+        {
+            get { return downloadSafeMoe; }
+            set { SetProperty(ref downloadSafeMoe, value); }
+        }
+
+        [DataMember]
+        public SafeMoeTypes SafeMoeType
+        {
+            get { return safemoeType; }
+            set { SetProperty(ref safemoeType, value); }
+        }
+
+        [DataMember]
+        public bool DownloadLoliSafe
+        {
+            get { return downloadLoliSafe; }
+            set { SetProperty(ref downloadLoliSafe, value); }
+        }
+
+        [DataMember]
+        public LoliSafeTypes LoliSafeType
+        {
+            get { return lolisafeType; }
+            set { SetProperty(ref lolisafeType, value); }
+        }
+
+        [DataMember]
+        public bool DownloadCatBox
+        {
+            get { return downloadCatBox; }
+            set { SetProperty(ref downloadCatBox, value); }
+        }
+
+        [DataMember]
+        public CatBoxTypes CatBoxType
+        {
+            get { return catboxType; }
+            set { SetProperty(ref catboxType, value); }
         }
 
         [DataMember]

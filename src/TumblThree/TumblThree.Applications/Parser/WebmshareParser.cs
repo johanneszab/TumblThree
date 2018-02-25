@@ -12,9 +12,9 @@ namespace TumblThree.Applications.Crawler
             return new Regex("(http[A-Za-z0-9_/:.]*webmshare.com/([A-Za-z0-9_]*))");
         }
 
-        public string CreateWebmshareUrl(string webshareId, WebmshareTypes webmshareType)
+        public string CreateWebmshareUrl(string webshareId, string detectedUrl, WebmshareTypes webmshareType)
         {
-            string url;
+            string url = "";
             switch (webmshareType)
             {
                 case WebmshareTypes.Mp4:
@@ -22,6 +22,10 @@ namespace TumblThree.Applications.Crawler
                     break;
                 case WebmshareTypes.Webm:
                     url = @"https://s1.webmshare.com/" + webshareId + ".webm";
+                    break;
+                case WebmshareTypes.Any:
+                    url = detectedUrl;
+
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

@@ -55,7 +55,7 @@ namespace TumblThree.Applications.Crawler
                     IImgurParser imgurParser = GetImgurParser(webRequestFactory, ct);
                     IGfycatParser gfycatParser = GetGfycatParser(webRequestFactory, ct);
                     IPostQueue<TumblrCrawlerData<DataModels.TumblrSvcJson.Post>> jsonSvcQueue = GetJsonQueue<DataModels.TumblrSvcJson.Post>();
-                    return new TumblrBlogCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, managerService, blog, files, postQueue), GetTumblrJsonDownloader(shellService, ct, pt, jsonSvcQueue, crawlerService, blog), GetTumblrSvcJsonToTextParser(blog), imgurParser, gfycatParser, GetWebmshareParser(), postQueue, jsonSvcQueue, blog);
+                    return new TumblrBlogCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, managerService, blog, files, postQueue), GetTumblrJsonDownloader(shellService, ct, pt, jsonSvcQueue, crawlerService, blog), GetTumblrSvcJsonToTextParser(blog), imgurParser, gfycatParser, GetWebmshareParser(), GetMixtapeParser(), GetUguuParser(), GetSafeMoeParser(), GetLoliSafeParser(), GetCatBoxParser(), postQueue, jsonSvcQueue, blog);
                 case BlogTypes.tlb:
                     return new TumblrLikedByCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, managerService, blog, files, postQueue), postQueue, blog);
                 case BlogTypes.tumblrsearch:
@@ -93,6 +93,31 @@ namespace TumblThree.Applications.Crawler
         private IWebmshareParser GetWebmshareParser()
         {
             return new WebmshareParser();
+        }
+
+        private IMixtapeParser GetMixtapeParser()
+        {
+            return new MixtapeParser();
+        }
+
+        private IUguuParser GetUguuParser()
+        {
+            return new UguuParser();
+        }
+
+        private ISafeMoeParser GetSafeMoeParser()
+        {
+            return new SafeMoeParser();
+        }
+
+        private ILoliSafeParser GetLoliSafeParser()
+        {
+            return new LoliSafeParser();
+        }
+
+        private ICatBoxParser GetCatBoxParser()
+        {
+            return new CatBoxParser();
         }
 
         private FileDownloader GetFileDownloader(CancellationToken ct)
