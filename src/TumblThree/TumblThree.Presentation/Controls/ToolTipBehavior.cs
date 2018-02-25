@@ -32,7 +32,7 @@ namespace TumblThree.Presentation.Controls
 
         private static void AutoToolTipPropertyChanged(DependencyObject element, DependencyPropertyChangedEventArgs e)
         {
-            TextBlock textBlock = element as TextBlock;
+            var textBlock = element as TextBlock;
             if (textBlock == null)
             {
                 throw new ArgumentException("The attached property AutoToolTip can only be used with a TextBlock.", nameof(element));
@@ -60,13 +60,13 @@ namespace TumblThree.Presentation.Controls
 
         private static void TextBlockTextChanged(object sender, EventArgs e)
         {
-            TextBlock textBlock = sender as TextBlock;
+            var textBlock = sender as TextBlock;
             ComputeAutoToolTip(textBlock);
         }
 
         private static void TextBlockSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            TextBlock textBlock = sender as TextBlock;
+            var textBlock = sender as TextBlock;
             ComputeAutoToolTip(textBlock);
         }
 

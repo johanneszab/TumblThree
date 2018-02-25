@@ -27,11 +27,17 @@ namespace TumblThree.Applications.Properties
         [DataMember]
         public BlogTypes LastCrawledBlogType { get; set; }
 
-        public IReadOnlyList<string> Names => names;
+        public IReadOnlyList<string> Names
+        {
+            get { return names; }
+        }
 
-	    public IReadOnlyList<BlogTypes> Types => types;
+        public IReadOnlyList<BlogTypes> Types
+        {
+            get { return types; }
+        }
 
-	    ExtensionDataObject IExtensibleDataObject.ExtensionData { get; set; }
+        ExtensionDataObject IExtensibleDataObject.ExtensionData { get; set; }
 
         public void ReplaceAll(IEnumerable<string> newBlogNames, IEnumerable<BlogTypes> newBlogTypes)
         {

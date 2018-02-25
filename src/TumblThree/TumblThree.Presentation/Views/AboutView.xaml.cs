@@ -11,7 +11,7 @@ namespace TumblThree.Presentation.Views
     /// <summary>
     ///     Interaction logic for AboutView.xaml
     /// </summary>
-    [Export(typeof(IAboutView))][PartCreationPolicy(CreationPolicy.NonShared)]
+    [Export(typeof(IAboutView)), PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class AboutView : Window, IAboutView
     {
         private readonly Lazy<AboutViewModel> viewModel;

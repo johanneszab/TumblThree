@@ -17,7 +17,7 @@ namespace System.Waf.Presentation
         public ValidationTracker(DependencyObject owner)
         {
             this.owner = owner;
-            errors = new List<Tuple<object, ValidationError>>();
+            this.errors = new List<Tuple<object, ValidationError>>();
 
             Validation.AddErrorHandler(owner, ErrorChangedHandler);
         }
@@ -55,7 +55,7 @@ namespace System.Waf.Presentation
             }
             else
             {
-                Tuple<object, ValidationError> error = errors.FirstOrDefault(err => (err.Item1 == e.OriginalSource) && (err.Item2 == e.Error));
+                Tuple<object, ValidationError> error = errors.FirstOrDefault(err => err.Item1 == e.OriginalSource && err.Item2 == e.Error);
                 if (error != null) { errors.Remove(error); }
             }
 

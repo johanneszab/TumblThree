@@ -11,13 +11,13 @@ namespace TumblThree.Presentation.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            IEnumerable<string> list = (IEnumerable<string>)value;
+            var list = ((IEnumerable<string>)value);
             return StringListConverter.ToString(list, GetSeparator(parameter));
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            string text = (string)value;
+            var text = (string)value;
             return StringListConverter.FromString(text, GetSeparator(parameter));
         }
 

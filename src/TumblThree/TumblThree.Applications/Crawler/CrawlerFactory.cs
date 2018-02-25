@@ -24,7 +24,7 @@ namespace TumblThree.Applications.Crawler
         [ImportingConstructor]
         internal CrawlerFactory(ShellService shellService, ISharedCookieService cookieService)
         {
-            settings = shellService.Settings;
+            this.settings = shellService.Settings;
             this.cookieService = cookieService;
         }
 
@@ -54,12 +54,10 @@ namespace TumblThree.Applications.Crawler
             {
                 case BlogTypes.tumblr:
                     IPostQueue<TumblrCrawlerData<DataModels.TumblrApiJson.Post>> jsonApiQueue = GetJsonQueue<DataModels.TumblrApiJson.Post>();
-                    return new TumblrBlogCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, 
-	                    crawlerService, managerService, blog, files, postQueue), GetTumblrJsonDownloader(shellService, ct, pt, jsonApiQueue, crawlerService, blog), 
-	                    GetTumblrApiJsonToTextParser(blog), imgurParser, gfycatParser, GetWebmshareParser(), GetMixtapeParser(), GetUguuParser(), GetSafeMoeParser(), GetLoliSafeParser(), GetCatBoxParser(), postQueue, jsonApiQueue, blog);
+                    return new TumblrBlogCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, managerService, blog, files, postQueue), GetTumblrJsonDownloader(shellService, ct, pt, jsonApiQueue, crawlerService, blog), GetTumblrApiJsonToTextParser(blog), imgurParser, gfycatParser, GetWebmshareParser(), GetMixtapeParser(), GetUguuParser(), GetSafeMoeParser(), GetLoliSafeParser(), GetCatBoxParser(), postQueue, jsonApiQueue, blog);
                 case BlogTypes.tmblrpriv:
                     IPostQueue<TumblrCrawlerData<DataModels.TumblrSvcJson.Post>> jsonSvcQueue = GetJsonQueue<DataModels.TumblrSvcJson.Post>();
-                    return new TumblrHiddenCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory ,cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, managerService, blog, files, postQueue), GetTumblrJsonDownloader(shellService, ct, pt, jsonSvcQueue, crawlerService, blog), GetTumblrSvcJsonToTextParser(blog), imgurParser, gfycatParser, GetWebmshareParser(), GetMixtapeParser(), GetUguuParser(), GetSafeMoeParser(), GetLoliSafeParser(), GetCatBoxParser(),postQueue, jsonSvcQueue, blog);
+                    return new TumblrHiddenCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, managerService, blog, files, postQueue), GetTumblrJsonDownloader(shellService, ct, pt, jsonSvcQueue, crawlerService, blog), GetTumblrSvcJsonToTextParser(blog), imgurParser, gfycatParser, GetWebmshareParser(), GetMixtapeParser(), GetUguuParser(), GetSafeMoeParser(), GetLoliSafeParser(), GetCatBoxParser(), postQueue, jsonSvcQueue, blog);
                 case BlogTypes.tlb:
                     return new TumblrLikedByCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, managerService, blog, files, postQueue), postQueue, blog);
                 case BlogTypes.tumblrsearch:
@@ -100,30 +98,31 @@ namespace TumblThree.Applications.Crawler
             return new WebmshareParser();
         }
 
-		private IMixtapeParser GetMixtapeParser()
+        private IMixtapeParser GetMixtapeParser()
         {
             return new MixtapeParser();
         }
 
         private IUguuParser GetUguuParser()
-	    {
-		    return new UguuParser();
-	    }
+        {
+            return new UguuParser();
+        }
 
-	    private ISafeMoeParser GetSafeMoeParser()
-	    {
-		    return new SafeMoeParser();
-	    }
+        private ISafeMoeParser GetSafeMoeParser()
+        {
+            return new SafeMoeParser();
+        }
 
-	    private ILoliSafeParser GetLoliSafeParser()
-	    {
-		    return new LoliSafeParser();
-	    }
+        private ILoliSafeParser GetLoliSafeParser()
+        {
+            return new LoliSafeParser();
+        }
 
-	    private ICatBoxParser GetCatBoxParser()
-	    {
-		    return new CatBoxParser();
-	    }
+        private ICatBoxParser GetCatBoxParser()
+        {
+            return new CatBoxParser();
+        }
+
         private FileDownloader GetFileDownloader(CancellationToken ct)
         {
             return new FileDownloader(settings, ct, cookieService);

@@ -50,7 +50,7 @@ namespace TumblThree.Applications.Parser
 
         private string GetPostAsString(T post)
         {
-            Post postCopy = (Post)post.Clone();
+            var postCopy = (Post)post.Clone();
             postCopy.blog = null;
             postCopy.trail = null;
             postCopy.share_popover_data = null;

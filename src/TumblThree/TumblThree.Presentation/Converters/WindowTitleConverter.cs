@@ -15,7 +15,7 @@ namespace TumblThree.Presentation.Converters
             //var stringList = values.OfType<string>().Where(x => !string.IsNullOrEmpty(x)).ToArray();
             //return string.Join(" - ", stringList);
 
-            ReadOnlyObservableList<QueueListItem> crawlingQueuelistItem = (ReadOnlyObservableList<QueueListItem>)values[0];
+            var crawlingQueuelistItem = (ReadOnlyObservableList<QueueListItem>)values[0];
             if (crawlingQueuelistItem.Count() == 0)
             {
                 return values[1];

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -25,15 +26,13 @@ namespace TumblThree.Applications.Downloader
         protected string ImageSize()
         {
             if (shellService.Settings.ImageSize == "raw")
-            {
-	            return "1280";
-            }
-	        return shellService.Settings.ImageSize;
+                return "1280";
+            return shellService.Settings.ImageSize;
         }
 
         protected string ResizeTumblrImageUrl(string imageUrl)
         {
-            StringBuilder sb = new StringBuilder(imageUrl);
+            var sb = new StringBuilder(imageUrl);
             return sb
                 .Replace("_raw", "_" + ImageSize())
                 .Replace("_1280", "_" + ImageSize())
@@ -58,11 +57,9 @@ namespace TumblThree.Applications.Downloader
 
         protected override async Task<bool> DownloadBinaryPost(TumblrPost downloadItem)
         {
-            string url = Url(downloadItem);
             if (!(downloadItem is PhotoPost))
-            {
-	            return await base.DownloadBinaryPost(downloadItem);
-            }
+                return await base.DownloadBinaryPost(downloadItem);
+            string url = Url(downloadItem);
 
             if (blog.ForceSize)
             {
@@ -73,9 +70,7 @@ namespace TumblThree.Applications.Downloader
             {
                 url = BuildRawImageUrl(url, host);
                 if (await base.DownloadBinaryPost(new PhotoPost(url, downloadItem.Id, downloadItem.Date)))
-                {
-	                return true;
-                }
+                    return true;
             }
             return await base.DownloadBinaryPost(downloadItem);
         }
@@ -91,7 +86,7 @@ namespace TumblThree.Applications.Downloader
             if (shellService.Settings.ImageSize == "raw")
             {
                 string path = new Uri(url).LocalPath.TrimStart('/');
-                Regex imageDimension = new Regex("_\\d+");
+                var imageDimension = new Regex("_\\d+");
                 path = imageDimension.Replace(path, "_raw");
                 return "https://" + host + "/" + path;
             }

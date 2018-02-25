@@ -12,7 +12,7 @@
         /// </summary>
         public static long SaturatedAdd(long a, long b)
         {
-            long naiveSum = unchecked(a + b);
+            var naiveSum = unchecked(a + b);
             if ((a ^ b) < 0 | (a ^ naiveSum) >= 0)
             {
                 // If a and b have different signs or a has the same sign as the result then there was no

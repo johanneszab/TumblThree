@@ -7,6 +7,6 @@ namespace TumblThree.Applications.Parser
 	{
 		Regex GetLoliSafeUrlRegex();
 
-		string CreateLoliSafeUrl(string id, string fullurl,LoliSafeTypes type);
+		string CreateLoliSafeUrl(string id, string detectedUrl, LoliSafeTypes type);
 	}
 }

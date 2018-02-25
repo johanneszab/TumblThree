@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.Composition;
 using System.Waf.Applications;
-using System.Windows.Forms;
 using System.Windows.Input;
 
 using TumblThree.Applications.Services;
@@ -27,11 +26,17 @@ namespace TumblThree.Applications.ViewModels
             browseFileDownloadLocationCommand = new DelegateCommand(BrowseFileDownloadLocation);
         }
 
-        public ICommand CopyUrlCommand => copyUrlCommand;
+        public ICommand CopyUrlCommand
+        {
+            get { return copyUrlCommand; }
+        }
 
-	    public ICommand BrowseFileDownloadLocationCommand => browseFileDownloadLocationCommand;
+        public ICommand BrowseFileDownloadLocationCommand
+        {
+            get { return browseFileDownloadLocationCommand; }
+        }
 
-	    public IBlog BlogFile
+        public IBlog BlogFile
         {
             get { return blogFile; }
             set { SetProperty(ref blogFile, value); }
@@ -52,7 +57,7 @@ namespace TumblThree.Applications.ViewModels
         }
         private void BrowseFileDownloadLocation()
         {
-            FolderBrowserDialog dialog = new System.Windows.Forms.FolderBrowserDialog { SelectedPath = BlogFile.FileDownloadLocation };
+            var dialog = new System.Windows.Forms.FolderBrowserDialog { SelectedPath = BlogFile.FileDownloadLocation };
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 BlogFile.FileDownloadLocation = dialog.SelectedPath;

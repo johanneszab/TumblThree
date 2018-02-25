@@ -10,7 +10,7 @@ namespace TumblThree.Domain.Models
     {
         public static Blog Create(string url, string location)
         {
-            TumblrBlog blog = new TumblrBlog()
+            var blog = new TumblrBlog()
             {
                 Url = ExtractUrl(url),
                 Name = ExtractName(url),

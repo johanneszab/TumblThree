@@ -36,11 +36,11 @@ namespace System.Waf.Applications
             if (originalCollection == null) { throw new ArgumentNullException("originalCollection"); }
             if (factory == null) { throw new ArgumentNullException("factory"); }
 
-            mapping = new List<Tuple<TOriginal, T>>();
+            this.mapping = new List<Tuple<TOriginal, T>>();
             this.originalCollection = originalCollection;
             this.factory = factory;
-            itemComparer = EqualityComparer<T>.Default;
-            originalItemComparer = EqualityComparer<TOriginal>.Default;
+            this.itemComparer = EqualityComparer<T>.Default;
+            this.originalItemComparer = EqualityComparer<TOriginal>.Default;
 
             INotifyCollectionChanged collectionChanged = originalCollection as INotifyCollectionChanged;
             if (collectionChanged != null)
@@ -48,7 +48,7 @@ namespace System.Waf.Applications
                 CollectionChangedEventManager.AddHandler(collectionChanged, OriginalCollectionChanged);
             }
 
-            innerCollection = (ObservableCollection<T>)Items;
+            innerCollection = (ObservableCollection<T>)this.Items;
             foreach (TOriginal item in originalCollection)
             {
                 innerCollection.Add(CreateItem(item));

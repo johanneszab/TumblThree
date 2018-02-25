@@ -48,9 +48,12 @@ namespace TumblThree.Applications.Controllers
             lockObject = new object();
         }
 
-        private CrawlerViewModel CrawlerViewModel => crawlerViewModel.Value;
+        private CrawlerViewModel CrawlerViewModel
+        {
+            get { return crawlerViewModel.Value; }
+        }
 
-	    public QueueManager QueueManager { get; set; }
+        public QueueManager QueueManager { get; set; }
 
         public ICrawlerFactory CrawlerFactory { get; set; }
 
@@ -138,8 +141,8 @@ namespace TumblThree.Applications.Controllers
 
         private async Task Crawl()
         {
-            CancellationTokenSource cancellation = new CancellationTokenSource();
-            PauseTokenSource pause = new PauseTokenSource();
+            var cancellation = new CancellationTokenSource();
+            var pause = new PauseTokenSource();
             crawlerCancellationToken = cancellation;
             crawlerPauseToken = pause;
 
@@ -151,7 +154,7 @@ namespace TumblThree.Applications.Controllers
 
             await crawlerService.DatabasesLoaded.Task;
 
-            for (int i = 0; i < shellService.Settings.ConcurrentBlogs; i++)
+            for (var i = 0; i < shellService.Settings.ConcurrentBlogs; i++)
             {
                 runningTasks.Add(Task.Run(() => RunCrawlerTasks(cancellation.Token, pause.Token)));
             }
@@ -237,7 +240,7 @@ namespace TumblThree.Applications.Controllers
 
         private ProgressThrottler<DataModels.DownloadProgress> SetupThrottledQueueListProgress(QueueListItem queueListItem)
         {
-            Progress<DownloadProgress> progressHandler = new Progress<DataModels.DownloadProgress>(value => { queueListItem.Progress = value.Progress; });
+            var progressHandler = new Progress<DataModels.DownloadProgress>(value => { queueListItem.Progress = value.Progress; });
             return new ProgressThrottler<DataModels.DownloadProgress>(progressHandler, shellService.Settings.ProgessUpdateInterval);
         }
     }

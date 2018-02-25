@@ -7,6 +7,6 @@ namespace TumblThree.Applications.Parser
 	{
 		Regex GetSafeMoeUrlRegex();
 
-		string CreateSafeMoeUrl(string id, string fullurl,SafeMoeTypes type);
+		string CreateSafeMoeUrl(string id, string detectedUrl, SafeMoeTypes type);
 	}
 }

@@ -12,7 +12,7 @@ namespace TumblThree.Presentation.DesignData
     {
         public SampleQueueViewModel() : base(new MockQueueView(), new MockCrawlerService())
         {
-            Blog[] blogFiles = new[]
+            var blogFiles = new[]
             {
                 new Blog
                 {
@@ -42,7 +42,7 @@ namespace TumblThree.Presentation.DesignData
                     TotalCount = 82453,
                 }
             };
-            QueueManager queueManager = new QueueManager();
+            var queueManager = new QueueManager();
             queueManager.AddItems(blogFiles.Select(x => new QueueListItem(x)));
             QueueManager = queueManager;
             ((MockCrawlerService)CrawlerService).SetActiveBlogFiles(blogFiles.ToArray());

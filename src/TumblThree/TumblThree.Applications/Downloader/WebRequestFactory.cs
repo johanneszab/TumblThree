@@ -65,20 +65,20 @@ namespace TumblThree.Applications.Crawler
             HttpWebRequest request = CreateStubReqeust(url);
             request.Method = "HEAD";
             request.AllowAutoRedirect = false;
-            HttpWebResponse response = await request.GetResponseAsync() as HttpWebResponse;
+            var response = await request.GetResponseAsync() as HttpWebResponse;
             response.Close();
-            return response.StatusCode == HttpStatusCode.OK;
+            return (response.StatusCode == HttpStatusCode.OK);
         }
 
         public async Task<string> ReadReqestToEnd(HttpWebRequest request)
         {
-            using (HttpWebResponse response = await request.GetResponseAsync() as HttpWebResponse)
+            using (var response = await request.GetResponseAsync() as HttpWebResponse)
             {
-                using (Stream stream = GetStreamForApiRequest(response.GetResponseStream()))
+                using (var stream = GetStreamForApiRequest(response.GetResponseStream()))
                 {
-                    using (BufferedStream buffer = new BufferedStream(stream))
+                    using (var buffer = new BufferedStream(stream))
                     {
-                        using (StreamReader reader = new StreamReader(buffer))
+                        using (var reader = new StreamReader(buffer))
                         {
                             return reader.ReadToEnd();
                         }
@@ -89,17 +89,15 @@ namespace TumblThree.Applications.Crawler
 
         public Stream GetStreamForApiRequest(Stream stream)
         {
-            if (!settings.LimitScanBandwidth || (settings.Bandwidth == 0))
-            {
-	            return stream;
-            }
-	        return new ThrottledStream(stream, settings.Bandwidth / settings.ConcurrentConnections * 1024);
+            if (!settings.LimitScanBandwidth || settings.Bandwidth == 0)
+                return stream;
+            return new ThrottledStream(stream, (settings.Bandwidth / settings.ConcurrentConnections) * 1024);
 
         }
 
         private HttpWebRequest CreateStubReqeust(string url)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            var request = (HttpWebRequest)WebRequest.Create(url);
             request.ProtocolVersion = HttpVersion.Version11;
             request.UserAgent =
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
@@ -123,13 +121,13 @@ namespace TumblThree.Applications.Crawler
         {
             if (!string.IsNullOrEmpty(settings.ProxyHost) && !string.IsNullOrEmpty(settings.ProxyPort))
             {
-	            request.Proxy = new WebProxy(settings.ProxyHost, int.Parse(settings.ProxyPort));
+                request.Proxy = new WebProxy(settings.ProxyHost, int.Parse(settings.ProxyPort));
             }
-	        if (!string.IsNullOrEmpty(settings.ProxyUsername) && !string.IsNullOrEmpty(settings.ProxyPassword))
-	        {
-		        request.Proxy.Credentials = new NetworkCredential(settings.ProxyUsername, settings.ProxyPassword);
-	        }
-	        return request;
+            if (!string.IsNullOrEmpty(settings.ProxyUsername) && !string.IsNullOrEmpty(settings.ProxyPassword))
+            {
+                request.Proxy.Credentials = new NetworkCredential(settings.ProxyUsername, settings.ProxyPassword);
+            }
+            return request;
         }
     }
 }

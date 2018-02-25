@@ -28,7 +28,7 @@ namespace TumblThree.Applications.Crawler
     {
         private readonly IDownloader downloader;
         private readonly PauseToken pt;
-        private string tumblrKey = string.Empty;
+        private string tumblrKey = String.Empty;
 
         public TumblrSearchCrawler(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress,
             ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService,
@@ -52,7 +52,7 @@ namespace TumblThree.Applications.Crawler
             blog.DuplicatePhotos = DetermineDuplicates<PhotoPost>();
             blog.DuplicateVideos = DetermineDuplicates<VideoPost>();
             blog.DuplicateAudios = DetermineDuplicates<AudioPost>();
-            blog.TotalCount = blog.TotalCount - blog.DuplicatePhotos - blog.DuplicateAudios - blog.DuplicateVideos;
+            blog.TotalCount = (blog.TotalCount - blog.DuplicatePhotos - blog.DuplicateAudios - blog.DuplicateVideos);
 
             CleanCollectedBlogStatistics();
 
@@ -70,8 +70,8 @@ namespace TumblThree.Applications.Crawler
 
         private async Task GetUrlsAsync()
         {
-            SemaphoreSlim semaphoreSlim = new SemaphoreSlim(shellService.Settings.ConcurrentScans);
-            List<Task> trackedTasks = new List<Task>();
+            var semaphoreSlim = new SemaphoreSlim(shellService.Settings.ConcurrentScans);
+            var trackedTasks = new List<Task>();
             await UpdateTumblrKey();
 
             foreach (int crawlerNumber in Enumerable.Range(1, shellService.Settings.ConcurrentScans))
@@ -133,18 +133,18 @@ namespace TumblThree.Applications.Crawler
 
         protected virtual async Task<string> RequestPostAsync(int pageNumber)
         {
-            CancellationTokenRegistration requestRegistration = new CancellationTokenRegistration();
+            var requestRegistration = new CancellationTokenRegistration();
             try
             {
                 string url = "https://www.tumblr.com/search/" + blog.Name + "/post_page/" + pageNumber;
                 string referer = @"https://www.tumblr.com/search/" + blog.Name;
-                Dictionary<string, string> headers = new Dictionary<string, string> { { "X-tumblr-form-key", tumblrKey }, { "DNT", "1" } };
+                var headers = new Dictionary<string, string> { { "X-tumblr-form-key", tumblrKey }, { "DNT", "1" } };
                 HttpWebRequest request = webRequestFactory.CreatePostXhrReqeust(url, referer, headers);
                 cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
                 cookieService.GetUriCookie(request.CookieContainer, new Uri("https://" + blog.Name.Replace("+", "-") + ".tumblr.com"));
                 //Complete requestBody from webbrowser, searching for cars:
                 //q=cars&sort=top&post_view=masonry&blogs_before=8&num_blogs_shown=8&num_posts_shown=20&before=24&blog_page=2&safe_mode=true&post_page=2&filter_nsfw=true&filter_post_type=&next_ad_offset=0&ad_placement_id=0&more_posts=true
-                string requestBody = "q=" + blog.Name + "&sort=top&post_view=masonry&num_posts_shown=" + (pageNumber - 1) * blog.PageSize + "&before=" + (pageNumber - 1) * blog.PageSize + "&safe_mode=false&post_page=" + pageNumber + "&filter_nsfw=false&filter_post_type=&next_ad_offset=0&ad_placement_id=0&more_posts=true";
+                string requestBody = "q=" + blog.Name + "&sort=top&post_view=masonry&num_posts_shown=" + ((pageNumber - 1) * blog.PageSize) + "&before=" + ((pageNumber - 1) * blog.PageSize) + "&safe_mode=false&post_page=" + pageNumber + "&filter_nsfw=false&filter_post_type=&next_ad_offset=0&ad_placement_id=0&more_posts=true";
                 using (Stream postStream = await request.GetRequestStreamAsync())
                 {
                     byte[] postBytes = Encoding.ASCII.GetBytes(requestBody);
@@ -163,7 +163,7 @@ namespace TumblThree.Applications.Crawler
 
         protected virtual async Task<string> RequestGetAsync()
         {
-            CancellationTokenRegistration requestRegistration = new CancellationTokenRegistration();
+            var requestRegistration = new CancellationTokenRegistration();
             try
             {
                 string url = "https://www.tumblr.com/search/" + blog.Name;
@@ -195,7 +195,7 @@ namespace TumblThree.Applications.Crawler
                     pt.WaitWhilePausedWithResponseAsyc().Wait();
                 }
 
-                TumblrSearchJson result = ConvertJsonToClass<TumblrSearchJson>(response);
+                var result = ConvertJsonToClass<TumblrSearchJson>(response);
                 if (string.IsNullOrEmpty(result.response.posts_html))
                 {
                     return;
@@ -214,7 +214,7 @@ namespace TumblThree.Applications.Crawler
 
                 Interlocked.Increment(ref numberOfPagesCrawled);
                 UpdateProgressQueueInformation(Resources.ProgressGetUrlShort, numberOfPagesCrawled);
-                response = await GetSearchPageAsync(crawlerNumber + shellService.Settings.ConcurrentScans);
+                response = await GetSearchPageAsync((crawlerNumber + shellService.Settings.ConcurrentScans));
                 crawlerNumber += shellService.Settings.ConcurrentScans;
             }
         }
@@ -223,15 +223,13 @@ namespace TumblThree.Applications.Crawler
         {
             if (blog.DownloadPhoto)
             {
-                Regex regex = new Regex("src=\"(http[A-Za-z0-9_/:.]*media.tumblr.com[A-Za-z0-9_/:.]*(jpg|png|gif))\"");
+                var regex = new Regex("src=\"(http[A-Za-z0-9_/:.]*media.tumblr.com[A-Za-z0-9_/:.]*(jpg|png|gif))\"");
                 foreach (Match match in regex.Matches(document))
                 {
                     string imageUrl = match.Groups[1].Value;
                     if (imageUrl.Contains("avatar") || imageUrl.Contains("previews"))
-                    {
-	                    continue;
-                    }
-	                if (blog.SkipGif && imageUrl.EndsWith(".gif"))
+                        continue;
+                    if (blog.SkipGif && imageUrl.EndsWith(".gif"))
                     {
                         continue;
                     }
@@ -246,7 +244,7 @@ namespace TumblThree.Applications.Crawler
         {
             if (blog.DownloadVideo)
             {
-                Regex regex = new Regex("src=\"(http[A-Za-z0-9_/:.]*.com/video_file/[A-Za-z0-9_/:.]*)\"");
+                var regex = new Regex("src=\"(http[A-Za-z0-9_/:.]*.com/video_file/[A-Za-z0-9_/:.]*)\"");
                 foreach (Match match in regex.Matches(document))
                 {
                     string videoUrl = match.Groups[1].Value;

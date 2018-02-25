@@ -6,7 +6,7 @@ using System.Text;
 
 namespace TumblThree.Applications.Services
 {
-    [Export(typeof(ISharedCookieService))][Export]
+    [Export(typeof(ISharedCookieService)), Export]
     public class SharedCookieService : ISharedCookieService
     {
         private readonly CookieContainer cookieContainer = new CookieContainer();
@@ -22,7 +22,7 @@ namespace TumblThree.Applications.Services
             IntPtr lpReserved);
 
         [DllImport("wininet.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Auto, SetLastError = true)]
-        private static extern bool InternetSetCookie(
+        static extern bool InternetSetCookie(
             string urlName,
             string cookieName,
             string cookieData);
@@ -55,9 +55,9 @@ namespace TumblThree.Applications.Services
         private static CookieContainer GetUriCookieContainer(Uri uri)
         {
             CookieContainer cookies = new CookieContainer();
-            int datasize = 0;
+            var datasize = 0;
             InternetGetCookieEx(uri.ToString(), null, null, ref datasize, InternetCookieHttponly, IntPtr.Zero);
-            StringBuilder cookieData = new StringBuilder(datasize);
+            var cookieData = new StringBuilder(datasize);
             if (!InternetGetCookieEx(uri.ToString(), null, cookieData, ref datasize, InternetCookieHttponly, IntPtr.Zero))
             {
                 if (datasize < 0)

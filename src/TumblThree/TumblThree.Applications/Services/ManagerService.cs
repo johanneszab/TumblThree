@@ -8,7 +8,7 @@ using TumblThree.Domain.Models;
 
 namespace TumblThree.Applications.Services
 {
-    [Export][Export(typeof(IManagerService))]
+    [Export, Export(typeof(IManagerService))]
     internal class ManagerService : Model, IManagerService
     {
         private readonly ObservableCollection<IBlog> blogFiles;
@@ -23,20 +23,24 @@ namespace TumblThree.Applications.Services
             databases = new List<IFiles>();
         }
 
-        public ObservableCollection<IBlog> BlogFiles => blogFiles;
+        public ObservableCollection<IBlog> BlogFiles
+        {
+            get { return blogFiles; }
+        }
 
-	    public IEnumerable<IFiles> Databases => databases;
+        public IEnumerable<IFiles> Databases
+        {
+            get { return databases; }
+        }
 
-	    public bool CheckIfFileExistsInDB(string url)
+        public bool CheckIfFileExistsInDB(string url)
         {
             lock (checkFilesLock)
             {
                 foreach (IFiles db in databases)
                 {
                     if (db.CheckIfFileExistsInDB(url))
-                    {
-	                    return true;
-                    }
+                        return true;
                 }
                 return false;
             }

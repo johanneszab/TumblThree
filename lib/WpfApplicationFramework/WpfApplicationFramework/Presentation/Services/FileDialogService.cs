@@ -76,7 +76,7 @@ namespace System.Waf.Presentation.Services
             if (dialog.ShowDialog(owner as Window) == true)
             {
                 filterIndex = dialog.FilterIndex - 1;
-                if ((filterIndex >= 0) && (filterIndex < fileTypes.Count()))
+                if (filterIndex >= 0 && filterIndex < fileTypes.Count())
                 {
                     defaultFileType = fileTypes.ElementAt(filterIndex);
                 }
@@ -97,7 +97,7 @@ namespace System.Waf.Presentation.Services
             string filter = "";
             foreach (FileType fileType in fileTypes)
             {
-                if (!string.IsNullOrEmpty(filter)) { filter += "|"; }
+                if (!String.IsNullOrEmpty(filter)) { filter += "|"; }
                 filter += fileType.Description + "|*" + fileType.FileExtension;
             }
             return filter;

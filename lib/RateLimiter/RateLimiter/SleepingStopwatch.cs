@@ -32,7 +32,7 @@ namespace Guava.RateLimiter
         public void SleepMicrosUninterruptibly(long micros)
         {
             //converting microseconds to ticks
-            long expectedTicks = _stopwatch.ElapsedTicks + micros * Stopwatch.Frequency / 1000000;//frequency = N of ticks per 1 second
+            var expectedTicks = _stopwatch.ElapsedTicks + micros * Stopwatch.Frequency / 1000000;//frequency = N of ticks per 1 second
 
             if (micros > 40000 || !Stopwatch.IsHighResolution)//32ms is the precision of DateTime which is used inside SpinUntil
             {

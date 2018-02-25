@@ -30,7 +30,7 @@ namespace TumblThree.Applications.Services
 
         private HttpWebRequest CreateWebReqeust(string url)
         {
-            HttpWebRequest request =
+            var request =
                 WebRequest.Create(url)
                     as HttpWebRequest;
             request.Method = "GET";
@@ -58,11 +58,11 @@ namespace TumblThree.Applications.Services
             downloadLink = null;
             try
             {
-                HttpWebRequest request = CreateWebReqeust(@"https://api.github.com/repos/johanneszab/tumblthree/releases/latest");
+                var request = CreateWebReqeust(@"https://api.github.com/repos/johanneszab/tumblthree/releases/latest");
                 string result;
-                using (HttpWebResponse resp = await request.GetResponseAsync() as HttpWebResponse)
+                using (var resp = await request.GetResponseAsync() as HttpWebResponse)
                 {
-                    StreamReader reader =
+                    var reader =
                         new StreamReader(resp.GetResponseStream());
                     result = reader.ReadToEnd();
                 }
@@ -84,7 +84,7 @@ namespace TumblThree.Applications.Services
         {
             try
             {
-                Version newVersion = new Version(version.Substring(1));
+                var newVersion = new Version(version.Substring(1));
                 if (newVersion > new Version(ApplicationInfo.Version))
                 {
                     return true;

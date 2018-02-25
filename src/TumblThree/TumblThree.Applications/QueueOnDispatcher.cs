@@ -23,7 +23,7 @@ namespace TumblThree.Applications
         {
             if (UIDispatcher == null)
             {
-                StringBuilder error = new StringBuilder("The DispatcherHelper is not initialized.");
+                var error = new StringBuilder("The DispatcherHelper is not initialized.");
                 error.AppendLine();
                 error.Append("Call DispatcherHelper.Initialize() in the static App constructor.");
                 throw new InvalidOperationException(error.ToString());
@@ -84,7 +84,7 @@ namespace TumblThree.Applications
         /// </summary>
         public static void Initialize()
         {
-            if ((UIDispatcher != null)
+            if (UIDispatcher != null
                 && UIDispatcher.Thread.IsAlive)
             {
                 return;

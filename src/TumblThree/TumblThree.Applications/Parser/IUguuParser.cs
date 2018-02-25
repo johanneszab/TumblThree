@@ -7,6 +7,6 @@ namespace TumblThree.Applications.Parser
 	{
 		Regex GetUguuUrlRegex();
 
-		string CreateUguuUrl(string uguuId, string fullurl, UguuTypes uguuType);
+		string CreateUguuUrl(string uguuId, string detectedUrl, UguuTypes uguuType);
 	}
 }

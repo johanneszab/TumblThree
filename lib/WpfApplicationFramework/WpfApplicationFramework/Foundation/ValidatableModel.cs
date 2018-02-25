@@ -26,7 +26,7 @@ namespace System.Waf.Foundation
         /// </summary>
         protected ValidatableModel()
         {
-            errors = new Dictionary<string, List<ValidationResult>>();
+            this.errors = new Dictionary<string, List<ValidationResult>>();
         }
 
 
@@ -64,7 +64,7 @@ namespace System.Waf.Foundation
         /// <returns>The validation errors for the property or entity.</returns>
         public IEnumerable<ValidationResult> GetErrors(string propertyName)
         {
-	        if (!string.IsNullOrEmpty(propertyName))
+            if (!string.IsNullOrEmpty(propertyName))
             {
                 List<ValidationResult> result;
                 if (errors.TryGetValue(propertyName, out result))
@@ -73,8 +73,10 @@ namespace System.Waf.Foundation
                 }
                 return noErrors;
             }
-
-	        return errors.Values.SelectMany(x => x).Distinct().ToArray();
+            else
+            {
+                return errors.Values.SelectMany(x => x).Distinct().ToArray();
+            }
         }
         
         IEnumerable INotifyDataErrorInfo.GetErrors(string propertyName)
@@ -94,9 +96,9 @@ namespace System.Waf.Foundation
             if (validationResults.Any())
             {
                 errors.Clear();
-                foreach (ValidationResult validationResult in validationResults)
+                foreach (var validationResult in validationResults)
                 {
-                    IEnumerable<string> propertyNames = validationResult.MemberNames.Any() ? validationResult.MemberNames : new string[] { "" };
+                    var propertyNames = validationResult.MemberNames.Any() ? validationResult.MemberNames : new string[] { "" };
                     foreach (string propertyName in propertyNames)
                     {
                         if (!errors.ContainsKey(propertyName))
@@ -112,13 +114,15 @@ namespace System.Waf.Foundation
                 RaiseErrorsChanged();
                 return false;
             }
-
-	        if (errors.Any())
-	        {
-		        errors.Clear();
-		        RaiseErrorsChanged();
-	        }
-	        return true;
+            else
+            {
+                if (errors.Any())
+                {
+                    errors.Clear();
+                    RaiseErrorsChanged();
+                }
+            }
+            return true;
         }
 
         /// <summary>
@@ -165,12 +169,14 @@ namespace System.Waf.Foundation
                 RaiseErrorsChanged(propertyName);
                 return false;
             }
-
-	        if (errors.Remove(propertyName))
-	        {
-		        RaiseErrorsChanged(propertyName);
-	        }
-	        return true;
+            else
+            {
+                if (errors.Remove(propertyName))
+                {
+                    RaiseErrorsChanged(propertyName);
+                }
+            }
+            return true;
         }
 
         /// <summary>
@@ -180,7 +186,10 @@ namespace System.Waf.Foundation
         protected virtual void OnErrorsChanged(DataErrorsChangedEventArgs e)
         {
             EventHandler<DataErrorsChangedEventArgs> handler = ErrorsChanged;
-	        handler?.Invoke(this, e);
+            if (handler != null)
+            {
+                handler(this, e);
+            }
         }
 
         private void RaiseErrorsChanged(string propertyName = "")

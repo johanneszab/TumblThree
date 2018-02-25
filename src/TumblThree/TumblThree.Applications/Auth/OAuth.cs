@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace TumblThree.Applications.Auth
 {
@@ -206,8 +203,8 @@ namespace TumblThree.Applications.Auth
         /// <returns>the nonce</returns>
         private string GenerateNonce()
         {
-            StringBuilder sb = new System.Text.StringBuilder();
-            for (int i = 0; i < 8; i++)
+            var sb = new System.Text.StringBuilder();
+            for (var i = 0; i < 8; i++)
             {
                 int g = _random.Next(3);
                 switch (g)
@@ -250,7 +247,7 @@ namespace TumblThree.Applications.Auth
                 queryString = queryString.Remove(0, 1);
             }
 
-            Dictionary<string, string> result = new Dictionary<string, string>();
+            var result = new Dictionary<string, string>();
 
             if (string.IsNullOrEmpty(queryString))
             {
@@ -287,7 +284,7 @@ namespace TumblThree.Applications.Auth
         /// <returns>the Url-encoded version of that string</returns>
         public static string UrlEncode(string value)
         {
-            StringBuilder result = new System.Text.StringBuilder();
+            var result = new System.Text.StringBuilder();
             foreach (char symbol in value)
             {
                 if (unreservedChars.IndexOf(symbol) != -1)
@@ -326,7 +323,7 @@ namespace TumblThree.Applications.Auth
         /// <returns>a string representing the parameters</returns>
         private static string EncodeRequestParameters(ICollection<KeyValuePair<string, string>> p)
         {
-            StringBuilder sb = new System.Text.StringBuilder();
+            var sb = new System.Text.StringBuilder();
             foreach (KeyValuePair<string, string> item in p.OrderBy(x => x.Key))
             {
                 if (!string.IsNullOrEmpty(item.Value) &&
@@ -386,15 +383,15 @@ namespace TumblThree.Applications.Auth
             NewRequest();
             string authHeader = GetAuthorizationHeader(uri, method);
             // prepare the token request
-            HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(uri);
+            var request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(uri);
             request.Headers.Add("Authorization", authHeader);
             request.Method = method;
 
-            using (HttpWebResponse response = (System.Net.HttpWebResponse)request.GetResponse())
+            using (var response = (System.Net.HttpWebResponse)request.GetResponse())
             {
-                using (StreamReader reader = new System.IO.StreamReader(response.GetResponseStream()))
+                using (var reader = new System.IO.StreamReader(response.GetResponseStream()))
                 {
-                    OAuthResponse r = new OAuthResponse(reader.ReadToEnd());
+                    var r = new OAuthResponse(reader.ReadToEnd());
                     this["token"] = r["oauth_token"];
 
                     // Sometimes the request_token URL gives us an access token,
@@ -457,15 +454,15 @@ namespace TumblThree.Applications.Auth
             string authHeader = GetAuthorizationHeader(uri, method);
 
             // prepare the token request
-            HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(uri);
+            var request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(uri);
             request.Headers.Add("Authorization", authHeader);
             request.Method = method;
 
-            using (HttpWebResponse response = (System.Net.HttpWebResponse)request.GetResponse())
+            using (var response = (System.Net.HttpWebResponse)request.GetResponse())
             {
-                using (StreamReader reader = new System.IO.StreamReader(response.GetResponseStream()))
+                using (var reader = new System.IO.StreamReader(response.GetResponseStream()))
                 {
-                    OAuthResponse r = new OAuthResponse(reader.ReadToEnd());
+                    var r = new OAuthResponse(reader.ReadToEnd());
                     this["token"] = r["oauth_token"];
                     this["token_secret"] = r["oauth_token_secret"];
                     return r;
@@ -510,7 +507,7 @@ namespace TumblThree.Applications.Auth
             Sign(uri, method);
 
             string erp = EncodeRequestParameters(_params);
-            return string.IsNullOrEmpty(realm)
+            return (string.IsNullOrEmpty(realm))
                 ? "OAuth " + erp
                 : string.Format("OAuth realm=\"{0}\", ", realm) + erp;
         }
@@ -533,10 +530,10 @@ namespace TumblThree.Applications.Auth
         private string GetSignatureBase(string url, string method)
         {
             // normalize the URI
-            Uri uri = new Uri(url);
+            var uri = new Uri(url);
             string normUrl = string.Format("{0}://{1}", uri.Scheme, uri.Host);
-            if (!(((uri.Scheme == "http") && (uri.Port == 80)) ||
-                  ((uri.Scheme == "https") && (uri.Port == 443))))
+            if (!((uri.Scheme == "http" && uri.Port == 80) ||
+                  (uri.Scheme == "https" && uri.Port == 443)))
             {
                 normUrl += ":" + uri.Port;
             }
@@ -544,7 +541,7 @@ namespace TumblThree.Applications.Auth
             normUrl += uri.AbsolutePath;
 
             // the sigbase starts with the method and the encoded URI
-            StringBuilder sb = new System.Text.StringBuilder();
+            var sb = new System.Text.StringBuilder();
             sb.Append(method)
               .Append('&')
               .Append(UrlEncode(normUrl))
@@ -569,7 +566,7 @@ namespace TumblThree.Applications.Auth
             }
 
             // concat+format all those params
-            StringBuilder sb1 = new System.Text.StringBuilder();
+            var sb1 = new System.Text.StringBuilder();
             foreach (KeyValuePair<string, string> item in p.OrderBy(x => x.Key))
             {
                 // even "empty" params need to be encoded this way.
@@ -592,7 +589,7 @@ namespace TumblThree.Applications.Auth
             string keystring = string.Format("{0}&{1}",
                 UrlEncode(this["consumer_secret"]),
                 UrlEncode(this["token_secret"]));
-            HMACSHA1 hmacsha1 = new HMACSHA1
+            var hmacsha1 = new HMACSHA1
             {
                 Key = System.Text.Encoding.ASCII.GetBytes(keystring)
             };
@@ -630,6 +627,9 @@ namespace TumblThree.Applications.Auth
         /// <summary>
         ///     a Dictionary of response parameters.
         /// </summary>
-        public string this[string ix] => _params[ix];
+        public string this[string ix]
+        {
+            get { return _params[ix]; }
+        }
     }
 }

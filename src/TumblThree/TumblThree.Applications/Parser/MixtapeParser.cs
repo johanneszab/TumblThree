@@ -12,7 +12,7 @@ namespace TumblThree.Applications.Crawler
             return new Regex("(http[A-Za-z0-9_/:.]*mixtape.moe/(.*))");
         }
 
-        public string CreateMixtapeUrl(string mixtapeId, string fullurl, MixtapeTypes mixtapeType)
+        public string CreateMixtapeUrl(string mixtapeId, string detectedUrl, MixtapeTypes mixtapeType)
         {
             string url;
             switch (mixtapeType)
@@ -24,7 +24,7 @@ namespace TumblThree.Applications.Crawler
                     url = @"https://my.mixtape.moe/" + mixtapeId + ".webm";
                     break;
 	            case MixtapeTypes.Any:
-		            url = fullurl;
+		            url = detectedUrl;
 
 		            break;
                 default:

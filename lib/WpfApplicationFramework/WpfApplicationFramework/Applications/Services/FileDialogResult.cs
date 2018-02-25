@@ -33,7 +33,7 @@
         /// Gets a value indicating whether this instance contains valid data. This property returns <c>false</c>
         /// when the user canceled the file dialog box.
         /// </summary>
-        public bool IsValid { get { return (FileName != null) && (SelectedFileType != null); } }
+        public bool IsValid { get { return FileName != null && SelectedFileType != null; } }
 
         /// <summary>
         /// Gets the filename entered by the user or <c>null</c> when the user canceled the dialog box.

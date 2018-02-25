@@ -42,7 +42,7 @@ namespace TumblThree.Applications.Crawler
 
         public virtual async Task<string> RequestImgurAlbumSite(string imgurAlbumUrl)
         {
-            CancellationTokenRegistration requestRegistration = new CancellationTokenRegistration();
+            var requestRegistration = new CancellationTokenRegistration();
             try
             {
                 HttpWebRequest request = webRequestFactory.CreateGetReqeust(imgurAlbumUrl);

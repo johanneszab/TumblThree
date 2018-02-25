@@ -7,8 +7,8 @@ namespace TumblThree.Domain.Attributes
 {
     public class LocalizedDescriptionAttribute : DescriptionAttribute
     {
-	    private ResourceManager _resourceManager;
-	    private string _resourceKey;
+        ResourceManager _resourceManager;
+        string _resourceKey;
 
         public LocalizedDescriptionAttribute(string resourceKey, Type resourceType)
         {

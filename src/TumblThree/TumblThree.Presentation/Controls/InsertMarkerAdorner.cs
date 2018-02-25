@@ -41,7 +41,7 @@ namespace TumblThree.Presentation.Controls
             base.OnRender(drawingContext);
             if (item != null)
             {
-                Rect itemRect = new Rect(item.RenderSize);
+                var itemRect = new Rect(item.RenderSize);
                 Point startPoint;
                 Point endPoint;
                 if (!showMarkerAfterItem)

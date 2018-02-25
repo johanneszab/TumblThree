@@ -61,7 +61,7 @@ namespace TumblThree.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to *.*.
+        ///   Looks up a localized string similar to any.
         /// </summary>
         public static string any {
             get {
@@ -122,8 +122,7 @@ namespace TumblThree.Domain.Properties {
                 return ResourceManager.GetString("mp4", resourceCulture);
             }
         }
- 
-	      
+        
         /// <summary>
         ///   Looks up a localized string similar to poster.
         /// </summary>

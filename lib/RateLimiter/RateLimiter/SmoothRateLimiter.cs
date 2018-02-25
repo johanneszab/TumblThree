@@ -197,8 +197,8 @@ namespace Guava.RateLimiter
 
             protected override void DoSetRate(double permitsPerSecond, double stableIntervalMicros)
             {
-                double oldMaxPermits = _maxPermits;
-                double coldIntervalMicros = stableIntervalMicros * _coldFactor;
+                var oldMaxPermits = _maxPermits;
+                var coldIntervalMicros = stableIntervalMicros * _coldFactor;
                 _thresholdPermits = 0.5 * _warmupPeriodMicros / stableIntervalMicros;
                 _maxPermits = _thresholdPermits + 2.0 * _warmupPeriodMicros / (stableIntervalMicros + coldIntervalMicros);
                 _slope = (coldIntervalMicros - stableIntervalMicros) / (_maxPermits - _thresholdPermits);
@@ -218,8 +218,8 @@ namespace Guava.RateLimiter
 
             protected override long StoredPermitsToWaitTime(double storedPermits, double permitsToTake)
             {
-                double availablePermitsAboveThreshold = storedPermits - _thresholdPermits;
-                long micros = 0L;
+                var availablePermitsAboveThreshold = storedPermits - _thresholdPermits;
+                var micros = 0L;
 
                 // measuring the integral on the right part of the function (the climbing line)
                 if (availablePermitsAboveThreshold > 0.0)
@@ -270,7 +270,7 @@ namespace Guava.RateLimiter
 
             protected override void DoSetRate(double permitsPerSecond, double stableIntervalMicros)
             {
-                double oldMaxPermits = _maxPermits;
+                var oldMaxPermits = _maxPermits;
                 _maxPermits = _maxBurstSeconds * permitsPerSecond;
                 if (double.IsPositiveInfinity(oldMaxPermits))
                 {
@@ -324,7 +324,7 @@ namespace Guava.RateLimiter
         protected sealed override void DoSetRate(double permitsPerSecond, long nowMicros)
         {
             Resync(nowMicros);
-            double stableIntervalMicros = TimeUnit.Seconds.ToMicros(1L) / permitsPerSecond;
+            var stableIntervalMicros = TimeUnit.Seconds.ToMicros(1L) / permitsPerSecond;
             _stableIntervalMicros = stableIntervalMicros;
             DoSetRate(permitsPerSecond, stableIntervalMicros);
         }
@@ -344,10 +344,10 @@ namespace Guava.RateLimiter
         protected sealed override long ReserveEarliestAvailable(int requiredPermits, long nowMicros)
         {
             Resync(nowMicros);
-            long returnValue = _nextFreeTicketMicros;
-            double storedPermitsToSpend = Math.Min(requiredPermits, _storedPermits);
-            double freshPermits = requiredPermits - storedPermitsToSpend;
-            long waitMicros = StoredPermitsToWaitTime(_storedPermits, storedPermitsToSpend)
+            var returnValue = _nextFreeTicketMicros;
+            var storedPermitsToSpend = Math.Min(requiredPermits, _storedPermits);
+            var freshPermits = requiredPermits - storedPermitsToSpend;
+            var waitMicros = StoredPermitsToWaitTime(_storedPermits, storedPermitsToSpend)
                               + (long)(freshPermits * _stableIntervalMicros);
 
             _nextFreeTicketMicros = LongMath.SaturatedAdd(_nextFreeTicketMicros, waitMicros);

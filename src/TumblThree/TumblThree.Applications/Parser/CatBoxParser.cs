@@ -12,7 +12,7 @@ namespace TumblThree.Applications.Parser
 			return new Regex("(http[A-Za-z0-9_/:.]*files.catbox.moe/(.*))");
 		}
 
-		public string CreateCatBoxUrl(string id, string fullurl, CatBoxTypes type)
+		public string CreateCatBoxUrl(string id, string detectedUrl, CatBoxTypes type)
 		{
 			string url;
 			switch ( type)
@@ -24,7 +24,7 @@ namespace TumblThree.Applications.Parser
 					url = @"https://files.catbox.moe/" +  id + ".webm";
 					break;
 				case CatBoxTypes.Any:
-					url = fullurl;
+					url = detectedUrl;
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();

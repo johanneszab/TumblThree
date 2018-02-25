@@ -2,7 +2,7 @@
 
 namespace TumblThree.Applications.Crawler
 {
-	internal interface ITumblrBlogDetector
+    interface ITumblrBlogDetector
     {
         Task<bool> IsHiddenTumblrBlog(string url);
 

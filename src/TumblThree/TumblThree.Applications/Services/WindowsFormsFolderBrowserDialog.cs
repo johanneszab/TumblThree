@@ -41,34 +41,28 @@ namespace TumblThree.Applications.Services
 
         public bool? ShowDialog()
         {
-            using (FolderBrowserDialog dialog = CreateDialog())
+            using (var dialog = CreateDialog())
             {
-                bool result = dialog.ShowDialog() == DialogResult.OK;
-                if (result)
-                {
-	                SelectedPath = dialog.SelectedPath;
-                }
-	            return result;
+                var result = dialog.ShowDialog() == DialogResult.OK;
+                if (result) SelectedPath = dialog.SelectedPath;
+                return result;
             }
         }
 
         public bool? ShowDialog(Window owner)
         {
-            using (FolderBrowserDialog dialog = CreateDialog())
+            using (var dialog = CreateDialog())
             {
-                bool result = dialog.ShowDialog(owner.AsWin32Window()) == DialogResult.OK;
-                if (result)
-                {
-	                SelectedPath = dialog.SelectedPath;
-                }
-	            return result;
+                var result = dialog.ShowDialog(owner.AsWin32Window()) == DialogResult.OK;
+                if (result) SelectedPath = dialog.SelectedPath;
+                return result;
             }
         }
         #endregion
 
         private FolderBrowserDialog CreateDialog()
         {
-            FolderBrowserDialog dialog = new FolderBrowserDialog();
+            var dialog = new FolderBrowserDialog();
             dialog.Description = Description;
             dialog.RootFolder = RootFolder;
             dialog.SelectedPath = SelectedPath;

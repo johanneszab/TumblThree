@@ -49,7 +49,7 @@ namespace TumblThree.Presentation.Views
         {
             get
             {
-                Dictionary<object, Tuple<int, double, Visibility>> columnSettings = new Dictionary<object, Tuple<int, double, Visibility>>();
+                var columnSettings = new Dictionary<object, Tuple<int, double, Visibility>>();
                 foreach (DataGridColumn column in blogFilesGrid.Columns)
                 {
                     columnSettings.Add(column.Header, Tuple.Create(column.DisplayIndex, column.Width.Value, column.Visibility));
@@ -76,7 +76,7 @@ namespace TumblThree.Presentation.Views
 
         private void BlogFilesGridSorting(object sender, DataGridSortingEventArgs e)
         {
-            ListCollectionView collectionView = CollectionViewSource.GetDefaultView(blogFilesGrid.ItemsSource) as ListCollectionView;
+            var collectionView = CollectionViewSource.GetDefaultView(blogFilesGrid.ItemsSource) as ListCollectionView;
             if (collectionView == null)
             {
                 return;
@@ -100,23 +100,19 @@ namespace TumblThree.Presentation.Views
         private void DataGridRowMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (ViewModel.CrawlerService.EnqueueSelectedCommand.CanExecute(null))
-            {
-	            ViewModel.CrawlerService.EnqueueSelectedCommand.Execute(null);
-            }
+                ViewModel.CrawlerService.EnqueueSelectedCommand.Execute(null);
         }
 
         private void DataGridRowMouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                DataGridRow draggedItem = (DataGridRow)sender;
+                var draggedItem = (DataGridRow)sender;
 
                 if (draggedItem.IsEditing)
-                {
-	                return;
-                }
+                    return;
 
-	            List<QueueListItem> items = blogFilesGrid.ItemsSource.Cast<IBlog>().Select(x => new QueueListItem(x)).ToList();
+                List<QueueListItem> items = blogFilesGrid.ItemsSource.Cast<IBlog>().Select(x => new QueueListItem(x)).ToList();
                 IEnumerable<QueueListItem> selectedItems = blogFilesGrid.SelectedItems
                     .Cast<IBlog>()
                     .OrderBy(x => items.IndexOf(new QueueListItem(x)))

@@ -22,7 +22,7 @@ namespace System.Waf.Presentation.Services
         {
             get
             {
-                return CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft ? MessageBoxOptions.RtlReading : MessageBoxOptions.None;
+                return (CultureInfo.CurrentUICulture.TextInfo.IsRightToLeft) ? MessageBoxOptions.RtlReading : MessageBoxOptions.None;
             }
         }
 

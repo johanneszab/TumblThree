@@ -6,7 +6,7 @@ namespace TumblThree.Applications
 {
     public class ClipboardMonitor : IDisposable
     {
-	    private bool disposed;
+        bool disposed = false;
 
         private readonly HwndSource hwndSource = new HwndSource(0, 0, 0, 0, 0, 0, 0, null, NativeMethods.HWND_MESSAGE);
 

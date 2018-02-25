@@ -10,7 +10,7 @@ namespace TumblThree.Domain.Models
     {
         public static Blog Create(string url, string location)
         {
-            TumblrHiddenBlog blog = new TumblrHiddenBlog()
+            var blog = new TumblrHiddenBlog()
             {
                 Url = ExtractUrl(url),
                 Name = ExtractName(url),
@@ -34,12 +34,12 @@ namespace TumblThree.Domain.Models
             return blog;
         }
 
-        protected new static string ExtractName(string url)
+        protected static new string ExtractName(string url)
         {
             return url.Split('/')[5];
         }
 
-        protected new static string ExtractUrl(string url)
+        protected static new string ExtractUrl(string url)
         {
             return "https://" + ExtractName(url) + ".tumblr.com/";
         }

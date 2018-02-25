@@ -12,7 +12,7 @@ using TumblThree.Applications.Views;
 
 namespace TumblThree.Applications.Services
 {
-    [Export(typeof(IShellService))][Export]
+    [Export(typeof(IShellService)), Export]
     internal class ShellService : Model, IShellService
     {
         private readonly List<ApplicationBusyContext> applicationBusyContext;
@@ -61,9 +61,12 @@ namespace TumblThree.Applications.Services
 
         public AppSettings Settings { get; set; }
 
-        public object ShellView => shellView.Value;
+        public object ShellView
+        {
+            get { return shellView.Value; }
+        }
 
-	    public object ContentView
+        public object ContentView
         {
             get { return contentView; }
             set { SetProperty(ref contentView, value); }
@@ -87,9 +90,12 @@ namespace TumblThree.Applications.Services
             set { SetProperty(ref crawlerView, value); }
         }
 
-        public IReadOnlyCollection<Task> TasksToCompleteBeforeShutdown => tasksToCompleteBeforeShutdown;
+        public IReadOnlyCollection<Task> TasksToCompleteBeforeShutdown
+        {
+            get { return tasksToCompleteBeforeShutdown; }
+        }
 
-	    public bool IsApplicationBusy
+        public bool IsApplicationBusy
         {
             get { return isApplicationBusy; }
             private set { SetProperty(ref isApplicationBusy, value); }
@@ -132,7 +138,7 @@ namespace TumblThree.Applications.Services
 
         public IDisposable SetApplicationBusy()
         {
-            ApplicationBusyContext context = new ApplicationBusyContext()
+            var context = new ApplicationBusyContext()
             {
                 DisposeCallback = ApplicationBusyContextDisposeCallback
             };

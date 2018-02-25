@@ -7,6 +7,6 @@ namespace TumblThree.Applications.Parser
 	{
 		Regex GetCatBoxUrlRegex();
 
-		string CreateCatBoxUrl(string id, string fullurl,CatBoxTypes type);
+		string CreateCatBoxUrl(string id, string detectedUrl, CatBoxTypes type);
 	}
 }

@@ -53,7 +53,7 @@ namespace System.Waf.Applications
             if (handler == null) { throw new ArgumentNullException("handler"); }
 
             PropertyChangedEventListener listener = propertyChangedListeners.LastOrDefault(l =>
-                (l.Source == source) && (l.Handler == handler));
+                l.Source == source && l.Handler == handler);
 
             if (listener != null)
             {
@@ -96,7 +96,7 @@ namespace System.Waf.Applications
             if (handler == null) { throw new ArgumentNullException("handler"); }
 
             CollectionChangedEventListener listener = collectionChangedListeners.LastOrDefault(l =>
-                (l.Source == source) && (l.Handler == handler));
+                l.Source == source && l.Handler == handler);
 
             if (listener != null)
             {

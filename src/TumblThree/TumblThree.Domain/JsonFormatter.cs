@@ -9,11 +9,11 @@ namespace TumblThree.Domain
         /// </summary>
         public static string FormatOutput(string jsonString)
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            var stringBuilder = new StringBuilder();
 
-            bool escaping = false;
-            bool inQuotes = false;
-            int indentation = 0;
+            var escaping = false;
+            var inQuotes = false;
+            var indentation = 0;
 
             foreach (char character in jsonString)
             {
@@ -42,13 +42,13 @@ namespace TumblThree.Domain
                             stringBuilder.Append("\r\n");
                             stringBuilder.Append('\t', indentation);
                         }
-                        else if ((character == '[') || (character == '{'))
+                        else if (character == '[' || character == '{')
                         {
                             stringBuilder.Append(character);
                             stringBuilder.Append("\r\n");
                             stringBuilder.Append('\t', ++indentation);
                         }
-                        else if ((character == ']') || (character == '}'))
+                        else if (character == ']' || character == '}')
                         {
                             stringBuilder.Append("\r\n");
                             stringBuilder.Append('\t', --indentation);

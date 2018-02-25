@@ -46,9 +46,12 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref selectedQueueItem, value); }
         }
 
-        public IList<QueueListItem> SelectedQueueItems => selectedQueueItems;
+        public IList<QueueListItem> SelectedQueueItems
+        {
+            get { return selectedQueueItems; }
+        }
 
-	    public ICommand RemoveSelectedCommand
+        public ICommand RemoveSelectedCommand
         {
             get { return removeSelectedCommand; }
             set { SetProperty(ref removeSelectedCommand, value); }

@@ -511,15 +511,6 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download google drive.
-        /// </summary>
-        public static string DownloadGoogleDrive {
-            get {
-                return ResourceManager.GetString("DownloadGoogleDrive", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Download image meta.
         /// </summary>
         public static string DownloadImageMeta {
@@ -570,15 +561,6 @@ namespace TumblThree.Presentation.Properties {
         public static string DownloadLoliSafe {
             get {
                 return ResourceManager.GetString("DownloadLoliSafe", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Download mega.
-        /// </summary>
-        public static string DownloadMega {
-            get {
-                return ResourceManager.GetString("DownloadMega", resourceCulture);
             }
         }
         
@@ -1578,24 +1560,6 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download linked GoogleDrive files.
-        /// </summary>
-        public static string ToolTipDownloadGoogleDrive {
-            get {
-                return ResourceManager.GetString("ToolTipDownloadGoogleDrive", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Download externally hosted GoogleDrive files.
-        /// </summary>
-        public static string ToolTipDownloadGoogleDriveDescription {
-            get {
-                return ResourceManager.GetString("ToolTipDownloadGoogleDriveDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Download linked imgur.com files.
         /// </summary>
         public static string ToolTipDownloadImgur {
@@ -1628,24 +1592,6 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipDownloadLoliSafeDescription {
             get {
                 return ResourceManager.GetString("ToolTipDownloadLoliSafeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Download linked mega files.
-        /// </summary>
-        public static string ToolTipDownloadMega {
-            get {
-                return ResourceManager.GetString("ToolTipDownloadMega", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Download externally hosted mega files.
-        /// </summary>
-        public static string ToolTipDownloadMegaDescription {
-            get {
-                return ResourceManager.GetString("ToolTipDownloadMegaDescription", resourceCulture);
             }
         }
         
@@ -1904,24 +1850,6 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File type to download.
-        /// </summary>
-        public static string ToolTipGoogleDriveFiletype {
-            get {
-                return ResourceManager.GetString("ToolTipGoogleDriveFiletype", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Chose which file type you want to download.
-        /// </summary>
-        public static string ToolTipGoogleDriveFiletypeDescription {
-            get {
-                return ResourceManager.GetString("ToolTipGoogleDriveFiletypeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Throttles the bandwidth of the downloader.
         /// </summary>
         public static string ToolTipLimitBandwidth {
@@ -2015,24 +1943,6 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipLoliSafeFiletypeDescription {
             get {
                 return ResourceManager.GetString("ToolTipLoliSafeFiletypeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to File type to download.
-        /// </summary>
-        public static string ToolTipMegaFiletype {
-            get {
-                return ResourceManager.GetString("ToolTipMegaFiletype", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Chose which file type you want to download.
-        /// </summary>
-        public static string ToolTipMegaFiletypeDescription {
-            get {
-                return ResourceManager.GetString("ToolTipMegaFiletypeDescription", resourceCulture);
             }
         }
         

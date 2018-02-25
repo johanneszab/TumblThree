@@ -93,7 +93,7 @@ namespace Guava.RateLimiter
 
         internal static RateLimiter Create(ISleepingStopwatch stopwatch, double permitsPerSecond)
         {
-            SmoothRateLimiter.SmoothBursty rateLimiter = new SmoothRateLimiter.SmoothBursty(stopwatch, 1.0 /* maxBurstSeconds */);
+            var rateLimiter = new SmoothRateLimiter.SmoothBursty(stopwatch, 1.0 /* maxBurstSeconds */);
             rateLimiter.SetRate(permitsPerSecond);
             return rateLimiter;
         }
@@ -137,7 +137,7 @@ namespace Guava.RateLimiter
 
         private object Mutex()
         {
-            object mutex = _mutexDoNotUseDirectly;
+            var mutex = _mutexDoNotUseDirectly;
             if (mutex == null)
             {
                 lock (this)
@@ -215,7 +215,7 @@ namespace Guava.RateLimiter
         /// <returns>Time spent sleeping to enforce rate, in seconds; 0.0 if not rate-limited</returns>
         public double Acquire(int permits = 1)
         {
-            long microsToWait = Reserve(permits);
+            var microsToWait = Reserve(permits);
             _stopwatch.SleepMicrosUninterruptibly(microsToWait);
             return 1.0 * microsToWait / TimeUnit.Seconds.ToMicros(1L);
         }
@@ -276,7 +276,7 @@ namespace Guava.RateLimiter
         /// <returns>Required wait time, never negative</returns>
         private long ReserveAndGetWaitLength(int permits, long nowMicros)
         {
-            long momentAvailable = ReserveEarliestAvailable(permits, nowMicros);
+            var momentAvailable = ReserveEarliestAvailable(permits, nowMicros);
             return Math.Max(momentAvailable - nowMicros, 0);
         }
 

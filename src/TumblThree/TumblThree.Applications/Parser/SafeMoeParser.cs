@@ -12,7 +12,7 @@ namespace TumblThree.Applications.Parser
 			return new Regex("(http[A-Za-z0-9_/:.]*a.safe.moe/(.*))");
 		}
 
-		public string CreateSafeMoeUrl(string id, string fullurl, SafeMoeTypes type)
+		public string CreateSafeMoeUrl(string id, string detectedUrl, SafeMoeTypes type)
 		{
 			string url;
 			switch ( type)
@@ -24,7 +24,7 @@ namespace TumblThree.Applications.Parser
 					url = @"https://a.safe.moe/" +  id + ".webm";
 					break;
 				case SafeMoeTypes.Any:
-					url = fullurl;
+					url = detectedUrl;
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();

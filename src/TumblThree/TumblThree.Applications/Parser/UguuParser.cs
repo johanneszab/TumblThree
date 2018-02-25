@@ -12,7 +12,7 @@ namespace TumblThree.Applications.Parser
 			return new Regex("(http[A-Za-z0-9_/:.]*a.uguu.se/(.*))");
 		}
 
-		public string CreateUguuUrl(string uguuId, string fullurl, UguuTypes uguuType)
+		public string CreateUguuUrl(string uguuId, string detectedUrl, UguuTypes uguuType)
 		{
 			string url;
 			switch ( uguuType)
@@ -24,7 +24,7 @@ namespace TumblThree.Applications.Parser
 					url = @"https://a.uguu.se/" +  uguuId + ".webm";
 					break;
 				case UguuTypes.Any:
-					url = fullurl;
+					url = detectedUrl;
 					break;
 				default:
 					throw new ArgumentOutOfRangeException();

@@ -34,7 +34,7 @@ namespace TumblThree.Applications.Crawler
 
         public virtual async Task<string> RequestGfycatCajax(string gfyId)
         {
-            CancellationTokenRegistration requestRegistration = new CancellationTokenRegistration();
+            var requestRegistration = new CancellationTokenRegistration();
             try
             {
                 string url = @"https://gfycat.com/cajax/get/" + gfyId;

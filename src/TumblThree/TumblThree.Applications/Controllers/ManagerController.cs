@@ -84,9 +84,12 @@ namespace TumblThree.Applications.Controllers
             copyUrlCommand = new DelegateCommand(CopyUrl, CanCopyUrl);
         }
 
-        private ManagerViewModel ManagerViewModel => managerViewModel.Value;
+        private ManagerViewModel ManagerViewModel
+        {
+            get { return managerViewModel.Value; }
+        }
 
-	    public ManagerSettings ManagerSettings { get; set; }
+        public ManagerSettings ManagerSettings { get; set; }
 
         public QueueManager QueueManager { get; set; }
 
@@ -216,7 +219,7 @@ namespace TumblThree.Applications.Controllers
         {
             Logger.Verbose("ManagerController:GetFilesCore Start");
 
-            List<IBlog> blogs = new List<IBlog>();
+            var blogs = new List<IBlog>();
 
             string[] supportedFileTypes = Enum.GetNames(typeof(BlogTypes)).ToArray();
 
@@ -226,25 +229,15 @@ namespace TumblThree.Applications.Controllers
             {
                 //TODO: Refactor
                 if (filename.EndsWith(BlogTypes.tumblr.ToString()))
-                {
-	                blogs.Add(new TumblrBlog().Load(filename));
-                }
-	            if (filename.EndsWith(BlogTypes.tmblrpriv.ToString()))
-	            {
-		            blogs.Add(new TumblrHiddenBlog().Load(filename));
-	            }
-	            if (filename.EndsWith(BlogTypes.tlb.ToString()))
-	            {
-		            blogs.Add(new TumblrLikedByBlog().Load(filename));
-	            }
-	            if (filename.EndsWith(BlogTypes.tumblrsearch.ToString()))
-	            {
-		            blogs.Add(new TumblrSearchBlog().Load(filename));
-	            }
-	            if (filename.EndsWith(BlogTypes.tumblrtagsearch.ToString()))
-	            {
-		            blogs.Add(new TumblrTagSearchBlog().Load(filename));
-	            }
+                    blogs.Add(new TumblrBlog().Load(filename));
+                if (filename.EndsWith(BlogTypes.tmblrpriv.ToString()))
+                    blogs.Add(new TumblrHiddenBlog().Load(filename));
+                if (filename.EndsWith(BlogTypes.tlb.ToString()))
+                    blogs.Add(new TumblrLikedByBlog().Load(filename));
+                if (filename.EndsWith(BlogTypes.tumblrsearch.ToString()))
+                    blogs.Add(new TumblrSearchBlog().Load(filename));
+                if (filename.EndsWith(BlogTypes.tumblrtagsearch.ToString()))
+                    blogs.Add(new TumblrTagSearchBlog().Load(filename));
             }
             Logger.Verbose("ManagerController.GetFilesCore End");
 
@@ -260,7 +253,7 @@ namespace TumblThree.Applications.Controllers
         {
             Logger.Verbose("ManagerController:GetFilesCore Start");
 
-            List<IFiles> blogs = new List<IFiles>();
+            var blogs = new List<IFiles>();
 
             string[] supportedFileTypes = Enum.GetNames(typeof(BlogTypes)).ToArray();
 
@@ -321,7 +314,7 @@ namespace TumblThree.Applications.Controllers
 
         private bool CanEnqueueSelected()
         {
-            return (ManagerViewModel.SelectedBlogFile != null) && ManagerViewModel.SelectedBlogFile.Online;
+            return ManagerViewModel.SelectedBlogFile != null && ManagerViewModel.SelectedBlogFile.Online;
         }
 
         private void EnqueueSelected()
@@ -351,12 +344,12 @@ namespace TumblThree.Applications.Controllers
             if (shellService.Settings.BlogType == shellService.Settings.BlogTypes.ElementAtOrDefault(2))
             {
                 Enqueue(
-                    managerService.BlogFiles.Where(blog => blog.Online && (blog.LastCompleteCrawl != new DateTime(0L, DateTimeKind.Utc))).ToArray());
+                    managerService.BlogFiles.Where(blog => blog.Online && blog.LastCompleteCrawl != new DateTime(0L, DateTimeKind.Utc)).ToArray());
             }
             if (shellService.Settings.BlogType == shellService.Settings.BlogTypes.ElementAtOrDefault(3))
             {
                 Enqueue(
-                    managerService.BlogFiles.Where(blog => blog.Online && (blog.LastCompleteCrawl == new DateTime(0L, DateTimeKind.Utc))).ToArray());
+                    managerService.BlogFiles.Where(blog => blog.Online && blog.LastCompleteCrawl == new DateTime(0L, DateTimeKind.Utc)).ToArray());
             }
 
             if (crawlerService.IsCrawl && crawlerService.IsPaused)
@@ -396,17 +389,11 @@ namespace TumblThree.Applications.Controllers
                 string blogNames = string.Join(", ", blogs.Select(blog => blog.Name));
                 string message = string.Empty;
                 if (shellService.Settings.DeleteOnlyIndex)
-                {
-	                message = string.Format(Resources.DeleteBlogsDialog, blogNames);
-                }
+                    message = string.Format(Resources.DeleteBlogsDialog, blogNames);
                 else
-                {
-	                message = string.Format(Resources.DeleteBlogsAndFilesDialog, blogNames);
-                }
-	            if (!messageService.ShowYesNoQuestion(this, message))
-	            {
-		            return;
-	            }
+                    message = string.Format(Resources.DeleteBlogsAndFilesDialog, blogNames);
+                if (!messageService.ShowYesNoQuestion(this, message))
+                    return;
             }
 
             RemoveBlog(blogs);
@@ -486,9 +473,9 @@ namespace TumblThree.Applications.Controllers
 
         private void CopyUrl()
         {
-            List<string> urls = selectionService.SelectedBlogFiles.Select(blog => blog.Url).ToList();
+            var urls = selectionService.SelectedBlogFiles.Select(blog => blog.Url).ToList();
             urls.Sort();
-            clipboardService.SetText(string.Join(Environment.NewLine, urls));
+            clipboardService.SetText(String.Join(Environment.NewLine, urls));
         }
 
         private bool CanCopyUrl()
@@ -513,7 +500,7 @@ namespace TumblThree.Applications.Controllers
                 return;
             }
 
-            if ((blog.GetType() == typeof(TumblrBlog)) && await TumblrBlogDetector.IsHiddenTumblrBlog(blog.Url))
+            if (blog.GetType() == typeof(TumblrBlog) && await TumblrBlogDetector.IsHiddenTumblrBlog(blog.Url))
             {
                 blog = PromoteTumblrBlogToHiddenBlog(blog);
             }
@@ -540,10 +527,8 @@ namespace TumblThree.Applications.Controllers
         private void AddToManager(IBlog blog)
         {
             QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => managerService.BlogFiles.Add(blog)));
-            if (shellService.Settings.LoadAllDatabases)
-            {
-	            managerService.AddDatabase(new Files().Load(blog.ChildId));
-            }
+            if (shellService.Settings.LoadAllDatabases)            
+                managerService.AddDatabase(new Files().Load(blog.ChildId));
         }
 
         private IBlog PromoteTumblrBlogToHiddenBlog(IBlog blog)
@@ -566,7 +551,7 @@ namespace TumblThree.Applications.Controllers
 
         private async Task AddBlogBatchedAsync(IEnumerable<string> urls)
         {
-            SemaphoreSlim semaphoreSlim = new SemaphoreSlim(25);
+            var semaphoreSlim = new SemaphoreSlim(25);
             IEnumerable<Task> tasks = urls.Select(async url =>
             {
                 try

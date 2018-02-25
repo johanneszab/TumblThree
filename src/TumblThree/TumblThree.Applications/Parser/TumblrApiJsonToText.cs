@@ -130,7 +130,7 @@ namespace TumblThree.Applications.Parser
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.PhotoUrl, post.photo_url_1280 + " " + string.Join(" ", post.photos.Select(photo => photo.photo_url_1280))) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.PhotoUrl, post.photo_url_1280 + " " + String.Join(" ", post.photos.Select(photo => photo.photo_url_1280))) +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.PhotoCaption, post.photo_caption) +
                    Environment.NewLine +

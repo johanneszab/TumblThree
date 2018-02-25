@@ -11,8 +11,8 @@ namespace TumblThree.Presentation.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            ReadOnlyObservableList<QueueListItem> crawlingQueuelistItem = (ReadOnlyObservableList<QueueListItem>)values[0];
-            QueueListItem currentQueuelistItem = (QueueListItem)values[1];
+            var crawlingQueuelistItem = (ReadOnlyObservableList<QueueListItem>)values[0];
+            var currentQueuelistItem = (QueueListItem)values[1];
 
             if (crawlingQueuelistItem.Contains(currentQueuelistItem))
             {

@@ -65,26 +65,21 @@ namespace TumblThree.Domain.Models
         private int downloadedVideoMetas;
         private int downloadedAudioMetas;
         private MetadataType metadataFormat;
-		//parsers
         private bool downloadGfycat;
         private bool downloadImgur;
         private bool downloadWebmshare;
-	    private bool downloadMixtape;
-	    private bool downloadMega;
-	    private bool downloadGoogleDrive;
-	    private bool downloadUguu;
-	    private bool downloadSafeMoe;
-	    private bool downloadLoliSafe;
-	    private bool downloadCatBox;
-		//parserTypes
+        private bool downloadMixtape;
+        private bool downloadUguu;
+        private bool downloadSafeMoe;
+        private bool downloadLoliSafe;
+        private bool downloadCatBox;
         private GfycatTypes gfycatType;
         private WebmshareTypes webmshareType;
-	    private MixtapeTypes mixtapeType;
-	    private UguuTypes uguuType;
-	    private SafeMoeTypes safemoeType;
-	    private LoliSafeTypes lolisafeType;
-	    private CatBoxTypes catboxType;
-
+        private MixtapeTypes mixtapeType;
+        private UguuTypes uguuType;
+        private SafeMoeTypes safemoeType;
+        private LoliSafeTypes lolisafeType;
+        private CatBoxTypes catboxType;
         private string downloadPages;
         private int pageSize;
         private string downloadFrom;
@@ -534,12 +529,6 @@ namespace TumblThree.Domain.Models
             get { return downloadWebmshare; }
             set { SetProperty(ref downloadWebmshare, value); }
         }
-	    [DataMember]
-	    public bool DownloadMixtape
-	    {
-		    get { return downloadMixtape; }
-		    set { SetProperty(ref downloadMixtape, value); }
-	    }
 
         [DataMember]
         public WebmshareTypes WebmshareType
@@ -548,74 +537,75 @@ namespace TumblThree.Domain.Models
             set { SetProperty(ref webmshareType, value); }
         }
 
-	    [DataMember]
-	    public MixtapeTypes MixtapeType
-	    {
-		    get { return mixtapeType; }
-		    set { SetProperty(ref mixtapeType, value); }
-	    }
-	    [DataMember]
-	    public bool DownloadMega
-	    {
-		    get { return downloadMega; }
-		    set { SetProperty(ref downloadMega, value); }
-	    }
+        [DataMember]
+        public bool DownloadMixtape
+        {
+            get { return downloadMixtape; }
+            set { SetProperty(ref downloadMixtape, value); }
+        }
 
-	    [DataMember]
-	    public bool DownloadGoogleDrive
-	    {
-		    get { return downloadGoogleDrive; }
-		    set { SetProperty(ref downloadGoogleDrive, value); }
-	    }
-	    [DataMember]
-	    public bool DownloadUguu
-	    {
-		    get { return downloadUguu; }
-		    set { SetProperty(ref downloadUguu, value); }
-	    }
-	    [DataMember]
-	    public bool DownloadSafeMoe
-	    {
-		    get { return downloadSafeMoe; }
-		    set { SetProperty(ref downloadSafeMoe, value); }
-	    }
-	    [DataMember]
-	    public bool DownloadLoliSafe
-	    {
-		    get { return downloadLoliSafe; }
-		    set { SetProperty(ref downloadLoliSafe, value); }
-	    }
-	    [DataMember]
-	    public bool DownloadCatBox
-	    {
-		    get { return downloadCatBox; }
-		    set { SetProperty(ref downloadCatBox, value); }
-	    }
+        [DataMember]
+        public MixtapeTypes MixtapeType
+        {
+            get { return mixtapeType; }
+            set { SetProperty(ref mixtapeType, value); }
+        }
 
-	    [DataMember]
-	    public UguuTypes UguuType
-	    {
-		    get { return uguuType; }
-		    set { SetProperty(ref uguuType, value); }
-	    }
-	    [DataMember]
-	    public SafeMoeTypes SafeMoeType
-	    {
-		    get { return safemoeType; }
-		    set { SetProperty(ref safemoeType, value); }
-	    }
-	    [DataMember]
-	    public LoliSafeTypes LoliSafeType
-	    {
-		    get { return lolisafeType; }
-		    set { SetProperty(ref lolisafeType, value); }
-	    }
-	    [DataMember]
-	    public CatBoxTypes CatBoxType
-	    {
-		    get { return catboxType; }
-		    set { SetProperty(ref catboxType, value); }
-	    }
+        [DataMember]
+        public bool DownloadUguu
+        {
+            get { return downloadUguu; }
+            set { SetProperty(ref downloadUguu, value); }
+        }
+
+        [DataMember]
+        public UguuTypes UguuType
+        {
+            get { return uguuType; }
+            set { SetProperty(ref uguuType, value); }
+        }
+
+        [DataMember]
+        public bool DownloadSafeMoe
+        {
+            get { return downloadSafeMoe; }
+            set { SetProperty(ref downloadSafeMoe, value); }
+        }
+
+        [DataMember]
+        public SafeMoeTypes SafeMoeType
+        {
+            get { return safemoeType; }
+            set { SetProperty(ref safemoeType, value); }
+        }
+
+        [DataMember]
+        public bool DownloadLoliSafe
+        {
+            get { return downloadLoliSafe; }
+            set { SetProperty(ref downloadLoliSafe, value); }
+        }
+
+        [DataMember]
+        public LoliSafeTypes LoliSafeType
+        {
+            get { return lolisafeType; }
+            set { SetProperty(ref lolisafeType, value); }
+        }
+
+        [DataMember]
+        public bool DownloadCatBox
+        {
+            get { return downloadCatBox; }
+            set { SetProperty(ref downloadCatBox, value); }
+        }
+
+        [DataMember]
+        public CatBoxTypes CatBoxType
+        {
+            get { return catboxType; }
+            set { SetProperty(ref catboxType, value); }
+        }
 
         [DataMember]
         public string DownloadPages
@@ -830,12 +820,9 @@ namespace TumblThree.Domain.Models
             lock (lockObjectPostCount)
             {
                 PropertyInfo property = typeof(IBlog).GetProperty(propertyName);
-	            if (property != null)
-	            {
-		            int postCounter = (int)property.GetValue(this);
-		            postCounter++;
-		            property.SetValue(this, postCounter, null);
-	            }
+                var postCounter = (int)property.GetValue(this);
+                postCounter++;
+                property.SetValue(this, postCounter, null);
             }
 
         }
@@ -897,22 +884,20 @@ namespace TumblThree.Domain.Models
         public string DownloadLocation()
         {
             if (string.IsNullOrWhiteSpace(FileDownloadLocation))
-            {
-	            return Path.Combine(Directory.GetParent(Location).FullName, Name);
-            }
-	        return FileDownloadLocation;
+                return Path.Combine((Directory.GetParent(Location).FullName), Name);
+            return FileDownloadLocation;
         }
 
         public IBlog Load(string fileLocation)
         {
             try
             {
-                using (FileStream stream = new FileStream(fileLocation,
+                using (var stream = new FileStream(fileLocation,
                     FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    DataContractJsonSerializer serializer = new DataContractJsonSerializer(GetType());
-                    IBlog blog = (IBlog)serializer.ReadObject(stream);
-                    blog.Location = Path.Combine(Directory.GetParent(fileLocation).FullName);
+                    var serializer = new DataContractJsonSerializer(GetType());
+                    var blog = (IBlog)serializer.ReadObject(stream);
+                    blog.Location = Path.Combine((Directory.GetParent(fileLocation).FullName));
                     blog.ChildId = Path.Combine(blog.Location, blog.Name + "_files." + blog.BlogType);
                     return blog;
                 }
@@ -947,12 +932,12 @@ namespace TumblThree.Domain.Models
 
             if (File.Exists(currentIndex))
             {
-                using (FileStream stream = new FileStream(newIndex, FileMode.Create, FileAccess.Write))
+                using (var stream = new FileStream(newIndex, FileMode.Create, FileAccess.Write))
                 {
                     using (XmlDictionaryWriter writer = JsonReaderWriterFactory.CreateJsonWriter(
                         stream, Encoding.UTF8, true, true, "  "))
                     {
-                        DataContractJsonSerializer serializer = new DataContractJsonSerializer(GetType());
+                        var serializer = new DataContractJsonSerializer(GetType());
                         serializer.WriteObject(writer, this);
                         writer.Flush();
                     }
@@ -962,12 +947,12 @@ namespace TumblThree.Domain.Models
             }
             else
             {
-                using (FileStream stream = new FileStream(currentIndex, FileMode.Create, FileAccess.Write))
+                using (var stream = new FileStream(currentIndex, FileMode.Create, FileAccess.Write))
                 {
                     using (XmlDictionaryWriter writer = JsonReaderWriterFactory.CreateJsonWriter(
                         stream, Encoding.UTF8, true, true, "  "))
                     {
-                        DataContractJsonSerializer serializer = new DataContractJsonSerializer(GetType());
+                        var serializer = new DataContractJsonSerializer(GetType());
                         serializer.WriteObject(writer, this);
                         writer.Flush();
                     }
@@ -977,17 +962,16 @@ namespace TumblThree.Domain.Models
 
         protected static string ExtractSubDomain(string url)
         {
-            string[] source = url.Split('.');
-            if ((source.Length >= 3) && source[0].StartsWith("http://", true, null))
+            string[] source = url.Split(new char[] { '.' });
+            if ((source.Count<string>() >= 3) && source[0].StartsWith("http://", true, null))
             {
                 return source[0].Replace("http://", string.Empty);
             }
-
-	        if ((source.Length >= 3) && source[0].StartsWith("https://", true, null))
-	        {
-		        return source[0].Replace("https://", string.Empty);
-	        }
-	        return null;
+            else if ((source.Count<string>() >= 3) && source[0].StartsWith("https://", true, null))
+            {
+                return source[0].Replace("https://", string.Empty);
+            }
+            return null;
         }
 
         protected static string ExtractName(string url)
@@ -997,7 +981,7 @@ namespace TumblThree.Domain.Models
 
         protected static string ExtractUrl(string url)
         {
-            return "https://" + ExtractSubDomain(url) + ".tumblr.com/";
+            return ("https://" + ExtractSubDomain(url) + ".tumblr.com/");
         }
 
         [OnDeserialized]

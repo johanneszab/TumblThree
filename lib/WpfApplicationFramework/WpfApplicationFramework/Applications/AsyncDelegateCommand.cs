@@ -90,7 +90,7 @@ namespace System.Waf.Applications
         /// <returns>true if this command can be executed; otherwise, false.</returns>
         public bool CanExecute(object parameter)
         {
-            return !IsExecuting && ((canExecute == null) || canExecute(parameter));
+            return !IsExecuting && (canExecute == null || canExecute(parameter));
         }
 
         /// <summary>

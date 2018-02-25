@@ -3,7 +3,6 @@ using System.ComponentModel.Composition;
 using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
-using System.Xml;
 
 namespace TumblThree.Applications.Services
 {
@@ -25,9 +24,9 @@ namespace TumblThree.Applications.Services
 
             if (File.Exists(fileName))
             {
-                using (FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+                using (var stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
                 {
-                    DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(T), knownTypes);
+                    var serializer = new DataContractJsonSerializer(typeof(T), knownTypes);
                     return (T)serializer.ReadObject(stream) ?? new T();
                 }
             }
@@ -54,12 +53,12 @@ namespace TumblThree.Applications.Services
             {
                 Directory.CreateDirectory(directory);
             }
-            using (FileStream stream = new FileStream(fileName, FileMode.Create, FileAccess.Write))
+            using (var stream = new FileStream(fileName, FileMode.Create, FileAccess.Write))
             {
-                using (XmlDictionaryWriter writer = JsonReaderWriterFactory.CreateJsonWriter(
+                using (var writer = JsonReaderWriterFactory.CreateJsonWriter(
                     stream, Encoding.UTF8, true, true, "  "))
                 {
-                    DataContractJsonSerializer serializer = new DataContractJsonSerializer(settings.GetType(), knownTypes);
+                    var serializer = new DataContractJsonSerializer(settings.GetType(), knownTypes);
                     serializer.WriteObject(writer, settings);
                     writer.Flush();
                 }

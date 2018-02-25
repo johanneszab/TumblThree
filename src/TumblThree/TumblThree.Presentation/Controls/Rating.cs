@@ -80,10 +80,10 @@ namespace TumblThree.Presentation.Controls
             }
 
             // Create new items
-            List<RatingItem> items = new List<RatingItem>();
-            for (int i = 0; i < Convert.ToInt32(GetValue(MaximumProperty), CultureInfo.InvariantCulture); i++)
+            var items = new List<RatingItem>();
+            for (var i = 0; i < Convert.ToInt32(GetValue(MaximumProperty), CultureInfo.InvariantCulture); i++)
             {
-                RatingItem item = new RatingItem() { ItemValue = i + 1, Value = Value };
+                var item = new RatingItem() { ItemValue = i + 1, Value = Value };
                 item.MouseEnter += ItemMouseEnter;
                 item.MouseLeave += ItemMouseLeave;
                 item.Click += ItemClick;

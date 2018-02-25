@@ -149,22 +149,22 @@ namespace TumblThree.Domain.Models
         bool DownloadMixtape { get; set; }
 
         MixtapeTypes MixtapeType { get; set; }
-		
-	    bool DownloadUguu { get; set; }
 
-	    UguuTypes UguuType { get; set; }
-		
-	    bool DownloadSafeMoe { get; set; }
+        bool DownloadUguu { get; set; }
 
-	    SafeMoeTypes SafeMoeType { get; set; }
-		
-	    bool DownloadLoliSafe { get; set; }
+        UguuTypes UguuType { get; set; }
 
-	    LoliSafeTypes LoliSafeType { get; set; }
-		
-	    bool DownloadCatBox { get; set; }
+        bool DownloadSafeMoe { get; set; }
 
-	    CatBoxTypes CatBoxType { get; set; }
+        SafeMoeTypes SafeMoeType { get; set; }
+
+        bool DownloadLoliSafe { get; set; }
+
+        LoliSafeTypes LoliSafeType { get; set; }
+
+        bool DownloadCatBox { get; set; }
+
+        CatBoxTypes CatBoxType { get; set; }
 
         BlogTypes BlogType { get; set; }
 

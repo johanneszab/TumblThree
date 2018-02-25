@@ -7,6 +7,6 @@ namespace TumblThree.Applications.Crawler
 	{
 		Regex GetMixtapeUrlRegex();
 
-		string CreateMixtapeUrl(string mixtapeId, string fullurl,MixtapeTypes mixtapeType);
+		string CreateMixtapeUrl(string mixtapeId, string detectedUrl, MixtapeTypes mixtapeType);
 	}
 }
