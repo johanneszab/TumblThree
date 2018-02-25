@@ -3,7 +3,6 @@ using System.IO;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using CG.Web.MegaApiClient;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 
@@ -110,7 +109,7 @@ namespace TumblThree.Applications.Downloader
 			}
 		}
 
-		protected Stream GetStreamForDownload(Stream stream)
+		public Stream GetStreamForDownload(Stream stream)
 		{
 			if (settings.Bandwidth == 0)
 			{
@@ -123,7 +122,7 @@ namespace TumblThree.Applications.Downloader
 		// TODO: Needs a complete rewrite. Also a append/cache function for resuming incomplete files on the disk.
 		// Should be in separated class with support for events for downloadspeed, is resumable file?, etc.
 		// Should check if file is complete, else it will trigger an WebException -- 416 requested range not satisfiable at every request 
-		public async Task<bool> DownloadFileWithResumeAsync(string url, string destinationPath, INode node = null)
+		public async Task<bool> DownloadFileWithResumeAsync(string url, string destinationPath)
 		{
 			long totalBytesReceived = 0;
 			int attemptCount = 0;
@@ -172,72 +171,39 @@ namespace TumblThree.Applications.Downloader
 
 					try
 					{
-						if (url.Contains("https://mega.nz/#"))
+						HttpWebRequest request = CreateWebReqeust(url);
+						requestRegistration = ct.Register(() => request.Abort());
+						request.AddRange(totalBytesReceived);
+
+						long totalBytesToReceive = 0;
+						using (WebResponse response = await request.GetResponseAsync())
 						{
-							MegaApiClient client = new MegaApiClient();
-							client.LoginAnonymous();
-							Uri link = new Uri(url);
+							totalBytesToReceive = totalBytesReceived + response.ContentLength;
 
-
-							Stream stream = node != null ? client.Download(node) : client.Download(link);
-
-							long totalBytesToReceive;
-
-							totalBytesToReceive = totalBytesReceived + stream.Length;
-
-
-							using (Stream throttledStream = GetStreamForDownload(stream))
+							using (Stream responseStream = response.GetResponseStream())
 							{
-								byte[] buffer = new byte[4096];
-								int bytesRead;
-
-
-								while ((bytesRead = await throttledStream.ReadAsync(buffer, 0, buffer.Length, ct)) > 0)
+								using (Stream throttledStream = GetStreamForDownload(responseStream))
 								{
-									await fileStream.WriteAsync(buffer, 0, bytesRead);
-									totalBytesReceived += bytesRead;
-								}
-							}
+									byte[] buffer = new byte[4096];
+									int bytesRead = 0;
+									//Stopwatch sw = Stopwatch.StartNew();
 
-							if (totalBytesReceived >= totalBytesToReceive) break;
-							//client.Logout();
-						}
-						else 
-						{
-							HttpWebRequest request = CreateWebReqeust(url);
-							requestRegistration = ct.Register(() => request.Abort());
-							request.AddRange(totalBytesReceived);
-
-							long totalBytesToReceive = 0;
-							using (WebResponse response = await request.GetResponseAsync())
-							{
-								totalBytesToReceive = totalBytesReceived + response.ContentLength;
-
-								using (Stream responseStream = response.GetResponseStream())
-								{
-									using (Stream throttledStream = GetStreamForDownload(responseStream))
+									while ((bytesRead = await throttledStream.ReadAsync(buffer, 0, buffer.Length, ct)) > 0)
 									{
-										byte[] buffer = new byte[4096];
-										int bytesRead = 0;
-										//Stopwatch sw = Stopwatch.StartNew();
+										await fileStream.WriteAsync(buffer, 0, bytesRead);
+										totalBytesReceived += bytesRead;
 
-										while ((bytesRead = await throttledStream.ReadAsync(buffer, 0, buffer.Length, ct)) > 0)
-										{
-											await fileStream.WriteAsync(buffer, 0, bytesRead);
-											totalBytesReceived += bytesRead;
-
-											//float currentSpeed = totalBytesReceived / (float)sw.Elapsed.TotalSeconds;
-											//OnProgressChanged(new DownloadProgressChangedEventArgs(totalBytesReceived,
-											//    totalBytesToReceive, (long)currentSpeed));
-										}
+										//float currentSpeed = totalBytesReceived / (float)sw.Elapsed.TotalSeconds;
+										//OnProgressChanged(new DownloadProgressChangedEventArgs(totalBytesReceived,
+										//    totalBytesToReceive, (long)currentSpeed));
 									}
 								}
 							}
+						}
 
-							if (totalBytesReceived >= totalBytesToReceive)
-							{
-								break;
-							}
+						if (totalBytesReceived >= totalBytesToReceive)
+						{
+							break;
 						}
 					}
 					catch (IOException ioException)
@@ -272,7 +238,7 @@ namespace TumblThree.Applications.Downloader
 			}
 		}
 
-		public static async Task<bool> SaveStreamToDisk(Stream input, string destinationFileName, CancellationToken ct)
+		public async Task<bool> SaveStreamToDisk(Stream input, string destinationFileName, CancellationToken ct)
 		{
 			using (FileStream stream = new FileStream(destinationFileName, FileMode.Create, FileAccess.Write, FileShare.Read, BufferSize, true))
 			{

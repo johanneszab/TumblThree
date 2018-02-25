@@ -123,6 +123,10 @@
     <Compile Include="Controllers\QueueController.cs" />
     <Compile Include="DataModels\TumblrApiJson.cs" />
     <Compile Include="DataModels\TumblrCrawlerData\TumblrCrawlerData.cs" />
+    <Compile Include="Downloader\GoogleDriveDownloader.cs" />
+    <Compile Include="Downloader\IGoogleDriveDownloader.cs" />
+    <Compile Include="Downloader\IMegaDownloader.cs" />
+    <Compile Include="Downloader\MegaDownloader.cs" />
     <Compile Include="Downloader\TumblrJsonDownloader.cs" />
     <Compile Include="Parser\CatBoxParser.cs" />
     <Compile Include="Parser\GfycatParser.cs" />

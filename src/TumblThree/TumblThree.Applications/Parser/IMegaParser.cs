@@ -1,25 +1,17 @@
-﻿using System.Text.RegularExpressions;
-using CG.Web.MegaApiClient;
-using System.IO;
-using TumblThree.Domain.Models;
-using System;
+﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
-namespace TumblThree.Applications.Crawler
+namespace TumblThree.Applications.Parser
 {
-	
-	public enum MegaLinkType
-	{
-		Single,
-		Folder
-	}
-
 	public interface IMegaParser
 	{
+        Task Login();
 
-		Regex GetMegaUrlRegex();
+        Task Logout();
 
+        Regex GetMegaUrlRegex();
 
-		string CreateMegaUrl(string id, string fullurl,MegaTypes type);
-		
-	}
+        Task<IEnumerable<string>> GetUrls(string url);
+    }
 }

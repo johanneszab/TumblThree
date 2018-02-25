@@ -1,6 +1,7 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using CG.Web.MegaApiClient;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -17,10 +18,14 @@ namespace TumblThree.Applications.Downloader
     {
         protected List<string> tags = new List<string>();
         protected int numberOfPagesCrawled = 0;
+        protected readonly IGoogleDriveDownloader googleDriveDownloader;
+        protected readonly IMegaDownloader megaDownloader;
 
-        public TumblrDownloader(IShellService shellService, IManagerService managerService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, IPostQueue<TumblrPost> postQueue, FileDownloader fileDownloader, ICrawlerService crawlerService, IBlog blog, IFiles files)
+        public TumblrDownloader(IShellService shellService, IManagerService managerService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, IPostQueue<TumblrPost> postQueue, FileDownloader fileDownloader, IGoogleDriveDownloader googleDriveDownloader, IMegaDownloader megaDownloader, ICrawlerService crawlerService, IBlog blog, IFiles files)
             : base(shellService, managerService, ct, pt, progress, postQueue, fileDownloader, crawlerService, blog, files)
         {
+            this.googleDriveDownloader = googleDriveDownloader;
+            this.megaDownloader = megaDownloader;
         }
 
         protected string ImageSize()
@@ -59,11 +64,31 @@ namespace TumblThree.Applications.Downloader
 
         protected override async Task<bool> DownloadBinaryPost(TumblrPost downloadItem)
         {
+            string url = Url(downloadItem);
+            if (downloadItem is ExternalVideoPost)
+            {
+                if (url.Contains("https://drive.google.com/"))
+                {
+                    string blogDownloadLocation = blog.DownloadLocation();
+                    googleDriveDownloader.Authenticate();
+                    googleDriveDownloader.OpenService();
+                    await googleDriveDownloader.RequestInfo(url, blogDownloadLocation + "\\");
+                }
+
+                if (url.Contains("https://mega.nz/#"))
+                {
+                    await megaDownloader.Login();
+                    Stream megaStream = await megaDownloader.DownloadAsync(url);
+                    Stream downloadStream = fileDownloader.GetStreamForDownload(megaStream);
+                    await fileDownloader.SaveStreamToDisk(downloadStream, downloadItem.Id, ct);
+                    await megaDownloader.Logout();
+                }
+            }
+
             if (!(downloadItem is PhotoPost))
             {
 	            return await base.DownloadBinaryPost(downloadItem);
             }
-	        string url = Url(downloadItem);
 
             if (blog.ForceSize)
             {

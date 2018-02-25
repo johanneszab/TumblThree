@@ -912,7 +912,7 @@ namespace TumblThree.Applications.Crawler
 
             if (blog.DownloadMixtape) AddMixtapeUrl(document);
 
-            if (blog.DownloadMega) AddMegaUrl(document);
+            if (blog.DownloadMega) await AddMegaUrl(document);
 
             if (blog.DownloadGoogleDrive) AddGoogleDriveUrl(document);
 
@@ -1092,7 +1092,7 @@ namespace TumblThree.Applications.Crawler
             }
         }
 
-        private void AddMegaUrl(TumblrJson document)
+        private async Task AddMegaUrl(TumblrJson document)
         {
             foreach (Post post in document.response.posts)
             {
@@ -1115,15 +1115,21 @@ namespace TumblThree.Applications.Crawler
                                 string id = match.Groups[2].Value;
                                 string url = temp.Split('\"').First();
 
-                                string imageUrl = megaParser.CreateMegaUrl(id, url, blog.MegaType);
-                                if (blog.SkipGif && imageUrl.EndsWith(".gif"))
+                                var list = await megaParser.GetUrls(url);
+
+                                var urls = list.Take(list.Count() / 2);
+                                var names = list.Skip(list.Count() / 2);
+
+                                var urlsNames = urls.Zip(names, (urlname, name) => new { Url = urlname, Name = name });
+                                foreach (var urlName in urlsNames)
                                 {
-                                    continue;
+                                    if (blog.SkipGif && urlName.Url.EndsWith(".gif"))
+                                    {
+                                        continue;
+                                    }
+
+                                    AddToDownloadList(new ExternalVideoPost(urlName.Url, urlName.Name, post.timestamp.ToString()));
                                 }
-
-                                AddToDownloadList(new ExternalVideoPost(imageUrl, string.Empty, post.timestamp.ToString()));
-                                AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(url, ".json"), post));
-
                             }
                         }
                     }
