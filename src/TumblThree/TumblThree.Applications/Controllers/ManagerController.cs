@@ -75,8 +75,8 @@ namespace TumblThree.Applications.Controllers
             showFilesCommand = new DelegateCommand(ShowFiles, CanShowFiles);
             visitBlogCommand = new DelegateCommand(VisitBlog, CanVisitBlog);
             enqueueSelectedCommand = new DelegateCommand(EnqueueSelected, CanEnqueueSelected);
-            loadLibraryCommand = new AsyncDelegateCommand(LoadLibrary, CanLoadLibrary);
-            loadAllDatabasesCommand = new AsyncDelegateCommand(LoadAllDatabases, CanLoadAllDatbases);
+            loadLibraryCommand = new AsyncDelegateCommand(LoadLibraryAsync, CanLoadLibrary);
+            loadAllDatabasesCommand = new AsyncDelegateCommand(LoadAllDatabasesAsync, CanLoadAllDatbases);
             listenClipboardCommand = new DelegateCommand(ListenClipboard);
             autoDownloadCommand = new DelegateCommand(EnqueueAutoDownload, CanEnqueueAutoDownload);
             showDetailsCommand = new DelegateCommand(ShowDetailsCommand);
@@ -133,11 +133,11 @@ namespace TumblThree.Applications.Controllers
                 shellService.ClipboardMonitor.OnClipboardContentChanged += OnClipboardContentChanged;
             }
 
-            Task loadLibraryTask = LoadLibrary();
-            Task loadAllDatabasesTask = LoadAllDatabases();
-            Task checkBlogOnlineStatusTask = CheckBlogsOnlineStatus();
+            Task loadLibraryTask = LoadLibraryAsync();
+            Task loadAllDatabasesTask = LoadAllDatabasesAsync();
 
-            await Task.WhenAll(loadLibraryTask, loadAllDatabasesTask, checkBlogOnlineStatusTask);
+            await loadLibraryTask;
+            Task checkBlogOnlineStatusTask = CheckBlogsOnlineStatusAsync();
         }
 
         public void Shutdown()
@@ -161,7 +161,7 @@ namespace TumblThree.Applications.Controllers
             }
         }
 
-        private async Task LoadLibrary()
+        private async Task LoadLibraryAsync()
         {
             Logger.Verbose("ManagerController.LoadLibrary:Start");
             managerService.BlogFiles.Clear();
@@ -190,20 +190,42 @@ namespace TumblThree.Applications.Controllers
             Logger.Verbose("ManagerController.LoadLibrary:End");
         }
 
-        private async Task CheckBlogsOnlineStatus()
+        //private async Task CheckBlogsOnlineStatusAsync()
+        //{
+        //    if (shellService.Settings.CheckOnlineStatusAtStartup)
+        //    {
+        //        await Task.Run(async () =>
+        //        {
+        //            IEnumerable<IBlog> blogs = managerService.BlogFiles;
+        //            foreach (IBlog blog in blogs)
+        //            {
+        //                ICrawler crawler = CrawlerFactory.GetCrawler(blog, new CancellationToken(), new PauseToken(),
+        //                    new Progress<DownloadProgress>(), shellService,
+        //                    crawlerService, managerService);
+        //                await crawler.IsBlogOnlineAsync();
+        //            }
+        //        });
+        //    }
+        //}
+
+        private async Task CheckBlogsOnlineStatusAsync()
         {
             if (shellService.Settings.CheckOnlineStatusAtStartup)
             {
                 await Task.Run(async () =>
                 {
+                    var semaphoreSlim = new SemaphoreSlim(25);
                     IEnumerable<IBlog> blogs = managerService.BlogFiles;
-                    foreach (IBlog blog in blogs)
+                    IEnumerable<Task> tasks = blogs.Select(async blog =>
                     {
+                        await semaphoreSlim.WaitAsync();
                         ICrawler crawler = CrawlerFactory.GetCrawler(blog, new CancellationToken(), new PauseToken(),
                             new Progress<DownloadProgress>(), shellService,
                             crawlerService, managerService);
                         await crawler.IsBlogOnlineAsync();
-                    }
+                        semaphoreSlim.Release();
+                    });
+                    await Task.WhenAll(tasks);
                 });
             }
         }
@@ -268,7 +290,7 @@ namespace TumblThree.Applications.Controllers
             return blogs;
         }
 
-        private async Task LoadAllDatabases()
+        private async Task LoadAllDatabasesAsync()
         {
             Logger.Verbose("ManagerController.LoadDatabasesGloballyAsync:Start");
             managerService.ClearDatabases();
