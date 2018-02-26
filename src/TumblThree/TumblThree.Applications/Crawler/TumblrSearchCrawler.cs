@@ -31,8 +31,8 @@ namespace TumblThree.Applications.Crawler
         private string tumblrKey = String.Empty;
 
         public TumblrSearchCrawler(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress,
-            ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IDownloader downloader,
-            IPostQueue<TumblrPost> postQueue, IBlog blog)
+            ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService,
+            IDownloader downloader, IPostQueue<TumblrPost> postQueue, IBlog blog)
             : base(shellService, ct, progress, webRequestFactory, cookieService, postQueue, blog)
         {
             this.downloader = downloader;
@@ -74,7 +74,7 @@ namespace TumblThree.Applications.Crawler
             var trackedTasks = new List<Task>();
             await UpdateTumblrKey();
 
-            foreach (int crawlerNumber in Enumerable.Range(1, shellService.Settings.ConcurrentScans))
+            foreach (int pageNumber in GetPageNumbers())
             {
                 await semaphoreSlim.WaitAsync();
 
@@ -87,8 +87,8 @@ namespace TumblThree.Applications.Crawler
 
                     try
                     {
-                        string document = await GetSearchPageAsync(crawlerNumber);
-                        await AddUrlsToDownloadList(document, crawlerNumber);
+                        string document = await GetSearchPageAsync(pageNumber);
+                        await AddUrlsToDownloadList(document, pageNumber);
                     }
                     catch (TimeoutException timeoutException)
                     {
@@ -211,6 +211,9 @@ namespace TumblThree.Applications.Crawler
                 catch (NullReferenceException)
                 {
                 }
+
+                if (!string.IsNullOrEmpty(blog.DownloadPages))
+                    return;
 
                 Interlocked.Increment(ref numberOfPagesCrawled);
                 UpdateProgressQueueInformation(Resources.ProgressGetUrlShort, numberOfPagesCrawled);

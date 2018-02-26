@@ -252,29 +252,53 @@
                             </Label.ToolTip>
                         </Label>
 
-                        <Label Content="{x:Static p:Resources.PageSize}" Grid.Column="0" Grid.Row="6" Margin="3,0,3,0" Padding="3,0,3,0">
-                            <Label.ToolTip>
-                                <ToolTip>
-                                    <StackPanel>
-                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipPageSizeTumblrSearch}" />
-                                        <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipPageSizeTumblrSearchDescription}" />
-                                    </StackPanel>
-                                </ToolTip>
-                            </Label.ToolTip>
-                        </Label>
+                            <Label Content="{x:Static p:Resources.DownloadPages}" Grid.Column="0" Grid.Row="6" Margin="3,0,3,0" Padding="3,0,3,0">
+                                <Label.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadPages}" />
+                                            <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipDownloadPagesDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </Label.ToolTip>
+                            </Label>
 
-                        <TextBox Grid.Column="1" Grid.ColumnSpan="1" Grid.Row="6" Padding="0" 
+                            <TextBox Grid.Column="1" Grid.Row="6" Padding="0" 
+                                 Text="{Binding BlogFile.DownloadPages, Mode=TwoWay, ValidatesOnDataErrors=True}">
+                                <TextBox.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDownloadPages}" />
+                                            <TextBlock xml:space="preserve"
+                                                   Text="{x:Static p:Resources.ToolTipDownloadPagesDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </TextBox.ToolTip>
+                            </TextBox>
+
+                            <Label Content="{x:Static p:Resources.PageSize}" Grid.Column="3" Grid.Row="6" Margin="3,0,3,0" Padding="3,0,3,0">
+                                <Label.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipPageSize}" />
+                                            <TextBlock xml:space="preserve" Text="{x:Static p:Resources.ToolTipPageSizeDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </Label.ToolTip>
+                            </Label>
+
+                            <TextBox Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="6" Padding="0" 
                                  Text="{Binding BlogFile.PageSize, Mode=TwoWay, ValidatesOnDataErrors=True}">
-                            <TextBox.ToolTip>
-                                <ToolTip>
-                                    <StackPanel>
-                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipPageSizeTumblrSearch}" />
-                                        <TextBlock xml:space="preserve"
-                                                   Text="{x:Static p:Resources.ToolTipPageSizeTumblrSearchDescription}" />
-                                    </StackPanel>
-                                </ToolTip>
-                            </TextBox.ToolTip>
-                        </TextBox>
+                                <TextBox.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipPageSize}" />
+                                            <TextBlock xml:space="preserve"
+                                                   Text="{x:Static p:Resources.ToolTipPageSizeDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </TextBox.ToolTip>
+                            </TextBox>
 
                         <Label Content="{x:Static p:Resources.FileDownloadLocation}" Grid.Column="0" Grid.Row="8" Margin="3,0,3,0" Padding="3,0,3,0">
                             <Label.ToolTip>

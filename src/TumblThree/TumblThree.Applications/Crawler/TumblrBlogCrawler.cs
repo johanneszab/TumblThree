@@ -326,7 +326,7 @@ namespace TumblThree.Applications.Crawler
                 return;
             }
 
-            foreach (int crawlerNumber in Enumerable.Range(0, shellService.Settings.ConcurrentScans))
+            foreach (int pageNumber in GetPageNumbers())
             {
                 await semaphoreSlim.WaitAsync();
 
@@ -339,9 +339,9 @@ namespace TumblThree.Applications.Crawler
 
                     try
                     {
-                        string document = await GetSvcPageAsync(blog.PageSize.ToString(), (blog.PageSize * crawlerNumber).ToString());
+                        string document = await GetSvcPageAsync(blog.PageSize.ToString(), (blog.PageSize * pageNumber).ToString());
                         TumblrJson response = ConvertJsonToClass<TumblrJson>(document);
-                        await AddUrlsToDownloadList(response, crawlerNumber);
+                        await AddUrlsToDownloadList(response, pageNumber);
                     }
                     catch (WebException webException) when (webException.Response != null)
                     {
@@ -486,7 +486,7 @@ namespace TumblThree.Applications.Crawler
 
                 string document = await GetSvcPageAsync(blog.PageSize.ToString(), (blog.PageSize * crawlerNumber).ToString());
                 response = ConvertJsonToClass<TumblrJson>(document);
-                if (!response.response.posts.Any())
+                if (!response.response.posts.Any() || !string.IsNullOrEmpty(blog.DownloadPages))
                 {
                     return;
                 }

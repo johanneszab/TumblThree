@@ -28,8 +28,8 @@ namespace TumblThree.Applications.Crawler
         private readonly PauseToken pt;
 
         public TumblrTagSearchCrawler(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress,
-            ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IDownloader downloader,
-            IPostQueue<TumblrPost> postQueue, IBlog blog)
+            ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService,
+            IDownloader downloader, IPostQueue<TumblrPost> postQueue, IBlog blog)
             : base(shellService, ct, progress, webRequestFactory, cookieService, postQueue, blog)
         {
             this.downloader = downloader;
@@ -80,7 +80,7 @@ namespace TumblThree.Applications.Crawler
 
             long crawlerTimeOffset = GenerateCrawlerTimeOffsets();
 
-            foreach (int crawlerNumber in Enumerable.Range(0, shellService.Settings.ConcurrentScans))
+            foreach (int pageNumber in GetPageNumbers())
             {
                 await semaphoreSlim.WaitAsync();
 
@@ -93,8 +93,8 @@ namespace TumblThree.Applications.Crawler
 
                     try
                     {
-                        long pagination = DateTimeOffset.Now.ToUnixTimeSeconds() - (crawlerNumber * crawlerTimeOffset);
-                        long nextCrawlersPagination = DateTimeOffset.Now.ToUnixTimeSeconds() - ((crawlerNumber + 1) * crawlerTimeOffset);
+                        long pagination = DateTimeOffset.Now.ToUnixTimeSeconds() - (pageNumber * crawlerTimeOffset);
+                        long nextCrawlersPagination = DateTimeOffset.Now.ToUnixTimeSeconds() - ((pageNumber + 1) * crawlerTimeOffset);
                         await AddUrlsToDownloadList(pagination, nextCrawlersPagination);
                     }
                     catch (TimeoutException timeoutException)
@@ -216,6 +216,8 @@ namespace TumblThree.Applications.Crawler
                     return;
                 if (!CheckIfWithinTimespan(pagination))
                     return;
+                //if (!string.IsNullOrEmpty(blog.DownloadPages))
+                //    return;
             }
         }
 

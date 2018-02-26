@@ -111,12 +111,7 @@ namespace TumblThree.Applications.Crawler
         {
             if (string.IsNullOrEmpty(blog.DownloadPages))
             {
-                int totalPosts = blog.Posts;
-                if (!TestRange(blog.PageSize, 1, 50))
-                    blog.PageSize = 50;
-                int totalPages = (totalPosts / blog.PageSize) + 1;
-
-                return Enumerable.Range(0, totalPages);
+                return Enumerable.Range(0, shellService.Settings.ConcurrentScans);
             }
             return RangeToSequence(blog.DownloadPages);
         }
