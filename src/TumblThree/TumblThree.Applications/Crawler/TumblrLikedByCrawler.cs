@@ -123,6 +123,14 @@ namespace TumblThree.Applications.Crawler
             return pagination;
         }
 
+        private bool CheckIfPagecountReached(int pageCount)
+        {
+            int numberOfPages = RangeToSequence(blog.DownloadPages).Count();
+            if (pageCount >= numberOfPages)
+                return true;
+            return false;
+        }
+
         private async Task<bool> CheckIfLoggedIn()
         {
             string document = await RequestDataAsync(blog.Url + "/page/1", "https://www.tumblr.com/", "https://" + blog.Name.Replace("+", "-") + ".tumblr.com");
@@ -163,6 +171,8 @@ namespace TumblThree.Applications.Crawler
                 crawlerNumber++;
                 if (!CheckIfWithinTimespan(pagination))
                     return;
+                //if (CheckIfPagecountReached(numberOfPagesCrawled))
+                //    return;
             }
         }
 

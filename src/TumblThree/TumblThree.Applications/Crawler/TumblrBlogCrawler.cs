@@ -281,6 +281,20 @@ namespace TumblThree.Applications.Crawler
             return highestId;
         }
 
+        protected override IEnumerable<int> GetPageNumbers()
+        {
+            if (string.IsNullOrEmpty(blog.DownloadPages))
+            {
+                int totalPosts = blog.Posts;
+                if (!TestRange(blog.PageSize, 1, 50))
+                    blog.PageSize = 50;
+                int totalPages = (totalPosts / blog.PageSize) + 1;
+
+                return Enumerable.Range(0, totalPages);
+            }
+            return RangeToSequence(blog.DownloadPages);
+        }
+
         private async Task<Tuple<ulong, bool>> GetUrlsAsync()
         {
             var semaphoreSlim = new SemaphoreSlim(shellService.Settings.ConcurrentScans);
