@@ -86,6 +86,7 @@ namespace TumblThree.Applications.Crawler
                 {
                     cookieService.GetUriCookie(request.CookieContainer, new Uri(cookieHost));
                 }
+                request.Credentials = new NetworkCredential(blog.Name + "tumblr.com", blog.Password);
                 requestRegistration = ct.Register(() => request.Abort());
                 return await webRequestFactory.ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
             }
