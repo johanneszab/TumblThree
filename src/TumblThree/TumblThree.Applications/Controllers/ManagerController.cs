@@ -190,24 +190,6 @@ namespace TumblThree.Applications.Controllers
             Logger.Verbose("ManagerController.LoadLibrary:End");
         }
 
-        //private async Task CheckBlogsOnlineStatusAsync()
-        //{
-        //    if (shellService.Settings.CheckOnlineStatusAtStartup)
-        //    {
-        //        await Task.Run(async () =>
-        //        {
-        //            IEnumerable<IBlog> blogs = managerService.BlogFiles;
-        //            foreach (IBlog blog in blogs)
-        //            {
-        //                ICrawler crawler = CrawlerFactory.GetCrawler(blog, new CancellationToken(), new PauseToken(),
-        //                    new Progress<DownloadProgress>(), shellService,
-        //                    crawlerService, managerService);
-        //                await crawler.IsBlogOnlineAsync();
-        //            }
-        //        });
-        //    }
-        //}
-
         private async Task CheckBlogsOnlineStatusAsync()
         {
             if (shellService.Settings.CheckOnlineStatusAtStartup)

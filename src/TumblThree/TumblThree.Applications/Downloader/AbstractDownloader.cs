@@ -65,15 +65,15 @@ namespace TumblThree.Applications.Downloader
         {
             try
             {
-                return await fileDownloader.DownloadFileWithResumeAsync(url, fileLocation).TimeoutAfter(shellService.Settings.TimeOut);
+                return await fileDownloader.DownloadFileWithResumeAsync(url, fileLocation);
             }
             catch (IOException ex) when ((ex.HResult & 0xFFFF) == 0x27 || (ex.HResult & 0xFFFF) == 0x70)
             {
                 // Disk Full, HRESULT: ‭-2147024784‬ == 0xFFFFFFFF80070070
-                Logger.Error("Downloader:DownloadBinaryFile: {0}", ex);
+                Logger.Error("AbstractDownloader:DownloadBinaryFile: {0}", ex);
                 shellService.ShowError(ex, Resources.DiskFull);
                 crawlerService.StopCommand.Execute(null);
-                return false;
+                throw;
             }
             catch (IOException ex) when ((ex.HResult & 0xFFFF) == 0x20)
             {
@@ -94,11 +94,11 @@ namespace TumblThree.Applications.Downloader
             {
                 Logger.Error("AbstractDownloader:DownloadBinaryFile {0}", timeoutException);
                 shellService.ShowError(timeoutException, Resources.TimeoutReached, Resources.Downloading, blog.Name);
-                return false;
+                throw;
             }
             catch
             {
-                return false;
+                throw;
             }
         }
 
