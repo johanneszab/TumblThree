@@ -3,7 +3,7 @@ using System.IO;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-
+using TumblThree.Applications.Extensions;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 
@@ -121,7 +121,7 @@ namespace TumblThree.Applications.Downloader
             {
                 var fileInfo = new FileInfo(destinationPath);
                 totalBytesReceived = fileInfo.Length;
-                if (totalBytesReceived >= await CheckDownloadSizeAsync(url))
+                if (totalBytesReceived >= await CheckDownloadSizeAsync(url).TimeoutAfter(settings.TimeOut))
                     return true;
             }
             if (ct.IsCancellationRequested)
@@ -149,7 +149,7 @@ namespace TumblThree.Applications.Downloader
                         request.AddRange(totalBytesReceived);
 
                         long totalBytesToReceive = 0;
-                        using (WebResponse response = await request.GetResponseAsync())
+                        using (WebResponse response = await request.GetResponseAsync().TimeoutAfter(settings.TimeOut))
                         {
                             totalBytesToReceive = totalBytesReceived + response.ContentLength;
 
@@ -161,7 +161,7 @@ namespace TumblThree.Applications.Downloader
                                     var bytesRead = 0;
                                     //Stopwatch sw = Stopwatch.StartNew();
 
-                                    while ((bytesRead = await throttledStream.ReadAsync(buffer, 0, buffer.Length, ct)) > 0)
+                                    while ((bytesRead = await throttledStream.ReadAsync(buffer, 0, buffer.Length, ct).TimeoutAfter(settings.TimeOut)) > 0)
                                     {
                                         await fileStream.WriteAsync(buffer, 0, bytesRead);
                                         totalBytesReceived += bytesRead;
