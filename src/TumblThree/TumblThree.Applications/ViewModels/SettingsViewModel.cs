@@ -64,6 +64,7 @@ namespace TumblThree.Applications.ViewModels
         private bool downloadVideos;
         private bool enablePreview;
         private bool forceSize;
+        private bool forceRescan;
         private string imageSize;
         private bool limitConnections;
         private bool limitScanBandwidth;
@@ -347,6 +348,12 @@ namespace TumblThree.Applications.ViewModels
         {
             get { return forceSize; }
             set { SetProperty(ref forceSize, value); }
+        }
+
+        public bool ForceRescan
+        {
+            get { return forceRescan; }
+            set { SetProperty(ref forceRescan, value); }
         }
 
         public bool CheckDirectoryForFiles
@@ -783,6 +790,7 @@ namespace TumblThree.Applications.ViewModels
                 DownloadRebloggedPosts = settings.DownloadRebloggedPosts;
                 AutoDownload = settings.AutoDownload;
                 ForceSize = settings.ForceSize;
+                ForceRescan = settings.ForceRescan;
                 CheckDirectoryForFiles = settings.CheckDirectoryForFiles;
                 DownloadUrlList = settings.DownloadUrlList;
                 PortableMode = settings.PortableMode;
@@ -860,6 +868,7 @@ namespace TumblThree.Applications.ViewModels
                 DownloadRebloggedPosts = true;
                 AutoDownload = false;
                 ForceSize = false;
+                ForceRescan = false;
                 CheckDirectoryForFiles = false;
                 DownloadUrlList = false;
                 PortableMode = false;
@@ -971,6 +980,7 @@ namespace TumblThree.Applications.ViewModels
             settings.OAuthCallbackUrl = OAuthCallbackUrl;
             settings.AutoDownload = AutoDownload;
             settings.ForceSize = ForceSize;
+            settings.ForceRescan = ForceRescan;
             settings.DownloadImgur = DownloadImgur;
             settings.DownloadGfycat = DownloadGfycat;
             settings.DownloadWebmshare = DownloadWebmshare;

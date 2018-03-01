@@ -33,6 +33,7 @@ namespace TumblThree.Applications.Services
             blog.SkipGif = shellService.Settings.SkipGif;
             blog.DownloadRebloggedPosts = shellService.Settings.DownloadRebloggedPosts;
             blog.ForceSize = shellService.Settings.ForceSize;
+            blog.ForceRescan = shellService.Settings.ForceRescan;
             blog.CheckDirectoryForFiles = shellService.Settings.CheckDirectoryForFiles;
             blog.DownloadUrlList = shellService.Settings.DownloadUrlList;
             blog.DownloadPages = shellService.Settings.DownloadPages;
