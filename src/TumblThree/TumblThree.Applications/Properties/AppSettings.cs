@@ -273,6 +273,9 @@ namespace TumblThree.Applications.Properties
         public bool ForceSize { get; set; }
 
         [DataMember]
+        public bool ForceRescan { get; set; }
+
+        [DataMember]
         public bool CheckDirectoryForFiles { get; set; }
 
         [DataMember]
@@ -384,6 +387,7 @@ namespace TumblThree.Applications.Properties
             AutoDownload = false;
             TimerInterval = "22:40:00";
             ForceSize = false;
+            ForceRescan = false;
             CheckDirectoryForFiles = false;
             DownloadUrlList = false;
             PortableMode = false;

@@ -740,7 +740,7 @@
                             </CheckBox.ToolTip>
                         </CheckBox>-->
                         <CheckBox x:Name="checkBoxDownloadUrlList" Content="{x:Static p:Resources.DownloadUrlList}"
-                          IsChecked="{Binding DownloadUrlList, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="13" Margin="10">
+                          IsChecked="{Binding DownloadUrlList, Mode=TwoWay}" VerticalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="13" Margin="10">
                             <CheckBox.ToolTip>
                                 <ToolTip>
                                     <StackPanel>
@@ -798,6 +798,18 @@
                                         <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipDumpCrawlerData}" />
                                         <TextBlock xml:space="preserve"
                                            Text="{x:Static p:Resources.ToolTipDumpCrawlerDataDescription}" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </CheckBox.ToolTip>
+                        </CheckBox>
+                        <CheckBox x:Name="checkBoxForceRescan" Content="{x:Static p:Resources.ForceRescan}"
+                          IsChecked="{Binding ForceSize, Mode=TwoWay}" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="16" Margin="10">
+                            <CheckBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipForceRescan}" />
+                                        <TextBlock xml:space="preserve"
+                                           Text="{x:Static p:Resources.ToolTipForceRescanDescription}" />
                                     </StackPanel>
                                 </ToolTip>
                             </CheckBox.ToolTip>
