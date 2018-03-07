@@ -411,6 +411,20 @@ namespace TumblThree.Presentation.Controls
             return true;
         }
 
+        public static void LoadColumnChecks(DataGrid dataGrid)
+        {
+            if (dataGrid == null)
+                return;
+
+            foreach (DataGridColumn column in dataGrid.Columns)
+            {
+                DataGridColumnHeader columnHeader = GetColumnHeaderFromColumn(dataGrid, column);
+                if (columnHeader == null)
+                    continue;
+                SyncItemsOnColumnHeader(columnHeader);
+            }
+        }
+
         /// <summary>
         /// Shows a column within the datagrid, which is not straightforward
         /// because the datagrid not only hides a column when you tell it to

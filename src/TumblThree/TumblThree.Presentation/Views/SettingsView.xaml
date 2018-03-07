@@ -225,8 +225,6 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid MinHeight="46" Height="Auto" Grid.Row="0">
                             <Grid.ColumnDefinitions>
@@ -490,7 +488,7 @@
                                 </TextBox.Text>
                             </TextBox>
                         </Grid>
-                        <Grid MinHeight="46" Height="Auto" Grid.Row="7">
+                        <!--<Grid MinHeight="46" Height="Auto" Grid.Row="7">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
@@ -547,7 +545,7 @@
                          Text="{Binding ProxyPassword, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                          Grid.Column="3" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center"
                          Margin="00,0,10,0" />
-                        </Grid>
+                        </Grid>-->
                     </Grid>
                 </TabItem>
                 <TabItem Header="{x:Static p:Resources.Blog}">
@@ -803,7 +801,7 @@
                             </CheckBox.ToolTip>
                         </CheckBox>
                         <CheckBox x:Name="checkBoxForceRescan" Content="{x:Static p:Resources.ForceRescan}"
-                          IsChecked="{Binding ForceSize, Mode=TwoWay}" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="16" Margin="10">
+                          IsChecked="{Binding ForceRescan, Mode=TwoWay}" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="16" Margin="10">
                             <CheckBox.ToolTip>
                                 <ToolTip>
                                     <StackPanel>

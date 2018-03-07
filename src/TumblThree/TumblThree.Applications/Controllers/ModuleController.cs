@@ -117,6 +117,7 @@ namespace TumblThree.Applications.Controllers
 
         public async void Run()
         {
+            ManagerController.RestoreColumn();
             ShellViewModel.IsQueueViewVisible = true;
             ShellViewModel.Show();
 
@@ -179,6 +180,8 @@ namespace TumblThree.Applications.Controllers
                 Logger.Error("Could not save the settings file: {0}", ex);
             }
         }
+
+
 
         private void ShowDetailsView()
         {
