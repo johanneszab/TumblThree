@@ -11,6 +11,7 @@ using System.Windows.Input;
 
 using TumblThree.Applications.ViewModels;
 using TumblThree.Applications.Views;
+using TumblThree.Presentation.Controls;
 using TumblThree.Domain.Models;
 using TumblThree.Domain.Queue;
 
@@ -66,6 +67,7 @@ namespace TumblThree.Presentation.Views
                     column.Width = new DataGridLength(entry.Item2, DataGridLengthUnitType.Pixel);
                     column.Visibility = entry.Item3;
                 }
+                DataGridHideColumns.LoadColumnChecks(blogFilesGrid);
             }
         }
 

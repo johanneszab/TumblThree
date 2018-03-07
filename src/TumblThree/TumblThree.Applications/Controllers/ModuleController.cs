@@ -117,6 +117,7 @@ namespace TumblThree.Applications.Controllers
 
         public async void Run()
         {
+            ManagerController.RestoreColumn();
             ShellViewModel.IsQueueViewVisible = true;
             ShellViewModel.Show();
 

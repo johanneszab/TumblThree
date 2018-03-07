@@ -35,20 +35,6 @@ namespace TumblThree.Applications.ViewModels
             this.crawlerService = crawlerService;
             this.managerService = managerService;
 
-            try
-            {
-                if (shellService.Settings.ColumnSettings.Count != 0)
-                {
-                    view.DataGridColumnRestore = ShellService.Settings.ColumnSettings;
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error("ManagerViewModel:ManagerViewModel {0}", ex);
-                shellService.ShowError(ex, Resources.CouldNotRestoreUISettings);
-                return;
-            }
-
             ShellService.Closing += ViewClosed;
         }
 
@@ -104,6 +90,23 @@ namespace TumblThree.Applications.ViewModels
         public void ViewClosed(object sender, EventArgs e)
         {
             ShellService.Settings.ColumnSettings = ViewCore.DataGridColumnRestore;
+        }
+
+        public void DataGridColumnRestore()
+        {
+            try
+            {
+                if (ShellService.Settings.ColumnSettings.Count != 0)
+                {
+                    ViewCore.DataGridColumnRestore = ShellService.Settings.ColumnSettings;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error("ManagerViewModel:ManagerViewModel {0}", ex);
+                ShellService.ShowError(ex, Resources.CouldNotRestoreUISettings);
+                return;
+            }
         }
 
         public void QueueItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

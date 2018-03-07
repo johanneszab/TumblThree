@@ -591,5 +591,10 @@ namespace TumblThree.Applications.Controllers
             removeBlogCommand.RaiseCanExecuteChanged();
             showFilesCommand.RaiseCanExecuteChanged();
         }
+
+        public void RestoreColumn()
+        {
+            ManagerViewModel.DataGridColumnRestore();
+        }
     }
 }
