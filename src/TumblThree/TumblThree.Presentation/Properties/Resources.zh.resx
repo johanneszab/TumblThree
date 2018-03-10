@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -757,7 +757,12 @@
   <data name="ToolTipLoadAllDatabasesDescription" xml:space="preserve">
     <value>爬取时，下载前将以所有博客为范围检查文件来避免重复下载。
 默认以单个博客为范围，启用此选项将以所有博客为范围。
-启用将增加工作时内存的占用（与已下载内容大小有关）。
-重启生效。</value>
+启用将增加工作时内存的占用（与已下载内容大小有关）。</value>
+  </data>
+  <data name="DisplayConfirmationDialog" xml:space="preserve">
+    <value>显示确认对话框？</value>
+  </data>
+  <data name="MetadataFormat" xml:space="preserve">
+    <value>元数据格式</value>
   </data>
 </root>
