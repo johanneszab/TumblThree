@@ -117,11 +117,11 @@ namespace TumblThree.Applications.Controllers
 
         public async void Run()
         {
-            ManagerController.RestoreColumn();
             ShellViewModel.IsQueueViewVisible = true;
             ShellViewModel.Show();
 
             // Let the UI to initialize first before loading the queuelist.
+            await Dispatcher.CurrentDispatcher.InvokeAsync(ManagerController.RestoreColumn, DispatcherPriority.ApplicationIdle);
             await Dispatcher.CurrentDispatcher.InvokeAsync(QueueController.Run, DispatcherPriority.ApplicationIdle);
         }
 

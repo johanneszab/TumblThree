@@ -6,7 +6,10 @@ This is Emphasia's Simplified Chinese translation for [johanneszab's TumblThree]
 
 - 作者页面：https://www.jzab.de/content/tumblthree
 - 未来的新功能与改进：https://github.com/johanneszab/TumblThree/wiki/New-Feature-Requests-and-Possible-Enhancements
-- 程序BUG或建议：https://github.com/johanneszab/TumblThree/issues
+- 程序BUG或建议：
+  - 向作者提*（建议英语）*：https://github.com/johanneszab/TumblThree/issues
+  - 向我提*（中英皆可）*：https://github.com/Emphasia/TumblThree-zh/issues
+  - 注意：在国内的网络环境下，**设定用于下载的代理**可能是必须的，这并不是TumblThree的BUG。
 
 ## 下载 Download
 
@@ -18,7 +21,7 @@ This is Emphasia's Simplified Chinese translation for [johanneszab's TumblThree]
 >
 > 同步的版本因新功能的增加可能会有未翻译和错误的情况，而完全翻译的版本一般会晚一个版本。
 
-TumblThree作者的最新版本、别的版本及更新历史： https://github.com/johanneszab/TumblThree/releases
+TumblThree作者的最新版本、别的版本及更新历史：https://github.com/johanneszab/TumblThree/releases
 
 ## 新手入门 Getting Started
 
@@ -35,17 +38,18 @@ TumblThree作者的最新版本、别的版本及更新历史： https://github.
 当你感觉**下载速度不理想时**可能想更改的设置：
 
 - `下载` -> HTTP代理：设定用于下载的代理。**注意：在国内的网络环境下，这可能是必须的。**（也可以考虑修改hosts😏）
-- `全局` -> 并行连接数：设定用于下载帖子的连接的数目。该数目将被所有当前正在下载的博客共用。注意：如果你只下载视频帖子，你也许想要减少并行连接数至8或更低，具体取决于你的网络状况。否则你可能会因为tumblr服务器频繁的关闭连接（同时打开了太多连接）而得到不完整的文件。对小文件（如图片）这没啥影响。
-- `全局` -> 并行博客数：同时处理的博客数量。
+- `下载` -> 并发连接数：设定用于下载帖子的连接的数目。该数目将被所有当前正在下载的博客共用。注意：如果你只下载视频帖子，你也许想要减少并行连接数至8或更低，具体取决于你的网络状况。否则你可能会因为tumblr服务器频繁的关闭连接（同时打开了太多连接）而得到不完整的文件。对小文件（如图片）这没啥影响。
+- `下载` -> 并发视频数：设定用于下载视频的连接的数目。该数目将被所有当前正在下载的博客共用。注意：当同时打开太多连接时，tumblr视频服务器(vt.tumblr.com)会频繁的关闭连接，从而导致得到不完整的文件。因此，设置此选项以供单独设定与其最大连接数。
+- `下载` -> 并发博客数：同时处理的博客数量。
 
 一般情况下你不需要改变其他的连接设置。特别的，除非你明确知道其作用否则不要去更改的：
 
-- `全局` -> 限制Tumblr-Api连接数：保持选中启用且不要改变对应的值（默认*90连接数每60秒*）。如果你执意更改，你可能会得到*博客离线*或*下载不全*等问题。
+- `下载` -> 限制Tumblr-API连接数：保持选中启用且不要改变对应的值（默认*90连接数每60秒*）。如果你执意更改，你可能会得到*博客离线*或*下载不全*等问题。
 
 ## 使用指南 Usage
 
 - 下载并解压 `.zip` 文件，运行 `TumblThree.exe`。
-- 复制想要备份或下载的tumblr博客`URL` (http(s)://\*.tumblr.com\*)到底部的文本框（或使用剪贴板监视功能自动添加）后，点击右边的 `添加博客`。
+- 复制想要备份或下载的tumblr博客`URL`(http(s)://\*.tumblr.com\*)到底部的文本框（或使用剪贴板监视功能自动添加）后，点击右边的 `添加博客`。
 - 先将要处理的博客`添加到队列`，然后单击`开始`来开始下载（爬取），程序将自动检查队列中的博客并处理，直到你按下`停止` 。当然，你可以也可以先开始再向队列中添加博客。
 - 队列中博客左边的蓝条表明这个博客正在下载，左边的博客管理器也表明了各个博客的状态（红色为离线，绿色为下载中，紫色为等待）。
 - 你可在`设置`中设置并行的博客数目，下载目录和指定图片分辨率，或自动下载的时间。
@@ -65,6 +69,14 @@ TumblThree作者的最新版本、别的版本及更新历史： https://github.
   - 下载某用户喜欢过的图片和视频：
     1. 到`设置`，单击`授权`，`登录`tumblr，登陆成功后弹出窗口会自动关闭
     2. 添加该博客（包括liked/by字符串 e.g. https://www.tumblr.com/liked/by/wallpaperfx/）
+    3. 将该博客添加到队列并下载
+
+    下载您 **自己的“喜欢”** 时，请确认您已经在您的博客设置 (https://www.tumblr.com/settings/blog/ *你的博客名*) 中（临时地）启用以下选项：
+    + `Likes` -> Share posts you like (使 “喜欢”页 公开)
+    + `Visibility` -> _blog_ is explicit (使 NSFW “喜欢” 可见/可下载)
+  - 下载tumblr搜索结果中的图片和视频：
+    1. 到`设置`，单击`授权`，`登录`tumblr，登陆成功后弹出窗口会自动关闭
+    2. 添加该博客（包括以‘+’分隔的关键词 e.g.  https://www.tumblr.com/search/my+keyword）
     3. 将该博客添加到队列并下载
   - 下载tumblr标签搜索结果中的图片和视频：
     1. 到`设置`，单击`授权`，`登录`tumblr，登陆成功后弹出窗口会自动关闭
@@ -86,11 +98,11 @@ TumblThree作者的最新版本、别的版本及更新历史： https://github.
 
 - 保存的文件
   - 注意：以下文件都以json格式保存
-  - 设置文件(Settings.json) 保存在 C:\\Users\\*用户名*\\AppData\\Local\\TumblThree\\
+  - 设置文件Settings.json保存在 C:\\Users\\*用户名*\\AppData\\Local\\TumblThree\\
   - 你可以使用 *便携模式* (设置->全局) 将设置文件保存在程序根目录
-  - 对每个博客，在下载目录（默认在程序根目录下的 _.\\Blogs\\_）下有一个以博客名命名的 索引(*Index*) 文件夹 中有 数据库(序列化类) 文件。其中储存了博客URL、何时添加、哪些文件已被下载等信息。这使你能够移动已下载的文件到别的目录而不影响下载过程。
+  - 对每个博客，在下载目录（默认在程序根目录下的 _.\\Blogs\\_）下有一个以博客名命名的 索引(*Index*)文件夹 中有 数据库(序列化类) 文件。其中储存了博客URL、何时添加、哪些文件已被下载等信息。这使你能够移动已下载的文件到别的目录而不影响下载过程。
 
-- 另有一些设置未在UI中显示，要查看或修改全部的设置可打开设置文件(Settings.json)。
+- 另有一些设置未在UI中显示，要查看或修改全部的设置可打开设置文件Settings.json。
 
   其中一些值得注意的可以进一步优化应用程序的设置：
 
@@ -107,12 +119,13 @@ TumblThree作者的最新版本、别的版本及更新历史： https://github.
 * 可导出下载地址而不实际下载
 * 下载队列可自动保存
 * 下载队列可导出、清空和恢复
-* 可设置指定分辨率
+* 可设置指定（下载）分辨率
+* 可跳过下载已在别的博客（当前已加载的）下载过的文件
 * 可用便携模式
-* 可用代理
+* 可用HTTP代理
 * 可限制带宽和线程
 * 可设置自动下载
-* 使用SSL而不是不安全的http连接
+* 使用SSL而不是不安全的HTTP连接
 * 任务栏图标和快捷键绑定
 
 ### 博客备份或下载 Blog backup/download
@@ -120,7 +133,8 @@ TumblThree作者的最新版本、别的版本及更新历史： https://github.
 * 可下载图片、视频、文本、音频、引用、对话、链接和回复贴
 * 可下载图片、视频、音频的元数据
 * 可下载内嵌的图片和视频
-* 可下载safe-mode、密码保护或隐藏的博客
+* 可下载safe-mode、密码保护或隐藏以及NSFW的博客
+* 可下载外链 Imgur.com, Gfycat.com 和 Webmshare.com 的帖子
 * 可仅下载原创帖而跳过转发帖
 * 可仅下载带标签（或指定标签）的帖子
 * 可下载特定页数或时间段内的帖子而不是整个博客
