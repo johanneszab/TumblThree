@@ -39,15 +39,15 @@ namespace TumblThree.Applications.Services
             request.ServicePoint.Expect100Continue = false;
             request.UnsafeAuthenticatedConnectionSharing = true;
             request.UserAgent = ApplicationInfo.ProductName;
-            request.KeepAlive = true;
-            request.Pipelined = true;
-            if (!string.IsNullOrEmpty(shellService.Settings.ProxyHost))
+            //request.KeepAlive = true;
+            //request.Pipelined = true;
+            if (!string.IsNullOrEmpty(shellService.Settings.ProxyHost) && !string.IsNullOrEmpty(shellService.Settings.ProxyPort))
             {
                 request.Proxy = new WebProxy(shellService.Settings.ProxyHost, int.Parse(shellService.Settings.ProxyPort));
             }
-            else
+            if (!string.IsNullOrEmpty(shellService.Settings.ProxyUsername) && !string.IsNullOrEmpty(shellService.Settings.ProxyPassword))
             {
-                request.Proxy = null;
+                request.Proxy.Credentials = new NetworkCredential(shellService.Settings.ProxyUsername, shellService.Settings.ProxyPassword);
             }
             return request;
         }
