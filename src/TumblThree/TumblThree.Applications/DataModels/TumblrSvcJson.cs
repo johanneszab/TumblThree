@@ -37,6 +37,14 @@ namespace TumblThree.Applications.DataModels.TumblrSvcJson
     public class Theme
     {
         [DataMember(EmitDefaultValue = false)]
+        public int header_full_width { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public int header_full_height { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public int header_focus_width { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public int header_focus_height { get; set; }
+        [DataMember(EmitDefaultValue = false)]
         public string avatar_shape { get; set; }
         [DataMember(EmitDefaultValue = false)]
         public string background_color { get; set; }
@@ -354,6 +362,8 @@ namespace TumblThree.Applications.DataModels.TumblrSvcJson
         [DataMember(EmitDefaultValue = false)]
         public bool is_nsfw_based_on_score { get; set; }
         [DataMember(EmitDefaultValue = false)]
+        public List<string> supply_logging { get; set; }
+        [DataMember(EmitDefaultValue = false)]
         public Blog blog { get; set; }
         [DataMember(EmitDefaultValue = false)]
         public bool is_nsfw { get; set; }
@@ -383,6 +393,8 @@ namespace TumblThree.Applications.DataModels.TumblrSvcJson
         public string short_url { get; set; }
         [DataMember(EmitDefaultValue = false)]
         public string summary { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public bool is_blocks_post_format { get; set; }
         [DataMember(EmitDefaultValue = false)]
         public string recommended_source { get; set; }
         [DataMember(EmitDefaultValue = false)]
@@ -535,6 +547,10 @@ namespace TumblThree.Applications.DataModels.TumblrSvcJson
         public bool? is_anonymous { get; set; }
         [DataMember(EmitDefaultValue = false)]
         public bool? is_submission { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public bool should_bypass_tagfiltering { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public string provider_uri { get; set; }
 
         public object Clone()
         {
@@ -551,6 +567,7 @@ namespace TumblThree.Applications.DataModels.TumblrSvcJson
         {
             type = string.Empty;
             is_nsfw_based_on_score = false;
+            supply_logging = new List<string>();
             blog = new Blog();
             is_nsfw = false;
             nsfw_score = 0.0;

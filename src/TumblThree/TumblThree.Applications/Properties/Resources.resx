@@ -287,6 +287,9 @@
   <data name="PostId" xml:space="preserve">
     <value>Post ID: {0}</value>
   </data>
+  <data name="PostNotParsable" xml:space="preserve">
+    <value>A post from {0} was not parsable. Setting 'posts per page' to 1 in the Details might increase the downloadable content.</value>
+  </data>
   <data name="ProgressDownloadImage" xml:space="preserve">
     <value>Downloading {0}.</value>
   </data>

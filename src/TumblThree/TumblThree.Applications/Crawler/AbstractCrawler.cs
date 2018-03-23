@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using System.Web;
 using TumblThree.Applications.DataModels;
 using TumblThree.Applications.DataModels.TumblrPosts;
-using TumblThree.Applications.Downloader;
 using TumblThree.Applications.Extensions;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
@@ -149,15 +148,17 @@ namespace TumblThree.Applications.Crawler
             statisticsBag.Add(addToList);
         }
 
-        public static T ConvertJsonToClass<T>(string json) where T : new()
+        public T ConvertJsonToClass<T>(string json) where T : new()
         {
             try
             {
                 var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
                 return serializer.Deserialize<T>(json);
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException invalidOperationException)
             {
+                Logger.Error("AbstractCrawler:ConvertJsonToClass<T>: {0}", "Could not parse data");
+                shellService.ShowError(invalidOperationException, Resources.PostNotParsable, blog.Name);
                 return new T();
             }
         }

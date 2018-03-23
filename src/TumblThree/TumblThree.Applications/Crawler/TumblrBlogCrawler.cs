@@ -144,18 +144,20 @@ namespace TumblThree.Applications.Crawler
             }
         }
 
-        public new static T ConvertJsonToClass<T>(string json) where T : new()
+        public new T ConvertJsonToClass<T>(string json) where T : new()
         {
             try
             {
                 using (MemoryStream ms = new MemoryStream(Encoding.Unicode.GetBytes(json)))
                 {
-                    DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(T));
+                    DataContractJsonSerializer serializer = new DataContractJsonSerializer((typeof(T)));
                     return (T)serializer.ReadObject(ms);
                 }
             }
-            catch (System.Runtime.Serialization.SerializationException)
+            catch (System.Runtime.Serialization.SerializationException serializationException)
             {
+                Logger.Error("TumblrBlogCrawler:ConvertJsonToClass<T>: {0}", "Could not parse data");
+                shellService.ShowError(serializationException, Resources.PostNotParsable, blog.Name);
                 return new T();
             }
         }
