@@ -49,7 +49,7 @@
                 <Label Content="{x:Static p:Resources.License}" Grid.Row="2" />
                 <Label Grid.Column="1" Grid.Row="2">
                     <Hyperlink Command="{Binding ShowWebsiteCommand}"
-                               CommandParameter="https://github.com/johanneszab/TumblThree/blob/master/LICENSE.txt">
+                               CommandParameter="https://github.com/johanneszab/TumblThree/blob/master/LICENSE">
                         The
                         MIT License (MIT)
                     </Hyperlink>
@@ -66,7 +66,7 @@
                 <Label Content="{x:Static p:Resources.ThirdPartySoftware}" Grid.Row="4" />
                 <Label Grid.Column="1" Grid.Row="4">
                     <Hyperlink Command="{Binding ShowWebsiteCommand}"
-                               CommandParameter="https://github.com/johanneszab/TumblThree/blob/master/LICENSE-3RD-PARTY.txt">
+                               CommandParameter="https://github.com/johanneszab/TumblThree/blob/master/LICENSE-3RD-PARTY">
                         Third-party
                         Software and Licenses
                     </Hyperlink>

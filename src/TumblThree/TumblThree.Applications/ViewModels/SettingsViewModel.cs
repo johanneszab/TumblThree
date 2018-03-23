@@ -816,7 +816,7 @@ namespace TumblThree.Applications.ViewModels
                 ConcurrentBlogs = 1;
                 ConcurrentScans = 4;
                 LimitScanBandwidth = false;
-                TimeOut = 30;
+                TimeOut = 60;
                 LimitConnections = true;
                 MaxConnections = 90;
                 ConnectionTimeInterval = 60;

@@ -567,6 +567,15 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A post from {0} was not parsable. Setting &apos;posts per page&apos; to 1 in the Details might increase the downloadable content..
+        /// </summary>
+        public static string PostNotParsable {
+            get {
+                return ResourceManager.GetString("PostNotParsable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Downloading {0}..
         /// </summary>
         public static string ProgressDownloadImage {

@@ -144,7 +144,7 @@ namespace TumblThree.Applications.Crawler
             }
         }
 
-        public new static T ConvertJsonToClass<T>(string json) where T : new()
+        public new T ConvertJsonToClass<T>(string json) where T : new()
         {
             try
             {
@@ -154,8 +154,10 @@ namespace TumblThree.Applications.Crawler
                     return (T)serializer.ReadObject(ms);
                 }
             }
-            catch (System.Runtime.Serialization.SerializationException)
+            catch (System.Runtime.Serialization.SerializationException serializationException)
             {
+                Logger.Error("TumblrHiddenCrawler:ConvertJsonToClass<T>: {0}", "Could not parse data");
+                shellService.ShowError(serializationException, Resources.PostNotParsable, blog.Name);
                 return new T();
             }
         }
