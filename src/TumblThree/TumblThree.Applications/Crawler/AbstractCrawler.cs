@@ -85,7 +85,11 @@ namespace TumblThree.Applications.Crawler
                 {
                     cookieService.GetUriCookie(request.CookieContainer, new Uri(cookieHost));
                 }
-                request.Credentials = new NetworkCredential(blog.Name + "tumblr.com", blog.Password);
+                string username = blog.Name + ".tumblr.com";
+                string password = blog.Password;
+                string encoded = System.Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(username + ":" + password));
+                request.Headers.Add("Authorization", "Basic " + encoded);
+                //request.Credentials = new NetworkCredential(blog.Name + ".tumblr.com", blog.Password);
                 requestRegistration = ct.Register(() => request.Abort());
                 return await webRequestFactory.ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
             }
