@@ -35,6 +35,14 @@ namespace TumblThree.Applications.Crawler
             return false;
         }
 
+        public async Task<bool> IsPasswordProtectedTumblrBlog(string url)
+        {
+            string location = await GetUrlRedirection(url).TimeoutAfter(shellService.Settings.TimeOut); ;
+            if (location.Contains("blog_auth"))
+                return true;
+            return false;
+        }
+
         private async Task<string> GetUrlRedirection(string url)
         {
             HttpWebRequest request = webRequestFactory.CreateGetReqeust(url);

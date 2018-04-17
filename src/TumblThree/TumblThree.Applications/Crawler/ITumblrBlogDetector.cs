@@ -6,6 +6,8 @@ namespace TumblThree.Applications.Crawler
     {
         Task<bool> IsHiddenTumblrBlog(string url);
 
+        Task<bool> IsPasswordProtectedTumblrBlog(string url);
+
         Task<bool> IsTumblrBlog(string url);
     }
 }
