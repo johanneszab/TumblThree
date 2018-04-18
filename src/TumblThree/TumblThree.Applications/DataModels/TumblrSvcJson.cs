@@ -227,6 +227,15 @@ namespace TumblThree.Applications.DataModels.TumblrSvcJson
     }
 
     [DataContract]
+    public class LinkImageDimensions
+    {
+        [DataMember(EmitDefaultValue = false)]
+        public int width { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public int height { get; set; }
+    }
+
+    [DataContract]
     public class OriginalSize
     {
         [DataMember(EmitDefaultValue = false)]
@@ -342,6 +351,17 @@ namespace TumblThree.Applications.DataModels.TumblrSvcJson
     }
 
     [DataContract]
+    public class PinterestShareWindowClass
+    {
+        [DataMember(EmitDefaultValue = false)]
+        public string url { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public string name { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public string dimensions { get; set; }
+    }
+
+    [DataContract]
     public class PhotosetPhoto
     {
         [DataMember(EmitDefaultValue = false)]
@@ -418,6 +438,8 @@ namespace TumblThree.Applications.DataModels.TumblrSvcJson
         [DataMember(EmitDefaultValue = false)]
         public bool html5_capable { get; set; }
         [DataMember(EmitDefaultValue = false)]
+        public Video video { get; set; }
+        [DataMember(EmitDefaultValue = false)]
         public string thumbnail_url { get; set; }
         [DataMember(EmitDefaultValue = false)]
         public int thumbnail_width { get; set; }
@@ -426,7 +448,7 @@ namespace TumblThree.Applications.DataModels.TumblrSvcJson
         [DataMember(EmitDefaultValue = false)]
         public float duration { get; set; }
         [DataMember(EmitDefaultValue = false)]
-        public List<Player> player { get; set; }
+        public object player { get; set; }
         [DataMember(EmitDefaultValue = false)]
         public string audio_url { get; set; }
         [DataMember(EmitDefaultValue = false)]
@@ -550,7 +572,26 @@ namespace TumblThree.Applications.DataModels.TumblrSvcJson
         [DataMember(EmitDefaultValue = false)]
         public bool should_bypass_tagfiltering { get; set; }
         [DataMember(EmitDefaultValue = false)]
-        public string provider_uri { get; set; }
+        public bool should_bypass_safemode { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public bool can_modify_safe_mode { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public object survey { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public string url { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public string link_image { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public LinkImageDimensions link_image_dimensions { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public object link_author { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public string excerpt { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public string publisher { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public string description { get; set; }
+
 
         public object Clone()
         {
@@ -598,7 +639,7 @@ namespace TumblThree.Applications.DataModels.TumblrSvcJson
             thumbnail_width = 0;
             thumbnail_height = 0;
             duration = 0;
-            player = new List<Player>();
+            player = new object();
             audio_url = string.Empty;
             audio_source_url = string.Empty;
             audio_type = string.Empty;
@@ -659,6 +700,16 @@ namespace TumblThree.Applications.DataModels.TumblrSvcJson
             dialogue = new List<Dialogue>();
             is_anonymous = false;
             is_submission = false;
+            should_bypass_safemode = false;
+            can_modify_safe_mode = false;
+            survey = new object();
+            url = string.Empty;
+            link_image = string.Empty;
+            link_image_dimensions = new LinkImageDimensions();
+            link_author = string.Empty;
+            excerpt = string.Empty;
+            publisher = string.Empty;
+            description = string.Empty;
         }
     }
 
@@ -691,6 +742,24 @@ namespace TumblThree.Applications.DataModels.TumblrSvcJson
         public int width { get; set; }
         [DataMember(EmitDefaultValue = false)]
         public string embed_code { get; set; }
+    }
+
+    [DataContract]
+    public class Youtube
+    {
+        [DataMember(EmitDefaultValue = false)]
+        public string video_id { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public int width { get; set; }
+        [DataMember(EmitDefaultValue = false)]
+        public int height { get; set; }
+    }
+
+    [DataContract]
+    public class Video
+    {
+        [DataMember(EmitDefaultValue = false)]
+        public Youtube youtube { get; set; }
     }
 
     [DataContract]
