@@ -137,6 +137,12 @@ namespace TumblThree.Applications.Crawler
 
         public new T ConvertJsonToClass<T>(string json) where T : new()
         {
+            if (json.Contains("tumblr_api_read"))
+            {
+                int jsonStart = json.IndexOf("{");
+                json = json.Substring(jsonStart);
+                json = json.Remove(json.Length - 2);
+            }
             try
             {
                 using (MemoryStream ms = new MemoryStream(Encoding.Unicode.GetBytes(json)))
