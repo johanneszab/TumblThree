@@ -217,7 +217,7 @@
     <value>Show details</value>
   </data>
   <data name="ShowFiles" xml:space="preserve">
-    <value>Show Files</value>
+    <value>Show files</value>
   </data>
   <data name="Stop" xml:space="preserve">
     <value>Stop</value>
@@ -496,7 +496,7 @@ Since the data is usually small, you should leave this high.</value>
     <value>per time interval (s):</value>
   </data>
   <data name="LimitConnections" xml:space="preserve">
-    <value>Limit Tumblr Api Connections:</value>
+    <value>Limit Tumblr API connections:</value>
   </data>
   <data name="MaxConnections" xml:space="preserve">
     <value>Number of connections:</value>
