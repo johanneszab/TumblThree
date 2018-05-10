@@ -19,7 +19,7 @@ namespace TumblThree.Applications.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Resources {
@@ -70,7 +70,7 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Audio Caption: {0}.
+        ///   Looks up a localized string similar to Audio caption: {0}.
         /// </summary>
         public static string AudioCaption {
             get {
@@ -97,7 +97,7 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The Blog is Offline: {0}.
+        ///   Looks up a localized string similar to The blog is offline: {0}.
         /// </summary>
         public static string BlogIsOffline {
             get {
@@ -214,7 +214,7 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not restore UI settings..
+        ///   Looks up a localized string similar to Could not restore user interface settings..
         /// </summary>
         public static string CouldNotRestoreUISettings {
             get {
@@ -241,7 +241,7 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not initialize the OAuth Manager.
+        ///   Looks up a localized string similar to Could not initialize the OAuth manager.
         /// </summary>
         public static string CouldNotStartOAuthManager {
             get {
@@ -315,7 +315,7 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Text Files (*.txt)|*.txt.
+        ///   Looks up a localized string similar to Text files (*.txt)|*.txt.
         /// </summary>
         public static string ExportFileFilter {
             get {
@@ -540,7 +540,7 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Photo Caption: {0}.
+        ///   Looks up a localized string similar to Photo caption: {0}.
         /// </summary>
         public static string PhotoCaption {
             get {
@@ -549,7 +549,16 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Photo Url: {0}.
+        ///   Looks up a localized string similar to Photo set urls: {0}.
+        /// </summary>
+        public static string PhotoSetUrl {
+            get {
+                return ResourceManager.GetString("PhotoSetUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Photo url: {0}.
         /// </summary>
         public static string PhotoUrl {
             get {
@@ -558,7 +567,7 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Post ID: {0}.
+        ///   Looks up a localized string similar to Post id: {0}.
         /// </summary>
         public static string PostId {
             get {
@@ -572,6 +581,15 @@ namespace TumblThree.Applications.Properties {
         public static string PostNotParsable {
             get {
                 return ResourceManager.GetString("PostNotParsable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Post url: {0}.
+        /// </summary>
+        public static string PostUrl {
+            get {
+                return ResourceManager.GetString("PostUrl", resourceCulture);
             }
         }
         
@@ -648,7 +666,7 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reblog Name: {0}.
+        ///   Looks up a localized string similar to Reblog name: {0}.
         /// </summary>
         public static string ReblogName {
             get {
@@ -657,11 +675,20 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reblog Url: {0}.
+        ///   Looks up a localized string similar to Reblog url: {0}.
         /// </summary>
         public static string ReblogUrl {
             get {
                 return ResourceManager.GetString("ReblogUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Slug: {0}.
+        /// </summary>
+        public static string Slug {
+            get {
+                return ResourceManager.GetString("Slug", resourceCulture);
             }
         }
         
@@ -720,7 +747,7 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Video Caption: {0}.
+        ///   Looks up a localized string similar to Video caption: {0}.
         /// </summary>
         public static string VideoCaption {
             get {
@@ -729,7 +756,7 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Video Player: {0}.
+        ///   Looks up a localized string similar to Video player: {0}.
         /// </summary>
         public static string VideoPlayer {
             get {
@@ -738,7 +765,7 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Video Source: {0}.
+        ///   Looks up a localized string similar to Video source: {0}.
         /// </summary>
         public static string VideoSource {
             get {

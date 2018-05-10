@@ -10,10 +10,13 @@ namespace TumblThree.Applications.Parser
     {
         public string ParseText(T post)
         {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) + ", " +
+            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) +
+                   Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.slug) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.PostUrl, post.url_with_slug) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Slug, post.slug) +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.reblog_key) +
                    Environment.NewLine +
@@ -31,10 +34,13 @@ namespace TumblThree.Applications.Parser
 
         public string ParseQuote(T post)
         {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) + ", " +
+            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) +
+                   Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.slug) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.PostUrl, post.url_with_slug) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Slug, post.slug) +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.reblog_key) +
                    Environment.NewLine +
@@ -42,7 +48,7 @@ namespace TumblThree.Applications.Parser
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Quote, post.quote_text) + 
+                   string.Format(CultureInfo.CurrentCulture, Resources.Quote, post.quote_text) +
                    Environment.NewLine + post.quote_source +
                    Environment.NewLine + post.regular_body +
                    Environment.NewLine +
@@ -53,10 +59,13 @@ namespace TumblThree.Applications.Parser
 
         public string ParseLink(T post)
         {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) + ", " +
+            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) +
+                   Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.slug) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.PostUrl, post.url_with_slug) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Slug, post.slug) +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.reblog_key) +
                    Environment.NewLine +
@@ -76,10 +85,13 @@ namespace TumblThree.Applications.Parser
 
         public string ParseConversation(T post)
         {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) + ", " +
+            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) +
+                   Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.slug) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.PostUrl, post.url_with_slug) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Slug, post.slug) +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.reblog_key) +
                    Environment.NewLine +
@@ -87,7 +99,7 @@ namespace TumblThree.Applications.Parser
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Quote, post.conversation.Select(dialogue => new { dialogue.name , dialogue.phrase })) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Quote, post.conversation.Select(dialogue => new { dialogue.name, dialogue.phrase })) +
                    Environment.NewLine + post.regular_body +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Tags,
@@ -97,10 +109,13 @@ namespace TumblThree.Applications.Parser
 
         public string ParseAnswer(T post)
         {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) + ", " +
+            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) +
+                   Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.slug) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.PostUrl, post.url_with_slug) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Slug, post.slug) +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.reblog_key) +
                    Environment.NewLine +
@@ -119,10 +134,13 @@ namespace TumblThree.Applications.Parser
 
         public string ParsePhotoMeta(T post)
         {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) + ", " +
+            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) +
+                   Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.slug) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.PostUrl, post.url_with_slug) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Slug, post.slug) +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.reblog_key) +
                    Environment.NewLine +
@@ -130,7 +148,9 @@ namespace TumblThree.Applications.Parser
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.PhotoUrl, post.photo_url_1280 + " " + String.Join(" ", post.photos.Select(photo => photo.photo_url_1280))) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.PhotoUrl, post.photo_url_1280) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.PhotoSetUrl, String.Join(" ", post.photos.Select(photo => photo.photo_url_1280))) +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.PhotoCaption, post.photo_caption) +
                    Environment.NewLine +
@@ -141,10 +161,13 @@ namespace TumblThree.Applications.Parser
 
         public string ParseVideoMeta(T post)
         {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) + ", " +
+            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) +
+                   Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.slug) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.PostUrl, post.url_with_slug) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Slug, post.slug) +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.reblog_key) +
                    Environment.NewLine +
@@ -165,10 +188,13 @@ namespace TumblThree.Applications.Parser
 
         public string ParseAudioMeta(T post)
         {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) + ", " +
+            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) +
+                   Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.UrlWithSlug, post.slug) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.PostUrl, post.url_with_slug) +
+                   Environment.NewLine +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Slug, post.slug) +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.reblog_key) +
                    Environment.NewLine +
