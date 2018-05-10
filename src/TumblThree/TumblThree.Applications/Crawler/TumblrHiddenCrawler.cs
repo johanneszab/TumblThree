@@ -166,14 +166,15 @@ namespace TumblThree.Applications.Crawler
         {
             Logger.Verbose("TumblrHiddenCrawler.Crawl:Start");
 
-            Task grabber = GetUrlsAsync();
+            Task<Tuple<ulong, bool>> grabber = GetUrlsAsync();
             Task<bool> download = downloader.DownloadBlogAsync();
 
             Task crawlerDownloader = Task.CompletedTask;
             if (blog.DumpCrawlerData)
                 crawlerDownloader = crawlerDataDownloader.DownloadCrawlerDataAsync();
 
-            await grabber;
+            Tuple<ulong, bool> grabberResult = await grabber;
+            bool apiLimitHit = grabberResult.Item2;
 
             UpdateProgressQueueInformation(Resources.ProgressUniqueDownloads);
             blog.DuplicatePhotos = DetermineDuplicates<PhotoPost>();
@@ -184,11 +185,15 @@ namespace TumblThree.Applications.Crawler
             CleanCollectedBlogStatistics();
 
             await crawlerDownloader;
-            await download;
+            bool finishedDownloading = await download;
 
             if (!ct.IsCancellationRequested)
             {
                 blog.LastCompleteCrawl = DateTime.Now;
+                if (finishedDownloading && !apiLimitHit)
+                {
+                    blog.LastId = grabberResult.Item1;
+                }
             }
 
             blog.Save();
@@ -288,41 +293,23 @@ namespace TumblThree.Applications.Crawler
             return RangeToSequence(blog.DownloadPages);
         }
 
-        private async Task<ulong> GetHighestPostId()
-        {
-            string document = await GetSvcPageAsync("1", "0");
-            var response = ConvertJsonToClass<TumblrJson>(document);
-
-            ulong highestId;
-            ulong.TryParse(blog.Title = response.response.posts.FirstOrDefault().id, out highestId);
-            return highestId;
-        }
-
-        private static bool CheckPostAge(TumblrJson document, ulong lastId)
-        {
-            ulong highestPostId = 0;
-            ulong.TryParse(document.response.posts.FirstOrDefault().id,
-                out highestPostId);
-
-            if (highestPostId < lastId)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        private async Task GetUrlsAsync()
+        private async Task<Tuple<ulong, bool>> GetUrlsAsync()
         {
             var semaphoreSlim = new SemaphoreSlim(shellService.Settings.ConcurrentScans);
             var trackedTasks = new List<Task>();
+            var incompleteCrawl = false;
+            ulong highestId = 0;
 
             if (!await CheckIfLoggedIn())
             {
                 Logger.Error("TumblrHiddenCrawler:GetUrlsAsync: {0}", "User not logged in");
                 shellService.ShowError(new Exception("User not logged in"), Resources.NotLoggedIn, blog.Name);
                 postQueue.CompleteAdding();
-                return;
+                incompleteCrawl = true;
+                return new Tuple<ulong, bool>(highestId, incompleteCrawl);
             }
+
+            highestId = await GetHighestPostIdAsync();
 
             foreach (int pageNumber in GetPageNumbers())
             {
@@ -347,12 +334,14 @@ namespace TumblThree.Applications.Crawler
                         if ((int)resp.StatusCode == 429)
                         {
                             // TODO: add retry logic?
+                            incompleteCrawl = true;
                             Logger.Error("TumblrHiddenCrawler:GetUrls:WebException {0}", webException);
                             shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
                         }
                     }
                     catch (TimeoutException timeoutException)
                     {
+                        incompleteCrawl = true;
                         Logger.Error("TumblrBlogCrawler:GetUrls:WebException {0}", timeoutException);
                         shellService.ShowError(timeoutException, Resources.TimeoutReached, Resources.Crawling, blog.Name);
                     }
@@ -371,6 +360,36 @@ namespace TumblThree.Applications.Crawler
             postQueue.CompleteAdding();
 
             UpdateBlogStats();
+
+            return new Tuple<ulong, bool>(highestId, incompleteCrawl);
+        }
+
+        private async Task<ulong> GetHighestPostIdAsync()
+        {
+            try
+            {
+                return await GetHighestPostId();
+            }
+            catch (WebException webException)
+            {
+                var webRespStatusCode = (int)((HttpWebResponse)webException?.Response).StatusCode;
+                if (webRespStatusCode == 429)
+                {
+                    Logger.Error("TumblrHiddenCrawler:GetHighestPostIdAsync:WebException {0}", webException);
+                    shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
+                }
+                return 0;
+            }
+        }
+
+        private async Task<ulong> GetHighestPostId()
+        {
+            string document = await GetSvcPageAsync("1", "0");
+            var response = ConvertJsonToClass<TumblrJson>(document);
+
+            ulong highestId;
+            ulong.TryParse(blog.Title = response.response.posts.FirstOrDefault().id, out highestId);
+            return highestId;
         }
 
         private bool PostWithinTimeSpan(Post post)
@@ -458,6 +477,11 @@ namespace TumblThree.Applications.Crawler
                     pt.WaitWhilePausedWithResponseAsyc().Wait();
                 }
 
+                if (!CheckPostAge(response))
+                {
+                    return;
+                }
+
                 try
                 {
                     AddPhotoUrlToDownloadList(response);
@@ -489,6 +513,19 @@ namespace TumblThree.Applications.Crawler
 
                 crawlerNumber += shellService.Settings.ConcurrentScans;
             }
+        }
+
+        private bool CheckPostAge(TumblrJson document)
+        {
+            ulong highestPostId = 0;
+            ulong.TryParse(document.response.posts.FirstOrDefault().id,
+                out highestPostId);
+
+            if (highestPostId < GetLastPostId())
+            {
+                return false;
+            }
+            return true;
         }
 
         private bool CheckIfDownloadRebloggedPosts(Post post)

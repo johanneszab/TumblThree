@@ -307,7 +307,7 @@ namespace TumblThree.Applications.Crawler
         {
             var semaphoreSlim = new SemaphoreSlim(shellService.Settings.ConcurrentScans);
             var trackedTasks = new List<Task>();
-            var apiLimitHit = false;
+            var incompleteCrawl = false;
             var completeGrab = true;
 
             await UpdateTotalPostCountAsync();
@@ -354,13 +354,14 @@ namespace TumblThree.Applications.Crawler
                         var webRespStatusCode = (int)((HttpWebResponse)webException?.Response).StatusCode;
                         if (webRespStatusCode == 429)
                         {
-                            apiLimitHit = true;
+                            incompleteCrawl = true;
                             Logger.Error("TumblrBlogCrawler:GetUrls:WebException {0}", webException);
                             shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
                         }
                     }
                     catch (TimeoutException timeoutException)
                     {
+                        incompleteCrawl = true;
                         Logger.Error("TumblrBlogCrawler:GetUrls:WebException {0}", timeoutException);
                         shellService.ShowError(timeoutException, Resources.TimeoutReached, Resources.Crawling, blog.Name);
                     }
@@ -383,7 +384,7 @@ namespace TumblThree.Applications.Crawler
 
             UpdateBlogStats();
 
-            return new Tuple<ulong, bool>(highestId, apiLimitHit);
+            return new Tuple<ulong, bool>(highestId, incompleteCrawl);
         }
 
         private bool PostWithinTimeSpan(Post post)
