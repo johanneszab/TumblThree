@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
@@ -6,7 +5,6 @@ using System.Net;
 using System.Threading.Tasks;
 
 using TumblThree.Applications.Properties;
-using TumblThree.Applications.Services;
 
 namespace TumblThree.Applications.Crawler
 {
@@ -27,13 +25,21 @@ namespace TumblThree.Applications.Crawler
             return request;
         }
 
-        public HttpWebRequest CreateGetXhrReqeust(string url, string referer = "")
+        public HttpWebRequest CreateGetXhrReqeust(string url, string referer = "", Dictionary<string, string> headers = null)
         {
             HttpWebRequest request = CreateStubReqeust(url);
             request.Method = "GET";
             request.ContentType = "application/json";
             request.Headers["X-Requested-With"] = "XMLHttpRequest";
             request.Referer = referer;
+            if (headers == null)
+            {
+                return request;
+            }
+            foreach (KeyValuePair<string, string> header in headers)
+            {
+                request.Headers[header.Key] = header.Value;
+            }
             return request;
         }
 

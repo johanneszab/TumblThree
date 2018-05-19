@@ -180,8 +180,6 @@ namespace TumblThree.Applications.Crawler
             }
         }
 
-
-
         private async Task AddUrlsToDownloadList(string response, int crawlerNumber)
         {
             while (true)
