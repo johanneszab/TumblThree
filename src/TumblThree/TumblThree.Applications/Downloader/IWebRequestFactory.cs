@@ -9,7 +9,7 @@ namespace TumblThree.Applications.Crawler
     {
         HttpWebRequest CreateGetReqeust(string url);
 
-        HttpWebRequest CreateGetXhrReqeust(string url, string referer = "");
+        HttpWebRequest CreateGetXhrReqeust(string url, string referer = "", Dictionary<string, string> headers = null);
 
         HttpWebRequest CreatePostReqeust(string url, string referer = "", Dictionary<string, string> headers = null);
 

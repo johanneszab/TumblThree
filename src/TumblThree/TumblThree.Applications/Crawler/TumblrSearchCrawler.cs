@@ -28,7 +28,7 @@ namespace TumblThree.Applications.Crawler
     {
         private readonly IDownloader downloader;
         private readonly PauseToken pt;
-        private string tumblrKey = String.Empty;
+        private string tumblrKey = string.Empty;
 
         public TumblrSearchCrawler(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress,
             ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService,
@@ -179,8 +179,6 @@ namespace TumblThree.Applications.Crawler
                 requestRegistration.Dispose();
             }
         }
-
-
 
         private async Task AddUrlsToDownloadList(string response, int crawlerNumber)
         {

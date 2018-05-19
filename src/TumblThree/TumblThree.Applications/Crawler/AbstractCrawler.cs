@@ -60,7 +60,7 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException)
             {
-                Logger.Error("TumblrBlogCrawler:IsBlogOnlineAsync:WebException {0}", webException);
+                Logger.Error("AbstractCrawler:IsBlogOnlineAsync:WebException {0}", webException);
                 shellService.ShowError(webException, Resources.BlogIsOffline, blog.Name);
                 blog.Online = false;
             }
