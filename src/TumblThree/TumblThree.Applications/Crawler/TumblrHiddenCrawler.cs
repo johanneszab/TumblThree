@@ -44,6 +44,7 @@ namespace TumblThree.Applications.Crawler
         private readonly IPostQueue<TumblrCrawlerData<Post>> jsonQueue;
         private readonly ICrawlerDataDownloader crawlerDataDownloader;
 
+        private string passwordAuthentication = string.Empty;
         private string tumblrKey = string.Empty;
 
         public TumblrHiddenCrawler(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress,
@@ -75,6 +76,7 @@ namespace TumblThree.Applications.Crawler
             try
             {
                 // Hidden and password protected blogs don't exist?
+                await UpdateAuthenticationWithPassword();
                 await UpdateTumblrKey();
                 string document = await GetSvcPageAsync("1", "0");
                 blog.Online = true;
@@ -200,6 +202,86 @@ namespace TumblThree.Applications.Crawler
             blog.Save();
 
             UpdateProgressQueueInformation("");
+        }
+
+        private async Task UpdateAuthenticationWithPassword()
+        {
+            string document = await ThrottleAsync(Authenticate).TimeoutAfter(shellService.Settings.TimeOut);
+            passwordAuthentication = ExtractAuthenticationKey(document);
+            await UpdateCookieWithAuthentication().TimeoutAfter(shellService.Settings.TimeOut);
+        }
+
+        private async Task<T> ThrottleAsync<T>(Func<Task<T>> method)
+        {
+            if (shellService.Settings.LimitConnections)
+            {
+                return await method();
+            }
+            return await method();
+        }
+
+        protected async Task<string> Authenticate()
+        {
+            var requestRegistration = new CancellationTokenRegistration();
+            try
+            {
+                string url = "https://www.tumblr.com/blog_auth/" + blog.Name;
+                var headers = new Dictionary<string, string>();
+                HttpWebRequest request = webRequestFactory.CreatePostReqeust(url, url, headers);
+                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
+                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://" + blog.Name.Replace("+", "-") + ".tumblr.com"));
+                string requestBody = "password=" + blog.Password;
+                using (Stream postStream = await request.GetRequestStreamAsync())
+                {
+                    byte[] postBytes = Encoding.ASCII.GetBytes(requestBody);
+                    await postStream.WriteAsync(postBytes, 0, postBytes.Length);
+                    await postStream.FlushAsync();
+                }
+
+                requestRegistration = ct.Register(() => request.Abort());
+                return await webRequestFactory.ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
+            }
+            finally
+            {
+                requestRegistration.Dispose();
+            }
+        }
+
+        private static string ExtractAuthenticationKey(string document)
+        {
+            return Regex.Match(document, "name=\"auth\" value=\"([\\S]*)\"").Groups[1].Value;
+        }
+
+        protected async Task UpdateCookieWithAuthentication()
+        {
+            var requestRegistration = new CancellationTokenRegistration();
+            try
+            {
+                string url = "https://" + blog.Name + ".tumblr.com/";
+                string referer = "https://www.tumblr.com/blog_auth/" + blog.Name;
+                var headers = new Dictionary<string, string>();
+                headers.Add("DNT", "1");
+                HttpWebRequest request = webRequestFactory.CreatePostReqeust(url, referer, headers);
+                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
+                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://" + blog.Name.Replace("+", "-") + ".tumblr.com"));
+                string requestBody = "auth=" + passwordAuthentication;
+                using (Stream postStream = await request.GetRequestStreamAsync())
+                {
+                    byte[] postBytes = Encoding.ASCII.GetBytes(requestBody);
+                    await postStream.WriteAsync(postBytes, 0, postBytes.Length);
+                    await postStream.FlushAsync();
+                }
+
+                requestRegistration = ct.Register(() => request.Abort());
+                using (var response = await request.GetResponseAsync() as HttpWebResponse)
+                {
+                    cookieService.SetUriCookie(response.Cookies);
+                }
+            }
+            finally
+            {
+                requestRegistration.Dispose();
+            }
         }
 
         private async Task UpdateTumblrKey()
