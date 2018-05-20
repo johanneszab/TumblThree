@@ -123,6 +123,7 @@ namespace TumblThree.Applications.Crawler
             {
                 if (blog.Online)
                 {
+                    await UpdateTumblrKey();
                     string document = await GetSvcPageAsync("1", "0");
                     var response = ConvertJsonToClass<TumblrJson>(document);
 
@@ -212,7 +213,7 @@ namespace TumblThree.Applications.Crawler
             return Regex.Match(document, "id=\"tumblr_form_key\" content=\"([\\S]*)\">").Groups[1].Value;
         }
 
-        protected virtual async Task<string> RequestGetAsync()
+        private async Task<string> RequestGetAsync()
         {
             var requestRegistration = new CancellationTokenRegistration();
             try

@@ -161,7 +161,7 @@ namespace TumblThree.Applications.Crawler
             }
         }
 
-        protected virtual async Task<string> RequestGetAsync()
+        private async Task<string> RequestGetAsync()
         {
             var requestRegistration = new CancellationTokenRegistration();
             try
