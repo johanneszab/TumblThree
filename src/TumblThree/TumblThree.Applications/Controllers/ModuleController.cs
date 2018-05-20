@@ -22,6 +22,7 @@ namespace TumblThree.Applications.Controllers
         private readonly Lazy<CrawlerController> crawlerController;
         private readonly Lazy<DetailsController> detailsController;
         private readonly IEnvironmentService environmentService;
+        private readonly IConfirmTumblrPrivacyConsent confirmTumblrPrivacyConsent;
         private readonly Lazy<ManagerController> managerController;
         private readonly Lazy<QueueController> queueController;
         private readonly QueueManager queueManager;
@@ -35,12 +36,14 @@ namespace TumblThree.Applications.Controllers
 
         [ImportingConstructor]
         public ModuleController(Lazy<ShellService> shellService, IEnvironmentService environmentService,
-            ISettingsProvider settingsProvider, Lazy<ManagerController> managerController,
-            Lazy<QueueController> queueController, Lazy<DetailsController> detailsController,
-            Lazy<CrawlerController> crawlerController, Lazy<ShellViewModel> shellViewModel)
+            IConfirmTumblrPrivacyConsent confirmTumblrPrivacyConsent, ISettingsProvider settingsProvider,
+            Lazy<ManagerController> managerController, Lazy<QueueController> queueController,
+            Lazy<DetailsController> detailsController, Lazy<CrawlerController> crawlerController,
+            Lazy<ShellViewModel> shellViewModel)
         {
             this.shellService = shellService;
             this.environmentService = environmentService;
+            this.confirmTumblrPrivacyConsent = confirmTumblrPrivacyConsent;
             this.settingsProvider = settingsProvider;
             this.detailsController = detailsController;
             this.managerController = managerController;
@@ -123,6 +126,7 @@ namespace TumblThree.Applications.Controllers
             // Let the UI to initialize first before loading the queuelist.
             await Dispatcher.CurrentDispatcher.InvokeAsync(ManagerController.RestoreColumn, DispatcherPriority.ApplicationIdle);
             await Dispatcher.CurrentDispatcher.InvokeAsync(QueueController.Run, DispatcherPriority.ApplicationIdle);
+            await confirmTumblrPrivacyConsent.ConfirmPrivacyConsent();
         }
 
         public void Shutdown()

@@ -163,7 +163,7 @@ namespace TumblThree.Applications.Crawler
             return await RequestGetAsync(pagination);
         }
 
-        protected virtual async Task<string> RequestGetAsync(long pagination)
+        private async Task<string> RequestGetAsync(long pagination)
         {
             var requestRegistration = new CancellationTokenRegistration();
             try

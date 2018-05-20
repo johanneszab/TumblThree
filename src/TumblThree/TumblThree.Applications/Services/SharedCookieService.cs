@@ -21,6 +21,13 @@ namespace TumblThree.Applications.Services
             int dwFlags,
             IntPtr lpReserved);
 
+        [DllImport("wininet.dll", SetLastError = true)]
+        public static extern bool InternetGetCookie(
+            string lpszUrl,
+            string lpszCookieName,
+            StringBuilder lpszCookieData,
+            ref int lpdwSize);
+
         [DllImport("wininet.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Auto, SetLastError = true)]
         static extern bool InternetSetCookie(
             string urlName,
@@ -29,12 +36,13 @@ namespace TumblThree.Applications.Services
 
         public void GetUriCookie(CookieContainer request, Uri uri)
         {
-            if (cookieContainer.GetCookies(uri).Count == 0)
+            foreach (Cookie cookie in GetUriCookieContainer(uri).GetCookies(uri))
             {
-                foreach (Cookie cookie in GetUriCookieContainer(uri).GetCookies(uri))
-                {
-                    request.Add(cookie);
-                }
+                request.Add(cookie);
+            }
+            foreach (Cookie cookie in cookieContainer.GetCookies(uri))
+            {
+                request.Add(cookie);
             }
         }
 
@@ -42,7 +50,7 @@ namespace TumblThree.Applications.Services
         {
             foreach (Cookie cookie in cookies)
             {
-                InternetSetCookie("http://" + cookie.Domain, cookie.Name, cookie.Value);
+                InternetSetCookie("https://" + cookie.Domain, cookie.Name, cookie.Value);
                 cookieContainer.Add(cookie);
             }
         }
@@ -55,26 +63,16 @@ namespace TumblThree.Applications.Services
         private static CookieContainer GetUriCookieContainer(Uri uri)
         {
             CookieContainer cookies = new CookieContainer();
+
+            // Determine buffer size
             var datasize = 0;
             InternetGetCookieEx(uri.ToString(), null, null, ref datasize, InternetCookieHttponly, IntPtr.Zero);
             var cookieData = new StringBuilder(datasize);
+
+            // Ask for cookies with correct buffer size
             if (!InternetGetCookieEx(uri.ToString(), null, cookieData, ref datasize, InternetCookieHttponly, IntPtr.Zero))
             {
-                if (datasize < 0)
-                {
-                    return cookies;
-                }
-                // Allocate stringbuilder large enough to hold the cookie
-                cookieData = new StringBuilder(datasize);
-                if (!InternetGetCookieEx(
-                    uri.ToString(),
-                    null, cookieData,
-                    ref datasize,
-                    InternetCookieHttponly,
-                    IntPtr.Zero))
-                {
-                    return cookies;
-                }
+                return cookies;
             }
             if (cookieData.Length > 0)
             {
@@ -87,7 +85,7 @@ namespace TumblThree.Applications.Services
         {
             foreach (Cookie cookie in cookies)
             {
-                InternetSetCookie("http://" + cookie.Domain, cookie.Name, cookie.Value);
+                InternetSetCookie("https://" + cookie.Domain, cookie.Name, cookie.Value);
             }
         }
     }
