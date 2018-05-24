@@ -230,9 +230,9 @@ namespace TumblThree.Applications.Crawler
             if (shellService.Settings.LimitConnections)
             {
                 crawlerService.Timeconstraint.Acquire();
-                return await RequestDataAsync(url).TimeoutAfter(shellService.Settings.TimeOut);
+                return await RequestDataAsync(url, "https://www.tumblr.com/", "https://" + blog.Name.Replace("+", "-") + ".tumblr.com").TimeoutAfter(shellService.Settings.TimeOut);
             }
-            return await RequestDataAsync(url).TimeoutAfter(shellService.Settings.TimeOut);
+            return await RequestDataAsync(url, "https://www.tumblr.com/", "https://" + blog.Name.Replace("+", "-") + ".tumblr.com").TimeoutAfter(shellService.Settings.TimeOut);
         }
 
         private async Task UpdateTotalPostCountAsync()
