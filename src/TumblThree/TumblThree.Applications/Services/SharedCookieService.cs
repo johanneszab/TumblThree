@@ -36,10 +36,18 @@ namespace TumblThree.Applications.Services
 
         public void GetUriCookie(CookieContainer request, Uri uri)
         {
+            foreach (Cookie cookie in cookieContainer.GetCookies(uri))
+            {
+                request.Add(cookie);
+            }
             foreach (Cookie cookie in GetUriCookieContainer(uri).GetCookies(uri))
             {
                 request.Add(cookie);
             }
+        }
+
+        public void GetTumblrToSCookie(CookieContainer request, Uri uri)
+        {
             foreach (Cookie cookie in cookieContainer.GetCookies(uri))
             {
                 request.Add(cookie);
