@@ -78,7 +78,7 @@
                                 </MultiBinding>
                             </DataTrigger.Binding>
                             <DataTrigger.Setters>
-                                <Setter Property="Background" Value="#FFA596FF" />
+                                <Setter Property="Background" Value="{StaticResource QueuedItem}" />
                             </DataTrigger.Setters>
                         </DataTrigger>
                         <DataTrigger Value="True">
@@ -89,11 +89,11 @@
                                 </MultiBinding>
                             </DataTrigger.Binding>
                             <DataTrigger.Setters>
-                                <Setter Property="Background" Value="#FF84FF84" />
+                                <Setter Property="Background" Value="{StaticResource ActiveItem}" />
                             </DataTrigger.Setters>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Online}" Value="False">
-                            <Setter Property="Background" Value="#FFFF7171" />
+                            <Setter Property="Background" Value="{StaticResource OfflineItem}" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>

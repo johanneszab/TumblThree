@@ -38,7 +38,7 @@ namespace TumblThree.Applications.Services
             request.ContentType = "application/json";
             request.ServicePoint.Expect100Continue = false;
             request.UnsafeAuthenticatedConnectionSharing = true;
-            request.UserAgent = ApplicationInfo.ProductName;
+            request.UserAgent = shellService.Settings.UserAgent;
             //request.KeepAlive = true;
             //request.Pipelined = true;
             if (!string.IsNullOrEmpty(shellService.Settings.ProxyHost) && !string.IsNullOrEmpty(shellService.Settings.ProxyPort))

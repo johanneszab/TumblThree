@@ -854,4 +854,22 @@ Activation will increase the memory usage during operation based on the amount o
   <data name="ToolTipUguuFiletypeDescription" xml:space="preserve">
     <value>Chose which file type you want to download</value>
   </data>
+  <data name="ToolTipTumblrLogin" xml:space="preserve">
+    <value>Your tumblr username</value>
+  </data>
+  <data name="ToolTipTumblrLoginDescription" xml:space="preserve">
+    <value>The username is not saved locally but only used for generating a cookie.</value>
+  </data>
+  <data name="ToolTipTumblrPassword" xml:space="preserve">
+    <value>Your tumblr password</value>
+  </data>
+  <data name="ToolTipTumblrPasswordDescription" xml:space="preserve">
+    <value>The password is not saved locally but only used for generating a cookie.</value>
+  </data>
+  <data name="TumblrLogin" xml:space="preserve">
+    <value>Tumblr login</value>
+  </data>
+  <data name="TumblrPassword" xml:space="preserve">
+    <value>Tumblr password</value>
+  </data>
 </root>

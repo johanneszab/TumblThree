@@ -30,8 +30,7 @@ namespace TumblThree.Applications.Downloader
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "GET";
             request.ProtocolVersion = HttpVersion.Version11;
-            request.UserAgent =
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
+            request.UserAgent = settings.UserAgent;
             request.AllowAutoRedirect = true;
             //request.KeepAlive = true;
             //request.Pipelined = true;

@@ -225,6 +225,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid MinHeight="46" Height="Auto" Grid.Row="0">
                             <Grid.ColumnDefinitions>
@@ -487,6 +488,69 @@
                                     </Binding>
                                 </TextBox.Text>
                             </TextBox>
+                        </Grid>
+                        <Grid MinHeight="46" Height="Auto" Grid.Row="7" HorizontalAlignment="Left">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Label x:Name="TumblrLoginLabel" Grid.Column="0" Content="{x:Static p:Resources.TumblrLogin}"
+                       VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10">
+                                <Label.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipTumblrLogin}" />
+                                            <TextBlock xml:space="preserve"
+                                           Text="{x:Static p:Resources.ToolTipTumblrLoginDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </Label.ToolTip>
+                            </Label>
+                            <TextBox x:Name="TumblrLoginTextBox" Grid.Column="3" HorizontalAlignment="Left"
+                         VerticalAlignment="Center" MinWidth="160">
+                                <TextBox.Text>
+                                    <Binding Path="TumblrUser" UpdateSourceTrigger="PropertyChanged">
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
+                            <Label x:Name="TumblrPasswordLabel" Grid.Column="4"
+                       Content="{x:Static p:Resources.TumblrPassword}" VerticalAlignment="Center"
+                       HorizontalAlignment="Left" Margin="10">
+                                <Label.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipTumblrPassword}" />
+                                            <TextBlock xml:space="preserve"
+                                           Text="{x:Static p:Resources.ToolTipTumblrPasswordDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </Label.ToolTip>
+                            </Label>
+                            <TextBox x:Name="TumblrPasswordTextBox" Grid.Column="5" HorizontalAlignment="Left"
+                         VerticalAlignment="Center" MinWidth="160">
+                                <TextBox.Text>
+                                    <Binding Path="TumblrPassword" UpdateSourceTrigger="PropertyChanged">
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
+                            <Button x:Name="tumblrAuthenticate" Grid.Column="6" HorizontalAlignment="Left" Margin="10"
+                        VerticalAlignment="Center" Content="{x:Static p:Resources.Authenticate}"
+                        Command="{Binding TumblrLoginCommand}" IsEnabled="True" MinWidth="90">
+                                <Button.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipAuthenticate}" />
+                                            <TextBlock xml:space="preserve"
+                                           Text="{x:Static p:Resources.ToolTipAuthenticateDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </Button.ToolTip>
+                            </Button>
                         </Grid>
                         <!--<Grid MinHeight="46" Height="Auto" Grid.Row="7">
                             <Grid.ColumnDefinitions>

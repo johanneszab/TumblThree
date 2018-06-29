@@ -2130,6 +2130,42 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your tumblr username.
+        /// </summary>
+        public static string ToolTipTumblrLogin {
+            get {
+                return ResourceManager.GetString("ToolTipTumblrLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The username is not saved locally but only used for generating a cookie..
+        /// </summary>
+        public static string ToolTipTumblrLoginDescription {
+            get {
+                return ResourceManager.GetString("ToolTipTumblrLoginDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your tumblr password.
+        /// </summary>
+        public static string ToolTipTumblrPassword {
+            get {
+                return ResourceManager.GetString("ToolTipTumblrPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The password is not saved locally but only used for generating a cookie..
+        /// </summary>
+        public static string ToolTipTumblrPasswordDescription {
+            get {
+                return ResourceManager.GetString("ToolTipTumblrPasswordDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File type to download.
         /// </summary>
         public static string ToolTipUguuFiletype {
@@ -2180,6 +2216,24 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipWebmshareFiletypeDescription {
             get {
                 return ResourceManager.GetString("ToolTipWebmshareFiletypeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tumblr login.
+        /// </summary>
+        public static string TumblrLogin {
+            get {
+                return ResourceManager.GetString("TumblrLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tumblr password.
+        /// </summary>
+        public static string TumblrPassword {
+            get {
+                return ResourceManager.GetString("TumblrPassword", resourceCulture);
             }
         }
         

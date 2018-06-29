@@ -2,8 +2,9 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
-
+using System.Web;
 using TumblThree.Applications.Properties;
 
 namespace TumblThree.Applications.Crawler
@@ -107,8 +108,7 @@ namespace TumblThree.Applications.Crawler
         {
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.ProtocolVersion = HttpVersion.Version11;
-            request.UserAgent =
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
+            request.UserAgent = settings.UserAgent;
             request.AllowAutoRedirect = true;
             //request.KeepAlive = true;
             //request.Pipelined = true;
@@ -137,6 +137,17 @@ namespace TumblThree.Applications.Crawler
                 request.Proxy.Credentials = new NetworkCredential(settings.ProxyUsername, settings.ProxyPassword);
             }
             return request;
+        }
+
+        public string UrlEncode(IDictionary<string, string> parameters)
+        {
+            var sb = new StringBuilder();
+            foreach (KeyValuePair<string, string> val in parameters)
+            {
+                sb.AppendFormat("{0}={1}&", val.Key, HttpUtility.UrlEncode(val.Value));
+            }
+            sb.Remove(sb.Length - 1, 1); // remove last '&'
+            return sb.ToString();
         }
     }
 }

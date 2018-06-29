@@ -124,7 +124,8 @@
     <Compile Include="Parser\GfycatParser.cs" />
     <Compile Include="Parser\IGfycatParser.cs" />
     <Compile Include="Parser\IWebmshareParser.cs" />
-    <Compile Include="Downloader\IWebRequestFactory.cs" />
+    <Compile Include="Services\ILoginService.cs" />
+    <Compile Include="Services\IWebRequestFactory.cs" />
     <Compile Include="Downloader\TumblrJsonDownloader.cs" />
     <Compile Include="Downloader\TumblrXmlDownloader.cs" />
     <Compile Include="ObjectModel\ObservableRangeCollection.cs" />
@@ -163,6 +164,7 @@
     <Compile Include="Services\ISettingsService.cs" />
     <Compile Include="Services\ISharedCookieService.cs" />
     <Compile Include="Services\IShellService.cs" />
+    <Compile Include="Services\LoginService.cs" />
     <Compile Include="Services\ManagerService.cs" />
     <Compile Include="Services\SelectionService.cs" />
     <Compile Include="Services\SettingsProvider.cs" />
@@ -198,7 +200,7 @@
     <Compile Include="Views\IAuthenticateView.cs" />
     <Compile Include="Views\ISettingsView.cs" />
     <Compile Include="Views\IShellView.cs" />
-    <Compile Include="Downloader\WebRequestFactory.cs" />
+    <Compile Include="Services\WebRequestFactory.cs" />
     <Compile Include="Parser\WebmshareParser.cs" />
   </ItemGroup>
   <ItemGroup>

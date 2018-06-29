@@ -60,6 +60,9 @@ namespace TumblThree.Applications.Properties
         public string SecretKey { get; set; }
 
         [DataMember]
+        public string UserAgent { get; set; }
+
+        [DataMember]
         public string OAuthToken { get; set; }
 
         [DataMember]
@@ -336,6 +339,7 @@ namespace TumblThree.Applications.Properties
             OAuthCallbackUrl = @"https://github.com/johanneszab/TumblThree";
             ApiKey = "x8pd1InspmnuLSFKT4jNxe8kQUkbRXPNkAffntAFSk01UjRsLV";
             SecretKey = "Mul4BviRQgPLuhN1xzEqmXzwvoWicEoc4w6ftWBGWtioEvexmM";
+            UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36";
             OAuthToken = string.Empty;
             OAuthTokenSecret = string.Empty;
             Left = 50;

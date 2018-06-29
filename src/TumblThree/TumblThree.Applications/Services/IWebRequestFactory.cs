@@ -21,5 +21,6 @@ namespace TumblThree.Applications.Crawler
 
         Stream GetStreamForApiRequest(Stream stream);
 
+        string UrlEncode(IDictionary<string, string> parameters);
     }
 }
