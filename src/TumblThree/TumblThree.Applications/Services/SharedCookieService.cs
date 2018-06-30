@@ -9,7 +9,8 @@ namespace TumblThree.Applications.Services
     [Export(typeof(ISharedCookieService)), Export]
     public class SharedCookieService : ISharedCookieService
     {
-        private readonly CookieContainer cookieContainer = new CookieContainer();
+        private readonly CookieContainer cookieContainer = new CookieContainer(); // used to store dot prefixed cookies that cannot be stored to disk because "http://.domain.com" is not a vailid Uri
+        private readonly CookieContainer tumblrToSCookieContainer = new CookieContainer();
         private const int InternetCookieHttponly = 0x2000;
 
         [DllImport("wininet.dll", SetLastError = true)]
@@ -34,6 +35,9 @@ namespace TumblThree.Applications.Services
             string cookieName,
             string cookieData);
 
+        //[DllImport("kernel32.dll")]
+        //public static extern uint GetLastError();
+
         public void GetUriCookie(CookieContainer request, Uri uri)
         {
             foreach (Cookie cookie in cookieContainer.GetCookies(uri))
@@ -48,19 +52,32 @@ namespace TumblThree.Applications.Services
 
         public void GetTumblrToSCookie(CookieContainer request, Uri uri)
         {
-            foreach (Cookie cookie in cookieContainer.GetCookies(uri))
-            {
-                request.Add(cookie);
-            }
+            GetUriCookie(request, uri);
+            //foreach (Cookie cookie in tumblrToSCookieContainer.GetCookies(uri))
+            //{
+            //    request.Add(cookie);
+            //}
         }
 
         public void SetUriCookie(CookieCollection cookies)
         {
             foreach (Cookie cookie in cookies)
             {
-                InternetSetCookie("https://" + cookie.Domain, cookie.Name, cookie.Value);
+                //string domain = cookie.Domain;
+                //if (cookie.Domain[0] == '.')
+                //    domain = "www" + cookie.Domain;
+                InternetSetCookie("https://" + cookie.Domain, cookie.Name, cookie.Value + "; expires = " + cookie.Expires.ToString("ddd, dd-MMM-yyyy HH':'mm':'ss 'GMT'"));
                 cookieContainer.Add(cookie);
             }
+        }
+
+        public void SetTumblrToSCookie(CookieCollection cookies)
+        {
+            SetUriCookie(cookies);
+            //foreach (Cookie cookie in cookies)
+            //{
+            //    tumblrToSCookieContainer.Add(cookie);
+            //}
         }
 
         /// <summary>

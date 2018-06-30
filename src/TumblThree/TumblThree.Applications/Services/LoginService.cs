@@ -29,10 +29,16 @@ namespace TumblThree.Applications.Services
 
         public async Task PerformTumblrLogin(string login, string password)
         {
-            string document = await RequestTumblrKey();
-            tumblrKey = ExtractTumblrKey(document);
-            await Register(login, password);
-            await Authenticate(login, password);
+            try
+            {
+                string document = await RequestTumblrKey().TimeoutAfter(shellService.Settings.TimeOut);
+                tumblrKey = ExtractTumblrKey(document);
+                await Register(login, password).TimeoutAfter(shellService.Settings.TimeOut);
+                await Authenticate(login, password).TimeoutAfter(shellService.Settings.TimeOut);
+            }
+            catch (TimeoutException)
+            {
+            }
         }
 
         private static string ExtractTumblrKey(string document)
@@ -44,7 +50,7 @@ namespace TumblThree.Applications.Services
         {
             string url = "https://www.tumblr.com/login";
             HttpWebRequest request = webRequestFactory.CreateGetReqeust(url);
-            cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
+            cookieService.GetTumblrToSCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
             using (var response = await request.GetResponseAsync() as HttpWebResponse)
             {
                 cookieService.SetUriCookie(response.Cookies);
@@ -138,7 +144,6 @@ namespace TumblThree.Applications.Services
             using (var response = await request.GetResponseAsync() as HttpWebResponse)
             {
                 cookieService.SetUriCookie(request.CookieContainer.GetCookies(new Uri("https://www.tumblr.com/")));
-                //cookieService.SetUriCookie(response.Cookies);
             }
         }
     }

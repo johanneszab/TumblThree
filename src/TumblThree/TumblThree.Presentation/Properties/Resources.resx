@@ -319,8 +319,7 @@
     <value>Authenticate to the tumblr.com network</value>
   </data>
   <data name="ToolTipAuthenticateDescription" xml:space="preserve">
-    <value>Opens a browser window to authenticate yourself to the tumblr.com site.
-The cookie with your credentials of your account is saved and the authentication process needs to be done only once.</value>
+    <value>Authenticate to the tumblr.com network</value>
   </data>
   <data name="ToolTipBlogs" xml:space="preserve">
     <value>Number of concurrent processing blogs</value>
@@ -871,5 +870,15 @@ Activation will increase the memory usage during operation based on the amount o
   </data>
   <data name="TumblrPassword" xml:space="preserve">
     <value>Tumblr password</value>
+  </data>
+  <data name="ToolTipAuthenticateBrowser" xml:space="preserve">
+    <value>Authenticate to the tumblr.com network</value>
+  </data>
+  <data name="ToolTipAuthenticateBrowserDescription" xml:space="preserve">
+    <value>Opens a browser window to authenticate yourself to the tumblr.com site.
+The cookie with your credentials of your account is saved and the authentication process needs to be done only once.</value>
+  </data>
+  <data name="UserAgent" xml:space="preserve">
+    <value>UserAgent</value>
   </data>
 </root>

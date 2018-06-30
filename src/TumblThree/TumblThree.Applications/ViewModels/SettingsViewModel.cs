@@ -108,6 +108,7 @@ namespace TumblThree.Applications.ViewModels
         private string timerInterval;
         private int videoSize;
         private int settingsTabIndex;
+        private string userAgent;
         private string tumblrUser = string.Empty;
         private string tumblrPassword = string.Empty;
 
@@ -632,6 +633,12 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref settingsTabIndex, value); }
         }
 
+        public string UserAgent
+        {
+            get { return userAgent; }
+            set { SetProperty(ref userAgent, value); }
+        }
+
         public void ShowDialog(object owner)
         {
             ViewCore.ShowDialog(owner);
@@ -830,6 +837,7 @@ namespace TumblThree.Applications.ViewModels
                 ProxyPassword = settings.ProxyPassword;
                 TimerInterval = settings.TimerInterval;
                 SettingsTabIndex = settings.SettingsTabIndex;
+                UserAgent = settings.UserAgent;
             }
             else
             {
@@ -908,6 +916,7 @@ namespace TumblThree.Applications.ViewModels
                 ProxyPort = string.Empty;
                 TimerInterval = "22:40:00";
                 SettingsTabIndex = 0;
+                UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36";
             }
         }
 
@@ -1035,6 +1044,7 @@ namespace TumblThree.Applications.ViewModels
             settings.ProxyPassword = ProxyPassword;
             settings.TimerInterval = TimerInterval;
             settings.SettingsTabIndex = SettingsTabIndex;
+            settings.UserAgent = UserAgent;
         }
     }
 }

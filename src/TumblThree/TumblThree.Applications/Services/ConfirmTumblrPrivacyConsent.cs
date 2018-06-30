@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Net;
@@ -28,6 +29,8 @@ namespace TumblThree.Applications.Services
 
         public async Task ConfirmPrivacyConsent()
         {
+            //if (CheckIfLoggedIn())
+            //    return;
             await UpdateTumblrKey();
             string referer = @"https://www.tumblr.com/privacy/consent?redirect=";
             var headers = new Dictionary<string, string> { { "X-tumblr-form-key", tumblrKey } };
@@ -42,7 +45,7 @@ namespace TumblThree.Applications.Services
             }
             using (var response = await request.GetResponseAsync() as HttpWebResponse)
             {
-                cookieService.SetUriCookie(response.Cookies);
+                cookieService.SetTumblrToSCookie(response.Cookies);
             }
         }
 
@@ -62,6 +65,17 @@ namespace TumblThree.Applications.Services
             string requestUrl = "https://www.tumblr.com/";
             HttpWebRequest request = webRequestFactory.CreateGetReqeust(requestUrl);
             return await webRequestFactory.ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
+        }
+
+        public bool CheckIfLoggedIn()
+        {
+            HttpWebRequest request = webRequestFactory.CreateGetReqeust("https://www.tumblr.com/");
+            cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
+            if (request.CookieContainer.GetCookieHeader(new Uri("https://www.tumblr.com/")).Contains("pfs"))
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

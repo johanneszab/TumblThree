@@ -10,5 +10,7 @@ namespace TumblThree.Applications.Services
         void GetTumblrToSCookie(CookieContainer request, Uri uri);
 
         void SetUriCookie(CookieCollection cookies);
+
+        void SetTumblrToSCookie(CookieCollection cookies);
     }
 }

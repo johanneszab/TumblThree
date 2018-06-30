@@ -1384,8 +1384,26 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Authenticate to the tumblr.com network.
+        /// </summary>
+        public static string ToolTipAuthenticateBrowser {
+            get {
+                return ResourceManager.GetString("ToolTipAuthenticateBrowser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Opens a browser window to authenticate yourself to the tumblr.com site.
         ///The cookie with your credentials of your account is saved and the authentication process needs to be done only once..
+        /// </summary>
+        public static string ToolTipAuthenticateBrowserDescription {
+            get {
+                return ResourceManager.GetString("ToolTipAuthenticateBrowserDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Authenticate to the tumblr.com network.
         /// </summary>
         public static string ToolTipAuthenticateDescription {
             get {
@@ -2252,6 +2270,15 @@ namespace TumblThree.Presentation.Properties {
         public static string Url {
             get {
                 return ResourceManager.GetString("Url", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UserAgent.
+        /// </summary>
+        public static string UserAgent {
+            get {
+                return ResourceManager.GetString("UserAgent", resourceCulture);
             }
         }
         
