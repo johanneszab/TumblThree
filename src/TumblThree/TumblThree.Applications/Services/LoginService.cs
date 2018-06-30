@@ -146,5 +146,30 @@ namespace TumblThree.Applications.Services
                 cookieService.SetUriCookie(request.CookieContainer.GetCookies(new Uri("https://www.tumblr.com/")));
             }
         }
+
+        public bool CheckIfLoggedIn()
+        {
+            HttpWebRequest request = webRequestFactory.CreateGetReqeust("https://www.tumblr.com/");
+            cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
+            if (request.CookieContainer.GetCookieHeader(new Uri("https://www.tumblr.com/")).Contains("pfs"))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<string> GetTumblrUsername()
+        {
+            string tumblrAccountSettingsUrl = "https://www.tumblr.com/settings/account";
+            HttpWebRequest request = webRequestFactory.CreateGetReqeust(tumblrAccountSettingsUrl);
+            cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
+            string document = await webRequestFactory.ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
+            return ExtractTumblrUsername(document);
+        }
+
+        private static string ExtractTumblrUsername(string document)
+        {
+            return Regex.Match(document, "<p class=\"accordion_label accordion_trigger\">([\\S]*)</p>").Groups[1].Value;
+        }
     }
 }

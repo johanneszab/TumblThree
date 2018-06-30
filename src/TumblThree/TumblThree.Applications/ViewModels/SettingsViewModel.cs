@@ -23,7 +23,7 @@ namespace TumblThree.Applications.ViewModels
         private readonly IFolderBrowserDialog folderBrowserDialog;
         private readonly IFileDialogService fileDialogService;
         private readonly DelegateCommand authenticateCommand;
-        private readonly DelegateCommand tumblrLoginCommand;
+        private readonly AsyncDelegateCommand tumblrLoginCommand;
         private readonly ExportFactory<AuthenticateViewModel> authenticateViewModelFactory;
         private readonly DelegateCommand browseDownloadLocationCommand;
         private readonly DelegateCommand enableAutoDownloadCommand;
@@ -111,6 +111,8 @@ namespace TumblThree.Applications.ViewModels
         private string userAgent;
         private string tumblrUser = string.Empty;
         private string tumblrPassword = string.Empty;
+        private bool tumblrLoggedIn = false;
+        private string tumblrEmail = string.Empty;
 
         [ImportingConstructor]
         public SettingsViewModel(ISettingsView view, IShellService shellService, ICrawlerService crawlerService,
@@ -129,15 +131,14 @@ namespace TumblThree.Applications.ViewModels
             browseDownloadLocationCommand = new DelegateCommand(BrowseDownloadLocation);
             browseExportLocationCommand = new DelegateCommand(BrowseExportLocation);
             authenticateCommand = new DelegateCommand(Authenticate);
-            tumblrLoginCommand = new DelegateCommand(TumblrLogin);
+            tumblrLoginCommand = new AsyncDelegateCommand(TumblrLogin);
             saveCommand = new DelegateCommand(Save);
             enableAutoDownloadCommand = new DelegateCommand(EnableAutoDownload);
             exportCommand = new DelegateCommand(ExportBlogs);
             bloglistExportFileType = new FileType(Resources.Textfile, SupportedFileTypes.BloglistExportFileType);
 
-            Load();
+            Task loadSettingsTask = Load();
             view.Closed += ViewClosed;
-
         }
 
         public IShellService ShellService { get; }
@@ -656,6 +657,18 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref tumblrPassword, value); }
         }
 
+        public bool TumblrLoggedIn
+        {
+            get { return tumblrLoggedIn; }
+            set { SetProperty(ref tumblrLoggedIn, value); }
+        }
+
+        public string TumblrEmail
+        {
+            get { return tumblrEmail; }
+            set { SetProperty(ref tumblrEmail, value); }
+        }
+
         private void ViewClosed(object sender, EventArgs e)
         {
             if (enableAutoDownloadCommand.CanExecute(null))
@@ -748,14 +761,25 @@ namespace TumblThree.Applications.ViewModels
             }
         }
 
-        private void TumblrLogin()
+        private async Task TumblrLogin()
         {
-            LoginService.PerformTumblrLogin(TumblrUser, TumblrPassword);
+            await LoginService.PerformTumblrLogin(TumblrUser, TumblrPassword);
+            CheckIfTumblrLoggedIn();
+            if (TumblrLoggedIn)
+                TumblrEmail = await LoginService.GetTumblrUsername();
         }
 
-        public void Load()
+        private void CheckIfTumblrLoggedIn()
+        {
+            TumblrLoggedIn = LoginService.CheckIfLoggedIn();
+        }
+
+        public async Task Load()
         {
             LoadSettings();
+            CheckIfTumblrLoggedIn();
+            if (TumblrLoggedIn)
+                TumblrEmail = await LoginService.GetTumblrUsername();
         }
 
         private void LoadSettings()

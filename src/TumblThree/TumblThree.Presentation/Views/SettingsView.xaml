@@ -8,8 +8,10 @@
         xmlns:vm="clr-namespace:TumblThree.Applications.ViewModels;assembly=TumblThree.Applications"
         xmlns:Models="clr-namespace:TumblThree.Domain.Models;assembly=TumblThree.Domain"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        mc:Ignorable="d" Title="Settings" Height="710" Width="720"
-        d:DataContext="{d:DesignInstance vm:SettingsViewModel}">
+        mc:Ignorable="d" Title="Settings" Height="710" Width="760"
+        d:DataContext="{d:DesignInstance vm:SettingsViewModel}" SizeToContent="Width" ResizeMode="CanResize"
+        ContentRendered="Window_ContentRendered">
+    
     <Window.Resources>
         <ObjectDataProvider MethodName="GetValues"
         ObjectType="{x:Type sys:Enum}"
@@ -516,6 +518,8 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Label x:Name="TumblrLoginLabel" Grid.Column="0" Content="{x:Static p:Resources.TumblrLogin}"
                        VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10">
@@ -569,6 +573,30 @@
                                     </ToolTip>
                                 </Button.ToolTip>
                             </Button>
+                            <Label x:Name="TumblrLoggedInLabel" Grid.Column="7" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0">
+                                <Label.Style>
+                                    <Style TargetType="{x:Type Label}">
+                                        <Setter Property="Content" Value="{x:Static p:Resources.LoggedOut}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding TumblrLoggedIn}" Value="True">
+                                                <Setter Property="Content" Value="{x:Static p:Resources.LoggedIn}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Label.Style>
+                            </Label>
+                            <Label x:Name="TumblrUsernameLabel" Grid.Column="8" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="-5,0,0,0">
+                                <Label.Style>
+                                    <Style TargetType="{x:Type Label}">
+                                        <Setter Property="Label.Content" Value="" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding TumblrLoggedIn}" Value="True">
+                                                <Setter Property="Label.Content" Value="{Binding TumblrEmail}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Label.Style>
+                            </Label>
                         </Grid>
                         <!--<Grid MinHeight="46" Height="Auto" Grid.Row="7">
                             <Grid.ColumnDefinitions>

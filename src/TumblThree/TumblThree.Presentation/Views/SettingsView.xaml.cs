@@ -37,5 +37,12 @@ namespace TumblThree.Presentation.Views
         {
             Close();
         }
+
+        private void Window_ContentRendered(object sender, EventArgs e)
+        {
+            this.MinWidth = this.ActualWidth;
+            this.MinHeight = this.ActualHeight;
+            this.MaxHeight = this.ActualHeight;
+        }
     }
 }

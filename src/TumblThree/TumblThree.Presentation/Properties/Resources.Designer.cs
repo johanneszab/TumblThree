@@ -916,6 +916,24 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Logged in as.
+        /// </summary>
+        public static string LoggedIn {
+            get {
+                return ResourceManager.GetString("LoggedIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logged out.
+        /// </summary>
+        public static string LoggedOut {
+            get {
+                return ResourceManager.GetString("LoggedOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Number of connections:.
         /// </summary>
         public static string MaxConnections {

@@ -881,4 +881,10 @@ The cookie with your credentials of your account is saved and the authentication
   <data name="UserAgent" xml:space="preserve">
     <value>UserAgent</value>
   </data>
+  <data name="LoggedIn" xml:space="preserve">
+    <value>Logged in as</value>
+  </data>
+  <data name="LoggedOut" xml:space="preserve">
+    <value>Logged out</value>
+  </data>
 </root>
