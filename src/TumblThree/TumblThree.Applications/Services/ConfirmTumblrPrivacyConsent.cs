@@ -45,7 +45,7 @@ namespace TumblThree.Applications.Services
             }
             using (var response = await request.GetResponseAsync() as HttpWebResponse)
             {
-                cookieService.SetTumblrToSCookie(response.Cookies);
+                cookieService.SetUriCookie(response.Cookies);
             }
         }
 

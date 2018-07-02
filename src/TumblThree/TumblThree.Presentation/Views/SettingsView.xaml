@@ -1180,7 +1180,7 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
-                <Button x:Name="buttonAuthenticate" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Margin="10"
+                <!--<Button x:Name="buttonAuthenticate" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Margin="10"
                         VerticalAlignment="Center" Content="{x:Static p:Resources.Authenticate}"
                         Command="{Binding AuthenticateCommand}" IsEnabled="True" MinWidth="90">
                     <Button.ToolTip>
@@ -1192,7 +1192,7 @@
                             </StackPanel>
                         </ToolTip>
                     </Button.ToolTip>
-                </Button>
+                </Button>-->
                 <Button Command="{Binding SaveCommand}" Height="Auto" Grid.Column="1" Grid.Row="0"
                         HorizontalAlignment="Right" VerticalAlignment="Center" Content="{x:Static p:Resources.Save}"
                         Margin="10" MinWidth="50" Click="closeWindow" />

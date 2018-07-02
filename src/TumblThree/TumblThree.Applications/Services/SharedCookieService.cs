@@ -1,8 +1,13 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.IO;
 using System.Net;
-using System.Runtime.InteropServices;
+using System.Reflection;
+using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Xml;
 
 namespace TumblThree.Applications.Services
 {
@@ -10,33 +15,6 @@ namespace TumblThree.Applications.Services
     public class SharedCookieService : ISharedCookieService
     {
         private readonly CookieContainer cookieContainer = new CookieContainer(); // used to store dot prefixed cookies that cannot be stored to disk because "http://.domain.com" is not a vailid Uri
-        private readonly CookieContainer tumblrToSCookieContainer = new CookieContainer();
-        private const int InternetCookieHttponly = 0x2000;
-
-        [DllImport("wininet.dll", SetLastError = true)]
-        public static extern bool InternetGetCookieEx(
-            string url,
-            string cookieName,
-            StringBuilder cookieData,
-            ref int size,
-            int dwFlags,
-            IntPtr lpReserved);
-
-        [DllImport("wininet.dll", SetLastError = true)]
-        public static extern bool InternetGetCookie(
-            string lpszUrl,
-            string lpszCookieName,
-            StringBuilder lpszCookieData,
-            ref int lpdwSize);
-
-        [DllImport("wininet.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Auto, SetLastError = true)]
-        static extern bool InternetSetCookie(
-            string urlName,
-            string cookieName,
-            string cookieData);
-
-        //[DllImport("kernel32.dll")]
-        //public static extern uint GetLastError();
 
         public void GetUriCookie(CookieContainer request, Uri uri)
         {
@@ -44,73 +22,64 @@ namespace TumblThree.Applications.Services
             {
                 request.Add(cookie);
             }
-            foreach (Cookie cookie in GetUriCookieContainer(uri).GetCookies(uri))
-            {
-                request.Add(cookie);
-            }
-        }
-
-        public void GetTumblrToSCookie(CookieContainer request, Uri uri)
-        {
-            GetUriCookie(request, uri);
-            //foreach (Cookie cookie in tumblrToSCookieContainer.GetCookies(uri))
-            //{
-            //    request.Add(cookie);
-            //}
         }
 
         public void SetUriCookie(CookieCollection cookies)
         {
             foreach (Cookie cookie in cookies)
             {
-                //string domain = cookie.Domain;
-                //if (cookie.Domain[0] == '.')
-                //    domain = "www" + cookie.Domain;
-                InternetSetCookie("https://" + cookie.Domain, cookie.Name, cookie.Value + "; expires = " + cookie.Expires.ToString("ddd, dd-MMM-yyyy HH':'mm':'ss 'GMT'"));
                 cookieContainer.Add(cookie);
             }
         }
 
-        public void SetTumblrToSCookie(CookieCollection cookies)
+        public void Serialize(string path)
         {
-            SetUriCookie(cookies);
-            //foreach (Cookie cookie in cookies)
-            //{
-            //    tumblrToSCookieContainer.Add(cookie);
-            //}
+            List<Cookie> cookieList = new List<Cookie>(GetAllCookies(cookieContainer));
+            using (var stream = new FileStream(path, FileMode.Create, FileAccess.Write))
+            {
+                using (XmlDictionaryWriter writer = JsonReaderWriterFactory.CreateJsonWriter(
+                    stream, Encoding.UTF8, true, true, "  "))
+                {
+                    var serializer = new DataContractJsonSerializer(typeof(List<Cookie>));
+                    serializer.WriteObject(writer, cookieList);
+                    writer.Flush();
+                }
+            }
         }
 
-        /// <summary>
-        ///     Gets the URI cookie container.
-        /// </summary>
-        /// <param name="uri">The URI.</param>
-        /// <returns></returns>
-        private static CookieContainer GetUriCookieContainer(Uri uri)
+        public void Deserialize(string path)
         {
-            CookieContainer cookies = new CookieContainer();
-
-            // Determine buffer size
-            var datasize = 0;
-            InternetGetCookieEx(uri.ToString(), null, null, ref datasize, InternetCookieHttponly, IntPtr.Zero);
-            var cookieData = new StringBuilder(datasize);
-
-            // Ask for cookies with correct buffer size
-            if (!InternetGetCookieEx(uri.ToString(), null, cookieData, ref datasize, InternetCookieHttponly, IntPtr.Zero))
+            try
             {
-                return cookies;
+                using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read))
+                {
+                    var serializer = new DataContractJsonSerializer(typeof(List<Cookie>));
+                    List<Cookie> cookies = (List<Cookie>)serializer.ReadObject(stream);
+                    foreach (Cookie cookie in cookies)
+                    {
+                        cookieContainer.Add(cookie);
+                    }
+                }
             }
-            if (cookieData.Length > 0)
+            catch (FileNotFoundException)
             {
-                cookies.SetCookies(uri, cookieData.ToString().Replace(';', ','));
             }
-            return cookies;
         }
 
-        private static void SetUriCookieContainer(CookieCollection cookies)
+        public static IEnumerable<Cookie> GetAllCookies(CookieContainer c)
         {
-            foreach (Cookie cookie in cookies)
+            Hashtable k = (Hashtable)c.GetType().GetField("m_domainTable", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(c);
+            foreach (DictionaryEntry element in k)
             {
-                InternetSetCookie("https://" + cookie.Domain, cookie.Name, cookie.Value);
+                SortedList l = (SortedList)element.Value.GetType().GetField("m_list", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(element.Value);
+                foreach (var e in l)
+                {
+                    var cl = (CookieCollection)((DictionaryEntry)e).Value;
+                    foreach (Cookie fc in cl)
+                    {
+                        yield return fc;
+                    }
+                }
             }
         }
     }

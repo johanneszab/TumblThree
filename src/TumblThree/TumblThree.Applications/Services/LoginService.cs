@@ -50,7 +50,7 @@ namespace TumblThree.Applications.Services
         {
             string url = "https://www.tumblr.com/login";
             HttpWebRequest request = webRequestFactory.CreateGetReqeust(url);
-            cookieService.GetTumblrToSCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
+            cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
             using (var response = await request.GetResponseAsync() as HttpWebResponse)
             {
                 cookieService.SetUriCookie(response.Cookies);

@@ -19,6 +19,7 @@ namespace TumblThree.Applications.Controllers
         private const string appSettingsFileName = "Settings.json";
         private const string managerSettingsFileName = "Manager.json";
         private const string queueSettingsFileName = "Queuelist.json";
+        private const string cookiesFileName = "Cookies.json";
         private readonly Lazy<CrawlerController> crawlerController;
         private readonly Lazy<DetailsController> detailsController;
         private readonly IEnvironmentService environmentService;
@@ -27,6 +28,7 @@ namespace TumblThree.Applications.Controllers
         private readonly Lazy<QueueController> queueController;
         private readonly QueueManager queueManager;
         private readonly ISettingsProvider settingsProvider;
+        private readonly ISharedCookieService cookieService;
 
         private readonly Lazy<ShellService> shellService;
         private readonly Lazy<ShellViewModel> shellViewModel;
@@ -37,7 +39,7 @@ namespace TumblThree.Applications.Controllers
         [ImportingConstructor]
         public ModuleController(Lazy<ShellService> shellService, IEnvironmentService environmentService,
             IConfirmTumblrPrivacyConsent confirmTumblrPrivacyConsent, ISettingsProvider settingsProvider,
-            Lazy<ManagerController> managerController, Lazy<QueueController> queueController,
+            ISharedCookieService cookieService, Lazy<ManagerController> managerController, Lazy<QueueController> queueController,
             Lazy<DetailsController> detailsController, Lazy<CrawlerController> crawlerController,
             Lazy<ShellViewModel> shellViewModel)
         {
@@ -45,6 +47,7 @@ namespace TumblThree.Applications.Controllers
             this.environmentService = environmentService;
             this.confirmTumblrPrivacyConsent = confirmTumblrPrivacyConsent;
             this.settingsProvider = settingsProvider;
+            this.cookieService = cookieService;
             this.detailsController = detailsController;
             this.managerController = managerController;
             this.queueController = queueController;
@@ -116,6 +119,8 @@ namespace TumblThree.Applications.Controllers
             DetailsController.Initialize();
             CrawlerController.QueueManager = queueManager;
             CrawlerController.Initialize();
+
+            cookieService.Deserialize(Path.Combine(environmentService.AppSettingsPath, cookiesFileName));
         }
 
         public async void Run()
@@ -141,12 +146,14 @@ namespace TumblThree.Applications.Controllers
                 SaveSettings(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, appSettingsFileName), appSettings);
                 SaveSettings(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, queueSettingsFileName), queueSettings);
                 SaveSettings(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, managerSettingsFileName), managerSettings);
+                cookieService.Serialize(Path.Combine(environmentService.AppSettingsPath, cookiesFileName));
             }
             else
             {
                 SaveSettings(Path.Combine(environmentService.AppSettingsPath, appSettingsFileName), appSettings);
                 SaveSettings(Path.Combine(environmentService.AppSettingsPath, queueSettingsFileName), queueSettings);
                 SaveSettings(Path.Combine(environmentService.AppSettingsPath, managerSettingsFileName), managerSettings);
+                cookieService.Serialize(Path.Combine(environmentService.AppSettingsPath, cookiesFileName));
             }
         }
 
@@ -184,6 +191,8 @@ namespace TumblThree.Applications.Controllers
                 Logger.Error("Could not save the settings file: {0}", ex);
             }
         }
+
+
 
         private void ShowDetailsView()
         {

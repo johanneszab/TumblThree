@@ -763,10 +763,16 @@ namespace TumblThree.Applications.ViewModels
 
         private async Task TumblrLogin()
         {
-            await LoginService.PerformTumblrLogin(TumblrUser, TumblrPassword);
-            CheckIfTumblrLoggedIn();
-            if (TumblrLoggedIn)
-                TumblrEmail = await LoginService.GetTumblrUsername();
+            try
+            {
+                await LoginService.PerformTumblrLogin(TumblrUser, TumblrPassword);
+                CheckIfTumblrLoggedIn();
+                if (TumblrLoggedIn)
+                    TumblrEmail = await LoginService.GetTumblrUsername();
+            }
+            catch
+            {
+            }
         }
 
         private void CheckIfTumblrLoggedIn()
