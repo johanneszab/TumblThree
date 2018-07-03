@@ -693,7 +693,7 @@ E.g.  great big car, bears searches for great big cars and bears.</value>
     <value>The length of time, in seconds, until the request times out.</value>
   </data>
   <data name="ConcurrentVideoConnections" xml:space="preserve">
-    <value>Concurrent video connections:</value>
+    <value>Concurrent video connections</value>
   </data>
   <data name="ToolTipVideoConnections" xml:space="preserve">
     <value>Number of concurrent connections to the tumblr video host</value>
@@ -854,10 +854,10 @@ Activation will increase the memory usage during operation based on the amount o
     <value>Chose which file type you want to download</value>
   </data>
   <data name="ToolTipTumblrLogin" xml:space="preserve">
-    <value>Your tumblr username</value>
+    <value>Your tumblr login</value>
   </data>
   <data name="ToolTipTumblrLoginDescription" xml:space="preserve">
-    <value>The username is not saved locally but only used for generating a cookie.</value>
+    <value>The login is not saved locally but only used for generating a cookie.</value>
   </data>
   <data name="ToolTipTumblrPassword" xml:space="preserve">
     <value>Your tumblr password</value>
@@ -879,7 +879,7 @@ Activation will increase the memory usage during operation based on the amount o
 The cookie with your credentials of your account is saved and the authentication process needs to be done only once.</value>
   </data>
   <data name="UserAgent" xml:space="preserve">
-    <value>UserAgent</value>
+    <value>User agent</value>
   </data>
   <data name="LoggedIn" xml:space="preserve">
     <value>Logged in as</value>

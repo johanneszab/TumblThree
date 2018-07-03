@@ -513,7 +513,7 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You need to login to tumblr.com for downloading {0}. Go to the Settings-&gt;Authenticate..
+        ///   Looks up a localized string similar to You need to login to tumblr.com for downloading {0}. Go to the Settings-&gt;Connection-&gt;Authenticate..
         /// </summary>
         public static string NotLoggedIn {
             get {

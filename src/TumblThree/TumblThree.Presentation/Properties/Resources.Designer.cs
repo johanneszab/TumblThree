@@ -313,7 +313,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Concurrent video connections:.
+        ///   Looks up a localized string similar to Concurrent video connections.
         /// </summary>
         public static string ConcurrentVideoConnections {
             get {
@@ -2166,7 +2166,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your tumblr username.
+        ///   Looks up a localized string similar to Your tumblr login.
         /// </summary>
         public static string ToolTipTumblrLogin {
             get {
@@ -2175,7 +2175,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The username is not saved locally but only used for generating a cookie..
+        ///   Looks up a localized string similar to The login is not saved locally but only used for generating a cookie..
         /// </summary>
         public static string ToolTipTumblrLoginDescription {
             get {
@@ -2292,7 +2292,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to UserAgent.
+        ///   Looks up a localized string similar to User agent.
         /// </summary>
         public static string UserAgent {
             get {

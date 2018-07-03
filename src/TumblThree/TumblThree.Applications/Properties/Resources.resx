@@ -270,7 +270,7 @@
     <value>New version available for download : {0}</value>
   </data>
   <data name="NotLoggedIn" xml:space="preserve">
-    <value>You need to login to tumblr.com for downloading {0}. Go to the Settings-&gt;Authenticate.</value>
+    <value>You need to login to tumblr.com for downloading {0}. Go to the Settings-&gt;Connection-&gt;Authenticate.</value>
   </data>
   <data name="PasswordProtected" xml:space="preserve">
     <value>Password protected blog: {0}. You need to enter the password in the Details.</value>
