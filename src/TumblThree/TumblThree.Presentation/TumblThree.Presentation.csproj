@@ -167,6 +167,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\FocusAdvancement.cs" />
     <Compile Include="Controls\DataGridHideColumns.cs" />
     <Compile Include="Controls\Flyout.cs" />
     <Compile Include="Controls\HorizontalFlyoutAlignment.cs" />

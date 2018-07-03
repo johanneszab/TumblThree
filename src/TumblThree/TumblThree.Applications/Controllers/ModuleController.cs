@@ -146,7 +146,7 @@ namespace TumblThree.Applications.Controllers
                 SaveSettings(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, appSettingsFileName), appSettings);
                 SaveSettings(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, queueSettingsFileName), queueSettings);
                 SaveSettings(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, managerSettingsFileName), managerSettings);
-                cookieService.Serialize(Path.Combine(environmentService.AppSettingsPath, cookiesFileName));
+                cookieService.Serialize(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, cookiesFileName));
             }
             else
             {

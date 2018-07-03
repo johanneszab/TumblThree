@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:p="clr-namespace:TumblThree.Presentation.Properties"
+        xmlns:ctrl="clr-namespace:TumblThree.Presentation.Controls"
         xmlns:vr="clr-namespace:TumblThree.Presentation.ValidationRules"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:TumblThree.Applications.ViewModels;assembly=TumblThree.Applications"
@@ -534,7 +535,7 @@
                                 </Label.ToolTip>
                             </Label>
                             <TextBox x:Name="TumblrLoginTextBox" Grid.Column="3" HorizontalAlignment="Left"
-                         VerticalAlignment="Center" MinWidth="160">
+                         VerticalAlignment="Center" MinWidth="160" ctrl:FocusAdvancement.AdvancesByEnterKey="True">
                                 <TextBox.Text>
                                     <Binding Path="TumblrUser" UpdateSourceTrigger="PropertyChanged">
                                     </Binding>
@@ -559,6 +560,9 @@
                                     <Binding Path="TumblrPassword" UpdateSourceTrigger="PropertyChanged">
                                     </Binding>
                                 </TextBox.Text>
+                                <TextBox.InputBindings>
+                                    <KeyBinding Command="{Binding TumblrLoginCommand}" Key="Return" />
+                                </TextBox.InputBindings>
                             </TextBox>
                             <Button x:Name="tumblrAuthenticate" Grid.Column="6" HorizontalAlignment="Left" Margin="10"
                         VerticalAlignment="Center" Content="{x:Static p:Resources.Authenticate}"
