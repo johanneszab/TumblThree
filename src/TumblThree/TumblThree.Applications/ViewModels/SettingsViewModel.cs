@@ -24,6 +24,7 @@ namespace TumblThree.Applications.ViewModels
         private readonly IFileDialogService fileDialogService;
         private readonly DelegateCommand authenticateCommand;
         private readonly AsyncDelegateCommand tumblrLoginCommand;
+        private readonly AsyncDelegateCommand tumblrSubmitTFACommand;
         private readonly ExportFactory<AuthenticateViewModel> authenticateViewModelFactory;
         private readonly DelegateCommand browseDownloadLocationCommand;
         private readonly DelegateCommand enableAutoDownloadCommand;
@@ -112,6 +113,8 @@ namespace TumblThree.Applications.ViewModels
         private string tumblrUser = string.Empty;
         private string tumblrPassword = string.Empty;
         private bool tumblrLoggedIn = false;
+        private bool tumblrTFADetected = false;
+        private string tumblrTFAAuthCode = string.Empty;
         private string tumblrEmail = string.Empty;
 
         [ImportingConstructor]
@@ -132,6 +135,7 @@ namespace TumblThree.Applications.ViewModels
             browseExportLocationCommand = new DelegateCommand(BrowseExportLocation);
             authenticateCommand = new DelegateCommand(Authenticate);
             tumblrLoginCommand = new AsyncDelegateCommand(TumblrLogin);
+            tumblrSubmitTFACommand = new AsyncDelegateCommand(TumblrSubmitTFA);
             saveCommand = new DelegateCommand(Save);
             enableAutoDownloadCommand = new DelegateCommand(EnableAutoDownload);
             exportCommand = new DelegateCommand(ExportBlogs);
@@ -162,6 +166,11 @@ namespace TumblThree.Applications.ViewModels
         public ICommand TumblrLoginCommand
         {
             get { return tumblrLoginCommand; }
+        }
+
+        public ICommand TumblrSubmitTFACommand
+        {
+            get { return tumblrSubmitTFACommand; }
         }
 
         public ICommand SaveCommand
@@ -663,6 +672,18 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref tumblrLoggedIn, value); }
         }
 
+        public bool TumblrTFADetected
+        {
+            get { return tumblrTFADetected; }
+            set { SetProperty(ref tumblrTFADetected, value); }
+        }
+
+        public string TumblrTFAAuthCode
+        {
+            get { return tumblrTFAAuthCode; }
+            set { SetProperty(ref tumblrTFAAuthCode, value); }
+        }
+
         public string TumblrEmail
         {
             get { return tumblrEmail; }
@@ -766,13 +787,35 @@ namespace TumblThree.Applications.ViewModels
             try
             {
                 await LoginService.PerformTumblrLogin(TumblrUser, TumblrPassword);
-                CheckIfTumblrLoggedIn();
-                if (TumblrLoggedIn)
-                    TumblrEmail = await LoginService.GetTumblrUsername();
             }
             catch
             {
             }
+
+            TumblrTFADetected = LoginService.CheckIfTumblrTFANeeded();
+            if (!TumblrTFADetected)
+            {
+                await UpdateTumblrLogin();
+            }
+        }
+
+        private async Task TumblrSubmitTFA()
+        {
+            try
+            {
+                await LoginService.PerformTumblrTFALogin(TumblrUser, TumblrTFAAuthCode);
+                await UpdateTumblrLogin();
+            }
+            catch
+            {
+            }
+        }
+
+        private async Task UpdateTumblrLogin()
+        {
+            TumblrEmail = await LoginService.GetTumblrUsername();
+            if (!String.IsNullOrEmpty(TumblrEmail))
+                TumblrLoggedIn = true;
         }
 
         private void CheckIfTumblrLoggedIn()
@@ -783,9 +826,7 @@ namespace TumblThree.Applications.ViewModels
         public async Task Load()
         {
             LoadSettings();
-            CheckIfTumblrLoggedIn();
-            if (TumblrLoggedIn)
-                TumblrEmail = await LoginService.GetTumblrUsername();
+            await UpdateTumblrLogin();
         }
 
         private void LoadSettings()

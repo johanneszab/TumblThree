@@ -230,6 +230,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid MinHeight="46" Height="Auto" Grid.Row="0">
                             <Grid.ColumnDefinitions>
@@ -601,6 +602,42 @@
                                     </Style>
                                 </Label.Style>
                             </Label>
+                        </Grid>
+                        <Grid MinHeight="46" Height="Auto" Grid.Row="9" HorizontalAlignment="Left" Visibility="{Binding TumblrTFADetected, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Label x:Name="TumblrTFANeededLabel" Grid.Column="0" Content="{x:Static p:Resources.TFANeeded}"
+                       VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10">
+                            </Label>
+                            <TextBox x:Name="TumblrTFATextBox" Grid.Column="3" HorizontalAlignment="Left"
+                         VerticalAlignment="Center" MinWidth="120">
+                                <TextBox.Text>
+                                    <Binding Path="TumblrTFAAuthCode" UpdateSourceTrigger="PropertyChanged">
+                                    </Binding>
+                                </TextBox.Text>
+                                <TextBox.InputBindings>
+                                    <KeyBinding Command="{Binding TumblrSubmitTFACommand}" Key="Return" />
+                                </TextBox.InputBindings>
+                            </TextBox>
+                            <Button x:Name="tumblrSubmitTFA" Grid.Column="4" HorizontalAlignment="Left" Margin="10"
+                        VerticalAlignment="Center" Content="{x:Static p:Resources.Submit}"
+                        Command="{Binding TumblrSubmitTFACommand}" IsEnabled="True" MinWidth="90">
+                                <Button.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipAuthenticate}" />
+                                            <TextBlock xml:space="preserve"
+                                           Text="{x:Static p:Resources.ToolTipAuthenticateDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </Button.ToolTip>
+                            </Button>
                         </Grid>
                         <!--<Grid MinHeight="46" Height="Auto" Grid.Row="7">
                             <Grid.ColumnDefinitions>

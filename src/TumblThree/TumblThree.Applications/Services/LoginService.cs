@@ -18,6 +18,8 @@ namespace TumblThree.Applications.Services
         private readonly ISharedCookieService cookieService;
         private readonly IWebRequestFactory webRequestFactory;
         private string tumblrKey = string.Empty;
+        private bool tfaNeeded = false;
+        private string tumblrTFAKey = string.Empty;
 
         [ImportingConstructor]
         public LoginService(IShellService shellService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService)
@@ -34,7 +36,27 @@ namespace TumblThree.Applications.Services
                 string document = await RequestTumblrKey().TimeoutAfter(shellService.Settings.TimeOut);
                 tumblrKey = ExtractTumblrKey(document);
                 await Register(login, password).TimeoutAfter(shellService.Settings.TimeOut);
-                await Authenticate(login, password).TimeoutAfter(shellService.Settings.TimeOut);
+                document = await Authenticate(login, password).TimeoutAfter(shellService.Settings.TimeOut);
+                if (tfaNeeded)
+                {
+                    tumblrTFAKey = ExtractTumblrTFAKey(document);
+                }
+            }
+            catch (TimeoutException)
+            {
+            }
+        }
+
+        public bool CheckIfTumblrTFANeeded()
+        {
+            return tfaNeeded;
+        }
+
+        public async Task PerformTumblrTFALogin(string login, string tumblrTFAAuthCode)
+        {
+            try
+            {
+                await SubmitTFAAuthCode(login, tumblrTFAAuthCode).TimeoutAfter(shellService.Settings.TimeOut);
             }
             catch (TimeoutException)
             {
@@ -67,7 +89,7 @@ namespace TumblThree.Applications.Services
             }
         }
 
-        protected async Task Register(string login, string password)
+        private async Task Register(string login, string password)
         {
             string url = "https://www.tumblr.com/svc/account/register";
             string referer = "https://www.tumblr.com/login";
@@ -108,7 +130,7 @@ namespace TumblThree.Applications.Services
             }
         }
 
-        protected async Task Authenticate(string login, string password)
+        private async Task<string> Authenticate(string login, string password)
         {
             string url = "https://www.tumblr.com/login";
             string referer = "https://www.tumblr.com/login";
@@ -127,6 +149,68 @@ namespace TumblThree.Applications.Services
                 { "version", "STANDARD" },
                 { "follow", "" },
                 { "form_key", tumblrKey },
+                { "seen_suggestion", "0" },
+                { "used_suggestion", "0" },
+                { "used_auto_suggestion", "0" },
+                { "about_tumblr_slide", "" },
+                { "random_username_suggestions", "[\"KawaiiBouquetStranger\",\"KeenTravelerFury\",\"RainyMakerTastemaker\",\"SuperbEnthusiastCollective\",\"TeenageYouthFestival\"]" },
+                { "action", "signup_determine" }
+            };
+            string requestBody = webRequestFactory.UrlEncode(parameters);
+            using (Stream postStream = await request.GetRequestStreamAsync())
+            {
+                byte[] postBytes = Encoding.ASCII.GetBytes(requestBody);
+                await postStream.WriteAsync(postBytes, 0, postBytes.Length);
+                await postStream.FlushAsync();
+            }
+            using (var response = await request.GetResponseAsync() as HttpWebResponse)
+            {
+                if (request.Address == new Uri("https://www.tumblr.com/login"))
+                {
+                    tfaNeeded = true;
+                    cookieService.SetUriCookie(response.Cookies);
+                    using (var stream = webRequestFactory.GetStreamForApiRequest(response.GetResponseStream()))
+                    {
+                        using (var buffer = new BufferedStream(stream))
+                        {
+                            using (var reader = new StreamReader(buffer))
+                            {
+                                return reader.ReadToEnd();
+                            }
+                        }
+                    }
+                }
+                cookieService.SetUriCookie(request.CookieContainer.GetCookies(new Uri("https://www.tumblr.com/")));
+                return string.Empty;
+            }
+        }
+
+        private static string ExtractTumblrTFAKey(string document)
+        {
+            return Regex.Match(document, "name=\"tfa_form_key\" value=\"([\\S]*)\"/>").Groups[1].Value;
+        }
+
+        private async Task SubmitTFAAuthCode(string login, string tumblrTFAAuthCode)
+        {
+            string url = "https://www.tumblr.com/login";
+            string referer = "https://www.tumblr.com/login";
+            var headers = new Dictionary<string, string>();
+            HttpWebRequest request = webRequestFactory.CreatePostReqeust(url, referer, headers);
+            request.AllowAutoRedirect = true;
+            cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
+            var parameters = new Dictionary<string, string>
+            {
+                { "determine_email", login },
+                { "user[email]", login },
+                { "tumblelog[name]", "" },
+                { "user[age]", "" },
+                { "context", "login" },
+                { "version", "STANDARD" },
+                { "follow", "" },
+                { "form_key", tumblrKey },
+                { "tfa_form_key", tumblrTFAKey },
+                { "tfa_response_field", tumblrTFAAuthCode },
+                { "http_referer", "https://www.tumblr.com/login" },
                 { "seen_suggestion", "0" },
                 { "used_suggestion", "0" },
                 { "used_auto_suggestion", "0" },

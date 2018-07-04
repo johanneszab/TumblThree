@@ -887,4 +887,10 @@ The cookie with your credentials of your account is saved and the authentication
   <data name="LoggedOut" xml:space="preserve">
     <value>Logged out</value>
   </data>
+  <data name="Submit" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="TFANeeded" xml:space="preserve">
+    <value>TFA detected, enter auth code:</value>
+  </data>
 </root>
