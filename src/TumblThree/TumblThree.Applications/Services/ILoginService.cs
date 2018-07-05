@@ -6,6 +6,8 @@ namespace TumblThree.Applications.Services
     {
         Task PerformTumblrLogin(string login, string password);
 
+        void PerformTumblrLogout();
+
         Task PerformTumblrTFALogin(string login, string tumblrTFAAuthCode);
 
         bool CheckIfTumblrTFANeeded();

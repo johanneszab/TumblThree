@@ -893,4 +893,13 @@ The cookie with your credentials of your account is saved and the authentication
   <data name="TFANeeded" xml:space="preserve">
     <value>TFA detected, enter auth code:</value>
   </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="ToolTipLogout" xml:space="preserve">
+    <value>Logout from Tumblr.com</value>
+  </data>
+  <data name="ToolTipLogoutDescription" xml:space="preserve">
+    <value>Removes the cookies used for authentication from the system.</value>
+  </data>
 </root>

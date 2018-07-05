@@ -578,6 +578,19 @@
                                     </ToolTip>
                                 </Button.ToolTip>
                             </Button>
+                            <Button x:Name="tumblrLogout" Grid.Column="6" HorizontalAlignment="Left" Margin="10"
+                        VerticalAlignment="Center" Content="{x:Static p:Resources.Logout}" Visibility="{Binding TumblrLoggedIn, Converter={StaticResource BoolToVisibilityConverter}}"
+                        Command="{Binding TumblrLogoutCommand}" IsEnabled="True" MinWidth="90">
+                                <Button.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipLogout}" />
+                                            <TextBlock xml:space="preserve"
+                                           Text="{x:Static p:Resources.ToolTipLogoutDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </Button.ToolTip>
+                            </Button>
                             <Label x:Name="TumblrLoggedInLabel" Grid.Column="7" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0">
                                 <Label.Style>
                                     <Style TargetType="{x:Type Label}">

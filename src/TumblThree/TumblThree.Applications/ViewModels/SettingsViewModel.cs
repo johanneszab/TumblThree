@@ -24,6 +24,7 @@ namespace TumblThree.Applications.ViewModels
         private readonly IFileDialogService fileDialogService;
         private readonly DelegateCommand authenticateCommand;
         private readonly AsyncDelegateCommand tumblrLoginCommand;
+        private readonly AsyncDelegateCommand tumblrLogoutCommand;
         private readonly AsyncDelegateCommand tumblrSubmitTFACommand;
         private readonly ExportFactory<AuthenticateViewModel> authenticateViewModelFactory;
         private readonly DelegateCommand browseDownloadLocationCommand;
@@ -135,6 +136,7 @@ namespace TumblThree.Applications.ViewModels
             browseExportLocationCommand = new DelegateCommand(BrowseExportLocation);
             authenticateCommand = new DelegateCommand(Authenticate);
             tumblrLoginCommand = new AsyncDelegateCommand(TumblrLogin);
+            tumblrLogoutCommand = new AsyncDelegateCommand(TumblrLogout);
             tumblrSubmitTFACommand = new AsyncDelegateCommand(TumblrSubmitTFA);
             saveCommand = new DelegateCommand(Save);
             enableAutoDownloadCommand = new DelegateCommand(EnableAutoDownload);
@@ -166,6 +168,11 @@ namespace TumblThree.Applications.ViewModels
         public ICommand TumblrLoginCommand
         {
             get { return tumblrLoginCommand; }
+        }
+
+        public ICommand TumblrLogoutCommand
+        {
+            get { return tumblrLogoutCommand; }
         }
 
         public ICommand TumblrSubmitTFACommand
@@ -799,6 +806,12 @@ namespace TumblThree.Applications.ViewModels
             }
         }
 
+        private async Task TumblrLogout()
+        {
+            LoginService.PerformTumblrLogout();
+            await UpdateTumblrLogin();
+        }
+
         private async Task TumblrSubmitTFA()
         {
             try
@@ -816,6 +829,8 @@ namespace TumblThree.Applications.ViewModels
             TumblrEmail = await LoginService.GetTumblrUsername();
             if (!String.IsNullOrEmpty(TumblrEmail))
                 TumblrLoggedIn = true;
+            else
+                TumblrLoggedIn = false;
         }
 
         private void CheckIfTumblrLoggedIn()

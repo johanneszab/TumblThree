@@ -934,6 +934,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Logout.
+        /// </summary>
+        public static string Logout {
+            get {
+                return ResourceManager.GetString("Logout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Number of connections:.
         /// </summary>
         public static string MaxConnections {
@@ -1979,6 +1988,24 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipLoadAllDatabasesDescription {
             get {
                 return ResourceManager.GetString("ToolTipLoadAllDatabasesDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logout from Tumblr.com.
+        /// </summary>
+        public static string ToolTipLogout {
+            get {
+                return ResourceManager.GetString("ToolTipLogout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Removes the cookies used for authentication from the system..
+        /// </summary>
+        public static string ToolTipLogoutDescription {
+            get {
+                return ResourceManager.GetString("ToolTipLogoutDescription", resourceCulture);
             }
         }
         

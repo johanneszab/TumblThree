@@ -9,6 +9,8 @@ namespace TumblThree.Applications.Services
 
         void SetUriCookie(CookieCollection cookies);
 
+        void RemoveUriCookie(Uri uri);
+
         void Serialize(string path);
 
         void Deserialize(string path);

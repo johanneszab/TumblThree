@@ -9,7 +9,7 @@ namespace TumblThree.Domain.Models
     {
         public bool IsValidTumblrUrl(string url)
         {
-            return url != null && url.Length > 18 && url.Contains(".tumblr.com") && !url.Contains("www.tumblr.com") && !url.Any(char.IsWhiteSpace) &&
+            return url != null && url.Length > 18 && url.Contains(".tumblr.com") && !url.Contains("//www.tumblr.com") && !url.Any(char.IsWhiteSpace) &&
                    (url.StartsWith("http://", true, null) || url.StartsWith("https://", true, null));
         }
 

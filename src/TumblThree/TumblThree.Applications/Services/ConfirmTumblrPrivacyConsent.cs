@@ -29,8 +29,8 @@ namespace TumblThree.Applications.Services
 
         public async Task ConfirmPrivacyConsent()
         {
-            //if (CheckIfLoggedIn())
-            //    return;
+            if (CheckIfLoggedIn())
+                return;
             await UpdateTumblrKey();
             string referer = @"https://www.tumblr.com/privacy/consent?redirect=";
             var headers = new Dictionary<string, string> { { "X-tumblr-form-key", tumblrKey } };

@@ -32,6 +32,15 @@ namespace TumblThree.Applications.Services
             }
         }
 
+        public void RemoveUriCookie(Uri uri)
+        {
+            var cookies = cookieContainer.GetCookies(uri);
+            foreach (Cookie cookie in cookies)
+            {
+                cookie.Expired = true;
+            }
+        }
+
         public void Serialize(string path)
         {
             List<Cookie> cookieList = new List<Cookie>(GetAllCookies(cookieContainer));
