@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 using System.Waf.Applications;
 using System.Windows.Threading;
@@ -35,6 +37,7 @@ namespace TumblThree.Applications.Controllers
         private AppSettings appSettings;
         private ManagerSettings managerSettings;
         private QueueSettings queueSettings;
+        private List<Cookie> cookieList;
 
         [ImportingConstructor]
         public ModuleController(Lazy<ShellService> shellService, IEnvironmentService environmentService,
@@ -93,14 +96,14 @@ namespace TumblThree.Applications.Controllers
                 appSettings = LoadSettings<AppSettings>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, appSettingsFileName));
                 queueSettings = LoadSettings<QueueSettings>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, queueSettingsFileName));
                 managerSettings = LoadSettings<ManagerSettings>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, managerSettingsFileName));
-                cookieService.Deserialize(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, cookiesFileName));
+                cookieList = LoadSettings<List<Cookie>>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, cookiesFileName));
             }
             else
             {
                 appSettings = LoadSettings<AppSettings>(Path.Combine(environmentService.AppSettingsPath, appSettingsFileName));
                 queueSettings = LoadSettings<QueueSettings>(Path.Combine(environmentService.AppSettingsPath, queueSettingsFileName));
                 managerSettings = LoadSettings<ManagerSettings>(Path.Combine(environmentService.AppSettingsPath, managerSettingsFileName));
-                cookieService.Deserialize(Path.Combine(environmentService.AppSettingsPath, cookiesFileName));
+                cookieList = LoadSettings<List<Cookie>>(Path.Combine(environmentService.AppSettingsPath, cookiesFileName));
             }
 
             ShellService.Settings = appSettings;
@@ -121,6 +124,7 @@ namespace TumblThree.Applications.Controllers
             DetailsController.Initialize();
             CrawlerController.QueueManager = queueManager;
             CrawlerController.Initialize();
+            cookieService.SetUriCookie(cookieList);
         }
 
         public async void Run()
@@ -146,14 +150,14 @@ namespace TumblThree.Applications.Controllers
                 SaveSettings(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, appSettingsFileName), appSettings);
                 SaveSettings(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, queueSettingsFileName), queueSettings);
                 SaveSettings(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, managerSettingsFileName), managerSettings);
-                cookieService.Serialize(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, cookiesFileName));
+                SaveSettings(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, cookiesFileName), new List<Cookie>(cookieService.GetAllCookies()));
             }
             else
             {
                 SaveSettings(Path.Combine(environmentService.AppSettingsPath, appSettingsFileName), appSettings);
                 SaveSettings(Path.Combine(environmentService.AppSettingsPath, queueSettingsFileName), queueSettings);
                 SaveSettings(Path.Combine(environmentService.AppSettingsPath, managerSettingsFileName), managerSettings);
-                cookieService.Serialize(Path.Combine(environmentService.AppSettingsPath, cookiesFileName));
+                SaveSettings(Path.Combine(environmentService.AppSettingsPath, cookiesFileName), new List<Cookie>(cookieService.GetAllCookies()));
             }
         }
 
@@ -191,8 +195,6 @@ namespace TumblThree.Applications.Controllers
                 Logger.Error("Could not save the settings file: {0}", ex);
             }
         }
-
-
 
         private void ShowDetailsView()
         {
