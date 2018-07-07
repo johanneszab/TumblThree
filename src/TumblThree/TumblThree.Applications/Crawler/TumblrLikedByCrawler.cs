@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -110,6 +110,21 @@ namespace TumblThree.Applications.Crawler
             UpdateBlogStats();
         }
 
+        public override async Task IsBlogOnlineAsync()
+        {
+            try
+            {
+                await RequestDataAsync(blog.Url, "https://www.tumblr.com/", "https://" + blog.Name.Replace("+", "-") + ".tumblr.com");
+                blog.Online = true;
+            }
+            catch (WebException webException)
+            {
+                Logger.Error("AbstractCrawler:IsBlogOnlineAsync:WebException {0}", webException);
+                shellService.ShowError(webException, Resources.BlogIsOffline, blog.Name);
+                blog.Online = false;
+            }
+        }
+
         private long CreateStartPagination()
         {
             long pagination = DateTimeOffset.Now.ToUnixTimeSeconds();
@@ -211,7 +226,7 @@ namespace TumblThree.Applications.Crawler
                 {
                     string imageUrl = match.Groups[1].Value;
                     if (imageUrl.Contains("avatar") || imageUrl.Contains("previews"))
-                        continue;                    
+                        continue;
                     if (blog.SkipGif && imageUrl.EndsWith(".gif"))
                     {
                         continue;
@@ -240,7 +255,7 @@ namespace TumblThree.Applications.Crawler
                     else if (shellService.Settings.VideoSize == 480)
                     {
                         // TODO: add valid postID
-                        AddToDownloadList(new VideoPost( 
+                        AddToDownloadList(new VideoPost(
                             "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + "_480.mp4",
                             Guid.NewGuid().ToString("N")));
                     }
