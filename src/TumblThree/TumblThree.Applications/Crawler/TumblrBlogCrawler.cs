@@ -117,6 +117,12 @@ namespace TumblThree.Applications.Crawler
                     }
                 }
             }
+            catch (TimeoutException timeoutException)
+            {
+                Logger.Error("TumblrBlogCrawler:CheckIfLoggedIn:WebException {0}", timeoutException);
+                shellService.ShowError(timeoutException, Resources.TimeoutReached, Resources.OnlineChecking, blog.Name);
+                blog.Online = false;
+            }
         }
 
         public override async Task UpdateMetaInformationAsync()
@@ -412,6 +418,12 @@ namespace TumblThree.Applications.Crawler
                 }
                 return 0;
             }
+            catch (TimeoutException timeoutException)
+            {
+                Logger.Error("TumblrBlogCrawler:CheckIfLoggedIn:WebException {0}", timeoutException);
+                shellService.ShowError(timeoutException, Resources.TimeoutReached, Resources.Crawling, blog.Name);
+                return 0;
+            }
         }
 
         private async Task<ulong> GetHighestPostId()
@@ -458,10 +470,17 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException)
             {
-                if (webException.Message.Contains("503"))
+                var webRespStatusCode = (int)((HttpWebResponse)webException?.Response).StatusCode;
+                if (webRespStatusCode == 503)
                 {
                     return false;
                 }
+            }
+            catch (TimeoutException timeoutException)
+            {
+                Logger.Error("TumblrBlogCrawler:CheckIfLoggedIn:WebException {0}", timeoutException);
+                shellService.ShowError(timeoutException, Resources.TimeoutReached, Resources.Crawling, blog.Name);
+                return false;
             }
             return true;
         }

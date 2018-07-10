@@ -123,6 +123,12 @@ namespace TumblThree.Applications.Crawler
                 shellService.ShowError(webException, Resources.BlogIsOffline, blog.Name);
                 blog.Online = false;
             }
+            catch (TimeoutException timeoutException)
+            {
+                Logger.Error("TumblrBlogCrawler:CheckIfLoggedIn:WebException {0}", timeoutException);
+                shellService.ShowError(timeoutException, Resources.TimeoutReached, Resources.OnlineChecking, blog.Name);
+                blog.Online = false;
+            }
         }
 
         private long CreateStartPagination()
@@ -148,8 +154,17 @@ namespace TumblThree.Applications.Crawler
 
         private async Task<bool> CheckIfLoggedIn()
         {
-            string document = await RequestDataAsync(blog.Url + "/page/1", "https://www.tumblr.com/", "https://" + blog.Name.Replace("+", "-") + ".tumblr.com");
-            return !document.Contains("<div class=\"signup_view account login\"");
+            try
+            {
+                string document = await RequestDataAsync(blog.Url + "/page/1", "https://www.tumblr.com/", "https://" + blog.Name.Replace("+", "-") + ".tumblr.com");
+                return !document.Contains("<div class=\"signup_view account login\"");
+            }
+            catch (TimeoutException timeoutException)
+            {
+                Logger.Error("TumblrLikedByCrawler:CheckIfLoggedIn:WebException {0}", timeoutException);
+                shellService.ShowError(timeoutException, Resources.TimeoutReached, Resources.Crawling, blog.Name);
+                return false;
+            }
         }
 
         private async Task AddUrlsToDownloadList(long pagination, int crawlerNumber)

@@ -3,7 +3,7 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace TumblThree.Applications.Crawler
+namespace TumblThree.Applications.Services
 {
     public interface IWebRequestFactory
     {

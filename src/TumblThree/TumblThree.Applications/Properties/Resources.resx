@@ -272,6 +272,9 @@
   <data name="NotLoggedIn" xml:space="preserve">
     <value>You need to login to tumblr.com for downloading {0}. Go to the Settings-&gt;Connection-&gt;Authenticate.</value>
   </data>
+  <data name="OnlineChecking" xml:space="preserve">
+    <value>online checking</value>
+  </data>
   <data name="PasswordProtected" xml:space="preserve">
     <value>Password protected blog: {0}. You need to enter the password in the Details.</value>
   </data>

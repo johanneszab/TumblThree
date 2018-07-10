@@ -522,6 +522,15 @@ namespace TumblThree.Applications.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to online checking.
+        /// </summary>
+        public static string OnlineChecking {
+            get {
+                return ResourceManager.GetString("OnlineChecking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password protected blog: {0}. You need to enter the password in the Details..
         /// </summary>
         public static string PasswordProtected {

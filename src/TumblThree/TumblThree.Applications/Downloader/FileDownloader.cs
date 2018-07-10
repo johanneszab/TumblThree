@@ -13,99 +13,18 @@ namespace TumblThree.Applications.Downloader
     {
         private readonly AppSettings settings;
         private readonly CancellationToken ct;
+        private readonly IWebRequestFactory webRequestFactory;
         private readonly ISharedCookieService cookieService;
         public static readonly int BufferSize = 512 * 4096;
         public event EventHandler Completed;
         public event EventHandler<DownloadProgressChangedEventArgs> ProgressChanged;
 
-        public FileDownloader(AppSettings settings, CancellationToken ct, ISharedCookieService cookieService)
+        public FileDownloader(AppSettings settings, CancellationToken ct, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService)
         {
             this.settings = settings;
             this.ct = ct;
+            this.webRequestFactory = webRequestFactory;
             this.cookieService = cookieService;
-        }
-
-        private HttpWebRequest CreateWebReqeust(string url)
-        {
-            var request = (HttpWebRequest)WebRequest.Create(url);
-            request.Method = "GET";
-            request.ProtocolVersion = HttpVersion.Version11;
-            request.UserAgent = settings.UserAgent;
-            request.AllowAutoRedirect = true;
-            //request.KeepAlive = true;
-            //request.Pipelined = true;
-            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-
-            // Timeouts don't work with GetResponseAsync() as it internally uses BeginGetResponse.
-            // See docs: https://msdn.microsoft.com/en-us/library/system.net.httpwebrequest.timeout(v=vs.110).aspx
-            // Quote: The Timeout property has no effect on asynchronous requests made with the BeginGetResponse or BeginGetRequestStream method.
-            // TODO: Use HttpClient instead?
-            request.ReadWriteTimeout = settings.TimeOut * 1000;
-            request.Timeout = settings.TimeOut * 1000;
-            request.CookieContainer = new CookieContainer();
-            //TODO: Fix site specific cookies!
-            cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
-            ServicePointManager.DefaultConnectionLimit = 400;
-            request = SetWebRequestProxy(request, settings);
-            return request;
-        }
-
-        private static HttpWebRequest SetWebRequestProxy(HttpWebRequest request, AppSettings settings)
-        {
-            if (!string.IsNullOrEmpty(settings.ProxyHost) && !string.IsNullOrEmpty(settings.ProxyPort))
-            {
-                request.Proxy = new WebProxy(settings.ProxyHost, int.Parse(settings.ProxyPort));
-            }
-            if (!string.IsNullOrEmpty(settings.ProxyUsername) && !string.IsNullOrEmpty(settings.ProxyPassword))
-            {
-                request.Proxy.Credentials = new NetworkCredential(settings.ProxyUsername, settings.ProxyPassword);
-            }
-            return request;
-        }
-
-        public async Task<Stream> ReadFromUrlIntoStream(string url)
-        {
-            HttpWebRequest request = CreateWebReqeust(url);
-
-            using (var response = await request.GetResponseAsync() as HttpWebResponse)
-            {
-                if (HttpStatusCode.OK == response.StatusCode)
-                {
-                    Stream responseStream = response.GetResponseStream();
-                    return GetStreamForDownload(responseStream);
-                }
-                else
-                {
-                    return null;
-                }
-            } 
-        }
-
-        private async Task<long> CheckDownloadSizeAsync(string url)
-        {
-            var requestRegistration = new CancellationTokenRegistration();
-            try
-            {
-                HttpWebRequest request = CreateWebReqeust(url);
-                requestRegistration = ct.Register(() => request.Abort());
-
-                using (WebResponse response = await request.GetResponseAsync())
-                {
-                    return response.ContentLength;
-                }
-            }
-            finally
-            {
-                requestRegistration.Dispose();
-            }
-
-        }
-
-        protected Stream GetStreamForDownload(Stream stream)
-        {
-            if (settings.Bandwidth == 0)
-                return stream;
-            return new ThrottledStream(stream, (settings.Bandwidth / settings.ConcurrentConnections) * 1024);
         }
 
         // TODO: Needs a complete rewrite. Also a append/cache function for resuming incomplete files on the disk.
@@ -144,7 +63,8 @@ namespace TumblThree.Applications.Downloader
 
                     try
                     {
-                        HttpWebRequest request = CreateWebReqeust(url);
+                        HttpWebRequest request = webRequestFactory.CreateGetReqeust(url);
+                        cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
                         requestRegistration = ct.Register(() => request.Abort());
                         request.AddRange(totalBytesReceived);
 
@@ -206,6 +126,53 @@ namespace TumblThree.Applications.Downloader
                 }
                 return true;
             }
+        }
+
+        private async Task<long> CheckDownloadSizeAsync(string url)
+        {
+            var requestRegistration = new CancellationTokenRegistration();
+            try
+            {
+                HttpWebRequest request = webRequestFactory.CreateGetReqeust(url);
+                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
+                requestRegistration = ct.Register(() => request.Abort());
+
+                using (WebResponse response = await request.GetResponseAsync())
+                {
+                    return response.ContentLength;
+                }
+            }
+            finally
+            {
+                requestRegistration.Dispose();
+            }
+
+        }
+
+        public async Task<Stream> ReadFromUrlIntoStream(string url)
+        {
+            HttpWebRequest request = webRequestFactory.CreateGetReqeust(url);
+            cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
+
+            using (var response = await request.GetResponseAsync() as HttpWebResponse)
+            {
+                if (HttpStatusCode.OK == response.StatusCode)
+                {
+                    Stream responseStream = response.GetResponseStream();
+                    return GetStreamForDownload(responseStream);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        private Stream GetStreamForDownload(Stream stream)
+        {
+            if (settings.Bandwidth == 0)
+                return stream;
+            return new ThrottledStream(stream, (settings.Bandwidth / settings.ConcurrentConnections) * 1024);
         }
 
         public static async Task<bool> SaveStreamToDisk(Stream input, string destinationFileName, CancellationToken ct)

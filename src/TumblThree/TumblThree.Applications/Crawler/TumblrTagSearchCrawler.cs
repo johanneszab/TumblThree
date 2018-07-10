@@ -141,8 +141,17 @@ namespace TumblThree.Applications.Crawler
 
         private async Task<bool> CheckIfLoggedIn()
         {
-            string document = await GetTaggedSearchPageAsync(DateTimeOffset.Now.ToUnixTimeSeconds());
-            return !document.Contains("SearchResultsModel");
+            try
+            {
+                string document = await GetTaggedSearchPageAsync(DateTimeOffset.Now.ToUnixTimeSeconds());
+                return !document.Contains("SearchResultsModel");
+            }
+            catch (TimeoutException timeoutException)
+            {
+                Logger.Error("TumblrTagSearchCrawler:CheckIfLoggedIn:WebException {0}", timeoutException);
+                shellService.ShowError(timeoutException, Resources.TimeoutReached, Resources.Crawling, blog.Name);
+                return false;
+            }
         }
 
         private long ExtractNextPageLink(string document)

@@ -10,6 +10,7 @@ using System.Xml.Linq;
 
 using TumblThree.Applications.Extensions;
 using TumblThree.Applications.Properties;
+using TumblThree.Applications.Services;
 using TumblThree.Domain.Models;
 
 namespace TumblThree.Applications.Crawler

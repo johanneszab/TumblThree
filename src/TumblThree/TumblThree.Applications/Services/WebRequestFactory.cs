@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Web;
 using TumblThree.Applications.Properties;
 
-namespace TumblThree.Applications.Crawler
+namespace TumblThree.Applications.Services
 {
     [Export(typeof(IWebRequestFactory))]
     public class WebRequestFactory : IWebRequestFactory

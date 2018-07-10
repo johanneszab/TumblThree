@@ -122,7 +122,7 @@ namespace TumblThree.Applications.Crawler
 
         private FileDownloader GetFileDownloader(CancellationToken ct)
         {
-            return new FileDownloader(settings, ct, cookieService);
+            return new FileDownloader(settings, ct, GetWebRequestFactory(), cookieService);
         }
 
         private static IBlogService GetBlogService(IBlog blog, IFiles files)
