@@ -72,8 +72,6 @@ namespace TumblThree.Applications.Crawler
         {
             try
             {
-                // Hidden and password protected blogs don't exist?
-                await UpdateAuthenticationWithPassword();
                 tumblrKey = await UpdateTumblrKey("https://www.tumblr.com/dashboard/blog/" + blog.Name);
                 string document = await GetSvcPageAsync("1", "0");
                 blog.Online = true;
@@ -181,79 +179,6 @@ namespace TumblThree.Applications.Crawler
             blog.Save();
 
             UpdateProgressQueueInformation("");
-        }
-
-        private async Task UpdateAuthenticationWithPassword()
-        {
-            string url = "https://www.tumblr.com/blog_auth/" + blog.Name;
-            string document = await ThrottleConnectionAsync(url, Authenticate).TimeoutAfter(shellService.Settings.TimeOut);
-            passwordAuthentication = ExtractAuthenticationKey(document);
-            await UpdateCookieWithAuthentication().TimeoutAfter(shellService.Settings.TimeOut);
-        }
-
-        protected async Task<string> Authenticate(string url)
-        {
-            var requestRegistration = new CancellationTokenRegistration();
-            try
-            {
-                var headers = new Dictionary<string, string>();
-                HttpWebRequest request = webRequestFactory.CreatePostReqeust(url, url, headers);
-                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
-                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://" + blog.Name.Replace("+", "-") + ".tumblr.com"));
-                string requestBody = "password=" + blog.Password;
-                using (Stream postStream = await request.GetRequestStreamAsync())
-                {
-                    byte[] postBytes = Encoding.ASCII.GetBytes(requestBody);
-                    await postStream.WriteAsync(postBytes, 0, postBytes.Length);
-                    await postStream.FlushAsync();
-                }
-
-                requestRegistration = ct.Register(() => request.Abort());
-                return await webRequestFactory.ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
-            }
-            finally
-            {
-                requestRegistration.Dispose();
-            }
-        }
-
-        private static string ExtractAuthenticationKey(string document)
-        {
-            return Regex.Match(document, "name=\"auth\" value=\"([\\S]*)\"").Groups[1].Value;
-        }
-
-        protected async Task UpdateCookieWithAuthentication()
-        {
-            var requestRegistration = new CancellationTokenRegistration();
-            try
-            {
-                string url = "https://" + blog.Name + ".tumblr.com/";
-                string referer = "https://www.tumblr.com/blog_auth/" + blog.Name;
-                var headers = new Dictionary<string, string>
-                {
-                    { "DNT", "1" }
-                };
-                HttpWebRequest request = webRequestFactory.CreatePostReqeust(url, referer, headers);
-                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
-                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://" + blog.Name.Replace("+", "-") + ".tumblr.com"));
-                string requestBody = "auth=" + passwordAuthentication;
-                using (Stream postStream = await request.GetRequestStreamAsync())
-                {
-                    byte[] postBytes = Encoding.ASCII.GetBytes(requestBody);
-                    await postStream.WriteAsync(postBytes, 0, postBytes.Length);
-                    await postStream.FlushAsync();
-                }
-
-                requestRegistration = ct.Register(() => request.Abort());
-                using (var response = await request.GetResponseAsync() as HttpWebResponse)
-                {
-                    cookieService.SetUriCookie(response.Cookies);
-                }
-            }
-            finally
-            {
-                requestRegistration.Dispose();
-            }
         }
 
         protected override IEnumerable<int> GetPageNumbers()

@@ -95,17 +95,13 @@ namespace TumblThree.Applications.Crawler
             return await method(url);
         }
 
-        protected virtual async Task<string> RequestDataAsync(string url, params string[] cookieHosts)
-        {
-            return await RequestDataAsync(url, null, cookieHosts);
-        }
-
-        protected async Task<string> RequestDataAsync(string url, Dictionary<string, string> headers = null, params string[] cookieHosts)
+        protected async Task<string> RequestDataAsync(string url, Dictionary<string, string> headers = null, IEnumerable<string> cookieHosts = null)
         {
             var requestRegistration = new CancellationTokenRegistration();
             try
             {
                 HttpWebRequest request = webRequestFactory.CreateGetReqeust(url, "", headers);
+                cookieHosts = cookieHosts ?? new List<String>();
                 foreach (string cookieHost in cookieHosts)
                 {
                     cookieService.GetUriCookie(request.CookieContainer, new Uri(cookieHost));
@@ -119,35 +115,20 @@ namespace TumblThree.Applications.Crawler
             }
         }
 
-        //public T ConvertJsonToClass<T>(string json) where T : new()
-        //{
-        //    try
-        //    {
-        //        using (MemoryStream ms = new MemoryStream(Encoding.Unicode.GetBytes(json)))
-        //        {
-        //            DataContractJsonSerializer serializer = new DataContractJsonSerializer((typeof(T)));
-        //            return (T)serializer.ReadObject(ms);
-        //        }
-        //    }
-        //    catch (System.Runtime.Serialization.SerializationException serializationException)
-        //    {
-        //        Logger.Error("AbstractCrawler:ConvertJsonToClass<T>: {0}", "Could not parse data");
-        //        shellService.ShowError(serializationException, Resources.PostNotParsable, blog.Name);
-        //        return new T();
-        //    }
-        //}
-
         public virtual T ConvertJsonToClass<T>(string json) where T : new()
         {
             try
             {
-                var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-                return serializer.Deserialize<T>(json);
+                using (MemoryStream ms = new MemoryStream(Encoding.Unicode.GetBytes(json)))
+                {
+                    DataContractJsonSerializer serializer = new DataContractJsonSerializer((typeof(T)));
+                    return (T)serializer.ReadObject(ms);
+                }
             }
-            catch (InvalidOperationException invalidOperationException)
+            catch (System.Runtime.Serialization.SerializationException serializationException)
             {
                 Logger.Error("AbstractCrawler:ConvertJsonToClass<T>: {0}", "Could not parse data");
-                shellService.ShowError(invalidOperationException, Resources.PostNotParsable, blog.Name);
+                shellService.ShowError(serializationException, Resources.PostNotParsable, blog.Name);
                 return new T();
             }
         }

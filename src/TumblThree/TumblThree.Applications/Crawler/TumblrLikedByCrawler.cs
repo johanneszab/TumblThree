@@ -114,7 +114,7 @@ namespace TumblThree.Applications.Crawler
         {
             try
             {
-                await RequestDataAsync(blog.Url, "https://www.tumblr.com/", "https://" + blog.Name.Replace("+", "-") + ".tumblr.com");
+                await GetRequestAsync(blog.Url);
                 blog.Online = true;
             }
             catch (WebException webException)
@@ -156,7 +156,7 @@ namespace TumblThree.Applications.Crawler
         {
             try
             {
-                string document = await RequestDataAsync(blog.Url + "/page/1", "https://www.tumblr.com/", "https://" + blog.Name.Replace("+", "-") + ".tumblr.com");
+                string document = await GetRequestAsync(blog.Url + "/page/1");
                 return !document.Contains("<div class=\"signup_view account login\"");
             }
             catch (TimeoutException timeoutException)
@@ -180,7 +180,7 @@ namespace TumblThree.Applications.Crawler
                     pt.WaitWhilePausedWithResponseAsyc().Wait();
                 }
 
-                string document = await RequestDataAsync(blog.Url + "/page/" + crawlerNumber + "/" + pagination, "https://www.tumblr.com/", "https://" + blog.Name.Replace("+", "-") + ".tumblr.com");
+                string document = await GetRequestAsync(blog.Url + "/page/" + crawlerNumber + "/" + pagination);
                 if (document.Contains("<div class=\"no_posts_found\""))
                 {
                     return;

@@ -43,10 +43,7 @@ namespace TumblThree.Applications.Services
             ServicePointManager.DefaultConnectionLimit = 400;
             request = SetWebRequestProxy(request, settings);
             request.Referer = referer;
-            if (headers == null)
-            {
-                return request;
-            }
+            headers = headers ?? new Dictionary<string, string>();
             foreach (KeyValuePair<string, string> header in headers)
             {
                 request.Headers[header.Key] = header.Value;

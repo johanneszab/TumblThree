@@ -64,7 +64,6 @@ namespace TumblThree.Applications.Downloader
                     try
                     {
                         HttpWebRequest request = webRequestFactory.CreateGetReqeust(url);
-                        cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
                         requestRegistration = ct.Register(() => request.Abort());
                         request.AddRange(totalBytesReceived);
 
@@ -134,7 +133,6 @@ namespace TumblThree.Applications.Downloader
             try
             {
                 HttpWebRequest request = webRequestFactory.CreateGetReqeust(url);
-                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
                 requestRegistration = ct.Register(() => request.Abort());
 
                 using (WebResponse response = await request.GetResponseAsync())
@@ -152,7 +150,6 @@ namespace TumblThree.Applications.Downloader
         public async Task<Stream> ReadFromUrlIntoStream(string url)
         {
             HttpWebRequest request = webRequestFactory.CreateGetReqeust(url);
-            cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
 
             using (var response = await request.GetResponseAsync() as HttpWebResponse)
             {

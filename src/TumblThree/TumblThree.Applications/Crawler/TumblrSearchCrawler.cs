@@ -114,6 +114,7 @@ namespace TumblThree.Applications.Crawler
         {
             if (shellService.Settings.LimitConnections)
             {
+                crawlerService.Timeconstraint.Acquire();
                 return await RequestPostAsync(pageNumber);
             }
             return await RequestPostAsync(pageNumber);

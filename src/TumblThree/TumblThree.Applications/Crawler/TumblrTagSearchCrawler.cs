@@ -166,12 +166,13 @@ namespace TumblThree.Applications.Crawler
         {
             if (shellService.Settings.LimitConnections)
             {
+                crawlerService.Timeconstraint.Acquire();
                 return await GetRequestAsync("https://www.tumblr.com/tagged/" + blog.Name + "?before=" + pagination);
             }
             return await GetRequestAsync("https://www.tumblr.com/tagged/" + blog.Name + "?before=" + pagination);
 
             //string url = "https://www.tumblr.com/tagged/" + blog.Name + "?before=" + pagination;
-            //return await ThrottleConnectionAsync(url, GetRequestAsync).TimeoutAfter(shellService.Settings.TimeOut);
+            //return await ThrottleConnectionAsync(url, GetRequestAsync);
         }
 
         private async Task AddUrlsToDownloadList(long pagination, long nextCrawlersPagination)

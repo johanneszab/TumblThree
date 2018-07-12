@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using TumblThree.Applications.DataModels;
-using TumblThree.Applications.Extensions;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain;
@@ -18,37 +16,20 @@ namespace TumblThree.Applications.Crawler
     {
         protected TumblrAbstractCrawler(IShellService shellService, ICrawlerService crawlerService,
             CancellationToken ct, IProgress<DownloadProgress> progress, IWebRequestFactory webRequestFactory,
-            ISharedCookieService cookieService, IPostQueue<TumblrPost> postQueue, IBlog blog) 
+            ISharedCookieService cookieService, IPostQueue<TumblrPost> postQueue, IBlog blog)
             : base(shellService, crawlerService, ct, progress, webRequestFactory, cookieService, postQueue, blog)
         {
         }
 
-        protected override async Task<string> RequestDataAsync(string url, params string[] cookieHosts)
+        protected async Task<string> GetRequestAsync(string url)
         {
-            Dictionary<string, string> headers = new Dictionary<string, string>(); 
+            Dictionary<string, string> headers = new Dictionary<string, string>();
             string username = blog.Name + ".tumblr.com";
             string password = blog.Password;
             string encoded = System.Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(username + ":" + password));
             headers.Add("Authorization", "Basic " + encoded);
+            string[] cookieHosts = { "https://www.tumblr.com/", "https://" + blog.Name.Replace("+", "-") + ".tumblr.com" };
             return await RequestDataAsync(url, headers, cookieHosts);
-        }
-
-        protected async Task<string> GetRequestAsync(string url)
-        {
-            var requestRegistration = new CancellationTokenRegistration();
-            try
-            {
-                HttpWebRequest request = webRequestFactory.CreateGetReqeust(url);
-                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
-                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://" + blog.Name.Replace("+", "-") + ".tumblr.com"));
-
-                requestRegistration = ct.Register(() => request.Abort());
-                return await webRequestFactory.ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
-            }
-            finally
-            {
-                requestRegistration.Dispose();
-            }
         }
 
         protected async Task<string> UpdateTumblrKey(string url)
