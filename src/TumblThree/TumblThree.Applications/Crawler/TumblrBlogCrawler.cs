@@ -21,15 +21,13 @@ using TumblThree.Applications.Parser;
 using TumblThree.Applications.DataModels.TumblrPosts;
 using TumblThree.Applications.DataModels.TumblrCrawlerData;
 using TumblThree.Applications.DataModels.TumblrSvcJson;
-using System.Runtime.Serialization.Json;
 
 namespace TumblThree.Applications.Crawler
 {
     [Export(typeof(ICrawler))]
     [ExportMetadata("BlogType", typeof(TumblrHiddenBlog))]
-    public class TumblrBlogCrawler : AbstractCrawler, ICrawler
+    public class TumblrBlogCrawler : TumblrAbstractCrawler, ICrawler
     {
-        private readonly ICrawlerService crawlerService;
         private readonly IDownloader downloader;
         private readonly PauseToken pt;
         private readonly ITumblrToTextParser<Post> tumblrJsonParser;
@@ -53,9 +51,8 @@ namespace TumblThree.Applications.Crawler
             IGfycatParser gfycatParser, IWebmshareParser webmshareParser, IMixtapeParser mixtapeParser, IUguuParser uguuParser,
             ISafeMoeParser safemoeParser, ILoliSafeParser lolisafeParser, ICatBoxParser catboxParser, IPostQueue<TumblrPost> postQueue,
             IPostQueue<TumblrCrawlerData<Post>> jsonQueue, IBlog blog)
-            : base(shellService, ct, progress, webRequestFactory, cookieService, postQueue, blog)
+            : base(shellService, crawlerService, ct, progress, webRequestFactory, cookieService, postQueue, blog)
         {
-            this.crawlerService = crawlerService;
             this.downloader = downloader;
             this.pt = pt;
             this.tumblrJsonParser = tumblrJsonParser;
@@ -77,7 +74,7 @@ namespace TumblThree.Applications.Crawler
             {
                 // Hidden and password protected blogs don't exist?
                 await UpdateAuthenticationWithPassword();
-                await UpdateTumblrKey();
+                tumblrKey = await UpdateTumblrKey("https://www.tumblr.com/dashboard/blog/" + blog.Name);
                 string document = await GetSvcPageAsync("1", "0");
                 blog.Online = true;
             }
@@ -93,10 +90,6 @@ namespace TumblThree.Applications.Crawler
                         blog.Online = true;
                         return;
                     }
-                }
-                if (webException.Status == WebExceptionStatus.ProtocolError && webException.Response != null)
-                {
-                    var resp = (HttpWebResponse)webException.Response;
                     if (resp.StatusCode == HttpStatusCode.NotFound)
                     {
                         Logger.Error("TumblrBlogCrawler:IsBlogOnlineAsync:WebException {0}", webException);
@@ -104,10 +97,7 @@ namespace TumblThree.Applications.Crawler
                         blog.Online = false;
                         return;
                     }
-                }
-                if (webException.Status == WebExceptionStatus.ProtocolError && webException.Response != null)
-                {
-                    var resp = (HttpWebResponse)webException.Response;
+                    // 429: Too Many Requests
                     if ((int)resp.StatusCode == 429)
                     {
                         Logger.Error("TumblrBlogCrawler:IsBlogOnlineAsync:WebException {0}", webException);
@@ -119,7 +109,7 @@ namespace TumblThree.Applications.Crawler
             }
             catch (TimeoutException timeoutException)
             {
-                Logger.Error("TumblrBlogCrawler:CheckIfLoggedIn:WebException {0}", timeoutException);
+                Logger.Error("TumblrBlogCrawler:IsBlogOnlineAsync:WebException {0}", timeoutException);
                 shellService.ShowError(timeoutException, Resources.TimeoutReached, Resources.OnlineChecking, blog.Name);
                 blog.Online = false;
             }
@@ -129,49 +119,32 @@ namespace TumblThree.Applications.Crawler
         {
             try
             {
-                if (blog.Online)
+                if (!blog.Online)
                 {
-                    await UpdateTumblrKey();
-                    string document = await GetSvcPageAsync("1", "0");
-                    var response = ConvertJsonToClass<TumblrJson>(document);
+                    return;
+                }
+                tumblrKey = await UpdateTumblrKey("https://www.tumblr.com/dashboard/blog/" + blog.Name);
+                string document = await GetSvcPageAsync("1", "0");
+                var response = ConvertJsonToClass<TumblrJson>(document);
 
-                    if (response.meta.status == 200)
-                    {
-                        blog.Title = response.response.posts.FirstOrDefault().blog.title;
-                        blog.Description = response.response.posts.FirstOrDefault().blog.description;
-                    }
+                if (response.meta.status == 200)
+                {
+                    blog.Title = response.response.posts.FirstOrDefault().blog.title;
+                    blog.Description = response.response.posts.FirstOrDefault().blog.description;
                 }
             }
             catch (WebException webException)
             {
-                var webRespStatusCode = (int)((HttpWebResponse)webException?.Response).StatusCode;
-                if (webRespStatusCode == 503)
-                {
+                var resp = (HttpWebResponse)webException.Response;
+                if (resp.StatusCode == HttpStatusCode.ServiceUnavailable)
+                { 
                     Logger.Error("TumblrBlogCrawler:GetUrlsAsync: {0}", "User not logged in");
                     shellService.ShowError(new Exception("User not logged in"), Resources.NotLoggedIn, blog.Name);
                 }
             }
         }
 
-        public new T ConvertJsonToClass<T>(string json) where T : new()
-        {
-            try
-            {
-                using (MemoryStream ms = new MemoryStream(Encoding.Unicode.GetBytes(json)))
-                {
-                    DataContractJsonSerializer serializer = new DataContractJsonSerializer((typeof(T)));
-                    return (T)serializer.ReadObject(ms);
-                }
-            }
-            catch (System.Runtime.Serialization.SerializationException serializationException)
-            {
-                Logger.Error("TumblrBlogCrawler:ConvertJsonToClass<T>: {0}", "Could not parse data");
-                shellService.ShowError(serializationException, Resources.PostNotParsable, blog.Name);
-                return new T();
-            }
-        }
-
-        public async Task Crawl()
+        public async Task CrawlAsync()
         {
             Logger.Verbose("TumblrBlogCrawler.Crawl:Start");
 
@@ -212,26 +185,17 @@ namespace TumblThree.Applications.Crawler
 
         private async Task UpdateAuthenticationWithPassword()
         {
-            string document = await ThrottleAsync(Authenticate).TimeoutAfter(shellService.Settings.TimeOut);
+            string url = "https://www.tumblr.com/blog_auth/" + blog.Name;
+            string document = await ThrottleConnectionAsync(url, Authenticate).TimeoutAfter(shellService.Settings.TimeOut);
             passwordAuthentication = ExtractAuthenticationKey(document);
             await UpdateCookieWithAuthentication().TimeoutAfter(shellService.Settings.TimeOut);
         }
 
-        private async Task<T> ThrottleAsync<T>(Func<Task<T>> method)
-        {
-            if (shellService.Settings.LimitConnections)
-            {
-                return await method();
-            }
-            return await method();
-        }
-
-        protected async Task<string> Authenticate()
+        protected async Task<string> Authenticate(string url)
         {
             var requestRegistration = new CancellationTokenRegistration();
             try
             {
-                string url = "https://www.tumblr.com/blog_auth/" + blog.Name;
                 var headers = new Dictionary<string, string>();
                 HttpWebRequest request = webRequestFactory.CreatePostReqeust(url, url, headers);
                 cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
@@ -265,8 +229,10 @@ namespace TumblThree.Applications.Crawler
             {
                 string url = "https://" + blog.Name + ".tumblr.com/";
                 string referer = "https://www.tumblr.com/blog_auth/" + blog.Name;
-                var headers = new Dictionary<string, string>();
-                headers.Add("DNT", "1");
+                var headers = new Dictionary<string, string>
+                {
+                    { "DNT", "1" }
+                };
                 HttpWebRequest request = webRequestFactory.CreatePostReqeust(url, referer, headers);
                 cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
                 cookieService.GetUriCookie(request.CookieContainer, new Uri("https://" + blog.Name.Replace("+", "-") + ".tumblr.com"));
@@ -283,35 +249,6 @@ namespace TumblThree.Applications.Crawler
                 {
                     cookieService.SetUriCookie(response.Cookies);
                 }
-            }
-            finally
-            {
-                requestRegistration.Dispose();
-            }
-        }
-
-        private async Task UpdateTumblrKey()
-        {
-            string document = await RequestGetAsync();
-            tumblrKey = ExtractTumblrKey(document);
-        }
-
-        private static string ExtractTumblrKey(string document)
-        {
-            return Regex.Match(document, "id=\"tumblr_form_key\" content=\"([\\S]*)\">").Groups[1].Value;
-        }
-
-        private async Task<string> RequestGetAsync()
-        {
-            var requestRegistration = new CancellationTokenRegistration();
-            try
-            {
-                string url = "https://www.tumblr.com/dashboard/blog/" + blog.Name;
-                HttpWebRequest request = webRequestFactory.CreateGetReqeust(url);
-                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
-                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://" + blog.Name.Replace("+", "-") + ".tumblr.com"));
-                requestRegistration = ct.Register(() => request.Abort());
-                return await webRequestFactory.ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
             }
             finally
             {
@@ -338,7 +275,7 @@ namespace TumblThree.Applications.Crawler
             var incompleteCrawl = false;
             ulong highestId = 0;
 
-            if (!await CheckIfLoggedIn())
+            if (!await CheckIfLoggedInAsync())
             {
                 Logger.Error("TumblrBlogCrawler:GetUrlsAsync: {0}", "User not logged in");
                 shellService.ShowError(new Exception("User not logged in"), Resources.NotLoggedIn, blog.Name);
@@ -373,14 +310,14 @@ namespace TumblThree.Applications.Crawler
                         {
                             // TODO: add retry logic?
                             incompleteCrawl = true;
-                            Logger.Error("TumblrBlogCrawler:GetUrls:WebException {0}", webException);
+                            Logger.Error("TumblrBlogCrawler:GetUrlsAsync:WebException {0}", webException);
                             shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
                         }
                     }
                     catch (TimeoutException timeoutException)
                     {
                         incompleteCrawl = true;
-                        Logger.Error("TumblrBlogCrawler:GetUrls:WebException {0}", timeoutException);
+                        Logger.Error("TumblrBlogCrawler:GetUrlsAsync:WebException {0}", timeoutException);
                         shellService.ShowError(timeoutException, Resources.TimeoutReached, Resources.Crawling, blog.Name);
                     }
                     catch
@@ -410,6 +347,7 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException)
             {
+                // 429: Too Many Requests
                 var webRespStatusCode = (int)((HttpWebResponse)webException?.Response).StatusCode;
                 if (webRespStatusCode == 429)
                 {
@@ -420,7 +358,7 @@ namespace TumblThree.Applications.Crawler
             }
             catch (TimeoutException timeoutException)
             {
-                Logger.Error("TumblrBlogCrawler:CheckIfLoggedIn:WebException {0}", timeoutException);
+                Logger.Error("TumblrBlogCrawler:GetHighestPostIdAsync:WebException {0}", timeoutException);
                 shellService.ShowError(timeoutException, Resources.TimeoutReached, Resources.Crawling, blog.Name);
                 return 0;
             }
@@ -462,7 +400,7 @@ namespace TumblThree.Applications.Crawler
             return true;
         }
 
-        private async Task<bool> CheckIfLoggedIn()
+        private async Task<bool> CheckIfLoggedInAsync()
         {
             try
             {

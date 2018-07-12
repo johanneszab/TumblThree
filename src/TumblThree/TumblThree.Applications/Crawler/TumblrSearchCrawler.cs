@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
@@ -24,7 +23,7 @@ namespace TumblThree.Applications.Crawler
 {
     [Export(typeof(ICrawler))]
     [ExportMetadata("BlogType", typeof(TumblrSearchBlog))]
-    public class TumblrSearchCrawler : AbstractCrawler, ICrawler
+    public class TumblrSearchCrawler : TumblrAbstractCrawler, ICrawler
     {
         private readonly IDownloader downloader;
         private readonly PauseToken pt;
@@ -33,13 +32,13 @@ namespace TumblThree.Applications.Crawler
         public TumblrSearchCrawler(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress,
             ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService,
             IDownloader downloader, IPostQueue<TumblrPost> postQueue, IBlog blog)
-            : base(shellService, ct, progress, webRequestFactory, cookieService, postQueue, blog)
+            : base(shellService, crawlerService, ct, progress, webRequestFactory, cookieService, postQueue, blog)
         {
             this.downloader = downloader;
             this.pt = pt;
         }
 
-        public async Task Crawl()
+        public async Task CrawlAsync()
         {
             Logger.Verbose("TumblrSearchCrawler.Crawl:Start");
 
@@ -72,7 +71,7 @@ namespace TumblThree.Applications.Crawler
         {
             var semaphoreSlim = new SemaphoreSlim(shellService.Settings.ConcurrentScans);
             var trackedTasks = new List<Task>();
-            await UpdateTumblrKey();
+            tumblrKey = await UpdateTumblrKey("https://www.tumblr.com/search/" + blog.Name);
 
             foreach (int pageNumber in GetPageNumbers())
             {
@@ -92,7 +91,7 @@ namespace TumblThree.Applications.Crawler
                     }
                     catch (TimeoutException timeoutException)
                     {
-                        Logger.Error("TumblrBlogCrawler:GetUrls:WebException {0}", timeoutException);
+                        Logger.Error("TumblrSearchCrawler:GetUrlsAsync:WebException {0}", timeoutException);
                         shellService.ShowError(timeoutException, Resources.TimeoutReached, Resources.Crawling, blog.Name);
                     }
                     catch
@@ -109,17 +108,6 @@ namespace TumblThree.Applications.Crawler
             postQueue.CompleteAdding();
 
             UpdateBlogStats();
-        }
-
-        private async Task UpdateTumblrKey()
-        {
-            string document = await RequestGetAsync();
-            tumblrKey = ExtractTumblrKey(document);
-        }
-
-        private static string ExtractTumblrKey(string document)
-        {
-            return Regex.Match(document, "id=\"tumblr_form_key\" content=\"([\\S]*)\">").Groups[1].Value;
         }
 
         private async Task<string> GetSearchPageAsync(int pageNumber)
@@ -142,8 +130,10 @@ namespace TumblThree.Applications.Crawler
                 HttpWebRequest request = webRequestFactory.CreatePostXhrReqeust(url, referer, headers);
                 cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
                 cookieService.GetUriCookie(request.CookieContainer, new Uri("https://" + blog.Name.Replace("+", "-") + ".tumblr.com"));
-                //Complete requestBody from webbrowser, searching for cars:
+
+                //Example request body, searching for cars:
                 //q=cars&sort=top&post_view=masonry&blogs_before=8&num_blogs_shown=8&num_posts_shown=20&before=24&blog_page=2&safe_mode=true&post_page=2&filter_nsfw=true&filter_post_type=&next_ad_offset=0&ad_placement_id=0&more_posts=true
+
                 string requestBody = "q=" + blog.Name + "&sort=top&post_view=masonry&num_posts_shown=" + ((pageNumber - 1) * blog.PageSize) + "&before=" + ((pageNumber - 1) * blog.PageSize) + "&safe_mode=false&post_page=" + pageNumber + "&filter_nsfw=false&filter_post_type=&next_ad_offset=0&ad_placement_id=0&more_posts=true";
                 using (Stream postStream = await request.GetRequestStreamAsync())
                 {
@@ -151,25 +141,6 @@ namespace TumblThree.Applications.Crawler
                     await postStream.WriteAsync(postBytes, 0, postBytes.Length);
                     await postStream.FlushAsync();
                 }
-
-                requestRegistration = ct.Register(() => request.Abort());
-                return await webRequestFactory.ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
-            }
-            finally
-            {
-                requestRegistration.Dispose();
-            }
-        }
-
-        private async Task<string> RequestGetAsync()
-        {
-            var requestRegistration = new CancellationTokenRegistration();
-            try
-            {
-                string url = "https://www.tumblr.com/search/" + blog.Name;
-                HttpWebRequest request = webRequestFactory.CreateGetReqeust(url);
-                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
-                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://" + blog.Name.Replace("+", "-") + ".tumblr.com"));
 
                 requestRegistration = ct.Register(() => request.Abort());
                 return await webRequestFactory.ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);

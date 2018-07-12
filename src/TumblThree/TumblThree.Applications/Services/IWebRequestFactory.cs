@@ -7,7 +7,7 @@ namespace TumblThree.Applications.Services
 {
     public interface IWebRequestFactory
     {
-        HttpWebRequest CreateGetReqeust(string url);
+        HttpWebRequest CreateGetReqeust(string url, string referer = "", Dictionary<string, string> headers = null);
 
         HttpWebRequest CreateGetXhrReqeust(string url, string referer = "", Dictionary<string, string> headers = null);
 

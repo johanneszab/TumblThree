@@ -2,8 +2,10 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -28,6 +30,7 @@ namespace TumblThree.Applications.Crawler
         protected readonly object lockObjectDirectory = new object();
         protected readonly object lockObjectDownload = new object();
         protected readonly object lockObjectProgress = new object();
+        protected readonly ICrawlerService crawlerService;
         protected readonly IShellService shellService;
         protected readonly CancellationToken ct;
         protected readonly IPostQueue<TumblrPost> postQueue;
@@ -35,9 +38,10 @@ namespace TumblThree.Applications.Crawler
         protected List<string> tags = new List<string>();
         protected int numberOfPagesCrawled = 0;
 
-        protected AbstractCrawler(IShellService shellService, CancellationToken ct, IProgress<DownloadProgress> progress, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IPostQueue<TumblrPost> postQueue, IBlog blog)
+        protected AbstractCrawler(IShellService shellService, ICrawlerService crawlerService, CancellationToken ct, IProgress<DownloadProgress> progress, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IPostQueue<TumblrPost> postQueue, IBlog blog)
         {
             this.shellService = shellService;
+            this.crawlerService = crawlerService;
             this.webRequestFactory = webRequestFactory;
             this.cookieService = cookieService;
             this.postQueue = postQueue;
@@ -66,7 +70,7 @@ namespace TumblThree.Applications.Crawler
             }
             catch (TimeoutException timeoutException)
             {
-                Logger.Error("TumblrBlogCrawler:CheckIfLoggedIn:WebException {0}", timeoutException);
+                Logger.Error("AbstractCrawler:IsBlogOnlineAsync:WebException {0}", timeoutException);
                 shellService.ShowError(timeoutException, Resources.TimeoutReached, Resources.OnlineChecking, blog.Name);
                 blog.Online = false;
             }
@@ -81,27 +85,70 @@ namespace TumblThree.Applications.Crawler
             progress.Report(newProgress);
         }
 
+        protected async Task<T> ThrottleConnectionAsync<T>(string url, Func<string, Task<T>> method)
+        {
+            if (shellService.Settings.LimitConnections)
+            {
+                crawlerService.Timeconstraint.Acquire();
+                return await method(url);
+            }
+            return await method(url);
+        }
+
         protected virtual async Task<string> RequestDataAsync(string url, params string[] cookieHosts)
+        {
+            return await RequestDataAsync(url, null, cookieHosts);
+        }
+
+        protected async Task<string> RequestDataAsync(string url, Dictionary<string, string> headers = null, params string[] cookieHosts)
         {
             var requestRegistration = new CancellationTokenRegistration();
             try
             {
-                HttpWebRequest request = webRequestFactory.CreateGetReqeust(url);
+                HttpWebRequest request = webRequestFactory.CreateGetReqeust(url, "", headers);
                 foreach (string cookieHost in cookieHosts)
                 {
                     cookieService.GetUriCookie(request.CookieContainer, new Uri(cookieHost));
                 }
-                string username = blog.Name + ".tumblr.com";
-                string password = blog.Password;
-                string encoded = System.Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(username + ":" + password));
-                request.Headers.Add("Authorization", "Basic " + encoded);
-                //request.Credentials = new NetworkCredential(blog.Name + ".tumblr.com", blog.Password);
                 requestRegistration = ct.Register(() => request.Abort());
                 return await webRequestFactory.ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
             }
             finally
             {
                 requestRegistration.Dispose();
+            }
+        }
+
+        //public T ConvertJsonToClass<T>(string json) where T : new()
+        //{
+        //    try
+        //    {
+        //        using (MemoryStream ms = new MemoryStream(Encoding.Unicode.GetBytes(json)))
+        //        {
+        //            DataContractJsonSerializer serializer = new DataContractJsonSerializer((typeof(T)));
+        //            return (T)serializer.ReadObject(ms);
+        //        }
+        //    }
+        //    catch (System.Runtime.Serialization.SerializationException serializationException)
+        //    {
+        //        Logger.Error("AbstractCrawler:ConvertJsonToClass<T>: {0}", "Could not parse data");
+        //        shellService.ShowError(serializationException, Resources.PostNotParsable, blog.Name);
+        //        return new T();
+        //    }
+        //}
+
+        public virtual T ConvertJsonToClass<T>(string json) where T : new()
+        {
+            try
+            {
+                var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+                return serializer.Deserialize<T>(json);
+            }
+            catch (InvalidOperationException invalidOperationException)
+            {
+                Logger.Error("AbstractCrawler:ConvertJsonToClass<T>: {0}", "Could not parse data");
+                shellService.ShowError(invalidOperationException, Resources.PostNotParsable, blog.Name);
+                return new T();
             }
         }
 
@@ -156,53 +203,6 @@ namespace TumblThree.Applications.Crawler
         {
             postQueue.Add(addToList);
             statisticsBag.Add(addToList);
-        }
-
-        public T ConvertJsonToClass<T>(string json) where T : new()
-        {
-            try
-            {
-                var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-                return serializer.Deserialize<T>(json);
-            }
-            catch (InvalidOperationException invalidOperationException)
-            {
-                Logger.Error("AbstractCrawler:ConvertJsonToClass<T>: {0}", "Could not parse data");
-                shellService.ShowError(invalidOperationException, Resources.PostNotParsable, blog.Name);
-                return new T();
-            }
-        }
-
-        protected string ImageSize()
-        {
-            if (shellService.Settings.ImageSize == "raw")
-                return "1280";
-            return shellService.Settings.ImageSize;
-        }
-
-        protected string ResizeTumblrImageUrl(string imageUrl)
-        {
-            var sb = new StringBuilder(imageUrl);
-            return sb
-                .Replace("_raw", "_" + ImageSize())
-                .Replace("_1280", "_" + ImageSize())
-                .Replace("_540", "_" + ImageSize())
-                .Replace("_500", "_" + ImageSize())
-                .Replace("_400", "_" + ImageSize())
-                .Replace("_250", "_" + ImageSize())
-                .Replace("_100", "_" + ImageSize())
-                .Replace("_75sq", "_" + ImageSize())
-                .ToString();
-        }
-
-        /// <returns>
-        ///     Return the url without the size and type suffix (e.g.
-        ///     https://68.media.tumblr.com/51a99943f4aa7068b6fd9a6b36e4961b/tumblr_mnj6m9Huml1qat3lvo1).
-        /// </returns>
-        protected string GetCoreImageUrl(string url)
-        {
-            // return url.Split('_')[0] + "_" + url.Split('_')[1];
-            return url;
         }
 
         protected ulong GetLastPostId()

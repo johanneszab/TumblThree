@@ -221,7 +221,7 @@ namespace TumblThree.Applications.Controllers
             ProgressThrottler<DownloadProgress> progress = SetupThrottledQueueListProgress(queueListItem);
 
             ICrawler crawler = CrawlerFactory.GetCrawler(blog, ct, pt, progress, shellService, crawlerService, managerService);
-            await crawler.Crawl();
+            await crawler.CrawlAsync();
 
             if (ct.IsCancellationRequested)
             {

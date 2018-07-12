@@ -242,7 +242,7 @@ namespace TumblThree.Applications.Services
             }
         }
 
-        public bool CheckIfLoggedIn()
+        public bool CheckIfLoggedInAsync()
         {
             HttpWebRequest request = webRequestFactory.CreateGetReqeust("https://www.tumblr.com/");
             cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));

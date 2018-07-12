@@ -20,7 +20,7 @@ namespace TumblThree.Applications.Crawler
 {
     [Export(typeof(ICrawler))]
     [ExportMetadata("BlogType", typeof(TumblrLikedByBlog))]
-    public class TumblrLikedByCrawler : AbstractCrawler, ICrawler
+    public class TumblrLikedByCrawler : TumblrAbstractCrawler, ICrawler
     {
         private readonly IDownloader downloader;
         private readonly PauseToken pt;
@@ -28,13 +28,13 @@ namespace TumblThree.Applications.Crawler
         public TumblrLikedByCrawler(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress,
             ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService,
             IDownloader downloader, IPostQueue<TumblrPost> postQueue, IBlog blog)
-            : base(shellService, ct, progress, webRequestFactory, cookieService, postQueue, blog)
+            : base(shellService, crawlerService, ct, progress, webRequestFactory, cookieService, postQueue, blog)
         {
             this.downloader = downloader;
             this.pt = pt;
         }
 
-        public async Task Crawl()
+        public async Task CrawlAsync()
         {
             Logger.Verbose("TumblrLikedByCrawler.Crawl:Start");
 
@@ -68,7 +68,7 @@ namespace TumblThree.Applications.Crawler
             var semaphoreSlim = new SemaphoreSlim(shellService.Settings.ConcurrentScans);
             var trackedTasks = new List<Task>();
 
-            if (!await CheckIfLoggedIn())
+            if (!await CheckIfLoggedInAsync())
             {
                 Logger.Error("TumblrLikedByCrawler:GetUrlsAsync: {0}", "User not logged in");
                 shellService.ShowError(new Exception("User not logged in"), Resources.NotLoggedIn, blog.Name);
@@ -91,7 +91,7 @@ namespace TumblThree.Applications.Crawler
                     }
                     catch (TimeoutException timeoutException)
                     {
-                        Logger.Error("TumblrBlogCrawler:GetUrls:WebException {0}", timeoutException);
+                        Logger.Error("TumblrLikedByCrawler:GetUrlsAsync:WebException {0}", timeoutException);
                         shellService.ShowError(timeoutException, Resources.TimeoutReached, Resources.Crawling, blog.Name);
                     }
                     catch
@@ -119,13 +119,13 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException)
             {
-                Logger.Error("AbstractCrawler:IsBlogOnlineAsync:WebException {0}", webException);
+                Logger.Error("TumblrLikedByCrawler:IsBlogOnlineAsync:WebException {0}", webException);
                 shellService.ShowError(webException, Resources.BlogIsOffline, blog.Name);
                 blog.Online = false;
             }
             catch (TimeoutException timeoutException)
             {
-                Logger.Error("TumblrBlogCrawler:CheckIfLoggedIn:WebException {0}", timeoutException);
+                Logger.Error("TumblrLikedByCrawler:IsBlogOnlineAsync:WebException {0}", timeoutException);
                 shellService.ShowError(timeoutException, Resources.TimeoutReached, Resources.OnlineChecking, blog.Name);
                 blog.Online = false;
             }
@@ -152,7 +152,7 @@ namespace TumblThree.Applications.Crawler
             return false;
         }
 
-        private async Task<bool> CheckIfLoggedIn()
+        private async Task<bool> CheckIfLoggedInAsync()
         {
             try
             {

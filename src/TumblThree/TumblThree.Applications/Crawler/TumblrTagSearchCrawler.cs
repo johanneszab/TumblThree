@@ -21,7 +21,7 @@ namespace TumblThree.Applications.Crawler
 {
     [Export(typeof(ICrawler))]
     [ExportMetadata("BlogType", typeof(TumblrTagSearchBlog))]
-    public class TumblrTagSearchCrawler : AbstractCrawler, ICrawler
+    public class TumblrTagSearchCrawler : TumblrAbstractCrawler, ICrawler
     {
         private readonly IDownloader downloader;
         private readonly PauseToken pt;
@@ -29,13 +29,13 @@ namespace TumblThree.Applications.Crawler
         public TumblrTagSearchCrawler(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress,
             ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService,
             IDownloader downloader, IPostQueue<TumblrPost> postQueue, IBlog blog)
-            : base(shellService, ct, progress, webRequestFactory, cookieService, postQueue, blog)
+            : base(shellService, crawlerService, ct, progress, webRequestFactory, cookieService, postQueue, blog)
         {
             this.downloader = downloader;
             this.pt = pt;
         }
 
-        public async Task Crawl()
+        public async Task CrawlAsync()
         {
             Logger.Verbose("TumblrTagSearchCrawler.Crawl:Start");
 
@@ -69,7 +69,7 @@ namespace TumblThree.Applications.Crawler
             var semaphoreSlim = new SemaphoreSlim(shellService.Settings.ConcurrentScans);
             var trackedTasks = new List<Task>();
 
-            if (!await CheckIfLoggedIn())
+            if (!await CheckIfLoggedInAsync())
             {
                 Logger.Error("TumblrTagSearchCrawler:GetUrlsAsync: {0}", "User not logged in");
                 shellService.ShowError(new Exception("User not logged in"), Resources.NotLoggedIn, blog.Name);
@@ -98,7 +98,7 @@ namespace TumblThree.Applications.Crawler
                     }
                     catch (TimeoutException timeoutException)
                     {
-                        Logger.Error("TumblrBlogCrawler:GetUrls:WebException {0}", timeoutException);
+                        Logger.Error("TumblrTagSearchCrawler:GetUrlsAsync:WebException {0}", timeoutException);
                         shellService.ShowError(timeoutException, Resources.TimeoutReached, Resources.Crawling, blog.Name);
                     }
                     catch
@@ -139,7 +139,7 @@ namespace TumblThree.Applications.Crawler
             return tagsLifeTime / shellService.Settings.ConcurrentScans;
         }
 
-        private async Task<bool> CheckIfLoggedIn()
+        private async Task<bool> CheckIfLoggedInAsync()
         {
             try
             {
@@ -166,27 +166,12 @@ namespace TumblThree.Applications.Crawler
         {
             if (shellService.Settings.LimitConnections)
             {
-                return await RequestGetAsync(pagination);
+                return await GetRequestAsync("https://www.tumblr.com/tagged/" + blog.Name + "?before=" + pagination);
             }
-            return await RequestGetAsync(pagination);
-        }
+            return await GetRequestAsync("https://www.tumblr.com/tagged/" + blog.Name + "?before=" + pagination);
 
-        private async Task<string> RequestGetAsync(long pagination)
-        {
-            var requestRegistration = new CancellationTokenRegistration();
-            try
-            {
-                string urlForGetRequest = "https://www.tumblr.com/tagged/" + blog.Name + "?before=" + pagination;
-                HttpWebRequest request = webRequestFactory.CreateGetReqeust(urlForGetRequest);
-                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
-                cookieService.GetUriCookie(request.CookieContainer, new Uri("https://" + blog.Name.Replace("+", "-") + ".tumblr.com"));
-                requestRegistration = ct.Register(() => request.Abort());
-                return await webRequestFactory.ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
-            }
-            finally
-            {
-                requestRegistration.Dispose();
-            }
+            //string url = "https://www.tumblr.com/tagged/" + blog.Name + "?before=" + pagination;
+            //return await ThrottleConnectionAsync(url, GetRequestAsync).TimeoutAfter(shellService.Settings.TimeOut);
         }
 
         private async Task AddUrlsToDownloadList(long pagination, long nextCrawlersPagination)

@@ -7,7 +7,7 @@ namespace TumblThree.Applications.Crawler
 {
     public interface ICrawler
     {
-        Task Crawl();
+        Task CrawlAsync();
 
         Task IsBlogOnlineAsync();
 

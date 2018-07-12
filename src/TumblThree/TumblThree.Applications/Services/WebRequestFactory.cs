@@ -20,44 +20,61 @@ namespace TumblThree.Applications.Services
             this.settings = settings;
         }
 
-        public HttpWebRequest CreateGetReqeust(string url)
+        private HttpWebRequest CreateStubReqeust(string url, string referer = "", Dictionary<string, string> headers = null)
         {
-            HttpWebRequest request = CreateStubReqeust(url);
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            request.ProtocolVersion = HttpVersion.Version11;
+            request.UserAgent = settings.UserAgent;
+            request.AllowAutoRedirect = true;
+            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+
+            //request.KeepAlive = true;
+            //request.Pipelined = true;
+
+            // Timeouts don't work with GetResponseAsync() as it internally uses BeginGetResponse.
+            // See docs: https://msdn.microsoft.com/en-us/library/system.net.httpwebrequest.timeout(v=vs.110).aspx
+            // Quote: The Timeout property has no effect on asynchronous requests made with the BeginGetResponse or BeginGetRequestStream method.
+            // TODO: Use HttpClient instead?
+
+            request.ReadWriteTimeout = settings.TimeOut * 1000;
+            request.Timeout = settings.TimeOut * 1000;
+            request.CookieContainer = new CookieContainer();
+            request.CookieContainer.PerDomainCapacity = 100;
+            ServicePointManager.DefaultConnectionLimit = 400;
+            request = SetWebRequestProxy(request, settings);
+            request.Referer = referer;
+            if (headers == null)
+            {
+                return request;
+            }
+            foreach (KeyValuePair<string, string> header in headers)
+            {
+                request.Headers[header.Key] = header.Value;
+            }
+            return request;
+        }
+
+        public HttpWebRequest CreateGetReqeust(string url, string referer = "", Dictionary<string, string> headers = null)
+        {
+            HttpWebRequest request = CreateStubReqeust(url, referer, headers);
+            request.Method = "GET";
             return request;
         }
 
         public HttpWebRequest CreateGetXhrReqeust(string url, string referer = "", Dictionary<string, string> headers = null)
         {
-            HttpWebRequest request = CreateStubReqeust(url);
+            HttpWebRequest request = CreateStubReqeust(url, referer, headers);
             request.Method = "GET";
             request.ContentType = "application/json";
             request.Headers["X-Requested-With"] = "XMLHttpRequest";
-            request.Referer = referer;
-            if (headers == null)
-            {
-                return request;
-            }
-            foreach (KeyValuePair<string, string> header in headers)
-            {
-                request.Headers[header.Key] = header.Value;
-            }
             return request;
         }
 
         public HttpWebRequest CreatePostReqeust(string url, string referer = "", Dictionary<string, string> headers = null)
         {
-            HttpWebRequest request = CreateStubReqeust(url);
+            HttpWebRequest request = CreateStubReqeust(url, referer, headers);
             request.Method = "POST";
             request.ContentType = "application/x-www-form-urlencoded";
-            request.Referer = referer;
-            if (headers == null)
-            {
-                return request;
-            }
-            foreach (KeyValuePair<string, string> header in headers)
-            {
-                request.Headers[header.Key] = header.Value;
-            }
             return request;
         }
 
@@ -104,26 +121,15 @@ namespace TumblThree.Applications.Services
 
         }
 
-        private HttpWebRequest CreateStubReqeust(string url)
+        public string UrlEncode(IDictionary<string, string> parameters)
         {
-            var request = (HttpWebRequest)WebRequest.Create(url);
-            request.ProtocolVersion = HttpVersion.Version11;
-            request.UserAgent = settings.UserAgent;
-            request.AllowAutoRedirect = true;
-            //request.KeepAlive = true;
-            //request.Pipelined = true;
-            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-            // Timeouts don't work with GetResponseAsync() as it internally uses BeginGetResponse.
-            // See docs: https://msdn.microsoft.com/en-us/library/system.net.httpwebrequest.timeout(v=vs.110).aspx
-            // Quote: The Timeout property has no effect on asynchronous requests made with the BeginGetResponse or BeginGetRequestStream method.
-            // TODO: Use HttpClient instead?
-            request.ReadWriteTimeout = settings.TimeOut * 1000;
-            request.Timeout = settings.TimeOut * 1000;
-            request.CookieContainer = new CookieContainer();
-            request.CookieContainer.PerDomainCapacity = 100;
-            ServicePointManager.DefaultConnectionLimit = 400;
-            request = SetWebRequestProxy(request, settings);
-            return request;
+            var sb = new StringBuilder();
+            foreach (KeyValuePair<string, string> val in parameters)
+            {
+                sb.AppendFormat("{0}={1}&", val.Key, HttpUtility.UrlEncode(val.Value));
+            }
+            sb.Remove(sb.Length - 1, 1); // remove last '&'
+            return sb.ToString();
         }
 
         private static HttpWebRequest SetWebRequestProxy(HttpWebRequest request, AppSettings settings)
@@ -137,17 +143,6 @@ namespace TumblThree.Applications.Services
                 request.Proxy.Credentials = new NetworkCredential(settings.ProxyUsername, settings.ProxyPassword);
             }
             return request;
-        }
-
-        public string UrlEncode(IDictionary<string, string> parameters)
-        {
-            var sb = new StringBuilder();
-            foreach (KeyValuePair<string, string> val in parameters)
-            {
-                sb.AppendFormat("{0}={1}&", val.Key, HttpUtility.UrlEncode(val.Value));
-            }
-            sb.Remove(sb.Length - 1, 1); // remove last '&'
-            return sb.ToString();
         }
     }
 }

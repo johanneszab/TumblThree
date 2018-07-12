@@ -835,7 +835,7 @@ namespace TumblThree.Applications.ViewModels
 
         private void CheckIfTumblrLoggedIn()
         {
-            TumblrLoggedIn = LoginService.CheckIfLoggedIn();
+            TumblrLoggedIn = LoginService.CheckIfLoggedInAsync();
         }
 
         public async Task Load()

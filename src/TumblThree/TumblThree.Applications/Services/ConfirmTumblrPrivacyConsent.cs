@@ -29,7 +29,7 @@ namespace TumblThree.Applications.Services
 
         public async Task ConfirmPrivacyConsent()
         {
-            if (CheckIfLoggedIn())
+            if (CheckIfLoggedInAsync())
                 return;
             await UpdateTumblrKey();
             string referer = @"https://www.tumblr.com/privacy/consent?redirect=";
@@ -51,7 +51,7 @@ namespace TumblThree.Applications.Services
 
         private async Task UpdateTumblrKey()
         {
-            string document = await RequestGetAsync();
+            string document = await GetRequestAsync();
             tumblrKey = ExtractTumblrKey(document);
         }
 
@@ -60,14 +60,14 @@ namespace TumblThree.Applications.Services
             return Regex.Match(document, "id=\"tumblr_form_key\" content=\"([\\S]*)\">").Groups[1].Value;
         }
 
-        private async Task<string> RequestGetAsync()
+        private async Task<string> GetRequestAsync()
         {
             string requestUrl = "https://www.tumblr.com/";
             HttpWebRequest request = webRequestFactory.CreateGetReqeust(requestUrl);
             return await webRequestFactory.ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
         }
 
-        public bool CheckIfLoggedIn()
+        public bool CheckIfLoggedInAsync()
         {
             HttpWebRequest request = webRequestFactory.CreateGetReqeust("https://www.tumblr.com/");
             cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
