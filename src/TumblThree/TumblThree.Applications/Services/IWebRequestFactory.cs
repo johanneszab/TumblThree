@@ -15,6 +15,10 @@ namespace TumblThree.Applications.Services
 
         HttpWebRequest CreatePostXhrReqeust(string url, string referer = "", Dictionary<string, string> headers = null);
 
+        Task PerformPostReqeust(HttpWebRequest request, Dictionary<string, string> parameters);
+
+        Task PerformPostXHRReqeust(HttpWebRequest request, string requestBody);
+
         Task<bool> RemotePageIsValid(string url);
 
         Task<string> ReadReqestToEnd(HttpWebRequest request);

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,7 +11,6 @@ using TumblThree.Applications.DataModels;
 using TumblThree.Applications.DataModels.TumblrPosts;
 using TumblThree.Applications.DataModels.TumblrSearchJson;
 using TumblThree.Applications.Downloader;
-using TumblThree.Applications.Extensions;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain;
@@ -136,15 +133,9 @@ namespace TumblThree.Applications.Crawler
                 //q=cars&sort=top&post_view=masonry&blogs_before=8&num_blogs_shown=8&num_posts_shown=20&before=24&blog_page=2&safe_mode=true&post_page=2&filter_nsfw=true&filter_post_type=&next_ad_offset=0&ad_placement_id=0&more_posts=true
 
                 string requestBody = "q=" + blog.Name + "&sort=top&post_view=masonry&num_posts_shown=" + ((pageNumber - 1) * blog.PageSize) + "&before=" + ((pageNumber - 1) * blog.PageSize) + "&safe_mode=false&post_page=" + pageNumber + "&filter_nsfw=false&filter_post_type=&next_ad_offset=0&ad_placement_id=0&more_posts=true";
-                using (Stream postStream = await request.GetRequestStreamAsync())
-                {
-                    byte[] postBytes = Encoding.ASCII.GetBytes(requestBody);
-                    await postStream.WriteAsync(postBytes, 0, postBytes.Length);
-                    await postStream.FlushAsync();
-                }
-
+                await webRequestFactory.PerformPostXHRReqeust(request, requestBody);
                 requestRegistration = ct.Register(() => request.Abort());
-                return await webRequestFactory.ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
+                return await webRequestFactory.ReadReqestToEnd(request);
             }
             finally
             {

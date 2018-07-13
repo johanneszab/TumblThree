@@ -5,6 +5,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
 using System.Xml.Linq;
+
 using TumblThree.Applications.DataModels;
 using TumblThree.Applications.DataModels.TumblrCrawlerData;
 using TumblThree.Applications.Downloader;
@@ -18,14 +19,16 @@ namespace TumblThree.Applications.Crawler
     [Export(typeof(ICrawlerFactory))]
     public class CrawlerFactory : ICrawlerFactory
     {
-        private readonly AppSettings settings;
+        private readonly IShellService shellService;
         private readonly ISharedCookieService cookieService;
+        private readonly AppSettings settings;
 
         [ImportingConstructor]
         internal CrawlerFactory(ShellService shellService, ISharedCookieService cookieService)
         {
-            this.settings = shellService.Settings;
+            this.shellService = shellService;
             this.cookieService = cookieService;
+            this.settings = shellService.Settings;
         }
 
         [ImportMany(typeof(ICrawler))]
@@ -48,12 +51,11 @@ namespace TumblThree.Applications.Crawler
             IPostQueue<TumblrPost> postQueue = GetProducerConsumerCollection();
             IFiles files = LoadFiles(blog, managerService);
             IWebRequestFactory webRequestFactory = GetWebRequestFactory();
-
+            IImgurParser imgurParser = GetImgurParser(webRequestFactory, ct);
+            IGfycatParser gfycatParser = GetGfycatParser(webRequestFactory, ct);
             switch (blog.BlogType)
             {
                 case BlogTypes.tumblr:
-                    IImgurParser imgurParser = GetImgurParser(webRequestFactory, ct);
-                    IGfycatParser gfycatParser = GetGfycatParser(webRequestFactory, ct);
                     IPostQueue<TumblrCrawlerData<DataModels.TumblrSvcJson.Post>> jsonSvcQueue = GetJsonQueue<DataModels.TumblrSvcJson.Post>();
                     return new TumblrBlogCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, GetTumblrDownloader(ct, pt, progress, shellService, crawlerService, managerService, blog, files, postQueue), GetTumblrJsonDownloader(shellService, ct, pt, jsonSvcQueue, crawlerService, blog), GetTumblrSvcJsonToTextParser(blog), imgurParser, gfycatParser, GetWebmshareParser(), GetMixtapeParser(), GetUguuParser(), GetSafeMoeParser(), GetLoliSafeParser(), GetCatBoxParser(), postQueue, jsonSvcQueue, blog);
                 case BlogTypes.tlb:
@@ -78,8 +80,9 @@ namespace TumblThree.Applications.Crawler
 
         private IWebRequestFactory GetWebRequestFactory()
         {
-            return new WebRequestFactory(settings);
+            return new WebRequestFactory(shellService, cookieService, settings);
         }
+
         private IImgurParser GetImgurParser(IWebRequestFactory webRequestFactory, CancellationToken ct)
         {
             return new ImgurParser(settings, webRequestFactory, ct);

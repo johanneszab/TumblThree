@@ -5,7 +5,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,7 +15,6 @@ using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain;
 using TumblThree.Domain.Models;
-using TumblThree.Applications.Extensions;
 using TumblThree.Applications.Parser;
 using TumblThree.Applications.DataModels.TumblrPosts;
 using TumblThree.Applications.DataModels.TumblrCrawlerData;
@@ -231,6 +229,7 @@ namespace TumblThree.Applications.Crawler
                     catch (WebException webException) when ((webException.Response != null))
                     {
                         var resp = (HttpWebResponse)webException.Response;
+                        // 429: Too Many Requests
                         if ((int)resp.StatusCode == 429)
                         {
                             // TODO: add retry logic?
@@ -371,7 +370,7 @@ namespace TumblThree.Applications.Crawler
                 cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
                 cookieService.GetUriCookie(request.CookieContainer, new Uri("https://" + blog.Name.Replace("+", "-") + ".tumblr.com"));
                 requestRegistration = ct.Register(() => request.Abort());
-                return await webRequestFactory.ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
+                return await webRequestFactory.ReadReqestToEnd(request);
             }
             finally
             {

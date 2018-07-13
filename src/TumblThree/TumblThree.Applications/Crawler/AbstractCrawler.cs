@@ -10,9 +10,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+
 using TumblThree.Applications.DataModels;
 using TumblThree.Applications.DataModels.TumblrPosts;
-using TumblThree.Applications.Extensions;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain;
@@ -107,7 +107,7 @@ namespace TumblThree.Applications.Crawler
                     cookieService.GetUriCookie(request.CookieContainer, new Uri(cookieHost));
                 }
                 requestRegistration = ct.Register(() => request.Abort());
-                return await webRequestFactory.ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
+                return await webRequestFactory.ReadReqestToEnd(request);
             }
             finally
             {

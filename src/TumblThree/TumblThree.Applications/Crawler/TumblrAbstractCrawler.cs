@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+
 using TumblThree.Applications.DataModels;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
@@ -16,14 +17,14 @@ namespace TumblThree.Applications.Crawler
     {
         protected TumblrAbstractCrawler(IShellService shellService, ICrawlerService crawlerService,
             CancellationToken ct, IProgress<DownloadProgress> progress, IWebRequestFactory webRequestFactory,
-            ISharedCookieService cookieService, IPostQueue<TumblrPost> postQueue, IBlog blog)
+            ISharedCookieService cookieService, IPostQueue<TumblrPost> postQueue, IBlog blog) 
             : base(shellService, crawlerService, ct, progress, webRequestFactory, cookieService, postQueue, blog)
         {
         }
 
         protected async Task<string> GetRequestAsync(string url)
         {
-            Dictionary<string, string> headers = new Dictionary<string, string>();
+            Dictionary<string, string> headers = new Dictionary<string, string>(); 
             string username = blog.Name + ".tumblr.com";
             string password = blog.Password;
             string encoded = System.Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(username + ":" + password));

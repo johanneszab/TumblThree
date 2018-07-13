@@ -48,7 +48,7 @@ namespace TumblThree.Applications.Crawler
             {
                 HttpWebRequest request = webRequestFactory.CreateGetReqeust(imgurAlbumUrl);
                 requestRegistration = ct.Register(() => request.Abort());
-                return await webRequestFactory.ReadReqestToEnd(request).TimeoutAfter(settings.TimeOut);
+                return await webRequestFactory.ReadReqestToEnd(request);
             }
             finally
             {

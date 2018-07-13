@@ -2,6 +2,7 @@
 using System.ComponentModel.Composition;
 using System.Net;
 using System.Threading.Tasks;
+
 using TumblThree.Applications.Extensions;
 using TumblThree.Applications.Services;
 
@@ -24,7 +25,7 @@ namespace TumblThree.Applications.Crawler
 
         public async Task<bool> IsTumblrBlog(string url)
         {
-            string location = await GetUrlRedirection(url).TimeoutAfter(shellService.Settings.TimeOut);
+            string location = await GetUrlRedirection(url);
             if (location.Contains("login_required"))
                 return false;
             return true;
@@ -32,7 +33,7 @@ namespace TumblThree.Applications.Crawler
 
         public async Task<bool> IsHiddenTumblrBlog(string url)
         {
-            string location = await GetUrlRedirection(url).TimeoutAfter(shellService.Settings.TimeOut);
+            string location = await GetUrlRedirection(url);
             if (location.Contains("login_required") || location.Contains("dashboard/blog/"))
                 return true;
             return false;
@@ -40,7 +41,7 @@ namespace TumblThree.Applications.Crawler
 
         public async Task<bool> IsPasswordProtectedTumblrBlog(string url)
         {
-            string location = await GetUrlRedirection(url).TimeoutAfter(shellService.Settings.TimeOut);
+            string location = await GetUrlRedirection(url);
             if (location.Contains("blog_auth"))
                 return true;
             return false;
@@ -51,7 +52,7 @@ namespace TumblThree.Applications.Crawler
             HttpWebRequest request = webRequestFactory.CreateGetReqeust(url);
             cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
             string location;
-            using (var response = await request.GetResponseAsync() as HttpWebResponse)
+            using (var response = await request.GetResponseAsync().TimeoutAfter(shellService.Settings.TimeOut) as HttpWebResponse)
             {
                 location = response.ResponseUri.ToString();
             }

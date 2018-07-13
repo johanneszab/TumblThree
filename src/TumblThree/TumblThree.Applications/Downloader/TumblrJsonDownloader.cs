@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
+
 using TumblThree.Applications.DataModels;
 using TumblThree.Applications.DataModels.TumblrCrawlerData;
 using TumblThree.Applications.Properties;
@@ -84,7 +85,7 @@ namespace TumblThree.Applications.Downloader
             }
             catch (IOException ex) when ((ex.HResult & 0xFFFF) == 0x27 || (ex.HResult & 0xFFFF) == 0x70)
             {
-                Logger.Error("TumblrXmlDownloader:AppendToTextFile: {0}", ex);
+                Logger.Error("TumblrJsonDownloader:AppendToTextFile: {0}", ex);
                 shellService.ShowError(ex, Resources.DiskFull);
                 crawlerService.StopCommand.Execute(null);
             }

@@ -5,6 +5,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using TumblThree.Applications.Extensions;
 using TumblThree.Applications.Properties;
 
 namespace TumblThree.Applications.Services
@@ -12,11 +13,15 @@ namespace TumblThree.Applications.Services
     [Export(typeof(IWebRequestFactory))]
     public class WebRequestFactory : IWebRequestFactory
     {
+        private readonly IShellService shellService;
+        private readonly ISharedCookieService cookieService;
         private readonly AppSettings settings;
 
         [ImportingConstructor]
-        public WebRequestFactory(AppSettings settings)
+        public WebRequestFactory(IShellService shellService, ISharedCookieService cookieService, AppSettings settings)
         {
+            this.shellService = shellService;
+            this.cookieService = cookieService;
             this.settings = settings;
         }
 
@@ -83,6 +88,27 @@ namespace TumblThree.Applications.Services
             return request;
         }
 
+        public async Task PerformPostReqeust(HttpWebRequest request, Dictionary<string, string> parameters)
+        {
+            string requestBody = UrlEncode(parameters);
+            using (Stream postStream = await request.GetRequestStreamAsync().TimeoutAfter(shellService.Settings.TimeOut))
+            {
+                byte[] postBytes = Encoding.ASCII.GetBytes(requestBody);
+                await postStream.WriteAsync(postBytes, 0, postBytes.Length);
+                await postStream.FlushAsync();
+            }
+        }
+
+        public async Task PerformPostXHRReqeust(HttpWebRequest request, string requestBody)
+        {
+            using (Stream postStream = await request.GetRequestStreamAsync())
+            {
+                byte[] postBytes = Encoding.ASCII.GetBytes(requestBody);
+                await postStream.WriteAsync(postBytes, 0, postBytes.Length);
+                await postStream.FlushAsync();
+            }
+        }
+
         public async Task<bool> RemotePageIsValid(string url)
         {
             HttpWebRequest request = CreateStubReqeust(url);
@@ -95,7 +121,7 @@ namespace TumblThree.Applications.Services
 
         public async Task<string> ReadReqestToEnd(HttpWebRequest request)
         {
-            using (var response = await request.GetResponseAsync() as HttpWebResponse)
+            using (var response = await request.GetResponseAsync().TimeoutAfter(shellService.Settings.TimeOut) as HttpWebResponse)
             {
                 using (var stream = GetStreamForApiRequest(response.GetResponseStream()))
                 {

@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Net;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using TumblThree.Applications.Crawler;
+
 using TumblThree.Applications.Extensions;
 
 namespace TumblThree.Applications.Services
@@ -33,10 +32,10 @@ namespace TumblThree.Applications.Services
         {
             try
             {
-                string document = await RequestTumblrKey().TimeoutAfter(shellService.Settings.TimeOut);
+                string document = await RequestTumblrKey();
                 tumblrKey = ExtractTumblrKey(document);
-                await Register(login, password).TimeoutAfter(shellService.Settings.TimeOut);
-                document = await Authenticate(login, password).TimeoutAfter(shellService.Settings.TimeOut);
+                await Register(login, password);
+                document = await Authenticate(login, password);
                 if (tfaNeeded)
                 {
                     tumblrTFAKey = ExtractTumblrTFAKey(document);
@@ -52,7 +51,7 @@ namespace TumblThree.Applications.Services
             HttpWebRequest request = webRequestFactory.CreateGetReqeust("https://www.tumblr.com/");
             cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
             cookieService.RemoveUriCookie(new Uri("https://www.tumblr.com"));
-            var tosCookie = request.CookieContainer.GetCookies(new Uri("https://www.tumblr.com/"))["pfg"];
+            var tosCookie = request.CookieContainer.GetCookies(new Uri("https://www.tumblr.com/"))["pfg"]; // pfg cookie contains ToS/GDPR agreement
             var tosCookieCollection = new CookieCollection();
             tosCookieCollection.Add(tosCookie);
             cookieService.SetUriCookie(tosCookieCollection);
@@ -67,7 +66,7 @@ namespace TumblThree.Applications.Services
         {
             try
             {
-                await SubmitTFAAuthCode(login, tumblrTFAAuthCode).TimeoutAfter(shellService.Settings.TimeOut);
+                await SubmitTFAAuthCode(login, tumblrTFAAuthCode);
             }
             catch (TimeoutException)
             {
@@ -84,7 +83,7 @@ namespace TumblThree.Applications.Services
             string url = "https://www.tumblr.com/login";
             HttpWebRequest request = webRequestFactory.CreateGetReqeust(url);
             cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
-            using (var response = await request.GetResponseAsync() as HttpWebResponse)
+            using (var response = await request.GetResponseAsync().TimeoutAfter(shellService.Settings.TimeOut) as HttpWebResponse)
             {
                 cookieService.SetUriCookie(response.Cookies);
                 using (var stream = webRequestFactory.GetStreamForApiRequest(response.GetResponseStream()))
@@ -106,7 +105,6 @@ namespace TumblThree.Applications.Services
             string referer = "https://www.tumblr.com/login";
             var headers = new Dictionary<string, string>();
             HttpWebRequest request = webRequestFactory.CreatePostXhrReqeust(url, referer, headers);
-            request.AllowAutoRedirect = true;
             cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
             var parameters = new Dictionary<string, string>
             {
@@ -128,14 +126,8 @@ namespace TumblThree.Applications.Services
                 { "random_username_suggestions", "[\"KawaiiBouquetStranger\",\"KeenTravelerFury\",\"RainyMakerTastemaker\",\"SuperbEnthusiastCollective\",\"TeenageYouthFestival\"]" },
                 { "action", "signup_determine" },
             };
-            string requestBody = webRequestFactory.UrlEncode(parameters);
-            using (Stream postStream = await request.GetRequestStreamAsync())
-            {
-                byte[] postBytes = Encoding.ASCII.GetBytes(requestBody);
-                await postStream.WriteAsync(postBytes, 0, postBytes.Length);
-                await postStream.FlushAsync();
-            }
-            using (var response = await request.GetResponseAsync() as HttpWebResponse)
+            await webRequestFactory.PerformPostReqeust(request, parameters);
+            using (var response = await request.GetResponseAsync().TimeoutAfter(shellService.Settings.TimeOut) as HttpWebResponse)
             {
                 cookieService.SetUriCookie(response.Cookies);
             }
@@ -147,7 +139,6 @@ namespace TumblThree.Applications.Services
             string referer = "https://www.tumblr.com/login";
             var headers = new Dictionary<string, string>();
             HttpWebRequest request = webRequestFactory.CreatePostReqeust(url, referer, headers);
-            request.AllowAutoRedirect = true;
             cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
             var parameters = new Dictionary<string, string>
             {
@@ -167,16 +158,10 @@ namespace TumblThree.Applications.Services
                 { "random_username_suggestions", "[\"KawaiiBouquetStranger\",\"KeenTravelerFury\",\"RainyMakerTastemaker\",\"SuperbEnthusiastCollective\",\"TeenageYouthFestival\"]" },
                 { "action", "signup_determine" }
             };
-            string requestBody = webRequestFactory.UrlEncode(parameters);
-            using (Stream postStream = await request.GetRequestStreamAsync())
+            await webRequestFactory.PerformPostReqeust(request, parameters);
+            using (var response = await request.GetResponseAsync().TimeoutAfter(shellService.Settings.TimeOut) as HttpWebResponse)
             {
-                byte[] postBytes = Encoding.ASCII.GetBytes(requestBody);
-                await postStream.WriteAsync(postBytes, 0, postBytes.Length);
-                await postStream.FlushAsync();
-            }
-            using (var response = await request.GetResponseAsync() as HttpWebResponse)
-            {
-                if (request.Address == new Uri("https://www.tumblr.com/login"))
+                if (request.Address == new Uri("https://www.tumblr.com/login")) // TFA required
                 {
                     tfaNeeded = true;
                     cookieService.SetUriCookie(response.Cookies);
@@ -207,7 +192,6 @@ namespace TumblThree.Applications.Services
             string referer = "https://www.tumblr.com/login";
             var headers = new Dictionary<string, string>();
             HttpWebRequest request = webRequestFactory.CreatePostReqeust(url, referer, headers);
-            request.AllowAutoRedirect = true;
             cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
             var parameters = new Dictionary<string, string>
             {
@@ -229,14 +213,8 @@ namespace TumblThree.Applications.Services
                 { "random_username_suggestions", "[\"KawaiiBouquetStranger\",\"KeenTravelerFury\",\"RainyMakerTastemaker\",\"SuperbEnthusiastCollective\",\"TeenageYouthFestival\"]" },
                 { "action", "signup_determine" }
             };
-            string requestBody = webRequestFactory.UrlEncode(parameters);
-            using (Stream postStream = await request.GetRequestStreamAsync())
-            {
-                byte[] postBytes = Encoding.ASCII.GetBytes(requestBody);
-                await postStream.WriteAsync(postBytes, 0, postBytes.Length);
-                await postStream.FlushAsync();
-            }
-            using (var response = await request.GetResponseAsync() as HttpWebResponse)
+            await webRequestFactory.PerformPostReqeust(request, parameters);
+            using (var response = await request.GetResponseAsync().TimeoutAfter(shellService.Settings.TimeOut) as HttpWebResponse)
             {
                 cookieService.SetUriCookie(request.CookieContainer.GetCookies(new Uri("https://www.tumblr.com/")));
             }
@@ -246,7 +224,7 @@ namespace TumblThree.Applications.Services
         {
             HttpWebRequest request = webRequestFactory.CreateGetReqeust("https://www.tumblr.com/");
             cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
-            if (request.CookieContainer.GetCookieHeader(new Uri("https://www.tumblr.com/")).Contains("pfs"))
+            if (request.CookieContainer.GetCookieHeader(new Uri("https://www.tumblr.com/")).Contains("pfs")) // pfs cookie created after successful login
             {
                 return true;
             }
@@ -258,7 +236,7 @@ namespace TumblThree.Applications.Services
             string tumblrAccountSettingsUrl = "https://www.tumblr.com/settings/account";
             HttpWebRequest request = webRequestFactory.CreateGetReqeust(tumblrAccountSettingsUrl);
             cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
-            string document = await webRequestFactory.ReadReqestToEnd(request).TimeoutAfter(shellService.Settings.TimeOut);
+            string document = await webRequestFactory.ReadReqestToEnd(request);
             return ExtractTumblrUsername(document);
         }
 

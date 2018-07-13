@@ -2,12 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.IO;
 using System.Net;
 using System.Reflection;
-using System.Runtime.Serialization.Json;
-using System.Text;
-using System.Xml;
 
 namespace TumblThree.Applications.Services
 {
