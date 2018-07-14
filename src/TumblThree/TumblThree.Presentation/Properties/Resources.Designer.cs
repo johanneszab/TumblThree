@@ -1963,7 +1963,8 @@ namespace TumblThree.Presentation.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to Since the data used for scanning is usually small, you should leave this off
-        ///since the throttling algorithm is too slow to adjust and might negatively impact the scan performance..
+        ///since the throttling algorithm is too slow to adjust and might negatively impact the scan performance.
+        ///Note: This setting has no impact if the Limit Tumblr Api Connections setting is turned on..
         /// </summary>
         public static string ToolTipLimitScanDescription {
             get {

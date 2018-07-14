@@ -1,7 +1,5 @@
 ﻿using System;
 using System.ComponentModel.Composition;
-using System.IO;
-using System.Net;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,37 +17,15 @@ namespace TumblThree.Applications.Services
     public class ApplicationUpdateService : IApplicationUpdateService
     {
         private readonly IShellService shellService;
+        private readonly IWebRequestFactory webRequestFactory;
         private string downloadLink;
         private string version;
 
         [ImportingConstructor]
-        public ApplicationUpdateService(IShellService shellService)
+        public ApplicationUpdateService(IShellService shellService, IWebRequestFactory webRequestFactory)
         {
             this.shellService = shellService;
-        }
-
-        private HttpWebRequest CreateWebReqeust(string url)
-        {
-            var request =
-                WebRequest.Create(url)
-                    as HttpWebRequest;
-            request.Method = "GET";
-            request.ProtocolVersion = HttpVersion.Version11;
-            request.ContentType = "application/json";
-            request.ServicePoint.Expect100Continue = false;
-            request.UnsafeAuthenticatedConnectionSharing = true;
-            request.UserAgent = shellService.Settings.UserAgent;
-            //request.KeepAlive = true;
-            //request.Pipelined = true;
-            if (!string.IsNullOrEmpty(shellService.Settings.ProxyHost) && !string.IsNullOrEmpty(shellService.Settings.ProxyPort))
-            {
-                request.Proxy = new WebProxy(shellService.Settings.ProxyHost, int.Parse(shellService.Settings.ProxyPort));
-            }
-            if (!string.IsNullOrEmpty(shellService.Settings.ProxyUsername) && !string.IsNullOrEmpty(shellService.Settings.ProxyPassword))
-            {
-                request.Proxy.Credentials = new NetworkCredential(shellService.Settings.ProxyUsername, shellService.Settings.ProxyPassword);
-            }
-            return request;
+            this.webRequestFactory = webRequestFactory;
         }
 
         public async Task<string> GetLatestReleaseFromServer()
@@ -58,14 +34,8 @@ namespace TumblThree.Applications.Services
             downloadLink = null;
             try
             {
-                var request = CreateWebReqeust(@"https://api.github.com/repos/johanneszab/tumblthree/releases/latest");
-                string result;
-                using (var resp = await request.GetResponseAsync() as HttpWebResponse)
-                {
-                    var reader =
-                        new StreamReader(resp.GetResponseStream());
-                    result = reader.ReadToEnd();
-                }
+                var request = webRequestFactory.CreateGetReqeust(@"https://api.github.com/repos/johanneszab/tumblthree/releases/latest");
+                string result = await webRequestFactory.ReadReqestToEnd(request);
                 XmlDictionaryReader jsonReader = JsonReaderWriterFactory.CreateJsonReader(Encoding.UTF8.GetBytes(result),
                     new System.Xml.XmlDictionaryReaderQuotas());
                 XElement root = XElement.Load(jsonReader);
