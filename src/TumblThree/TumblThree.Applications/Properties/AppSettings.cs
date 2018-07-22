@@ -153,7 +153,7 @@ namespace TumblThree.Applications.Properties
         public bool DeleteOnlyIndex { get; set; }
 
         [DataMember]
-        public bool CheckOnlineStatusAtStartup { get; set; }
+        public bool CheckOnlineStatusOnStartup { get; set; }
 
         [DataMember]
         public bool SkipGif { get; set; }
@@ -370,7 +370,7 @@ namespace TumblThree.Applications.Properties
             ShowPicturePreview = true;
             DisplayConfirmationDialog = false;
             DeleteOnlyIndex = true;
-            CheckOnlineStatusAtStartup = false;
+            CheckOnlineStatusOnStartup = false;
             SkipGif = false;
             EnablePreview = true;
             RemoveIndexAfterCrawl = false;

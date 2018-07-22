@@ -253,7 +253,7 @@
     <value>1 Blog</value>
   </data>
   <data name="CheckStatus" xml:space="preserve">
-    <value>Check blog online status on startup</value>
+    <value>Check blog online status</value>
   </data>
   <data name="DeleteIndex" xml:space="preserve">
     <value>Delete only the index files (no downloaded files)</value>
@@ -470,15 +470,15 @@ It's safe to turn this on.</value>
   </data>
   <data name="ToolTipLimitScanDescription" xml:space="preserve">
     <value>Since the data used for scanning is usually small, you should leave this off
-since the throttling algorithm is too slow to adjust and might negatively impact the scan performance.
-Note: This setting has no impact if the Limit Tumblr Api Connections setting is turned on.</value>
+since the throttling algorithm is too slow to adjust and might negatively impact the scan performance.</value>
   </data>
   <data name="ToolTipScan" xml:space="preserve">
     <value>Number of connections used for each scan</value>
   </data>
   <data name="ToolTipScanDescription" xml:space="preserve">
     <value>Sets the number connections used for scanning.
-Since the data is usually small, you should leave this high.</value>
+Since the data is usually small, you should leave this high.
+Note: This setting has no impact if the Limit Tumblr Api Connections setting is turned on.</value>
   </data>
   <data name="BandwidthRangeError" xml:space="preserve">
     <value>The value must be between 0 and 9,000,000,000,000,000.</value>
@@ -902,5 +902,8 @@ The cookie with your credentials of your account is saved and the authentication
   </data>
   <data name="ToolTipLogoutDescription" xml:space="preserve">
     <value>Removes the cookies used for authentication from the system.</value>
+  </data>
+  <data name="CheckStatusOnStartup" xml:space="preserve">
+    <value>Check blog online status on startup</value>
   </data>
 </root>

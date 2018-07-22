@@ -120,8 +120,8 @@
                         </Grid>
                         <CheckBox x:Name="checkBoxEnablePreview" Content="{x:Static p:Resources.EnablePreview}"
                               IsChecked="{Binding EnablePreview, Mode=TwoWay}" Grid.Column="0" Grid.Row="1" Margin="10" />
-                        <CheckBox x:Name="checkBoxCheckStatus" Content="{x:Static p:Resources.CheckStatus}"
-                              IsChecked="{Binding CheckOnlineStatusAtStartup, Mode=TwoWay}" Grid.Column="0" Grid.Row="2"
+                        <CheckBox x:Name="checkBoxCheckStatusOnStartup" Content="{x:Static p:Resources.CheckStatusOnStartup}"
+                              IsChecked="{Binding CheckOnlineStatusOnStartup, Mode=TwoWay}" Grid.Column="0" Grid.Row="2"
                               Margin="10" />
                         <CheckBox x:Name="checkBoxDeleteIndex" Content="{x:Static p:Resources.DeleteIndex}"
                               IsChecked="{Binding DeleteOnlyIndex, Mode=TwoWay}" Grid.Column="0" Grid.Row="3" Margin="10" />

@@ -268,11 +268,20 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Check blog online status on startup.
+        ///   Looks up a localized string similar to Check blog online status.
         /// </summary>
         public static string CheckStatus {
             get {
                 return ResourceManager.GetString("CheckStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check blog online status on startup.
+        /// </summary>
+        public static string CheckStatusOnStartup {
+            get {
+                return ResourceManager.GetString("CheckStatusOnStartup", resourceCulture);
             }
         }
         
@@ -1963,8 +1972,7 @@ namespace TumblThree.Presentation.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to Since the data used for scanning is usually small, you should leave this off
-        ///since the throttling algorithm is too slow to adjust and might negatively impact the scan performance.
-        ///Note: This setting has no impact if the Limit Tumblr Api Connections setting is turned on..
+        ///since the throttling algorithm is too slow to adjust and might negatively impact the scan performance..
         /// </summary>
         public static string ToolTipLimitScanDescription {
             get {
@@ -2166,7 +2174,8 @@ namespace TumblThree.Presentation.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to Sets the number connections used for scanning.
-        ///Since the data is usually small, you should leave this high..
+        ///Since the data is usually small, you should leave this high.
+        ///Note: This setting has no impact if the Limit Tumblr Api Connections setting is turned on..
         /// </summary>
         public static string ToolTipScanDescription {
             get {

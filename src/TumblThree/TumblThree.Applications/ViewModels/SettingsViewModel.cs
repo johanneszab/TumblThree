@@ -41,7 +41,7 @@ namespace TumblThree.Applications.ViewModels
         private string blogType;
         private bool checkClipboard;
         private bool checkDirectoryForFiles;
-        private bool checkOnlineStatusAtStartup;
+        private bool checkOnlineStatusOnStartup;
         private int connectionTimeInterval;
         private bool createAudioMeta;
         private bool createImageMeta;
@@ -344,10 +344,10 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref deleteOnlyIndex, value); }
         }
 
-        public bool CheckOnlineStatusAtStartup
+        public bool CheckOnlineStatusOnStartup
         {
-            get { return checkOnlineStatusAtStartup; }
-            set { SetProperty(ref checkOnlineStatusAtStartup, value); }
+            get { return checkOnlineStatusOnStartup; }
+            set { SetProperty(ref checkOnlineStatusOnStartup, value); }
         }
 
         public bool SkipGif
@@ -872,7 +872,7 @@ namespace TumblThree.Applications.ViewModels
                 ShowPicturePreview = settings.ShowPicturePreview;
                 DisplayConfirmationDialog = settings.DisplayConfirmationDialog;
                 DeleteOnlyIndex = settings.DeleteOnlyIndex;
-                CheckOnlineStatusAtStartup = settings.CheckOnlineStatusAtStartup;
+                CheckOnlineStatusOnStartup = settings.CheckOnlineStatusOnStartup;
                 SkipGif = settings.SkipGif;
                 EnablePreview = settings.EnablePreview;
                 RemoveIndexAfterCrawl = settings.RemoveIndexAfterCrawl;
@@ -951,7 +951,7 @@ namespace TumblThree.Applications.ViewModels
                 ShowPicturePreview = true;
                 DisplayConfirmationDialog = false;
                 DeleteOnlyIndex = true;
-                CheckOnlineStatusAtStartup = false;
+                CheckOnlineStatusOnStartup = false;
                 SkipGif = false;
                 EnablePreview = true;
                 RemoveIndexAfterCrawl = false;
@@ -1074,7 +1074,7 @@ namespace TumblThree.Applications.ViewModels
             settings.ShowPicturePreview = ShowPicturePreview;
             settings.DisplayConfirmationDialog = DisplayConfirmationDialog;
             settings.DeleteOnlyIndex = DeleteOnlyIndex;
-            settings.CheckOnlineStatusAtStartup = CheckOnlineStatusAtStartup;
+            settings.CheckOnlineStatusOnStartup = CheckOnlineStatusOnStartup;
             settings.SkipGif = SkipGif;
             settings.EnablePreview = EnablePreview;
             settings.RemoveIndexAfterCrawl = RemoveIndexAfterCrawl;

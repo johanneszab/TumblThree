@@ -55,6 +55,8 @@
                                           Header="{x:Static p:Resources.EnqueueSelection}"
                                           InputGestureText="{x:Static p:Resources.ShiftReturn}" />
                                 <Separator />
+                                <MenuItem Command="{Binding CheckStatusCommand}"
+                                          Header="{x:Static p:Resources.CheckStatus}" />
                                 <MenuItem Command="{Binding CopyUrlCommand}"
                                           Header="{x:Static p:Resources.CopyUrl}" />
                                 <MenuItem Command="{Binding VisitBlogCommand}"

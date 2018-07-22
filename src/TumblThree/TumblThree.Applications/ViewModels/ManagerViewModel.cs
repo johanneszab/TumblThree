@@ -25,6 +25,7 @@ namespace TumblThree.Applications.ViewModels
         private ICommand showFilesCommand;
         private ICommand visitBlogCommand;
         private ICommand copyUrlCommand;
+        private ICommand checkStatusCommand;
 
         [ImportingConstructor]
         public ManagerViewModel(IManagerView view, IShellService shellService, Lazy<ISelectionService> selectionService,
@@ -77,6 +78,12 @@ namespace TumblThree.Applications.ViewModels
         {
             get { return copyUrlCommand; }
             set { SetProperty(ref copyUrlCommand, value); }
+        }
+
+        public ICommand CheckStatusCommand
+        {
+            get { return checkStatusCommand; }
+            set { SetProperty(ref checkStatusCommand, value); }
         }
 
         public Blog SelectedBlogFile
