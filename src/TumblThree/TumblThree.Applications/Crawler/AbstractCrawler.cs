@@ -89,7 +89,7 @@ namespace TumblThree.Applications.Crawler
         {
             if (shellService.Settings.LimitConnections)
             {
-                crawlerService.Timeconstraint.Acquire();
+                //crawlerService.Timeconstraint.Acquire();
                 return await method(url);
             }
             return await method(url);

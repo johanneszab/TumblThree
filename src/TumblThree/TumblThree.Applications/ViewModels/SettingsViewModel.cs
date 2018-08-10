@@ -120,7 +120,7 @@ namespace TumblThree.Applications.ViewModels
 
         [ImportingConstructor]
         public SettingsViewModel(ISettingsView view, IShellService shellService, ICrawlerService crawlerService,
-            IManagerService managerService, ILoginService loginService, IFolderBrowserDialog folderBrowserDialog, IFileDialogService fileDialogService, 
+            IManagerService managerService, ILoginService loginService, IFolderBrowserDialog folderBrowserDialog, IFileDialogService fileDialogService,
             ExportFactory<AuthenticateViewModel> authenticateViewModelFactory)
             : base(view)
         {
@@ -327,16 +327,16 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref checkClipboard, value); }
         }
 
-        public bool DisplayConfirmationDialog
-        {
-            get { return displayConfirmationDialog; }
-            set { SetProperty(ref displayConfirmationDialog, value); }
-        }
-
         public bool ShowPicturePreview
         {
             get { return showPicturePreview; }
             set { SetProperty(ref showPicturePreview, value); }
+        }
+
+        public bool DisplayConfirmationDialog
+        {
+            get { return displayConfirmationDialog; }
+            set { SetProperty(ref displayConfirmationDialog, value); }
         }
 
         public bool DeleteOnlyIndex
@@ -983,7 +983,7 @@ namespace TumblThree.Applications.ViewModels
                 DownloadLoliSafe = false;
                 DownloadCatBox = false;
                 GfycatType = GfycatTypes.Mp4;
-                WebmshareType = WebmshareTypes.Webm;
+                WebmshareType = WebmshareTypes.Mp4;
                 MixtapeType = MixtapeTypes.Any;
                 UguuType = UguuTypes.Any;
                 SafeMoeType = SafeMoeTypes.Any;
@@ -1017,7 +1017,7 @@ namespace TumblThree.Applications.ViewModels
 
         private void ApplySettings(bool downloadLocationChanged, bool loadAllDatabasesChanged)
         {
-            CrawlerService.Timeconstraint.SetRate(((double)MaxConnections / (double)ConnectionTimeInterval));
+            //CrawlerService.Timeconstraint.SetRate(((double)MaxConnections / (double)ConnectionTimeInterval));
 
             if (loadAllDatabasesChanged && downloadLocationChanged)
             {

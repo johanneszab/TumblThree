@@ -351,7 +351,7 @@ namespace TumblThree.Applications.Crawler
         {
             if (shellService.Settings.LimitConnections)
             {
-                crawlerService.Timeconstraint.Acquire();
+                //crawlerService.Timeconstraint.Acquire();
                 return await RequestDataAsync(limit, offset);
             }
             return await RequestDataAsync(limit, offset);

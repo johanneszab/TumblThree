@@ -11,7 +11,7 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d" Title="Settings" Height="710" Width="760"
         d:DataContext="{d:DesignInstance vm:SettingsViewModel}" SizeToContent="Width" ResizeMode="CanResize"
-        ContentRendered="Window_ContentRendered"> 
+        ContentRendered="Window_ContentRendered">
     
     <Window.Resources>
         <ObjectDataProvider MethodName="GetValues"
@@ -632,7 +632,7 @@
                          VerticalAlignment="Center" MinWidth="120">
                                 <TextBox.Text>
                                     <Binding Path="TumblrTFAAuthCode" UpdateSourceTrigger="PropertyChanged">
-                                </Binding>
+                                    </Binding>
                                 </TextBox.Text>
                                 <TextBox.InputBindings>
                                     <KeyBinding Command="{Binding TumblrSubmitTFACommand}" Key="Return" />
@@ -1240,9 +1240,9 @@
                     <Button.ToolTip>
                         <ToolTip>
                             <StackPanel>
-                                <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipAuthenticateBrowser}" />
+                                <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipAuthenticate}" />
                                 <TextBlock xml:space="preserve"
-                                           Text="{x:Static p:Resources.ToolTipAuthenticateBrowserDescription}" />
+                                           Text="{x:Static p:Resources.ToolTipAuthenticateDescription}" />
                             </StackPanel>
                         </ToolTip>
                     </Button.ToolTip>

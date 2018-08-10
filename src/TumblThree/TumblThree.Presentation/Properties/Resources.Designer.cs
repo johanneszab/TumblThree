@@ -898,7 +898,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Limit Tumblr API connections:.
+        ///   Looks up a localized string similar to Limit Tumblr api connections:.
         /// </summary>
         public static string LimitConnections {
             get {

@@ -1094,47 +1094,47 @@
                                 <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
                             <UserControl x:Name="Preview" Width="Auto" Height="Auto" Grid.Column="0"  Grid.Row="0" MouseDown="Preview_OnMouseDown">
-                                <Grid>
-                                    <VisualStateManager.VisualStateGroups>
-                                        <VisualStateGroup x:Name="SwitchableStates">
-                                            <VisualState x:Name="Photo" />
-                                            <VisualState x:Name="Video">
-                                                <Storyboard>
-                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="SwitchableImage"
+                        <Grid>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="SwitchableStates">
+                                    <VisualState x:Name="Photo" />
+                                    <VisualState x:Name="Video">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="SwitchableImage"
                                                                        Storyboard.TargetProperty="Visibility"
                                                                        Duration="0">
-                                                        <DiscreteObjectKeyFrame KeyTime="0">
-                                                            <DiscreteObjectKeyFrame.Value>
-                                                                <Visibility>Collapsed</Visibility>
-                                                            </DiscreteObjectKeyFrame.Value>
-                                                        </DiscreteObjectKeyFrame>
-                                                    </ObjectAnimationUsingKeyFrames>
-                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="SwitchableMediaElement"
+                                                <DiscreteObjectKeyFrame KeyTime="0">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <Visibility>Collapsed</Visibility>
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="SwitchableMediaElement"
                                                                        Storyboard.TargetProperty="Visibility"
                                                                        Duration="0">
-                                                        <DiscreteObjectKeyFrame KeyTime="0">
-                                                            <DiscreteObjectKeyFrame.Value>
-                                                                <Visibility>Visible</Visibility>
-                                                            </DiscreteObjectKeyFrame.Value>
-                                                        </DiscreteObjectKeyFrame>
-                                                    </ObjectAnimationUsingKeyFrames>
-                                                </Storyboard>
-                                            </VisualState>
-                                        </VisualStateGroup>
-                                    </VisualStateManager.VisualStateGroups>
-                                    <MediaElement Visibility="Collapsed" x:Name="SwitchableMediaElement"
+                                                <DiscreteObjectKeyFrame KeyTime="0">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <Visibility>Visible</Visibility>
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <MediaElement Visibility="Collapsed" x:Name="SwitchableMediaElement"
                                       Source="{Binding BlogFile.LastDownloadedVideo, Converter={StaticResource NullImageConverter}, IsAsync=True}"
                                       Stretch="Fill" IsMuted="True" LoadedBehavior="Play" UnloadedBehavior="Close" />
-                                    <Image Visibility="Visible" x:Name="SwitchableImage"
+                            <Image Visibility="Visible" x:Name="SwitchableImage"
                                Source="{Binding BlogFile.LastDownloadedPhoto, Converter={StaticResource NullImageConverter}, IsAsync=True}"
                                Stretch="Fill" />
-                                    <i:Interaction.Triggers>
-                                        <ei:DataTrigger Binding="{Binding BlogFile.States}" Value="{Binding BlogFile.States}">
-                                            <ei:GoToStateAction StateName="{Binding BlogFile.States}" />
-                                        </ei:DataTrigger>
-                                    </i:Interaction.Triggers>
-                                </Grid>
-                            </UserControl>
+                            <i:Interaction.Triggers>
+                                <ei:DataTrigger Binding="{Binding BlogFile.States}" Value="{Binding BlogFile.States}">
+                                    <ei:GoToStateAction StateName="{Binding BlogFile.States}" />
+                                </ei:DataTrigger>
+                            </i:Interaction.Triggers>
+                        </Grid>
+                    </UserControl>
                         </Grid>
                     </TabItem>
                 </TabControl>

@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using System.Waf.Foundation;
 using System.Windows.Input;
 
-using Guava.RateLimiter;
-
 using TumblThree.Domain.Queue;
 
 namespace TumblThree.Applications.Services
@@ -34,16 +32,11 @@ namespace TumblThree.Applications.Services
         private ICommand resumeCommand;
         private ICommand showFilesCommand;
         private ICommand stopCommand;
-        private RateLimiter timeconstraint;
         private System.Threading.Timer timer;
 
         [ImportingConstructor]
         public CrawlerService(IShellService shellService)
         {
-            timeconstraint =
-                RateLimiter.Create((double)shellService.Settings.MaxConnections /
-                                   (double)shellService.Settings.ConnectionTimeInterval);
-
             activeItems = new ObservableCollection<QueueListItem>();
             readonlyActiveItems = new ReadOnlyObservableList<QueueListItem>(activeItems);
             databasesLoaded = new TaskCompletionSource<bool>();
@@ -167,12 +160,6 @@ namespace TumblThree.Applications.Services
         {
             get { return newBlogUrl; }
             set { SetProperty(ref newBlogUrl, value); }
-        }
-
-        public RateLimiter Timeconstraint
-        {
-            get { return timeconstraint; }
-            set { SetProperty(ref timeconstraint, value); }
         }
 
         public void AddActiveItems(QueueListItem itemToAdd)

@@ -496,7 +496,7 @@ Note: This setting has no impact if the Limit Tumblr Api Connections setting is 
     <value>per time interval (s):</value>
   </data>
   <data name="LimitConnections" xml:space="preserve">
-    <value>Limit Tumblr API connections:</value>
+    <value>Limit Tumblr api connections:</value>
   </data>
   <data name="MaxConnections" xml:space="preserve">
     <value>Number of connections:</value>
