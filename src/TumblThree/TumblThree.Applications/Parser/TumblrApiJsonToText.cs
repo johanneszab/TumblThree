@@ -48,7 +48,7 @@ namespace TumblThree.Applications.Parser
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Quote, post.quote_text) + 
+                   string.Format(CultureInfo.CurrentCulture, Resources.Quote, post.quote_text) +
                    Environment.NewLine + post.quote_source +
                    Environment.NewLine + post.regular_body +
                    Environment.NewLine +
@@ -99,7 +99,7 @@ namespace TumblThree.Applications.Parser
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Quote, post.conversation.Select(dialogue => new { dialogue.name , dialogue.phrase })) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Quote, post.conversation.Select(dialogue => new { dialogue.name, dialogue.phrase })) +
                    Environment.NewLine + post.regular_body +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Tags,

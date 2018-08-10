@@ -386,7 +386,7 @@ namespace TumblThree.Applications.Properties
             CreateVideoMeta = false;
             CreateAudioMeta = false;
             MetadataFormat = MetadataType.Text;
-            PageSize = 50;
+            PageSize = 100;
             DownloadRebloggedPosts = true;
             AutoDownload = false;
             TimerInterval = "22:40:00";

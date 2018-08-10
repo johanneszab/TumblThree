@@ -499,13 +499,13 @@ Aufgrund der kleinen Datenmenge sollte diese Einstellung hochbleiben.</value>
     <value>Limitiere Tumblr Api Verbindungen</value>
   </data>
   <data name="ToolTipLimitConnections" xml:space="preserve">
-    <value>Begrenzt Verbindungen zur Tumblr API.</value>
+    <value>Begrenzt Verbindungen zur Tumblr svc.</value>
   </data>
   <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
-    <value>Ein zu hoher Wert schließt die Verbindungen (429 - Limit Exceeded), die mit der tumblr api erstellt wurden, zwangsweise aus.
+    <value>Ein zu hoher Wert schließt die Verbindungen (429 - Limit Exceeded), die mit der tumblr svc erstellt wurden, zwangsweise aus.
 Ein zu kleiner Wert verringert die Scangeschwindigkeit.
 Legen Sie ein Zahlen- / Zeitpaar fest.
-Hinweis: Die tumblr API wird nur für reguläre Tumblr-Blog-Downloads verwendet.</value>
+Hinweis: Die tumblr svc wird nur für reguläre Tumblr-Blog-Downloads verwendet.</value>
   </data>
   <data name="CheckDirectoryForFiles" xml:space="preserve">
     <value>Prüfe Ordner auf Dateien</value>

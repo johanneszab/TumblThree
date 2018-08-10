@@ -496,19 +496,19 @@ Note: This setting has no impact if the Limit Tumblr Api Connections setting is 
     <value>per time interval (s):</value>
   </data>
   <data name="LimitConnections" xml:space="preserve">
-    <value>Limit Tumblr API connections:</value>
+    <value>Limit Tumblr svc connections:</value>
   </data>
   <data name="MaxConnections" xml:space="preserve">
     <value>Number of connections:</value>
   </data>
   <data name="ToolTipLimitConnections" xml:space="preserve">
-    <value>Limit connections to the tumblr api.</value>
+    <value>Limit connections to the tumblr svc.</value>
   </data>
   <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
-    <value>A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr api.
+    <value>A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr svc.
 A too small value will decrease the scanning speed.
 Set a number/time pair.
-Note: The tumblr api is only used for regular tumblr blog downloads.</value>
+Note: The tumblr svc is only used for regular tumblr blog downloads.</value>
   </data>
   <data name="ForceRescan" xml:space="preserve">
     <value>Force rescan</value>
@@ -596,8 +596,8 @@ Might negatively impact the download speed for large directories.</value>
     <value>Posts per Page</value>
   </data>
   <data name="ToolTipPageSizeDescription" xml:space="preserve">
-    <value>Sets the post per page (should be between 1-50, default 50).
-E.g. 50 means to scan 50 posts per page.</value>
+    <value>Sets the post per page (should be between 1-100, default 100).
+E.g. 100 means to scan 100 posts per page.</value>
   </data>
   <data name="FullScreenMedia" xml:space="preserve">
     <value>FullScreenView</value>
@@ -639,7 +639,7 @@ E.g. 50 means to scan 50 posts per page.</value>
     <value>Posts per Page</value>
   </data>
   <data name="ToolTipPageSizeTumblrSearchDescription" xml:space="preserve">
-    <value>Sets the post per page. E.g. 50 means to scan 50 posts per page.</value>
+    <value>Sets the post per page. E.g. 100 means to scan 100 posts per page.</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Password:</value>
