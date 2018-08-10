@@ -120,7 +120,7 @@ namespace TumblThree.Applications.ViewModels
 
         [ImportingConstructor]
         public SettingsViewModel(ISettingsView view, IShellService shellService, ICrawlerService crawlerService,
-            IManagerService managerService, ILoginService loginService, IFolderBrowserDialog folderBrowserDialog, IFileDialogService fileDialogService,
+            IManagerService managerService, ILoginService loginService, IFolderBrowserDialog folderBrowserDialog, IFileDialogService fileDialogService, 
             ExportFactory<AuthenticateViewModel> authenticateViewModelFactory)
             : base(view)
         {
@@ -145,6 +145,7 @@ namespace TumblThree.Applications.ViewModels
 
             Task loadSettingsTask = Load();
             view.Closed += ViewClosed;
+
         }
 
         public IShellService ShellService { get; }
@@ -326,16 +327,16 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref checkClipboard, value); }
         }
 
-        public bool ShowPicturePreview
-        {
-            get { return showPicturePreview; }
-            set { SetProperty(ref showPicturePreview, value); }
-        }
-
         public bool DisplayConfirmationDialog
         {
             get { return displayConfirmationDialog; }
             set { SetProperty(ref displayConfirmationDialog, value); }
+        }
+
+        public bool ShowPicturePreview
+        {
+            get { return showPicturePreview; }
+            set { SetProperty(ref showPicturePreview, value); }
         }
 
         public bool DeleteOnlyIndex
@@ -656,11 +657,6 @@ namespace TumblThree.Applications.ViewModels
             set { SetProperty(ref userAgent, value); }
         }
 
-        public void ShowDialog(object owner)
-        {
-            ViewCore.ShowDialog(owner);
-        }
-
         public string TumblrUser
         {
             get { return tumblrUser; }
@@ -695,6 +691,11 @@ namespace TumblThree.Applications.ViewModels
         {
             get { return tumblrEmail; }
             set { SetProperty(ref tumblrEmail, value); }
+        }
+
+        public void ShowDialog(object owner)
+        {
+            ViewCore.ShowDialog(owner);
         }
 
         private void ViewClosed(object sender, EventArgs e)
@@ -969,7 +970,7 @@ namespace TumblThree.Applications.ViewModels
                 MetadataFormat = MetadataType.Text;
                 DumpCrawlerData = false;
                 DownloadPages = string.Empty;
-                PageSize = 100;
+                PageSize = 50;
                 DownloadFrom = string.Empty;
                 DownloadTo = string.Empty;
                 Tags = string.Empty;
@@ -982,7 +983,7 @@ namespace TumblThree.Applications.ViewModels
                 DownloadLoliSafe = false;
                 DownloadCatBox = false;
                 GfycatType = GfycatTypes.Mp4;
-                WebmshareType = WebmshareTypes.Mp4;
+                WebmshareType = WebmshareTypes.Webm;
                 MixtapeType = MixtapeTypes.Any;
                 UguuType = UguuTypes.Any;
                 SafeMoeType = SafeMoeTypes.Any;

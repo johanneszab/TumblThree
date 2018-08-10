@@ -91,7 +91,7 @@
                                 </MultiBinding>
                             </DataTrigger.Binding>
                             <DataTrigger.Setters>
-                                <Setter Property="Background" Value="{StaticResource ActiveItem}" />
+                                <Setter Property="Background" Value="{StaticResource ActiveItem}" /> 
                             </DataTrigger.Setters>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Online}" Value="False">

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
@@ -62,9 +63,9 @@ namespace TumblThree.Applications.Controllers
         {
             this.shellService = shellService;
             this.selectionService = selectionService;
+            this.clipboardService = clipboardService;
             this.crawlerService = crawlerService;
             this.managerService = managerService;
-            this.clipboardService = clipboardService;
             this.managerViewModel = managerViewModel;
             this.settingsService = settingsService;
             this.messageService = messageService;
@@ -305,6 +306,8 @@ namespace TumblThree.Applications.Controllers
             Logger.Verbose("ManagerController.LoadDatabasesGloballyAsync:End");
         }
 
+
+
         private bool CanLoadLibrary()
         {
             return !crawlerService.IsCrawl;
@@ -488,12 +491,12 @@ namespace TumblThree.Applications.Controllers
 
         private async Task CheckStatusAsync()
         {
-            //        foreach (IBlog blog in selectionService.SelectedBlogFiles.ToArray())
-            //        {
-            //            ICrawler crawler = CrawlerFactory.GetCrawler(blog, new CancellationToken(), new PauseToken(),
-            //new Progress<DownloadProgress>(), shellService, crawlerService, managerService);
-            //            await crawler.IsBlogOnlineAsync();
-            //        }
+    //        foreach (IBlog blog in selectionService.SelectedBlogFiles.ToArray())
+    //        {
+    //            ICrawler crawler = CrawlerFactory.GetCrawler(blog, new CancellationToken(), new PauseToken(),
+    //new Progress<DownloadProgress>(), shellService, crawlerService, managerService);
+    //            await crawler.IsBlogOnlineAsync();
+    //        }
             await Task.Run(async () =>
             {
                 var semaphoreSlim = new SemaphoreSlim(25);
@@ -532,7 +535,10 @@ namespace TumblThree.Applications.Controllers
                 return;
             }
 
-            await TumblrBlogDetector.IsTumblrBlog(blog.Url);
+            if (blog.GetType() == typeof(TumblrBlog) && await TumblrBlogDetector.IsHiddenTumblrBlog(blog.Url))
+            {
+                blog = PromoteTumblrBlogToHiddenBlog(blog);
+            }
 
             lock (lockObject)
             {
@@ -558,6 +564,13 @@ namespace TumblThree.Applications.Controllers
             QueueOnDispatcher.CheckBeginInvokeOnUI((Action)(() => managerService.BlogFiles.Add(blog)));
             if (shellService.Settings.LoadAllDatabases)            
                 managerService.AddDatabase(new Files().Load(blog.ChildId));
+        }
+
+        private IBlog PromoteTumblrBlogToHiddenBlog(IBlog blog)
+        {
+            RemoveBlog(new[] { blog } );
+            blog = TumblrHiddenBlog.Create("https://www.tumblr.com/dashboard/blog/" + blog.Name, Path.Combine(shellService.Settings.DownloadLocation, "Index"));
+            return blog;
         }
 
         private void OnClipboardContentChanged(object sender, EventArgs e)

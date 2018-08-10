@@ -1,4 +1,6 @@
-﻿namespace TumblThree.Applications.DataModels.TumblrCrawlerData
+﻿using TumblThree.Applications.DataModels.TumblrApiJson;
+
+namespace TumblThree.Applications.DataModels.TumblrCrawlerData
 {
     public class TumblrCrawlerData<T> : ITumblrCrawlerData
     {

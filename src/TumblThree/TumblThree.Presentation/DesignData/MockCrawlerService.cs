@@ -79,6 +79,7 @@ namespace TumblThree.Presentation.DesignData
 
         public TaskCompletionSource<bool> DatabasesLoaded { get; set; }
 
+
         public void SetActiveBlogFiles(IEnumerable<IBlog> blogFilesToAdd)
         {
             activeItems.Clear();

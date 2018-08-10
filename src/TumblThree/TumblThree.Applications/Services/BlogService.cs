@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -27,8 +26,8 @@ namespace TumblThree.Applications.Services
         {
             lock (lockObjectProgress)
             {
-                blog.DownloadedImages++;
-                blog.Progress = (int)((double)blog.DownloadedImages / (double)blog.TotalCount * 100);
+                blog.DownloadedImages++; 
+                blog.Progress = (int)((double)blog.DownloadedImages/ (double)blog.TotalCount * 100);
             }
         }
 

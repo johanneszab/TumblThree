@@ -503,13 +503,6 @@ namespace TumblThree.Domain.Models
         }
 
         [DataMember]
-        public bool DownloadImgur
-        {
-            get { return downloadImgur; }
-            set { SetProperty(ref downloadImgur, value); }
-        }
-
-        [DataMember]
         public bool DownloadGfycat
         {
             get { return downloadGfycat; }
@@ -521,6 +514,13 @@ namespace TumblThree.Domain.Models
         {
             get { return gfycatType; }
             set { SetProperty(ref gfycatType, value); }
+        }
+
+        [DataMember]
+        public bool DownloadImgur
+        {
+            get { return downloadImgur; }
+            set { SetProperty(ref downloadImgur, value); }
         }
 
         [DataMember]
