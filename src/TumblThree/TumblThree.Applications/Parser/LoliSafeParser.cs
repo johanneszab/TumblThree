@@ -9,7 +9,7 @@ namespace TumblThree.Applications.Parser
 	{
 		public Regex GetLoliSafeUrlRegex()
 		{
-			return new Regex("(http[A-Za-z0-9_/:.]*loli.temel.me/(.*))");
+			return new Regex("(http[A-Za-z0-9_/:.]*(loli.temel.me|3dx.pw)/(.*))");
 		}
 
 		public string CreateLoliSafeUrl(string id, string detectedUrl, LoliSafeTypes type)
@@ -18,10 +18,10 @@ namespace TumblThree.Applications.Parser
 			switch ( type)
 			{
 				case LoliSafeTypes.Mp4:
-					url = @"https://loli.temel.me/" +  id + ".mp4";
+					url = @"https://3dx.pw/" +  id + ".mp4";
 					break;
 				case LoliSafeTypes.Webm:
-					url = @"https://loli.temel.me/" +  id + ".webm";
+					url = @"https://3dx.pw/" +  id + ".webm";
 					break;
 				case LoliSafeTypes.Any:
 					url = detectedUrl;
