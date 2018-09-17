@@ -15,7 +15,7 @@ namespace TumblThree.Applications.Parser
 		public string CreateLoliSafeUrl(string id, string detectedUrl, LoliSafeTypes type)
 		{
 			string url;
-			switch ( type)
+			switch (type)
 			{
 				case LoliSafeTypes.Mp4:
 					url = @"https://3dx.pw/" +  id + ".mp4";
