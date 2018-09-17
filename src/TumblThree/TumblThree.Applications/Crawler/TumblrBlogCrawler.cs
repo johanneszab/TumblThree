@@ -769,7 +769,7 @@ namespace TumblThree.Applications.Crawler
 
         private void AddInlineVttTumblrVideoUrl(Post post)
         {
-            var regex = new Regex("\"(https?://vtt.tumblr.com/(tumblr_[A-Za-z0-9]*))");
+            var regex = new Regex("\"(https?://vtt.tumblr.com/(tumblr_[\\w]*))");
             foreach (Match match in regex.Matches(InlineSearch(post)))
             {
                 string videoUrl = match.Groups[1].Value;
@@ -784,29 +784,29 @@ namespace TumblThree.Applications.Crawler
                     AddToDownloadList(new VideoPost(
                         videoUrl + "_480.mp4",
                         post.id, post.unix_timestamp.ToString()));
-                    //AddToJsonQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(videoUrl.Split('/').Last(), ".json"), post));
+                    //AddToJsonQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(videoUrl.Split('/').Last(), "_480.json"), post));
                 }
             }
         }
 
         private void AddInlineVideoUrl(Post post)
         {
-            var regex = new Regex("\"(http[A-Za-z0-9_/:.]*.com/video_file/[A-Za-z0-9_/:.]*)\"");
+            var regex = new Regex("src=\"(http[A-Za-z0-9_/:.]*video_file[\\S]*/(tumblr_[\\w]*))[0-9/]*\"");
             foreach (Match match in regex.Matches(InlineSearch(post)))
             {
-                string videoUrl = match.Groups[1].Value;
+                string videoUrl = match.Groups[2].Value;
                 if (shellService.Settings.VideoSize == 1080)
                 {
-                    AddToDownloadList(new VideoPost(videoUrl.Replace("/480", "") + ".mp4", post.id, post.unix_timestamp.ToString()));
-                    //AddToJsonQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(videoUrl.Split('/').Last(), ".json"), post));
+                    AddToDownloadList(new VideoPost("https://vtt.tumblr.com/" + videoUrl + ".mp4", post.id, post.unix_timestamp.ToString()));
+                    //AddToJsonQueue(new TumblrCrawlerXmlData(videoUrl + ".json", post));
 
                 }
                 else if (shellService.Settings.VideoSize == 480)
                 {
                     AddToDownloadList(new VideoPost(
-                        "https://vtt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + "_480.mp4",
+                        "https://vtt.tumblr.com/" + videoUrl + "_480.mp4",
                         post.id, post.unix_timestamp.ToString()));
-                    //AddToJsonQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(videoUrl.Split('/').Last(), ".json"), post));
+                    //AddToJsonQueue(new TumblrCrawlerXmlData(videoUrl + "_480.json", post));
                 }
             }
         }
@@ -837,25 +837,22 @@ namespace TumblThree.Applications.Crawler
 
         private void AddVideoUrl(Post post)
         {
-            string videoUrl = Regex.Match(post.video_player, "<source src=\"([\\S]*)\"").Groups[1].ToString();
+            string videoUrl = Regex.Match(post.video_player, "\"url\":\"([\\S]*/(tumblr_[\\S]*)_filmstrip[\\S]*)\"").Groups[2].ToString();
 
             if (shellService.Settings.VideoSize == 1080)
             {
-
                 AddToDownloadList(new VideoPost(
-                    "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + ".mp4",
+                    "https://vtt.tumblr.com/" + videoUrl + ".mp4",
                     post.id, post.unix_timestamp.ToString()));
-                AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(videoUrl.Split('/').Last(), ".json"), post));
+                AddToJsonQueue(new TumblrCrawlerData<Post>(videoUrl + ".json", post));
 
             }
             else if (shellService.Settings.VideoSize == 480)
             {
-
                 AddToDownloadList(new VideoPost(
-                    "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + "_480.mp4",
+                    "https://vtt.tumblr.com/" + videoUrl + "_480.mp4",
                     post.id, post.unix_timestamp.ToString()));
-                AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(videoUrl.Split('/').Last(), ".json"), post));
-
+                AddToJsonQueue(new TumblrCrawlerData<Post>(videoUrl + "_480.json", post));
             }
         }
 
