@@ -27,7 +27,7 @@ namespace TumblThree.Applications.Services
 
         private HttpWebRequest CreateStubReqeust(string url, string referer = "", Dictionary<string, string> headers = null)
         {
-            var request = (HttpWebRequest)WebRequest.Create(url);
+            var request = (HttpWebRequest)WebRequest.Create(HttpUtility.UrlDecode(url));
             request.ProtocolVersion = HttpVersion.Version11;
             request.UserAgent = settings.UserAgent;
             request.AllowAutoRedirect = true;

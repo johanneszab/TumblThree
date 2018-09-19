@@ -19,7 +19,7 @@ namespace TumblThree.Applications.Downloader
 {
     [Export(typeof(IDownloader))]
     [ExportMetadata("BlogType", typeof(TumblrBlog))]
-    public class TumblrBlogCrawler : TumblrAbstractCrawler, ICrawler
+    public class TumblrBlogCrawler : AbstractTumblrCrawler, ICrawler
     {
         private readonly IDownloader downloader;
         private readonly PauseToken pt;

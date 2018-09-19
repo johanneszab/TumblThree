@@ -69,7 +69,7 @@
     <Compile Include="Controllers\ManagerController.cs" />
     <Compile Include="Controllers\ModuleController.cs" />
     <Compile Include="Controllers\QueueController.cs" />
-    <Compile Include="Crawler\TumblrAbstractCrawler.cs" />
+    <Compile Include="Crawler\AbstractTumblrCrawler.cs" />
     <Compile Include="DataModels\TumblrApiJson.cs" />
     <Compile Include="Parser\CatBoxParser.cs" />
     <Compile Include="Parser\GfycatParser.cs" />
