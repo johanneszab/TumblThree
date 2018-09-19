@@ -208,21 +208,21 @@ namespace TumblThree.Applications.Crawler
         {
             if (blog.DownloadVideo)
             {
-                var regex = new Regex("src=\"(http[A-Za-z0-9_/:.]*.com/video_file/[A-Za-z0-9_/:.]*)\"");
+                var regex = new Regex("src=\"(http[A-Za-z0-9_/:.]*video_file[\\S]*/(tumblr_[\\w]*))[0-9/]*\"");
                 foreach (Match match in regex.Matches(document))
                 {
-                    string videoUrl = match.Groups[1].Value;
+                    string videoUrl = match.Groups[2].Value;
                     // TODO: postId
                     if (shellService.Settings.VideoSize == 1080)
                     {
                         // TODO: postID
-                        AddToDownloadList(new VideoPost(videoUrl.Replace("/480", "") + ".mp4", Guid.NewGuid().ToString("N")));
+                        AddToDownloadList(new VideoPost("https://vtt.tumblr.com/" + videoUrl + ".mp4", Guid.NewGuid().ToString("N")));
                     }
                     else if (shellService.Settings.VideoSize == 480)
                     {
                         // TODO: postID
                         AddToDownloadList(new VideoPost(
-                            "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + "_480.mp4",
+                            "https://vtt.tumblr.com/" + videoUrl + "_480.mp4",
                             Guid.NewGuid().ToString("N")));
                     }
                 }
