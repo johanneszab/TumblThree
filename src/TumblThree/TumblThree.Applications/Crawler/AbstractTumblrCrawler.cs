@@ -13,9 +13,9 @@ using TumblThree.Domain.Models;
 
 namespace TumblThree.Applications.Crawler
 {
-    public abstract class TumblrAbstractCrawler : AbstractCrawler
+    public abstract class AbstractTumblrCrawler : AbstractCrawler
     {
-        protected TumblrAbstractCrawler(IShellService shellService, ICrawlerService crawlerService,
+        protected AbstractTumblrCrawler(IShellService shellService, ICrawlerService crawlerService,
             CancellationToken ct, IProgress<DownloadProgress> progress, IWebRequestFactory webRequestFactory,
             ISharedCookieService cookieService, IPostQueue<TumblrPost> postQueue, IBlog blog) 
             : base(shellService, crawlerService, ct, progress, webRequestFactory, cookieService, postQueue, blog)
@@ -29,7 +29,7 @@ namespace TumblThree.Applications.Crawler
             string password = blog.Password;
             string encoded = System.Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(username + ":" + password));
             headers.Add("Authorization", "Basic " + encoded);
-            string[] cookieHosts = { "https://www.tumblr.com/", "https://" + blog.Name.Replace("+", "-") + ".tumblr.com" };
+            string[] cookieHosts = { "https://www.tumblr.com/" };
             return await RequestDataAsync(url, headers, cookieHosts);
         }
 
