@@ -23,7 +23,6 @@ namespace TumblThree.Applications.Downloader
     {
         private readonly IDownloader downloader;
         private readonly PauseToken pt;
-        private string passwordAuthentication = string.Empty;
 
         public TumblrBlogCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
             IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory,
