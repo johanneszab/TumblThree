@@ -43,8 +43,10 @@ namespace TumblThree.Applications.Services
 
             request.ReadWriteTimeout = settings.TimeOut * 1000;
             request.Timeout = settings.TimeOut * 1000;
-            request.CookieContainer = new CookieContainer();
-            request.CookieContainer.PerDomainCapacity = 100;
+            request.CookieContainer = new CookieContainer
+            {
+                PerDomainCapacity = 100
+            };
             ServicePointManager.DefaultConnectionLimit = 400;
             request = SetWebRequestProxy(request, settings);
             request.Referer = referer;

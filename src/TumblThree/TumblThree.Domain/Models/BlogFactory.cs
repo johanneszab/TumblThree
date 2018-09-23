@@ -6,7 +6,7 @@ namespace TumblThree.Domain.Models
     [Export(typeof(IBlogFactory))]
     public class BlogFactory : IBlogFactory
     {
-        IUrlValidator urlValidator;
+        private IUrlValidator urlValidator;
 
         [ImportingConstructor]
         internal BlogFactory(IUrlValidator urlValidator)

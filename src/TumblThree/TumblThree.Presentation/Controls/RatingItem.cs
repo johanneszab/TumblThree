@@ -30,7 +30,7 @@ namespace TumblThree.Presentation.Controls
 
         internal double Value
         {
-            get { return value; }
+            get => value;
             set
             {
                 if (this.value != value)
@@ -43,7 +43,7 @@ namespace TumblThree.Presentation.Controls
 
         internal double MouseOverValue
         {
-            get { return mouseOverValue; }
+            get => mouseOverValue;
             set
             {
                 if (mouseOverValue != value)
@@ -54,15 +54,9 @@ namespace TumblThree.Presentation.Controls
             }
         }
 
-        public bool IsMouseOverRating
-        {
-            get { return (bool)GetValue(IsMouseOverRatingProperty); }
-        }
+        public bool IsMouseOverRating => (bool)GetValue(IsMouseOverRatingProperty);
 
-        public RatingItemState RatingItemState
-        {
-            get { return (RatingItemState)GetValue(RatingItemStateProperty); }
-        }
+        public RatingItemState RatingItemState => (RatingItemState)GetValue(RatingItemStateProperty);
 
         private void UpdateRatingItemState()
         {

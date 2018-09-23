@@ -8,17 +8,16 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-
 using TumblThree.Applications.DataModels;
+using TumblThree.Applications.DataModels.TumblrCrawlerData;
+using TumblThree.Applications.DataModels.TumblrPosts;
+using TumblThree.Applications.DataModels.TumblrSvcJson;
 using TumblThree.Applications.Downloader;
+using TumblThree.Applications.Parser;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain;
 using TumblThree.Domain.Models;
-using TumblThree.Applications.Parser;
-using TumblThree.Applications.DataModels.TumblrPosts;
-using TumblThree.Applications.DataModels.TumblrCrawlerData;
-using TumblThree.Applications.DataModels.TumblrSvcJson;
 
 namespace TumblThree.Applications.Crawler
 {
@@ -40,7 +39,7 @@ namespace TumblThree.Applications.Crawler
         private readonly IPostQueue<TumblrCrawlerData<Post>> jsonQueue;
         private readonly ICrawlerDataDownloader crawlerDataDownloader;
 
-        private string passwordAuthentication = string.Empty;
+        private readonly string passwordAuthentication = string.Empty;
         private string tumblrKey = string.Empty;
 
         public TumblrHiddenCrawler(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress,
@@ -133,7 +132,7 @@ namespace TumblThree.Applications.Crawler
             {
                 var resp = (HttpWebResponse)webException.Response;
                 if (resp.StatusCode == HttpStatusCode.ServiceUnavailable)
-                { 
+                {
                     Logger.Error("TumblrHiddenCrawler:GetUrlsAsync: {0}", "User not logged in");
                     shellService.ShowError(new Exception("User not logged in"), Resources.NotLoggedIn, blog.Name);
                 }

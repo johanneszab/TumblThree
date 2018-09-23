@@ -3,10 +3,10 @@ using TumblThree.Domain.Models;
 
 namespace TumblThree.Applications.Crawler
 {
-	public interface IMixtapeParser
-	{
-		Regex GetMixtapeUrlRegex();
+    public interface IMixtapeParser
+    {
+        Regex GetMixtapeUrlRegex();
 
-		string CreateMixtapeUrl(string mixtapeId, string detectedUrl, MixtapeTypes mixtapeType);
-	}
+        string CreateMixtapeUrl(string mixtapeId, string detectedUrl, MixtapeTypes mixtapeType);
+    }
 }

@@ -16,10 +16,11 @@ namespace TumblThree.Applications.ViewModels
     [Export]
     public class AboutViewModel : ViewModel<IAboutView>
     {
-        private readonly IApplicationUpdateService applicationUpdateService;
-        private readonly DelegateCommand showWebsiteCommand;
         private readonly AsyncDelegateCommand checkForUpdatesCommand;
         private readonly DelegateCommand downloadCommand;
+        private readonly DelegateCommand showWebsiteCommand;
+
+        private readonly IApplicationUpdateService applicationUpdateService;
         private bool isCheckInProgress;
         private bool isLatestVersionAvailable;
         private string updateText;
@@ -34,62 +35,38 @@ namespace TumblThree.Applications.ViewModels
             this.applicationUpdateService = applicationUpdateService;
         }
 
-        public ICommand ShowWebsiteCommand
-        {
-            get { return showWebsiteCommand; }
-        }
+        public ICommand ShowWebsiteCommand => showWebsiteCommand;
 
-        public ICommand CheckForUpdatesCommand
-        {
-            get { return checkForUpdatesCommand; }
-        }
+        public ICommand CheckForUpdatesCommand => checkForUpdatesCommand;
 
-        public ICommand DownloadCommand
-        {
-            get { return downloadCommand; }
-        }
+        public ICommand DownloadCommand => downloadCommand;
 
-        public string ProductName
-        {
-            get { return ApplicationInfo.ProductName; }
-        }
+        public string ProductName => ApplicationInfo.ProductName;
 
-        public string Version
-        {
-            get { return ApplicationInfo.Version; }
-        }
+        public string Version => ApplicationInfo.Version;
 
-        public string OSVersion
-        {
-            get { return Environment.OSVersion.ToString(); }
-        }
+        public string OSVersion => Environment.OSVersion.ToString();
 
-        public string NetVersion
-        {
-            get { return Environment.Version.ToString(); }
-        }
+        public string NetVersion => Environment.Version.ToString();
 
-        public bool Is64BitProcess
-        {
-            get { return Environment.Is64BitProcess; }
-        }
+        public bool Is64BitProcess => Environment.Is64BitProcess;
 
         public bool IsCheckInProgress
         {
-            get { return isCheckInProgress; }
-            set { SetProperty(ref isCheckInProgress, value); }
+            get => isCheckInProgress;
+            set => SetProperty(ref isCheckInProgress, value);
         }
 
         public bool IsLatestVersionAvailable
         {
-            get { return isLatestVersionAvailable; }
-            set { SetProperty(ref isLatestVersionAvailable, value); }
+            get => isLatestVersionAvailable;
+            set => SetProperty(ref isLatestVersionAvailable, value);
         }
 
         public string UpdateText
         {
-            get { return updateText; }
-            set { SetProperty(ref updateText, value); }
+            get => updateText;
+            set => SetProperty(ref updateText, value);
         }
 
         public void ShowDialog(object owner)

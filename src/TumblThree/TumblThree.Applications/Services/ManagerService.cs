@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Waf.Foundation;
@@ -23,15 +22,9 @@ namespace TumblThree.Applications.Services
             databases = new List<IFiles>();
         }
 
-        public ObservableCollection<IBlog> BlogFiles
-        {
-            get { return blogFiles; }
-        }
+        public ObservableCollection<IBlog> BlogFiles => blogFiles;
 
-        public IEnumerable<IFiles> Databases
-        {
-            get { return databases; }
-        }
+        public IEnumerable<IFiles> Databases => databases;
 
         public bool CheckIfFileExistsInDB(string url)
         {

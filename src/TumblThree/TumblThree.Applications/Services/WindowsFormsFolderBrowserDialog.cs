@@ -25,16 +25,16 @@ namespace TumblThree.Applications.Services
 
         public string Description
         {
-            get { return _description ?? string.Empty; }
-            set { _description = value; }
+            get => _description ?? string.Empty;
+            set => _description = value;
         }
 
         public System.Environment.SpecialFolder RootFolder { get; set; }
 
         public string SelectedPath
         {
-            get { return _selectedPath ?? string.Empty; }
-            set { _selectedPath = value; }
+            get => _selectedPath ?? string.Empty;
+            set => _selectedPath = value;
         }
 
         public bool ShowNewFolderButton { get; set; }
@@ -62,11 +62,13 @@ namespace TumblThree.Applications.Services
 
         private FolderBrowserDialog CreateDialog()
         {
-            var dialog = new FolderBrowserDialog();
-            dialog.Description = Description;
-            dialog.RootFolder = RootFolder;
-            dialog.SelectedPath = SelectedPath;
-            dialog.ShowNewFolderButton = ShowNewFolderButton;
+            var dialog = new FolderBrowserDialog
+            {
+                Description = Description,
+                RootFolder = RootFolder,
+                SelectedPath = SelectedPath,
+                ShowNewFolderButton = ShowNewFolderButton
+            };
             return dialog;
         }
     }

@@ -25,10 +25,7 @@ namespace TumblThree.Presentation.DesignData
 
         public ICommand AddBlogToQueueCommand { get; set; }
 
-        public IReadOnlyObservableList<QueueListItem> ActiveItems
-        {
-            get { return readonlyActiveItems; }
-        }
+        public IReadOnlyObservableList<QueueListItem> ActiveItems => readonlyActiveItems;
 
         public void AddActiveItems(QueueListItem itemToAdd)
         {

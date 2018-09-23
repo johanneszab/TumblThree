@@ -29,7 +29,7 @@ namespace TumblThree.Applications.Downloader
         protected readonly CancellationToken ct;
         protected readonly PauseToken pt;
         protected readonly FileDownloader fileDownloader;
-        string[] suffixes = { ".jpg", ".jpeg", ".png" };
+        private string[] suffixes = { ".jpg", ".jpeg", ".png" };
 
         protected AbstractDownloader(IShellService shellService, IManagerService managerService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, IPostQueue<TumblrPost> postQueue, FileDownloader fileDownloader, ICrawlerService crawlerService = null, IBlog blog = null, IFiles files = null)
         {
@@ -162,8 +162,9 @@ namespace TumblThree.Applications.Downloader
                 trackedTasks.Add(new Func<Task>(async () =>
                 {
                     try { await DownloadPostAsync(downloadItem); }
-                    catch {}
-                    finally {
+                    catch { }
+                    finally
+                    {
                         concurrentConnectionsSemaphore.Release();
                         if (downloadItem.GetType() == typeof(VideoPost))
                             concurrentVideoConnectionsSemaphore.Release();
@@ -191,7 +192,7 @@ namespace TumblThree.Applications.Downloader
             else
             {
                 DownloadTextPost(downloadItem);
-            }            
+            }
         }
 
         protected virtual async Task<bool> DownloadBinaryPost(TumblrPost downloadItem)

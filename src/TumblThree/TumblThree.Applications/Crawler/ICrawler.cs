@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-
-using TumblThree.Applications.DataModels;
+﻿using System.Threading.Tasks;
 
 namespace TumblThree.Applications.Crawler
 {

@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.IO;
 using System.Net;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace TumblThree.Applications.Services
 {
     [Export(typeof(IConfirmTumblrPrivacyConsent)), Export]
-    class ConfirmTumblrPrivacyConsent : IConfirmTumblrPrivacyConsent
+    internal class ConfirmTumblrPrivacyConsent : IConfirmTumblrPrivacyConsent
     {
         private readonly IWebRequestFactory webRequestFactory;
         private readonly IShellService shellService;

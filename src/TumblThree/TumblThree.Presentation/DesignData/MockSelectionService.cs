@@ -16,10 +16,7 @@ namespace TumblThree.Presentation.DesignData
             selectedBlogFiles = new ObservableRangeCollection<IBlog>();
         }
 
-        public IList<IBlog> SelectedBlogFiles
-        {
-            get { return selectedBlogFiles; }
-        }
+        public IList<IBlog> SelectedBlogFiles => selectedBlogFiles;
 
         public void SetSelectedBlogFiles(IEnumerable<IBlog> blogFilesToAdd)
         {
