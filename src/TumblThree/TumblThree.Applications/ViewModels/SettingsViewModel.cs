@@ -20,21 +20,22 @@ namespace TumblThree.Applications.ViewModels
     [Export]
     public class SettingsViewModel : ViewModel<ISettingsView>
     {
-        private readonly IFolderBrowserDialog folderBrowserDialog;
-        private readonly IFileDialogService fileDialogService;
         private readonly DelegateCommand authenticateCommand;
+        private readonly DelegateCommand browseDownloadLocationCommand;
+        private readonly DelegateCommand browseExportLocationCommand;
+        private readonly DelegateCommand enableAutoDownloadCommand;
+        private readonly DelegateCommand exportCommand;
+        private readonly DelegateCommand saveCommand;
         private readonly AsyncDelegateCommand tumblrLoginCommand;
         private readonly AsyncDelegateCommand tumblrLogoutCommand;
         private readonly AsyncDelegateCommand tumblrSubmitTFACommand;
-        private readonly ExportFactory<AuthenticateViewModel> authenticateViewModelFactory;
-        private readonly DelegateCommand browseDownloadLocationCommand;
-        private readonly DelegateCommand enableAutoDownloadCommand;
-        private readonly DelegateCommand exportCommand;
-        private readonly DelegateCommand browseExportLocationCommand;
-        private readonly DelegateCommand saveCommand;
-        private readonly FileType bloglistExportFileType;
 
+        private readonly IFolderBrowserDialog folderBrowserDialog;
+        private readonly IFileDialogService fileDialogService;
+        private readonly ExportFactory<AuthenticateViewModel> authenticateViewModelFactory;
+        private readonly FileType bloglistExportFileType;
         private readonly AppSettings settings;
+
         private string apiKey;
         private bool autoDownload;
         private long bandwidth;
@@ -120,7 +121,7 @@ namespace TumblThree.Applications.ViewModels
 
         [ImportingConstructor]
         public SettingsViewModel(ISettingsView view, IShellService shellService, ICrawlerService crawlerService,
-            IManagerService managerService, ILoginService loginService, IFolderBrowserDialog folderBrowserDialog, IFileDialogService fileDialogService, 
+            IManagerService managerService, ILoginService loginService, IFolderBrowserDialog folderBrowserDialog, IFileDialogService fileDialogService,
             ExportFactory<AuthenticateViewModel> authenticateViewModelFactory)
             : base(view)
         {
@@ -156,541 +157,514 @@ namespace TumblThree.Applications.ViewModels
 
         public ILoginService LoginService { get; }
 
-        public ICommand BrowseDownloadLocationCommand
-        {
-            get { return browseDownloadLocationCommand; }
-        }
+        public ICommand BrowseDownloadLocationCommand => browseDownloadLocationCommand;
 
-        public ICommand AuthenticateCommand
-        {
-            get { return authenticateCommand; }
-        }
+        public ICommand AuthenticateCommand => authenticateCommand;
 
-        public ICommand TumblrLoginCommand
-        {
-            get { return tumblrLoginCommand; }
-        }
+        public ICommand TumblrLoginCommand => tumblrLoginCommand;
 
-        public ICommand TumblrLogoutCommand
-        {
-            get { return tumblrLogoutCommand; }
-        }
+        public ICommand TumblrLogoutCommand => tumblrLogoutCommand;
 
-        public ICommand TumblrSubmitTFACommand
-        {
-            get { return tumblrSubmitTFACommand; }
-        }
+        public ICommand TumblrSubmitTFACommand => tumblrSubmitTFACommand;
 
-        public ICommand SaveCommand
-        {
-            get { return saveCommand; }
-        }
+        public ICommand SaveCommand => saveCommand;
 
-        public ICommand EnableAutoDownloadCommand
-        {
-            get { return enableAutoDownloadCommand; }
-        }
+        public ICommand EnableAutoDownloadCommand => enableAutoDownloadCommand;
 
-        public ICommand ExportCommand
-        {
-            get { return exportCommand; }
-        }
+        public ICommand ExportCommand => exportCommand;
 
-        public ICommand BrowseExportLocationCommand
-        {
-            get { return browseExportLocationCommand; }
-        }
+        public ICommand BrowseExportLocationCommand => browseExportLocationCommand;
 
         public string OAuthToken
         {
-            get { return oauthToken; }
-            set { SetProperty(ref oauthToken, value); }
+            get => oauthToken;
+            set => SetProperty(ref oauthToken, value);
         }
 
         public string OAuthTokenSecret
         {
-            get { return oauthTokenSecret; }
-            set { SetProperty(ref oauthTokenSecret, value); }
+            get => oauthTokenSecret;
+            set => SetProperty(ref oauthTokenSecret, value);
         }
 
         public string ApiKey
         {
-            get { return apiKey; }
-            set { SetProperty(ref apiKey, value); }
+            get => apiKey;
+            set => SetProperty(ref apiKey, value);
         }
 
         public string SecretKey
         {
-            get { return secretKey; }
-            set { SetProperty(ref secretKey, value); }
+            get => secretKey;
+            set => SetProperty(ref secretKey, value);
         }
 
         public string OAuthCallbackUrl
         {
-            get { return oauthCallbackUrl; }
-            set { SetProperty(ref oauthCallbackUrl, value); }
+            get => oauthCallbackUrl;
+            set => SetProperty(ref oauthCallbackUrl, value);
         }
 
         public string DownloadLocation
         {
-            get { return downloadLocation; }
-            set { SetProperty(ref downloadLocation, value); }
+            get => downloadLocation;
+            set => SetProperty(ref downloadLocation, value);
         }
 
         public string ExportLocation
         {
-            get { return exportLocation; }
-            set { SetProperty(ref exportLocation, value); }
+            get => exportLocation;
+            set => SetProperty(ref exportLocation, value);
         }
 
         public int ConcurrentConnections
         {
-            get { return concurrentConnections; }
-            set { SetProperty(ref concurrentConnections, value); }
+            get => concurrentConnections;
+            set => SetProperty(ref concurrentConnections, value);
         }
 
         public int ConcurrentVideoConnections
         {
-            get { return concurrentVideoConnections; }
-            set { SetProperty(ref concurrentVideoConnections, value); }
+            get => concurrentVideoConnections;
+            set => SetProperty(ref concurrentVideoConnections, value);
         }
 
         public int ConcurrentBlogs
         {
-            get { return concurrentBlogs; }
-            set { SetProperty(ref concurrentBlogs, value); }
+            get => concurrentBlogs;
+            set => SetProperty(ref concurrentBlogs, value);
         }
 
         public int ConcurrentScans
         {
-            get { return concurrentScans; }
-            set { SetProperty(ref concurrentScans, value); }
+            get => concurrentScans;
+            set => SetProperty(ref concurrentScans, value);
         }
 
         public int TimeOut
         {
-            get { return timeOut; }
-            set { SetProperty(ref timeOut, value); }
+            get => timeOut;
+            set => SetProperty(ref timeOut, value);
         }
 
         public bool LimitConnections
         {
-            get { return limitConnections; }
-            set { SetProperty(ref limitConnections, value); }
+            get => limitConnections;
+            set => SetProperty(ref limitConnections, value);
         }
 
         public int MaxConnections
         {
-            get { return maxConnections; }
-            set { SetProperty(ref maxConnections, value); }
+            get => maxConnections;
+            set => SetProperty(ref maxConnections, value);
         }
 
         public int ConnectionTimeInterval
         {
-            get { return connectionTimeInterval; }
-            set { SetProperty(ref connectionTimeInterval, value); }
+            get => connectionTimeInterval;
+            set => SetProperty(ref connectionTimeInterval, value);
         }
 
         public long Bandwidth
         {
-            get { return bandwidth; }
-            set { SetProperty(ref bandwidth, value); }
+            get => bandwidth;
+            set => SetProperty(ref bandwidth, value);
         }
 
         public bool LimitScanBandwidth
         {
-            get { return limitScanBandwidth; }
-            set { SetProperty(ref limitScanBandwidth, value); }
+            get => limitScanBandwidth;
+            set => SetProperty(ref limitScanBandwidth, value);
         }
 
         public string ImageSize
         {
-            get { return imageSize; }
-            set { SetProperty(ref imageSize, value); }
+            get => imageSize;
+            set => SetProperty(ref imageSize, value);
         }
 
         public int VideoSize
         {
-            get { return videoSize; }
-            set { SetProperty(ref videoSize, value); }
+            get => videoSize;
+            set => SetProperty(ref videoSize, value);
         }
 
         public string BlogType
         {
-            get { return blogType; }
-            set { SetProperty(ref blogType, value); }
+            get => blogType;
+            set => SetProperty(ref blogType, value);
         }
 
         public bool CheckClipboard
         {
-            get { return checkClipboard; }
-            set { SetProperty(ref checkClipboard, value); }
+            get => checkClipboard;
+            set => SetProperty(ref checkClipboard, value);
         }
 
         public bool DisplayConfirmationDialog
         {
-            get { return displayConfirmationDialog; }
-            set { SetProperty(ref displayConfirmationDialog, value); }
+            get => displayConfirmationDialog;
+            set => SetProperty(ref displayConfirmationDialog, value);
         }
 
         public bool ShowPicturePreview
         {
-            get { return showPicturePreview; }
-            set { SetProperty(ref showPicturePreview, value); }
+            get => showPicturePreview;
+            set => SetProperty(ref showPicturePreview, value);
         }
 
         public bool DeleteOnlyIndex
         {
-            get { return deleteOnlyIndex; }
-            set { SetProperty(ref deleteOnlyIndex, value); }
+            get => deleteOnlyIndex;
+            set => SetProperty(ref deleteOnlyIndex, value);
         }
 
         public bool CheckOnlineStatusOnStartup
         {
-            get { return checkOnlineStatusOnStartup; }
-            set { SetProperty(ref checkOnlineStatusOnStartup, value); }
+            get => checkOnlineStatusOnStartup;
+            set => SetProperty(ref checkOnlineStatusOnStartup, value);
         }
 
         public bool SkipGif
         {
-            get { return skipGif; }
-            set { SetProperty(ref skipGif, value); }
+            get => skipGif;
+            set => SetProperty(ref skipGif, value);
         }
 
         public bool EnablePreview
         {
-            get { return enablePreview; }
-            set { SetProperty(ref enablePreview, value); }
+            get => enablePreview;
+            set => SetProperty(ref enablePreview, value);
         }
 
         public bool AutoDownload
         {
-            get { return autoDownload; }
-            set { SetProperty(ref autoDownload, value); }
+            get => autoDownload;
+            set => SetProperty(ref autoDownload, value);
         }
 
         public bool RemoveIndexAfterCrawl
         {
-            get { return removeIndexAfterCrawl; }
-            set { SetProperty(ref removeIndexAfterCrawl, value); }
+            get => removeIndexAfterCrawl;
+            set => SetProperty(ref removeIndexAfterCrawl, value);
         }
 
         public bool ForceSize
         {
-            get { return forceSize; }
-            set { SetProperty(ref forceSize, value); }
+            get => forceSize;
+            set => SetProperty(ref forceSize, value);
         }
 
         public bool ForceRescan
         {
-            get { return forceRescan; }
-            set { SetProperty(ref forceRescan, value); }
+            get => forceRescan;
+            set => SetProperty(ref forceRescan, value);
         }
 
         public bool CheckDirectoryForFiles
         {
-            get { return checkDirectoryForFiles; }
-            set { SetProperty(ref checkDirectoryForFiles, value); }
+            get => checkDirectoryForFiles;
+            set => SetProperty(ref checkDirectoryForFiles, value);
         }
 
         public bool DownloadUrlList
         {
-            get { return downloadUrlList; }
-            set { SetProperty(ref downloadUrlList, value); }
+            get => downloadUrlList;
+            set => SetProperty(ref downloadUrlList, value);
         }
 
         public bool PortableMode
         {
-            get { return portableMode; }
-            set { SetProperty(ref portableMode, value); }
+            get => portableMode;
+            set => SetProperty(ref portableMode, value);
         }
 
         public bool LoadAllDatabases
         {
-            get { return loadAllDatabases; }
-            set { SetProperty(ref loadAllDatabases, value); }
+            get => loadAllDatabases;
+            set => SetProperty(ref loadAllDatabases, value);
         }
 
         public string ProxyHost
         {
-            get { return proxyHost; }
-            set { SetProperty(ref proxyHost, value); }
+            get => proxyHost;
+            set => SetProperty(ref proxyHost, value);
         }
 
         public string ProxyPort
         {
-            get { return proxyPort; }
-            set { SetProperty(ref proxyPort, value); }
+            get => proxyPort;
+            set => SetProperty(ref proxyPort, value);
         }
 
         public string ProxyUsername
         {
-            get { return proxyUsername; }
-            set { SetProperty(ref proxyUsername, value); }
+            get => proxyUsername;
+            set => SetProperty(ref proxyUsername, value);
         }
 
         public string ProxyPassword
         {
-            get { return proxyPassword; }
-            set { SetProperty(ref proxyPassword, value); }
+            get => proxyPassword;
+            set => SetProperty(ref proxyPassword, value);
         }
 
         public bool DownloadImages
         {
-            get { return downloadImages; }
-            set { SetProperty(ref downloadImages, value); }
+            get => downloadImages;
+            set => SetProperty(ref downloadImages, value);
         }
 
         public bool DownloadVideos
         {
-            get { return downloadVideos; }
-            set { SetProperty(ref downloadVideos, value); }
+            get => downloadVideos;
+            set => SetProperty(ref downloadVideos, value);
         }
 
         public bool DownloadAudios
         {
-            get { return downloadAudios; }
-            set { SetProperty(ref downloadAudios, value); }
+            get => downloadAudios;
+            set => SetProperty(ref downloadAudios, value);
         }
 
         public bool DownloadTexts
         {
-            get { return downloadTexts; }
-            set { SetProperty(ref downloadTexts, value); }
+            get => downloadTexts;
+            set => SetProperty(ref downloadTexts, value);
         }
 
         public bool DownloadAnswers
         {
-            get { return downloadAnswers; }
-            set { SetProperty(ref downloadAnswers, value); }
+            get => downloadAnswers;
+            set => SetProperty(ref downloadAnswers, value);
         }
 
         public bool DownloadQuotes
         {
-            get { return downloadQuotes; }
-            set { SetProperty(ref downloadQuotes, value); }
+            get => downloadQuotes;
+            set => SetProperty(ref downloadQuotes, value);
         }
 
         public bool DownloadConversations
         {
-            get { return downloadConversations; }
-            set { SetProperty(ref downloadConversations, value); }
+            get => downloadConversations;
+            set => SetProperty(ref downloadConversations, value);
         }
 
         public bool DownloadLinks
         {
-            get { return downloadLinks; }
-            set { SetProperty(ref downloadLinks, value); }
+            get => downloadLinks;
+            set => SetProperty(ref downloadLinks, value);
         }
 
         public bool CreateImageMeta
         {
-            get { return createImageMeta; }
-            set { SetProperty(ref createImageMeta, value); }
+            get => createImageMeta;
+            set => SetProperty(ref createImageMeta, value);
         }
 
         public bool CreateVideoMeta
         {
-            get { return createVideoMeta; }
-            set { SetProperty(ref createVideoMeta, value); }
+            get => createVideoMeta;
+            set => SetProperty(ref createVideoMeta, value);
         }
 
         public bool CreateAudioMeta
         {
-            get { return createAudioMeta; }
-            set { SetProperty(ref createAudioMeta, value); }
+            get => createAudioMeta;
+            set => SetProperty(ref createAudioMeta, value);
         }
 
         public MetadataType MetadataFormat
         {
-            get { return metadataFormat; }
-            set { SetProperty(ref metadataFormat, value); }
+            get => metadataFormat;
+            set => SetProperty(ref metadataFormat, value);
         }
 
         public bool DumpCrawlerData
         {
-            get { return dumpCrawlerData; }
-            set { SetProperty(ref dumpCrawlerData, value); }
+            get => dumpCrawlerData;
+            set => SetProperty(ref dumpCrawlerData, value);
         }
 
         public string DownloadPages
         {
-            get { return downloadPages; }
-            set { SetProperty(ref downloadPages, value); }
+            get => downloadPages;
+            set => SetProperty(ref downloadPages, value);
         }
 
         public int PageSize
         {
-            get { return pageSize; }
-            set { SetProperty(ref pageSize, value); }
+            get => pageSize;
+            set => SetProperty(ref pageSize, value);
         }
 
         public string DownloadFrom
         {
-            get { return downloadFrom; }
-            set { SetProperty(ref downloadFrom, value); }
+            get => downloadFrom;
+            set => SetProperty(ref downloadFrom, value);
         }
 
         public string DownloadTo
         {
-            get { return downloadTo; }
-            set { SetProperty(ref downloadTo, value); }
+            get => downloadTo;
+            set => SetProperty(ref downloadTo, value);
         }
 
         public bool DownloadGfycat
         {
-            get { return downloadGfycat; }
-            set { SetProperty(ref downloadGfycat, value); }
+            get => downloadGfycat;
+            set => SetProperty(ref downloadGfycat, value);
         }
 
         public GfycatTypes GfycatType
         {
-            get { return gfycatType; }
-            set { SetProperty(ref gfycatType, value); }
+            get => gfycatType;
+            set => SetProperty(ref gfycatType, value);
         }
 
         public bool DownloadImgur
         {
-            get { return downloadImgur; }
-            set { SetProperty(ref downloadImgur, value); }
+            get => downloadImgur;
+            set => SetProperty(ref downloadImgur, value);
         }
 
         public bool DownloadWebmshare
         {
-            get { return downloadWebmshare; }
-            set { SetProperty(ref downloadWebmshare, value); }
+            get => downloadWebmshare;
+            set => SetProperty(ref downloadWebmshare, value);
         }
 
         public WebmshareTypes WebmshareType
         {
-            get { return webmshareType; }
-            set { SetProperty(ref webmshareType, value); }
+            get => webmshareType;
+            set => SetProperty(ref webmshareType, value);
         }
 
         public bool DownloadMixtape
         {
-            get { return downloadMixtape; }
-            set { SetProperty(ref downloadMixtape, value); }
+            get => downloadMixtape;
+            set => SetProperty(ref downloadMixtape, value);
         }
 
         public MixtapeTypes MixtapeType
         {
-            get { return mixtapeType; }
-            set { SetProperty(ref mixtapeType, value); }
+            get => mixtapeType;
+            set => SetProperty(ref mixtapeType, value);
         }
 
         public bool DownloadUguu
         {
-            get { return downloadUguu; }
-            set { SetProperty(ref downloadUguu, value); }
+            get => downloadUguu;
+            set => SetProperty(ref downloadUguu, value);
         }
 
         public UguuTypes UguuType
         {
-            get { return uguuType; }
-            set { SetProperty(ref uguuType, value); }
+            get => uguuType;
+            set => SetProperty(ref uguuType, value);
         }
 
         public bool DownloadSafeMoe
         {
-            get { return downloadSafeMoe; }
-            set { SetProperty(ref downloadSafeMoe, value); }
+            get => downloadSafeMoe;
+            set => SetProperty(ref downloadSafeMoe, value);
         }
 
         public SafeMoeTypes SafeMoeType
         {
-            get { return safeMoeType; }
-            set { SetProperty(ref safeMoeType, value); }
+            get => safeMoeType;
+            set => SetProperty(ref safeMoeType, value);
         }
 
         public bool DownloadLoliSafe
         {
-            get { return downloadLoliSafe; }
-            set { SetProperty(ref downloadLoliSafe, value); }
+            get => downloadLoliSafe;
+            set => SetProperty(ref downloadLoliSafe, value);
         }
 
         public LoliSafeTypes LoliSafeType
         {
-            get { return loliSafeType; }
-            set { SetProperty(ref loliSafeType, value); }
+            get => loliSafeType;
+            set => SetProperty(ref loliSafeType, value);
         }
 
         public bool DownloadCatBox
         {
-            get { return downloadCatBox; }
-            set { SetProperty(ref downloadCatBox, value); }
+            get => downloadCatBox;
+            set => SetProperty(ref downloadCatBox, value);
         }
 
         public CatBoxTypes CatBoxType
         {
-            get { return catBoxType; }
-            set { SetProperty(ref catBoxType, value); }
+            get => catBoxType;
+            set => SetProperty(ref catBoxType, value);
         }
 
         public string Tags
         {
-            get { return tags; }
-            set { SetProperty(ref tags, value); }
+            get => tags;
+            set => SetProperty(ref tags, value);
         }
 
         public bool DownloadRebloggedPosts
         {
-            get { return downloadRebloggedPosts; }
-            set { SetProperty(ref downloadRebloggedPosts, value); }
+            get => downloadRebloggedPosts;
+            set => SetProperty(ref downloadRebloggedPosts, value);
         }
 
         public string TimerInterval
         {
-            get { return timerInterval; }
-            set { SetProperty(ref timerInterval, value); }
+            get => timerInterval;
+            set => SetProperty(ref timerInterval, value);
         }
 
         public int SettingsTabIndex
         {
-            get { return settingsTabIndex; }
-            set { SetProperty(ref settingsTabIndex, value); }
+            get => settingsTabIndex;
+            set => SetProperty(ref settingsTabIndex, value);
         }
 
         public string UserAgent
         {
-            get { return userAgent; }
-            set { SetProperty(ref userAgent, value); }
+            get => userAgent;
+            set => SetProperty(ref userAgent, value);
         }
 
         public string TumblrUser
         {
-            get { return tumblrUser; }
-            set { SetProperty(ref tumblrUser, value); }
+            get => tumblrUser;
+            set => SetProperty(ref tumblrUser, value);
         }
 
         public string TumblrPassword
         {
-            get { return tumblrPassword; }
-            set { SetProperty(ref tumblrPassword, value); }
+            get => tumblrPassword;
+            set => SetProperty(ref tumblrPassword, value);
         }
 
         public bool TumblrLoggedIn
         {
-            get { return tumblrLoggedIn; }
-            set { SetProperty(ref tumblrLoggedIn, value); }
+            get => tumblrLoggedIn;
+            set => SetProperty(ref tumblrLoggedIn, value);
         }
 
         public bool TumblrTFADetected
         {
-            get { return tumblrTFADetected; }
-            set { SetProperty(ref tumblrTFADetected, value); }
+            get => tumblrTFADetected;
+            set => SetProperty(ref tumblrTFADetected, value);
         }
 
         public string TumblrTFAAuthCode
         {
-            get { return tumblrTFAAuthCode; }
-            set { SetProperty(ref tumblrTFAAuthCode, value); }
+            get => tumblrTFAAuthCode;
+            set => SetProperty(ref tumblrTFAAuthCode, value);
         }
 
         public string TumblrEmail
         {
-            get { return tumblrEmail; }
-            set { SetProperty(ref tumblrEmail, value); }
+            get => tumblrEmail;
+            set => SetProperty(ref tumblrEmail, value);
         }
 
         public void ShowDialog(object owner)
@@ -828,7 +802,7 @@ namespace TumblThree.Applications.ViewModels
         private async Task UpdateTumblrLogin()
         {
             TumblrEmail = await LoginService.GetTumblrUsername();
-            if (!String.IsNullOrEmpty(TumblrEmail))
+            if (!string.IsNullOrEmpty(TumblrEmail))
                 TumblrLoggedIn = true;
             else
                 TumblrLoggedIn = false;
@@ -1017,7 +991,7 @@ namespace TumblThree.Applications.ViewModels
 
         private void ApplySettings(bool downloadLocationChanged, bool loadAllDatabasesChanged)
         {
-            CrawlerService.Timeconstraint.SetRate(((double)MaxConnections / (double)ConnectionTimeInterval));
+            CrawlerService.Timeconstraint.SetRate((MaxConnections / (double)ConnectionTimeInterval));
 
             if (loadAllDatabasesChanged && downloadLocationChanged)
             {

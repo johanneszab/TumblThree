@@ -27,14 +27,8 @@ namespace TumblThree.Presentation.Services
                     ApplicationInfo.ProductName, "Settings"));
         }
 
-        public string ProfilePath
-        {
-            get { return profilePath.Value; }
-        }
+        public string ProfilePath => profilePath.Value;
 
-        public string AppSettingsPath
-        {
-            get { return appSettingsPath.Value; }
-        }
+        public string AppSettingsPath => appSettingsPath.Value;
     }
 }

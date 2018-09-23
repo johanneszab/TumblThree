@@ -29,6 +29,8 @@ namespace TumblThree.Applications.Controllers
             blogsToSave = new HashSet<IBlog>();
         }
 
+        public QueueManager QueueManager { get; set; }
+
         [ImportMany(typeof(IDetailsViewModel))]
         private IEnumerable<Lazy<IDetailsViewModel, ICrawlerData>> ViewModelFactoryLazy { get; set; }
 
@@ -44,15 +46,7 @@ namespace TumblThree.Applications.Controllers
             throw new ArgumentException("Website is not supported!", "blogType");
         }
 
-        public QueueManager QueueManager { get; set; }
-
-        private IDetailsViewModel DetailsViewModel
-        {
-            get
-            {
-                return detailsViewModel.Value;
-            }
-        }
+        private IDetailsViewModel DetailsViewModel => detailsViewModel.Value;
 
         public void SelectBlogFiles(IReadOnlyList<IBlog> blogFiles)
         {
@@ -196,7 +190,7 @@ namespace TumblThree.Applications.Controllers
             };
         }
 
-        private static T SetProperty<T>(IReadOnlyCollection<IBlog> blogs, string propertyName) where T: IConvertible
+        private static T SetProperty<T>(IReadOnlyCollection<IBlog> blogs, string propertyName) where T : IConvertible
         {
             PropertyInfo property = typeof(IBlog).GetProperty(propertyName);
             var value = (T)property.GetValue(blogs.FirstOrDefault());

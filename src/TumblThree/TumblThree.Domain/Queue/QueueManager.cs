@@ -22,21 +22,18 @@ namespace TumblThree.Domain.Queue
             items.CollectionChanged += ItemsCollectionChanged;
         }
 
-        public IReadOnlyObservableList<QueueListItem> Items
-        {
-            get { return readonlyItems; }
-        }
+        public IReadOnlyObservableList<QueueListItem> Items => readonlyItems;
 
         public int QueueTotalImageCount
         {
-            get { return queueTotalImageCount; }
-            private set { SetProperty(ref queueTotalImageCount, value); }
+            get => queueTotalImageCount;
+            private set => SetProperty(ref queueTotalImageCount, value);
         }
 
         public int QueueDownloadedImageCount
         {
-            get { return queueDownloadedImageCount; }
-            private set { SetProperty(ref queueDownloadedImageCount, value); }
+            get => queueDownloadedImageCount;
+            private set => SetProperty(ref queueDownloadedImageCount, value);
         }
 
         public void AddAndReplaceItems(IEnumerable<QueueListItem> itemsToAdd)

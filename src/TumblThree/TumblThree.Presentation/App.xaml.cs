@@ -134,7 +134,7 @@ namespace TumblThree.Presentation
             }
         }
 
-        void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        private void Application_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             var comException = e.Exception as System.Runtime.InteropServices.COMException;
 
@@ -144,7 +144,7 @@ namespace TumblThree.Presentation
             }
         }
 
-        static bool ValidateCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors)
+        private static bool ValidateCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors)
         {
             return true;
         }

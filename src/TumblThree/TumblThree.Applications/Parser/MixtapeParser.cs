@@ -23,10 +23,9 @@ namespace TumblThree.Applications.Crawler
                 case MixtapeTypes.Webm:
                     url = @"https://my.mixtape.moe/" + mixtapeId + ".webm";
                     break;
-	            case MixtapeTypes.Any:
-		            url = detectedUrl;
-
-		            break;
+                case MixtapeTypes.Any:
+                    url = detectedUrl;
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }

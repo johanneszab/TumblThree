@@ -7,21 +7,21 @@ namespace TumblThree.Domain.Attributes
 {
     public class LocalizedDescriptionAttribute : DescriptionAttribute
     {
-        ResourceManager _resourceManager;
-        string _resourceKey;
+        private ResourceManager resourceManager;
+        private readonly string resourceKey;
 
         public LocalizedDescriptionAttribute(string resourceKey, Type resourceType)
         {
-            _resourceManager = new ResourceManager(resourceType);
-            _resourceKey = resourceKey;
+            this.resourceManager = new ResourceManager(resourceType);
+            this.resourceKey = resourceKey;
         }
 
         public override string Description
         {
             get
             {
-                string description = _resourceManager.GetString(_resourceKey);
-                return string.IsNullOrWhiteSpace(description) ? string.Format("[[{0}]]", _resourceKey) : description;
+                string description = resourceManager.GetString(resourceKey);
+                return string.IsNullOrWhiteSpace(description) ? string.Format("[[{0}]]", resourceKey) : description;
             }
         }
     }

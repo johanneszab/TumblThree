@@ -19,10 +19,7 @@ namespace TumblThree.Presentation.DesignData
             blogFiles = new ObservableCollection<IBlog>(innerBlogFiles);
         }
 
-        public ObservableCollection<IBlog> BlogFiles
-        {
-            get { return blogFiles; }
-        }
+        public ObservableCollection<IBlog> BlogFiles => blogFiles;
 
         public IEnumerable<IFiles> Databases { get; }
 

@@ -173,10 +173,12 @@ namespace TumblThree.Presentation.Controls
             if (column == null)
                 return null;
 
-            MenuItem item = new MenuItem();
-            item.Tag = column;
+            MenuItem item = new MenuItem
+            {
+                Tag = column,
 
-            item.Header = GetColumnName(column);
+                Header = GetColumnName(column)
+            };
             if (string.IsNullOrEmpty(item.Header as string))
                 return null;
 
@@ -458,9 +460,9 @@ namespace TumblThree.Presentation.Controls
 
             foreach (DataGridColumn c in vis.Keys)
             {
-                if ((Visibility)vis[c] != Visibility.Visible)
+                if (vis[c] != Visibility.Visible)
                 {
-                    c.Visibility = (Visibility)vis[c];
+                    c.Visibility = vis[c];
                 }
             }
             dataGrid.UpdateLayout();
@@ -515,7 +517,7 @@ namespace TumblThree.Presentation.Controls
                     child = VisualTreeHelper.GetChild(parent, childIndex);
                     if (child is TReturn)
                     {
-                        return (TReturn)(object)child;
+                        return (TReturn)child;
                     }
                 }
                 return default(TReturn);
@@ -531,14 +533,14 @@ namespace TumblThree.Presentation.Controls
                     child = VisualTreeHelper.GetChild(parent, childIndex);
                     if (child is TReturn)
                     {
-                        return (TReturn)(object)child;
+                        return (TReturn)child;
                     }
                     else
                     {
                         child = CustomVisualTreeHelper<TReturn>.FindChildRecursive(child);
                         if (child is TReturn)
                         {
-                            return (TReturn)(object)child;
+                            return (TReturn)child;
                         }
                     }
                 }
@@ -556,7 +558,7 @@ namespace TumblThree.Presentation.Controls
                     child = VisualTreeHelper.GetChild(parent, childIndex);
                     if (child is TReturn)
                     {
-                        children[childIndex] = (TReturn)(object)child;
+                        children[childIndex] = (TReturn)child;
                     }
                 }
                 return children.ToArray();
@@ -573,7 +575,7 @@ namespace TumblThree.Presentation.Controls
                     child = VisualTreeHelper.GetChild(parent, childIndex);
                     if (child is TReturn)
                     {
-                        children.Add((TReturn)(object)child);
+                        children.Add((TReturn)child);
                     }
 
                     children.AddRange(CustomVisualTreeHelper<TReturn>.FindChildrenRecursive(child));

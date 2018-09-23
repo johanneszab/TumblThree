@@ -41,14 +41,14 @@ namespace TumblThree.Applications.Services
 
         public object SettingsView
         {
-            get { return settingsView; }
-            set { SetProperty(ref settingsView, value); }
+            get => settingsView;
+            set => SetProperty(ref settingsView, value);
         }
 
         public object AboutView
         {
-            get { return aboutView; }
-            set { SetProperty(ref aboutView, value); }
+            get => aboutView;
+            set => SetProperty(ref aboutView, value);
         }
 
         public Action<Exception, string> ShowErrorAction { get; set; }
@@ -61,44 +61,38 @@ namespace TumblThree.Applications.Services
 
         public AppSettings Settings { get; set; }
 
-        public object ShellView
-        {
-            get { return shellView.Value; }
-        }
+        public object ShellView => shellView.Value;
 
         public object ContentView
         {
-            get { return contentView; }
-            set { SetProperty(ref contentView, value); }
+            get => contentView;
+            set => SetProperty(ref contentView, value);
         }
 
         public object DetailsView
         {
-            get { return detailsView; }
-            set { SetProperty(ref detailsView, value); }
+            get => detailsView;
+            set => SetProperty(ref detailsView, value);
         }
 
         public object QueueView
         {
-            get { return queueView; }
-            set { SetProperty(ref queueView, value); }
+            get => queueView;
+            set => SetProperty(ref queueView, value);
         }
 
         public object CrawlerView
         {
-            get { return crawlerView; }
-            set { SetProperty(ref crawlerView, value); }
+            get => crawlerView;
+            set => SetProperty(ref crawlerView, value);
         }
 
-        public IReadOnlyCollection<Task> TasksToCompleteBeforeShutdown
-        {
-            get { return tasksToCompleteBeforeShutdown; }
-        }
+        public IReadOnlyCollection<Task> TasksToCompleteBeforeShutdown => tasksToCompleteBeforeShutdown;
 
         public bool IsApplicationBusy
         {
-            get { return isApplicationBusy; }
-            private set { SetProperty(ref isApplicationBusy, value); }
+            get => isApplicationBusy;
+            private set => SetProperty(ref isApplicationBusy, value);
         }
 
         public event CancelEventHandler Closing
@@ -149,14 +143,14 @@ namespace TumblThree.Applications.Services
 
         public ClipboardMonitor ClipboardMonitor
         {
-            get { return clipboardMonitor; }
-            set { SetProperty(ref clipboardMonitor, value); }
+            get => clipboardMonitor;
+            set => SetProperty(ref clipboardMonitor, value);
         }
 
         public OAuthManager OAuthManager
         {
-            get { return oauthManager; }
-            set { SetProperty(ref oauthManager, value); }
+            get => oauthManager;
+            set => SetProperty(ref oauthManager, value);
         }
 
         private event CancelEventHandler closing;

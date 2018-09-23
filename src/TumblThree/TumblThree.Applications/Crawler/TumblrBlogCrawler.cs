@@ -129,7 +129,7 @@ namespace TumblThree.Applications.Crawler
             string document = await GetApiPageAsync(0);
             var response = ConvertJsonToClass<TumblrApiJson>(document);
 
-            blog.Title =  response.tumblelog?.title;
+            blog.Title = response.tumblelog?.title;
             blog.Description = response.tumblelog?.description;
             blog.TotalCount = response.posts_total;
         }
@@ -366,7 +366,7 @@ namespace TumblThree.Applications.Crawler
                         shellService.ShowError(timeoutException, Resources.TimeoutReached, Resources.Crawling, blog.Name);
                     }
                     catch
-                    {                        
+                    {
                     }
                     finally
                     {

@@ -92,8 +92,8 @@ namespace TumblThree.Domain.Models
         private int settingsTabIndex;
         private int progress;
         private int quotes;
-        [DataMember(Name="Links")]
-        private List<string> links = new List<string>();
+        [DataMember(Name = "Links")]
+        private readonly List<string> links = new List<string>();
         private int downloadedImages;
 
         private object lockObjectProgress = new object();
@@ -112,28 +112,28 @@ namespace TumblThree.Domain.Models
         [DataMember]
         public int DuplicatePhotos
         {
-            get { return duplicatePhotos; }
-            set { SetProperty(ref duplicatePhotos, value); }
+            get => duplicatePhotos;
+            set => SetProperty(ref duplicatePhotos, value);
         }
 
         [DataMember]
         public int DuplicateVideos
         {
-            get { return duplicateVideos; }
-            set { SetProperty(ref duplicateVideos, value); }
+            get => duplicateVideos;
+            set => SetProperty(ref duplicateVideos, value);
         }
 
         [DataMember]
         public int DuplicateAudios
         {
-            get { return duplicateAudios; }
-            set { SetProperty(ref duplicateAudios, value); }
+            get => duplicateAudios;
+            set => SetProperty(ref duplicateAudios, value);
         }
 
         [DataMember]
         public bool DownloadText
         {
-            get { return downloadText; }
+            get => downloadText;
             set
             {
                 SetProperty(ref downloadText, value);
@@ -144,7 +144,7 @@ namespace TumblThree.Domain.Models
         [DataMember]
         public bool DownloadQuote
         {
-            get { return downloadQuote; }
+            get => downloadQuote;
             set
             {
                 SetProperty(ref downloadQuote, value);
@@ -155,7 +155,7 @@ namespace TumblThree.Domain.Models
         [DataMember]
         public bool DownloadPhoto
         {
-            get { return downloadPhoto; }
+            get => downloadPhoto;
             set
             {
                 SetProperty(ref downloadPhoto, value);
@@ -166,7 +166,7 @@ namespace TumblThree.Domain.Models
         [DataMember]
         public bool DownloadLink
         {
-            get { return downloadLink; }
+            get => downloadLink;
             set
             {
                 SetProperty(ref downloadLink, value);
@@ -177,7 +177,7 @@ namespace TumblThree.Domain.Models
         [DataMember]
         public bool DownloadAnswer
         {
-            get { return downloadAnswer; }
+            get => downloadAnswer;
             set
             {
                 SetProperty(ref downloadAnswer, value);
@@ -188,7 +188,7 @@ namespace TumblThree.Domain.Models
         [DataMember]
         public bool DownloadConversation
         {
-            get { return downloadConversation; }
+            get => downloadConversation;
             set
             {
                 SetProperty(ref downloadConversation, value);
@@ -199,7 +199,7 @@ namespace TumblThree.Domain.Models
         [DataMember]
         public bool DownloadVideo
         {
-            get { return downloadVideo; }
+            get => downloadVideo;
             set
             {
                 SetProperty(ref downloadVideo, value);
@@ -210,7 +210,7 @@ namespace TumblThree.Domain.Models
         [DataMember]
         public bool DumpCrawlerData
         {
-            get { return dumpCrawlerData; }
+            get => dumpCrawlerData;
             set
             {
                 SetProperty(ref dumpCrawlerData, value);
@@ -221,7 +221,7 @@ namespace TumblThree.Domain.Models
         [DataMember]
         public string FileDownloadLocation
         {
-            get { return fileDownloadLocation; }
+            get => fileDownloadLocation;
             set
             {
                 SetProperty(ref fileDownloadLocation, value);
@@ -232,7 +232,7 @@ namespace TumblThree.Domain.Models
         [DataMember]
         public bool DownloadAudio
         {
-            get { return downloadAudio; }
+            get => downloadAudio;
             set
             {
                 SetProperty(ref downloadAudio, value);
@@ -243,7 +243,7 @@ namespace TumblThree.Domain.Models
         [DataMember]
         public bool CreatePhotoMeta
         {
-            get { return createPhotoMeta; }
+            get => createPhotoMeta;
             set
             {
                 SetProperty(ref createPhotoMeta, value);
@@ -254,7 +254,7 @@ namespace TumblThree.Domain.Models
         [DataMember]
         public bool CreateVideoMeta
         {
-            get { return createVideoMeta; }
+            get => createVideoMeta;
             set
             {
                 SetProperty(ref createVideoMeta, value);
@@ -265,7 +265,7 @@ namespace TumblThree.Domain.Models
         [DataMember]
         public bool CreateAudioMeta
         {
-            get { return createAudioMeta; }
+            get => createAudioMeta;
             set
             {
                 SetProperty(ref createAudioMeta, value);
@@ -276,7 +276,7 @@ namespace TumblThree.Domain.Models
         [DataMember]
         public bool DownloadRebloggedPosts
         {
-            get { return downloadRebloggedPosts; }
+            get => downloadRebloggedPosts;
             set
             {
                 SetProperty(ref downloadRebloggedPosts, value);
@@ -302,20 +302,20 @@ namespace TumblThree.Domain.Models
         [DataMember]
         public int DownloadedImages
         {
-            get { return downloadedImages; }
-            set { SetProperty(ref downloadedImages, value); }
+            get => downloadedImages;
+            set => SetProperty(ref downloadedImages, value);
         }
         [DataMember]
         public int TotalCount
         {
-            get { return totalCount; }
-            set { SetProperty(ref totalCount, value); }
+            get => totalCount;
+            set => SetProperty(ref totalCount, value);
         }
 
         [DataMember]
         public string Tags
         {
-            get { return tags; }
+            get => tags;
             set
             {
                 SetProperty(ref tags, value);
@@ -326,7 +326,7 @@ namespace TumblThree.Domain.Models
         [DataMember]
         public int Rating
         {
-            get { return rating; }
+            get => rating;
             set
             {
                 SetProperty(ref rating, value);
@@ -337,280 +337,280 @@ namespace TumblThree.Domain.Models
         [DataMember]
         public int Posts
         {
-            get { return posts; }
-            set { SetProperty(ref posts, value); }
+            get => posts;
+            set => SetProperty(ref posts, value);
         }
 
         [DataMember]
         public int Texts
         {
-            get { return texts; }
-            set { SetProperty(ref texts, value); }
+            get => texts;
+            set => SetProperty(ref texts, value);
         }
 
         [DataMember]
         public int Answers
         {
-            get { return answers; }
-            set { SetProperty(ref answers, value); }
+            get => answers;
+            set => SetProperty(ref answers, value);
         }
 
         [DataMember]
         public int Quotes
         {
-            get { return quotes; }
-            set { SetProperty(ref quotes, value); }
+            get => quotes;
+            set => SetProperty(ref quotes, value);
         }
 
         [DataMember]
         public int Photos
         {
-            get { return photos; }
-            set { SetProperty(ref photos, value); }
+            get => photos;
+            set => SetProperty(ref photos, value);
         }
 
         [DataMember]
         public int NumberOfLinks
         {
-            get { return numberOfLinks; }
-            set { SetProperty(ref numberOfLinks, value); }
+            get => numberOfLinks;
+            set => SetProperty(ref numberOfLinks, value);
         }
 
         [DataMember]
         public int Conversations
         {
-            get { return conversations; }
-            set { SetProperty(ref conversations, value); }
+            get => conversations;
+            set => SetProperty(ref conversations, value);
         }
 
         [DataMember]
         public int Videos
         {
-            get { return videos; }
-            set { SetProperty(ref videos, value); }
+            get => videos;
+            set => SetProperty(ref videos, value);
         }
 
         [DataMember]
         public int Audios
         {
-            get { return audios; }
-            set { SetProperty(ref audios, value); }
+            get => audios;
+            set => SetProperty(ref audios, value);
         }
 
         [DataMember]
         public int PhotoMetas
         {
-            get { return photoMetas; }
-            set { SetProperty(ref photoMetas, value); }
+            get => photoMetas;
+            set => SetProperty(ref photoMetas, value);
         }
 
         [DataMember]
         public int VideoMetas
         {
-            get { return videoMetas; }
-            set { SetProperty(ref videoMetas, value); }
+            get => videoMetas;
+            set => SetProperty(ref videoMetas, value);
         }
 
         [DataMember]
         public int AudioMetas
         {
-            get { return audioMetas; }
-            set { SetProperty(ref audioMetas, value); }
+            get => audioMetas;
+            set => SetProperty(ref audioMetas, value);
         }
 
         [DataMember]
         public int DownloadedTexts
         {
-            get { return downloadedTexts; }
-            set { SetProperty(ref downloadedTexts, value); }
+            get => downloadedTexts;
+            set => SetProperty(ref downloadedTexts, value);
         }
 
         [DataMember]
         public int DownloadedQuotes
         {
-            get { return downloadedQuotes; }
-            set { SetProperty(ref downloadedQuotes, value); }
+            get => downloadedQuotes;
+            set => SetProperty(ref downloadedQuotes, value);
         }
 
         [DataMember]
         public int DownloadedPhotos
         {
-            get { return downloadedPhotos; }
-            set { SetProperty(ref downloadedPhotos, value); }
+            get => downloadedPhotos;
+            set => SetProperty(ref downloadedPhotos, value);
         }
 
         [DataMember]
         public int DownloadedLinks
         {
-            get { return downloadedLinks; }
-            set { SetProperty(ref downloadedLinks, value); }
+            get => downloadedLinks;
+            set => SetProperty(ref downloadedLinks, value);
         }
 
         [DataMember]
         public int DownloadedConversations
         {
-            get { return downloadedConversations; }
-            set { SetProperty(ref downloadedConversations, value); }
+            get => downloadedConversations;
+            set => SetProperty(ref downloadedConversations, value);
         }
 
         [DataMember]
         public int DownloadedAnswers
         {
-            get { return downloadedAnswers; }
-            set { SetProperty(ref downloadedAnswers, value); }
+            get => downloadedAnswers;
+            set => SetProperty(ref downloadedAnswers, value);
         }
 
         [DataMember]
         public int DownloadedVideos
         {
-            get { return downloadedVideos; }
-            set { SetProperty(ref downloadedVideos, value); }
+            get => downloadedVideos;
+            set => SetProperty(ref downloadedVideos, value);
         }
 
         [DataMember]
         public int DownloadedAudios
         {
-            get { return downloadedAudios; }
-            set { SetProperty(ref downloadedAudios, value); }
+            get => downloadedAudios;
+            set => SetProperty(ref downloadedAudios, value);
         }
 
         [DataMember]
         public int DownloadedPhotoMetas
         {
-            get { return downloadedPhotoMetas; }
-            set { SetProperty(ref downloadedPhotoMetas, value); }
+            get => downloadedPhotoMetas;
+            set => SetProperty(ref downloadedPhotoMetas, value);
         }
 
         [DataMember]
         public int DownloadedVideoMetas
         {
-            get { return downloadedVideoMetas; }
-            set { SetProperty(ref downloadedVideoMetas, value); }
+            get => downloadedVideoMetas;
+            set => SetProperty(ref downloadedVideoMetas, value);
         }
 
         [DataMember]
         public int DownloadedAudioMetas
         {
-            get { return downloadedAudioMetas; }
-            set { SetProperty(ref downloadedAudioMetas, value); }
+            get => downloadedAudioMetas;
+            set => SetProperty(ref downloadedAudioMetas, value);
         }
 
         [DataMember]
         public MetadataType MetadataFormat
         {
-            get { return metadataFormat; }
-            set { SetProperty(ref metadataFormat, value); }
+            get => metadataFormat;
+            set => SetProperty(ref metadataFormat, value);
         }
 
         [DataMember]
         public bool DownloadGfycat
         {
-            get { return downloadGfycat; }
-            set { SetProperty(ref downloadGfycat, value); }
+            get => downloadGfycat;
+            set => SetProperty(ref downloadGfycat, value);
         }
 
         [DataMember]
         public GfycatTypes GfycatType
         {
-            get { return gfycatType; }
-            set { SetProperty(ref gfycatType, value); }
+            get => gfycatType;
+            set => SetProperty(ref gfycatType, value);
         }
 
         [DataMember]
         public bool DownloadImgur
         {
-            get { return downloadImgur; }
-            set { SetProperty(ref downloadImgur, value); }
+            get => downloadImgur;
+            set => SetProperty(ref downloadImgur, value);
         }
 
         [DataMember]
         public bool DownloadWebmshare
         {
-            get { return downloadWebmshare; }
-            set { SetProperty(ref downloadWebmshare, value); }
+            get => downloadWebmshare;
+            set => SetProperty(ref downloadWebmshare, value);
         }
 
         [DataMember]
         public WebmshareTypes WebmshareType
         {
-            get { return webmshareType; }
-            set { SetProperty(ref webmshareType, value); }
+            get => webmshareType;
+            set => SetProperty(ref webmshareType, value);
         }
 
         [DataMember]
         public bool DownloadMixtape
         {
-            get { return downloadMixtape; }
-            set { SetProperty(ref downloadMixtape, value); }
+            get => downloadMixtape;
+            set => SetProperty(ref downloadMixtape, value);
         }
 
         [DataMember]
         public MixtapeTypes MixtapeType
         {
-            get { return mixtapeType; }
-            set { SetProperty(ref mixtapeType, value); }
+            get => mixtapeType;
+            set => SetProperty(ref mixtapeType, value);
         }
 
         [DataMember]
         public bool DownloadUguu
         {
-            get { return downloadUguu; }
-            set { SetProperty(ref downloadUguu, value); }
+            get => downloadUguu;
+            set => SetProperty(ref downloadUguu, value);
         }
 
         [DataMember]
         public UguuTypes UguuType
         {
-            get { return uguuType; }
-            set { SetProperty(ref uguuType, value); }
+            get => uguuType;
+            set => SetProperty(ref uguuType, value);
         }
 
         [DataMember]
         public bool DownloadSafeMoe
         {
-            get { return downloadSafeMoe; }
-            set { SetProperty(ref downloadSafeMoe, value); }
+            get => downloadSafeMoe;
+            set => SetProperty(ref downloadSafeMoe, value);
         }
 
         [DataMember]
         public SafeMoeTypes SafeMoeType
         {
-            get { return safemoeType; }
-            set { SetProperty(ref safemoeType, value); }
+            get => safemoeType;
+            set => SetProperty(ref safemoeType, value);
         }
 
         [DataMember]
         public bool DownloadLoliSafe
         {
-            get { return downloadLoliSafe; }
-            set { SetProperty(ref downloadLoliSafe, value); }
+            get => downloadLoliSafe;
+            set => SetProperty(ref downloadLoliSafe, value);
         }
 
         [DataMember]
         public LoliSafeTypes LoliSafeType
         {
-            get { return lolisafeType; }
-            set { SetProperty(ref lolisafeType, value); }
+            get => lolisafeType;
+            set => SetProperty(ref lolisafeType, value);
         }
 
         [DataMember]
         public bool DownloadCatBox
         {
-            get { return downloadCatBox; }
-            set { SetProperty(ref downloadCatBox, value); }
+            get => downloadCatBox;
+            set => SetProperty(ref downloadCatBox, value);
         }
 
         [DataMember]
         public CatBoxTypes CatBoxType
         {
-            get { return catboxType; }
-            set { SetProperty(ref catboxType, value); }
+            get => catboxType;
+            set => SetProperty(ref catboxType, value);
         }
 
         [DataMember]
         public string DownloadPages
         {
-            get { return downloadPages; }
+            get => downloadPages;
             set
             {
                 SetProperty(ref downloadPages, value);
@@ -621,7 +621,7 @@ namespace TumblThree.Domain.Models
         [DataMember]
         public int PageSize
         {
-            get { return pageSize; }
+            get => pageSize;
             set
             {
                 SetProperty(ref pageSize, value);
@@ -632,7 +632,7 @@ namespace TumblThree.Domain.Models
         [DataMember]
         public string DownloadFrom
         {
-            get { return downloadFrom; }
+            get => downloadFrom;
             set
             {
                 SetProperty(ref downloadFrom, value);
@@ -643,7 +643,7 @@ namespace TumblThree.Domain.Models
         [DataMember]
         public string DownloadTo
         {
-            get { return downloadTo; }
+            get => downloadTo;
             set
             {
                 SetProperty(ref downloadTo, value);
@@ -654,7 +654,7 @@ namespace TumblThree.Domain.Models
         [DataMember]
         public string Password
         {
-            get { return password; }
+            get => password;
             set
             {
                 SetProperty(ref password, value);
@@ -665,42 +665,42 @@ namespace TumblThree.Domain.Models
         [DataMember]
         public DateTime DateAdded
         {
-            get { return dateAdded; }
-            set { SetProperty(ref dateAdded, value); }
+            get => dateAdded;
+            set => SetProperty(ref dateAdded, value);
         }
 
         [DataMember(IsRequired = false, EmitDefaultValue = false)]
         public DateTime LastCompleteCrawl
         {
-            get { return lastCompleteCrawl; }
-            set { SetProperty(ref lastCompleteCrawl, value); }
+            get => lastCompleteCrawl;
+            set => SetProperty(ref lastCompleteCrawl, value);
         }
 
         [DataMember]
         public bool Online
         {
-            get { return online; }
-            set { SetProperty(ref online, value); }
+            get => online;
+            set => SetProperty(ref online, value);
         }
 
         [DataMember]
         public int SettingsTabIndex
         {
-            get { return settingsTabIndex; }
-            set { SetProperty(ref settingsTabIndex, value); }
+            get => settingsTabIndex;
+            set => SetProperty(ref settingsTabIndex, value);
         }
 
         [DataMember]
         public int Progress
         {
-            get { return progress; }
-            set { SetProperty(ref progress, value); }
+            get => progress;
+            set => SetProperty(ref progress, value);
         }
 
         [DataMember]
         public string Notes
         {
-            get { return notes; }
+            get => notes;
             set
             {
                 SetProperty(ref notes, value);
@@ -711,7 +711,7 @@ namespace TumblThree.Domain.Models
         [DataMember]
         public bool CheckDirectoryForFiles
         {
-            get { return checkDirectoryForFiles; }
+            get => checkDirectoryForFiles;
             set
             {
                 SetProperty(ref checkDirectoryForFiles, value);
@@ -722,7 +722,7 @@ namespace TumblThree.Domain.Models
         [DataMember]
         public bool DownloadUrlList
         {
-            get { return downloadUrlList; }
+            get => downloadUrlList;
             set
             {
                 SetProperty(ref downloadUrlList, value);
@@ -738,14 +738,14 @@ namespace TumblThree.Domain.Models
 
         public List<string> Links
         {
-            get { return links; }
+            get => links;
             protected set { }
         }
 
         [DataMember]
         public string LastDownloadedPhoto
         {
-            get { return lastDownloadedPhoto; }
+            get => lastDownloadedPhoto;
             set
             {
                 SetProperty(ref lastDownloadedPhoto, value);
@@ -756,7 +756,7 @@ namespace TumblThree.Domain.Models
         [DataMember]
         public string LastDownloadedVideo
         {
-            get { return lastDownloadedVideo; }
+            get => lastDownloadedVideo;
             set
             {
                 SetProperty(ref lastDownloadedVideo, value);
@@ -776,7 +776,7 @@ namespace TumblThree.Domain.Models
         [DataMember]
         public bool SkipGif
         {
-            get { return skipGif; }
+            get => skipGif;
             set
             {
                 SetProperty(ref skipGif, value);
@@ -787,7 +787,7 @@ namespace TumblThree.Domain.Models
         [DataMember]
         public bool ForceSize
         {
-            get { return forceSize; }
+            get => forceSize;
             set
             {
                 SetProperty(ref forceSize, value);
@@ -798,7 +798,7 @@ namespace TumblThree.Domain.Models
         [DataMember]
         public bool ForceRescan
         {
-            get { return forceRescan; }
+            get => forceRescan;
             set
             {
                 SetProperty(ref forceRescan, value);
@@ -811,7 +811,7 @@ namespace TumblThree.Domain.Models
             lock (lockObjectProgress)
             {
                 DownloadedImages++;
-                Progress = (int)((double)DownloadedImages / (double)TotalCount * 100);
+                Progress = (int)(DownloadedImages / (double)TotalCount * 100);
             }
         }
 
@@ -991,6 +991,6 @@ namespace TumblThree.Domain.Models
             lockObjectPostCount = new object();
             lockObjectDb = new object();
             lockObjectDirectory = new object();
-    }
+        }
     }
 }

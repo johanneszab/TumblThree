@@ -52,8 +52,10 @@ namespace TumblThree.Applications.Services
             cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
             cookieService.RemoveUriCookie(new Uri("https://www.tumblr.com"));
             var tosCookie = request.CookieContainer.GetCookies(new Uri("https://www.tumblr.com/"))["pfg"]; // pfg cookie contains ToS/GDPR agreement
-            var tosCookieCollection = new CookieCollection();
-            tosCookieCollection.Add(tosCookie);
+            var tosCookieCollection = new CookieCollection
+            {
+                tosCookie
+            };
             cookieService.SetUriCookie(tosCookieCollection);
         }
 

@@ -6,7 +6,7 @@ namespace TumblThree.Applications
     public class ProgressThrottler<T> : IProgress<T>
     {
         private readonly IProgress<T> _progress;
-        bool reportProgressAfterThrottling = true;
+        private bool reportProgressAfterThrottling = true;
 
         public ProgressThrottler(IProgress<T> progress, double interval)
         {
