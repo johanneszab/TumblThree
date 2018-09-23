@@ -17,7 +17,7 @@ using TumblThree.Domain.Models;
 
 namespace TumblThree.Applications.Downloader
 {
-    [Export(typeof(IDownloader))]
+    [Export(typeof(ICrawler))]
     [ExportMetadata("BlogType", typeof(TumblrBlog))]
     public class TumblrBlogCrawler : AbstractTumblrCrawler, ICrawler
     {

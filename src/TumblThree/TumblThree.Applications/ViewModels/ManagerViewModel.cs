@@ -17,15 +17,16 @@ namespace TumblThree.Applications.ViewModels
     [Export]
     public class ManagerViewModel : ViewModel<IManagerView>
     {
+        private ICommand copyUrlCommand;
+        private ICommand checkStatusCommand;
+        private ICommand showDetailsCommand;
+        private ICommand showFilesCommand;
+        private ICommand visitBlogCommand;
+
         private readonly Lazy<ICrawlerService> crawlerService;
         private readonly Lazy<IManagerService> managerService;
         private readonly Lazy<ISelectionService> selectionService;
         private Blog selectedBlogFile;
-        private ICommand showDetailsCommand;
-        private ICommand showFilesCommand;
-        private ICommand visitBlogCommand;
-        private ICommand copyUrlCommand;
-        private ICommand checkStatusCommand;
 
         [ImportingConstructor]
         public ManagerViewModel(IManagerView view, IShellService shellService, Lazy<ISelectionService> selectionService,
@@ -39,57 +40,48 @@ namespace TumblThree.Applications.ViewModels
             ShellService.Closing += ViewClosed;
         }
 
-        public ISelectionService SelectionService
-        {
-            get { return selectionService.Value; }
-        }
+        public ISelectionService SelectionService => selectionService.Value;
 
         public IShellService ShellService { get; }
 
-        public ICrawlerService CrawlerService
-        {
-            get { return crawlerService.Value; }
-        }
+        public ICrawlerService CrawlerService => crawlerService.Value;
 
-        public IManagerService ManagerService
-        {
-            get { return managerService.Value; }
-        }
+        public IManagerService ManagerService => managerService.Value;
 
         public ICommand ShowFilesCommand
         {
-            get { return showFilesCommand; }
-            set { SetProperty(ref showFilesCommand, value); }
+            get => showFilesCommand;
+            set => SetProperty(ref showFilesCommand, value);
         }
 
         public ICommand VisitBlogCommand
         {
-            get { return visitBlogCommand; }
-            set { SetProperty(ref visitBlogCommand, value); }
+            get => visitBlogCommand;
+            set => SetProperty(ref visitBlogCommand, value);
         }
 
         public ICommand ShowDetailsCommand
         {
-            get { return showDetailsCommand; }
-            set { SetProperty(ref showDetailsCommand, value); }
+            get => showDetailsCommand;
+            set => SetProperty(ref showDetailsCommand, value);
         }
 
         public ICommand CopyUrlCommand
         {
-            get { return copyUrlCommand; }
-            set { SetProperty(ref copyUrlCommand, value); }
+            get => copyUrlCommand;
+            set => SetProperty(ref copyUrlCommand, value);
         }
 
         public ICommand CheckStatusCommand
         {
-            get { return checkStatusCommand; }
-            set { SetProperty(ref checkStatusCommand, value); }
+            get => checkStatusCommand;
+            set => SetProperty(ref checkStatusCommand, value);
         }
 
         public Blog SelectedBlogFile
         {
-            get { return selectedBlogFile; }
-            set { SetProperty(ref selectedBlogFile, value); }
+            get => selectedBlogFile;
+            set => SetProperty(ref selectedBlogFile, value);
         }
 
         public IReadOnlyObservableList<QueueListItem> QueueItems { get; set; }

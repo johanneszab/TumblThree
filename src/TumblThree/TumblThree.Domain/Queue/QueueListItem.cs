@@ -19,8 +19,8 @@ namespace TumblThree.Domain.Queue
 
         public string Progress
         {
-            get { return progress; }
-            set { SetProperty(ref progress, value); }
+            get => progress;
+            set => SetProperty(ref progress, value);
         }
     }
 }

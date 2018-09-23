@@ -4,7 +4,6 @@ using System.ComponentModel.Composition;
 using System.Threading.Tasks;
 using System.Waf.Foundation;
 using System.Windows.Input;
-
 using TumblThree.Domain.Queue;
 
 namespace TumblThree.Applications.Services
@@ -45,121 +44,118 @@ namespace TumblThree.Applications.Services
 
         public bool IsTimerSet
         {
-            get { return isTimerSet; }
-            set { SetProperty(ref isTimerSet, value); }
+            get => isTimerSet;
+            set => SetProperty(ref isTimerSet, value);
         }
 
         public TaskCompletionSource<bool> DatabasesLoaded
         {
-            get { return databasesLoaded; }
-            set { SetProperty(ref databasesLoaded, value); }
+            get => databasesLoaded;
+            set => SetProperty(ref databasesLoaded, value);
         }
 
         public System.Threading.Timer Timer
         {
-            get { return timer; }
-            set { SetProperty(ref timer, value); }
+            get => timer;
+            set => SetProperty(ref timer, value);
         }
 
-        public IReadOnlyObservableList<QueueListItem> ActiveItems
-        {
-            get { return readonlyActiveItems; }
-        }
+        public IReadOnlyObservableList<QueueListItem> ActiveItems => readonlyActiveItems;
 
         public ICommand AddBlogCommand
         {
-            get { return addBlogCommand; }
-            set { SetProperty(ref addBlogCommand, value); }
+            get => addBlogCommand;
+            set => SetProperty(ref addBlogCommand, value);
         }
 
         public ICommand RemoveBlogCommand
         {
-            get { return removeBlogCommand; }
-            set { SetProperty(ref removeBlogCommand, value); }
+            get => removeBlogCommand;
+            set => SetProperty(ref removeBlogCommand, value);
         }
 
         public ICommand ShowFilesCommand
         {
-            get { return showFilesCommand; }
-            set { SetProperty(ref showFilesCommand, value); }
+            get => showFilesCommand;
+            set => SetProperty(ref showFilesCommand, value);
         }
 
         public ICommand EnqueueSelectedCommand
         {
-            get { return enqueueSelectedCommand; }
-            set { SetProperty(ref enqueueSelectedCommand, value); }
+            get => enqueueSelectedCommand;
+            set => SetProperty(ref enqueueSelectedCommand, value);
         }
 
         public ICommand LoadLibraryCommand
         {
-            get { return loadLibraryCommand; }
-            set { SetProperty(ref loadLibraryCommand, value); }
+            get => loadLibraryCommand;
+            set => SetProperty(ref loadLibraryCommand, value);
         }
 
         public ICommand LoadAllDatabasesCommand
         {
-            get { return loadAllDatabasesCommand; }
-            set { SetProperty(ref loadAllDatabasesCommand, value); }
+            get => loadAllDatabasesCommand;
+            set => SetProperty(ref loadAllDatabasesCommand, value);
         }
 
         public ICommand RemoveBlogFromQueueCommand
         {
-            get { return removeBlogFromQueueCommand; }
-            set { SetProperty(ref removeBlogFromQueueCommand, value); }
+            get => removeBlogFromQueueCommand;
+            set => SetProperty(ref removeBlogFromQueueCommand, value);
         }
 
         public ICommand ListenClipboardCommand
         {
-            get { return listenClipboardCommand; }
-            set { SetProperty(ref listenClipboardCommand, value); }
+            get => listenClipboardCommand;
+            set => SetProperty(ref listenClipboardCommand, value);
         }
 
         public ICommand CrawlCommand
         {
-            get { return crawlCommand; }
-            set { SetProperty(ref crawlCommand, value); }
+            get => crawlCommand;
+            set => SetProperty(ref crawlCommand, value);
         }
 
         public ICommand PauseCommand
         {
-            get { return pauseCommand; }
-            set { SetProperty(ref pauseCommand, value); }
+            get => pauseCommand;
+            set => SetProperty(ref pauseCommand, value);
         }
 
         public ICommand ResumeCommand
         {
-            get { return resumeCommand; }
-            set { SetProperty(ref resumeCommand, value); }
+            get => resumeCommand;
+            set => SetProperty(ref resumeCommand, value);
         }
 
         public ICommand StopCommand
         {
-            get { return stopCommand; }
-            set { SetProperty(ref stopCommand, value); }
+            get => stopCommand;
+            set => SetProperty(ref stopCommand, value);
         }
 
         public ICommand AutoDownloadCommand
         {
-            get { return autoDownloadCommand; }
-            set { SetProperty(ref autoDownloadCommand, value); }
+            get => autoDownloadCommand;
+            set => SetProperty(ref autoDownloadCommand, value);
         }
 
         public bool IsCrawl
         {
-            get { return isCrawl; }
-            set { SetProperty(ref isCrawl, value); }
+            get => isCrawl;
+            set => SetProperty(ref isCrawl, value);
         }
 
         public bool IsPaused
         {
-            get { return isPaused; }
-            set { SetProperty(ref isPaused, value); }
+            get => isPaused;
+            set => SetProperty(ref isPaused, value);
         }
 
         public string NewBlogUrl
         {
-            get { return newBlogUrl; }
-            set { SetProperty(ref newBlogUrl, value); }
+            get => newBlogUrl;
+            set => SetProperty(ref newBlogUrl, value);
         }
 
         public void AddActiveItems(QueueListItem itemToAdd)

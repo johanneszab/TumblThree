@@ -3,10 +3,10 @@ using TumblThree.Domain.Models;
 
 namespace TumblThree.Applications.Parser
 {
-	public interface ICatBoxParser
-	{
-		Regex GetCatBoxUrlRegex();
+    public interface ICatBoxParser
+    {
+        Regex GetCatBoxUrlRegex();
 
-		string CreateCatBoxUrl(string id, string detectedUrl, CatBoxTypes type);
-	}
+        string CreateCatBoxUrl(string id, string detectedUrl, CatBoxTypes type);
+    }
 }

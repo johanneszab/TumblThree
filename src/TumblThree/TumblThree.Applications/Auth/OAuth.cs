@@ -627,9 +627,6 @@ namespace TumblThree.Applications.Auth
         /// <summary>
         ///     a Dictionary of response parameters.
         /// </summary>
-        public string this[string ix]
-        {
-            get { return _params[ix]; }
-        }
+        public string this[string ix] => _params[ix];
     }
 }

@@ -101,7 +101,7 @@ namespace TumblThree.Applications.Crawler
             try
             {
                 HttpWebRequest request = webRequestFactory.CreateGetReqeust(url, "", headers);
-                cookieHosts = cookieHosts ?? new List<String>();
+                cookieHosts = cookieHosts ?? new List<string>();
                 foreach (string cookieHost in cookieHosts)
                 {
                     cookieService.GetUriCookie(request.CookieContainer, new Uri(cookieHost));

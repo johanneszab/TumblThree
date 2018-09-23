@@ -5,7 +5,7 @@ namespace TumblThree.Applications.Extensions
 {
     static class TaskTimeoutExtension
     {
-        public async static Task<T> TimeoutAfter<T>(this Task<T> task, int delay)
+        public static async Task<T> TimeoutAfter<T>(this Task<T> task, int delay)
         {
             await Task.WhenAny(task, Task.Delay(delay * 1000));
 
@@ -15,7 +15,7 @@ namespace TumblThree.Applications.Extensions
             return await task;
         }
 
-        public async static Task TimeoutAfter(this Task task, int delay)
+        public static async Task TimeoutAfter(this Task task, int delay)
         {
             await Task.WhenAny(task, Task.Delay(delay * 1000));
 

@@ -8,20 +8,11 @@ namespace TumblThree.Applications.Data
         private static readonly string[] queueFileExtensions = new string[] { ".que" };
         private static readonly string[] bloglistExportFileType = new string[] { ".txt" };
 
-        public static IReadOnlyList<string> BlogFileExtensions
-        {
-            get { return blogFileExtensions; }
-        }
+        public static IReadOnlyList<string> BlogFileExtensions => blogFileExtensions;
 
-        public static IReadOnlyList<string> QueueFileExtensions
-        {
-            get { return queueFileExtensions; }
-        }
+        public static IReadOnlyList<string> QueueFileExtensions => queueFileExtensions;
 
-        public static IReadOnlyList<string> BloglistExportFileType
-        {
-            get { return bloglistExportFileType; }
-        }
+        public static IReadOnlyList<string> BloglistExportFileType => bloglistExportFileType;
 
     }
 }

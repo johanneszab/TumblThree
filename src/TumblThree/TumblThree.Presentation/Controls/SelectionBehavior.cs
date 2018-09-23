@@ -200,15 +200,9 @@ namespace TumblThree.Presentation.Controls
                 this.listBox = listBox;
             }
 
-            public Selector Selector
-            {
-                get { return listBox; }
-            }
+            public Selector Selector => listBox;
 
-            public IList SelectedItems
-            {
-                get { return listBox.SelectedItems; }
-            }
+            public IList SelectedItems => listBox.SelectedItems;
         }
 
         private class MultiSelectorAdapter : IMultiSelector
@@ -220,15 +214,9 @@ namespace TumblThree.Presentation.Controls
                 this.multiSelector = multiSelector;
             }
 
-            public Selector Selector
-            {
-                get { return multiSelector; }
-            }
+            public Selector Selector => multiSelector;
 
-            public IList SelectedItems
-            {
-                get { return multiSelector.SelectedItems; }
-            }
+            public IList SelectedItems => multiSelector.SelectedItems;
         }
     }
 }

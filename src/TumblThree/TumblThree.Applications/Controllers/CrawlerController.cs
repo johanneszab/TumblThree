@@ -5,9 +5,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Waf.Applications;
-
-using TumblThree.Applications.DataModels;
 using TumblThree.Applications.Crawler;
+using TumblThree.Applications.DataModels;
 using TumblThree.Applications.Services;
 using TumblThree.Applications.ViewModels;
 using TumblThree.Domain.Models;
@@ -18,16 +17,19 @@ namespace TumblThree.Applications.Controllers
     [Export]
     internal class CrawlerController
     {
-        private readonly AsyncDelegateCommand crawlCommand;
+        private readonly ICrawlerFactory crawlerFactory;
         private readonly ICrawlerService crawlerService;
         private readonly Lazy<CrawlerViewModel> crawlerViewModel;
-        private readonly object lockObject;
         private readonly IManagerService managerService;
+        private readonly IShellService shellService;
+
+        private readonly AsyncDelegateCommand crawlCommand;
         private readonly DelegateCommand pauseCommand;
         private readonly DelegateCommand resumeCommand;
-        private readonly List<Task> runningTasks;
-        private readonly IShellService shellService;
         private readonly DelegateCommand stopCommand;
+
+        private readonly object lockObject;
+        private readonly List<Task> runningTasks;
         private CancellationTokenSource crawlerCancellationToken;
         private PauseTokenSource crawlerPauseToken;
 
@@ -39,7 +41,7 @@ namespace TumblThree.Applications.Controllers
             this.managerService = managerService;
             this.crawlerService = crawlerService;
             this.crawlerViewModel = crawlerViewModel;
-            CrawlerFactory = crawlerFactory;
+            this.crawlerFactory = crawlerFactory;
             crawlCommand = new AsyncDelegateCommand(Crawl, CanCrawl);
             pauseCommand = new DelegateCommand(Pause, CanPause);
             resumeCommand = new DelegateCommand(Resume, CanResume);
@@ -48,14 +50,9 @@ namespace TumblThree.Applications.Controllers
             lockObject = new object();
         }
 
-        private CrawlerViewModel CrawlerViewModel
-        {
-            get { return crawlerViewModel.Value; }
-        }
+        private CrawlerViewModel CrawlerViewModel => crawlerViewModel.Value;
 
         public QueueManager QueueManager { get; set; }
-
-        public ICrawlerFactory CrawlerFactory { get; set; }
 
         public void Initialize()
         {
@@ -185,7 +182,7 @@ namespace TumblThree.Applications.Controllers
                     QueueListItem nextQueueItem = queueList.First();
                     IBlog blog = nextQueueItem.Blog;
 
-                    ICrawler crawler = CrawlerFactory.GetCrawler(blog, ct, pt, new Progress<DownloadProgress>(), shellService, crawlerService, managerService);
+                    ICrawler crawler = crawlerFactory.GetCrawler(blog, ct, pt, new Progress<DownloadProgress>(), shellService, crawlerService, managerService);
                     crawler.IsBlogOnlineAsync().Wait(4000);
 
                     if (crawlerService.ActiveItems.Any(item => item.Blog.Name.Equals(nextQueueItem.Blog.Name)))
@@ -220,7 +217,7 @@ namespace TumblThree.Applications.Controllers
             blog.Dirty = true;
             ProgressThrottler<DownloadProgress> progress = SetupThrottledQueueListProgress(queueListItem);
 
-            ICrawler crawler = CrawlerFactory.GetCrawler(blog, ct, pt, progress, shellService, crawlerService, managerService);
+            ICrawler crawler = crawlerFactory.GetCrawler(blog, ct, pt, progress, shellService, crawlerService, managerService);
             await crawler.CrawlAsync();
 
             if (ct.IsCancellationRequested)
