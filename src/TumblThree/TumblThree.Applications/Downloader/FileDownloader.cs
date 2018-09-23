@@ -217,13 +217,7 @@ namespace TumblThree.Applications.Downloader
 
         public long BytesReceived { get; private set; }
         public long TotalBytesToReceive { get; private set; }
-        public float ProgressPercentage
-        {
-            get
-            {
-                return ((float)BytesReceived / (float)TotalBytesToReceive) * 100;
-            }
-        }
+        public float ProgressPercentage => (BytesReceived / (float)TotalBytesToReceive) * 100;
         public float CurrentSpeed { get; private set; } // in bytes
         public TimeSpan TimeLeft
         {

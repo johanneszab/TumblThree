@@ -1,7 +1,4 @@
-﻿using System.Waf.Applications;
-using System.Windows.Input;
-using System.Windows.Media;
-using TumblThree.Domain.Models;
+﻿using TumblThree.Domain.Models;
 
 namespace TumblThree.Applications.Views
 {

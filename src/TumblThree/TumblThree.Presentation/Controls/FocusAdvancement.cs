@@ -19,7 +19,7 @@ namespace TumblThree.Presentation.Controls
             DependencyProperty.RegisterAttached("AdvancesByEnterKey", typeof(bool), typeof(FocusAdvancement),
             new UIPropertyMetadata(OnAdvancesByEnterKeyPropertyChanged));
 
-        static void OnAdvancesByEnterKeyPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnAdvancesByEnterKeyPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var element = d as UIElement;
             if (element == null) return;
@@ -28,7 +28,7 @@ namespace TumblThree.Presentation.Controls
             else element.KeyDown -= Keydown;
         }
 
-        static void Keydown(object sender, KeyEventArgs e)
+        private static void Keydown(object sender, KeyEventArgs e)
         {
             if (!e.Key.Equals(Key.Enter)) return;
 

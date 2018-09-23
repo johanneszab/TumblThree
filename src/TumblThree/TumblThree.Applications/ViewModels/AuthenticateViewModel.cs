@@ -25,8 +25,8 @@ namespace TumblThree.Applications.ViewModels
 
         public string OAuthCallbackUrl
         {
-            get { return oauthCallbackUrl; }
-            set { SetProperty(ref oauthCallbackUrl, value); }
+            get => oauthCallbackUrl;
+            set => SetProperty(ref oauthCallbackUrl, value);
         }
 
         public void ShowDialog(object owner)

@@ -17,15 +17,16 @@ namespace TumblThree.Applications.ViewModels
     [Export]
     public class ShellViewModel : ViewModel<IShellView>
     {
-        private readonly ExportFactory<AboutViewModel> aboutViewModelFactory;
         private readonly DelegateCommand closeErrorCommand;
-        private readonly ObservableCollection<Tuple<Exception, string>> errors;
         private readonly DelegateCommand exitCommand;
         private readonly DelegateCommand garbageCollectorCommand;
-        private readonly AppSettings settings;
-        private readonly ExportFactory<SettingsViewModel> settingsViewModelFactory;
         private readonly DelegateCommand showAboutCommand;
         private readonly DelegateCommand showSettingsCommand;
+
+        private readonly ExportFactory<AboutViewModel> aboutViewModelFactory;
+        private readonly ObservableCollection<Tuple<Exception, string>> errors;
+        private readonly AppSettings settings;
+        private readonly ExportFactory<SettingsViewModel> settingsViewModelFactory;
 
         private object detailsView;
 
@@ -64,59 +65,35 @@ namespace TumblThree.Applications.ViewModels
             view.IsMaximized = settings.IsMaximized;
         }
 
-        public string Title
-        {
-            get { return ApplicationInfo.ProductName; }
-        }
+        public string Title => ApplicationInfo.ProductName;
 
         public IShellService ShellService { get; }
 
         public ICrawlerService CrawlerService { get; }
 
-        public IReadOnlyList<Tuple<Exception, string>> Errors
-        {
-            get { return errors; }
-        }
+        public IReadOnlyList<Tuple<Exception, string>> Errors => errors;
 
-        public Tuple<Exception, string> LastError
-        {
-            get { return errors.LastOrDefault(); }
-        }
+        public Tuple<Exception, string> LastError => errors.LastOrDefault();
 
-        public ICommand ExitCommand
-        {
-            get { return exitCommand; }
-        }
+        public ICommand ExitCommand => exitCommand;
 
-        public ICommand CloseErrorCommand
-        {
-            get { return closeErrorCommand; }
-        }
+        public ICommand CloseErrorCommand => closeErrorCommand;
 
-        public ICommand GarbageCollectorCommand
-        {
-            get { return garbageCollectorCommand; }
-        }
+        public ICommand GarbageCollectorCommand => garbageCollectorCommand;
 
-        public ICommand ShowSettingsCommand
-        {
-            get { return showSettingsCommand; }
-        }
+        public ICommand ShowSettingsCommand => showSettingsCommand;
 
-        public ICommand ShowAboutCommand
-        {
-            get { return showAboutCommand; }
-        }
+        public ICommand ShowAboutCommand => showAboutCommand;
 
         public object DetailsView
         {
-            get { return detailsView; }
-            private set { SetProperty(ref detailsView, value); }
+            get => detailsView;
+            private set => SetProperty(ref detailsView, value);
         }
 
         public bool IsDetailsViewVisible
         {
-            get { return DetailsView == ShellService.DetailsView; }
+            get => DetailsView == ShellService.DetailsView;
             set
             {
                 if (value)
@@ -128,7 +105,7 @@ namespace TumblThree.Applications.ViewModels
 
         public bool IsQueueViewVisible
         {
-            get { return DetailsView == ShellService.QueueView; }
+            get => DetailsView == ShellService.QueueView;
             set
             {
                 if (value)

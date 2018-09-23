@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -15,7 +14,7 @@ namespace TumblThree.Domain.Models
     [DataContract]
     public class Files : Model, IFiles
     {
-        [DataMember(Name="Links")]
+        [DataMember(Name = "Links")]
         protected List<string> links;
 
         private object lockObjectProgress = new object();
@@ -47,7 +46,7 @@ namespace TumblThree.Domain.Models
 
         public IList<string> Links
         {
-            get { return links; }
+            get => links;
             protected set { }
         }
 

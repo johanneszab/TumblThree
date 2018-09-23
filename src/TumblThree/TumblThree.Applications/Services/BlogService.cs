@@ -26,8 +26,8 @@ namespace TumblThree.Applications.Services
         {
             lock (lockObjectProgress)
             {
-                blog.DownloadedImages++; 
-                blog.Progress = (int)((double)blog.DownloadedImages/ (double)blog.TotalCount * 100);
+                blog.DownloadedImages++;
+                blog.Progress = (int)(blog.DownloadedImages / (double)blog.TotalCount * 100);
             }
         }
 

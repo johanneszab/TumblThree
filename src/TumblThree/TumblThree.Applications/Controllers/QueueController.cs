@@ -60,10 +60,7 @@ namespace TumblThree.Applications.Controllers
 
         public QueueManager QueueManager { get; set; }
 
-        private QueueViewModel QueueViewModel
-        {
-            get { return queueViewModel.Value; }
-        }
+        private QueueViewModel QueueViewModel => queueViewModel.Value;
 
         public void Initialize()
         {

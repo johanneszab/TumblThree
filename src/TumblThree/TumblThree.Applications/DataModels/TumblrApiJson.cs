@@ -335,7 +335,7 @@ namespace TumblThree.Applications.DataModels.TumblrApiJson
         [DataMember(Name = "audio-plays", EmitDefaultValue = false)]
         public int? audio_plays { get; set; }
 
-        [DataMember(Name = "regular-title", EmitDefaultValue = false)]        
+        [DataMember(Name = "regular-title", EmitDefaultValue = false)]
         public string regular_title { get; set; }
 
         [DataMember(Name = "regular-body", EmitDefaultValue = false)]

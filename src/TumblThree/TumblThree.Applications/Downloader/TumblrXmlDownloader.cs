@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -90,14 +89,16 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        static string PrettyXml(XContainer xml)
+        private static string PrettyXml(XContainer xml)
         {
             var stringBuilder = new StringBuilder();
 
-            var settings = new XmlWriterSettings();
-            settings.OmitXmlDeclaration = true;
-            settings.Indent = true;
-            settings.NewLineOnAttributes = true;
+            var settings = new XmlWriterSettings
+            {
+                OmitXmlDeclaration = true,
+                Indent = true,
+                NewLineOnAttributes = true
+            };
 
             using (var xmlWriter = XmlWriter.Create(stringBuilder, settings))
             {
