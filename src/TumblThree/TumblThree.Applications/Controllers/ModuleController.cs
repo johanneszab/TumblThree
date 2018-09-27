@@ -22,18 +22,22 @@ namespace TumblThree.Applications.Controllers
         private const string managerSettingsFileName = "Manager.json";
         private const string queueSettingsFileName = "Queuelist.json";
         private const string cookiesFileName = "Cookies.json";
+
+        private readonly ISharedCookieService cookieService;
+        private readonly IEnvironmentService environmentService;
+        private readonly Lazy<ShellService> shellService;
+
         private readonly Lazy<CrawlerController> crawlerController;
         private readonly Lazy<DetailsController> detailsController;
-        private readonly IEnvironmentService environmentService;
-        private readonly IConfirmTumblrPrivacyConsent confirmTumblrPrivacyConsent;
         private readonly Lazy<ManagerController> managerController;
         private readonly Lazy<QueueController> queueController;
+
         private readonly QueueManager queueManager;
         private readonly ISettingsProvider settingsProvider;
-        private readonly ISharedCookieService cookieService;
+        private readonly IConfirmTumblrPrivacyConsent confirmTumblrPrivacyConsent;
 
-        private readonly Lazy<ShellService> shellService;
         private readonly Lazy<ShellViewModel> shellViewModel;
+
         private AppSettings appSettings;
         private ManagerSettings managerSettings;
         private QueueSettings queueSettings;
@@ -42,9 +46,9 @@ namespace TumblThree.Applications.Controllers
         [ImportingConstructor]
         public ModuleController(Lazy<ShellService> shellService, IEnvironmentService environmentService,
             IConfirmTumblrPrivacyConsent confirmTumblrPrivacyConsent, ISettingsProvider settingsProvider,
-            ISharedCookieService cookieService, Lazy<ManagerController> managerController, Lazy<QueueController> queueController,
-            Lazy<DetailsController> detailsController, Lazy<CrawlerController> crawlerController,
-            Lazy<ShellViewModel> shellViewModel)
+            ISharedCookieService cookieService, Lazy<ManagerController> managerController,
+            Lazy<QueueController> queueController, Lazy<DetailsController> detailsController,
+            Lazy<CrawlerController> crawlerController, Lazy<ShellViewModel> shellViewModel)
         {
             this.shellService = shellService;
             this.environmentService = environmentService;

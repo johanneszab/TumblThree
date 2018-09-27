@@ -20,7 +20,8 @@ namespace TumblThree.Applications.ViewModels
         private int count = 0;
 
         [ImportingConstructor]
-        public DetailsTumblrBlogViewModel([Import("TumblrBlogView", typeof(IDetailsView))]IDetailsView view, IClipboardService clipboardService) : base(view)
+        public DetailsTumblrBlogViewModel([Import("TumblrBlogView", typeof(IDetailsView))]IDetailsView view,
+            IClipboardService clipboardService) : base(view)
         {
             this.clipboardService = clipboardService;
             copyUrlCommand = new DelegateCommand(CopyUrlToClipboard);

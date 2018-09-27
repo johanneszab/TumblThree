@@ -23,19 +23,23 @@ namespace TumblThree.Applications.Controllers
     [Export]
     internal class QueueController
     {
-        private readonly DelegateCommand clearQueueCommand;
         private readonly ICrawlerService crawlerService;
         private readonly IDetailsService detailsService;
         private readonly IFileDialogService fileDialogService;
         private readonly IManagerService managerService;
+        private readonly IShellService shellService;
+
+        private readonly DelegateCommand clearQueueCommand;
         private readonly DelegateCommand openQueueCommand;
-        private readonly FileType openQueuelistFileType;
-        private readonly Lazy<QueueViewModel> queueViewModel;
         private readonly DelegateCommand removeSelectedCommand;
         private readonly DelegateCommand saveQueueCommand;
-        private readonly FileType saveQueuelistFileType;
-        private readonly IShellService shellService;
         private readonly DelegateCommand showBlogDetailsCommand;
+
+        private readonly Lazy<QueueViewModel> queueViewModel;
+
+        private readonly FileType saveQueuelistFileType;
+
+        private readonly FileType openQueuelistFileType;
 
         [ImportingConstructor]
         public QueueController(IFileDialogService fileDialogService, IShellService shellService, IDetailsService detailsService,

@@ -10,7 +10,7 @@ namespace TumblThree.Applications.Services
     [Export(typeof(ISharedCookieService)), Export]
     public class SharedCookieService : ISharedCookieService
     {
-        private readonly CookieContainer cookieContainer = new CookieContainer(); // used to store dot prefixed cookies that cannot be stored to disk because "http://.domain.com" is not a vailid Uri
+        private readonly CookieContainer cookieContainer = new CookieContainer();
 
         public void GetUriCookie(CookieContainer request, Uri uri)
         {
