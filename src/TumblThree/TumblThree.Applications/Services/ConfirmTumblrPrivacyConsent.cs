@@ -16,7 +16,8 @@ namespace TumblThree.Applications.Services
         private string tumblrKey = string.Empty;
 
         [ImportingConstructor]
-        public ConfirmTumblrPrivacyConsent(IShellService shellService, ISharedCookieService cookieService, IWebRequestFactory webRequestFactory)
+        public ConfirmTumblrPrivacyConsent(IShellService shellService, ISharedCookieService cookieService,
+            IWebRequestFactory webRequestFactory)
         {
             this.webRequestFactory = webRequestFactory;
             this.cookieService = cookieService;

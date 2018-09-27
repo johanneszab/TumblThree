@@ -6,13 +6,12 @@ using System.Windows.Interop;
 
 namespace TumblThree.Applications.Services
 {
-
     [Export(typeof(IFolderBrowserDialog))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
     internal class WindowsFormsFolderBrowserDialog : IFolderBrowserDialog
     {
-        private string _description;
-        private string _selectedPath;
+        private string description;
+        private string selectedPath;
 
         [ImportingConstructor]
         public WindowsFormsFolderBrowserDialog()
@@ -25,16 +24,16 @@ namespace TumblThree.Applications.Services
 
         public string Description
         {
-            get => _description ?? string.Empty;
-            set => _description = value;
+            get => description ?? string.Empty;
+            set => description = value;
         }
 
         public System.Environment.SpecialFolder RootFolder { get; set; }
 
         public string SelectedPath
         {
-            get => _selectedPath ?? string.Empty;
-            set => _selectedPath = value;
+            get => selectedPath ?? string.Empty;
+            set => selectedPath = value;
         }
 
         public bool ShowNewFolderButton { get; set; }
