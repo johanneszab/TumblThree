@@ -70,6 +70,7 @@
     <Compile Include="Controllers\ModuleController.cs" />
     <Compile Include="Controllers\QueueController.cs" />
     <Compile Include="Crawler\AbstractTumblrCrawler.cs" />
+    <Compile Include="Crawler\TumblrHiddenCrawler.cs" />
     <Compile Include="DataModels\TumblrApiJson.cs" />
     <Compile Include="Parser\CatBoxParser.cs" />
     <Compile Include="Parser\ICatBoxParser.cs" />

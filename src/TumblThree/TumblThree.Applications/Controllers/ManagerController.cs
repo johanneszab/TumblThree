@@ -25,6 +25,7 @@ namespace TumblThree.Applications.Controllers
     internal class ManagerController
     {
         private readonly IBlogFactory blogFactory;
+        private readonly ICrawlerService crawlerService;
         private readonly IClipboardService clipboardService;
         private readonly ICrawlerFactory crawlerFactory;
         private readonly IManagerService managerService;
@@ -39,7 +40,6 @@ namespace TumblThree.Applications.Controllers
         private readonly DelegateCommand copyUrlCommand;
         private readonly AsyncDelegateCommand addBlogCommand;
         private readonly DelegateCommand autoDownloadCommand;
-        private readonly ICrawlerService crawlerService;
         private readonly DelegateCommand enqueueSelectedCommand;
         private readonly DelegateCommand listenClipboardCommand;
         private readonly AsyncDelegateCommand loadLibraryCommand;
@@ -60,8 +60,10 @@ namespace TumblThree.Applications.Controllers
         #endregion
 
         [ImportingConstructor]
-        public ManagerController(IShellService shellService, ISelectionService selectionService, ICrawlerService crawlerService, ISettingsService settingsService, IClipboardService clipboardService,
-                                IManagerService managerService, ICrawlerFactory crawlerFactory, IBlogFactory blogFactory, ITumblrBlogDetector tumblrBlogDetector, IMessageService messageService, Lazy<ManagerViewModel> managerViewModel)
+        public ManagerController(IShellService shellService, ISelectionService selectionService, ICrawlerService crawlerService,
+            ISettingsService settingsService, IClipboardService clipboardService, IManagerService managerService,
+            ICrawlerFactory crawlerFactory, IBlogFactory blogFactory, ITumblrBlogDetector tumblrBlogDetector,
+            IMessageService messageService, Lazy<ManagerViewModel> managerViewModel)
         {
             this.shellService = shellService;
             this.selectionService = selectionService;

@@ -514,10 +514,8 @@ namespace TumblThree.Applications.Crawler
 
         private void AddInlinePhotoUrl(Post post)
         {
-            if (post.caption == null)
-                return;
             var regex = new Regex("\"(http[A-Za-z0-9_/:.]*media.tumblr.com[A-Za-z0-9_/:.]*(jpg|png|gif))\"");
-            foreach (Match match in regex.Matches(post.caption))
+            foreach (Match match in regex.Matches(InlineSearch(post)))
             {
                 string postId = post.id;
 
@@ -589,10 +587,8 @@ namespace TumblThree.Applications.Crawler
 
         private void AddInlineVttTumblrVideoUrl(Post post)
         {
-            if (post.caption == null)
-                return;
             var regex = new Regex("\"(https?://vtt.tumblr.com/(tumblr_[\\w]*))");
-            foreach (Match match in regex.Matches(post.caption))
+            foreach (Match match in regex.Matches(InlineSearch(post)))
             {
                 string videoUrl = match.Groups[1].Value;
                 if (shellService.Settings.VideoSize == 1080)
@@ -610,10 +606,8 @@ namespace TumblThree.Applications.Crawler
 
         private void AddInlineVideoUrl(Post post)
         {
-            if (post.caption == null)
-                return;
             var regex = new Regex("src=\"(http[A-Za-z0-9_/:.]*video_file[\\S]*/(tumblr_[\\w]*))[0-9/]*\"");
-            foreach (Match match in regex.Matches(post.caption))
+            foreach (Match match in regex.Matches(InlineSearch(post)))
             {
                 string videoUrl = match.Groups[2].Value;
                 if (shellService.Settings.VideoSize == 1080)
@@ -829,6 +823,11 @@ namespace TumblThree.Applications.Crawler
                     }
                 }
             }
+        }
+
+        private string InlineSearch(Post post)
+        {
+            return string.Join(" ", post.trail.Select(trail => trail.content_raw));
         }
 
         private async Task AddExternalPhotoUrlToDownloadList(TumblrJson document)

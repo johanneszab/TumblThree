@@ -15,14 +15,15 @@ namespace TumblThree.Applications.Controllers
     [Export, Export(typeof(IDetailsService))]
     internal class DetailsController : IDetailsService
     {
-        private readonly HashSet<IBlog> blogsToSave;
-        private Lazy<IDetailsViewModel> detailsViewModel;
         private readonly ISelectionService selectionService;
         private readonly IShellService shellService;
 
+        private Lazy<IDetailsViewModel> detailsViewModel;
+
+        private readonly HashSet<IBlog> blogsToSave;
+
         [ImportingConstructor]
-        public DetailsController(IShellService shellService, ISelectionService selectionService, IManagerService managerService
-            )
+        public DetailsController(IShellService shellService, ISelectionService selectionService, IManagerService managerService)
         {
             this.shellService = shellService;
             this.selectionService = selectionService;
