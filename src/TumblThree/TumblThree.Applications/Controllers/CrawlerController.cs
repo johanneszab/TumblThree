@@ -156,9 +156,9 @@ namespace TumblThree.Applications.Controllers
                 runningTasks.Add(Task.Run(() => RunCrawlerTasks(cancellation.Token, pause.Token)));
             }
 
-            try { await Task.WhenAll(runningTasks.ToArray()); crawlerCancellationToken.Dispose(); }
+            try { await Task.WhenAll(runningTasks.ToArray()); }
             catch { }
-            finally { runningTasks.Clear(); }
+            finally { crawlerCancellationToken.Dispose(); runningTasks.Clear(); }
         }
 
         private async Task RunCrawlerTasks(CancellationToken ct, PauseToken pt)
