@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Waf.Applications;
@@ -25,6 +26,7 @@ namespace TumblThree.Applications.Controllers
     internal class ManagerController
     {
         private readonly IBlogFactory blogFactory;
+        private readonly ICrawlerService crawlerService;
         private readonly IClipboardService clipboardService;
         private readonly ICrawlerFactory crawlerFactory;
         private readonly IManagerService managerService;
@@ -39,7 +41,6 @@ namespace TumblThree.Applications.Controllers
         private readonly DelegateCommand copyUrlCommand;
         private readonly AsyncDelegateCommand addBlogCommand;
         private readonly DelegateCommand autoDownloadCommand;
-        private readonly ICrawlerService crawlerService;
         private readonly DelegateCommand enqueueSelectedCommand;
         private readonly DelegateCommand listenClipboardCommand;
         private readonly AsyncDelegateCommand loadLibraryCommand;
@@ -60,8 +61,10 @@ namespace TumblThree.Applications.Controllers
         #endregion
 
         [ImportingConstructor]
-        public ManagerController(IShellService shellService, ISelectionService selectionService, ICrawlerService crawlerService, ISettingsService settingsService, IClipboardService clipboardService,
-                                IManagerService managerService, ICrawlerFactory crawlerFactory, IBlogFactory blogFactory, ITumblrBlogDetector tumblrBlogDetector, IMessageService messageService, Lazy<ManagerViewModel> managerViewModel)
+        public ManagerController(IShellService shellService, ISelectionService selectionService, ICrawlerService crawlerService,
+            ISettingsService settingsService, IClipboardService clipboardService, IManagerService managerService,
+            ICrawlerFactory crawlerFactory, IBlogFactory blogFactory, ITumblrBlogDetector tumblrBlogDetector,
+            IMessageService messageService, Lazy<ManagerViewModel> managerViewModel)
         {
             this.shellService = shellService;
             this.selectionService = selectionService;
@@ -164,26 +167,19 @@ namespace TumblThree.Applications.Controllers
             managerService.BlogFiles.Clear();
             string path = Path.Combine(shellService.Settings.DownloadLocation, "Index");
 
-            try
+            if (Directory.Exists(path))
             {
-                if (Directory.Exists(path))
                 {
+                    IReadOnlyList<IBlog> files = await GetIBlogsAsync(path);
+                    foreach (IBlog file in files)
                     {
-                        IReadOnlyList<IBlog> files = await GetIBlogsAsync(path);
-                        foreach (IBlog file in files)
-                        {
-                            managerService.BlogFiles.Add(file);
-                        }
-
-                        BlogManagerFinishedLoadingLibrary?.Invoke(this, EventArgs.Empty);
+                        managerService.BlogFiles.Add(file);
                     }
+
+                    BlogManagerFinishedLoadingLibrary?.Invoke(this, EventArgs.Empty);
                 }
             }
-            catch (Exception ex)
-            {
-                Logger.Verbose("ManagerController:LoadLibrary: {0}", ex);
-                shellService.ShowError(ex, Resources.CouldNotLoadLibrary, ex.Data["Filename"]);
-            }
+
             Logger.Verbose("ManagerController.LoadLibrary:End");
         }
 
@@ -219,6 +215,7 @@ namespace TumblThree.Applications.Controllers
             Logger.Verbose("ManagerController:GetFilesCore Start");
 
             var blogs = new List<IBlog>();
+            var failedToLoadBlogs = new List<string>();
 
             string[] supportedFileTypes = Enum.GetNames(typeof(BlogTypes)).ToArray();
 
@@ -227,17 +224,31 @@ namespace TumblThree.Applications.Controllers
                             !fileName.Contains("_files")))
             {
                 //TODO: Refactor
-                if (filename.EndsWith(BlogTypes.tumblr.ToString()))
-                    blogs.Add(new TumblrBlog().Load(filename));
-                if (filename.EndsWith(BlogTypes.tmblrpriv.ToString()))
-                    blogs.Add(new TumblrHiddenBlog().Load(filename));
-                if (filename.EndsWith(BlogTypes.tlb.ToString()))
-                    blogs.Add(new TumblrLikedByBlog().Load(filename));
-                if (filename.EndsWith(BlogTypes.tumblrsearch.ToString()))
-                    blogs.Add(new TumblrSearchBlog().Load(filename));
-                if (filename.EndsWith(BlogTypes.tumblrtagsearch.ToString()))
-                    blogs.Add(new TumblrTagSearchBlog().Load(filename));
+                try
+                {
+                    if (filename.EndsWith(BlogTypes.tumblr.ToString()))
+                        blogs.Add(new TumblrBlog().Load(filename));
+                    if (filename.EndsWith(BlogTypes.tmblrpriv.ToString()))
+                        blogs.Add(new TumblrHiddenBlog().Load(filename));
+                    if (filename.EndsWith(BlogTypes.tlb.ToString()))
+                        blogs.Add(new TumblrLikedByBlog().Load(filename));
+                    if (filename.EndsWith(BlogTypes.tumblrsearch.ToString()))
+                        blogs.Add(new TumblrSearchBlog().Load(filename));
+                    if (filename.EndsWith(BlogTypes.tumblrtagsearch.ToString()))
+                        blogs.Add(new TumblrTagSearchBlog().Load(filename));
+                }
+                catch (SerializationException ex)
+                {
+                    failedToLoadBlogs.Add(ex.Data["Filename"].ToString());
+                }
             }
+            if (failedToLoadBlogs.Any())
+            {
+                string failedBlogNames = failedToLoadBlogs.Aggregate((a, b) => a + ", " + b);
+                Logger.Verbose("ManagerController:LoadLibrary: {0}", failedBlogNames);
+                shellService.ShowError(new SerializationException(), Resources.CouldNotLoadLibrary, failedBlogNames);
+            }
+
             Logger.Verbose("ManagerController.GetFilesCore End");
 
             return blogs;
@@ -253,6 +264,7 @@ namespace TumblThree.Applications.Controllers
             Logger.Verbose("ManagerController:GetFilesCore Start");
 
             var blogs = new List<IFiles>();
+            var failedToLoadBlogs = new List<string>();
 
             string[] supportedFileTypes = Enum.GetNames(typeof(BlogTypes)).ToArray();
 
@@ -261,8 +273,26 @@ namespace TumblThree.Applications.Controllers
                             fileName.Contains("_files")))
             {
                 //TODO: Refactor
-                blogs.Add(new Files().Load(filename));
+                try
+                {
+                    IFiles blog = new Files().Load(filename);
+                    if (shellService.Settings.LoadAllDatabases)
+                    {
+                        blogs.Add(blog);
+                    }
+                }
+                catch (SerializationException ex)
+                {
+                    failedToLoadBlogs.Add(ex.Data["Filename"].ToString());
+                }
             }
+            if (failedToLoadBlogs.Any())
+            {
+                string failedBlogNames = failedToLoadBlogs.Aggregate((a, b) => a + ", " + b);
+                Logger.Verbose("ManagerController:LoadLibrary: {0}", failedBlogNames);
+                shellService.ShowError(new SerializationException(), Resources.CouldNotLoadLibrary, failedBlogNames);
+            }
+
             Logger.Verbose("ManagerController.GetFilesCore End");
 
             return blogs;
@@ -272,29 +302,27 @@ namespace TumblThree.Applications.Controllers
         {
             Logger.Verbose("ManagerController.LoadDatabasesGloballyAsync:Start");
             managerService.ClearDatabases();
-            if (shellService.Settings.LoadAllDatabases)
-            {
-                string path = Path.Combine(shellService.Settings.DownloadLocation, "Index");
+            string path = Path.Combine(shellService.Settings.DownloadLocation, "Index");
 
-                try
+            try
+            {
+                if (Directory.Exists(path))
                 {
-                    if (Directory.Exists(path))
                     {
+                        IReadOnlyList<IFiles> databases = await GetIFilesAsync(path);
+                        foreach (IFiles database in databases)
                         {
-                            IReadOnlyList<IFiles> databases = await GetIFilesAsync(path);
-                            foreach (IFiles database in databases)
-                            {
-                                managerService.AddDatabase(database);
-                            }
+                            managerService.AddDatabase(database);
                         }
                     }
                 }
-                catch (Exception ex)
-                {
-                    Logger.Verbose("ManagerController:LoadDatabasesGloballyAsync: {0}", ex);
-                    shellService.ShowError(ex, Resources.CouldNotLoadLibrary, ex.Data["Filename"]);
-                }
             }
+            catch (Exception ex)
+            {
+                Logger.Verbose("ManagerController:LoadDatabasesGloballyAsync: {0}", ex);
+                shellService.ShowError(ex, Resources.CouldNotLoadLibrary, ex.Data["Filename"]);
+            }
+            
             BlogManaerFinishedLoadingDatabases?.Invoke(this, EventArgs.Empty);
             Logger.Verbose("ManagerController.LoadDatabasesGloballyAsync:End");
         }
@@ -482,12 +510,6 @@ namespace TumblThree.Applications.Controllers
 
         private async Task CheckStatusAsync()
         {
-            //        foreach (IBlog blog in selectionService.SelectedBlogFiles.ToArray())
-            //        {
-            //            ICrawler crawler = CrawlerFactory.GetCrawler(blog, new CancellationToken(), new PauseToken(),
-            //new Progress<DownloadProgress>(), shellService, crawlerService, managerService);
-            //            await crawler.IsBlogOnlineAsync();
-            //        }
             await Task.Run(async () =>
             {
                 var semaphoreSlim = new SemaphoreSlim(25);

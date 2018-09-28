@@ -38,7 +38,9 @@ namespace TumblThree.Applications.Crawler
         protected List<string> tags = new List<string>();
         protected int numberOfPagesCrawled = 0;
 
-        protected AbstractCrawler(IShellService shellService, ICrawlerService crawlerService, CancellationToken ct, IProgress<DownloadProgress> progress, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService, IPostQueue<TumblrPost> postQueue, IBlog blog)
+        protected AbstractCrawler(IShellService shellService, ICrawlerService crawlerService, CancellationToken ct,
+            IProgress<DownloadProgress> progress, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService,
+            IPostQueue<TumblrPost> postQueue, IBlog blog)
         {
             this.shellService = shellService;
             this.crawlerService = crawlerService;
