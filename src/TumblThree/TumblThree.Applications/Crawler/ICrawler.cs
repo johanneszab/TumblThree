@@ -9,7 +9,5 @@ namespace TumblThree.Applications.Crawler
         Task IsBlogOnlineAsync();
 
         Task UpdateMetaInformationAsync();
-
-        void UpdateProgressQueueInformation(string format, params object[] args);
     }
 }
