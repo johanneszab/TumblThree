@@ -22,6 +22,7 @@ namespace TumblThree.Domain.Models
 
         public Files()
         {
+            // DO NOT USE
         }
 
         public Files(string name, string location)
