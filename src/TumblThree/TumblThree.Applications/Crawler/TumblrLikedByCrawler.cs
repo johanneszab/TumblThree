@@ -201,8 +201,6 @@ namespace TumblThree.Applications.Crawler
                 crawlerNumber++;
                 if (!CheckIfWithinTimespan(pagination))
                     return;
-                //if (CheckIfPagecountReached(numberOfPagesCrawled))
-                //    return;
             }
         }
 
