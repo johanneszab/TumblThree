@@ -189,20 +189,12 @@ namespace TumblThree.Applications.Downloader
 
         protected void OnProgressChanged(DownloadProgressChangedEventArgs e)
         {
-            EventHandler<DownloadProgressChangedEventArgs> handler = ProgressChanged;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            ProgressChanged?.Invoke(this, e);
         }
 
         protected void OnCompleted(EventArgs e)
         {
-            EventHandler handler = Completed;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            Completed?.Invoke(this, e);
         }
     }
 

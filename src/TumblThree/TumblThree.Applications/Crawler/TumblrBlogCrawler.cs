@@ -229,14 +229,17 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException)
             {
-                // 429: Too Many Requests
-                var webRespStatusCode = (int)((HttpWebResponse)webException?.Response).StatusCode;
-                if (webRespStatusCode == 429)
+                if (webException.Response != null)
                 {
-                    Logger.Error("TumblrBlogCrawler:UpdateTotalPostCountAsync:WebException {0}", webException);
-                    shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
+                    // 429: Too Many Requests
+                    var webRespStatusCode = (int)((HttpWebResponse)webException.Response).StatusCode;
+                    if (webRespStatusCode == 429)
+                    {
+                        Logger.Error("TumblrBlogCrawler:UpdateTotalPostCountAsync:WebException {0}", webException);
+                        shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
+                    }
+                    blog.Posts = 0;
                 }
-                blog.Posts = 0;
             }
             catch (TimeoutException timeoutException)
             {
@@ -262,12 +265,15 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException)
             {
-                // 429: Too Many Requests
-                var webRespStatusCode = (int)((HttpWebResponse)webException?.Response).StatusCode;
-                if (webRespStatusCode == 429)
+                if (webException.Response != null)
                 {
-                    Logger.Error("TumblrBlogCrawler:GetHighestPostIdAsync:WebException {0}", webException);
-                    shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
+                    // 429: Too Many Requests
+                    var webRespStatusCode = (int)((HttpWebResponse)webException.Response).StatusCode;
+                    if (webRespStatusCode == 429)
+                    {
+                        Logger.Error("TumblrBlogCrawler:GetHighestPostIdAsync:WebException {0}", webException);
+                        shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
+                    }
                 }
                 return 0;
             }
