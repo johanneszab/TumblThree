@@ -129,11 +129,14 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException)
             {
-                var resp = (HttpWebResponse)webException.Response;
-                if (resp.StatusCode == HttpStatusCode.ServiceUnavailable)
+                if (webException.Response != null)
                 {
-                    Logger.Error("TumblrBlogCrawler:GetUrlsAsync: {0}", "User not logged in");
-                    shellService.ShowError(new Exception("User not logged in"), Resources.NotLoggedIn, blog.Name);
+                    var resp = (HttpWebResponse)webException.Response;
+                    if (resp.StatusCode == HttpStatusCode.ServiceUnavailable)
+                    {
+                        Logger.Error("TumblrBlogCrawler:GetUrlsAsync: {0}", "User not logged in");
+                        shellService.ShowError(new Exception("User not logged in"), Resources.NotLoggedIn, blog.Name);
+                    }
                 }
             }
         }
@@ -269,12 +272,15 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException)
             {
-                // 429: Too Many Requests
-                var webRespStatusCode = (int)((HttpWebResponse)webException?.Response).StatusCode;
-                if (webRespStatusCode == 429)
+                if (webException.Response != null)
                 {
-                    Logger.Error("TumblrBlogCrawler:GetHighestPostIdAsync:WebException {0}", webException);
-                    shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
+                    // 429: Too Many Requests
+                    var webRespStatusCode = (int)((HttpWebResponse)webException.Response).StatusCode;
+                    if (webRespStatusCode == 429)
+                    {
+                        Logger.Error("TumblrBlogCrawler:GetHighestPostIdAsync:WebException {0}", webException);
+                        shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
+                    }
                 }
                 return 0;
             }
@@ -330,10 +336,13 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException)
             {
-                var webRespStatusCode = (int)((HttpWebResponse)webException?.Response).StatusCode;
-                if (webRespStatusCode == 503)
+                if (webException.Response != null)
                 {
-                    return false;
+                    var webRespStatusCode = (int)((HttpWebResponse)webException.Response).StatusCode;
+                    if (webRespStatusCode == 503)
+                    {
+                        return false;
+                    }
                 }
             }
             catch (TimeoutException timeoutException)

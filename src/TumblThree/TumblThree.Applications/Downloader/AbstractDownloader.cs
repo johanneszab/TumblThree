@@ -80,7 +80,7 @@ namespace TumblThree.Applications.Downloader
             }
             catch (WebException webException) when ((webException.Response != null))
             {
-                var webRespStatusCode = (int)((HttpWebResponse)webException?.Response).StatusCode;
+                var webRespStatusCode = (int)((HttpWebResponse)webException.Response).StatusCode;
                 if (webRespStatusCode >= 400 && webRespStatusCode < 600) // removes inaccessible files: http status codes 400 to 599
                 {
                     try { File.Delete(fileLocation); } // could be open again in a different thread
