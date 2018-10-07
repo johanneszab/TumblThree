@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 using TumblThree.Domain.Models;
 
-namespace TumblThree.Applications.Crawler
+namespace TumblThree.Applications.Parser
 {
     public class WebmshareParser : IWebmshareParser
     {
@@ -14,7 +14,7 @@ namespace TumblThree.Applications.Crawler
 
         public string CreateWebmshareUrl(string webshareId, string detectedUrl, WebmshareTypes webmshareType)
         {
-            string url = "";
+            var url = "";
             switch (webmshareType)
             {
                 case WebmshareTypes.Mp4:
@@ -30,6 +30,7 @@ namespace TumblThree.Applications.Crawler
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+
             return url;
         }
     }

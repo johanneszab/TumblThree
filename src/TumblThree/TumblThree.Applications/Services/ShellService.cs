@@ -102,7 +102,7 @@ namespace TumblThree.Applications.Services
                 closing += value;
                 InitializeClosingEvent();
             }
-            remove { closing -= value; }
+            remove => closing -= value;
         }
 
         public void ShowError(Exception exception, string displayMessage)

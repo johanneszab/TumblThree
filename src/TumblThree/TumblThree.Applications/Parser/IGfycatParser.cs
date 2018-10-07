@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 using TumblThree.Domain.Models;
 
-namespace TumblThree.Applications.Crawler
+namespace TumblThree.Applications.Parser
 {
     public interface IGfycatParser
     {

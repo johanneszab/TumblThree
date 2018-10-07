@@ -7,15 +7,15 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-using TumblThree.Applications.Crawler;
 using TumblThree.Applications.DataModels;
 using TumblThree.Applications.DataModels.TumblrPosts;
+using TumblThree.Applications.Downloader;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain;
-using TumblThree.Domain.Models;
+using TumblThree.Domain.Models.Blogs;
 
-namespace TumblThree.Applications.Downloader
+namespace TumblThree.Applications.Crawler
 {
     [Export(typeof(ICrawler))]
     [ExportMetadata("BlogType", typeof(TumblrBlog))]
@@ -56,10 +56,12 @@ namespace TumblThree.Applications.Downloader
         {
             if (Regex.IsMatch(document, "<form id=\"auth_password\" method=\"post\">"))
             {
-                Logger.Error("TumblrBlogCrawler:CheckIfPasswordProtecedBlog:PasswordProtectedBlog {0}", Resources.PasswordProtected, blog.Name);
+                Logger.Error("TumblrBlogCrawler:CheckIfPasswordProtecedBlog:PasswordProtectedBlog {0}",
+                    Resources.PasswordProtected, blog.Name);
                 shellService.ShowError(new WebException(), Resources.PasswordProtected, blog.Name);
                 return true;
             }
+
             return false;
         }
 
@@ -128,6 +130,7 @@ namespace TumblThree.Applications.Downloader
                     }
                 })());
             }
+
             await Task.WhenAll(trackedTasks);
 
             postQueue.CompleteAdding();
@@ -143,6 +146,7 @@ namespace TumblThree.Applications.Downloader
                 {
                     return;
                 }
+
                 if (pt.IsPaused)
                 {
                     pt.WaitWhilePausedWithResponseAsyc().Wait();
@@ -158,6 +162,7 @@ namespace TumblThree.Applications.Downloader
                 {
                     return;
                 }
+
                 crawlerNumber += shellService.Settings.ConcurrentScans;
             }
         }
@@ -176,6 +181,7 @@ namespace TumblThree.Applications.Downloader
                     {
                         continue;
                     }
+
                     imageUrl = ResizeTumblrImageUrl(imageUrl);
                     // TODO: postID
                     AddToDownloadList(new PhotoPost(imageUrl, Guid.NewGuid().ToString("N")));

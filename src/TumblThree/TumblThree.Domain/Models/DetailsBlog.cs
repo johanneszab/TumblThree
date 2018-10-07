@@ -1,5 +1,7 @@
 ﻿using System.Runtime.Serialization;
 
+using TumblThree.Domain.Models.Blogs;
+
 namespace TumblThree.Domain.Models
 {
     [DataContract]
@@ -23,10 +25,6 @@ namespace TumblThree.Domain.Models
         private bool? skipGif;
         private bool? downloadRebloggedPosts;
         private bool? online;
-
-        public DetailsBlog()
-        {
-        }
 
         [DataMember]
         public new bool? DownloadText
@@ -167,7 +165,6 @@ namespace TumblThree.Domain.Models
             set => SetProperty(ref online, value);
         }
 
-
         [DataMember]
         public new bool? CheckDirectoryForFiles
         {
@@ -190,8 +187,7 @@ namespace TumblThree.Domain.Models
             }
         }
 
-        [DataMember]
-        public new bool? Dirty { get; set; }
+        [DataMember] public new bool? Dirty { get; set; }
 
         [DataMember]
         public new bool? SkipGif

@@ -1,12 +1,13 @@
 ﻿using System.ComponentModel.Composition;
 using System.Waf.Applications;
+using System.Windows.Forms;
 using System.Windows.Input;
 
 using TumblThree.Applications.Services;
 using TumblThree.Applications.Views;
-using TumblThree.Domain.Models;
+using TumblThree.Domain.Models.Blogs;
 
-namespace TumblThree.Applications.ViewModels
+namespace TumblThree.Applications.ViewModels.DetailsViewModels
 {
     [Export(typeof(IDetailsViewModel))]
     [ExportMetadata("BlogType", typeof(TumblrLikedByBlog))]
@@ -20,7 +21,8 @@ namespace TumblThree.Applications.ViewModels
         private int count = 0;
 
         [ImportingConstructor]
-        public DetailsTumblrLikedByViewModel([Import("TumblrLikedByView", typeof(IDetailsView))]IDetailsView view,
+        public DetailsTumblrLikedByViewModel([Import("TumblrLikedByView", typeof(IDetailsView))]
+            IDetailsView view,
             IClipboardService clipboardService) : base(view)
         {
             this.clipboardService = clipboardService;
@@ -54,8 +56,8 @@ namespace TumblThree.Applications.ViewModels
 
         private void BrowseFileDownloadLocation()
         {
-            var dialog = new System.Windows.Forms.FolderBrowserDialog { SelectedPath = BlogFile.FileDownloadLocation };
-            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            var dialog = new FolderBrowserDialog { SelectedPath = BlogFile.FileDownloadLocation };
+            if (dialog.ShowDialog() == DialogResult.OK)
             {
                 BlogFile.FileDownloadLocation = dialog.SelectedPath;
             }

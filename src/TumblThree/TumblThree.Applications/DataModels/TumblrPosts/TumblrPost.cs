@@ -1,6 +1,10 @@
-﻿namespace TumblThree.Applications.DataModels
+﻿namespace TumblThree.Applications.DataModels.TumblrPosts
 {
-    public enum PostType { Binary, Text }
+    public enum PostType
+    {
+        Binary,
+        Text
+    }
 
     public abstract class TumblrPost
     {
@@ -16,7 +20,7 @@
 
         public string TextFileLocation { get; protected set; }
 
-        public TumblrPost(string url, string id, string date)
+        protected TumblrPost(string url, string id, string date)
         {
             this.Url = url;
             this.Id = id;

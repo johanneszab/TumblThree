@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Waf.Foundation;
 using System.Windows.Input;
+
 using TumblThree.Domain.Queue;
 
 namespace TumblThree.Applications.Services

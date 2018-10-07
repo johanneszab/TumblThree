@@ -8,6 +8,7 @@ using System.Windows.Input;
 
 using TumblThree.Applications.Services;
 using TumblThree.Domain.Models;
+using TumblThree.Domain.Models.Blogs;
 using TumblThree.Domain.Queue;
 
 namespace TumblThree.Presentation.DesignData

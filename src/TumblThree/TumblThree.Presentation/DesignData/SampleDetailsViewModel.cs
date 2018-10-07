@@ -1,8 +1,10 @@
 ﻿using System;
 
 using TumblThree.Applications.ViewModels;
+using TumblThree.Applications.ViewModels.DetailsViewModels;
 using TumblThree.Applications.Views;
 using TumblThree.Domain.Models;
+using TumblThree.Domain.Models.Blogs;
 
 namespace TumblThree.Presentation.DesignData
 {

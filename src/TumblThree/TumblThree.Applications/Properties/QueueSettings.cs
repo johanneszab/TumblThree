@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 using TumblThree.Domain.Models;
@@ -21,21 +20,13 @@ namespace TumblThree.Applications.Properties
             types = new List<BlogTypes>();
         }
 
-        [DataMember]
-        public string LastCrawledBlogName { get; set; }
+        [DataMember] public string LastCrawledBlogName { get; set; }
 
-        [DataMember]
-        public BlogTypes LastCrawledBlogType { get; set; }
+        [DataMember] public BlogTypes LastCrawledBlogType { get; set; }
 
-        public IReadOnlyList<string> Names
-        {
-            get { return names; }
-        }
+        public IReadOnlyList<string> Names => names;
 
-        public IReadOnlyList<BlogTypes> Types
-        {
-            get { return types; }
-        }
+        public IReadOnlyList<BlogTypes> Types => types;
 
         ExtensionDataObject IExtensibleDataObject.ExtensionData { get; set; }
 

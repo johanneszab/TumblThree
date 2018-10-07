@@ -75,15 +75,17 @@ namespace TumblThree.Domain.Queue
 
         public void MoveItems(int newIndex, IEnumerable<QueueListItem> itemsToMove)
         {
-            int oldIndex = items.IndexOf(itemsToMove.First());
+            List<QueueListItem> listItems = itemsToMove.ToList();
+
+            int oldIndex = items.IndexOf(listItems.First());
             if (oldIndex != newIndex)
             {
                 if (newIndex < oldIndex)
                 {
-                    itemsToMove = itemsToMove.Reverse();
+                    listItems.Reverse();
                 }
 
-                foreach (QueueListItem item in itemsToMove)
+                foreach (QueueListItem item in listItems)
                 {
                     int currentIndex = items.IndexOf(item);
                     if (currentIndex != newIndex)

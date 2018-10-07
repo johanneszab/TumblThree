@@ -13,6 +13,7 @@ using TumblThree.Applications.ViewModels;
 using TumblThree.Applications.Views;
 using TumblThree.Presentation.Controls;
 using TumblThree.Domain.Models;
+using TumblThree.Domain.Models.Blogs;
 using TumblThree.Domain.Queue;
 
 namespace TumblThree.Presentation.Views

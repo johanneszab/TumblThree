@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace TumblThree.Applications.Crawler
+namespace TumblThree.Applications.Parser
 {
     public interface IImgurParser
     {

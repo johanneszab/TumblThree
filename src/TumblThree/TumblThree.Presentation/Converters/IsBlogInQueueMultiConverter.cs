@@ -5,6 +5,7 @@ using System.Waf.Foundation;
 using System.Windows.Data;
 
 using TumblThree.Domain.Models;
+using TumblThree.Domain.Models.Blogs;
 using TumblThree.Domain.Queue;
 
 namespace TumblThree.Presentation.Converters

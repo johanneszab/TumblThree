@@ -50,10 +50,7 @@
     <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
@@ -325,7 +322,7 @@
       <Name>WpfApplicationFramework</Name>
     </ProjectReference>
     <ProjectReference Include="..\TumblThree.Applications\TumblThree.Applications.csproj">
-      <Project>{bd6b0abd-6114-476b-b0df-734e891d6634}</Project>
+      <Project>{BD6B0ABD-6114-476B-B0DF-734E891D6634}</Project>
       <Name>TumblThree.Applications</Name>
     </ProjectReference>
     <ProjectReference Include="..\TumblThree.Domain\TumblThree.Domain.csproj">

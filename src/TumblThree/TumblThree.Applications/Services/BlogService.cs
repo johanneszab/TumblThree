@@ -3,7 +3,8 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 
-using TumblThree.Domain.Models;
+using TumblThree.Domain.Models.Blogs;
+using TumblThree.Domain.Models.Files;
 
 namespace TumblThree.Applications.Services
 {
@@ -40,7 +41,6 @@ namespace TumblThree.Applications.Services
                 postCounter++;
                 property.SetValue(blog, postCounter, null);
             }
-
         }
 
         public void UpdateBlogDB(string fileName)
@@ -65,6 +65,7 @@ namespace TumblThree.Applications.Services
                 Directory.CreateDirectory(blogPath);
                 return true;
             }
+
             return true;
         }
 
@@ -77,6 +78,7 @@ namespace TumblThree.Applications.Services
                 Monitor.Exit(lockObjectDb);
                 return true;
             }
+
             Monitor.Exit(lockObjectDb);
             return false;
         }
@@ -87,6 +89,7 @@ namespace TumblThree.Applications.Services
             {
                 return CheckIfFileExistsInDirectory(url);
             }
+
             return false;
         }
 
@@ -100,6 +103,7 @@ namespace TumblThree.Applications.Services
                 Monitor.Exit(lockObjectDirectory);
                 return true;
             }
+
             Monitor.Exit(lockObjectDirectory);
             return false;
         }

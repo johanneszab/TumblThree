@@ -5,7 +5,7 @@ namespace TumblThree.Applications.DataModels
 {
     public class PostQueue<T> : IPostQueue<T>
     {
-        private BlockingCollection<T> postQueue;
+        private readonly BlockingCollection<T> postQueue;
 
         public PostQueue(IProducerConsumerCollection<T> postTaskCollection)
         {

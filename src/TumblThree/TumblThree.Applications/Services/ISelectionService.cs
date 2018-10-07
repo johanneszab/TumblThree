@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-using TumblThree.Domain.Models;
+using TumblThree.Domain.Models.Blogs;
 
 namespace TumblThree.Applications.Services
 {

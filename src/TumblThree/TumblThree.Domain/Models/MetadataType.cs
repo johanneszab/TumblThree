@@ -11,6 +11,7 @@ namespace TumblThree.Domain.Models
     {
         [LocalizedDescription("text", typeof(Resources))]
         Text,
+
         [LocalizedDescription("json", typeof(Resources))]
         Json
     }

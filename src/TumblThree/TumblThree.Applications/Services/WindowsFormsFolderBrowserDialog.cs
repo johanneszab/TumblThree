@@ -4,6 +4,8 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Interop;
 
+using IWin32Window = System.Windows.Forms.IWin32Window;
+
 namespace TumblThree.Applications.Services
 {
     [Export(typeof(IFolderBrowserDialog))]
@@ -16,7 +18,7 @@ namespace TumblThree.Applications.Services
         [ImportingConstructor]
         public WindowsFormsFolderBrowserDialog()
         {
-            RootFolder = System.Environment.SpecialFolder.MyComputer;
+            RootFolder = Environment.SpecialFolder.MyComputer;
             ShowNewFolderButton = false;
         }
 
@@ -28,7 +30,7 @@ namespace TumblThree.Applications.Services
             set => description = value;
         }
 
-        public System.Environment.SpecialFolder RootFolder { get; set; }
+        public Environment.SpecialFolder RootFolder { get; set; }
 
         public string SelectedPath
         {
@@ -40,9 +42,9 @@ namespace TumblThree.Applications.Services
 
         public bool? ShowDialog()
         {
-            using (var dialog = CreateDialog())
+            using (FolderBrowserDialog dialog = CreateDialog())
             {
-                var result = dialog.ShowDialog() == DialogResult.OK;
+                bool result = dialog.ShowDialog() == DialogResult.OK;
                 if (result) SelectedPath = dialog.SelectedPath;
                 return result;
             }
@@ -50,13 +52,14 @@ namespace TumblThree.Applications.Services
 
         public bool? ShowDialog(Window owner)
         {
-            using (var dialog = CreateDialog())
+            using (FolderBrowserDialog dialog = CreateDialog())
             {
-                var result = dialog.ShowDialog(owner.AsWin32Window()) == DialogResult.OK;
+                bool result = dialog.ShowDialog(owner.AsWin32Window()) == DialogResult.OK;
                 if (result) SelectedPath = dialog.SelectedPath;
                 return result;
             }
         }
+
         #endregion
 
         private FolderBrowserDialog CreateDialog()
@@ -74,13 +77,13 @@ namespace TumblThree.Applications.Services
 
     internal static class WindowExtensions
     {
-        public static System.Windows.Forms.IWin32Window AsWin32Window(this Window window)
+        public static IWin32Window AsWin32Window(this Window window)
         {
             return new Wpf32Window(window);
         }
     }
 
-    internal class Wpf32Window : System.Windows.Forms.IWin32Window
+    internal class Wpf32Window : IWin32Window
     {
         public Wpf32Window(Window window)
         {

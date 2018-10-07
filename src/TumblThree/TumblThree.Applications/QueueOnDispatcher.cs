@@ -52,6 +52,7 @@ namespace TumblThree.Applications
             {
                 return;
             }
+
             CheckDispatcher();
             if (UIDispatcher.CheckAccess())
             {
@@ -89,6 +90,7 @@ namespace TumblThree.Applications
             {
                 return;
             }
+
             UIDispatcher = Dispatcher.CurrentDispatcher;
         }
 

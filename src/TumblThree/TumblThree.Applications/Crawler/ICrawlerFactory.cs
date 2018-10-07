@@ -2,8 +2,7 @@
 using System.Threading;
 
 using TumblThree.Applications.DataModels;
-using TumblThree.Applications.Services;
-using TumblThree.Domain.Models;
+using TumblThree.Domain.Models.Blogs;
 
 namespace TumblThree.Applications.Crawler
 {
@@ -11,6 +10,6 @@ namespace TumblThree.Applications.Crawler
     {
         ICrawler GetCrawler(IBlog blog);
 
-        ICrawler GetCrawler(IBlog blog, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, IShellService shellService, ICrawlerService crawlerService, IManagerService managerService);
+        ICrawler GetCrawler(IBlog blog, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress);
     }
 }
