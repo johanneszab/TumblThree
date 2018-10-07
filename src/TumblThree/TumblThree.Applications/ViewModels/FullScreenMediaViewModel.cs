@@ -1,9 +1,7 @@
 ﻿using System.ComponentModel.Composition;
-
 using System.Waf.Applications;
 
 using TumblThree.Applications.Views;
-
 
 namespace TumblThree.Applications.ViewModels
 {

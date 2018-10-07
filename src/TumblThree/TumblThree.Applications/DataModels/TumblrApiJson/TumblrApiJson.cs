@@ -7,8 +7,7 @@ namespace TumblThree.Applications.DataModels.TumblrApiJson
     [DataContract]
     public class TumblrApiJson
     {
-        [DataMember(EmitDefaultValue = false)]
-        public Tumblelog tumblelog { get; set; }
+        [DataMember(EmitDefaultValue = false)] public Tumblelog tumblelog { get; set; }
 
         [DataMember(Name = "posts-start", EmitDefaultValue = false)]
         public int posts_start { get; set; }
@@ -19,102 +18,74 @@ namespace TumblThree.Applications.DataModels.TumblrApiJson
         [DataMember(Name = "posts-type", EmitDefaultValue = false)]
         public bool posts_type { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public List<Post> posts { get; set; }
+        [DataMember(EmitDefaultValue = false)] public List<Post> posts { get; set; }
     }
 
     [DataContract]
     public class Tumblelog
     {
-        [DataMember(EmitDefaultValue = false)]
-        public string title { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string title { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string description { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string description { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string name { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string name { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string timezone { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string timezone { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public object cname { get; set; }
+        [DataMember(EmitDefaultValue = false)] public object cname { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public List<object> feeds { get; set; }
+        [DataMember(EmitDefaultValue = false)] public List<object> feeds { get; set; }
     }
 
     [DataContract]
     public class Tumblelog2
     {
-        [DataMember(EmitDefaultValue = false)]
-        public string title { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string title { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string name { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string name { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public object cname { get; set; }
+        [DataMember(EmitDefaultValue = false)] public object cname { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string url { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string url { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string timezone { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string timezone { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string avatar_url_16 { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string avatar_url_16 { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string avatar_url_24 { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string avatar_url_24 { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string avatar_url_30 { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string avatar_url_30 { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string avatar_url_40 { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string avatar_url_40 { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string avatar_url_48 { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string avatar_url_48 { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string avatar_url_64 { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string avatar_url_64 { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string avatar_url_96 { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string avatar_url_96 { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string avatar_url_128 { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string avatar_url_128 { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string avatar_url_512 { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string avatar_url_512 { get; set; }
     }
 
     [DataContract]
     public class Conversation
     {
-        [DataMember(EmitDefaultValue = false)]
-        public string name { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string name { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string label { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string label { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string phrase { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string phrase { get; set; }
     }
 
     [DataContract]
     public class Photo
     {
-        [DataMember(EmitDefaultValue = false)]
-        public string offset { get; set; }
-        [DataMember(EmitDefaultValue = false)]
-        public string caption { get; set; }
-        [DataMember(EmitDefaultValue = false)]
-        public int width { get; set; }
-        [DataMember(EmitDefaultValue = false)]
-        public int height { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string offset { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string caption { get; set; }
+        [DataMember(EmitDefaultValue = false)] public int width { get; set; }
+        [DataMember(EmitDefaultValue = false)] public int height { get; set; }
 
         [DataMember(Name = "photo-url-1280", EmitDefaultValue = false)]
         public string photo_url_1280 { get; set; }
@@ -138,29 +109,23 @@ namespace TumblThree.Applications.DataModels.TumblrApiJson
     [DataContract]
     public class Post : ICloneable
     {
-        [DataMember(EmitDefaultValue = false)]
-        public string id { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string id { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string url { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string url { get; set; }
 
         [DataMember(Name = "url-with-slug", EmitDefaultValue = false)]
         public string url_with_slug { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string type { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string type { get; set; }
 
         [DataMember(Name = "date-gmt", EmitDefaultValue = false)]
         public string date_gmt { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string date { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string date { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public int? bookmarklet { get; set; }
+        [DataMember(EmitDefaultValue = false)] public int? bookmarklet { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public int? mobile { get; set; }
+        [DataMember(EmitDefaultValue = false)] public int? mobile { get; set; }
 
         [DataMember(Name = "feed-item", EmitDefaultValue = false)]
         public string feed_item { get; set; }
@@ -171,13 +136,12 @@ namespace TumblThree.Applications.DataModels.TumblrApiJson
         [DataMember(Name = "unix-timestamp", EmitDefaultValue = false)]
         public int unix_timestamp { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string format { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string format { get; set; }
 
         [DataMember(Name = "reblog-key", EmitDefaultValue = false)]
         public string reblog_key { get; set; }
-        [DataMember(EmitDefaultValue = false)]
-        public string slug { get; set; }
+
+        [DataMember(EmitDefaultValue = false)] public string slug { get; set; }
 
         [DataMember(Name = "is-submission", EmitDefaultValue = false)]
         public bool is_submission { get; set; }
@@ -200,32 +164,23 @@ namespace TumblThree.Applications.DataModels.TumblrApiJson
         [DataMember(Name = "reblogged-from-title", EmitDefaultValue = false)]
         public string reblogged_from_title { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string reblogged_from_avatar_url_16 { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string reblogged_from_avatar_url_16 { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string reblogged_from_avatar_url_24 { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string reblogged_from_avatar_url_24 { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string reblogged_from_avatar_url_30 { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string reblogged_from_avatar_url_30 { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string reblogged_from_avatar_url_40 { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string reblogged_from_avatar_url_40 { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string reblogged_from_avatar_url_48 { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string reblogged_from_avatar_url_48 { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string reblogged_from_avatar_url_64 { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string reblogged_from_avatar_url_64 { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string reblogged_from_avatar_url_96 { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string reblogged_from_avatar_url_96 { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string reblogged_from_avatar_url_128 { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string reblogged_from_avatar_url_128 { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string reblogged_from_avatar_url_512 { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string reblogged_from_avatar_url_512 { get; set; }
 
         [DataMember(Name = "reblogged-root-url", EmitDefaultValue = false)]
         public string reblogged_root_url { get; set; }
@@ -236,35 +191,25 @@ namespace TumblThree.Applications.DataModels.TumblrApiJson
         [DataMember(Name = "reblogged-root-title", EmitDefaultValue = false)]
         public string reblogged_root_title { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string reblogged_root_avatar_url_16 { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string reblogged_root_avatar_url_16 { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string reblogged_root_avatar_url_24 { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string reblogged_root_avatar_url_24 { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string reblogged_root_avatar_url_30 { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string reblogged_root_avatar_url_30 { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string reblogged_root_avatar_url_40 { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string reblogged_root_avatar_url_40 { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string reblogged_root_avatar_url_48 { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string reblogged_root_avatar_url_48 { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string reblogged_root_avatar_url_64 { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string reblogged_root_avatar_url_64 { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string reblogged_root_avatar_url_96 { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string reblogged_root_avatar_url_96 { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string reblogged_root_avatar_url_128 { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string reblogged_root_avatar_url_128 { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string reblogged_root_avatar_url_512 { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string reblogged_root_avatar_url_512 { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public Tumblelog2 tumblelog { get; set; }
+        [DataMember(EmitDefaultValue = false)] public Tumblelog2 tumblelog { get; set; }
 
         [DataMember(Name = "quote-text", EmitDefaultValue = false)]
         public string quote_text { get; set; }
@@ -272,17 +217,14 @@ namespace TumblThree.Applications.DataModels.TumblrApiJson
         [DataMember(Name = "quote-source", EmitDefaultValue = false)]
         public string quote_source { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public List<string> tags { get; set; }
+        [DataMember(EmitDefaultValue = false)] public List<string> tags { get; set; }
 
         [DataMember(Name = "photo-caption", EmitDefaultValue = false)]
         public string photo_caption { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public object width { get; set; }
+        [DataMember(EmitDefaultValue = false)] public object width { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public object height { get; set; }
+        [DataMember(EmitDefaultValue = false)] public object height { get; set; }
 
         [DataMember(Name = "photo-url-1280", EmitDefaultValue = false)]
         public string photo_url_1280 { get; set; }
@@ -302,8 +244,7 @@ namespace TumblThree.Applications.DataModels.TumblrApiJson
         [DataMember(Name = "photo-url-75", EmitDefaultValue = false)]
         public string photo_url_75 { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public List<Photo> photos { get; set; }
+        [DataMember(EmitDefaultValue = false)] public List<Photo> photos { get; set; }
 
         [DataMember(Name = "photo-link-url", EmitDefaultValue = false)]
         public string photo_link_url { get; set; }
@@ -371,15 +312,11 @@ namespace TumblThree.Applications.DataModels.TumblrApiJson
         [DataMember(Name = "video-player-250", EmitDefaultValue = false)]
         public string video_player_250 { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public List<Conversation> conversation { get; set; }
+        [DataMember(EmitDefaultValue = false)] public List<Conversation> conversation { get; set; }
 
-        [DataMember(EmitDefaultValue = false)]
-        public string submitter { get; set; }
-        [DataMember(EmitDefaultValue = false)]
-        public string question { get; set; }
-        [DataMember(EmitDefaultValue = false)]
-        public string answer { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string submitter { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string question { get; set; }
+        [DataMember(EmitDefaultValue = false)] public string answer { get; set; }
 
         public object Clone()
         {

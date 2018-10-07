@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+
 using TumblThree.Domain.Models;
 
 namespace TumblThree.Applications.Parser

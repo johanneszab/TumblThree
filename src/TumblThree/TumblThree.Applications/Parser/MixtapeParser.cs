@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 using TumblThree.Domain.Models;
 
-namespace TumblThree.Applications.Crawler
+namespace TumblThree.Applications.Parser
 {
     public class MixtapeParser : IMixtapeParser
     {
@@ -29,6 +29,7 @@ namespace TumblThree.Applications.Crawler
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+
             return url;
         }
     }

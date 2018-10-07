@@ -16,7 +16,8 @@ namespace TumblThree.Applications.Crawler
         protected readonly ISharedCookieService cookieService;
 
         [ImportingConstructor]
-        public TumblrBlogDetector(IShellService shellService, ISharedCookieService cookieService, IWebRequestFactory webRequestFactory)
+        public TumblrBlogDetector(IShellService shellService, ISharedCookieService cookieService,
+            IWebRequestFactory webRequestFactory)
         {
             this.webRequestFactory = webRequestFactory;
             this.cookieService = cookieService;
@@ -56,6 +57,7 @@ namespace TumblThree.Applications.Crawler
             {
                 location = response.ResponseUri.ToString();
             }
+
             return location;
         }
     }

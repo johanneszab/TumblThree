@@ -30,7 +30,7 @@ namespace TumblThree.Applications.Services
 
         public void RemoveUriCookie(Uri uri)
         {
-            var cookies = cookieContainer.GetCookies(uri);
+            CookieCollection cookies = cookieContainer.GetCookies(uri);
             foreach (Cookie cookie in cookies)
             {
                 cookie.Expired = true;
@@ -39,11 +39,15 @@ namespace TumblThree.Applications.Services
 
         public IEnumerable<Cookie> GetAllCookies()
         {
-            Hashtable k = (Hashtable)cookieContainer.GetType().GetField("m_domainTable", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(cookieContainer);
+            var k = (Hashtable)cookieContainer
+                                     .GetType().GetField("m_domainTable", BindingFlags.Instance | BindingFlags.NonPublic)
+                                     .GetValue(cookieContainer);
             foreach (DictionaryEntry element in k)
             {
-                SortedList l = (SortedList)element.Value.GetType().GetField("m_list", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(element.Value);
-                foreach (var e in l)
+                var l = (SortedList)element.Value.GetType()
+                                                  .GetField("m_list", BindingFlags.Instance | BindingFlags.NonPublic)
+                                                  .GetValue(element.Value);
+                foreach (object e in l)
                 {
                     var cl = (CookieCollection)((DictionaryEntry)e).Value;
                     foreach (Cookie fc in cl)

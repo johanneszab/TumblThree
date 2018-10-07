@@ -9,7 +9,7 @@ using System.Threading;
 using System.Waf.Foundation;
 using System.Xml;
 
-namespace TumblThree.Domain.Models
+namespace TumblThree.Domain.Models.Files
 {
     [DataContract]
     public class Files : Model, IFiles
@@ -33,17 +33,13 @@ namespace TumblThree.Domain.Models
             links = new List<string>();
         }
 
-        [DataMember]
-        public string Name { get; set; }
+        [DataMember] public string Name { get; set; }
 
-        [DataMember]
-        public string Location { get; set; }
+        [DataMember] public string Location { get; set; }
 
-        [DataMember]
-        public BlogTypes BlogType { get; set; }
+        [DataMember] public BlogTypes BlogType { get; set; }
 
-        [DataMember]
-        public string Version { get; set; }
+        [DataMember] public string Version { get; set; }
 
         public IList<string> Links
         {
@@ -68,6 +64,7 @@ namespace TumblThree.Domain.Models
                 Monitor.Exit(lockObjectDb);
                 return true;
             }
+
             Monitor.Exit(lockObjectDb);
             return false;
         }
@@ -112,6 +109,7 @@ namespace TumblThree.Domain.Models
                             writer.Flush();
                         }
                     }
+
                     File.Replace(newIndex, currentIndex, backupIndex, true);
                     File.Delete(backupIndex);
                 }

@@ -11,10 +11,11 @@ namespace TumblThree.Domain.Models
     {
         [LocalizedDescription("any", typeof(Resources))]
         Any,
+
         [LocalizedDescription("mp4", typeof(Resources))]
         Mp4,
+
         [LocalizedDescription("webm", typeof(Resources))]
         Webm
-
     }
 }

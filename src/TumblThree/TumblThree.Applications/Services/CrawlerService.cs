@@ -1,10 +1,13 @@
-﻿using Guava.RateLimiter;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel.Composition;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Waf.Foundation;
 using System.Windows.Input;
+
+using Guava.RateLimiter;
+
 using TumblThree.Domain.Queue;
 
 namespace TumblThree.Applications.Services
@@ -33,7 +36,7 @@ namespace TumblThree.Applications.Services
         private ICommand showFilesCommand;
         private ICommand stopCommand;
         private RateLimiter timeconstraint;
-        private System.Threading.Timer timer;
+        private Timer timer;
 
         [ImportingConstructor]
         public CrawlerService(IShellService shellService)
@@ -60,7 +63,7 @@ namespace TumblThree.Applications.Services
             set => SetProperty(ref databasesLoaded, value);
         }
 
-        public System.Threading.Timer Timer
+        public Timer Timer
         {
             get => timer;
             set => SetProperty(ref timer, value);

@@ -14,7 +14,7 @@ using TumblThree.Applications.Downloader;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain;
-using TumblThree.Domain.Models;
+using TumblThree.Domain.Models.Blogs;
 
 namespace TumblThree.Applications.Crawler
 {
@@ -26,9 +26,9 @@ namespace TumblThree.Applications.Crawler
         private readonly PauseToken pt;
         private string tumblrKey = string.Empty;
 
-        public TumblrSearchCrawler(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress,
-            ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService,
-            IDownloader downloader, IPostQueue<TumblrPost> postQueue, IBlog blog)
+        public TumblrSearchCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
+            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory,
+            ISharedCookieService cookieService, IDownloader downloader, IPostQueue<TumblrPost> postQueue, IBlog blog)
             : base(shellService, crawlerService, ct, progress, webRequestFactory, cookieService, postQueue, blog)
         {
             this.downloader = downloader;
@@ -100,6 +100,7 @@ namespace TumblThree.Applications.Crawler
                     }
                 })());
             }
+
             await Task.WhenAll(trackedTasks);
 
             postQueue.CompleteAdding();
@@ -114,6 +115,7 @@ namespace TumblThree.Applications.Crawler
                 crawlerService.Timeconstraint.Acquire();
                 return await RequestPostAsync(pageNumber);
             }
+
             return await RequestPostAsync(pageNumber);
         }
 
@@ -131,7 +133,10 @@ namespace TumblThree.Applications.Crawler
                 //Example request body, searching for cars:
                 //q=cars&sort=top&post_view=masonry&blogs_before=8&num_blogs_shown=8&num_posts_shown=20&before=24&blog_page=2&safe_mode=true&post_page=2&filter_nsfw=true&filter_post_type=&next_ad_offset=0&ad_placement_id=0&more_posts=true
 
-                string requestBody = "q=" + blog.Name + "&sort=top&post_view=masonry&num_posts_shown=" + ((pageNumber - 1) * blog.PageSize) + "&before=" + ((pageNumber - 1) * blog.PageSize) + "&safe_mode=false&post_page=" + pageNumber + "&filter_nsfw=false&filter_post_type=&next_ad_offset=0&ad_placement_id=0&more_posts=true";
+                string requestBody = "q=" + blog.Name + "&sort=top&post_view=masonry&num_posts_shown=" +
+                                     ((pageNumber - 1) * blog.PageSize) + "&before=" + ((pageNumber - 1) * blog.PageSize) +
+                                     "&safe_mode=false&post_page=" + pageNumber +
+                                     "&filter_nsfw=false&filter_post_type=&next_ad_offset=0&ad_placement_id=0&more_posts=true";
                 await webRequestFactory.PerformPostXHRReqeust(request, requestBody);
                 requestRegistration = ct.Register(() => request.Abort());
                 return await webRequestFactory.ReadReqestToEnd(request);
@@ -150,6 +155,7 @@ namespace TumblThree.Applications.Crawler
                 {
                     return;
                 }
+
                 if (pt.IsPaused)
                 {
                     pt.WaitWhilePausedWithResponseAsyc().Wait();
@@ -196,6 +202,7 @@ namespace TumblThree.Applications.Crawler
                     {
                         continue;
                     }
+
                     imageUrl = ResizeTumblrImageUrl(imageUrl);
                     // TODO: postID
                     AddToDownloadList(new PhotoPost(imageUrl, Guid.NewGuid().ToString("N")));
@@ -215,7 +222,8 @@ namespace TumblThree.Applications.Crawler
                     if (shellService.Settings.VideoSize == 1080)
                     {
                         // TODO: postID
-                        AddToDownloadList(new VideoPost("https://vtt.tumblr.com/" + videoUrl + ".mp4", Guid.NewGuid().ToString("N")));
+                        AddToDownloadList(new VideoPost("https://vtt.tumblr.com/" + videoUrl + ".mp4",
+                            Guid.NewGuid().ToString("N")));
                     }
                     else if (shellService.Settings.VideoSize == 480)
                     {

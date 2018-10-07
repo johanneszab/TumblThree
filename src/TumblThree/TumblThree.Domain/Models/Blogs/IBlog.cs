@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace TumblThree.Domain.Models
+namespace TumblThree.Domain.Models.Blogs
 {
     public interface IBlog : INotifyPropertyChanged
     {

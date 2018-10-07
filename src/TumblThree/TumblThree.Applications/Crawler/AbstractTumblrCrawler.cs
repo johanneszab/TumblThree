@@ -6,28 +6,29 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using TumblThree.Applications.DataModels;
+using TumblThree.Applications.DataModels.TumblrPosts;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain;
-using TumblThree.Domain.Models;
+using TumblThree.Domain.Models.Blogs;
 
 namespace TumblThree.Applications.Crawler
 {
     public abstract class AbstractTumblrCrawler : AbstractCrawler
     {
-        protected AbstractTumblrCrawler(IShellService shellService, ICrawlerService crawlerService,
-            CancellationToken ct, IProgress<DownloadProgress> progress, IWebRequestFactory webRequestFactory,
-            ISharedCookieService cookieService, IPostQueue<TumblrPost> postQueue, IBlog blog)
+        protected AbstractTumblrCrawler(IShellService shellService, ICrawlerService crawlerService, CancellationToken ct,
+            IProgress<DownloadProgress> progress, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService,
+            IPostQueue<TumblrPost> postQueue, IBlog blog)
             : base(shellService, crawlerService, ct, progress, webRequestFactory, cookieService, postQueue, blog)
         {
         }
 
         protected async Task<string> GetRequestAsync(string url)
         {
-            Dictionary<string, string> headers = new Dictionary<string, string>();
+            var headers = new Dictionary<string, string>();
             string username = blog.Name + ".tumblr.com";
             string password = blog.Password;
-            string encoded = System.Convert.ToBase64String(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(username + ":" + password));
+            string encoded = Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1").GetBytes(username + ":" + password));
             headers.Add("Authorization", "Basic " + encoded);
             string[] cookieHosts = { "https://www.tumblr.com/" };
             return await RequestDataAsync(url, headers, cookieHosts);
@@ -74,15 +75,15 @@ namespace TumblThree.Applications.Crawler
         {
             var sb = new StringBuilder(imageUrl);
             return sb
-                .Replace("_raw", "_" + ImageSize())
-                .Replace("_1280", "_" + ImageSize())
-                .Replace("_540", "_" + ImageSize())
-                .Replace("_500", "_" + ImageSize())
-                .Replace("_400", "_" + ImageSize())
-                .Replace("_250", "_" + ImageSize())
-                .Replace("_100", "_" + ImageSize())
-                .Replace("_75sq", "_" + ImageSize())
-                .ToString();
+                   .Replace("_raw", "_" + ImageSize())
+                   .Replace("_1280", "_" + ImageSize())
+                   .Replace("_540", "_" + ImageSize())
+                   .Replace("_500", "_" + ImageSize())
+                   .Replace("_400", "_" + ImageSize())
+                   .Replace("_250", "_" + ImageSize())
+                   .Replace("_100", "_" + ImageSize())
+                   .Replace("_75sq", "_" + ImageSize())
+                   .ToString();
         }
     }
 }

@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace TumblThree.Applications.Auth
 {
@@ -135,6 +138,7 @@ namespace TumblThree.Applications.Auth
                 {
                     return _params[ix];
                 }
+
                 throw new ArgumentException(ix);
             }
             set
@@ -143,6 +147,7 @@ namespace TumblThree.Applications.Auth
                 {
                     throw new ArgumentException(ix);
                 }
+
                 _params[ix] = value;
             }
         }
@@ -203,7 +208,7 @@ namespace TumblThree.Applications.Auth
         /// <returns>the nonce</returns>
         private string GenerateNonce()
         {
-            var sb = new System.Text.StringBuilder();
+            var sb = new StringBuilder();
             for (var i = 0; i < 8; i++)
             {
                 int g = _random.Next(3);
@@ -219,6 +224,7 @@ namespace TumblThree.Applications.Auth
                         break;
                 }
             }
+
             return sb.ToString();
         }
 
@@ -284,7 +290,7 @@ namespace TumblThree.Applications.Auth
         /// <returns>the Url-encoded version of that string</returns>
         public static string UrlEncode(string value)
         {
-            var result = new System.Text.StringBuilder();
+            var result = new StringBuilder();
             foreach (char symbol in value)
             {
                 if (unreservedChars.IndexOf(symbol) != -1)
@@ -296,6 +302,7 @@ namespace TumblThree.Applications.Auth
                     result.Append('%' + string.Format("{0:X2}", (int)symbol));
                 }
             }
+
             return result.ToString();
         }
 
@@ -323,7 +330,7 @@ namespace TumblThree.Applications.Auth
         /// <returns>a string representing the parameters</returns>
         private static string EncodeRequestParameters(ICollection<KeyValuePair<string, string>> p)
         {
-            var sb = new System.Text.StringBuilder();
+            var sb = new StringBuilder();
             foreach (KeyValuePair<string, string> item in p.OrderBy(x => x.Key))
             {
                 if (!string.IsNullOrEmpty(item.Value) &&
@@ -383,13 +390,13 @@ namespace TumblThree.Applications.Auth
             NewRequest();
             string authHeader = GetAuthorizationHeader(uri, method);
             // prepare the token request
-            var request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(uri);
+            var request = (HttpWebRequest)WebRequest.Create(uri);
             request.Headers.Add("Authorization", authHeader);
             request.Method = method;
 
-            using (var response = (System.Net.HttpWebResponse)request.GetResponse())
+            using (var response = (HttpWebResponse)request.GetResponse())
             {
-                using (var reader = new System.IO.StreamReader(response.GetResponseStream()))
+                using (var reader = new StreamReader(response.GetResponseStream()))
                 {
                     var r = new OAuthResponse(reader.ReadToEnd());
                     this["token"] = r["oauth_token"];
@@ -407,6 +414,7 @@ namespace TumblThree.Applications.Auth
                     catch
                     {
                     }
+
                     return r;
                 }
             }
@@ -454,13 +462,13 @@ namespace TumblThree.Applications.Auth
             string authHeader = GetAuthorizationHeader(uri, method);
 
             // prepare the token request
-            var request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(uri);
+            var request = (HttpWebRequest)WebRequest.Create(uri);
             request.Headers.Add("Authorization", authHeader);
             request.Method = method;
 
-            using (var response = (System.Net.HttpWebResponse)request.GetResponse())
+            using (var response = (HttpWebResponse)request.GetResponse())
             {
-                using (var reader = new System.IO.StreamReader(response.GetResponseStream()))
+                using (var reader = new StreamReader(response.GetResponseStream()))
                 {
                     var r = new OAuthResponse(reader.ReadToEnd());
                     this["token"] = r["oauth_token"];
@@ -517,7 +525,7 @@ namespace TumblThree.Applications.Auth
             string signatureBase = GetSignatureBase(uri, method);
             HashAlgorithm hash = GetHash();
 
-            byte[] dataBuffer = System.Text.Encoding.ASCII.GetBytes(signatureBase);
+            byte[] dataBuffer = Encoding.ASCII.GetBytes(signatureBase);
             byte[] hashBytes = hash.ComputeHash(dataBuffer);
 
             this["signature"] = Convert.ToBase64String(hashBytes);
@@ -541,7 +549,7 @@ namespace TumblThree.Applications.Auth
             normUrl += uri.AbsolutePath;
 
             // the sigbase starts with the method and the encoded URI
-            var sb = new System.Text.StringBuilder();
+            var sb = new StringBuilder();
             sb.Append(method)
               .Append('&')
               .Append(UrlEncode(normUrl))
@@ -566,7 +574,7 @@ namespace TumblThree.Applications.Auth
             }
 
             // concat+format all those params
-            var sb1 = new System.Text.StringBuilder();
+            var sb1 = new StringBuilder();
             foreach (KeyValuePair<string, string> item in p.OrderBy(x => x.Key))
             {
                 // even "empty" params need to be encoded this way.
@@ -591,7 +599,7 @@ namespace TumblThree.Applications.Auth
                 UrlEncode(this["token_secret"]));
             var hmacsha1 = new HMACSHA1
             {
-                Key = System.Text.Encoding.ASCII.GetBytes(keystring)
+                Key = Encoding.ASCII.GetBytes(keystring)
             };
             return hmacsha1;
         }
@@ -614,6 +622,7 @@ namespace TumblThree.Applications.Auth
                 string[] kv = pair.Split('=');
                 _params.Add(kv[0], kv[1]);
             }
+
             // expected keys:
             //   oauth_token, oauth_token_secret, user_id, screen_name, etc
         }

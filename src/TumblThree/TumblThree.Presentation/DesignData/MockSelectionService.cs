@@ -4,6 +4,7 @@ using System.Linq;
 using TumblThree.Applications.ObjectModel;
 using TumblThree.Applications.Services;
 using TumblThree.Domain.Models;
+using TumblThree.Domain.Models.Blogs;
 
 namespace TumblThree.Presentation.DesignData
 {

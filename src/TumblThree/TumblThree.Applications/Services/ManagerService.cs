@@ -3,14 +3,14 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Waf.Foundation;
 
-using TumblThree.Domain.Models;
+using TumblThree.Domain.Models.Blogs;
+using TumblThree.Domain.Models.Files;
 
 namespace TumblThree.Applications.Services
 {
     [Export, Export(typeof(IManagerService))]
     internal class ManagerService : Model, IManagerService
     {
-        private readonly ObservableCollection<IBlog> blogFiles;
         private readonly IList<IFiles> databases;
         private readonly object checkFilesLock = new object();
         private readonly object databasesLock = new object();
@@ -18,11 +18,11 @@ namespace TumblThree.Applications.Services
         [ImportingConstructor]
         public ManagerService()
         {
-            blogFiles = new ObservableCollection<IBlog>();
+            BlogFiles = new ObservableCollection<IBlog>();
             databases = new List<IFiles>();
         }
 
-        public ObservableCollection<IBlog> BlogFiles => blogFiles;
+        public ObservableCollection<IBlog> BlogFiles { get; }
 
         public IEnumerable<IFiles> Databases => databases;
 
@@ -35,6 +35,7 @@ namespace TumblThree.Applications.Services
                     if (db.CheckIfFileExistsInDB(url))
                         return true;
                 }
+
                 return false;
             }
         }

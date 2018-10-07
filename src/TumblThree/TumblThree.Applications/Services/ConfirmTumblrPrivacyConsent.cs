@@ -29,10 +29,12 @@ namespace TumblThree.Applications.Services
             if (CheckIfLoggedInAsync())
                 return;
             await UpdateTumblrKey();
-            string referer = @"https://www.tumblr.com/privacy/consent?redirect=";
+            var referer = @"https://www.tumblr.com/privacy/consent?redirect=";
             var headers = new Dictionary<string, string> { { "X-tumblr-form-key", tumblrKey } };
-            HttpWebRequest request = webRequestFactory.CreatePostXhrReqeust("https://www.tumblr.com/svc/privacy/consent", referer, headers);
-            string requestBody = "{\"eu_resident\":true,\"gdpr_is_acceptable_age\":true,\"gdpr_consent_core\":true,\"gdpr_consent_first_party_ads\":true,\"gdpr_consent_third_party_ads\":true,\"gdpr_consent_search_history\":true,\"redirect_to\":\"\"}";
+            HttpWebRequest request =
+                webRequestFactory.CreatePostXhrReqeust("https://www.tumblr.com/svc/privacy/consent", referer, headers);
+            var requestBody =
+                "{\"eu_resident\":true,\"gdpr_is_acceptable_age\":true,\"gdpr_consent_core\":true,\"gdpr_consent_first_party_ads\":true,\"gdpr_consent_third_party_ads\":true,\"gdpr_consent_search_history\":true,\"redirect_to\":\"\"}";
             request.ContentType = "application/json";
             await webRequestFactory.PerformPostXHRReqeust(request, requestBody);
             using (var response = await request.GetResponseAsync() as HttpWebResponse)
@@ -54,7 +56,7 @@ namespace TumblThree.Applications.Services
 
         private async Task<string> GetRequestAsync()
         {
-            string requestUrl = "https://www.tumblr.com/";
+            var requestUrl = "https://www.tumblr.com/";
             HttpWebRequest request = webRequestFactory.CreateGetReqeust(requestUrl);
             return await webRequestFactory.ReadReqestToEnd(request);
         }
@@ -67,6 +69,7 @@ namespace TumblThree.Applications.Services
             {
                 return true;
             }
+
             return false;
         }
     }

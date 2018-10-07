@@ -8,6 +8,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 
 using TumblThree.Applications.DataModels;
 using TumblThree.Applications.DataModels.TumblrApiJson;
@@ -18,7 +19,7 @@ using TumblThree.Applications.Parser;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain;
-using TumblThree.Domain.Models;
+using TumblThree.Domain.Models.Blogs;
 
 namespace TumblThree.Applications.Crawler
 {
@@ -40,12 +41,13 @@ namespace TumblThree.Applications.Crawler
         private readonly IPostQueue<TumblrCrawlerData<Post>> jsonQueue;
         private readonly ICrawlerDataDownloader crawlerDataDownloader;
 
-        public TumblrBlogCrawler(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress,
-            ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService,
-            IDownloader downloader, ICrawlerDataDownloader crawlerDataDownloader, ITumblrToTextParser<Post> tumblrJsonParser,
-            IImgurParser imgurParser, IGfycatParser gfycatParser, IWebmshareParser webmshareParser, IMixtapeParser mixtapeParser,
-            IUguuParser uguuParser, ISafeMoeParser safemoeParser, ILoliSafeParser lolisafeParser, ICatBoxParser catboxParser,
-            IPostQueue<TumblrPost> postQueue, IPostQueue<TumblrCrawlerData<Post>> jsonQueue, IBlog blog)
+        public TumblrBlogCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
+            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory,
+            ISharedCookieService cookieService, IDownloader downloader, ICrawlerDataDownloader crawlerDataDownloader,
+            ITumblrToTextParser<Post> tumblrJsonParser, IImgurParser imgurParser, IGfycatParser gfycatParser,
+            IWebmshareParser webmshareParser, IMixtapeParser mixtapeParser, IUguuParser uguuParser, ISafeMoeParser safemoeParser,
+            ILoliSafeParser lolisafeParser, ICatBoxParser catboxParser, IPostQueue<TumblrPost> postQueue,
+            IPostQueue<TumblrCrawlerData<Post>> jsonQueue, IBlog blog)
             : base(shellService, crawlerService, ct, progress, webRequestFactory, cookieService, postQueue, blog)
         {
             this.downloader = downloader;
@@ -82,6 +84,7 @@ namespace TumblThree.Applications.Crawler
                         blog.Online = true;
                         return;
                     }
+
                     // 429: Too Many Requests
                     if ((int)resp.StatusCode == 429)
                     {
@@ -91,6 +94,7 @@ namespace TumblThree.Applications.Crawler
                         return;
                     }
                 }
+
                 Logger.Error("TumblrBlogCrawler:IsBlogOnlineAsync:WebException {0}", webException);
                 shellService.ShowError(webException, Resources.BlogIsOffline, blog.Name);
                 blog.Online = false;
@@ -126,6 +130,7 @@ namespace TumblThree.Applications.Crawler
             {
                 return;
             }
+
             string document = await GetApiPageAsync(0);
             var response = ConvertJsonToClass<TumblrApiJson>(document);
 
@@ -180,10 +185,11 @@ namespace TumblThree.Applications.Crawler
         {
             if (json.Contains("tumblr_api_read"))
             {
-                int jsonStart = json.IndexOf("{");
+                int jsonStart = json.IndexOf("{", StringComparison.Ordinal);
                 json = json.Substring(jsonStart);
                 json = json.Remove(json.Length - 2);
             }
+
             return base.ConvertJsonToClass<T>(json);
         }
 
@@ -206,6 +212,7 @@ namespace TumblThree.Applications.Crawler
             {
                 parameters["start"] = start.ToString();
             }
+
             return url + UrlEncode(parameters);
         }
 
@@ -218,6 +225,7 @@ namespace TumblThree.Applications.Crawler
                 crawlerService.Timeconstraint.Acquire();
                 return await GetRequestAsync(url);
             }
+
             return await GetRequestAsync(url);
         }
 
@@ -238,6 +246,7 @@ namespace TumblThree.Applications.Crawler
                         Logger.Error("TumblrBlogCrawler:UpdateTotalPostCountAsync:WebException {0}", webException);
                         shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
                     }
+
                     blog.Posts = 0;
                 }
             }
@@ -275,6 +284,7 @@ namespace TumblThree.Applications.Crawler
                         shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
                     }
                 }
+
                 return 0;
             }
             catch (TimeoutException timeoutException)
@@ -306,6 +316,7 @@ namespace TumblThree.Applications.Crawler
 
                 return Enumerable.Range(0, totalPages);
             }
+
             return RangeToSequence(blog.DownloadPages);
         }
 
@@ -334,6 +345,7 @@ namespace TumblThree.Applications.Crawler
                 {
                     break;
                 }
+
                 if (pt.IsPaused)
                 {
                     pt.WaitWhilePausedWithResponseAsyc().Wait();
@@ -357,7 +369,7 @@ namespace TumblThree.Applications.Crawler
                     }
                     catch (WebException webException) when ((webException.Response != null))
                     {
-                        var webRespStatusCode = (int)((HttpWebResponse)webException?.Response).StatusCode;
+                        var webRespStatusCode = (int)((HttpWebResponse)webException.Response).StatusCode;
                         if (webRespStatusCode == 429)
                         {
                             incompleteCrawl = true;
@@ -383,6 +395,7 @@ namespace TumblThree.Applications.Crawler
                     UpdateProgressQueueInformation(Resources.ProgressGetUrlLong, numberOfPagesCrawled, totalPosts);
                 })());
             }
+
             await Task.WhenAll(trackedTasks);
 
             postQueue.CompleteAdding();
@@ -405,17 +418,20 @@ namespace TumblThree.Applications.Crawler
                         DateTimeStyles.None);
                     downloadFromUnixTime = new DateTimeOffset(downloadFrom).ToUnixTimeSeconds();
                 }
+
                 if (!string.IsNullOrEmpty(blog.DownloadTo))
                 {
                     DateTime downloadTo = DateTime.ParseExact(blog.DownloadTo, "yyyyMMdd", CultureInfo.InvariantCulture,
                         DateTimeStyles.None);
                     downloadToUnixTime = new DateTimeOffset(downloadTo).ToUnixTimeSeconds();
                 }
+
                 long postTime = 0;
                 postTime = post.unix_timestamp;
                 if (downloadFromUnixTime >= postTime || postTime >= downloadToUnixTime)
                     return false;
             }
+
             return true;
         }
 
@@ -429,6 +445,7 @@ namespace TumblThree.Applications.Crawler
             {
                 return false;
             }
+
             return true;
         }
 
@@ -457,7 +474,6 @@ namespace TumblThree.Applications.Crawler
             }
             catch (NullReferenceException)
             {
-
             }
         }
 
@@ -469,6 +485,7 @@ namespace TumblThree.Applications.Crawler
                     return true;
                 return false;
             }
+
             return true;
         }
 
@@ -734,17 +751,15 @@ namespace TumblThree.Applications.Crawler
 
         private string ParseImageUrl(Post post)
         {
-            string imageUrl = (string)post.GetType().GetProperty("photo_url_" + ImageSize()).GetValue(post, null);
-            if (imageUrl == null)
-                imageUrl = post.photo_url_1280;
+            string imageUrl = (string)post.GetType().GetProperty("photo_url_" + ImageSize()).GetValue(post, null) ??
+                              post.photo_url_1280;
             return imageUrl;
         }
 
         private string ParseImageUrl(Photo post)
         {
-            string imageUrl = (string)post.GetType().GetProperty("photo_url_" + ImageSize()).GetValue(post, null);
-            if (imageUrl == null)
-                imageUrl = post.photo_url_1280;
+            string imageUrl = (string)post.GetType().GetProperty("photo_url_" + ImageSize()).GetValue(post, null) ??
+                              post.photo_url_1280;
             return imageUrl;
         }
 
@@ -767,6 +782,7 @@ namespace TumblThree.Applications.Crawler
                 {
                     continue;
                 }
+
                 imageUrl = ResizeTumblrImageUrl(imageUrl);
                 AddToDownloadList(new PhotoPost(imageUrl, post.id, post.unix_timestamp.ToString()));
                 //AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
@@ -783,7 +799,6 @@ namespace TumblThree.Applications.Crawler
                 {
                     AddToDownloadList(new VideoPost(videoUrl + ".mp4", post.id, post.unix_timestamp.ToString()));
                     //AddToJsonQueue(new TumblrCrawlerXmlData(Path.ChangeExtension(videoUrl.Split('/').Last(), ".json"), post));
-
                 }
                 else if (shellService.Settings.VideoSize == 480)
                 {
@@ -803,9 +818,9 @@ namespace TumblThree.Applications.Crawler
                 string videoUrl = match.Groups[2].Value;
                 if (shellService.Settings.VideoSize == 1080)
                 {
-                    AddToDownloadList(new VideoPost("https://vtt.tumblr.com/" + videoUrl + ".mp4", post.id, post.unix_timestamp.ToString()));
+                    AddToDownloadList(new VideoPost("https://vtt.tumblr.com/" + videoUrl + ".mp4", post.id,
+                        post.unix_timestamp.ToString()));
                     //AddToJsonQueue(new TumblrCrawlerXmlData(videoUrl + ".json", post));
-
                 }
                 else if (shellService.Settings.VideoSize == 480)
                 {
@@ -824,6 +839,7 @@ namespace TumblThree.Applications.Crawler
             {
                 return;
             }
+
             AddToDownloadList(new PhotoPost(imageUrl, post.id, post.unix_timestamp.ToString()));
             AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
         }
@@ -834,7 +850,9 @@ namespace TumblThree.Applications.Crawler
             {
                 return;
             }
-            foreach (string imageUrl in post.photos.Select(ParseImageUrl).Where(imageUrl => !blog.SkipGif || !imageUrl.EndsWith(".gif")))
+
+            foreach (string imageUrl in post.photos.Select(ParseImageUrl)
+                                            .Where(imageUrl => !blog.SkipGif || !imageUrl.EndsWith(".gif")))
             {
                 AddToDownloadList(new PhotoPost(imageUrl, post.id, post.unix_timestamp.ToString()));
                 AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
@@ -843,7 +861,8 @@ namespace TumblThree.Applications.Crawler
 
         private void AddVideoUrl(Post post)
         {
-            string videoUrl = Regex.Match(post.video_player, "\"url\":\"([\\S]*/(tumblr_[\\S]*)_filmstrip[\\S]*)\"").Groups[2].ToString();
+            string videoUrl = Regex.Match(post.video_player, "\"url\":\"([\\S]*/(tumblr_[\\S]*)_filmstrip[\\S]*)\"").Groups[2]
+                                   .ToString();
 
             if (shellService.Settings.VideoSize == 1080)
             {
@@ -851,7 +870,6 @@ namespace TumblThree.Applications.Crawler
                     "https://vtt.tumblr.com/" + videoUrl + ".mp4",
                     post.id, post.unix_timestamp.ToString()));
                 AddToJsonQueue(new TumblrCrawlerData<Post>(videoUrl + ".json", post));
-
             }
             else if (shellService.Settings.VideoSize == 480)
             {
@@ -865,7 +883,7 @@ namespace TumblThree.Applications.Crawler
         private void AddAudioUrl(Post post)
         {
             string audioUrl = Regex.Match(post.audio_embed, "audio_file=([\\S]*)\"").Groups[1].ToString();
-            audioUrl = System.Web.HttpUtility.UrlDecode(audioUrl);
+            audioUrl = HttpUtility.UrlDecode(audioUrl);
             if (!audioUrl.EndsWith(".mp3"))
                 audioUrl = audioUrl + ".mp3";
 
@@ -912,9 +930,11 @@ namespace TumblThree.Applications.Crawler
                             {
                                 continue;
                             }
+
                             AddToDownloadList(new ExternalPhotoPost(imageUrl, imgurId,
                                 post.unix_timestamp.ToString()));
-                            AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
+                            AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"),
+                                post));
                         }
 
                         // album urls
@@ -926,14 +946,14 @@ namespace TumblThree.Applications.Crawler
                             string album = await imgurParser.RequestImgurAlbumSite(albumUrl);
 
                             Regex hashRegex = imgurParser.GetImgurAlbumHashRegex();
-                            var hashMatches = hashRegex.Matches(album);
-                            var hashes = hashMatches.Cast<Match>().Select(hashMatch => hashMatch.Groups[1].Value).ToList();
+                            MatchCollection hashMatches = hashRegex.Matches(album);
+                            List<string> hashes = hashMatches.Cast<Match>().Select(hashMatch => hashMatch.Groups[1].Value).ToList();
 
                             Regex extRegex = imgurParser.GetImgurAlbumExtRegex();
-                            var extMatches = extRegex.Matches(album);
-                            var exts = extMatches.Cast<Match>().Select(extMatch => extMatch.Groups[1].Value).ToList();
+                            MatchCollection extMatches = extRegex.Matches(album);
+                            List<string> exts = extMatches.Cast<Match>().Select(extMatch => extMatch.Groups[1].Value).ToList();
 
-                            var imageUrls = hashes.Zip(exts, (hash, ext) => "https://i.imgur.com/" + hash + ext);
+                            IEnumerable<string> imageUrls = hashes.Zip(exts, (hash, ext) => "https://i.imgur.com/" + hash + ext);
 
                             foreach (string imageUrl in imageUrls)
                             {
@@ -941,7 +961,8 @@ namespace TumblThree.Applications.Crawler
                                     continue;
                                 AddToDownloadList(new ExternalPhotoPost(imageUrl, imgurId,
                                     post.unix_timestamp.ToString()));
-                                AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
+                                AddToJsonQueue(
+                                    new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
                             }
                         }
                     }
@@ -969,9 +990,11 @@ namespace TumblThree.Applications.Crawler
                             {
                                 continue;
                             }
+
                             AddToDownloadList(new ExternalVideoPost(videoUrl, gfyId,
                                 post.unix_timestamp.ToString()));
-                            AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(videoUrl.Split('/').Last(), ".json"), post));
+                            AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(videoUrl.Split('/').Last(), ".json"),
+                                post));
                         }
                     }
                 }
@@ -1004,7 +1027,8 @@ namespace TumblThree.Applications.Crawler
 
                             AddToDownloadList(new ExternalVideoPost(imageUrl, webmshareId,
                                 post.unix_timestamp.ToString()));
-                            AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
+                            AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"),
+                                post));
                         }
                     }
                 }
@@ -1028,7 +1052,6 @@ namespace TumblThree.Applications.Crawler
                         string[] parts = InlineSearch(post).Split(new string[] { "href=" }, StringSplitOptions.RemoveEmptyEntries);
                         foreach (string part in parts)
                         {
-
                             foreach (Match match in regex.Matches(part))
                             {
                                 string temp = match.Groups[0].ToString();
@@ -1043,10 +1066,9 @@ namespace TumblThree.Applications.Crawler
 
                                 AddToDownloadList(new ExternalVideoPost(imageUrl, id,
                                     post.unix_timestamp.ToString()));
-                                AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
-
+                                AddToJsonQueue(
+                                    new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
                             }
-
                         }
                     }
                 }
@@ -1070,13 +1092,11 @@ namespace TumblThree.Applications.Crawler
                         string[] parts = InlineSearch(post).Split(new string[] { "href=" }, StringSplitOptions.RemoveEmptyEntries);
                         foreach (string part in parts)
                         {
-
                             foreach (Match match in regex.Matches(part))
                             {
                                 string temp = match.Groups[0].ToString();
                                 string id = match.Groups[2].Value;
                                 string url = temp.Split('\"').First();
-
 
                                 string imageUrl = uguuParser.CreateUguuUrl(id, url, blog.UguuType);
                                 if (blog.SkipGif && imageUrl.EndsWith(".gif"))
@@ -1086,10 +1106,9 @@ namespace TumblThree.Applications.Crawler
 
                                 AddToDownloadList(new ExternalVideoPost(imageUrl, id,
                                     post.unix_timestamp.ToString()));
-                                AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
-
+                                AddToJsonQueue(
+                                    new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
                             }
-
                         }
                     }
                 }
@@ -1113,13 +1132,11 @@ namespace TumblThree.Applications.Crawler
                         string[] parts = InlineSearch(post).Split(new string[] { "href=" }, StringSplitOptions.RemoveEmptyEntries);
                         foreach (string part in parts)
                         {
-
                             foreach (Match match in regex.Matches(part))
                             {
                                 string temp = match.Groups[0].ToString();
                                 string id = match.Groups[2].Value;
                                 string url = temp.Split('\"').First();
-
 
                                 string imageUrl = safemoeParser.CreateSafeMoeUrl(id, url, blog.SafeMoeType);
                                 if (blog.SkipGif && imageUrl.EndsWith(".gif"))
@@ -1129,10 +1146,9 @@ namespace TumblThree.Applications.Crawler
 
                                 AddToDownloadList(new ExternalVideoPost(imageUrl, id,
                                     post.unix_timestamp.ToString()));
-                                AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
-
+                                AddToJsonQueue(
+                                    new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
                             }
-
                         }
                     }
                 }
@@ -1156,7 +1172,6 @@ namespace TumblThree.Applications.Crawler
                         string[] parts = InlineSearch(post).Split(new string[] { "href=" }, StringSplitOptions.RemoveEmptyEntries);
                         foreach (string part in parts)
                         {
-
                             foreach (Match match in regex.Matches(part))
                             {
                                 string temp = match.Groups[0].ToString();
@@ -1171,10 +1186,9 @@ namespace TumblThree.Applications.Crawler
 
                                 AddToDownloadList(new ExternalVideoPost(imageUrl, id,
                                     post.unix_timestamp.ToString()));
-                                AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
-
+                                AddToJsonQueue(
+                                    new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
                             }
-
                         }
                     }
                 }
@@ -1212,10 +1226,9 @@ namespace TumblThree.Applications.Crawler
 
                                 AddToDownloadList(new ExternalVideoPost(imageUrl, id,
                                     post.unix_timestamp.ToString()));
-                                AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
-
+                                AddToJsonQueue(
+                                    new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
                             }
-
                         }
                     }
                 }

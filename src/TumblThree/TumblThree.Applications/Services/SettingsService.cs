@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.Composition;
-using TumblThree.Domain.Models;
+
+using TumblThree.Domain.Models.Blogs;
 
 namespace TumblThree.Applications.Services
 {

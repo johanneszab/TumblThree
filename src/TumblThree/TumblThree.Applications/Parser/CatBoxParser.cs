@@ -29,6 +29,7 @@ namespace TumblThree.Applications.Parser
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+
             return url;
         }
     }

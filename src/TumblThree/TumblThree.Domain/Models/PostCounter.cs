@@ -1,4 +1,6 @@
-﻿namespace TumblThree.Domain.Models
+﻿using TumblThree.Domain.Models.Blogs;
+
+namespace TumblThree.Domain.Models
 {
     public class PostCounter
     {

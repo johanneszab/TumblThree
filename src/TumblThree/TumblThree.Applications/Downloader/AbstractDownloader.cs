@@ -12,7 +12,8 @@ using TumblThree.Applications.DataModels.TumblrPosts;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain;
-using TumblThree.Domain.Models;
+using TumblThree.Domain.Models.Blogs;
+using TumblThree.Domain.Models.Files;
 
 namespace TumblThree.Applications.Downloader
 {
@@ -29,9 +30,11 @@ namespace TumblThree.Applications.Downloader
         protected readonly CancellationToken ct;
         protected readonly PauseToken pt;
         protected readonly FileDownloader fileDownloader;
-        private string[] suffixes = { ".jpg", ".jpeg", ".png" };
+        private readonly string[] suffixes = { ".jpg", ".jpeg", ".png" };
 
-        protected AbstractDownloader(IShellService shellService, IManagerService managerService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, IPostQueue<TumblrPost> postQueue, FileDownloader fileDownloader, ICrawlerService crawlerService = null, IBlog blog = null, IFiles files = null)
+        protected AbstractDownloader(IShellService shellService, IManagerService managerService, CancellationToken ct,
+            PauseToken pt, IProgress<DownloadProgress> progress, IPostQueue<TumblrPost> postQueue, FileDownloader fileDownloader,
+            ICrawlerService crawlerService = null, IBlog blog = null, IFiles files = null)
         {
             this.shellService = shellService;
             this.crawlerService = crawlerService;
@@ -47,7 +50,7 @@ namespace TumblThree.Applications.Downloader
 
         public void UpdateProgressQueueInformation(string format, params object[] args)
         {
-            var newProgress = new DataModels.DownloadProgress
+            var newProgress = new DownloadProgress
             {
                 Progress = string.Format(CultureInfo.CurrentCulture, format, args)
             };
@@ -81,21 +84,24 @@ namespace TumblThree.Applications.Downloader
             catch (WebException webException) when ((webException.Response != null))
             {
                 var webRespStatusCode = (int)((HttpWebResponse)webException.Response).StatusCode;
-                if (webRespStatusCode >= 400 && webRespStatusCode < 600) // removes inaccessible files: http status codes 400 to 599
+                if (webRespStatusCode >= 400 && webRespStatusCode < 600
+                ) // removes inaccessible files: http status codes 400 to 599
                 {
-                    try { File.Delete(fileLocation); } // could be open again in a different thread
-                    catch { }
+                    try
+                    {
+                        File.Delete(fileLocation);
+                    } // could be open again in a different thread
+                    catch
+                    {
+                    }
                 }
+
                 return false;
             }
             catch (TimeoutException timeoutException)
             {
                 Logger.Error("AbstractDownloader:DownloadBinaryFile {0}", timeoutException);
                 shellService.ShowError(timeoutException, Resources.TimeoutReached, Resources.Downloading, blog.Name);
-                throw;
-            }
-            catch
-            {
                 throw;
             }
         }
@@ -106,6 +112,7 @@ namespace TumblThree.Applications.Downloader
             {
                 return await DownloadBinaryFile(fileLocation, url);
             }
+
             return AppendToTextFile(fileLocationUrlList, url);
         }
 
@@ -120,6 +127,7 @@ namespace TumblThree.Applications.Downloader
                         sw.WriteLine(text);
                     }
                 }
+
                 return true;
             }
             catch (IOException ex) when ((ex.HResult & 0xFFFF) == 0x27 || (ex.HResult & 0xFFFF) == 0x70)
@@ -137,8 +145,10 @@ namespace TumblThree.Applications.Downloader
 
         public virtual async Task<bool> DownloadBlogAsync()
         {
-            var concurrentConnectionsSemaphore = new SemaphoreSlim(shellService.Settings.ConcurrentConnections / crawlerService.ActiveItems.Count);
-            var concurrentVideoConnectionsSemaphore = new SemaphoreSlim(shellService.Settings.ConcurrentVideoConnections / crawlerService.ActiveItems.Count);
+            var concurrentConnectionsSemaphore =
+                new SemaphoreSlim(shellService.Settings.ConcurrentConnections / crawlerService.ActiveItems.Count);
+            var concurrentVideoConnectionsSemaphore =
+                new SemaphoreSlim(shellService.Settings.ConcurrentVideoConnections / crawlerService.ActiveItems.Count);
             var trackedTasks = new List<Task>();
             var completeDownload = true;
 
@@ -154,6 +164,7 @@ namespace TumblThree.Applications.Downloader
                 {
                     break;
                 }
+
                 if (pt.IsPaused)
                 {
                     pt.WaitWhilePausedWithResponseAsyc().Wait();
@@ -161,8 +172,13 @@ namespace TumblThree.Applications.Downloader
 
                 trackedTasks.Add(new Func<Task>(async () =>
                 {
-                    try { await DownloadPostAsync(downloadItem); }
-                    catch { }
+                    try
+                    {
+                        await DownloadPostAsync(downloadItem);
+                    }
+                    catch
+                    {
+                    }
                     finally
                     {
                         concurrentConnectionsSemaphore.Release();
@@ -171,8 +187,15 @@ namespace TumblThree.Applications.Downloader
                     }
                 })());
             }
-            try { await Task.WhenAll(trackedTasks); }
-            catch { completeDownload = false; }
+
+            try
+            {
+                await Task.WhenAll(trackedTasks);
+            }
+            catch
+            {
+                completeDownload = false;
+            }
 
             blog.LastDownloadedPhoto = null;
             blog.LastDownloadedVideo = null;
@@ -222,8 +245,10 @@ namespace TumblThree.Applications.Downloader
                             blog.LastDownloadedVideo = Path.GetFullPath(fileLocation);
                         }
                     }
+
                     return true;
                 }
+
                 return false;
             }
             else
@@ -231,6 +256,7 @@ namespace TumblThree.Applications.Downloader
                 string fileName = FileName(downloadItem);
                 UpdateProgressQueueInformation(Resources.ProgressSkipFile, fileName);
             }
+
             return true;
         }
 
@@ -246,9 +272,9 @@ namespace TumblThree.Applications.Downloader
                 if (files.CheckIfFileExistsInDB(url) || blog.CheckIfBlogShouldCheckDirectory(GetCoreImageUrl(url)))
                     return true;
             }
+
             return false;
         }
-
 
         private void DownloadTextPost(TumblrPost downloadItem)
         {
@@ -314,10 +340,11 @@ namespace TumblThree.Applications.Downloader
         {
             if (!string.IsNullOrEmpty(downloadItem.Date))
             {
-                var epoch = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+                var epoch = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
                 DateTime postDate = epoch.AddSeconds(Convert.ToDouble(downloadItem.Date)).ToLocalTime();
                 return postDate;
             }
+
             return DateTime.Now;
         }
     }
