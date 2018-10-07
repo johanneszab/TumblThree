@@ -1,12 +1,14 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 
+using TumblThree.Domain.Models.Blogs;
+
 namespace TumblThree.Domain.Models
 {
     [Export(typeof(IBlogFactory))]
     public class BlogFactory : IBlogFactory
     {
-        private IUrlValidator urlValidator;
+        private readonly IUrlValidator urlValidator;
 
         [ImportingConstructor]
         internal BlogFactory(IUrlValidator urlValidator)
@@ -18,10 +20,10 @@ namespace TumblThree.Domain.Models
         {
             blogUrl = urlValidator.AddHttpsProtocol(blogUrl);
             return urlValidator.IsValidTumblrUrl(blogUrl)
-                || urlValidator.IsValidTumblrHiddenUrl(blogUrl)
-                || urlValidator.IsValidTumblrLikedByUrl(blogUrl)
-                || urlValidator.IsValidTumblrSearchUrl(blogUrl)
-                || urlValidator.IsValidTumblrTagSearchUrl(blogUrl);
+                   || urlValidator.IsValidTumblrHiddenUrl(blogUrl)
+                   || urlValidator.IsValidTumblrLikedByUrl(blogUrl)
+                   || urlValidator.IsValidTumblrSearchUrl(blogUrl)
+                   || urlValidator.IsValidTumblrTagSearchUrl(blogUrl);
         }
 
         public IBlog GetBlog(string blogUrl, string path)

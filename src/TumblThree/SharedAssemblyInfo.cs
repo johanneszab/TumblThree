@@ -12,5 +12,5 @@ using System.Runtime.InteropServices;
 
 [assembly: ComVisible(false)]
 [assembly: NeutralResourcesLanguage("en-US", UltimateResourceFallbackLocation.MainAssembly)]
-[assembly: AssemblyVersion("1.0.8.60")]
-[assembly: AssemblyFileVersion("1.0.8.60")]
+[assembly: AssemblyVersion("1.0.8.61")]
+[assembly: AssemblyFileVersion("1.0.8.61")]

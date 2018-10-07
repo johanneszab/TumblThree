@@ -2,6 +2,5 @@
 {
     interface ITumblrCrawlerData
     {
-
     }
 }

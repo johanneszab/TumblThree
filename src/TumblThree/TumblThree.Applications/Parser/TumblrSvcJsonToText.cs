@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+
 using TumblThree.Applications.DataModels.TumblrSvcJson;
 using TumblThree.Applications.Properties;
 
@@ -104,7 +105,8 @@ namespace TumblThree.Applications.Parser
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Summary, post.summary) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Quote, post.dialogue.Select(dialogue => new { dialogue.name, dialogue.phrase })) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Quote,
+                       post.dialogue.Select(dialogue => new { dialogue.name, dialogue.phrase })) +
                    Environment.NewLine + post.body +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Tags,
@@ -157,9 +159,11 @@ namespace TumblThree.Applications.Parser
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Summary, post.summary) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.PhotoUrl, post.photos.Select(photo => photo.original_size.url).FirstOrDefault()) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.PhotoUrl,
+                       post.photos.Select(photo => photo.original_size.url).FirstOrDefault()) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.PhotoCaption, post.trail.Select(trail => trail.content_raw).FirstOrDefault()) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.PhotoCaption,
+                       post.trail.Select(trail => trail.content_raw).FirstOrDefault()) +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Tags,
                        string.Join(", ", post.tags.ToArray())) +
@@ -207,7 +211,8 @@ namespace TumblThree.Applications.Parser
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Summary, post.summary) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.AudioCaption, post.trail.Select(trail => trail.content_raw).FirstOrDefault()) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.AudioCaption,
+                       post.trail.Select(trail => trail.content_raw).FirstOrDefault()) +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Id3Artist, post.artist) +
                    Environment.NewLine +

@@ -62,6 +62,7 @@ namespace TumblThree.Applications.ViewModels
                 view.Width = settings.Width;
                 view.GridSplitterPosition = settings.GridSplitterPosition;
             }
+
             view.IsMaximized = settings.IsMaximized;
         }
 

@@ -5,9 +5,11 @@ using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Reflection;
+
 using TumblThree.Applications.Services;
 using TumblThree.Applications.Views;
 using TumblThree.Domain.Models;
+using TumblThree.Domain.Models.Blogs;
 using TumblThree.Domain.Queue;
 
 namespace TumblThree.Applications.Controllers
@@ -44,6 +46,7 @@ namespace TumblThree.Applications.Controllers
             {
                 return viewModel;
             }
+
             throw new ArgumentException("Website is not supported!", "blogType");
         }
 
@@ -55,14 +58,14 @@ namespace TumblThree.Applications.Controllers
 
             ClearBlogSelection();
 
-            if (blogFiles.Count() <= 1)
+            if (blogFiles.Count <= 1)
             {
                 DetailsViewModel.Count = 1;
                 DetailsViewModel.BlogFile = blogFiles.FirstOrDefault();
             }
             else
             {
-                DetailsViewModel.Count = blogFiles.Count();
+                DetailsViewModel.Count = blogFiles.Count;
                 DetailsViewModel.BlogFile = CreateFromMultiple(blogFiles.ToArray());
                 DetailsViewModel.BlogFile.PropertyChanged += ChangeBlogSettings;
             }
@@ -72,14 +75,9 @@ namespace TumblThree.Applications.Controllers
         {
             if (blogFiles.Count == 0)
                 return;
-            if (blogFiles.Select(blog => blog.GetType()).Distinct().Count() < 2)
-            {
-                detailsViewModel = GetViewModel(blogFiles.FirstOrDefault());
-            }
-            else
-            {
-                detailsViewModel = GetViewModel(new Blog());
-            }
+            detailsViewModel = GetViewModel(blogFiles.Select(blog => blog.GetType()).Distinct().Count() < 2
+                ? blogFiles.FirstOrDefault()
+                : new Blog());
             shellService.DetailsView = DetailsViewModel.View;
             shellService.UpdateDetailsView();
         }
@@ -106,12 +104,12 @@ namespace TumblThree.Applications.Controllers
 
         public IBlog CreateFromMultiple(IEnumerable<IBlog> blogFiles)
         {
-            if (!blogFiles.Any())
+            List<IBlog> sharedBlogFiles = blogFiles.ToList();
+            if (!sharedBlogFiles.Any())
             {
                 throw new ArgumentException("The collection must have at least one item.", nameof(blogFiles));
             }
 
-            IBlog[] sharedBlogFiles = blogFiles.ToArray();
             foreach (IBlog blog in sharedBlogFiles)
             {
                 blogsToSave.Add(blog);
@@ -195,14 +193,10 @@ namespace TumblThree.Applications.Controllers
         {
             PropertyInfo property = typeof(IBlog).GetProperty(propertyName);
             var value = (T)property.GetValue(blogs.FirstOrDefault());
-            if (value != null)
-            {
-                bool equal = blogs.All(blog => property.GetValue(blog)?.Equals(value) ?? false);
-                if (equal)
-                    return value;
+            if (value == null)
                 return default(T);
-            }
-            return default(T);
+            bool equal = blogs.All(blog => property.GetValue(blog)?.Equals(value) ?? false);
+            return equal ? value : default(T);
         }
 
         private static bool SetCheckBox(IReadOnlyCollection<IBlog> blogs, string propertyName)
@@ -232,6 +226,7 @@ namespace TumblThree.Applications.Controllers
             {
                 DetailsViewModel.BlogFile.PropertyChanged -= ChangeBlogSettings;
             }
+
             SelectBlogFiles(selectionService.SelectedBlogFiles.ToArray());
         }
     }

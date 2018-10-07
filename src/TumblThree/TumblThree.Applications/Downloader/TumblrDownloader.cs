@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 using TumblThree.Applications.DataModels;
 using TumblThree.Applications.DataModels.TumblrPosts;
 using TumblThree.Applications.Services;
-using TumblThree.Domain.Models;
+using TumblThree.Domain.Models.Blogs;
+using TumblThree.Domain.Models.Files;
 
 namespace TumblThree.Applications.Downloader
 {
@@ -17,7 +18,9 @@ namespace TumblThree.Applications.Downloader
         protected List<string> tags = new List<string>();
         protected int numberOfPagesCrawled = 0;
 
-        public TumblrDownloader(IShellService shellService, IManagerService managerService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress, IPostQueue<TumblrPost> postQueue, FileDownloader fileDownloader, ICrawlerService crawlerService, IBlog blog, IFiles files)
+        public TumblrDownloader(IShellService shellService, IManagerService managerService, CancellationToken ct, PauseToken pt,
+            IProgress<DownloadProgress> progress, IPostQueue<TumblrPost> postQueue, FileDownloader fileDownloader,
+            ICrawlerService crawlerService, IBlog blog, IFiles files)
             : base(shellService, managerService, ct, pt, progress, postQueue, fileDownloader, crawlerService, blog, files)
         {
         }
@@ -33,15 +36,15 @@ namespace TumblThree.Applications.Downloader
         {
             var sb = new StringBuilder(imageUrl);
             return sb
-                .Replace("_raw", "_" + ImageSize())
-                .Replace("_1280", "_" + ImageSize())
-                .Replace("_540", "_" + ImageSize())
-                .Replace("_500", "_" + ImageSize())
-                .Replace("_400", "_" + ImageSize())
-                .Replace("_250", "_" + ImageSize())
-                .Replace("_100", "_" + ImageSize())
-                .Replace("_75sq", "_" + ImageSize())
-                .ToString();
+                   .Replace("_raw", "_" + ImageSize())
+                   .Replace("_1280", "_" + ImageSize())
+                   .Replace("_540", "_" + ImageSize())
+                   .Replace("_500", "_" + ImageSize())
+                   .Replace("_400", "_" + ImageSize())
+                   .Replace("_250", "_" + ImageSize())
+                   .Replace("_100", "_" + ImageSize())
+                   .Replace("_75sq", "_" + ImageSize())
+                   .ToString();
         }
 
         /// <returns>
@@ -71,6 +74,7 @@ namespace TumblThree.Applications.Downloader
                 if (await base.DownloadBinaryPost(new PhotoPost(url, downloadItem.Id, downloadItem.Date)))
                     return true;
             }
+
             return await base.DownloadBinaryPost(downloadItem);
         }
 
@@ -89,6 +93,7 @@ namespace TumblThree.Applications.Downloader
                 path = imageDimension.Replace(path, "_raw");
                 return "https://" + host + "/" + path;
             }
+
             return url;
         }
     }

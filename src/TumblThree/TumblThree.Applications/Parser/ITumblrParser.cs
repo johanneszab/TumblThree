@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace TumblThree.Applications.Crawler
+namespace TumblThree.Applications.Parser
 {
     public interface ITumblrParser
     {

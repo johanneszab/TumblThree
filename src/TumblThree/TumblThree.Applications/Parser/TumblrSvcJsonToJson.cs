@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
+
 using TumblThree.Applications.DataModels.TumblrSvcJson;
 using TumblThree.Domain;
 
@@ -55,9 +56,9 @@ namespace TumblThree.Applications.Parser
             postCopy.trail = null;
             postCopy.share_popover_data = null;
 
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(postCopy.GetType());
+            var serializer = new DataContractJsonSerializer(postCopy.GetType());
 
-            using (MemoryStream ms = new MemoryStream())
+            using (var ms = new MemoryStream())
             {
                 serializer.WriteObject(ms, postCopy);
                 return JsonFormatter.FormatOutput(Encoding.UTF8.GetString(ms.ToArray()));

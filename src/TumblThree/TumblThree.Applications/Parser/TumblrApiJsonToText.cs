@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+
 using TumblThree.Applications.DataModels.TumblrApiJson;
 using TumblThree.Applications.Properties;
 
@@ -99,7 +100,8 @@ namespace TumblThree.Applications.Parser
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Quote, post.conversation.Select(dialogue => new { dialogue.name, dialogue.phrase })) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Quote,
+                       post.conversation.Select(dialogue => new { dialogue.name, dialogue.phrase })) +
                    Environment.NewLine + post.regular_body +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Tags,
@@ -150,7 +152,8 @@ namespace TumblThree.Applications.Parser
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.PhotoUrl, post.photo_url_1280) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.PhotoSetUrl, string.Join(" ", post.photos.Select(photo => photo.photo_url_1280))) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.PhotoSetUrl,
+                       string.Join(" ", post.photos.Select(photo => photo.photo_url_1280))) +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.PhotoCaption, post.photo_caption) +
                    Environment.NewLine +

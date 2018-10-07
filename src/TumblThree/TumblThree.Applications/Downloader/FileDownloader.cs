@@ -20,7 +20,8 @@ namespace TumblThree.Applications.Downloader
         public event EventHandler Completed;
         public event EventHandler<DownloadProgressChangedEventArgs> ProgressChanged;
 
-        public FileDownloader(AppSettings settings, CancellationToken ct, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService)
+        public FileDownloader(AppSettings settings, CancellationToken ct, IWebRequestFactory webRequestFactory,
+            ISharedCookieService cookieService)
         {
             this.settings = settings;
             this.ct = ct;
@@ -44,6 +45,7 @@ namespace TumblThree.Applications.Downloader
                 if (totalBytesReceived >= await CheckDownloadSizeAsync(url).TimeoutAfter(settings.TimeOut))
                     return true;
             }
+
             if (ct.IsCancellationRequested)
                 return false;
 
@@ -81,7 +83,9 @@ namespace TumblThree.Applications.Downloader
                                     var bytesRead = 0;
                                     //Stopwatch sw = Stopwatch.StartNew();
 
-                                    while ((bytesRead = await throttledStream.ReadAsync(buffer, 0, buffer.Length, ct).TimeoutAfter(settings.TimeOut)) > 0)
+                                    while ((bytesRead = await throttledStream
+                                                              .ReadAsync(buffer, 0, buffer.Length, ct)
+                                                              .TimeoutAfter(settings.TimeOut)) > 0)
                                     {
                                         await fileStream.WriteAsync(buffer, 0, bytesRead);
                                         totalBytesReceived += bytesRead;
@@ -93,6 +97,7 @@ namespace TumblThree.Applications.Downloader
                                 }
                             }
                         }
+
                         if (totalBytesReceived >= totalBytesToReceive)
                         {
                             break;
@@ -106,6 +111,7 @@ namespace TumblThree.Applications.Downloader
                         {
                             return false;
                         }
+
                         // retry (IOException: Received an unexpected EOF or 0 bytes from the transport stream)
                     }
                     catch (WebException webException)
@@ -124,6 +130,7 @@ namespace TumblThree.Applications.Downloader
                         requestRegistration.Dispose();
                     }
                 }
+
                 return true;
             }
         }
@@ -145,7 +152,6 @@ namespace TumblThree.Applications.Downloader
             {
                 requestRegistration.Dispose();
             }
-
         }
 
         public async Task<Stream> ReadFromUrlIntoStream(string url)
@@ -175,7 +181,8 @@ namespace TumblThree.Applications.Downloader
 
         public static async Task<bool> SaveStreamToDisk(Stream input, string destinationFileName, CancellationToken ct)
         {
-            using (var stream = new FileStream(destinationFileName, FileMode.Create, FileAccess.Write, FileShare.Read, BufferSize, true))
+            using (var stream = new FileStream(destinationFileName, FileMode.Create, FileAccess.Write, FileShare.Read, BufferSize,
+                true))
             {
                 var buf = new byte[4096];
                 int bytesRead;
@@ -184,6 +191,7 @@ namespace TumblThree.Applications.Downloader
                     await stream.WriteAsync(buf, 0, bytesRead, ct);
                 }
             }
+
             return true;
         }
 
@@ -211,6 +219,7 @@ namespace TumblThree.Applications.Downloader
         public long TotalBytesToReceive { get; private set; }
         public float ProgressPercentage => (BytesReceived / (float)TotalBytesToReceive) * 100;
         public float CurrentSpeed { get; private set; } // in bytes
+
         public TimeSpan TimeLeft
         {
             get

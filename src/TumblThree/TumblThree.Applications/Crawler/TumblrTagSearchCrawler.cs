@@ -13,7 +13,7 @@ using TumblThree.Applications.Downloader;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain;
-using TumblThree.Domain.Models;
+using TumblThree.Domain.Models.Blogs;
 
 namespace TumblThree.Applications.Crawler
 {
@@ -24,9 +24,9 @@ namespace TumblThree.Applications.Crawler
         private readonly IDownloader downloader;
         private readonly PauseToken pt;
 
-        public TumblrTagSearchCrawler(IShellService shellService, CancellationToken ct, PauseToken pt, IProgress<DownloadProgress> progress,
-            ICrawlerService crawlerService, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService,
-            IDownloader downloader, IPostQueue<TumblrPost> postQueue, IBlog blog)
+        public TumblrTagSearchCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
+            IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory,
+            ISharedCookieService cookieService, IDownloader downloader, IPostQueue<TumblrPost> postQueue, IBlog blog)
             : base(shellService, crawlerService, ct, progress, webRequestFactory, cookieService, postQueue, blog)
         {
             this.downloader = downloader;
@@ -91,7 +91,8 @@ namespace TumblThree.Applications.Crawler
                     try
                     {
                         long pagination = DateTimeOffset.Now.ToUnixTimeSeconds() - (pageNumber * crawlerTimeOffset);
-                        long nextCrawlersPagination = DateTimeOffset.Now.ToUnixTimeSeconds() - ((pageNumber + 1) * crawlerTimeOffset);
+                        long nextCrawlersPagination =
+                            DateTimeOffset.Now.ToUnixTimeSeconds() - ((pageNumber + 1) * crawlerTimeOffset);
                         await AddUrlsToDownloadList(pagination, nextCrawlersPagination);
                     }
                     catch (TimeoutException timeoutException)
@@ -108,6 +109,7 @@ namespace TumblThree.Applications.Crawler
                     }
                 })());
             }
+
             await Task.WhenAll(trackedTasks);
 
             postQueue.CompleteAdding();
@@ -120,19 +122,21 @@ namespace TumblThree.Applications.Crawler
             long tagsIntroduced = 1178470824; // Unix time of 05/06/2007 @ 5:00pm (UTC)
             if (!string.IsNullOrEmpty(blog.DownloadFrom))
             {
-                var downloadFrom = DateTime.ParseExact(blog.DownloadFrom, "yyyyMMdd", CultureInfo.InvariantCulture,
+                DateTime downloadFrom = DateTime.ParseExact(blog.DownloadFrom, "yyyyMMdd", CultureInfo.InvariantCulture,
                     DateTimeStyles.None);
                 var dateTimeOffset = new DateTimeOffset(downloadFrom);
                 tagsIntroduced = dateTimeOffset.ToUnixTimeSeconds();
             }
+
             long unixTimeNow = DateTimeOffset.Now.ToUnixTimeSeconds();
             if (!string.IsNullOrEmpty(blog.DownloadTo))
             {
-                var downloadTo = DateTime.ParseExact(blog.DownloadTo, "yyyyMMdd", CultureInfo.InvariantCulture,
+                DateTime downloadTo = DateTime.ParseExact(blog.DownloadTo, "yyyyMMdd", CultureInfo.InvariantCulture,
                     DateTimeStyles.None);
                 var dateTimeOffset = new DateTimeOffset(downloadTo);
                 unixTimeNow = dateTimeOffset.ToUnixTimeSeconds();
             }
+
             long tagsLifeTime = unixTimeNow - tagsIntroduced;
             return tagsLifeTime / shellService.Settings.ConcurrentScans;
         }
@@ -167,6 +171,7 @@ namespace TumblThree.Applications.Crawler
                 crawlerService.Timeconstraint.Acquire();
                 return await GetRequestAsync("https://www.tumblr.com/tagged/" + blog.Name + "?before=" + pagination);
             }
+
             return await GetRequestAsync("https://www.tumblr.com/tagged/" + blog.Name + "?before=" + pagination);
 
             //string url = "https://www.tumblr.com/tagged/" + blog.Name + "?before=" + pagination;
@@ -181,6 +186,7 @@ namespace TumblThree.Applications.Crawler
                 {
                     return;
                 }
+
                 if (pt.IsPaused)
                 {
                     pt.WaitWhilePausedWithResponseAsyc().Wait();
@@ -217,12 +223,13 @@ namespace TumblThree.Applications.Crawler
         {
             if (!string.IsNullOrEmpty(blog.DownloadFrom))
             {
-                var downloadFrom = DateTime.ParseExact(blog.DownloadFrom, "yyyyMMdd", CultureInfo.InvariantCulture,
+                DateTime downloadFrom = DateTime.ParseExact(blog.DownloadFrom, "yyyyMMdd", CultureInfo.InvariantCulture,
                     DateTimeStyles.None);
                 var dateTimeOffset = new DateTimeOffset(downloadFrom);
                 if (pagination < dateTimeOffset.ToUnixTimeSeconds())
                     return false;
             }
+
             return true;
         }
 
@@ -240,6 +247,7 @@ namespace TumblThree.Applications.Crawler
                     {
                         continue;
                     }
+
                     imageUrl = ResizeTumblrImageUrl(imageUrl);
                     // TODO: postID
                     AddToDownloadList(new PhotoPost(imageUrl, Guid.NewGuid().ToString("N")));
@@ -259,7 +267,8 @@ namespace TumblThree.Applications.Crawler
                     if (shellService.Settings.VideoSize == 1080)
                     {
                         // TODO: postID
-                        AddToDownloadList(new VideoPost("https://vtt.tumblr.com/" + videoUrl + ".mp4", Guid.NewGuid().ToString("N")));
+                        AddToDownloadList(new VideoPost("https://vtt.tumblr.com/" + videoUrl + ".mp4",
+                            Guid.NewGuid().ToString("N")));
                     }
                     else if (shellService.Settings.VideoSize == 480)
                     {

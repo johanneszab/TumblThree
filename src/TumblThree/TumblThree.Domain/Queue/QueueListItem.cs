@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Waf.Foundation;
 
-using TumblThree.Domain.Models;
+using TumblThree.Domain.Models.Blogs;
 
 namespace TumblThree.Domain.Queue
 {

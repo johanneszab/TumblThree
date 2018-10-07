@@ -10,7 +10,7 @@ using System.Threading;
 using System.Waf.Foundation;
 using System.Xml;
 
-namespace TumblThree.Domain.Models
+namespace TumblThree.Domain.Models.Blogs
 {
     [DataContract]
     public class Blog : Model, IBlog
@@ -92,8 +92,10 @@ namespace TumblThree.Domain.Models
         private int settingsTabIndex;
         private int progress;
         private int quotes;
+
         [DataMember(Name = "Links")]
         private readonly List<string> links = new List<string>();
+
         private int downloadedImages;
 
         private object lockObjectProgress = new object();
@@ -101,13 +103,15 @@ namespace TumblThree.Domain.Models
         private object lockObjectDb = new object();
         private object lockObjectDirectory = new object();
 
-        public enum PostType { Photo, Video }
+        public enum PostType
+        {
+            Photo,
+            Video
+        }
 
-        [DataMember]
-        public PostType States { get; set; }
+        [DataMember] public PostType States { get; set; }
 
-        [DataMember]
-        public string Version { get; set; }
+        [DataMember] public string Version { get; set; }
 
         [DataMember]
         public int DuplicatePhotos
@@ -284,20 +288,15 @@ namespace TumblThree.Domain.Models
             }
         }
 
-        [DataMember]
-        public string Name { get; set; }
+        [DataMember] public string Name { get; set; }
 
-        [DataMember]
-        public string Url { get; set; }
+        [DataMember] public string Url { get; set; }
 
-        [DataMember]
-        public string Location { get; set; }
+        [DataMember] public string Location { get; set; }
 
-        [DataMember]
-        public string ChildId { get; set; }
+        [DataMember] public string ChildId { get; set; }
 
-        [DataMember]
-        public BlogTypes BlogType { get; set; }
+        [DataMember] public BlogTypes BlogType { get; set; }
 
         [DataMember]
         public int DownloadedImages
@@ -305,6 +304,7 @@ namespace TumblThree.Domain.Models
             get => downloadedImages;
             set => SetProperty(ref downloadedImages, value);
         }
+
         [DataMember]
         public int TotalCount
         {
@@ -730,11 +730,9 @@ namespace TumblThree.Domain.Models
             }
         }
 
-        [DataMember]
-        public bool Dirty { get; set; }
+        [DataMember] public bool Dirty { get; set; }
 
-        [DataMember]
-        public Exception LoadError { get; set; }
+        [DataMember] public Exception LoadError { get; set; }
 
         public List<string> Links
         {
@@ -764,14 +762,11 @@ namespace TumblThree.Domain.Models
             }
         }
 
-        [DataMember]
-        public string Description { get; set; }
+        [DataMember] public string Description { get; set; }
 
-        [DataMember]
-        public string Title { get; set; }
+        [DataMember] public string Title { get; set; }
 
-        [DataMember]
-        public ulong LastId { get; set; }
+        [DataMember] public ulong LastId { get; set; }
 
         [DataMember]
         public bool SkipGif
@@ -824,7 +819,6 @@ namespace TumblThree.Domain.Models
                 postCounter++;
                 property.SetValue(this, postCounter, null);
             }
-
         }
 
         public void AddFileToDb(string fileName)
@@ -842,6 +836,7 @@ namespace TumblThree.Domain.Models
                 Directory.CreateDirectory(DownloadLocation());
                 return true;
             }
+
             return true;
         }
 
@@ -854,6 +849,7 @@ namespace TumblThree.Domain.Models
                 Monitor.Exit(lockObjectDb);
                 return true;
             }
+
             Monitor.Exit(lockObjectDb);
             return false;
         }
@@ -864,6 +860,7 @@ namespace TumblThree.Domain.Models
             {
                 return CheckIfFileExistsInDirectory(url);
             }
+
             return false;
         }
 
@@ -877,6 +874,7 @@ namespace TumblThree.Domain.Models
                 Monitor.Exit(lockObjectDirectory);
                 return true;
             }
+
             Monitor.Exit(lockObjectDirectory);
             return false;
         }
@@ -942,6 +940,7 @@ namespace TumblThree.Domain.Models
                         writer.Flush();
                     }
                 }
+
                 File.Replace(newIndex, currentIndex, backupIndex, true);
                 File.Delete(backupIndex);
             }
@@ -962,15 +961,17 @@ namespace TumblThree.Domain.Models
 
         protected static string ExtractSubDomain(string url)
         {
-            string[] source = url.Split(new char[] { '.' });
-            if ((source.Count<string>() >= 3) && source[0].StartsWith("http://", true, null))
+            string[] source = url.Split('.');
+            if ((source.Length >= 3) && source[0].StartsWith("http://", true, null))
             {
                 return source[0].Replace("http://", string.Empty);
             }
-            else if ((source.Count<string>() >= 3) && source[0].StartsWith("https://", true, null))
+
+            if ((source.Length >= 3) && source[0].StartsWith("https://", true, null))
             {
                 return source[0].Replace("https://", string.Empty);
             }
+
             return null;
         }
 

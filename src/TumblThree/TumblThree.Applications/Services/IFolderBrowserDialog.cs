@@ -9,7 +9,9 @@ namespace TumblThree.Applications.Services
         Environment.SpecialFolder RootFolder { get; set; }
         string SelectedPath { get; set; }
         bool ShowNewFolderButton { get; set; }
+
         bool? ShowDialog();
+
         bool? ShowDialog(Window owner);
     }
 }

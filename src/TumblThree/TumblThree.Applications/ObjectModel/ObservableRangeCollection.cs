@@ -12,9 +12,9 @@ namespace TumblThree.Applications.ObjectModel
         /// </summary> 
         public void AddRange(IEnumerable<T> collection)
         {
-            if (collection == null) throw new ArgumentNullException("collection");
+            if (collection == null) throw new ArgumentNullException(nameof(collection));
 
-            foreach (var i in collection) Items.Add(i);
+            foreach (T i in collection) Items.Add(i);
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
@@ -23,9 +23,9 @@ namespace TumblThree.Applications.ObjectModel
         /// </summary> 
         public void RemoveRange(IEnumerable<T> collection)
         {
-            if (collection == null) throw new ArgumentNullException("collection");
+            if (collection == null) throw new ArgumentNullException(nameof(collection));
 
-            foreach (var i in collection) Items.Remove(i);
+            foreach (T i in collection) Items.Remove(i);
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
@@ -42,10 +42,10 @@ namespace TumblThree.Applications.ObjectModel
         /// </summary> 
         public void ReplaceRange(IEnumerable<T> collection)
         {
-            if (collection == null) throw new ArgumentNullException("collection");
+            if (collection == null) throw new ArgumentNullException(nameof(collection));
 
             Items.Clear();
-            foreach (var i in collection) Items.Add(i);
+            foreach (T i in collection) Items.Add(i);
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
@@ -53,7 +53,9 @@ namespace TumblThree.Applications.ObjectModel
         /// Initializes a new instance of the System.Collections.ObjectModel.ObservableCollection(Of T) class. 
         /// </summary> 
         public ObservableRangeCollection()
-            : base() { }
+            : base()
+        {
+        }
 
         /// <summary> 
         /// Initializes a new instance of the System.Collections.ObjectModel.ObservableCollection(Of T) class that contains elements copied from the specified collection. 
@@ -61,6 +63,8 @@ namespace TumblThree.Applications.ObjectModel
         /// <param name="collection">collection: The collection from which the elements are copied.</param> 
         /// <exception cref="System.ArgumentNullException">The collection parameter cannot be null.</exception> 
         public ObservableRangeCollection(IEnumerable<T> collection)
-            : base(collection) { }
+            : base(collection)
+        {
+        }
     }
 }
