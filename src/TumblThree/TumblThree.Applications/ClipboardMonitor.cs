@@ -62,6 +62,7 @@ namespace TumblThree.Applications
                 hwndSource.RemoveHook(WndProc);
                 hwndSource.Dispose();
             }
+
             // Free any unmanaged objects here.
             //
             disposed = true;

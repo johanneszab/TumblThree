@@ -2,12 +2,11 @@
 using System.ComponentModel;
 using System.Resources;
 
-
 namespace TumblThree.Domain.Attributes
 {
     public class LocalizedDescriptionAttribute : DescriptionAttribute
     {
-        private ResourceManager resourceManager;
+        private readonly ResourceManager resourceManager;
         private readonly string resourceKey;
 
         public LocalizedDescriptionAttribute(string resourceKey, Type resourceType)
@@ -21,7 +20,7 @@ namespace TumblThree.Domain.Attributes
             get
             {
                 string description = resourceManager.GetString(resourceKey);
-                return string.IsNullOrWhiteSpace(description) ? string.Format("[[{0}]]", resourceKey) : description;
+                return string.IsNullOrWhiteSpace(description) ? $"[[{resourceKey}]]" : description;
             }
         }
     }

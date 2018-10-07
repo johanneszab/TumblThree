@@ -13,6 +13,5 @@ namespace TumblThree.Applications.Data
         public static IReadOnlyList<string> QueueFileExtensions => queueFileExtensions;
 
         public static IReadOnlyList<string> BloglistExportFileType => bloglistExportFileType;
-
     }
 }

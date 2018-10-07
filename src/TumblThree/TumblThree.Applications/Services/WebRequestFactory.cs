@@ -5,6 +5,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+
 using TumblThree.Applications.Extensions;
 using TumblThree.Applications.Properties;
 
@@ -55,6 +56,7 @@ namespace TumblThree.Applications.Services
             {
                 request.Headers[header.Key] = header.Value;
             }
+
             return request;
         }
 
@@ -125,7 +127,7 @@ namespace TumblThree.Applications.Services
         {
             using (var response = await request.GetResponseAsync().TimeoutAfter(shellService.Settings.TimeOut) as HttpWebResponse)
             {
-                using (var stream = GetStreamForApiRequest(response.GetResponseStream()))
+                using (Stream stream = GetStreamForApiRequest(response.GetResponseStream()))
                 {
                     using (var buffer = new BufferedStream(stream))
                     {
@@ -143,7 +145,6 @@ namespace TumblThree.Applications.Services
             if (!settings.LimitScanBandwidth || settings.Bandwidth == 0)
                 return stream;
             return new ThrottledStream(stream, (settings.Bandwidth / settings.ConcurrentConnections) * 1024);
-
         }
 
         public string UrlEncode(IDictionary<string, string> parameters)
@@ -153,6 +154,7 @@ namespace TumblThree.Applications.Services
             {
                 sb.AppendFormat("{0}={1}&", val.Key, HttpUtility.UrlEncode(val.Value));
             }
+
             sb.Remove(sb.Length - 1, 1); // remove last '&'
             return sb.ToString();
         }
@@ -163,10 +165,12 @@ namespace TumblThree.Applications.Services
             {
                 request.Proxy = new WebProxy(settings.ProxyHost, int.Parse(settings.ProxyPort));
             }
+
             if (!string.IsNullOrEmpty(settings.ProxyUsername) && !string.IsNullOrEmpty(settings.ProxyPassword))
             {
                 request.Proxy.Credentials = new NetworkCredential(settings.ProxyUsername, settings.ProxyPassword);
             }
+
             return request;
         }
     }

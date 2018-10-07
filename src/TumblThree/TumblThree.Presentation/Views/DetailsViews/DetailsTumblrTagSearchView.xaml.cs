@@ -4,6 +4,7 @@ using System.Waf.Applications;
 using System.Windows.Input;
 
 using TumblThree.Applications.ViewModels;
+using TumblThree.Applications.ViewModels.DetailsViewModels;
 using TumblThree.Applications.Views;
 
 namespace TumblThree.Presentation.Views

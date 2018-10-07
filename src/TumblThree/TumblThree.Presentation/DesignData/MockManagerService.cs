@@ -5,6 +5,8 @@ using System.Linq;
 
 using TumblThree.Applications.Services;
 using TumblThree.Domain.Models;
+using TumblThree.Domain.Models.Blogs;
+using TumblThree.Domain.Models.Files;
 
 namespace TumblThree.Presentation.DesignData
 {

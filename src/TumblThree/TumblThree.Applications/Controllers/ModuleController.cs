@@ -46,8 +46,8 @@ namespace TumblThree.Applications.Controllers
         [ImportingConstructor]
         public ModuleController(Lazy<ShellService> shellService, IEnvironmentService environmentService,
             IConfirmTumblrPrivacyConsent confirmTumblrPrivacyConsent, ISettingsProvider settingsProvider,
-            ISharedCookieService cookieService, Lazy<ManagerController> managerController,
-            Lazy<QueueController> queueController, Lazy<DetailsController> detailsController,
+            ISharedCookieService cookieService, Lazy<ManagerController> managerController, Lazy<QueueController> queueController,
+            Lazy<DetailsController> detailsController,
             Lazy<CrawlerController> crawlerController, Lazy<ShellViewModel> shellViewModel)
         {
             this.shellService = shellService;
@@ -80,15 +80,19 @@ namespace TumblThree.Applications.Controllers
             if (CheckIfPortableMode(appSettingsFileName))
             {
                 appSettings = LoadSettings<AppSettings>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, appSettingsFileName));
-                queueSettings = LoadSettings<QueueSettings>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, queueSettingsFileName));
-                managerSettings = LoadSettings<ManagerSettings>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, managerSettingsFileName));
+                queueSettings =
+                    LoadSettings<QueueSettings>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, queueSettingsFileName));
+                managerSettings =
+                    LoadSettings<ManagerSettings>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, managerSettingsFileName));
                 cookieList = LoadSettings<List<Cookie>>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, cookiesFileName));
             }
             else
             {
                 appSettings = LoadSettings<AppSettings>(Path.Combine(environmentService.AppSettingsPath, appSettingsFileName));
-                queueSettings = LoadSettings<QueueSettings>(Path.Combine(environmentService.AppSettingsPath, queueSettingsFileName));
-                managerSettings = LoadSettings<ManagerSettings>(Path.Combine(environmentService.AppSettingsPath, managerSettingsFileName));
+                queueSettings =
+                    LoadSettings<QueueSettings>(Path.Combine(environmentService.AppSettingsPath, queueSettingsFileName));
+                managerSettings =
+                    LoadSettings<ManagerSettings>(Path.Combine(environmentService.AppSettingsPath, managerSettingsFileName));
                 cookieList = LoadSettings<List<Cookie>>(Path.Combine(environmentService.AppSettingsPath, cookiesFileName));
             }
 
@@ -136,14 +140,16 @@ namespace TumblThree.Applications.Controllers
                 SaveSettings(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, appSettingsFileName), appSettings);
                 SaveSettings(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, queueSettingsFileName), queueSettings);
                 SaveSettings(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, managerSettingsFileName), managerSettings);
-                SaveSettings(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, cookiesFileName), new List<Cookie>(cookieService.GetAllCookies()));
+                SaveSettings(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, cookiesFileName),
+                    new List<Cookie>(cookieService.GetAllCookies()));
             }
             else
             {
                 SaveSettings(Path.Combine(environmentService.AppSettingsPath, appSettingsFileName), appSettings);
                 SaveSettings(Path.Combine(environmentService.AppSettingsPath, queueSettingsFileName), queueSettings);
                 SaveSettings(Path.Combine(environmentService.AppSettingsPath, managerSettingsFileName), managerSettings);
-                SaveSettings(Path.Combine(environmentService.AppSettingsPath, cookiesFileName), new List<Cookie>(cookieService.GetAllCookies()));
+                SaveSettings(Path.Combine(environmentService.AppSettingsPath, cookiesFileName),
+                    new List<Cookie>(cookieService.GetAllCookies()));
             }
         }
 

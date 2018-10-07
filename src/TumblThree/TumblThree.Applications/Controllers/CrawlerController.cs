@@ -5,11 +5,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Waf.Applications;
+
 using TumblThree.Applications.Crawler;
 using TumblThree.Applications.DataModels;
 using TumblThree.Applications.Services;
 using TumblThree.Applications.ViewModels;
-using TumblThree.Domain.Models;
+using TumblThree.Domain.Models.Blogs;
 using TumblThree.Domain.Queue;
 
 namespace TumblThree.Applications.Controllers
@@ -71,11 +72,13 @@ namespace TumblThree.Applications.Controllers
                 {
                     stopCommand.Execute(null);
                 }
+
                 Task.WaitAll(runningTasks.ToArray());
             }
             catch (AggregateException)
             {
             }
+
             foreach (IBlog blog in managerService.BlogFiles)
             {
                 if (blog.Dirty)
@@ -156,9 +159,18 @@ namespace TumblThree.Applications.Controllers
                 runningTasks.Add(Task.Run(() => RunCrawlerTasks(cancellation.Token, pause.Token)));
             }
 
-            try { await Task.WhenAll(runningTasks.ToArray()); }
-            catch { }
-            finally { crawlerCancellationToken.Dispose(); runningTasks.Clear(); }
+            try
+            {
+                await Task.WhenAll(runningTasks.ToArray());
+            }
+            catch
+            {
+            }
+            finally
+            {
+                crawlerCancellationToken.Dispose();
+                runningTasks.Clear();
+            }
         }
 
         private async Task RunCrawlerTasks(CancellationToken ct, PauseToken pt)
@@ -176,13 +188,13 @@ namespace TumblThree.Applications.Controllers
                 }
 
                 Monitor.Enter(lockObject);
-                if (crawlerService.ActiveItems.Count() < QueueManager.Items.Count())
+                if (crawlerService.ActiveItems.Count < QueueManager.Items.Count)
                 {
                     IEnumerable<QueueListItem> queueList = QueueManager.Items.Except(crawlerService.ActiveItems);
                     QueueListItem nextQueueItem = queueList.First();
                     IBlog blog = nextQueueItem.Blog;
 
-                    ICrawler crawler = crawlerFactory.GetCrawler(blog, ct, pt, new Progress<DownloadProgress>(), shellService, crawlerService, managerService);
+                    ICrawler crawler = crawlerFactory.GetCrawler(blog, ct, pt, new Progress<DownloadProgress>());
                     crawler.IsBlogOnlineAsync().Wait(4000);
 
                     if (crawlerService.ActiveItems.Any(item => item.Blog.Name.Equals(nextQueueItem.Blog.Name)))
@@ -217,7 +229,7 @@ namespace TumblThree.Applications.Controllers
             blog.Dirty = true;
             ProgressThrottler<DownloadProgress> progress = SetupThrottledQueueListProgress(queueListItem);
 
-            ICrawler crawler = crawlerFactory.GetCrawler(blog, ct, pt, progress, shellService, crawlerService, managerService);
+            ICrawler crawler = crawlerFactory.GetCrawler(blog, ct, pt, progress);
             await crawler.CrawlAsync();
 
             if (ct.IsCancellationRequested)
@@ -235,10 +247,10 @@ namespace TumblThree.Applications.Controllers
             }
         }
 
-        private ProgressThrottler<DataModels.DownloadProgress> SetupThrottledQueueListProgress(QueueListItem queueListItem)
+        private ProgressThrottler<DownloadProgress> SetupThrottledQueueListProgress(QueueListItem queueListItem)
         {
-            var progressHandler = new Progress<DataModels.DownloadProgress>(value => { queueListItem.Progress = value.Progress; });
-            return new ProgressThrottler<DataModels.DownloadProgress>(progressHandler, shellService.Settings.ProgessUpdateInterval);
+            var progressHandler = new Progress<DownloadProgress>(value => { queueListItem.Progress = value.Progress; });
+            return new ProgressThrottler<DownloadProgress>(progressHandler, shellService.Settings.ProgessUpdateInterval);
         }
     }
 }

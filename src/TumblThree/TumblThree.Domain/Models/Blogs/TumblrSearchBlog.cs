@@ -2,7 +2,9 @@
 using System.IO;
 using System.Runtime.Serialization;
 
-namespace TumblThree.Domain.Models
+using TumblThree.Domain.Models.Files;
+
+namespace TumblThree.Domain.Models.Blogs
 {
     [DataContract]
     public class TumblrSearchBlog : Blog
@@ -31,15 +33,16 @@ namespace TumblThree.Domain.Models
                 files.Save();
                 files = null;
             }
+
             return blog;
         }
 
-        protected static new string ExtractName(string url)
+        protected new static string ExtractName(string url)
         {
             return url.Split('/')[4].Replace("-", "+");
         }
 
-        protected static new string ExtractUrl(string url)
+        protected new static string ExtractUrl(string url)
         {
             if (url.StartsWith("http://"))
                 url = url.Insert(4, "s");

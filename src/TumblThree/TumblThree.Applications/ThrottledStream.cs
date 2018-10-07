@@ -6,12 +6,14 @@ using System.Timers;
 
 using TumblThree.Applications.Properties;
 
+using Timer = System.Timers.Timer;
+
 namespace TumblThree.Applications
 {
     public class ThrottledStream : Stream
     {
         private readonly Stream parent;
-        private readonly System.Timers.Timer resettimer;
+        private readonly Timer resettimer;
         private readonly AutoResetEvent wh = new AutoResetEvent(true);
         private long maxBytesPerSecond;
         private static long processed;
@@ -26,7 +28,7 @@ namespace TumblThree.Applications
             MaxBytesPerSecond = maxBytesPerSecond;
             parent = parentStream;
             processed = 0;
-            resettimer = new System.Timers.Timer
+            resettimer = new Timer
             {
                 Interval = 1000
             };

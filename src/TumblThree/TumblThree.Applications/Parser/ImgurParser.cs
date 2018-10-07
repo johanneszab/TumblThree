@@ -2,10 +2,11 @@
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 
-namespace TumblThree.Applications.Crawler
+namespace TumblThree.Applications.Parser
 {
     public class ImgurParser : IImgurParser
     {

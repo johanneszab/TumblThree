@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading;
@@ -16,7 +17,7 @@ using TumblThree.Applications.DataModels.TumblrPosts;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain;
-using TumblThree.Domain.Models;
+using TumblThree.Domain.Models.Blogs;
 
 namespace TumblThree.Applications.Crawler
 {
@@ -80,7 +81,7 @@ namespace TumblThree.Applications.Crawler
 
         public void UpdateProgressQueueInformation(string format, params object[] args)
         {
-            var newProgress = new DataModels.DownloadProgress
+            var newProgress = new DownloadProgress
             {
                 Progress = string.Format(CultureInfo.CurrentCulture, format, args)
             };
@@ -94,10 +95,12 @@ namespace TumblThree.Applications.Crawler
                 crawlerService.Timeconstraint.Acquire();
                 return await method(url);
             }
+
             return await method(url);
         }
 
-        protected async Task<string> RequestDataAsync(string url, Dictionary<string, string> headers = null, IEnumerable<string> cookieHosts = null)
+        protected async Task<string> RequestDataAsync(string url, Dictionary<string, string> headers = null,
+            IEnumerable<string> cookieHosts = null)
         {
             var requestRegistration = new CancellationTokenRegistration();
             try
@@ -108,6 +111,7 @@ namespace TumblThree.Applications.Crawler
                 {
                     cookieService.GetUriCookie(request.CookieContainer, new Uri(cookieHost));
                 }
+
                 requestRegistration = ct.Register(() => request.Abort());
                 return await webRequestFactory.ReadReqestToEnd(request);
             }
@@ -121,13 +125,13 @@ namespace TumblThree.Applications.Crawler
         {
             try
             {
-                using (MemoryStream ms = new MemoryStream(Encoding.Unicode.GetBytes(json)))
+                using (var ms = new MemoryStream(Encoding.Unicode.GetBytes(json)))
                 {
-                    DataContractJsonSerializer serializer = new DataContractJsonSerializer((typeof(T)));
+                    var serializer = new DataContractJsonSerializer((typeof(T)));
                     return (T)serializer.ReadObject(ms);
                 }
             }
-            catch (System.Runtime.Serialization.SerializationException serializationException)
+            catch (SerializationException serializationException)
             {
                 Logger.Error("AbstractCrawler:ConvertJsonToClass<T>: {0}", "Could not parse data");
                 shellService.ShowError(serializationException, Resources.PostNotParsable, blog.Name);
@@ -142,6 +146,7 @@ namespace TumblThree.Applications.Crawler
             {
                 sb.AppendFormat("{0}={1}&", val.Key, HttpUtility.UrlEncode(val.Value));
             }
+
             sb.Remove(sb.Length - 1, 1); // remove last '&'
             return sb.ToString();
         }
@@ -152,6 +157,7 @@ namespace TumblThree.Applications.Crawler
             {
                 return Enumerable.Range(0, shellService.Settings.ConcurrentScans);
             }
+
             return RangeToSequence(blog.DownloadPages);
         }
 
@@ -170,6 +176,7 @@ namespace TumblThree.Applications.Crawler
                     yield return int.Parse(part);
                     continue;
                 }
+
                 string[] rangeParts = part.Split('-');
                 int start = int.Parse(rangeParts[0]);
                 int end = int.Parse(rangeParts[1]);
@@ -195,10 +202,12 @@ namespace TumblThree.Applications.Crawler
             {
                 return 0;
             }
+
             if (!string.IsNullOrEmpty(blog.DownloadPages))
             {
                 return 0;
             }
+
             return lastId;
         }
 

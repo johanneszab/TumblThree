@@ -52,7 +52,6 @@
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />
@@ -70,10 +69,13 @@
     <Compile Include="Controllers\ModuleController.cs" />
     <Compile Include="Controllers\QueueController.cs" />
     <Compile Include="Crawler\AbstractTumblrCrawler.cs" />
-    <Compile Include="Crawler\TumblrHiddenCrawler.cs" />
-    <Compile Include="DataModels\TumblrApiJson.cs" />
+    <Compile Include="DataModels\TumblrApiJson\TumblrApiJson.cs" />
+    <Compile Include="DataModels\TumblrCrawlerData\TumblrCrawlerData.cs" />
+    <Compile Include="Downloader\TumblrJsonDownloader.cs" />
     <Compile Include="Parser\CatBoxParser.cs" />
+    <Compile Include="Parser\GfycatParser.cs" />
     <Compile Include="Parser\ICatBoxParser.cs" />
+    <Compile Include="Parser\IGfycatParser.cs" />
     <Compile Include="Parser\IImgurParser.cs" />
     <Compile Include="Parser\ILoliSafeParser.cs" />
     <Compile Include="Parser\ImgurParser.cs" />
@@ -81,61 +83,61 @@
     <Compile Include="Parser\IMixtapeParser.cs" />
     <Compile Include="Parser\ISafeMoeParser.cs" />
     <Compile Include="Parser\ITumblrParser.cs" />
-    <Compile Include="Parser\ITumblrToTextParser.cs" />
+    <Compile Include="Parser\ITumblrToText.cs" />
     <Compile Include="Parser\IUguuParser.cs" />
+    <Compile Include="Parser\IWebmshareParser.cs" />
+    <Compile Include="Services\ILoginService.cs" />
+    <Compile Include="Services\IWebRequestFactory.cs" />
+    <Compile Include="Crawler\TumblrBlogDetector.cs" />
     <Compile Include="Parser\LoliSafeParser.cs" />
     <Compile Include="Parser\MixtapeParser.cs" />
     <Compile Include="Parser\SafeMoeParser.cs" />
+    <Compile Include="Parser\TumblrSvcJsonToJson.cs" />
     <Compile Include="Parser\TumblrApiJsonToJson.cs" />
-    <Compile Include="Parser\TumblrApiJsonToText.cs" />
     <Compile Include="Parser\TumblrParser.cs" />
+    <Compile Include="Parser\TumblrApiJsonToText.cs" />
+    <Compile Include="Parser\UguuParser.cs" />
+    <Compile Include="Parser\WebmshareParser.cs" />
+    <Compile Include="Services\WebRequestFactory.cs" />
     <Compile Include="DataModels\DownloadProgress.cs" />
     <Compile Include="DataModels\IPostQueue.cs" />
     <Compile Include="DataModels\PostQueue.cs" />
     <Compile Include="DataModels\TumblrCrawlerData\ITumblrCrawlerData.cs" />
-    <Compile Include="DataModels\TumblrCrawlerData\TumblrCrawlerData.cs" />
-    <Compile Include="DataModels\TumblrPosts\AnswerPost.cs" />
-    <Compile Include="DataModels\TumblrPosts\AudioMetaPost.cs" />
-    <Compile Include="DataModels\TumblrPosts\AudioPost.cs" />
-    <Compile Include="DataModels\TumblrPosts\ConversationPost.cs" />
-    <Compile Include="DataModels\TumblrPosts\ExternalVideoPost.cs" />
-    <Compile Include="DataModels\TumblrPosts\LinkPost.cs" />
     <Compile Include="DataModels\TumblrPosts\PhotoMetaPost.cs" />
+    <Compile Include="DataModels\TumblrPosts\ExternalVideoPost.cs" />
     <Compile Include="DataModels\TumblrPosts\ExternalPhotoPost.cs" />
-    <Compile Include="DataModels\TumblrPosts\PhotoPost.cs" />
+    <Compile Include="DataModels\TumblrPosts\VideoMetaPost.cs" />
+    <Compile Include="DataModels\TumblrPosts\AudioMetaPost.cs" />
+    <Compile Include="DataModels\TumblrPosts\ConversationPost.cs" />
+    <Compile Include="DataModels\TumblrPosts\LinkPost.cs" />
     <Compile Include="DataModels\TumblrPosts\QuotePost.cs" />
     <Compile Include="DataModels\TumblrPosts\TextPost.cs" />
-    <Compile Include="DataModels\TumblrPosts\VideoMetaPost.cs" />
+    <Compile Include="DataModels\TumblrPosts\AudioPost.cs" />
+    <Compile Include="DataModels\TumblrPosts\AnswerPost.cs" />
     <Compile Include="DataModels\TumblrPosts\VideoPost.cs" />
-    <Compile Include="DataModels\TumblrSvcJson.cs" />
+    <Compile Include="DataModels\TumblrPosts\PhotoPost.cs" />
+    <Compile Include="Downloader\ICrawlerDataDownloader.cs" />
+    <Compile Include="Downloader\TumblrXmlDownloader.cs" />
+    <Compile Include="ObjectModel\ObservableRangeCollection.cs" />
+    <Compile Include="DataModels\TumblrSvcJson\TumblrSvcJson.cs" />
     <Compile Include="DataModels\TumblrPosts\TumblrPost.cs" />
-    <Compile Include="DataModels\TumblrSearchJson.cs" />
+    <Compile Include="DataModels\TumblrSearchJson\TumblrSearchJson.cs" />
     <Compile Include="Data\StringListConverter.cs" />
     <Compile Include="Data\SupportedFileTypes.cs" />
     <Compile Include="Downloader\AbstractDownloader.cs" />
     <Compile Include="Crawler\CrawlerFactory.cs" />
     <Compile Include="Crawler\ICrawlerFactory.cs" />
-    <Compile Include="Downloader\ICrawlerDataDownloader.cs" />
     <Compile Include="Downloader\IDownloader.cs" />
     <Compile Include="Crawler\AbstractCrawler.cs" />
     <Compile Include="Crawler\TumblrLikedByCrawler.cs" />
+    <Compile Include="Crawler\TumblrHiddenCrawler.cs" />
     <Compile Include="Crawler\TumblrTagSearchCrawler.cs" />
     <Compile Include="Crawler\TumblrSearchCrawler.cs" />
     <Compile Include="Downloader\TumblrDownloader.cs" />
     <Compile Include="Downloader\FileDownloader.cs" />
-    <Compile Include="Parser\GfycatParser.cs" />
-    <Compile Include="Parser\IGfycatParser.cs" />
-    <Compile Include="Parser\IWebmshareParser.cs" />
-    <Compile Include="Services\ILoginService.cs" />
-    <Compile Include="Services\IWebRequestFactory.cs" />
-    <Compile Include="Downloader\TumblrJsonDownloader.cs" />
-    <Compile Include="Downloader\TumblrXmlDownloader.cs" />
-    <Compile Include="ObjectModel\ObservableRangeCollection.cs" />
     <Compile Include="Parser\ITumblrApiXmlToText.cs" />
-    <Compile Include="Parser\TumblrSvcJsonToJson.cs" />
     <Compile Include="Parser\TumblrSvcJsonToText.cs" />
     <Compile Include="Parser\TumblrApiXmlToText.cs" />
-    <Compile Include="Parser\UguuParser.cs" />
     <Compile Include="QueueOnDispatcher.cs" />
     <Compile Include="Crawler\ICrawler.cs" />
     <Compile Include="Crawler\TumblrBlogCrawler.cs" />
@@ -177,7 +179,6 @@
     <Compile Include="Extensions\TaskTimeoutExtension.cs" />
     <Compile Include="Services\WindowsFormsFolderBrowserDialog.cs" />
     <Compile Include="ThrottledStream.cs" />
-    <Compile Include="Crawler\TumblrBlogDetector.cs" />
     <Compile Include="ViewModels\DetailsViewModels\DetailsTumblrHiddenBlogViewModel.cs" />
     <Compile Include="ViewModels\DetailsViewModels\DetailsTumblrBlogViewModel.cs" />
     <Compile Include="ViewModels\DetailsViewModels\DetailsTumblrLikedByViewModel.cs" />
@@ -187,7 +188,7 @@
     <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\CrawlerViewModel.cs" />
     <Compile Include="ViewModels\DetailsViewModels\DetailsAllViewModel.cs" />
-    <Compile Include="ViewModels\IDetailsViewModel.cs" />
+    <Compile Include="Views\IDetailsViewModel.cs" />
     <Compile Include="ViewModels\ManagerViewModel.cs" />
     <Compile Include="ViewModels\QueueViewModel.cs" />
     <Compile Include="ViewModels\AuthenticateViewModel.cs" />
@@ -202,8 +203,6 @@
     <Compile Include="Views\IAuthenticateView.cs" />
     <Compile Include="Views\ISettingsView.cs" />
     <Compile Include="Views\IShellView.cs" />
-    <Compile Include="Services\WebRequestFactory.cs" />
-    <Compile Include="Parser\WebmshareParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -222,14 +221,19 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.ar.resx" />
+    <EmbeddedResource Include="Properties\Resources.ar.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.de.resx" />
     <EmbeddedResource Include="Properties\Resources.el.resx" />
     <EmbeddedResource Include="Properties\Resources.es.resx" />
     <EmbeddedResource Include="Properties\Resources.fi.resx" />
     <EmbeddedResource Include="Properties\Resources.fr.resx" />
-    <EmbeddedResource Include="Properties\Resources.he.resx" />
+    <EmbeddedResource Include="Properties\Resources.he.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.hi.resx" />
     <EmbeddedResource Include="Properties\Resources.it.resx" />
     <EmbeddedResource Include="Properties\Resources.ja.resx" />

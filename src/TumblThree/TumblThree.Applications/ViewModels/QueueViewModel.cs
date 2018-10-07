@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 using TumblThree.Applications.Services;
 using TumblThree.Applications.Views;
-using TumblThree.Domain.Models;
+using TumblThree.Domain.Models.Blogs;
 using TumblThree.Domain.Queue;
 
 namespace TumblThree.Applications.ViewModels
@@ -24,7 +24,6 @@ namespace TumblThree.Applications.ViewModels
         private QueueManager queueManager;
         private QueueListItem selectedQueueItem;
         private readonly ObservableCollection<QueueListItem> selectedQueueItems;
-
 
         [ImportingConstructor]
         public QueueViewModel(IQueueView view, ICrawlerService crawlerService) : base(view)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Composition;
+using System.Net;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,10 +35,11 @@ namespace TumblThree.Applications.Services
             downloadLink = null;
             try
             {
-                var request = webRequestFactory.CreateGetReqeust(@"https://api.github.com/repos/johanneszab/tumblthree/releases/latest");
+                HttpWebRequest request = webRequestFactory.CreateGetReqeust(
+                    @"https://api.github.com/repos/johanneszab/tumblthree/releases/latest");
                 string result = await webRequestFactory.ReadReqestToEnd(request);
                 XmlDictionaryReader jsonReader = JsonReaderWriterFactory.CreateJsonReader(Encoding.UTF8.GetBytes(result),
-                    new System.Xml.XmlDictionaryReaderQuotas());
+                    new XmlDictionaryReaderQuotas());
                 XElement root = XElement.Load(jsonReader);
                 version = root.Element("tag_name").Value;
                 downloadLink = root.Element("assets").Element("item").Element("browser_download_url").Value;
@@ -47,6 +49,7 @@ namespace TumblThree.Applications.Services
                 Logger.Error(exception.ToString());
                 return exception.Message;
             }
+
             return null;
         }
 
@@ -64,6 +67,7 @@ namespace TumblThree.Applications.Services
             {
                 Logger.Error(exception.ToString());
             }
+
             return false;
         }
 
@@ -78,6 +82,7 @@ namespace TumblThree.Applications.Services
             {
                 return null;
             }
+
             return new Uri(downloadLink);
         }
     }

@@ -7,11 +7,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
+
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain.Models;
 
-namespace TumblThree.Applications.Crawler
+namespace TumblThree.Applications.Parser
 {
     public class GfycatParser : IGfycatParser
     {
@@ -50,7 +51,7 @@ namespace TumblThree.Applications.Crawler
         public string ParseGfycatCajaxResponse(string result, GfycatTypes gfycatType)
         {
             XmlDictionaryReader jsonReader = JsonReaderWriterFactory.CreateJsonReader(Encoding.UTF8.GetBytes(result),
-                new System.Xml.XmlDictionaryReaderQuotas());
+                new XmlDictionaryReaderQuotas());
             XElement root = XElement.Load(jsonReader);
             string url;
             switch (gfycatType)
@@ -82,6 +83,7 @@ namespace TumblThree.Applications.Crawler
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+
             return url;
         }
     }

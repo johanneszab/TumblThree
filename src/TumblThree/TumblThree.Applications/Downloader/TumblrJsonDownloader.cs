@@ -12,7 +12,7 @@ using TumblThree.Applications.DataModels.TumblrCrawlerData;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
 using TumblThree.Domain;
-using TumblThree.Domain.Models;
+using TumblThree.Domain.Models.Blogs;
 
 namespace TumblThree.Applications.Downloader
 {
@@ -25,7 +25,8 @@ namespace TumblThree.Applications.Downloader
         protected readonly CancellationToken ct;
         protected readonly PauseToken pt;
 
-        public TumblrJsonDownloader(IShellService shellService, CancellationToken ct, PauseToken pt, IPostQueue<TumblrCrawlerData<T>> jsonQueue, ICrawlerService crawlerService, IBlog blog)
+        public TumblrJsonDownloader(IShellService shellService, CancellationToken ct, PauseToken pt,
+            IPostQueue<TumblrCrawlerData<T>> jsonQueue, ICrawlerService crawlerService, IBlog blog)
         {
             this.shellService = shellService;
             this.crawlerService = crawlerService;
@@ -46,6 +47,7 @@ namespace TumblThree.Applications.Downloader
                 {
                     break;
                 }
+
                 if (pt.IsPaused)
                 {
                     pt.WaitWhilePausedWithResponseAsyc().Wait();
@@ -53,12 +55,23 @@ namespace TumblThree.Applications.Downloader
 
                 trackedTasks.Add(new Func<Task>(async () =>
                 {
-                    try { await DownloadTextPost(downloadItem); }
-                    catch { }
+                    try
+                    {
+                        await DownloadTextPost(downloadItem);
+                    }
+                    catch
+                    {
+                    }
                 })());
             }
-            try { await Task.WhenAll(trackedTasks); }
-            catch { }
+
+            try
+            {
+                await Task.WhenAll(trackedTasks);
+            }
+            catch
+            {
+            }
         }
 
         private async Task DownloadTextPost(TumblrCrawlerData<T> crawlerData)

@@ -1,7 +1,8 @@
 ﻿using System.Text.RegularExpressions;
+
 using TumblThree.Domain.Models;
 
-namespace TumblThree.Applications.Crawler
+namespace TumblThree.Applications.Parser
 {
     public interface IMixtapeParser
     {

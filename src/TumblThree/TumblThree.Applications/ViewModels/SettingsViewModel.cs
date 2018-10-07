@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Waf.Applications;
 using System.Waf.Applications.Services;
 using System.Windows.Input;
+
 using TumblThree.Applications.Data;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
@@ -121,7 +123,8 @@ namespace TumblThree.Applications.ViewModels
 
         [ImportingConstructor]
         public SettingsViewModel(ISettingsView view, IShellService shellService, ICrawlerService crawlerService,
-            IManagerService managerService, ILoginService loginService, IFolderBrowserDialog folderBrowserDialog, IFileDialogService fileDialogService,
+            IManagerService managerService, ILoginService loginService, IFolderBrowserDialog folderBrowserDialog,
+            IFileDialogService fileDialogService,
             ExportFactory<AuthenticateViewModel> authenticateViewModelFactory)
             : base(view)
         {
@@ -694,6 +697,7 @@ namespace TumblThree.Applications.ViewModels
                         // time already passed
                         timeToGo = timeToGo.Add(new TimeSpan(24, 00, 00));
                     }
+
                     CrawlerService.Timer = new Timer(x => { OnTimedEvent(); }, null, timeToGo, Timeout.InfiniteTimeSpan);
 
                     CrawlerService.IsTimerSet = true;
@@ -722,6 +726,7 @@ namespace TumblThree.Applications.ViewModels
             {
                 QueueOnDispatcher.CheckBeginInvokeOnUI(() => CrawlerService.AutoDownloadCommand.Execute(null));
             }
+
             CrawlerService.Timer.Change(new TimeSpan(24, 00, 00), Timeout.InfiniteTimeSpan);
         }
 
@@ -735,7 +740,8 @@ namespace TumblThree.Applications.ViewModels
 
         private void BrowseExportLocation()
         {
-            FileDialogResult result = fileDialogService.ShowSaveFileDialog(ShellService.ShellView, bloglistExportFileType, ExportLocation);
+            FileDialogResult result =
+                fileDialogService.ShowSaveFileDialog(ShellService.ShellView, bloglistExportFileType, ExportLocation);
             if (!result.IsValid)
             {
                 return;
@@ -755,7 +761,7 @@ namespace TumblThree.Applications.ViewModels
                 authenticateViewModel.AddUrl(url);
                 authenticateViewModel.ShowDialog(ShellService.ShellView);
             }
-            catch (System.Net.WebException ex)
+            catch (WebException ex)
             {
                 Logger.Error("SettingsViewModel:Authenticate: {0}", ex);
                 ShellService.ShowError(ex, Resources.AuthenticationFailure, ex.Message);
@@ -801,10 +807,7 @@ namespace TumblThree.Applications.ViewModels
         private async Task UpdateTumblrLogin()
         {
             TumblrEmail = await LoginService.GetTumblrUsername();
-            if (!string.IsNullOrEmpty(TumblrEmail))
-                TumblrLoggedIn = true;
-            else
-                TumblrLoggedIn = false;
+            TumblrLoggedIn = !string.IsNullOrEmpty(TumblrEmail);
         }
 
         private void CheckIfTumblrLoggedIn()
@@ -976,7 +979,8 @@ namespace TumblThree.Applications.ViewModels
                 ProxyPort = string.Empty;
                 TimerInterval = "22:40:00";
                 SettingsTabIndex = 0;
-                UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36";
+                UserAgent =
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36";
             }
         }
 

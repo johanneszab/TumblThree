@@ -3,7 +3,7 @@ using System.ComponentModel.Composition;
 using System.Waf.Foundation;
 
 using TumblThree.Applications.ObjectModel;
-using TumblThree.Domain.Models;
+using TumblThree.Domain.Models.Blogs;
 
 namespace TumblThree.Applications.Services
 {

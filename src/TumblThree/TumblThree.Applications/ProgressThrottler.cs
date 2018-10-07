@@ -14,12 +14,7 @@ namespace TumblThree.Applications
             resettimer.Elapsed += resettimer_Elapsed;
             resettimer.Start();
 
-            if (progress == null)
-            {
-                throw new ArgumentNullException(nameof(progress));
-            }
-
-            _progress = progress;
+            _progress = progress ?? throw new ArgumentNullException(nameof(progress));
         }
 
         public void Report(T value)

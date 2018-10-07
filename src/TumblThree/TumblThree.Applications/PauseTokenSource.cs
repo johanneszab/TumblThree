@@ -35,6 +35,7 @@ namespace TumblThree.Applications
                 {
                     return;
                 }
+
                 m_paused = true;
                 m_pauseResponse = s_completedTcs;
                 m_resumeRequest = new TaskCompletionSource<bool>();
@@ -51,6 +52,7 @@ namespace TumblThree.Applications
                 {
                     return;
                 }
+
                 m_paused = false;
                 resumeRequest = m_resumeRequest;
                 m_resumeRequest = null;
@@ -72,6 +74,7 @@ namespace TumblThree.Applications
                 {
                     return m_pauseResponse.Task;
                 }
+
                 m_paused = true;
                 m_pauseResponse = new TaskCompletionSource<bool>();
                 m_resumeRequest = new TaskCompletionSource<bool>();
@@ -92,6 +95,7 @@ namespace TumblThree.Applications
                 {
                     return s_completedTcs.Task;
                 }
+
                 response = m_pauseResponse;
                 resumeTask = m_resumeRequest.Task;
             }

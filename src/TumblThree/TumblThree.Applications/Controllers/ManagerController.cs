@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 using System.Waf.Applications;
 using System.Waf.Applications.Services;
 using System.Windows;
+
 using TumblThree.Applications.Crawler;
 using TumblThree.Applications.DataModels;
 using TumblThree.Applications.Properties;
@@ -18,6 +20,8 @@ using TumblThree.Applications.Services;
 using TumblThree.Applications.ViewModels;
 using TumblThree.Domain;
 using TumblThree.Domain.Models;
+using TumblThree.Domain.Models.Blogs;
+using TumblThree.Domain.Models.Files;
 using TumblThree.Domain.Queue;
 
 namespace TumblThree.Applications.Controllers
@@ -195,7 +199,7 @@ namespace TumblThree.Applications.Controllers
                     {
                         await semaphoreSlim.WaitAsync();
                         ICrawler crawler = crawlerFactory.GetCrawler(blog, new CancellationToken(), new PauseToken(),
-                            new Progress<DownloadProgress>(), shellService, crawlerService, managerService);
+                            new Progress<DownloadProgress>());
                         await crawler.IsBlogOnlineAsync();
                         semaphoreSlim.Release();
                     });
@@ -242,6 +246,7 @@ namespace TumblThree.Applications.Controllers
                     failedToLoadBlogs.Add(ex.Data["Filename"].ToString());
                 }
             }
+
             if (failedToLoadBlogs.Any())
             {
                 string failedBlogNames = failedToLoadBlogs.Aggregate((a, b) => a + ", " + b);
@@ -286,6 +291,7 @@ namespace TumblThree.Applications.Controllers
                     failedToLoadBlogs.Add(ex.Data["Filename"].ToString());
                 }
             }
+
             if (failedToLoadBlogs.Any())
             {
                 string failedBlogNames = failedToLoadBlogs.Aggregate((a, b) => a + ", " + b);
@@ -322,7 +328,7 @@ namespace TumblThree.Applications.Controllers
                 Logger.Verbose("ManagerController:LoadDatabasesGloballyAsync: {0}", ex);
                 shellService.ShowError(ex, Resources.CouldNotLoadLibrary, ex.Data["Filename"]);
             }
-            
+
             BlogManaerFinishedLoadingDatabases?.Invoke(this, EventArgs.Empty);
             Logger.Verbose("ManagerController.LoadDatabasesGloballyAsync:End");
         }
@@ -362,19 +368,26 @@ namespace TumblThree.Applications.Controllers
             if (shellService.Settings.BlogType == shellService.Settings.BlogTypes.ElementAtOrDefault(0))
             {
             }
+
             if (shellService.Settings.BlogType == shellService.Settings.BlogTypes.ElementAtOrDefault(1))
             {
                 Enqueue(managerService.BlogFiles.Where(blog => blog.Online).ToArray());
             }
+
             if (shellService.Settings.BlogType == shellService.Settings.BlogTypes.ElementAtOrDefault(2))
             {
                 Enqueue(
-                    managerService.BlogFiles.Where(blog => blog.Online && blog.LastCompleteCrawl != new DateTime(0L, DateTimeKind.Utc)).ToArray());
+                    managerService
+                        .BlogFiles.Where(blog => blog.Online && blog.LastCompleteCrawl != new DateTime(0L, DateTimeKind.Utc))
+                        .ToArray());
             }
+
             if (shellService.Settings.BlogType == shellService.Settings.BlogTypes.ElementAtOrDefault(3))
             {
                 Enqueue(
-                    managerService.BlogFiles.Where(blog => blog.Online && blog.LastCompleteCrawl == new DateTime(0L, DateTimeKind.Utc)).ToArray());
+                    managerService
+                        .BlogFiles.Where(blog => blog.Online && blog.LastCompleteCrawl == new DateTime(0L, DateTimeKind.Utc))
+                        .ToArray());
             }
 
             if (crawlerService.IsCrawl && crawlerService.IsPaused)
@@ -396,8 +409,13 @@ namespace TumblThree.Applications.Controllers
 
         private async Task AddBlog()
         {
-            try { await AddBlogAsync(null); }
-            catch { }
+            try
+            {
+                await AddBlogAsync(null);
+            }
+            catch
+            {
+            }
         }
 
         private bool CanRemoveBlog()
@@ -413,10 +431,7 @@ namespace TumblThree.Applications.Controllers
             {
                 string blogNames = string.Join(", ", blogs.Select(blog => blog.Name));
                 string message = string.Empty;
-                if (shellService.Settings.DeleteOnlyIndex)
-                    message = string.Format(Resources.DeleteBlogsDialog, blogNames);
-                else
-                    message = string.Format(Resources.DeleteBlogsAndFilesDialog, blogNames);
+                message = string.Format(shellService.Settings.DeleteOnlyIndex ? Resources.DeleteBlogsDialog : Resources.DeleteBlogsAndFilesDialog, blogNames);
                 if (!messageService.ShowYesNoQuestion(this, message))
                     return;
             }
@@ -460,11 +475,15 @@ namespace TumblThree.Applications.Controllers
                 if (shellService.Settings.LoadAllDatabases)
                 {
                     managerService.RemoveDatabase(managerService.Databases
-                                  .FirstOrDefault(db => db.Name.Equals(blog.Name) && db.BlogType.Equals(blog.BlogType)));
+                                                                .FirstOrDefault(db =>
+                                                                    db.Name.Equals(blog.Name) &&
+                                                                    db.BlogType.Equals(blog.BlogType)));
                 }
+
                 QueueManager.RemoveItems(QueueManager.Items.Where(item => item.Blog.Equals(blog)));
             }
         }
+
         private bool CanShowFiles()
         {
             return ManagerViewModel.SelectedBlogFile != null;
@@ -474,7 +493,7 @@ namespace TumblThree.Applications.Controllers
         {
             foreach (IBlog blog in selectionService.SelectedBlogFiles.ToArray())
             {
-                System.Diagnostics.Process.Start("explorer.exe", blog.DownloadLocation());
+                Process.Start("explorer.exe", blog.DownloadLocation());
             }
         }
 
@@ -487,7 +506,7 @@ namespace TumblThree.Applications.Controllers
         {
             foreach (IBlog blog in selectionService.SelectedBlogFiles.ToArray())
             {
-                System.Diagnostics.Process.Start(blog.Url);
+                Process.Start(blog.Url);
             }
         }
 
@@ -498,7 +517,7 @@ namespace TumblThree.Applications.Controllers
 
         private void CopyUrl()
         {
-            var urls = selectionService.SelectedBlogFiles.Select(blog => blog.Url).ToList();
+            List<string> urls = selectionService.SelectedBlogFiles.Select(blog => blog.Url).ToList();
             urls.Sort();
             clipboardService.SetText(string.Join(Environment.NewLine, urls));
         }
@@ -518,7 +537,7 @@ namespace TumblThree.Applications.Controllers
                 {
                     await semaphoreSlim.WaitAsync();
                     ICrawler crawler = crawlerFactory.GetCrawler(blog, new CancellationToken(), new PauseToken(),
-                        new Progress<DownloadProgress>(), shellService, crawlerService, managerService);
+                        new Progress<DownloadProgress>());
                     await crawler.IsBlogOnlineAsync();
                     semaphoreSlim.Release();
                 });
@@ -565,7 +584,8 @@ namespace TumblThree.Applications.Controllers
             }
 
             blog = settingsService.TransferGlobalSettingsToBlog(blog);
-            ICrawler crawler = crawlerFactory.GetCrawler(blog, new CancellationToken(), new PauseToken(), new Progress<DownloadProgress>(), shellService, crawlerService, managerService);
+            ICrawler crawler = crawlerFactory.GetCrawler(blog, new CancellationToken(), new PauseToken(),
+                new Progress<DownloadProgress>());
             await crawler.UpdateMetaInformationAsync();
         }
 
@@ -583,7 +603,10 @@ namespace TumblThree.Applications.Controllers
                 // Count each whitespace as new url
                 string[] urls = Clipboard.GetText().Split();
 
-                Task.Run(() => { Task addBlogBatchedTask = AddBlogBatchedAsync(urls); });
+                Task.Run(() =>
+                {
+                    Task addBlogBatchedTask = AddBlogBatchedAsync(urls);
+                });
             }
         }
 
@@ -597,7 +620,9 @@ namespace TumblThree.Applications.Controllers
                     await semaphoreSlim.WaitAsync();
                     await AddBlogAsync(url);
                 }
-                catch { }
+                catch
+                {
+                }
                 finally
                 {
                     semaphoreSlim.Release();
@@ -613,6 +638,7 @@ namespace TumblThree.Applications.Controllers
                 shellService.ClipboardMonitor.OnClipboardContentChanged += OnClipboardContentChanged;
                 return;
             }
+
             shellService.ClipboardMonitor.OnClipboardContentChanged -= OnClipboardContentChanged;
         }
 
