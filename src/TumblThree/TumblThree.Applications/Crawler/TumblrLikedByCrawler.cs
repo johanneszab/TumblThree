@@ -215,7 +215,7 @@ namespace TumblThree.Applications.Crawler
             // <a id="next_page_link" href="/liked/by/wallpaperfx/page/5/1457139681" class="next button chrome blue">Next</a></div></div>
 
             long unixTime = 0;
-            var pagination = "(id=\"next_page_link\" href=\"[A-Za-z0-9_/:.]+/([0-9]+)/([A-Za-z0-9]+))\"";
+            var pagination = "(id=\"next_page_link\" href=\"[A-Za-z0-9_/:.-]+/([0-9]+)/([A-Za-z0-9]+))\"";
             long.TryParse(Regex.Match(document, pagination).Groups[3].Value, out unixTime);
             return unixTime;
         }
