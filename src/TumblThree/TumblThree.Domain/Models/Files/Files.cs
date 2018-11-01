@@ -82,7 +82,7 @@ namespace TumblThree.Domain.Models.Files
                     return file;
                 }
             }
-            catch (SerializationException ex)
+            catch (Exception ex) when (ex is SerializationException || ex is FileNotFoundException)
             {
                 ex.Data.Add("Filename", fileLocation);
                 throw;

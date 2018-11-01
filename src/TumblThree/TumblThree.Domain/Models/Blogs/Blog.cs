@@ -900,7 +900,7 @@ namespace TumblThree.Domain.Models.Blogs
                     return blog;
                 }
             }
-            catch (SerializationException ex)
+            catch (Exception ex) when (ex is SerializationException || ex is FileNotFoundException)
             {
                 ex.Data.Add("Filename", fileLocation);
                 throw;

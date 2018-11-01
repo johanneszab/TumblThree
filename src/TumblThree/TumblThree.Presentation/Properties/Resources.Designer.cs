@@ -1150,6 +1150,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Progress update interval (ms).
+        /// </summary>
+        public static string ProgressUpdateInterval {
+            get {
+                return ResourceManager.GetString("ProgressUpdateInterval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to HTTP Proxy:.
         /// </summary>
         public static string ProxyHost {
@@ -2124,6 +2133,25 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipPortableModeDescription {
             get {
                 return ResourceManager.GetString("ToolTipPortableModeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh rate of the progress information.
+        /// </summary>
+        public static string ToolTipProgressUpdate {
+            get {
+                return ResourceManager.GetString("ToolTipProgressUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Refresh rate of the progress information in the queue panel.
+        ///This value determines the information refresh rate for each individual queued blog..
+        /// </summary>
+        public static string ToolTipProgressUpdateDescription {
+            get {
+                return ResourceManager.GetString("ToolTipProgressUpdateDescription", resourceCulture);
             }
         }
         

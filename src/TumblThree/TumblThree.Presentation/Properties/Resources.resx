@@ -906,4 +906,14 @@ The cookie with your credentials of your account is saved and the authentication
   <data name="CheckStatusOnStartup" xml:space="preserve">
     <value>Check blog online status on startup</value>
   </data>
+  <data name="ProgressUpdateInterval" xml:space="preserve">
+    <value>Progress update interval (ms)</value>
+  </data>
+  <data name="ToolTipProgressUpdate" xml:space="preserve">
+    <value>Refresh rate of the progress information</value>
+  </data>
+  <data name="ToolTipProgressUpdateDescription" xml:space="preserve">
+    <value>Refresh rate of the progress information in the queue panel.
+This value determines the information refresh rate for each individual queued blog.</value>
+  </data>
 </root>
