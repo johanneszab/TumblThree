@@ -69,7 +69,7 @@ namespace TumblThree.Applications.Crawler
         {
             try
             {
-                await GetApiPageAsync(0);
+                await GetApiPageWithRetryAsync(0);
                 blog.Online = true;
             }
             catch (WebException webException)
@@ -131,7 +131,7 @@ namespace TumblThree.Applications.Crawler
                 return;
             }
 
-            string document = await GetApiPageAsync(0);
+            string document = await GetApiPageWithRetryAsync(0);
             var response = ConvertJsonToClass<TumblrApiJson>(document);
 
             blog.Title = response.tumblelog?.title;
@@ -229,6 +229,20 @@ namespace TumblThree.Applications.Crawler
             return await GetRequestAsync(url);
         }
 
+        private async Task<string> GetApiPageWithRetryAsync(int pageId)
+        {
+            string page = string.Empty;
+            var attemptCount = 0;
+            
+            do
+            {
+                page = await GetApiPageAsync(pageId);
+                attemptCount++;
+            } while (string.IsNullOrEmpty(page) && (attemptCount < shellService.Settings.MaxNumberOfRetries));
+
+            return page;
+        }
+
         private async Task UpdateTotalPostCountAsync()
         {
             try
@@ -260,7 +274,7 @@ namespace TumblThree.Applications.Crawler
 
         private async Task UpdateTotalPostCount()
         {
-            string document = await GetApiPageAsync(0);
+            string document = await GetApiPageWithRetryAsync(0);
             var response = ConvertJsonToClass<TumblrApiJson>(document);
             int totalPosts = response.posts_total;
             blog.Posts = totalPosts;
@@ -297,7 +311,7 @@ namespace TumblThree.Applications.Crawler
 
         private async Task<ulong> GetHighestPostId()
         {
-            string document = await GetApiPageAsync(0);
+            string document = await GetApiPageWithRetryAsync(0);
             var response = ConvertJsonToClass<TumblrApiJson>(document);
 
             ulong highestId;
@@ -355,7 +369,7 @@ namespace TumblThree.Applications.Crawler
                 {
                     try
                     {
-                        string document = await GetApiPageAsync(pageNumber);
+                        string document = await GetApiPageWithRetryAsync(pageNumber);
                         var response = ConvertJsonToClass<TumblrApiJson>(document);
 
                         completeGrab = CheckPostAge(response);
