@@ -103,7 +103,7 @@ namespace TumblThree.Applications.Controllers
 
         public event BlogManagerFinishedLoadingLibraryHandler BlogManagerFinishedLoadingLibrary;
 
-        public event BlogManagerFinishedLoadingDatabasesHandler BlogManaerFinishedLoadingDatabases;
+        public event BlogManagerFinishedLoadingDatabasesHandler BlogManagerFinishedLoadingDatabases;
 
         public async Task Initialize()
         {
@@ -128,7 +128,7 @@ namespace TumblThree.Applications.Controllers
             ManagerViewModel.QueueItems = QueueManager.Items;
             QueueManager.Items.CollectionChanged += QueueItemsCollectionChanged;
             ManagerViewModel.QueueItems.CollectionChanged += ManagerViewModel.QueueItemsCollectionChanged;
-            BlogManaerFinishedLoadingDatabases += OnBlogManagerFinishedLoadingDatabases;
+            BlogManagerFinishedLoadingDatabases += OnBlogManagerFinishedLoadingDatabases;
 
             shellService.ContentView = ManagerViewModel.View;
 
@@ -329,7 +329,7 @@ namespace TumblThree.Applications.Controllers
                 shellService.ShowError(ex, Resources.CouldNotLoadLibrary, ex.Data["Filename"]);
             }
 
-            BlogManaerFinishedLoadingDatabases?.Invoke(this, EventArgs.Empty);
+            BlogManagerFinishedLoadingDatabases?.Invoke(this, EventArgs.Empty);
             Logger.Verbose("ManagerController.LoadDatabasesGloballyAsync:End");
         }
 

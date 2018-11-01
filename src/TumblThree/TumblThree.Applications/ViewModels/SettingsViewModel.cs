@@ -41,6 +41,7 @@ namespace TumblThree.Applications.ViewModels
         private string apiKey;
         private bool autoDownload;
         private long bandwidth;
+        private double progressUpdateInterval;
         private string blogType;
         private bool checkClipboard;
         private bool checkDirectoryForFiles;
@@ -271,6 +272,12 @@ namespace TumblThree.Applications.ViewModels
         {
             get => bandwidth;
             set => SetProperty(ref bandwidth, value);
+        }
+
+        public double ProgressUpdateInterval
+        {
+            get => progressUpdateInterval;
+            set => SetProperty(ref progressUpdateInterval, value);
         }
 
         public bool LimitScanBandwidth
@@ -845,6 +852,7 @@ namespace TumblThree.Applications.ViewModels
                 MaxConnections = settings.MaxConnections;
                 connectionTimeInterval = settings.ConnectionTimeInterval;
                 Bandwidth = settings.Bandwidth;
+                ProgressUpdateInterval = settings.ProgressUpdateInterval;
                 CheckClipboard = settings.CheckClipboard;
                 ShowPicturePreview = settings.ShowPicturePreview;
                 DisplayConfirmationDialog = settings.DisplayConfirmationDialog;
@@ -920,6 +928,7 @@ namespace TumblThree.Applications.ViewModels
                 LimitConnections = true;
                 MaxConnections = 90;
                 ConnectionTimeInterval = 60;
+                ProgressUpdateInterval = 100;
                 Bandwidth = 0;
                 ImageSize = "raw";
                 VideoSize = 1080;
@@ -1044,6 +1053,7 @@ namespace TumblThree.Applications.ViewModels
             settings.LimitConnections = LimitConnections;
             settings.MaxConnections = MaxConnections;
             settings.ConnectionTimeInterval = ConnectionTimeInterval;
+            settings.ProgressUpdateInterval = ProgressUpdateInterval;
             settings.Bandwidth = Bandwidth;
             settings.ImageSize = ImageSize;
             settings.VideoSize = VideoSize;
