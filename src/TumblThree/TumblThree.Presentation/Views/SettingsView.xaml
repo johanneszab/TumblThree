@@ -102,6 +102,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid Height="Auto" Grid.Row="0">
                             <Grid.ColumnDefinitions>
@@ -156,7 +157,7 @@
                                 </ToolTip>
                             </CheckBox.ToolTip>
                         </CheckBox>
-                        <Grid MinHeight="46" Height="Auto" Grid.Row="8" HorizontalAlignment="Left">
+                        <Grid Height="Auto" Grid.Row="8" HorizontalAlignment="Left">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
@@ -187,7 +188,39 @@
                             <Label x:Name="autoDownloadBlogsLabel" Grid.Column="4" Content="{x:Static p:Resources.AutoDownloadBlogs}"
                        HorizontalAlignment="Left" VerticalAlignment="Center" />
                         </Grid>
-                        <Grid Grid.Row="9" Grid.ColumnSpan="2">
+                        <Grid Height="Auto" Grid.Row="9" HorizontalAlignment="Left">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Label x:Name="ProgressUpdateIntervalLabel" Grid.Column="0" Content="{x:Static p:Resources.ProgressUpdateInterval}"
+                                   VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10">
+                                <Label.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipProgressUpdate}" />
+                                            <TextBlock Text="{x:Static p:Resources.ToolTipProgressUpdateDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </Label.ToolTip>
+                            </Label>
+                            <TextBox x:Name="ProgressUpdateIntervalTextBox" Grid.Column="3" HorizontalAlignment="Left"
+                                     VerticalAlignment="Center" MinWidth="60">
+                                <TextBox.Text>
+                                    <Binding Path="ProgressUpdateInterval" UpdateSourceTrigger="PropertyChanged">
+                                    </Binding>
+                                </TextBox.Text>
+                                <TextBox.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipProgressUpdate}" />
+                                            <TextBlock Text="{x:Static p:Resources.ToolTipProgressUpdateDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </TextBox.ToolTip>
+                            </TextBox>
+                        </Grid>
+                        <Grid Grid.Row="10" Grid.ColumnSpan="2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
