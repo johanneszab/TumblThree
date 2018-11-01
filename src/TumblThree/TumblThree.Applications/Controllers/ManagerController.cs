@@ -137,11 +137,7 @@ namespace TumblThree.Applications.Controllers
                 shellService.ClipboardMonitor.OnClipboardContentChanged += OnClipboardContentChanged;
             }
 
-            Task loadLibraryTask = LoadLibraryAsync();
-            Task loadAllDatabasesTask = LoadAllDatabasesAsync();
-
-            await loadLibraryTask;
-            Task checkBlogOnlineStatusTask = CheckBlogsOnlineStatusAsync();
+            await LoadDataBasesAsync();
         }
 
         public void Shutdown()
@@ -165,6 +161,15 @@ namespace TumblThree.Applications.Controllers
             }
         }
 
+        private async Task LoadDataBasesAsync()
+        {
+            // TODO: Methods have side effects!
+            await LoadLibraryAsync();
+            await LoadAllDatabasesAsync();        
+            CheckIfDatabasesComplete();
+            await CheckBlogsOnlineStatusAsync();
+        }
+
         private async Task LoadLibraryAsync()
         {
             Logger.Verbose("ManagerController.LoadLibrary:Start");
@@ -173,39 +178,14 @@ namespace TumblThree.Applications.Controllers
 
             if (Directory.Exists(path))
             {
+                IReadOnlyList<IBlog> files = await GetIBlogsAsync(path);
+                foreach (IBlog file in files)
                 {
-                    IReadOnlyList<IBlog> files = await GetIBlogsAsync(path);
-                    foreach (IBlog file in files)
-                    {
-                        managerService.BlogFiles.Add(file);
-                    }
-
-                    BlogManagerFinishedLoadingLibrary?.Invoke(this, EventArgs.Empty);
+                    managerService.BlogFiles.Add(file);
                 }
             }
-
+            BlogManagerFinishedLoadingLibrary?.Invoke(this, EventArgs.Empty);
             Logger.Verbose("ManagerController.LoadLibrary:End");
-        }
-
-        private async Task CheckBlogsOnlineStatusAsync()
-        {
-            if (shellService.Settings.CheckOnlineStatusOnStartup)
-            {
-                await Task.Run(async () =>
-                {
-                    var semaphoreSlim = new SemaphoreSlim(25);
-                    IEnumerable<IBlog> blogs = managerService.BlogFiles;
-                    IEnumerable<Task> tasks = blogs.Select(async blog =>
-                    {
-                        await semaphoreSlim.WaitAsync();
-                        ICrawler crawler = crawlerFactory.GetCrawler(blog, new CancellationToken(), new PauseToken(),
-                            new Progress<DownloadProgress>());
-                        await crawler.IsBlogOnlineAsync();
-                        semaphoreSlim.Release();
-                    });
-                    await Task.WhenAll(tasks);
-                });
-            }
         }
 
         //TODO: Refactor and extract blog loading.
@@ -216,7 +196,7 @@ namespace TumblThree.Applications.Controllers
 
         private IReadOnlyList<IBlog> GetIBlogsCore(string directory)
         {
-            Logger.Verbose("ManagerController:GetFilesCore Start");
+            Logger.Verbose("ManagerController:GetIBlogsCore Start");
 
             var blogs = new List<IBlog>();
             var failedToLoadBlogs = new List<string>();
@@ -250,13 +230,31 @@ namespace TumblThree.Applications.Controllers
             if (failedToLoadBlogs.Any())
             {
                 string failedBlogNames = failedToLoadBlogs.Aggregate((a, b) => a + ", " + b);
-                Logger.Verbose("ManagerController:LoadLibrary: {0}", failedBlogNames);
+                Logger.Verbose("ManagerController:GetIBlogsCore: {0}", failedBlogNames);
                 shellService.ShowError(new SerializationException(), Resources.CouldNotLoadLibrary, failedBlogNames);
             }
 
-            Logger.Verbose("ManagerController.GetFilesCore End");
+            Logger.Verbose("ManagerController.GetIBlogsCore End");
 
             return blogs;
+        }
+
+        private async Task LoadAllDatabasesAsync()
+        {
+            Logger.Verbose("ManagerController.LoadAllDatabasesAsync:Start");
+            managerService.ClearDatabases();
+            string path = Path.Combine(shellService.Settings.DownloadLocation, "Index");
+
+            if (Directory.Exists(path))
+            {
+                IReadOnlyList<IFiles> databases = await GetIFilesAsync(path);
+                foreach (IFiles database in databases)
+                {
+                    managerService.AddDatabase(database);
+                }
+            }
+            BlogManagerFinishedLoadingDatabases?.Invoke(this, EventArgs.Empty);
+            Logger.Verbose("ManagerController.LoadAllDatabasesAsync:End");
         }
 
         private Task<IReadOnlyList<IFiles>> GetIFilesAsync(string directory)
@@ -268,8 +266,8 @@ namespace TumblThree.Applications.Controllers
         {
             Logger.Verbose("ManagerController:GetFilesCore Start");
 
-            var blogs = new List<IFiles>();
-            var failedToLoadBlogs = new List<string>();
+            var databases = new List<IFiles>();
+            var failedToLoadDatabases = new List<string>();
 
             string[] supportedFileTypes = Enum.GetNames(typeof(BlogTypes)).ToArray();
 
@@ -280,57 +278,75 @@ namespace TumblThree.Applications.Controllers
                 //TODO: Refactor
                 try
                 {
-                    IFiles blog = new Files().Load(filename);
+                    IFiles database = new Files().Load(filename);
                     if (shellService.Settings.LoadAllDatabases)
                     {
-                        blogs.Add(blog);
+                        databases.Add(database);
                     }
                 }
                 catch (SerializationException ex)
                 {
-                    failedToLoadBlogs.Add(ex.Data["Filename"].ToString());
+                    failedToLoadDatabases.Add(ex.Data["Filename"].ToString());
                 }
             }
 
-            if (failedToLoadBlogs.Any())
+            if (failedToLoadDatabases.Any())
             {
-                string failedBlogNames = failedToLoadBlogs.Aggregate((a, b) => a + ", " + b);
-                Logger.Verbose("ManagerController:LoadLibrary: {0}", failedBlogNames);
+                IEnumerable<IBlog> blogs = managerService.BlogFiles;
+                IEnumerable<IBlog> failedToLoadBlogs = blogs.Where(blog => failedToLoadDatabases.Contains(blog.ChildId));
+
+                string failedBlogNames = failedToLoadDatabases.Aggregate((a, b) => a + ", " + b);
+                Logger.Verbose("ManagerController:GetIFilesCore: {0}", failedBlogNames);
                 shellService.ShowError(new SerializationException(), Resources.CouldNotLoadLibrary, failedBlogNames);
+
+                foreach (IBlog failedToLoadBlog in failedToLoadBlogs)
+                {
+                    managerService.BlogFiles.Remove(failedToLoadBlog);
+                }
             }
 
             Logger.Verbose("ManagerController.GetFilesCore End");
 
-            return blogs;
+            return databases;
         }
 
-        private async Task LoadAllDatabasesAsync()
+        private void CheckIfDatabasesComplete()
         {
-            Logger.Verbose("ManagerController.LoadDatabasesGloballyAsync:Start");
-            managerService.ClearDatabases();
-            string path = Path.Combine(shellService.Settings.DownloadLocation, "Index");
+            IEnumerable<IBlog> blogs = managerService.BlogFiles;
+            List<IBlog> incompleteBlogs = blogs.Where(blog => !File.Exists(blog.ChildId)).ToList();
 
-            try
+            if (!incompleteBlogs.Any())
+                return;
+
+            string incompleteBlogNames = incompleteBlogs.Select(blog => blog.ChildId).Aggregate((a, b) => a + ", " + b);
+            Logger.Verbose("ManagerController:CheckIfDatabasesComplete: {0}", incompleteBlogNames);
+            shellService.ShowError(new SerializationException(), Resources.CouldNotLoadLibrary, incompleteBlogNames);
+
+            foreach (IBlog incompleteBlog in incompleteBlogs)
             {
-                if (Directory.Exists(path))
+                managerService.BlogFiles.Remove(incompleteBlog);
+            }
+        }
+
+        private async Task CheckBlogsOnlineStatusAsync()
+        {
+            if (shellService.Settings.CheckOnlineStatusOnStartup)
+            {
+                await Task.Run(async () =>
                 {
+                    var semaphoreSlim = new SemaphoreSlim(25);
+                    IEnumerable<IBlog> blogs = managerService.BlogFiles;
+                    IEnumerable<Task> tasks = blogs.Select(async blog =>
                     {
-                        IReadOnlyList<IFiles> databases = await GetIFilesAsync(path);
-                        foreach (IFiles database in databases)
-                        {
-                            managerService.AddDatabase(database);
-                        }
-                    }
-                }
+                        await semaphoreSlim.WaitAsync();
+                        ICrawler crawler = crawlerFactory.GetCrawler(blog, new CancellationToken(), new PauseToken(),
+                            new Progress<DownloadProgress>());
+                        await crawler.IsBlogOnlineAsync();
+                        semaphoreSlim.Release();
+                    });
+                    await Task.WhenAll(tasks);
+                });
             }
-            catch (Exception ex)
-            {
-                Logger.Verbose("ManagerController:LoadDatabasesGloballyAsync: {0}", ex);
-                shellService.ShowError(ex, Resources.CouldNotLoadLibrary, ex.Data["Filename"]);
-            }
-
-            BlogManagerFinishedLoadingDatabases?.Invoke(this, EventArgs.Empty);
-            Logger.Verbose("ManagerController.LoadDatabasesGloballyAsync:End");
         }
 
         private bool CanLoadLibrary()
