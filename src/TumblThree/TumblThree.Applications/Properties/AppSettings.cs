@@ -13,25 +13,21 @@ namespace TumblThree.Applications.Properties
     public sealed class AppSettings : IExtensibleDataObject
     {
         private static readonly string[] blogTypes =
-            new string[]
             {
                 Resources.BlogTypesNone, Resources.BlogTypesAll, Resources.BlogTypesOnceFinished, Resources.BlogTypesNeverFinished
             };
 
         private static readonly string[] imageSizes =
-            new string[]
             {
                 "raw", "1280", "500", "400", "250", "100", "75"
             };
 
         private static readonly string[] videoSizes =
-            new string[]
             {
                 "1080", "480"
             };
 
         private static string[] tumblrHosts =
-            new string[]
             {
                 "data.tumblr.com"
             };
@@ -262,7 +258,7 @@ namespace TumblThree.Applications.Properties
             LimitConnections = true;
             MaxConnections = 90;
             ConnectionTimeInterval = 60;
-            MaxNumberOfRetries = 10;
+            MaxNumberOfRetries = 3;
             ProgessUpdateInterval = 200;
             Bandwidth = 0;
             BufferSize = 512;
