@@ -106,13 +106,14 @@ namespace TumblThree.Applications.Controllers
             ManagerController.QueueManager = queueManager;
             ManagerController.ManagerSettings = managerSettings;
             ManagerController.BlogManagerFinishedLoadingLibrary += OnBlogManagerFinishedLoadingLibrary;
-            Task managerControllerInit = ManagerController.Initialize();
             QueueController.QueueSettings = queueSettings;
             QueueController.QueueManager = queueManager;
-            QueueController.Initialize();
             DetailsController.QueueManager = queueManager;
-            DetailsController.Initialize();
             CrawlerController.QueueManager = queueManager;
+
+            Task managerControllerInit = ManagerController.Initialize();
+            QueueController.Initialize();
+            DetailsController.Initialize();
             CrawlerController.Initialize();
             cookieService.SetUriCookie(cookieList);
         }
