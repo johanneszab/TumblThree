@@ -27,7 +27,7 @@ namespace TumblThree.Applications.ViewModels
         private readonly DelegateCommand browseExportLocationCommand;
         private readonly DelegateCommand enableAutoDownloadCommand;
         private readonly DelegateCommand exportCommand;
-        private readonly DelegateCommand saveCommand;
+        private readonly AsyncDelegateCommand saveCommand;
         private readonly AsyncDelegateCommand tumblrLoginCommand;
         private readonly AsyncDelegateCommand tumblrLogoutCommand;
         private readonly AsyncDelegateCommand tumblrSubmitTFACommand;
@@ -143,7 +143,7 @@ namespace TumblThree.Applications.ViewModels
             tumblrLoginCommand = new AsyncDelegateCommand(TumblrLogin);
             tumblrLogoutCommand = new AsyncDelegateCommand(TumblrLogout);
             tumblrSubmitTFACommand = new AsyncDelegateCommand(TumblrSubmitTFA);
-            saveCommand = new DelegateCommand(Save);
+            saveCommand = new AsyncDelegateCommand(Save);
             enableAutoDownloadCommand = new DelegateCommand(EnableAutoDownload);
             exportCommand = new DelegateCommand(ExportBlogs);
             bloglistExportFileType = new FileType(Resources.Textfile, SupportedFileTypes.BloglistExportFileType);
@@ -993,33 +993,39 @@ namespace TumblThree.Applications.ViewModels
             }
         }
 
-        private void Save()
+        private async Task Save()
         {
             bool downloadLocationChanged = DownloadLocationChanged();
             bool loadAllDatabasesChanged = LoadAllDatabasesChanged();
             SaveSettings();
-            ApplySettings(downloadLocationChanged, loadAllDatabasesChanged);
+            await ApplySettings(downloadLocationChanged, loadAllDatabasesChanged);
         }
 
-        private void ApplySettings(bool downloadLocationChanged, bool loadAllDatabasesChanged)
+        private async Task ApplySettings(bool downloadLocationChanged, bool loadAllDatabasesChanged)
         {
             //CrawlerService.Timeconstraint.SetRate(((double)MaxConnections / (double)ConnectionTimeInterval));
 
             if (loadAllDatabasesChanged && downloadLocationChanged)
             {
+                CrawlerService.LibraryLoaded = new TaskCompletionSource<bool>();
                 CrawlerService.DatabasesLoaded = new TaskCompletionSource<bool>();
                 if (CrawlerService.StopCommand.CanExecute(null))
                     CrawlerService.StopCommand.Execute(null);
                 CrawlerService.LoadLibraryCommand.Execute(null);
                 CrawlerService.LoadAllDatabasesCommand.Execute(null);
+                await Task.WhenAll(CrawlerService.LibraryLoaded.Task, CrawlerService.DatabasesLoaded.Task);
+                CrawlerService.CheckIfDatabasesCompleteCommand.Execute(null);
             }
             else if (downloadLocationChanged)
             {
+                CrawlerService.LibraryLoaded = new TaskCompletionSource<bool>();
                 CrawlerService.DatabasesLoaded = new TaskCompletionSource<bool>();
                 if (CrawlerService.StopCommand.CanExecute(null))
                     CrawlerService.StopCommand.Execute(null);
                 CrawlerService.LoadLibraryCommand.Execute(null);
                 CrawlerService.LoadAllDatabasesCommand.Execute(null);
+                await Task.WhenAll(CrawlerService.LibraryLoaded.Task, CrawlerService.DatabasesLoaded.Task);
+                CrawlerService.CheckIfDatabasesCompleteCommand.Execute(null);
             }
             else if (loadAllDatabasesChanged)
             {

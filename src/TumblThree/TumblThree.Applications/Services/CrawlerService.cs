@@ -21,9 +21,11 @@ namespace TumblThree.Applications.Services
         private ICommand enqueueSelectedCommand;
         private ICommand loadLibraryCommand;
         private ICommand loadAllDatabasesCommand;
+        private ICommand checkIfDatabasesCompleteCommand;
         private bool isCrawl;
         private bool isPaused;
         private bool isTimerSet;
+        private TaskCompletionSource<bool> libraryLoaded;
         private TaskCompletionSource<bool> databasesLoaded;
         private ICommand listenClipboardCommand;
         private string newBlogUrl;
@@ -40,6 +42,7 @@ namespace TumblThree.Applications.Services
         {
             activeItems = new ObservableCollection<QueueListItem>();
             readonlyActiveItems = new ReadOnlyObservableList<QueueListItem>(activeItems);
+            libraryLoaded = new TaskCompletionSource<bool>();
             databasesLoaded = new TaskCompletionSource<bool>();
             activeItems.CollectionChanged += ActiveItemsCollectionChanged;
         }
@@ -48,6 +51,12 @@ namespace TumblThree.Applications.Services
         {
             get => isTimerSet;
             set => SetProperty(ref isTimerSet, value);
+        }
+
+        public TaskCompletionSource<bool> LibraryLoaded
+        {
+            get => libraryLoaded;
+            set => SetProperty(ref libraryLoaded, value);
         }
 
         public TaskCompletionSource<bool> DatabasesLoaded
@@ -98,6 +107,12 @@ namespace TumblThree.Applications.Services
         {
             get => loadAllDatabasesCommand;
             set => SetProperty(ref loadAllDatabasesCommand, value);
+        }
+
+        public ICommand CheckIfDatabasesCompleteCommand
+        {
+            get => checkIfDatabasesCompleteCommand;
+            set => SetProperty(ref checkIfDatabasesCompleteCommand, value);
         }
 
         public ICommand RemoveBlogFromQueueCommand

@@ -152,7 +152,7 @@ namespace TumblThree.Applications.Controllers
             pauseCommand.RaiseCanExecuteChanged();
             stopCommand.RaiseCanExecuteChanged();
 
-            await crawlerService.DatabasesLoaded.Task;
+            await Task.WhenAll(crawlerService.LibraryLoaded.Task, crawlerService.DatabasesLoaded.Task);
 
             for (var i = 0; i < shellService.Settings.ConcurrentBlogs; i++)
             {

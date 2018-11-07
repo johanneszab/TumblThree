@@ -22,6 +22,8 @@ namespace TumblThree.Applications.Services
 
         ICommand LoadAllDatabasesCommand { get; set; }
 
+        ICommand CheckIfDatabasesCompleteCommand { get; set; }
+
         ICommand RemoveBlogFromQueueCommand { get; set; }
 
         ICommand ListenClipboardCommand { get; set; }
@@ -47,6 +49,8 @@ namespace TumblThree.Applications.Services
         IReadOnlyObservableList<QueueListItem> ActiveItems { get; }
 
         Timer Timer { get; set; }
+
+        TaskCompletionSource<bool> LibraryLoaded { get; set; }
 
         TaskCompletionSource<bool> DatabasesLoaded { get; set; }
 

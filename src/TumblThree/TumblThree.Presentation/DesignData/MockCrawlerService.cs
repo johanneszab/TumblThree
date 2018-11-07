@@ -50,6 +50,8 @@ namespace TumblThree.Presentation.DesignData
 
         public ICommand LoadAllDatabasesCommand { get; set; }
 
+        public ICommand CheckIfDatabasesCompleteCommand { get; set; }
+
         public ICommand ListenClipboardCommand { get; set; }
 
         public ICommand CrawlCommand { get; set; }
@@ -71,6 +73,8 @@ namespace TumblThree.Presentation.DesignData
         public string NewBlogUrl { get; set; }
 
         public Timer Timer { get; set; }
+
+        public TaskCompletionSource<bool> LibraryLoaded { get; set; }
 
         public TaskCompletionSource<bool> DatabasesLoaded { get; set; }
 
