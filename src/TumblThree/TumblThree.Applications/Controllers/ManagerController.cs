@@ -43,6 +43,7 @@ namespace TumblThree.Applications.Controllers
 
         private readonly AsyncDelegateCommand checkStatusCommand;
         private readonly DelegateCommand copyUrlCommand;
+        private readonly DelegateCommand checkIfDatabasesCompleteCommand;
         private readonly AsyncDelegateCommand addBlogCommand;
         private readonly DelegateCommand autoDownloadCommand;
         private readonly DelegateCommand enqueueSelectedCommand;
@@ -88,6 +89,7 @@ namespace TumblThree.Applications.Controllers
             enqueueSelectedCommand = new DelegateCommand(EnqueueSelected, CanEnqueueSelected);
             loadLibraryCommand = new AsyncDelegateCommand(LoadLibraryAsync, CanLoadLibrary);
             loadAllDatabasesCommand = new AsyncDelegateCommand(LoadAllDatabasesAsync, CanLoadAllDatbases);
+            checkIfDatabasesCompleteCommand = new DelegateCommand(CheckIfDatabasesComplete, CanCheckIfDatabasesComplete);
             listenClipboardCommand = new DelegateCommand(ListenClipboard);
             autoDownloadCommand = new DelegateCommand(EnqueueAutoDownload, CanEnqueueAutoDownload);
             showDetailsCommand = new DelegateCommand(ShowDetailsCommand);
@@ -113,6 +115,7 @@ namespace TumblThree.Applications.Controllers
             crawlerService.EnqueueSelectedCommand = enqueueSelectedCommand;
             crawlerService.LoadLibraryCommand = loadLibraryCommand;
             crawlerService.LoadAllDatabasesCommand = loadAllDatabasesCommand;
+            crawlerService.CheckIfDatabasesCompleteCommand = checkIfDatabasesCompleteCommand;
             crawlerService.AutoDownloadCommand = autoDownloadCommand;
             crawlerService.ListenClipboardCommand = listenClipboardCommand;
             crawlerService.PropertyChanged += CrawlerServicePropertyChanged;
@@ -128,6 +131,7 @@ namespace TumblThree.Applications.Controllers
             ManagerViewModel.QueueItems = QueueManager.Items;
             QueueManager.Items.CollectionChanged += QueueItemsCollectionChanged;
             ManagerViewModel.QueueItems.CollectionChanged += ManagerViewModel.QueueItemsCollectionChanged;
+            BlogManagerFinishedLoadingLibrary += OnBlogManagerFinishedLoadingLibrary;
             BlogManagerFinishedLoadingDatabases += OnBlogManagerFinishedLoadingDatabases;
 
             shellService.ContentView = ManagerViewModel.View;
@@ -142,6 +146,11 @@ namespace TumblThree.Applications.Controllers
 
         public void Shutdown()
         {
+        }
+
+        private void OnBlogManagerFinishedLoadingLibrary(object sender, EventArgs e)
+        {
+            crawlerService.LibraryLoaded.SetResult(true);
         }
 
         private void OnBlogManagerFinishedLoadingDatabases(object sender, EventArgs e)
@@ -164,8 +173,9 @@ namespace TumblThree.Applications.Controllers
         private async Task LoadDataBasesAsync()
         {
             // TODO: Methods have side effects!
+            // They remove blogs from the blog manager.
             await LoadLibraryAsync();
-            await LoadAllDatabasesAsync();        
+            await LoadAllDatabasesAsync();
             CheckIfDatabasesComplete();
             await CheckBlogsOnlineStatusAsync();
         }
@@ -357,6 +367,11 @@ namespace TumblThree.Applications.Controllers
         private bool CanLoadAllDatbases()
         {
             return !crawlerService.IsCrawl;
+        }
+
+        private bool CanCheckIfDatabasesComplete()
+        {
+            return crawlerService.DatabasesLoaded.Task.GetAwaiter().IsCompleted && crawlerService.LibraryLoaded.Task.GetAwaiter().IsCompleted;
         }
 
         private bool CanEnqueueSelected()

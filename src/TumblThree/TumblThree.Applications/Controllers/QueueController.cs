@@ -91,6 +91,7 @@ namespace TumblThree.Applications.Controllers
 
         public void LoadQueue()
         {
+            ClearList();
             IReadOnlyList<string> blogNamesToLoad = QueueSettings.Names;
             IReadOnlyList<BlogTypes> blogTypesToLoad = QueueSettings.Types;
             InsertFilesCore(0, blogNamesToLoad, blogTypesToLoad);
