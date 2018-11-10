@@ -174,9 +174,7 @@ namespace TumblThree.Applications.Downloader
 
         private Stream GetStreamForDownload(Stream stream)
         {
-            if (settings.Bandwidth == 0)
-                return stream;
-            return new ThrottledStream(stream, (settings.Bandwidth / settings.ConcurrentConnections) * 1024);
+            return settings.Bandwidth == 0 ? stream : new ThrottledStream(stream, (settings.Bandwidth / settings.ConcurrentConnections) * 1024);
         }
 
         public static async Task<bool> SaveStreamToDisk(Stream input, string destinationFileName, CancellationToken ct)

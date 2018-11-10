@@ -66,9 +66,7 @@ namespace TumblThree.Applications.Crawler
 
         protected string ImageSize()
         {
-            if (shellService.Settings.ImageSize == "raw")
-                return "1280";
-            return shellService.Settings.ImageSize;
+            return shellService.Settings.ImageSize == "raw" ? "1280" : shellService.Settings.ImageSize;
         }
 
         protected string ResizeTumblrImageUrl(string imageUrl)

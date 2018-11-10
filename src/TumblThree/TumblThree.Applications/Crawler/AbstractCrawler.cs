@@ -90,12 +90,10 @@ namespace TumblThree.Applications.Crawler
 
         protected async Task<T> ThrottleConnectionAsync<T>(string url, Func<string, Task<T>> method)
         {
-            if (shellService.Settings.LimitConnections)
-            {
-                crawlerService.Timeconstraint.Acquire();
+            if (!shellService.Settings.LimitConnections)
                 return await method(url);
-            }
 
+            crawlerService.Timeconstraint.Acquire();
             return await method(url);
         }
 
@@ -153,12 +151,7 @@ namespace TumblThree.Applications.Crawler
 
         protected virtual IEnumerable<int> GetPageNumbers()
         {
-            if (string.IsNullOrEmpty(blog.DownloadPages))
-            {
-                return Enumerable.Range(0, shellService.Settings.ConcurrentScans);
-            }
-
-            return RangeToSequence(blog.DownloadPages);
+            return string.IsNullOrEmpty(blog.DownloadPages) ? Enumerable.Range(0, shellService.Settings.ConcurrentScans) : RangeToSequence(blog.DownloadPages);
         }
 
         protected static bool TestRange(int numberToCheck, int bottom, int top)
@@ -203,12 +196,7 @@ namespace TumblThree.Applications.Crawler
                 return 0;
             }
 
-            if (!string.IsNullOrEmpty(blog.DownloadPages))
-            {
-                return 0;
-            }
-
-            return lastId;
+            return !string.IsNullOrEmpty(blog.DownloadPages) ? (ulong)0 : lastId;
         }
 
         protected void UpdateBlogStats()

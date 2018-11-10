@@ -490,33 +490,25 @@ namespace TumblThree.Applications.Crawler
 
         private void AddPhotoUrlToDownloadList(TumblrJson document)
         {
-            if (blog.DownloadPhoto)
+            if (!blog.DownloadPhoto)
+                return;
+            foreach (Post post in document.response.posts)
             {
-                foreach (Post post in document.response.posts)
-                {
-                    if (!PostWithinTimeSpan(post))
-                        continue;
-                    if (post.type == "photo" && CheckIfContainsTaggedPost(post))
-                    {
-                        if (CheckIfDownloadRebloggedPosts(post))
-                        {
-                            AddPhotoUrl(post);
-                            if (post.caption != null)
-                            {
-                                var postCopy = (Post)post.Clone();
-                                postCopy.photos.Clear();
-                                AddInlinePhotoUrl(postCopy);
-                            }
-                        }
-                    }
+                if (!PostWithinTimeSpan(post))
+                    continue;
+                if (!CheckIfContainsTaggedPost(post))
+                    continue;
+                if (!CheckIfDownloadRebloggedPosts(post))
+                    continue;
 
-                    // check for inline images
-                    if (post.type != "photo" && CheckIfContainsTaggedPost(post))
-                    {
-                        if (CheckIfDownloadRebloggedPosts(post))
-                            AddInlinePhotoUrl(post);
-                    }
+                Post postCopy = post;
+                if (post.type == "photo")
+                {
+                    AddPhotoUrl(post);
+                    postCopy = (Post)post.Clone();
+                    postCopy.photos.Clear();
                 }
+                AddInlinePhotoUrl(postCopy);
             }
         }
 
@@ -561,37 +553,33 @@ namespace TumblThree.Applications.Crawler
 
         private void AddVideoUrlToDownloadList(TumblrJson document)
         {
-            if (blog.DownloadVideo)
+            if (!blog.DownloadVideo)
+                return;
+            foreach (Post post in document.response.posts)
             {
-                foreach (Post post in document.response.posts)
+                if (!PostWithinTimeSpan(post))
+                    continue;
+                if (!CheckIfContainsTaggedPost(post))
+                    continue;
+                if (!CheckIfDownloadRebloggedPosts(post))
+                    continue;
+                    
+                Post postCopy = post;
+                if (post.type == "video")
                 {
-                    if (!PostWithinTimeSpan(post))
-                        continue;
-                    if (post.type == "video" && CheckIfContainsTaggedPost(post))
-                    {
-                        if (CheckIfDownloadRebloggedPosts(post))
-                        {
-                            AddVideoUrl(post);
-                            if (post.caption != null)
-                            {
-                                var postCopy = (Post)post.Clone();
-                                postCopy.video_url = string.Empty;
-                                AddInlineVttTumblrVideoUrl(postCopy);
-                                AddInlineVideoUrl(postCopy);
-                            }
-                        }
-                    }
+                    AddVideoUrl(post);
 
-                    // check for inline videos
-                    if (post.type != "video" && CheckIfContainsTaggedPost(post))
-                    {
-                        if (CheckIfDownloadRebloggedPosts(post))
-                        {
-                            AddInlineVttTumblrVideoUrl(post);
-                            AddInlineVideoUrl(post);
-                        }
-                    }
+                    postCopy = (Post)post.Clone();
+                    postCopy.video_url = string.Empty;
                 }
+                var videoUrls = new HashSet<string>();
+
+                AddInlineVideoUrl(videoUrls, postCopy);
+                //AddInlineVttTumblrVideoUrl(videoUrls, postCopy);
+                //AddInlineVeTumblrVideoUrl(videoUrls, postCopy);
+                AddGenericInlineVideoUrl(videoUrls, postCopy);
+
+                AddInlineVideoUrlsToDownloader(videoUrls, postCopy);
             }
         }
 
@@ -614,26 +602,7 @@ namespace TumblThree.Applications.Crawler
             AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(videoUrl.Split('/').Last(), ".json"), post));
         }
 
-        private void AddInlineVttTumblrVideoUrl(Post post)
-        {
-            var regex = new Regex("\"(https?://vtt.tumblr.com/(tumblr_[\\w]*))");
-            foreach (Match match in regex.Matches(InlineSearch(post)))
-            {
-                string videoUrl = match.Groups[1].Value;
-                if (shellService.Settings.VideoSize == 1080)
-                {
-                    AddToDownloadList(new VideoPost(videoUrl + ".mp4", post.id, post.timestamp.ToString()));
-                    //AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(videoUrl.Split('/').Last(), ".json"), post));
-                }
-                else if (shellService.Settings.VideoSize == 480)
-                {
-                    AddToDownloadList(new VideoPost(videoUrl + "_480.mp4", post.id, post.timestamp.ToString()));
-                    //AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(videoUrl.Split('/').Last(), "_480.json"), post));
-                }
-            }
-        }
-
-        private void AddInlineVideoUrl(Post post)
+        private void AddInlineVideoUrl(HashSet<string> videoUrls, Post post)
         {
             var regex = new Regex("src=\"(http[A-Za-z0-9_/:.]*video_file[\\S]*/(tumblr_[\\w]*))[0-9/]*\"");
             foreach (Match match in regex.Matches(InlineSearch(post)))
@@ -641,17 +610,74 @@ namespace TumblThree.Applications.Crawler
                 string videoUrl = match.Groups[2].Value;
                 if (shellService.Settings.VideoSize == 1080)
                 {
-                    AddToDownloadList(new VideoPost("https://vtt.tumblr.com/" + videoUrl + ".mp4", post.id,
-                        post.timestamp.ToString()));
-                    //AddToJsonQueue(new TumblrCrawlerData<Post>(videoUrl + ".json", post));
+                    videoUrls.Add("https://vtt.tumblr.com/" + videoUrl + ".mp4");
                 }
                 else if (shellService.Settings.VideoSize == 480)
                 {
-                    AddToDownloadList(new VideoPost(
-                        "https://vtt.tumblr.com/" + videoUrl + "_480.mp4",
-                        post.id, post.timestamp.ToString()));
-                    //AddToJsonQueue(new TumblrCrawlerData<Post>(videoUrl + "_480.json", post));
+                    videoUrls.Add("https://vtt.tumblr.com/" + videoUrl + "_480.mp4");
                 }
+            }
+        }
+
+        private void AddInlineVttTumblrVideoUrl(HashSet<string> videoUrls, Post post)
+        {
+            var regex = new Regex("\"(https?://vtt.tumblr.com/(tumblr_[\\w]*))");
+            foreach (Match match in regex.Matches(InlineSearch(post)))
+            {
+                string videoUrl = match.Groups[1].Value;
+                if (shellService.Settings.VideoSize == 1080)
+                {
+                    videoUrls.Add(videoUrl + ".mp4");
+                }
+                else if (shellService.Settings.VideoSize == 480)
+                {
+                    videoUrls.Add(videoUrl + "_480.mp4");
+                }
+            }
+        }
+
+        private void AddInlineVeTumblrVideoUrl(HashSet<string> videoUrls, Post post)
+        {
+            var regex = new Regex("\"(https?://ve.media.tumblr.com/(tumblr_[\\w]*))");
+            foreach (Match match in regex.Matches(InlineSearch(post)))
+            {
+                string videoUrl = match.Groups[1].Value;
+                if (shellService.Settings.VideoSize == 1080)
+                {
+                    videoUrls.Add(videoUrl + ".mp4");
+                }
+                else if (shellService.Settings.VideoSize == 480)
+                {
+                    videoUrls.Add(videoUrl + "_480.mp4");
+                }
+            }
+        }
+
+        private void AddGenericInlineVideoUrl(HashSet<string> videoUrls, Post post)
+        {
+            var regex = new Regex("\"(https?://(?:[a-z0-9\\-]+\\.)+[a-z]{2,6}(?:/[^/#?]+)+\\.(?:mp4|mkv))\"");
+
+            foreach (Match match in regex.Matches(InlineSearch(post)))
+            {
+                string videoUrl = match.Groups[1].Value;
+
+                if (videoUrl.Contains("tumblr") && shellService.Settings.VideoSize == 480)
+                {
+                    int indexOfSuffix = videoUrl.LastIndexOf('.');
+                    if (indexOfSuffix >= 0)
+                        videoUrl = videoUrl.Insert(indexOfSuffix, "_480");
+                }
+
+                videoUrls.Add(videoUrl);
+            }
+        }
+
+        private void AddInlineVideoUrlsToDownloader(HashSet<string> videoUrls, Post post)
+        {
+            foreach (string videoUrl in videoUrls)
+            {
+                AddToDownloadList(new VideoPost(videoUrl, post.id, post.timestamp.ToString()));
+                //AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(videoUrl.Split('/').Last(), ".json"), post));
             }
         }
 
@@ -663,19 +689,19 @@ namespace TumblThree.Applications.Crawler
                 {
                     if (!PostWithinTimeSpan(post))
                         continue;
-                    if (post.type == "audio" && CheckIfContainsTaggedPost(post))
-                    {
-                        if (CheckIfDownloadRebloggedPosts(post))
-                        {
-                            string postId = post.id;
-                            string audioUrl = post.audio_url;
-                            if (!audioUrl.EndsWith(".mp3"))
-                                audioUrl = audioUrl + ".mp3";
-                            AddToDownloadList(new AudioPost(audioUrl, postId, post.timestamp.ToString()));
-                            AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(audioUrl.Split('/').Last(), ".json"),
-                                post));
-                        }
-                    }
+                    if (!CheckIfContainsTaggedPost(post))
+                        continue;
+                    if (post.type != "audio")
+                        continue;
+                    if (!CheckIfDownloadRebloggedPosts(post))
+                        continue;
+                    string postId = post.id;
+                    string audioUrl = post.audio_url;
+                    if (!audioUrl.EndsWith(".mp3"))
+                        audioUrl = audioUrl + ".mp3";
+                    AddToDownloadList(new AudioPost(audioUrl, postId, post.timestamp.ToString()));
+                    AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(audioUrl.Split('/').Last(), ".json"),
+                        post));
                 }
             }
         }
@@ -688,16 +714,16 @@ namespace TumblThree.Applications.Crawler
                 {
                     if (!PostWithinTimeSpan(post))
                         continue;
-                    if (post.type == "text" && (CheckIfContainsTaggedPost(post)))
-                    {
-                        if (CheckIfDownloadRebloggedPosts(post))
-                        {
-                            string postId = post.id;
-                            string textBody = tumblrJsonParser.ParseText(post);
-                            AddToDownloadList(new TextPost(textBody, postId, post.timestamp.ToString()));
-                            AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(postId, ".json"), post));
-                        }
-                    }
+                    if (!CheckIfContainsTaggedPost(post))
+                        continue;
+                    if (post.type != "text")
+                        continue;
+                    if (!CheckIfDownloadRebloggedPosts(post))
+                        continue;
+                    string postId = post.id;
+                    string textBody = tumblrJsonParser.ParseText(post);
+                    AddToDownloadList(new TextPost(textBody, postId, post.timestamp.ToString()));
+                    AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(postId, ".json"), post));
                 }
             }
         }
@@ -710,16 +736,16 @@ namespace TumblThree.Applications.Crawler
                 {
                     if (!PostWithinTimeSpan(post))
                         continue;
-                    if (post.type == "quote" && CheckIfContainsTaggedPost(post))
-                    {
-                        if (CheckIfDownloadRebloggedPosts(post))
-                        {
-                            string postId = post.id;
-                            string textBody = tumblrJsonParser.ParseQuote(post);
-                            AddToDownloadList(new QuotePost(textBody, postId, post.timestamp.ToString()));
-                            AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(postId, ".json"), post));
-                        }
-                    }
+                    if (!CheckIfContainsTaggedPost(post))
+                        continue;
+                    if (post.type != "quote")
+                        continue;
+                    if (!CheckIfDownloadRebloggedPosts(post))
+                        continue;
+                    string postId = post.id;
+                    string textBody = tumblrJsonParser.ParseQuote(post);
+                    AddToDownloadList(new QuotePost(textBody, postId, post.timestamp.ToString()));
+                    AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(postId, ".json"), post));
                 }
             }
         }
@@ -732,16 +758,16 @@ namespace TumblThree.Applications.Crawler
                 {
                     if (!PostWithinTimeSpan(post))
                         continue;
-                    if (post.type == "link" && CheckIfContainsTaggedPost(post))
-                    {
-                        if (CheckIfDownloadRebloggedPosts(post))
-                        {
-                            string postId = post.id;
-                            string textBody = tumblrJsonParser.ParseLink(post);
-                            AddToDownloadList(new LinkPost(textBody, postId, post.timestamp.ToString()));
-                            AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(postId, ".json"), post));
-                        }
-                    }
+                    if (!CheckIfContainsTaggedPost(post))
+                        continue;
+                    if (post.type != "link")
+                        continue;
+                    if (!CheckIfDownloadRebloggedPosts(post))
+                        continue;
+                    string postId = post.id;
+                    string textBody = tumblrJsonParser.ParseLink(post);
+                    AddToDownloadList(new LinkPost(textBody, postId, post.timestamp.ToString()));
+                    AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(postId, ".json"), post));
                 }
             }
         }
@@ -754,16 +780,16 @@ namespace TumblThree.Applications.Crawler
                 {
                     if (!PostWithinTimeSpan(post))
                         continue;
-                    if (post.type == "chat" && CheckIfContainsTaggedPost(post))
-                    {
-                        if (CheckIfDownloadRebloggedPosts(post))
-                        {
-                            string postId = post.id;
-                            string textBody = tumblrJsonParser.ParseConversation(post);
-                            AddToDownloadList(new ConversationPost(textBody, postId, post.timestamp.ToString()));
-                            AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(postId, ".json"), post));
-                        }
-                    }
+                    if (!CheckIfContainsTaggedPost(post))
+                        continue;
+                    if (post.type != "chat")
+                        continue;
+                    if (!CheckIfDownloadRebloggedPosts(post))
+                        continue;
+                    string postId = post.id;
+                    string textBody = tumblrJsonParser.ParseConversation(post);
+                    AddToDownloadList(new ConversationPost(textBody, postId, post.timestamp.ToString()));
+                    AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(postId, ".json"), post));
                 }
             }
         }
@@ -776,16 +802,16 @@ namespace TumblThree.Applications.Crawler
                 {
                     if (!PostWithinTimeSpan(post))
                         continue;
-                    if (post.type == "answer" && CheckIfContainsTaggedPost(post))
-                    {
-                        if (CheckIfDownloadRebloggedPosts(post))
-                        {
-                            string postId = post.id;
-                            string textBody = tumblrJsonParser.ParseAnswer(post);
-                            AddToDownloadList(new AnswerPost(textBody, postId, post.timestamp.ToString()));
-                            AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(postId, ".json"), post));
-                        }
-                    }
+                    if (!CheckIfContainsTaggedPost(post))
+                        continue;
+                    if (post.type != "answer")
+                        continue;
+                    if (!CheckIfDownloadRebloggedPosts(post))
+                        continue;
+                    string postId = post.id;
+                    string textBody = tumblrJsonParser.ParseAnswer(post);
+                    AddToDownloadList(new AnswerPost(textBody, postId, post.timestamp.ToString()));
+                    AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(postId, ".json"), post));
                 }
             }
         }
@@ -798,16 +824,16 @@ namespace TumblThree.Applications.Crawler
                 {
                     if (!PostWithinTimeSpan(post))
                         continue;
-                    if (post.type == "photo" && CheckIfContainsTaggedPost(post))
-                    {
-                        if (CheckIfDownloadRebloggedPosts(post))
-                        {
-                            string postId = post.id;
-                            string textBody = tumblrJsonParser.ParsePhotoMeta(post);
-                            AddToDownloadList(new PhotoMetaPost(textBody, postId));
-                            AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(postId, ".json"), post));
-                        }
-                    }
+                    if (!CheckIfContainsTaggedPost(post))
+                        continue;
+                    if (post.type != "photo")
+                        continue;
+                    if (!CheckIfDownloadRebloggedPosts(post))
+                        continue;
+                    string postId = post.id;
+                    string textBody = tumblrJsonParser.ParsePhotoMeta(post);
+                    AddToDownloadList(new PhotoMetaPost(textBody, postId));
+                    AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(postId, ".json"), post));
                 }
             }
         }
@@ -820,16 +846,16 @@ namespace TumblThree.Applications.Crawler
                 {
                     if (!PostWithinTimeSpan(post))
                         continue;
-                    if (post.type == "video" && CheckIfContainsTaggedPost(post))
-                    {
-                        if (CheckIfDownloadRebloggedPosts(post))
-                        {
-                            string postId = post.id;
-                            string textBody = tumblrJsonParser.ParseVideoMeta(post);
-                            AddToDownloadList(new VideoMetaPost(textBody, postId));
-                            AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(postId, ".json"), post));
-                        }
-                    }
+                    if (!CheckIfContainsTaggedPost(post))
+                        continue;
+                    if (post.type != "video")
+                        continue;
+                    if (!CheckIfDownloadRebloggedPosts(post))
+                        continue;
+                    string postId = post.id;
+                    string textBody = tumblrJsonParser.ParseVideoMeta(post);
+                    AddToDownloadList(new VideoMetaPost(textBody, postId));
+                    AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(postId, ".json"), post));
                 }
             }
         }
@@ -842,16 +868,16 @@ namespace TumblThree.Applications.Crawler
                 {
                     if (!PostWithinTimeSpan(post))
                         continue;
-                    if (post.type == "audio" && CheckIfContainsTaggedPost(post))
-                    {
-                        if (CheckIfDownloadRebloggedPosts(post))
-                        {
-                            string postId = post.id;
-                            string textBody = tumblrJsonParser.ParseAudioMeta(post);
-                            AddToDownloadList(new AudioMetaPost(textBody, postId));
-                            AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(postId, ".json"), post));
-                        }
-                    }
+                    if (!CheckIfContainsTaggedPost(post))
+                        continue;
+                    if (post.type != "audio")
+                        continue;
+                    if (!CheckIfDownloadRebloggedPosts(post))
+                        continue;
+                    string postId = post.id;
+                    string textBody = tumblrJsonParser.ParseAudioMeta(post);
+                    AddToDownloadList(new AudioMetaPost(textBody, postId));
+                    AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(postId, ".json"), post));
                 }
             }
         }
@@ -886,55 +912,53 @@ namespace TumblThree.Applications.Crawler
             {
                 if (!PostWithinTimeSpan(post))
                     continue;
-                if (CheckIfContainsTaggedPost(post))
+                if (!CheckIfDownloadRebloggedPosts(post))
+                    continue;
+                if (!CheckIfContainsTaggedPost(post))
+                    continue;
+                // single linked images
+                Regex regex = imgurParser.GetImgurImageRegex();
+                foreach (Match match in regex.Matches(post.caption))
                 {
-                    if (CheckIfDownloadRebloggedPosts(post))
+                    string imageUrl = match.Groups[1].Value;
+                    string imgurId = match.Groups[2].Value;
+                    if (blog.SkipGif && (imageUrl.EndsWith(".gif") || imageUrl.EndsWith(".gifv")))
                     {
-                        // single linked images
-                        Regex regex = imgurParser.GetImgurImageRegex();
-                        foreach (Match match in regex.Matches(post.caption))
-                        {
-                            string imageUrl = match.Groups[1].Value;
-                            string imgurId = match.Groups[2].Value;
-                            if (blog.SkipGif && (imageUrl.EndsWith(".gif") || imageUrl.EndsWith(".gifv")))
-                            {
-                                continue;
-                            }
+                        continue;
+                    }
 
-                            AddToDownloadList(new ExternalPhotoPost(imageUrl, imgurId,
-                                post.timestamp.ToString()));
-                            AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"),
-                                post));
-                        }
+                    AddToDownloadList(new ExternalPhotoPost(imageUrl, imgurId,
+                        post.timestamp.ToString()));
+                    AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"),
+                        post));
+                }
 
-                        // album urls
-                        regex = imgurParser.GetImgurAlbumRegex();
-                        foreach (Match match in regex.Matches(post.caption))
-                        {
-                            string albumUrl = match.Groups[1].Value;
-                            string imgurId = match.Groups[2].Value;
-                            string album = await imgurParser.RequestImgurAlbumSite(albumUrl);
+                // album urls
+                regex = imgurParser.GetImgurAlbumRegex();
+                foreach (Match match in regex.Matches(post.caption))
+                {
+                    string albumUrl = match.Groups[1].Value;
+                    string imgurId = match.Groups[2].Value;
+                    string album = await imgurParser.RequestImgurAlbumSite(albumUrl);
 
-                            Regex hashRegex = imgurParser.GetImgurAlbumHashRegex();
-                            MatchCollection hashMatches = hashRegex.Matches(album);
-                            List<string> hashes = hashMatches.Cast<Match>().Select(hashMatch => hashMatch.Groups[1].Value).ToList();
+                    Regex hashRegex = imgurParser.GetImgurAlbumHashRegex();
+                    MatchCollection hashMatches = hashRegex.Matches(album);
+                    List<string> hashes = hashMatches.Cast<Match>().Select(hashMatch => hashMatch.Groups[1].Value).ToList();
 
-                            Regex extRegex = imgurParser.GetImgurAlbumExtRegex();
-                            MatchCollection extMatches = extRegex.Matches(album);
-                            List<string> exts = extMatches.Cast<Match>().Select(extMatch => extMatch.Groups[1].Value).ToList();
+                    Regex extRegex = imgurParser.GetImgurAlbumExtRegex();
+                    MatchCollection extMatches = extRegex.Matches(album);
+                    List<string> exts = extMatches.Cast<Match>().Select(extMatch => extMatch.Groups[1].Value).ToList();
 
-                            IEnumerable<string> imageUrls = hashes.Zip(exts, (hash, ext) => "https://i.imgur.com/" + hash + ext);
+                    IEnumerable<string> imageUrls = hashes.Zip(exts, (hash, ext) => "https://i.imgur.com/" + hash + ext);
 
-                            foreach (string imageUrl in imageUrls)
-                            {
-                                if (blog.SkipGif && (imageUrl.EndsWith(".gif") || imageUrl.EndsWith(".gifv")))
-                                    continue;
-                                AddToDownloadList(new ExternalPhotoPost(imageUrl, imgurId,
-                                    post.timestamp.ToString()));
-                                AddToJsonQueue(
-                                    new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
-                            }
-                        }
+                    foreach (string imageUrl in imageUrls)
+                    {
+                        if (blog.SkipGif && (imageUrl.EndsWith(".gif") || imageUrl.EndsWith(".gifv")))
+                            continue;
+                        AddToDownloadList(new ExternalPhotoPost(imageUrl, imgurId,
+                            post.timestamp.ToString()));
+                        AddToJsonQueue(
+                            new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
                     }
                 }
             }
@@ -946,28 +970,26 @@ namespace TumblThree.Applications.Crawler
             {
                 if (!PostWithinTimeSpan(post))
                     continue;
-                if (CheckIfContainsTaggedPost(post))
+                if (!CheckIfContainsTaggedPost(post))
+                    continue;
+                if (!CheckIfDownloadRebloggedPosts(post))
+                    continue;
+                Regex regex = gfycatParser.GetGfycatUrlRegex();
+                foreach (Match match in regex.Matches(post.caption))
                 {
-                    if (CheckIfDownloadRebloggedPosts(post))
+                    string gfyId = match.Groups[2].Value;
+                    string videoUrl = gfycatParser.ParseGfycatCajaxResponse(await gfycatParser.RequestGfycatCajax(gfyId),
+                        blog.GfycatType);
+                    if (blog.SkipGif && (videoUrl.EndsWith(".gif") || videoUrl.EndsWith(".gifv")))
                     {
-                        Regex regex = gfycatParser.GetGfycatUrlRegex();
-                        foreach (Match match in regex.Matches(post.caption))
-                        {
-                            string gfyId = match.Groups[2].Value;
-                            string videoUrl = gfycatParser.ParseGfycatCajaxResponse(await gfycatParser.RequestGfycatCajax(gfyId),
-                                blog.GfycatType);
-                            if (blog.SkipGif && (videoUrl.EndsWith(".gif") || videoUrl.EndsWith(".gifv")))
-                            {
-                                continue;
-                            }
-
-                            // TODO: postID
-                            AddToDownloadList(new VideoPost(videoUrl, gfyId,
-                                post.timestamp.ToString()));
-                            AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(videoUrl.Split('/').Last(), ".json"),
-                                post));
-                        }
+                        continue;
                     }
+
+                    // TODO: postID
+                    AddToDownloadList(new VideoPost(videoUrl, gfyId,
+                        post.timestamp.ToString()));
+                    AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(videoUrl.Split('/').Last(), ".json"),
+                        post));
                 }
             }
         }
@@ -976,33 +998,28 @@ namespace TumblThree.Applications.Crawler
         {
             foreach (Post post in document.response.posts)
             {
-                if (!PostWithinTimeSpan(post))
-                {
+                if (!PostWithinTimeSpan(post))                
                     continue;
-                }
-
-                if (CheckIfContainsTaggedPost(post))
+                if (!CheckIfContainsTaggedPost(post))
+                    continue;
+                if (!CheckIfDownloadRebloggedPosts(post))
+                    continue;
+                Regex regex = webmshareParser.GetWebmshareUrlRegex();
+                foreach (Match match in regex.Matches(post.caption))
                 {
-                    if (CheckIfDownloadRebloggedPosts(post))
+                    string url = match.Groups[0].Value.Split('\"').First();
+                    string webmshareId = match.Groups[2].Value;
+                    string imageUrl = webmshareParser.CreateWebmshareUrl(webmshareId, url, blog.WebmshareType);
+                    if (blog.SkipGif && (imageUrl.EndsWith(".gif") || imageUrl.EndsWith(".gifv")))
                     {
-                        Regex regex = webmshareParser.GetWebmshareUrlRegex();
-                        foreach (Match match in regex.Matches(post.caption))
-                        {
-                            string url = match.Groups[0].Value.Split('\"').First();
-                            string webmshareId = match.Groups[2].Value;
-                            string imageUrl = webmshareParser.CreateWebmshareUrl(webmshareId, url, blog.WebmshareType);
-                            if (blog.SkipGif && (imageUrl.EndsWith(".gif") || imageUrl.EndsWith(".gifv")))
-                            {
-                                continue;
-                            }
-
-                            // TODO: postID
-                            AddToDownloadList(new VideoPost(imageUrl, webmshareId,
-                                post.timestamp.ToString()));
-                            AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"),
-                                post));
-                        }
+                        continue;
                     }
+
+                    // TODO: postID
+                    AddToDownloadList(new VideoPost(imageUrl, webmshareId,
+                        post.timestamp.ToString()));
+                    AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"),
+                        post));
                 }
             }
         }
@@ -1011,37 +1028,33 @@ namespace TumblThree.Applications.Crawler
         {
             foreach (Post post in document.response.posts)
             {
-                if (!PostWithinTimeSpan(post))
-                {
+                if (!PostWithinTimeSpan(post))                
                     continue;
-                }
 
-                if (CheckIfContainsTaggedPost(post))
+                if (!CheckIfContainsTaggedPost(post))
+                    continue;
+                if (!CheckIfDownloadRebloggedPosts(post))
+                    continue;
+                Regex regex = mixtapeParser.GetMixtapeUrlRegex();
+                string[] parts = post.caption.Split(new string[] { "href=" }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (string part in parts)
                 {
-                    if (CheckIfDownloadRebloggedPosts(post))
+                    foreach (Match match in regex.Matches(part))
                     {
-                        Regex regex = mixtapeParser.GetMixtapeUrlRegex();
-                        string[] parts = post.caption.Split(new string[] { "href=" }, StringSplitOptions.RemoveEmptyEntries);
-                        foreach (string part in parts)
+                        string temp = match.Groups[0].ToString();
+                        string id = match.Groups[2].Value;
+                        string url = temp.Split('\"').First();
+
+                        string imageUrl = mixtapeParser.CreateMixtapeUrl(id, url, blog.MixtapeType);
+                        if (blog.SkipGif && imageUrl.EndsWith(".gif"))
                         {
-                            foreach (Match match in regex.Matches(part))
-                            {
-                                string temp = match.Groups[0].ToString();
-                                string id = match.Groups[2].Value;
-                                string url = temp.Split('\"').First();
-
-                                string imageUrl = mixtapeParser.CreateMixtapeUrl(id, url, blog.MixtapeType);
-                                if (blog.SkipGif && imageUrl.EndsWith(".gif"))
-                                {
-                                    continue;
-                                }
-
-                                AddToDownloadList(new ExternalVideoPost(imageUrl, id,
-                                    post.timestamp.ToString()));
-                                AddToJsonQueue(
-                                    new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
-                            }
+                            continue;
                         }
+
+                        AddToDownloadList(new ExternalVideoPost(imageUrl, id,
+                            post.timestamp.ToString()));
+                        AddToJsonQueue(
+                            new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
                     }
                 }
             }
@@ -1051,37 +1064,32 @@ namespace TumblThree.Applications.Crawler
         {
             foreach (Post post in document.response.posts)
             {
-                if (!PostWithinTimeSpan(post))
-                {
+                if (!PostWithinTimeSpan(post))                
                     continue;
-                }
-
-                if (CheckIfContainsTaggedPost(post))
+                if (!CheckIfContainsTaggedPost(post))
+                    continue;
+                if (!CheckIfDownloadRebloggedPosts(post))
+                    continue;
+                Regex regex = uguuParser.GetUguuUrlRegex();
+                string[] parts = post.caption.Split(new string[] { "href=" }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (string part in parts)
                 {
-                    if (CheckIfDownloadRebloggedPosts(post))
+                    foreach (Match match in regex.Matches(part))
                     {
-                        Regex regex = uguuParser.GetUguuUrlRegex();
-                        string[] parts = post.caption.Split(new string[] { "href=" }, StringSplitOptions.RemoveEmptyEntries);
-                        foreach (string part in parts)
+                        string temp = match.Groups[0].ToString();
+                        string id = match.Groups[2].Value;
+                        string url = temp.Split('\"').First();
+
+                        string imageUrl = uguuParser.CreateUguuUrl(id, url, blog.UguuType);
+                        if (blog.SkipGif && imageUrl.EndsWith(".gif"))
                         {
-                            foreach (Match match in regex.Matches(part))
-                            {
-                                string temp = match.Groups[0].ToString();
-                                string id = match.Groups[2].Value;
-                                string url = temp.Split('\"').First();
-
-                                string imageUrl = uguuParser.CreateUguuUrl(id, url, blog.UguuType);
-                                if (blog.SkipGif && imageUrl.EndsWith(".gif"))
-                                {
-                                    continue;
-                                }
-
-                                AddToDownloadList(new ExternalVideoPost(imageUrl, id,
-                                    post.timestamp.ToString()));
-                                AddToJsonQueue(
-                                    new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
-                            }
+                            continue;
                         }
+
+                        AddToDownloadList(new ExternalVideoPost(imageUrl, id,
+                            post.timestamp.ToString()));
+                        AddToJsonQueue(
+                            new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
                     }
                 }
             }
@@ -1091,37 +1099,32 @@ namespace TumblThree.Applications.Crawler
         {
             foreach (Post post in document.response.posts)
             {
-                if (!PostWithinTimeSpan(post))
-                {
+                if (!PostWithinTimeSpan(post))              
                     continue;
-                }
-
-                if (CheckIfContainsTaggedPost(post))
+                if (!CheckIfContainsTaggedPost(post))
+                    continue;
+                if (!CheckIfDownloadRebloggedPosts(post))
+                    continue;
+                Regex regex = safemoeParser.GetSafeMoeUrlRegex();
+                string[] parts = post.caption.Split(new string[] { "href=" }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (string part in parts)
                 {
-                    if (CheckIfDownloadRebloggedPosts(post))
+                    foreach (Match match in regex.Matches(part))
                     {
-                        Regex regex = safemoeParser.GetSafeMoeUrlRegex();
-                        string[] parts = post.caption.Split(new string[] { "href=" }, StringSplitOptions.RemoveEmptyEntries);
-                        foreach (string part in parts)
+                        string temp = match.Groups[0].ToString();
+                        string id = match.Groups[2].Value;
+                        string url = temp.Split('\"').First();
+
+                        string imageUrl = safemoeParser.CreateSafeMoeUrl(id, url, blog.SafeMoeType);
+                        if (blog.SkipGif && imageUrl.EndsWith(".gif"))
                         {
-                            foreach (Match match in regex.Matches(part))
-                            {
-                                string temp = match.Groups[0].ToString();
-                                string id = match.Groups[2].Value;
-                                string url = temp.Split('\"').First();
-
-                                string imageUrl = safemoeParser.CreateSafeMoeUrl(id, url, blog.SafeMoeType);
-                                if (blog.SkipGif && imageUrl.EndsWith(".gif"))
-                                {
-                                    continue;
-                                }
-
-                                AddToDownloadList(new ExternalVideoPost(imageUrl, id,
-                                    post.timestamp.ToString()));
-                                AddToJsonQueue(
-                                    new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
-                            }
+                            continue;
                         }
+
+                        AddToDownloadList(new ExternalVideoPost(imageUrl, id,
+                            post.timestamp.ToString()));
+                        AddToJsonQueue(
+                            new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
                     }
                 }
             }
@@ -1132,36 +1135,32 @@ namespace TumblThree.Applications.Crawler
             foreach (Post post in document.response.posts)
             {
                 if (!PostWithinTimeSpan(post))
-                {
                     continue;
-                }
+                if (!CheckIfContainsTaggedPost(post))
+                    continue;
+                if (!CheckIfDownloadRebloggedPosts(post))
+                    continue;
 
-                if (CheckIfContainsTaggedPost(post))
+                Regex regex = lolisafeParser.GetLoliSafeUrlRegex();
+                string[] parts = post.caption.Split(new string[] { "href=" }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (string part in parts)
                 {
-                    if (CheckIfDownloadRebloggedPosts(post))
+                    foreach (Match match in regex.Matches(part))
                     {
-                        Regex regex = lolisafeParser.GetLoliSafeUrlRegex();
-                        string[] parts = post.caption.Split(new string[] { "href=" }, StringSplitOptions.RemoveEmptyEntries);
-                        foreach (string part in parts)
+                        string temp = match.Groups[0].ToString();
+                        string id = match.Groups[2].Value;
+                        string url = temp.Split('\"').First();
+
+                        string imageUrl = lolisafeParser.CreateLoliSafeUrl(id, url, blog.LoliSafeType);
+                        if (blog.SkipGif && imageUrl.EndsWith(".gif"))
                         {
-                            foreach (Match match in regex.Matches(part))
-                            {
-                                string temp = match.Groups[0].ToString();
-                                string id = match.Groups[2].Value;
-                                string url = temp.Split('\"').First();
-
-                                string imageUrl = lolisafeParser.CreateLoliSafeUrl(id, url, blog.LoliSafeType);
-                                if (blog.SkipGif && imageUrl.EndsWith(".gif"))
-                                {
-                                    continue;
-                                }
-
-                                AddToDownloadList(new ExternalVideoPost(imageUrl, id,
-                                    post.timestamp.ToString()));
-                                AddToJsonQueue(
-                                    new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
-                            }
+                            continue;
                         }
+
+                        AddToDownloadList(new ExternalVideoPost(imageUrl, id,
+                            post.timestamp.ToString()));
+                        AddToJsonQueue(
+                            new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
                     }
                 }
             }
@@ -1172,36 +1171,32 @@ namespace TumblThree.Applications.Crawler
             foreach (Post post in document.response.posts)
             {
                 if (!PostWithinTimeSpan(post))
-                {
                     continue;
-                }
+                if (!CheckIfContainsTaggedPost(post))
+                    continue;
+                if (!CheckIfDownloadRebloggedPosts(post))
+                    continue;
 
-                if (CheckIfContainsTaggedPost(post))
+                Regex regex = catboxParser.GetCatBoxUrlRegex();
+                string[] parts = post.caption.Split(new string[] { "href=" }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (string part in parts)
                 {
-                    if (CheckIfDownloadRebloggedPosts(post))
+                    foreach (Match match in regex.Matches(part))
                     {
-                        Regex regex = catboxParser.GetCatBoxUrlRegex();
-                        string[] parts = post.caption.Split(new string[] { "href=" }, StringSplitOptions.RemoveEmptyEntries);
-                        foreach (string part in parts)
+                        string temp = match.Groups[0].ToString();
+                        string id = match.Groups[2].Value;
+                        string url = temp.Split('\"').First();
+
+                        string imageUrl = catboxParser.CreateCatBoxUrl(id, url, blog.CatBoxType);
+                        if (blog.SkipGif && imageUrl.EndsWith(".gif"))
                         {
-                            foreach (Match match in regex.Matches(part))
-                            {
-                                string temp = match.Groups[0].ToString();
-                                string id = match.Groups[2].Value;
-                                string url = temp.Split('\"').First();
-
-                                string imageUrl = catboxParser.CreateCatBoxUrl(id, url, blog.CatBoxType);
-                                if (blog.SkipGif && imageUrl.EndsWith(".gif"))
-                                {
-                                    continue;
-                                }
-
-                                AddToDownloadList(new ExternalVideoPost(imageUrl, id,
-                                    post.timestamp.ToString()));
-                                AddToJsonQueue(
-                                    new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
-                            }
+                            continue;
                         }
+
+                        AddToDownloadList(new ExternalVideoPost(imageUrl, id,
+                            post.timestamp.ToString()));
+                        AddToJsonQueue(
+                            new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
                     }
                 }
             }

@@ -27,25 +27,19 @@ namespace TumblThree.Applications.Crawler
         public async Task<bool> IsTumblrBlog(string url)
         {
             string location = await GetUrlRedirection(url);
-            if (location.Contains("login_required"))
-                return false;
-            return true;
+            return !location.Contains("login_required");
         }
 
         public async Task<bool> IsHiddenTumblrBlog(string url)
         {
             string location = await GetUrlRedirection(url);
-            if (location.Contains("login_required") || location.Contains("dashboard/blog/"))
-                return true;
-            return false;
+            return location.Contains("login_required") || location.Contains("dashboard/blog/");
         }
 
         public async Task<bool> IsPasswordProtectedTumblrBlog(string url)
         {
             string location = await GetUrlRedirection(url);
-            if (location.Contains("blog_auth"))
-                return true;
-            return false;
+            return location.Contains("blog_auth");
         }
 
         private async Task<string> GetUrlRedirection(string url)

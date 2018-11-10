@@ -27,9 +27,7 @@ namespace TumblThree.Applications.Downloader
 
         protected string ImageSize()
         {
-            if (shellService.Settings.ImageSize == "raw")
-                return "1280";
-            return shellService.Settings.ImageSize;
+            return shellService.Settings.ImageSize == "raw" ? "1280" : shellService.Settings.ImageSize;
         }
 
         protected string ResizeTumblrImageUrl(string imageUrl)
@@ -86,15 +84,13 @@ namespace TumblThree.Applications.Downloader
         /// <returns></returns>
         public string BuildRawImageUrl(string url, string host)
         {
-            if (shellService.Settings.ImageSize == "raw")
-            {
-                string path = new Uri(url).LocalPath.TrimStart('/');
-                var imageDimension = new Regex("_\\d+");
-                path = imageDimension.Replace(path, "_raw");
-                return "https://" + host + "/" + path;
-            }
+            if (shellService.Settings.ImageSize != "raw")
+                return url;
+            string path = new Uri(url).LocalPath.TrimStart('/');
+            var imageDimension = new Regex("_\\d+");
+            path = imageDimension.Replace(path, "_raw");
+            return "https://" + host + "/" + path;
 
-            return url;
         }
     }
 }
