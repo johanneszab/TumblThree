@@ -600,16 +600,12 @@ namespace TumblThree.Applications.Crawler
 
         private string ParseImageUrl(Post post)
         {
-            string imageUrl = (string)post.GetType().GetProperty("photo_url_" + ImageSize()).GetValue(post, null) ??
-                              post.photo_url_1280;
-            return imageUrl;
+            return (string)post.GetType().GetProperty("photo_url_" + ImageSize()).GetValue(post, null) ?? post.photo_url_1280;
         }
 
         private string ParseImageUrl(Photo post)
         {
-            string imageUrl = (string)post.GetType().GetProperty("photo_url_" + ImageSize()).GetValue(post, null) ??
-                              post.photo_url_1280;
-            return imageUrl;
+            return (string)post.GetType().GetProperty("photo_url_" + ImageSize()).GetValue(post, null) ?? post.photo_url_1280;
         }
 
         private static string InlineSearch(Post post)
@@ -743,20 +739,14 @@ namespace TumblThree.Applications.Crawler
             string videoUrl = Regex.Match(post.video_player, "\"url\":\"([\\S]*/(tumblr_[\\S]*)_filmstrip[\\S]*)\"").Groups[2]
                                    .ToString();
 
-            if (shellService.Settings.VideoSize == 1080)
+            if (shellService.Settings.VideoSize == 480)
             {
-                AddToDownloadList(new VideoPost(
-                    "https://vtt.tumblr.com/" + videoUrl + ".mp4",
-                    post.id, post.unix_timestamp.ToString()));
-                AddToJsonQueue(new TumblrCrawlerData<Post>(videoUrl + ".json", post));
+                videoUrl += "_480";
             }
-            else if (shellService.Settings.VideoSize == 480)
-            {
-                AddToDownloadList(new VideoPost(
-                    "https://vtt.tumblr.com/" + videoUrl + "_480.mp4",
-                    post.id, post.unix_timestamp.ToString()));
-                AddToJsonQueue(new TumblrCrawlerData<Post>(videoUrl + "_480.json", post));
-            }
+
+            AddToDownloadList(
+                new VideoPost("https://vtt.tumblr.com/" + videoUrl + ".mp4", post.id, post.unix_timestamp.ToString()));
+            AddToJsonQueue(new TumblrCrawlerData<Post>(videoUrl + ".json", post));
         }
 
         private void AddAudioUrl(Post post)
