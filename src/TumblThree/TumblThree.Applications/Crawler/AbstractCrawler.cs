@@ -90,12 +90,10 @@ namespace TumblThree.Applications.Crawler
 
         protected async Task<T> ThrottleConnectionAsync<T>(string url, Func<string, Task<T>> method)
         {
-            if (shellService.Settings.LimitConnections)
-            {
-                //crawlerService.Timeconstraint.Acquire();
+            if (!shellService.Settings.LimitConnections)
                 return await method(url);
-            }
 
+            //crawlerService.Timeconstraint.Acquire();
             return await method(url);
         }
 
@@ -153,12 +151,9 @@ namespace TumblThree.Applications.Crawler
 
         protected virtual IEnumerable<int> GetPageNumbers()
         {
-            if (string.IsNullOrEmpty(blog.DownloadPages))
-            {
-                return Enumerable.Range(0, shellService.Settings.ConcurrentScans);
-            }
-
-            return RangeToSequence(blog.DownloadPages);
+            return string.IsNullOrEmpty(blog.DownloadPages)
+                ? Enumerable.Range(0, shellService.Settings.ConcurrentScans)
+                : RangeToSequence(blog.DownloadPages);
         }
 
         protected static bool TestRange(int numberToCheck, int bottom, int top)
@@ -203,12 +198,7 @@ namespace TumblThree.Applications.Crawler
                 return 0;
             }
 
-            if (!string.IsNullOrEmpty(blog.DownloadPages))
-            {
-                return 0;
-            }
-
-            return lastId;
+            return !string.IsNullOrEmpty(blog.DownloadPages) ? (ulong)0 : lastId;
         }
 
         protected void UpdateBlogStats()
@@ -238,6 +228,58 @@ namespace TumblThree.Applications.Crawler
         protected void CleanCollectedBlogStatistics()
         {
             statisticsBag = null;
+        }
+
+        protected void HandleTimeoutException(TimeoutException timeoutException, string duringAction)
+        {
+            Logger.Error("{0}, {1}", string.Format(CultureInfo.CurrentCulture, Resources.TimeoutReached, blog.Name),
+                timeoutException);
+            shellService.ShowError(timeoutException, Resources.TimeoutReached, duringAction, blog.Name);
+        }
+
+        protected bool HandleWebExceptionServiceUnavailable(WebException webException)
+        {
+            var resp = (HttpWebResponse)webException.Response;
+            if (resp.StatusCode != HttpStatusCode.ServiceUnavailable)
+                return false;
+
+            Logger.Error("{0}, {1}", string.Format(CultureInfo.CurrentCulture, Resources.NotLoggedIn, blog.Name), webException);
+            shellService.ShowError(webException, Resources.NotLoggedIn, blog.Name);
+            return true;
+        }
+
+        protected bool HandleWebExceptionNotFound(WebException webException)
+        {
+            var resp = (HttpWebResponse)webException.Response;
+            if (resp.StatusCode != HttpStatusCode.NotFound)
+                return false;
+
+            Logger.Error("{0}, {1}", string.Format(CultureInfo.CurrentCulture, Resources.BlogIsOffline, blog.Name), webException);
+            shellService.ShowError(webException, Resources.BlogIsOffline, blog.Name);
+            return true;
+        }
+
+        protected bool HandleWebExceptionLimitExceeded(WebException webException)
+        {
+            var resp = (HttpWebResponse)webException.Response;
+            if ((int)resp.StatusCode != 429)
+                return false;
+
+            Logger.Error("{0}, {1}", string.Format(CultureInfo.CurrentCulture, Resources.LimitExceeded, blog.Name), webException);
+            shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
+            return true;
+        }
+
+        protected bool HandleWebExceptionUnauthorized(WebException webException)
+        {
+            var resp = (HttpWebResponse)webException.Response;
+            if (resp.StatusCode != HttpStatusCode.Unauthorized)
+                return false;
+
+            Logger.Error("{0}, {1}", string.Format(CultureInfo.CurrentCulture, Resources.PasswordProtected, blog.Name),
+                webException);
+            shellService.ShowError(webException, Resources.PasswordProtected, blog.Name);
+            return true;
         }
     }
 }

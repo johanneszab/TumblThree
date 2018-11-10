@@ -26,6 +26,9 @@ namespace TumblThree.Applications.Crawler
         private readonly PauseToken pt;
         private string tumblrKey = string.Empty;
 
+        private SemaphoreSlim semaphoreSlim;
+        private List<Task> trackedTasks;
+
         public TumblrSearchCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
             IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory,
             ISharedCookieService cookieService, IDownloader downloader, IPostQueue<TumblrPost> postQueue, IBlog blog)
@@ -66,39 +69,17 @@ namespace TumblThree.Applications.Crawler
 
         private async Task GetUrlsAsync()
         {
-            var semaphoreSlim = new SemaphoreSlim(shellService.Settings.ConcurrentScans);
-            var trackedTasks = new List<Task>();
+            semaphoreSlim = new SemaphoreSlim(shellService.Settings.ConcurrentScans);
+            trackedTasks = new List<Task>();
             tumblrKey = await UpdateTumblrKey("https://www.tumblr.com/search/" + blog.Name);
+
+            GenerateTags();
 
             foreach (int pageNumber in GetPageNumbers())
             {
                 await semaphoreSlim.WaitAsync();
 
-                trackedTasks.Add(new Func<Task>(async () =>
-                {
-                    if (!string.IsNullOrWhiteSpace(blog.Tags))
-                    {
-                        tags = blog.Tags.Split(',').Select(x => x.Trim()).ToList();
-                    }
-
-                    try
-                    {
-                        string document = await GetSearchPageAsync(pageNumber);
-                        await AddUrlsToDownloadList(document, pageNumber);
-                    }
-                    catch (TimeoutException timeoutException)
-                    {
-                        Logger.Error("TumblrSearchCrawler:GetUrlsAsync:WebException {0}", timeoutException);
-                        shellService.ShowError(timeoutException, Resources.TimeoutReached, Resources.Crawling, blog.Name);
-                    }
-                    catch
-                    {
-                    }
-                    finally
-                    {
-                        semaphoreSlim.Release();
-                    }
-                })());
+                trackedTasks.Add(new Func<Task>(async () => { await CrawlPage(pageNumber); })());
             }
 
             await Task.WhenAll(trackedTasks);
@@ -108,14 +89,32 @@ namespace TumblThree.Applications.Crawler
             UpdateBlogStats();
         }
 
+        private async Task CrawlPage(int pageNumber)
+        {
+            try
+            {
+                string document = await GetSearchPageAsync(pageNumber);
+                await AddUrlsToDownloadList(document, pageNumber);
+            }
+            catch (TimeoutException timeoutException)
+            {
+                HandleTimeoutException(timeoutException, Resources.Crawling);
+            }
+            catch
+            {
+            }
+            finally
+            {
+                semaphoreSlim.Release();
+            }
+        }
+
         private async Task<string> GetSearchPageAsync(int pageNumber)
         {
-            if (shellService.Settings.LimitConnections)
-            {
-                //crawlerService.Timeconstraint.Acquire();
+            if (!shellService.Settings.LimitConnections)
                 return await RequestPostAsync(pageNumber);
-            }
 
+            //crawlerService.Timeconstraint.Acquire();
             return await RequestPostAsync(pageNumber);
         }
 
@@ -190,48 +189,46 @@ namespace TumblThree.Applications.Crawler
 
         private void AddPhotoUrlToDownloadList(string document)
         {
-            if (blog.DownloadPhoto)
+            if (!blog.DownloadPhoto)
+                return;
+            var regex = new Regex("src=\"(http[A-Za-z0-9_/:.]*media.tumblr.com[A-Za-z0-9_/:.]*(jpg|png|gif))\"");
+            foreach (Match match in regex.Matches(document))
             {
-                var regex = new Regex("src=\"(http[A-Za-z0-9_/:.]*media.tumblr.com[A-Za-z0-9_/:.]*(jpg|png|gif))\"");
-                foreach (Match match in regex.Matches(document))
+                string imageUrl = match.Groups[1].Value;
+                if (imageUrl.Contains("avatar") || imageUrl.Contains("previews"))
+                    continue;
+                if (blog.SkipGif && imageUrl.EndsWith(".gif"))
                 {
-                    string imageUrl = match.Groups[1].Value;
-                    if (imageUrl.Contains("avatar") || imageUrl.Contains("previews"))
-                        continue;
-                    if (blog.SkipGif && imageUrl.EndsWith(".gif"))
-                    {
-                        continue;
-                    }
-
-                    imageUrl = ResizeTumblrImageUrl(imageUrl);
-                    // TODO: postID
-                    AddToDownloadList(new PhotoPost(imageUrl, Guid.NewGuid().ToString("N")));
+                    continue;
                 }
+
+                imageUrl = ResizeTumblrImageUrl(imageUrl);
+                // TODO: postID
+                AddToDownloadList(new PhotoPost(imageUrl, Guid.NewGuid().ToString("N")));
             }
         }
 
         private void AddVideoUrlToDownloadList(string document)
         {
-            if (blog.DownloadVideo)
+            if (!blog.DownloadVideo)
+                return;
+            var regex = new Regex("src=\"(http[A-Za-z0-9_/:.]*video_file[\\S]*/(tumblr_[\\w]*))[0-9/]*\"");
+            foreach (Match match in regex.Matches(document))
             {
-                var regex = new Regex("src=\"(http[A-Za-z0-9_/:.]*video_file[\\S]*/(tumblr_[\\w]*))[0-9/]*\"");
-                foreach (Match match in regex.Matches(document))
+                string videoUrl = match.Groups[2].Value;
+                // TODO: postId
+                if (shellService.Settings.VideoSize == 1080)
                 {
-                    string videoUrl = match.Groups[2].Value;
-                    // TODO: postId
-                    if (shellService.Settings.VideoSize == 1080)
-                    {
-                        // TODO: postID
-                        AddToDownloadList(new VideoPost("https://vtt.tumblr.com/" + videoUrl + ".mp4",
-                            Guid.NewGuid().ToString("N")));
-                    }
-                    else if (shellService.Settings.VideoSize == 480)
-                    {
-                        // TODO: postID
-                        AddToDownloadList(new VideoPost(
-                            "https://vtt.tumblr.com/" + videoUrl + "_480.mp4",
-                            Guid.NewGuid().ToString("N")));
-                    }
+                    // TODO: postID
+                    AddToDownloadList(new VideoPost("https://vtt.tumblr.com/" + videoUrl + ".mp4",
+                        Guid.NewGuid().ToString("N")));
+                }
+                else if (shellService.Settings.VideoSize == 480)
+                {
+                    // TODO: postID
+                    AddToDownloadList(new VideoPost(
+                        "https://vtt.tumblr.com/" + videoUrl + "_480.mp4",
+                        Guid.NewGuid().ToString("N")));
                 }
             }
         }

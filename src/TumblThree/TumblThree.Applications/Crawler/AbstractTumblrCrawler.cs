@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -9,7 +10,6 @@ using TumblThree.Applications.DataModels;
 using TumblThree.Applications.DataModels.TumblrPosts;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
-using TumblThree.Domain;
 using TumblThree.Domain.Models.Blogs;
 
 namespace TumblThree.Applications.Crawler
@@ -43,8 +43,7 @@ namespace TumblThree.Applications.Crawler
             }
             catch (TimeoutException timeoutException)
             {
-                Logger.Error("TumblrHiddenCrawler:IsBlogOnlineAsync:WebException {0}", timeoutException);
-                shellService.ShowError(timeoutException, Resources.TimeoutReached, Resources.OnlineChecking, blog.Name);
+                HandleTimeoutException(timeoutException, Resources.OnlineChecking);
                 return string.Empty;
             }
         }
@@ -66,9 +65,7 @@ namespace TumblThree.Applications.Crawler
 
         protected string ImageSize()
         {
-            if (shellService.Settings.ImageSize == "raw")
-                return "1280";
-            return shellService.Settings.ImageSize;
+            return shellService.Settings.ImageSize == "raw" ? "1280" : shellService.Settings.ImageSize;
         }
 
         protected string ResizeTumblrImageUrl(string imageUrl)
@@ -84,6 +81,14 @@ namespace TumblThree.Applications.Crawler
                    .Replace("_100", "_" + ImageSize())
                    .Replace("_75sq", "_" + ImageSize())
                    .ToString();
+        }
+
+        protected void GenerateTags()
+        {
+            if (!string.IsNullOrWhiteSpace(blog.Tags))
+            {
+                tags = blog.Tags.Split(',').Select(x => x.Trim()).ToList();
+            }
         }
     }
 }
