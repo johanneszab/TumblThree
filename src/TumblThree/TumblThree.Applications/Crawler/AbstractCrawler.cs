@@ -151,7 +151,9 @@ namespace TumblThree.Applications.Crawler
 
         protected virtual IEnumerable<int> GetPageNumbers()
         {
-            return string.IsNullOrEmpty(blog.DownloadPages) ? Enumerable.Range(0, shellService.Settings.ConcurrentScans) : RangeToSequence(blog.DownloadPages);
+            return string.IsNullOrEmpty(blog.DownloadPages)
+                ? Enumerable.Range(0, shellService.Settings.ConcurrentScans)
+                : RangeToSequence(blog.DownloadPages);
         }
 
         protected static bool TestRange(int numberToCheck, int bottom, int top)
@@ -230,11 +232,12 @@ namespace TumblThree.Applications.Crawler
 
         protected void HandleTimeoutException(TimeoutException timeoutException, string duringAction)
         {
-            Logger.Error("{0}, {1}", string.Format(CultureInfo.CurrentCulture, Resources.TimeoutReached, blog.Name), timeoutException);
+            Logger.Error("{0}, {1}", string.Format(CultureInfo.CurrentCulture, Resources.TimeoutReached, blog.Name),
+                timeoutException);
             shellService.ShowError(timeoutException, Resources.TimeoutReached, duringAction, blog.Name);
         }
 
-        protected bool WebExecptionServiceUnavailable(WebException webException)
+        protected bool WebExceptionServiceUnavailable(WebException webException)
         {
             var resp = (HttpWebResponse)webException.Response;
             if (resp.StatusCode != HttpStatusCode.ServiceUnavailable)
@@ -245,7 +248,7 @@ namespace TumblThree.Applications.Crawler
             return true;
         }
 
-        protected bool WebExecptionNotFound(WebException webException)
+        protected bool WebExceptionNotFound(WebException webException)
         {
             var resp = (HttpWebResponse)webException.Response;
             if (resp.StatusCode != HttpStatusCode.NotFound)
@@ -256,7 +259,7 @@ namespace TumblThree.Applications.Crawler
             return true;
         }
 
-        protected bool WebExecptionLimitExceeded(WebException webException)
+        protected bool WebExceptionLimitExceeded(WebException webException)
         {
             var resp = (HttpWebResponse)webException.Response;
             if ((int)resp.StatusCode != 429)
@@ -267,13 +270,14 @@ namespace TumblThree.Applications.Crawler
             return true;
         }
 
-        protected bool WebExecptionUnauthorized(WebException webException)
+        protected bool WebExceptionUnauthorized(WebException webException)
         {
             var resp = (HttpWebResponse)webException.Response;
             if (resp.StatusCode != HttpStatusCode.Unauthorized)
                 return false;
 
-            Logger.Error("{0}, {1}", string.Format(CultureInfo.CurrentCulture, Resources.PasswordProtected, blog.Name), webException);
+            Logger.Error("{0}, {1}", string.Format(CultureInfo.CurrentCulture, Resources.PasswordProtected, blog.Name),
+                webException);
             shellService.ShowError(webException, Resources.PasswordProtected, blog.Name);
             return true;
         }

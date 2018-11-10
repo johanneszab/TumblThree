@@ -25,6 +25,12 @@ namespace TumblThree.Applications.Crawler
         private readonly IDownloader downloader;
         private readonly PauseToken pt;
 
+        private bool completeGrab = true;
+        private bool incompleteCrawl = false;
+
+        private SemaphoreSlim semaphoreSlim;
+        private List<Task> trackedTasks;
+
         public TumblrLikedByCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
             IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory,
             ISharedCookieService cookieService, IDownloader downloader, IPostQueue<TumblrPost> postQueue, IBlog blog)
@@ -65,8 +71,8 @@ namespace TumblThree.Applications.Crawler
 
         private async Task GetUrlsAsync()
         {
-            var semaphoreSlim = new SemaphoreSlim(shellService.Settings.ConcurrentScans);
-            var trackedTasks = new List<Task>();
+            semaphoreSlim = new SemaphoreSlim(shellService.Settings.ConcurrentScans);
+            trackedTasks = new List<Task>();
 
             if (!await CheckIfLoggedInAsync())
             {
@@ -83,24 +89,7 @@ namespace TumblThree.Applications.Crawler
             {
                 await semaphoreSlim.WaitAsync();
 
-                trackedTasks.Add(new Func<Task>(async () =>
-                {
-                    try
-                    {
-                        await AddUrlsToDownloadList(pagination, crawlerNumber);
-                    }
-                    catch (TimeoutException timeoutException)
-                    {
-                        HandleTimeoutException(timeoutException, Resources.Crawling);
-                    }
-                    catch
-                    {
-                    }
-                    finally
-                    {
-                        semaphoreSlim.Release();
-                    }
-                })());
+                trackedTasks.Add(new Func<Task>(async () => { await CrawlPage(pagination, crawlerNumber); })());
             }
 
             await Task.WhenAll(trackedTasks);
@@ -108,6 +97,25 @@ namespace TumblThree.Applications.Crawler
             postQueue.CompleteAdding();
 
             UpdateBlogStats();
+        }
+
+        private async Task CrawlPage(long pagination, int crawlerNumber)
+        {
+            try
+            {
+                await AddUrlsToDownloadList(pagination, crawlerNumber);
+            }
+            catch (TimeoutException timeoutException)
+            {
+                HandleTimeoutException(timeoutException, Resources.Crawling);
+            }
+            catch
+            {
+            }
+            finally
+            {
+                semaphoreSlim.Release();
+            }
         }
 
         public override async Task IsBlogOnlineAsync()

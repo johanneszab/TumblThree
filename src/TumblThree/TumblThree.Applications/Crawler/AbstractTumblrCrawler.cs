@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -80,6 +81,14 @@ namespace TumblThree.Applications.Crawler
                    .Replace("_100", "_" + ImageSize())
                    .Replace("_75sq", "_" + ImageSize())
                    .ToString();
+        }
+
+        protected void GenerateTags()
+        {
+            if (!string.IsNullOrWhiteSpace(blog.Tags))
+            {
+                tags = blog.Tags.Split(',').Select(x => x.Trim()).ToList();
+            }
         }
     }
 }

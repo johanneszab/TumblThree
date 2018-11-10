@@ -41,6 +41,12 @@ namespace TumblThree.Applications.Crawler
         private readonly IPostQueue<TumblrCrawlerData<Post>> jsonQueue;
         private readonly ICrawlerDataDownloader crawlerDataDownloader;
 
+        private bool completeGrab = true;
+        private bool incompleteCrawl = false;
+
+        private SemaphoreSlim semaphoreSlim;
+        private List<Task> trackedTasks;
+
         public TumblrBlogCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
             IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory,
             ISharedCookieService cookieService, IDownloader downloader, ICrawlerDataDownloader crawlerDataDownloader,
@@ -74,16 +80,16 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException) when ((webException.Response != null))
             {
-                if (WebExecptionUnauthorized(webException))
+                if (WebExceptionUnauthorized(webException))
                     blog.Online = true;
-                else if (WebExecptionLimitExceeded(webException))
+                else if (WebExceptionLimitExceeded(webException))
                     blog.Online = true;
                 else
                 {
                     Logger.Error("TumblrBlogCrawler:IsBlogOnlineAsync:WebException {0}", webException);
                     shellService.ShowError(webException, Resources.BlogIsOffline, blog.Name);
                     blog.Online = false;
-                } 
+                }
             }
             catch (TimeoutException timeoutException)
             {
@@ -100,7 +106,7 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException) when ((webException.Response != null))
             {
-                WebExecptionLimitExceeded(webException);
+                WebExceptionLimitExceeded(webException);
             }
         }
 
@@ -179,8 +185,9 @@ namespace TumblThree.Applications.Crawler
             {
                 url += "/";
             }
+
             url += "api/read/json?debug=1&";
-            
+
             var parameters = new Dictionary<string, string>
             {
                 { "num", count.ToString() }
@@ -208,12 +215,13 @@ namespace TumblThree.Applications.Crawler
         {
             string page = string.Empty;
             var attemptCount = 0;
-            
+
             do
             {
                 page = await GetApiPageAsync(pageId);
                 attemptCount++;
-            } while (string.IsNullOrEmpty(page) && (attemptCount < shellService.Settings.MaxNumberOfRetries));
+            }
+            while (string.IsNullOrEmpty(page) && (attemptCount < shellService.Settings.MaxNumberOfRetries));
 
             return page;
         }
@@ -226,8 +234,8 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException) when ((webException.Response != null))
             {
-                WebExecptionLimitExceeded(webException);
-                blog.Posts = 0; 
+                WebExceptionLimitExceeded(webException);
+                blog.Posts = 0;
             }
             catch (TimeoutException timeoutException)
             {
@@ -252,7 +260,7 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException) when ((webException.Response != null))
             {
-                WebExecptionLimitExceeded(webException);
+                WebExceptionLimitExceeded(webException);
                 return 0;
             }
             catch (TimeoutException timeoutException)
@@ -287,13 +295,12 @@ namespace TumblThree.Applications.Crawler
 
         private async Task<Tuple<ulong, bool>> GetUrlsAsync()
         {
-            var semaphoreSlim = new SemaphoreSlim(shellService.Settings.ConcurrentScans);
-            var trackedTasks = new List<Task>();
-            var incompleteCrawl = false;
-            var completeGrab = true;
+            trackedTasks = new List<Task>();
+            semaphoreSlim = new SemaphoreSlim(shellService.Settings.ConcurrentScans);
+
+            GenerateTags();
 
             await UpdateTotalPostCountAsync();
-            int totalPosts = blog.Posts;
 
             ulong highestId = await GetHighestPostIdAsync();
 
@@ -316,43 +323,7 @@ namespace TumblThree.Applications.Crawler
                     pt.WaitWhilePausedWithResponseAsyc().Wait();
                 }
 
-                trackedTasks.Add(new Func<Task>(async () =>
-                {
-                    try
-                    {
-                        string document = await GetApiPageWithRetryAsync(pageNumber);
-                        var response = ConvertJsonToClass<TumblrApiJson>(document);
-
-                        completeGrab = CheckPostAge(response);
-
-                        if (!string.IsNullOrWhiteSpace(blog.Tags))
-                        {
-                            tags = blog.Tags.Split(',').Select(x => x.Trim()).ToList();
-                        }
-
-                        await AddUrlsToDownloadList(response);
-                    }
-                    catch (WebException webException) when ((webException.Response != null))
-                    {
-                        if (WebExecptionLimitExceeded(webException))
-                            incompleteCrawl = true;
-                    }
-                    catch (TimeoutException timeoutException)
-                    {
-                        incompleteCrawl = true;
-                        HandleTimeoutException(timeoutException, Resources.Crawling);
-                    }
-                    catch
-                    {
-                    }
-                    finally
-                    {
-                        semaphoreSlim.Release();
-                    }
-
-                    numberOfPagesCrawled += blog.PageSize;
-                    UpdateProgressQueueInformation(Resources.ProgressGetUrlLong, numberOfPagesCrawled, totalPosts);
-                })());
+                trackedTasks.Add(new Func<Task>(async () => { await CrawlPage(pageNumber); })());
             }
 
             await Task.WhenAll(trackedTasks);
@@ -363,6 +334,39 @@ namespace TumblThree.Applications.Crawler
             UpdateBlogStats();
 
             return new Tuple<ulong, bool>(highestId, incompleteCrawl);
+        }
+
+        private async Task CrawlPage(int pageNumber)
+        {
+            try
+            {
+                string document = await GetApiPageWithRetryAsync(pageNumber);
+                var response = ConvertJsonToClass<TumblrApiJson>(document);
+
+                completeGrab = CheckPostAge(response);
+
+                await AddUrlsToDownloadList(response);
+            }
+            catch (WebException webException) when ((webException.Response != null))
+            {
+                if (WebExceptionLimitExceeded(webException))
+                    incompleteCrawl = true;
+            }
+            catch (TimeoutException timeoutException)
+            {
+                incompleteCrawl = true;
+                HandleTimeoutException(timeoutException, Resources.Crawling);
+            }
+            catch
+            {
+            }
+            finally
+            {
+                semaphoreSlim.Release();
+            }
+
+            numberOfPagesCrawled += blog.PageSize;
+            UpdateProgressQueueInformation(Resources.ProgressGetUrlLong, numberOfPagesCrawled, blog.Posts);
         }
 
         private bool PostWithinTimeSpan(Post post)
@@ -460,8 +464,8 @@ namespace TumblThree.Applications.Crawler
                 AddPhotoUrl(post);
                 AddPhotoSetUrl(post);
             }
-        
-            AddInlinePhotoUrl(post);                    
+
+            AddInlinePhotoUrl(post);
         }
 
         private void AddVideoUrlToDownloadList(Post post)
@@ -487,7 +491,6 @@ namespace TumblThree.Applications.Crawler
             AddGenericInlineVideoUrl(videoUrls, post);
 
             AddInlineVideoUrlsToDownloader(videoUrls, post);
-            
         }
 
         private void AddAudioUrlToDownloadList(Post post)
@@ -496,7 +499,7 @@ namespace TumblThree.Applications.Crawler
                 return;
             if (post.type != "audio")
                 return;
-            AddAudioUrl(post);            
+            AddAudioUrl(post);
         }
 
         private void AddTextUrlToDownloadList(Post post)
@@ -509,7 +512,6 @@ namespace TumblThree.Applications.Crawler
             string textBody = tumblrJsonParser.ParseText(post);
             AddToDownloadList(new TextPost(textBody, post.id));
             AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(post.id, ".json"), post));
-        
         }
 
         private void AddQuoteUrlToDownloadList(Post post)
@@ -522,7 +524,6 @@ namespace TumblThree.Applications.Crawler
             string textBody = tumblrJsonParser.ParseQuote(post);
             AddToDownloadList(new QuotePost(textBody, post.id));
             AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(post.id, ".json"), post));
-        
         }
 
         private void AddLinkUrlToDownloadList(Post post)
@@ -535,7 +536,6 @@ namespace TumblThree.Applications.Crawler
             string textBody = tumblrJsonParser.ParseLink(post);
             AddToDownloadList(new LinkPost(textBody, post.id));
             AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(post.id, ".json"), post));
-        
         }
 
         private void AddConversationUrlToDownloadList(Post post)
@@ -548,7 +548,6 @@ namespace TumblThree.Applications.Crawler
             string textBody = tumblrJsonParser.ParseConversation(post);
             AddToDownloadList(new ConversationPost(textBody, post.id));
             AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(post.id, ".json"), post));
-        
         }
 
         private void AddAnswerUrlToDownloadList(Post post)
@@ -572,7 +571,7 @@ namespace TumblThree.Applications.Crawler
 
             string textBody = tumblrJsonParser.ParsePhotoMeta(post);
             AddToDownloadList(new PhotoMetaPost(textBody, post.id));
-            AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(post.id, ".json"), post));     
+            AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(post.id, ".json"), post));
         }
 
         private void AddVideoMetaUrlToDownloadList(Post post)
@@ -581,10 +580,10 @@ namespace TumblThree.Applications.Crawler
                 return;
             if (post.type != "video")
                 return;
-            
+
             string textBody = tumblrJsonParser.ParseVideoMeta(post);
             AddToDownloadList(new VideoMetaPost(textBody, post.id));
-            AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(post.id, ".json"), post));     
+            AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(post.id, ".json"), post));
         }
 
         private void AddAudioMetaUrlToDownloadList(Post post)
@@ -649,6 +648,7 @@ namespace TumblThree.Applications.Crawler
                 {
                     videoUrl += "_480";
                 }
+
                 videoUrls.Add("https://vtt.tumblr.com/" + videoUrl + ".mp4");
             }
         }
@@ -663,6 +663,7 @@ namespace TumblThree.Applications.Crawler
                 {
                     videoUrl += "_480";
                 }
+
                 videoUrls.Add(videoUrl + ".mp4");
             }
         }
@@ -677,6 +678,7 @@ namespace TumblThree.Applications.Crawler
                 {
                     videoUrl += "_480";
                 }
+
                 videoUrls.Add(videoUrl + ".mp4");
             }
         }
@@ -784,11 +786,11 @@ namespace TumblThree.Applications.Crawler
 
             if (blog.DownloadLoliSafe) AddLoliSafeUrl(post);
 
-            if (blog.DownloadCatBox) AddCatBoxUrl(post);           
+            if (blog.DownloadCatBox) AddCatBoxUrl(post);
         }
 
         private async Task AddImgurUrl(Post post)
-        {                               
+        {
             // single linked images
             Regex regex = imgurParser.GetImgurImageRegex();
             foreach (Match match in regex.Matches(InlineSearch(post)))
@@ -833,7 +835,7 @@ namespace TumblThree.Applications.Crawler
                     AddToJsonQueue(
                         new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
                 }
-            }         
+            }
         }
 
         private async Task AddGfycatUrl(Post post)
@@ -853,7 +855,7 @@ namespace TumblThree.Applications.Crawler
                     post.unix_timestamp.ToString()));
                 AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(videoUrl.Split('/').Last(), ".json"),
                     post));
-            }           
+            }
         }
 
         private void AddWebmshareUrl(Post post)
@@ -873,7 +875,7 @@ namespace TumblThree.Applications.Crawler
                     post.unix_timestamp.ToString()));
                 AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"),
                     post));
-            }          
+            }
         }
 
         private void AddMixtapeUrl(Post post)
@@ -899,7 +901,7 @@ namespace TumblThree.Applications.Crawler
                     AddToJsonQueue(
                         new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
                 }
-            }                         
+            }
         }
 
         private void AddUguuUrl(Post post)
@@ -925,7 +927,7 @@ namespace TumblThree.Applications.Crawler
                     AddToJsonQueue(
                         new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
                 }
-            }                     
+            }
         }
 
         private void AddSafeMoeUrl(Post post)
@@ -951,7 +953,7 @@ namespace TumblThree.Applications.Crawler
                     AddToJsonQueue(
                         new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
                 }
-            }                  
+            }
         }
 
         private void AddLoliSafeUrl(Post post)
@@ -977,7 +979,7 @@ namespace TumblThree.Applications.Crawler
                     AddToJsonQueue(
                         new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
                 }
-            }                        
+            }
         }
 
         private void AddCatBoxUrl(Post post)
@@ -1003,7 +1005,7 @@ namespace TumblThree.Applications.Crawler
                     AddToJsonQueue(
                         new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
                 }
-            }                                         
+            }
         }
     }
 }

@@ -24,6 +24,12 @@ namespace TumblThree.Applications.Crawler
         private readonly IDownloader downloader;
         private readonly PauseToken pt;
 
+        private bool completeGrab = true;
+        private bool incompleteCrawl = false;
+
+        private SemaphoreSlim semaphoreSlim;
+        private List<Task> trackedTasks;
+
         public TumblrTagSearchCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
             IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory,
             ISharedCookieService cookieService, IDownloader downloader, IPostQueue<TumblrPost> postQueue, IBlog blog)
@@ -64,8 +70,8 @@ namespace TumblThree.Applications.Crawler
 
         private async Task GetUrlsAsync()
         {
-            var semaphoreSlim = new SemaphoreSlim(shellService.Settings.ConcurrentScans);
-            var trackedTasks = new List<Task>();
+            semaphoreSlim = new SemaphoreSlim(shellService.Settings.ConcurrentScans);
+            trackedTasks = new List<Task>();
 
             if (!await CheckIfLoggedInAsync())
             {
@@ -75,38 +81,15 @@ namespace TumblThree.Applications.Crawler
                 return;
             }
 
+            GenerateTags();
+
             long crawlerTimeOffset = GenerateCrawlerTimeOffsets();
 
             foreach (int pageNumber in GetPageNumbers())
             {
                 await semaphoreSlim.WaitAsync();
 
-                trackedTasks.Add(new Func<Task>(async () =>
-                {
-                    if (!string.IsNullOrWhiteSpace(blog.Tags))
-                    {
-                        tags = blog.Tags.Split(',').Select(x => x.Trim()).ToList();
-                    }
-
-                    try
-                    {
-                        long pagination = DateTimeOffset.Now.ToUnixTimeSeconds() - (pageNumber * crawlerTimeOffset);
-                        long nextCrawlersPagination =
-                            DateTimeOffset.Now.ToUnixTimeSeconds() - ((pageNumber + 1) * crawlerTimeOffset);
-                        await AddUrlsToDownloadList(pagination, nextCrawlersPagination);
-                    }
-                    catch (TimeoutException timeoutException)
-                    {
-                        HandleTimeoutException(timeoutException, Resources.Crawling);
-                    }
-                    catch
-                    {
-                    }
-                    finally
-                    {
-                        semaphoreSlim.Release();
-                    }
-                })());
+                trackedTasks.Add(new Func<Task>(async () => { await CrawlPage(pageNumber, crawlerTimeOffset); })());
             }
 
             await Task.WhenAll(trackedTasks);
@@ -114,6 +97,28 @@ namespace TumblThree.Applications.Crawler
             postQueue.CompleteAdding();
 
             UpdateBlogStats();
+        }
+
+        private async Task CrawlPage(int pageNumber, long crawlerTimeOffset)
+        {
+            try
+            {
+                long pagination = DateTimeOffset.Now.ToUnixTimeSeconds() - (pageNumber * crawlerTimeOffset);
+                long nextCrawlersPagination =
+                    DateTimeOffset.Now.ToUnixTimeSeconds() - ((pageNumber + 1) * crawlerTimeOffset);
+                await AddUrlsToDownloadList(pagination, nextCrawlersPagination);
+            }
+            catch (TimeoutException timeoutException)
+            {
+                HandleTimeoutException(timeoutException, Resources.Crawling);
+            }
+            catch
+            {
+            }
+            finally
+            {
+                semaphoreSlim.Release();
+            }
         }
 
         private long GenerateCrawlerTimeOffsets()

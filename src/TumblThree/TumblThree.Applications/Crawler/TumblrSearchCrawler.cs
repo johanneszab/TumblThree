@@ -26,6 +26,12 @@ namespace TumblThree.Applications.Crawler
         private readonly PauseToken pt;
         private string tumblrKey = string.Empty;
 
+        private bool completeGrab = true;
+        private bool incompleteCrawl = false;
+
+        private SemaphoreSlim semaphoreSlim;
+        private List<Task> trackedTasks;
+
         public TumblrSearchCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
             IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory,
             ISharedCookieService cookieService, IDownloader downloader, IPostQueue<TumblrPost> postQueue, IBlog blog)
@@ -66,38 +72,17 @@ namespace TumblThree.Applications.Crawler
 
         private async Task GetUrlsAsync()
         {
-            var semaphoreSlim = new SemaphoreSlim(shellService.Settings.ConcurrentScans);
-            var trackedTasks = new List<Task>();
+            semaphoreSlim = new SemaphoreSlim(shellService.Settings.ConcurrentScans);
+            trackedTasks = new List<Task>();
             tumblrKey = await UpdateTumblrKey("https://www.tumblr.com/search/" + blog.Name);
+
+            GenerateTags();
 
             foreach (int pageNumber in GetPageNumbers())
             {
                 await semaphoreSlim.WaitAsync();
 
-                trackedTasks.Add(new Func<Task>(async () =>
-                {
-                    if (!string.IsNullOrWhiteSpace(blog.Tags))
-                    {
-                        tags = blog.Tags.Split(',').Select(x => x.Trim()).ToList();
-                    }
-
-                    try
-                    {
-                        string document = await GetSearchPageAsync(pageNumber);
-                        await AddUrlsToDownloadList(document, pageNumber);
-                    }
-                    catch (TimeoutException timeoutException)
-                    {
-                        HandleTimeoutException(timeoutException, Resources.Crawling);
-                    }
-                    catch
-                    {
-                    }
-                    finally
-                    {
-                        semaphoreSlim.Release();
-                    }
-                })());
+                trackedTasks.Add(new Func<Task>(async () => { await CrawlPage(pageNumber); })());
             }
 
             await Task.WhenAll(trackedTasks);
@@ -107,6 +92,26 @@ namespace TumblThree.Applications.Crawler
             UpdateBlogStats();
         }
 
+        private async Task CrawlPage(int pageNumber)
+        {
+            try
+            {
+                string document = await GetSearchPageAsync(pageNumber);
+                await AddUrlsToDownloadList(document, pageNumber);
+            }
+            catch (TimeoutException timeoutException)
+            {
+                HandleTimeoutException(timeoutException, Resources.Crawling);
+            }
+            catch
+            {
+            }
+            finally
+            {
+                semaphoreSlim.Release();
+            }
+        }
+
         private async Task<string> GetSearchPageAsync(int pageNumber)
         {
             if (!shellService.Settings.LimitConnections)
@@ -114,7 +119,6 @@ namespace TumblThree.Applications.Crawler
 
             crawlerService.Timeconstraint.Acquire();
             return await RequestPostAsync(pageNumber);
-
         }
 
         protected virtual async Task<string> RequestPostAsync(int pageNumber)
