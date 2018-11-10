@@ -88,8 +88,7 @@ namespace TumblThree.Applications.Crawler
                     }
                     catch (TimeoutException timeoutException)
                     {
-                        Logger.Error("TumblrSearchCrawler:GetUrlsAsync:WebException {0}", timeoutException);
-                        shellService.ShowError(timeoutException, Resources.TimeoutReached, Resources.Crawling, blog.Name);
+                        HandleTimeoutException(timeoutException, Resources.Crawling);
                     }
                     catch
                     {

@@ -97,8 +97,7 @@ namespace TumblThree.Applications.Crawler
                     }
                     catch (TimeoutException timeoutException)
                     {
-                        Logger.Error("TumblrTagSearchCrawler:GetUrlsAsync:WebException {0}", timeoutException);
-                        shellService.ShowError(timeoutException, Resources.TimeoutReached, Resources.Crawling, blog.Name);
+                        HandleTimeoutException(timeoutException, Resources.Crawling);
                     }
                     catch
                     {
@@ -150,8 +149,7 @@ namespace TumblThree.Applications.Crawler
             }
             catch (TimeoutException timeoutException)
             {
-                Logger.Error("TumblrTagSearchCrawler:CheckIfLoggedIn:WebException {0}", timeoutException);
-                shellService.ShowError(timeoutException, Resources.TimeoutReached, Resources.Crawling, blog.Name);
+                HandleTimeoutException(timeoutException, Resources.Crawling);
                 return false;
             }
         }

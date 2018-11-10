@@ -9,7 +9,6 @@ using TumblThree.Applications.DataModels;
 using TumblThree.Applications.DataModels.TumblrPosts;
 using TumblThree.Applications.Properties;
 using TumblThree.Applications.Services;
-using TumblThree.Domain;
 using TumblThree.Domain.Models.Blogs;
 
 namespace TumblThree.Applications.Crawler
@@ -43,8 +42,7 @@ namespace TumblThree.Applications.Crawler
             }
             catch (TimeoutException timeoutException)
             {
-                Logger.Error("TumblrHiddenCrawler:IsBlogOnlineAsync:WebException {0}", timeoutException);
-                shellService.ShowError(timeoutException, Resources.TimeoutReached, Resources.OnlineChecking, blog.Name);
+                HandleTimeoutException(timeoutException, Resources.OnlineChecking);
                 return string.Empty;
             }
         }

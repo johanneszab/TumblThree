@@ -91,8 +91,7 @@ namespace TumblThree.Applications.Crawler
                     }
                     catch (TimeoutException timeoutException)
                     {
-                        Logger.Error("TumblrLikedByCrawler:GetUrlsAsync:WebException {0}", timeoutException);
-                        shellService.ShowError(timeoutException, Resources.TimeoutReached, Resources.Crawling, blog.Name);
+                        HandleTimeoutException(timeoutException, Resources.Crawling);
                     }
                     catch
                     {
@@ -126,8 +125,7 @@ namespace TumblThree.Applications.Crawler
             }
             catch (TimeoutException timeoutException)
             {
-                Logger.Error("TumblrLikedByCrawler:IsBlogOnlineAsync:WebException {0}", timeoutException);
-                shellService.ShowError(timeoutException, Resources.TimeoutReached, Resources.OnlineChecking, blog.Name);
+                HandleTimeoutException(timeoutException, Resources.OnlineChecking);
                 blog.Online = false;
             }
         }
@@ -160,8 +158,7 @@ namespace TumblThree.Applications.Crawler
             }
             catch (TimeoutException timeoutException)
             {
-                Logger.Error("TumblrLikedByCrawler:CheckIfLoggedIn:WebException {0}", timeoutException);
-                shellService.ShowError(timeoutException, Resources.TimeoutReached, Resources.Crawling, blog.Name);
+                HandleTimeoutException(timeoutException, Resources.Crawling);
                 return false;
             }
         }
@@ -204,7 +201,7 @@ namespace TumblThree.Applications.Crawler
             }
         }
 
-        private long ExtractNextPageLink(string document)
+        private static long ExtractNextPageLink(string document)
         {
             // Example pagination:
             //
@@ -257,19 +254,14 @@ namespace TumblThree.Applications.Crawler
             {
                 string videoUrl = match.Groups[2].Value;
                 // TODO: add valid postID
-                if (shellService.Settings.VideoSize == 1080)
+                if (shellService.Settings.VideoSize == 480)
                 {
-                    // TODO: add valid postID
-                    AddToDownloadList(new VideoPost("https://vtt.tumblr.com/" + videoUrl + ".mp4",
-                        Guid.NewGuid().ToString("N")));
+                    videoUrl += "_480";
                 }
-                else if (shellService.Settings.VideoSize == 480)
-                {
-                    // TODO: add valid postID
-                    AddToDownloadList(new VideoPost(
-                        "https://vtt.tumblr.com/" + videoUrl + "_480.mp4",
-                        Guid.NewGuid().ToString("N")));
-                }
+
+                // TODO: add valid postID
+                AddToDownloadList(new VideoPost("https://vtt.tumblr.com/" + videoUrl + ".mp4",
+                    Guid.NewGuid().ToString("N")));
             }
         }
     }

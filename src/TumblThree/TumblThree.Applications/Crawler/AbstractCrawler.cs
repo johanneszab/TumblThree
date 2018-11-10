@@ -227,5 +227,55 @@ namespace TumblThree.Applications.Crawler
         {
             statisticsBag = null;
         }
+
+        protected void HandleTimeoutException(TimeoutException timeoutException, string duringAction)
+        {
+            Logger.Error("{0}, {1}", string.Format(CultureInfo.CurrentCulture, Resources.TimeoutReached, blog.Name), timeoutException);
+            shellService.ShowError(timeoutException, Resources.TimeoutReached, duringAction, blog.Name);
+        }
+
+        protected bool WebExecptionServiceUnavailable(WebException webException)
+        {
+            var resp = (HttpWebResponse)webException.Response;
+            if (resp.StatusCode != HttpStatusCode.ServiceUnavailable)
+                return false;
+
+            Logger.Error("{0}, {1}", string.Format(CultureInfo.CurrentCulture, Resources.NotLoggedIn, blog.Name), webException);
+            shellService.ShowError(webException, Resources.NotLoggedIn, blog.Name);
+            return true;
+        }
+
+        protected bool WebExecptionNotFound(WebException webException)
+        {
+            var resp = (HttpWebResponse)webException.Response;
+            if (resp.StatusCode != HttpStatusCode.NotFound)
+                return false;
+
+            Logger.Error("{0}, {1}", string.Format(CultureInfo.CurrentCulture, Resources.BlogIsOffline, blog.Name), webException);
+            shellService.ShowError(webException, Resources.BlogIsOffline, blog.Name);
+            return true;
+        }
+
+        protected bool WebExecptionLimitExceeded(WebException webException)
+        {
+            var resp = (HttpWebResponse)webException.Response;
+            if ((int)resp.StatusCode != 429)
+                return false;
+
+            Logger.Error("{0}, {1}", string.Format(CultureInfo.CurrentCulture, Resources.LimitExceeded, blog.Name), webException);
+            shellService.ShowError(webException, Resources.LimitExceeded, blog.Name);
+            return true;
+        }
+
+        protected bool WebExecptionUnauthorized(WebException webException)
+        {
+            var resp = (HttpWebResponse)webException.Response;
+            if (resp.StatusCode != HttpStatusCode.Unauthorized)
+                return false;
+
+            Logger.Error("{0}, {1}", string.Format(CultureInfo.CurrentCulture, Resources.PasswordProtected, blog.Name), webException);
+            shellService.ShowError(webException, Resources.PasswordProtected, blog.Name);
+            return true;
+        }
     }
 }
