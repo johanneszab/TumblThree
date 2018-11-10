@@ -82,13 +82,13 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException) when ((webException.Response != null))
             {
-                if (WebExceptionServiceUnavailable(webException))
+                if (HandleWebExceptionServiceUnavailable(webException))
                     blog.Online = true;
 
-                if (WebExceptionNotFound(webException))
+                if (HandleWebExceptionNotFound(webException))
                     blog.Online = false;
 
-                if (WebExceptionLimitExceeded(webException))
+                if (HandleWebExceptionLimitExceeded(webException))
                     blog.Online = true;
             }
             catch (TimeoutException timeoutException)
@@ -119,7 +119,7 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException) when ((webException.Response != null))
             {
-                WebExceptionServiceUnavailable(webException);
+                HandleWebExceptionServiceUnavailable(webException);
             }
         }
 
@@ -217,7 +217,7 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException) when ((webException.Response != null))
             {
-                if (WebExceptionLimitExceeded(webException))
+                if (HandleWebExceptionLimitExceeded(webException))
                     incompleteCrawl = true;
             }
             catch (TimeoutException timeoutException)
@@ -242,7 +242,7 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException)
             {
-                WebExceptionLimitExceeded(webException);
+                HandleWebExceptionLimitExceeded(webException);
                 return 0;
             }
             catch (TimeoutException timeoutException)
@@ -295,7 +295,7 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException) when ((webException.Response != null))
             {
-                if (WebExceptionServiceUnavailable(webException))
+                if (HandleWebExceptionServiceUnavailable(webException))
                     return false;
             }
             catch (TimeoutException timeoutException)

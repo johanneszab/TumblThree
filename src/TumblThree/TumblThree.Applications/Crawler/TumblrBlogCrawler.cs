@@ -80,9 +80,9 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException) when ((webException.Response != null))
             {
-                if (WebExceptionUnauthorized(webException))
+                if (HandleWebExceptionUnauthorized(webException))
                     blog.Online = true;
-                else if (WebExceptionLimitExceeded(webException))
+                else if (HandleWebExceptionLimitExceeded(webException))
                     blog.Online = true;
                 else
                 {
@@ -106,7 +106,7 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException) when ((webException.Response != null))
             {
-                WebExceptionLimitExceeded(webException);
+                HandleWebExceptionLimitExceeded(webException);
             }
         }
 
@@ -234,7 +234,7 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException) when ((webException.Response != null))
             {
-                WebExceptionLimitExceeded(webException);
+                HandleWebExceptionLimitExceeded(webException);
                 blog.Posts = 0;
             }
             catch (TimeoutException timeoutException)
@@ -260,7 +260,7 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException) when ((webException.Response != null))
             {
-                WebExceptionLimitExceeded(webException);
+                HandleWebExceptionLimitExceeded(webException);
                 return 0;
             }
             catch (TimeoutException timeoutException)
@@ -346,10 +346,13 @@ namespace TumblThree.Applications.Crawler
                 completeGrab = CheckPostAge(response);
 
                 await AddUrlsToDownloadList(response);
+
+                numberOfPagesCrawled += blog.PageSize;
+                UpdateProgressQueueInformation(Resources.ProgressGetUrlLong, numberOfPagesCrawled, blog.Posts);
             }
             catch (WebException webException) when ((webException.Response != null))
             {
-                if (WebExceptionLimitExceeded(webException))
+                if (HandleWebExceptionLimitExceeded(webException))
                     incompleteCrawl = true;
             }
             catch (TimeoutException timeoutException)
@@ -364,9 +367,6 @@ namespace TumblThree.Applications.Crawler
             {
                 semaphoreSlim.Release();
             }
-
-            numberOfPagesCrawled += blog.PageSize;
-            UpdateProgressQueueInformation(Resources.ProgressGetUrlLong, numberOfPagesCrawled, blog.Posts);
         }
 
         private bool PostWithinTimeSpan(Post post)

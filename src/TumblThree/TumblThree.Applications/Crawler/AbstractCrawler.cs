@@ -237,7 +237,7 @@ namespace TumblThree.Applications.Crawler
             shellService.ShowError(timeoutException, Resources.TimeoutReached, duringAction, blog.Name);
         }
 
-        protected bool WebExceptionServiceUnavailable(WebException webException)
+        protected bool HandleWebExceptionServiceUnavailable(WebException webException)
         {
             var resp = (HttpWebResponse)webException.Response;
             if (resp.StatusCode != HttpStatusCode.ServiceUnavailable)
@@ -248,7 +248,7 @@ namespace TumblThree.Applications.Crawler
             return true;
         }
 
-        protected bool WebExceptionNotFound(WebException webException)
+        protected bool HandleWebExceptionNotFound(WebException webException)
         {
             var resp = (HttpWebResponse)webException.Response;
             if (resp.StatusCode != HttpStatusCode.NotFound)
@@ -259,7 +259,7 @@ namespace TumblThree.Applications.Crawler
             return true;
         }
 
-        protected bool WebExceptionLimitExceeded(WebException webException)
+        protected bool HandleWebExceptionLimitExceeded(WebException webException)
         {
             var resp = (HttpWebResponse)webException.Response;
             if ((int)resp.StatusCode != 429)
@@ -270,7 +270,7 @@ namespace TumblThree.Applications.Crawler
             return true;
         }
 
-        protected bool WebExceptionUnauthorized(WebException webException)
+        protected bool HandleWebExceptionUnauthorized(WebException webException)
         {
             var resp = (HttpWebResponse)webException.Response;
             if (resp.StatusCode != HttpStatusCode.Unauthorized)
