@@ -315,7 +315,7 @@ namespace TumblThree.Applications.Crawler
 
                 CheckIfShouldPause();
 
-                trackedTasks.Add(new Func<Task>(async () => { await CrawlPage(pageNumber); })());
+                trackedTasks.Add(CrawlPage(pageNumber));
             }
 
             await Task.WhenAll(trackedTasks);

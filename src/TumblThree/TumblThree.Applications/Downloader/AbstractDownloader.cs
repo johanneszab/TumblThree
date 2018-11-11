@@ -151,7 +151,7 @@ namespace TumblThree.Applications.Downloader
             concurrentVideoConnectionsSemaphore =
                 new SemaphoreSlim(shellService.Settings.ConcurrentVideoConnections / crawlerService.ActiveItems.Count);
             var trackedTasks = new List<Task>();
-            var completeDownload = true;
+            var completeDownload = false;
 
             blog.CreateDataFolder();
 
@@ -166,16 +166,17 @@ namespace TumblThree.Applications.Downloader
 
                 CheckIfShouldPause();
 
-                trackedTasks.Add(new Func<Task>(async () => { await DownloadPost(downloadItem); })());
+                trackedTasks.Add(DownloadPost(downloadItem));
             }
 
+            // TODO: Is this even right?
             try
             {
                 await Task.WhenAll(trackedTasks);
             }
             catch
             {
-                completeDownload = false;
+                completeDownload = true;
             }
 
             blog.LastDownloadedPhoto = null;
