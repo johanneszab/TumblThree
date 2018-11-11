@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Runtime.Serialization.Json;
 using System.Text;
@@ -30,6 +32,11 @@ namespace TumblThree.Applications.Parser
         public Regex GetGfycatUrlRegex()
         {
             return new Regex("(http[A-Za-z0-9_/:.]*gfycat.com/([A-Za-z0-9_]*))");
+        }
+
+        public string GetGfycatId(string url)
+        {
+            return GetGfycatUrlRegex().Match(url).Groups[2].Value;
         }
 
         public virtual async Task<string> RequestGfycatCajax(string gfyId)
@@ -85,6 +92,19 @@ namespace TumblThree.Applications.Parser
             }
 
             return url;
+        }
+
+        public async Task<IEnumerable<string>> SearchForGfycatUrlAsync(string searchableText, GfycatTypes gfycatType)
+        {
+            var urlList = new List<string>();
+            Regex regex = GetGfycatUrlRegex();
+            foreach (Match match in regex.Matches(searchableText))
+            {
+                string gfyId = match.Groups[2].Value;
+                urlList.Add(ParseGfycatCajaxResponse(await RequestGfycatCajax(gfyId), gfycatType));
+            }
+
+            return urlList;
         }
     }
 }
