@@ -28,7 +28,6 @@ namespace TumblThree.Applications.Crawler
     public class TumblrBlogCrawler : AbstractTumblrCrawler, ICrawler
     {
         private readonly IDownloader downloader;
-        private readonly PauseToken pt;
         private readonly ITumblrToTextParser<Post> tumblrJsonParser;
         private readonly IImgurParser imgurParser;
         private readonly IGfycatParser gfycatParser;
@@ -54,10 +53,9 @@ namespace TumblThree.Applications.Crawler
             IWebmshareParser webmshareParser, IMixtapeParser mixtapeParser, IUguuParser uguuParser, ISafeMoeParser safemoeParser,
             ILoliSafeParser lolisafeParser, ICatBoxParser catboxParser, IPostQueue<TumblrPost> postQueue,
             IPostQueue<TumblrCrawlerData<Post>> jsonQueue, IBlog blog)
-            : base(shellService, crawlerService, ct, progress, webRequestFactory, cookieService, postQueue, blog)
+            : base(shellService, crawlerService, ct, pt, progress, webRequestFactory, cookieService, postQueue, blog)
         {
             this.downloader = downloader;
-            this.pt = pt;
             this.tumblrJsonParser = tumblrJsonParser;
             this.imgurParser = imgurParser;
             this.gfycatParser = gfycatParser;
@@ -80,9 +78,9 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException) when ((webException.Response != null))
             {
-                if (HandleWebExceptionUnauthorized(webException))
+                if (HandleUnauthorizedWebException(webException))
                     blog.Online = true;
-                else if (HandleWebExceptionLimitExceeded(webException))
+                else if (HandleLimitExceededWebException(webException))
                     blog.Online = true;
                 else
                 {
@@ -106,7 +104,7 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException) when ((webException.Response != null))
             {
-                HandleWebExceptionLimitExceeded(webException);
+                HandleLimitExceededWebException(webException);
             }
         }
 
@@ -179,12 +177,10 @@ namespace TumblThree.Applications.Crawler
             return base.ConvertJsonToClass<T>(json);
         }
 
-        private string GetApiUrl(string url, int count, int start = 0)
+        private static string GetApiUrl(string url, int count, int start = 0)
         {
             if (url.Last() != '/')
-            {
                 url += "/";
-            }
 
             url += "api/read/json?debug=1&";
 
@@ -204,10 +200,9 @@ namespace TumblThree.Applications.Crawler
         {
             string url = GetApiUrl(blog.Url, blog.PageSize, pageId * blog.PageSize);
 
-            if (!shellService.Settings.LimitConnections)
-                return await GetRequestAsync(url);
+            if (shellService.Settings.LimitConnections)
+                crawlerService.Timeconstraint.Acquire();
 
-            crawlerService.Timeconstraint.Acquire();
             return await GetRequestAsync(url);
         }
 
@@ -234,7 +229,7 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException) when ((webException.Response != null))
             {
-                HandleWebExceptionLimitExceeded(webException);
+                HandleLimitExceededWebException(webException);
                 blog.Posts = 0;
             }
             catch (TimeoutException timeoutException)
@@ -260,7 +255,7 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException) when ((webException.Response != null))
             {
-                HandleWebExceptionLimitExceeded(webException);
+                HandleLimitExceededWebException(webException);
                 return 0;
             }
             catch (TimeoutException timeoutException)
@@ -282,15 +277,17 @@ namespace TumblThree.Applications.Crawler
 
         protected override IEnumerable<int> GetPageNumbers()
         {
-            if (!string.IsNullOrEmpty(blog.DownloadPages))
-                return RangeToSequence(blog.DownloadPages);
+            if (string.IsNullOrEmpty(blog.DownloadPages))
+            {
+                int totalPosts = blog.Posts;
+                if (!TestRange(blog.PageSize, 1, 50))
+                    blog.PageSize = 50;
+                int totalPages = (totalPosts / blog.PageSize) + 1;
 
-            int totalPosts = blog.Posts;
-            if (!TestRange(blog.PageSize, 1, 50))
-                blog.PageSize = 50;
-            int totalPages = (totalPosts / blog.PageSize) + 1;
+                return Enumerable.Range(0, totalPages);
+            }
 
-            return Enumerable.Range(0, totalPages);
+            return RangeToSequence(blog.DownloadPages);
         }
 
         private async Task<Tuple<ulong, bool>> GetUrlsAsync()
@@ -313,15 +310,10 @@ namespace TumblThree.Applications.Crawler
                     break;
                 }
 
-                if (ct.IsCancellationRequested)
-                {
+                if (CheckifShouldStop())
                     break;
-                }
 
-                if (pt.IsPaused)
-                {
-                    pt.WaitWhilePausedWithResponseAsyc().Wait();
-                }
+                CheckIfShouldPause();
 
                 trackedTasks.Add(new Func<Task>(async () => { await CrawlPage(pageNumber); })());
             }
@@ -352,7 +344,7 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException) when ((webException.Response != null))
             {
-                if (HandleWebExceptionLimitExceeded(webException))
+                if (HandleLimitExceededWebException(webException))
                     incompleteCrawl = true;
             }
             catch (TimeoutException timeoutException)
@@ -444,9 +436,7 @@ namespace TumblThree.Applications.Crawler
 
         private bool CheckIfDownloadRebloggedPosts(Post post)
         {
-            if (blog.DownloadRebloggedPosts)
-                return true;
-            return !post.reblogged_from_url.Any();
+            return blog.DownloadRebloggedPosts || !post.reblogged_from_url.Any();
         }
 
         private bool CheckIfContainsTaggedPost(Post post)
@@ -495,11 +485,9 @@ namespace TumblThree.Applications.Crawler
 
         private void AddAudioUrlToDownloadList(Post post)
         {
-            if (!blog.DownloadAudio)
-                return;
-            if (post.type != "audio")
-                return;
-            AddAudioUrl(post);
+            if (blog.DownloadAudio)
+                if (post.type == "audio")
+                    AddAudioUrl(post);
         }
 
         private void AddTextUrlToDownloadList(Post post)
@@ -623,10 +611,8 @@ namespace TumblThree.Applications.Crawler
                 string imageUrl = match.Groups[1].Value;
                 if (imageUrl.Contains("avatar") || imageUrl.Contains("previews"))
                     continue;
-                if (blog.SkipGif && imageUrl.EndsWith(".gif"))
-                {
+                if (blog.SkipGif && imageUrl.EndsWith(".gif") || imageUrl.EndsWith(".gifv"))
                     continue;
-                }
 
                 imageUrl = ResizeTumblrImageUrl(imageUrl);
                 AddToDownloadList(new PhotoPost(imageUrl, post.id, post.unix_timestamp.ToString()));
@@ -641,9 +627,7 @@ namespace TumblThree.Applications.Crawler
             {
                 string videoUrl = match.Groups[2].Value;
                 if (shellService.Settings.VideoSize == 480)
-                {
                     videoUrl += "_480";
-                }
 
                 videoUrls.Add("https://vtt.tumblr.com/" + videoUrl + ".mp4");
             }
@@ -656,9 +640,7 @@ namespace TumblThree.Applications.Crawler
             {
                 string videoUrl = match.Groups[1].Value;
                 if (shellService.Settings.VideoSize == 480)
-                {
                     videoUrl += "_480";
-                }
 
                 videoUrls.Add(videoUrl + ".mp4");
             }
@@ -671,9 +653,7 @@ namespace TumblThree.Applications.Crawler
             {
                 string videoUrl = match.Groups[1].Value;
                 if (shellService.Settings.VideoSize == 480)
-                {
                     videoUrl += "_480";
-                }
 
                 videoUrls.Add(videoUrl + ".mp4");
             }
@@ -710,10 +690,8 @@ namespace TumblThree.Applications.Crawler
         private void AddPhotoUrl(Post post)
         {
             string imageUrl = ParseImageUrl(post);
-            if (blog.SkipGif && imageUrl.EndsWith(".gif"))
-            {
+            if (CheckIfSkipGif(imageUrl))
                 return;
-            }
 
             AddToDownloadList(new PhotoPost(imageUrl, post.id, post.unix_timestamp.ToString()));
             AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
@@ -722,12 +700,9 @@ namespace TumblThree.Applications.Crawler
         private void AddPhotoSetUrl(Post post)
         {
             if (!post.photos.Any())
-            {
                 return;
-            }
 
-            foreach (string imageUrl in post.photos.Select(ParseImageUrl)
-                                            .Where(imageUrl => !blog.SkipGif || !imageUrl.EndsWith(".gif")))
+            foreach (string imageUrl in post.photos.Select(ParseImageUrl).Where(CheckIfSkipGif))
             {
                 AddToDownloadList(new PhotoPost(imageUrl, post.id, post.unix_timestamp.ToString()));
                 AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
@@ -740,9 +715,7 @@ namespace TumblThree.Applications.Crawler
                                    .ToString();
 
             if (shellService.Settings.VideoSize == 480)
-            {
                 videoUrl += "_480";
-            }
 
             AddToDownloadList(
                 new VideoPost("https://vtt.tumblr.com/" + videoUrl + ".mp4", post.id, post.unix_timestamp.ToString()));
@@ -787,10 +760,8 @@ namespace TumblThree.Applications.Crawler
             {
                 string imageUrl = match.Groups[1].Value;
                 string imgurId = match.Groups[2].Value;
-                if (blog.SkipGif && (imageUrl.EndsWith(".gif") || imageUrl.EndsWith(".gifv")))
-                {
+                if (CheckIfSkipGif(imageUrl))
                     continue;
-                }
 
                 AddToDownloadList(new ExternalPhotoPost(imageUrl, imgurId,
                     post.unix_timestamp.ToString()));
@@ -818,7 +789,7 @@ namespace TumblThree.Applications.Crawler
 
                 foreach (string imageUrl in imageUrls)
                 {
-                    if (blog.SkipGif && (imageUrl.EndsWith(".gif") || imageUrl.EndsWith(".gifv")))
+                    if (CheckIfSkipGif(imageUrl))
                         continue;
                     AddToDownloadList(new ExternalPhotoPost(imageUrl, imgurId,
                         post.unix_timestamp.ToString()));
@@ -836,10 +807,8 @@ namespace TumblThree.Applications.Crawler
                 string gfyId = match.Groups[2].Value;
                 string videoUrl = gfycatParser.ParseGfycatCajaxResponse(await gfycatParser.RequestGfycatCajax(gfyId),
                     blog.GfycatType);
-                if (blog.SkipGif && (videoUrl.EndsWith(".gif") || videoUrl.EndsWith(".gifv")))
-                {
+                if (CheckIfSkipGif(videoUrl))
                     continue;
-                }
 
                 AddToDownloadList(new ExternalVideoPost(videoUrl, gfyId,
                     post.unix_timestamp.ToString()));
@@ -856,10 +825,8 @@ namespace TumblThree.Applications.Crawler
                 string webmshareId = match.Groups[2].Value;
                 string url = match.Groups[0].Value.Split('\"').First();
                 string imageUrl = webmshareParser.CreateWebmshareUrl(webmshareId, url, blog.WebmshareType);
-                if (blog.SkipGif && (imageUrl.EndsWith(".gif") || imageUrl.EndsWith(".gifv")))
-                {
+                if (CheckIfSkipGif(imageUrl))
                     continue;
-                }
 
                 AddToDownloadList(new ExternalVideoPost(imageUrl, webmshareId,
                     post.unix_timestamp.ToString()));
@@ -881,10 +848,8 @@ namespace TumblThree.Applications.Crawler
                     string url = temp.Split('\"').First();
 
                     string imageUrl = mixtapeParser.CreateMixtapeUrl(id, url, blog.MixtapeType);
-                    if (blog.SkipGif && imageUrl.EndsWith(".gif"))
-                    {
+                    if (CheckIfSkipGif(imageUrl))
                         continue;
-                    }
 
                     AddToDownloadList(new ExternalVideoPost(imageUrl, id,
                         post.unix_timestamp.ToString()));
@@ -907,10 +872,8 @@ namespace TumblThree.Applications.Crawler
                     string url = temp.Split('\"').First();
 
                     string imageUrl = uguuParser.CreateUguuUrl(id, url, blog.UguuType);
-                    if (blog.SkipGif && imageUrl.EndsWith(".gif"))
-                    {
+                    if (CheckIfSkipGif(imageUrl))
                         continue;
-                    }
 
                     AddToDownloadList(new ExternalVideoPost(imageUrl, id,
                         post.unix_timestamp.ToString()));
@@ -933,10 +896,8 @@ namespace TumblThree.Applications.Crawler
                     string url = temp.Split('\"').First();
 
                     string imageUrl = safemoeParser.CreateSafeMoeUrl(id, url, blog.SafeMoeType);
-                    if (blog.SkipGif && imageUrl.EndsWith(".gif"))
-                    {
+                    if (CheckIfSkipGif(imageUrl))
                         continue;
-                    }
 
                     AddToDownloadList(new ExternalVideoPost(imageUrl, id,
                         post.unix_timestamp.ToString()));
@@ -959,10 +920,8 @@ namespace TumblThree.Applications.Crawler
                     string url = temp.Split('\"').First();
 
                     string imageUrl = lolisafeParser.CreateLoliSafeUrl(id, url, blog.LoliSafeType);
-                    if (blog.SkipGif && imageUrl.EndsWith(".gif"))
-                    {
+                    if (CheckIfSkipGif(imageUrl))
                         continue;
-                    }
 
                     AddToDownloadList(new ExternalVideoPost(imageUrl, id,
                         post.unix_timestamp.ToString()));
@@ -985,10 +944,8 @@ namespace TumblThree.Applications.Crawler
                     string url = temp.Split('\"').First();
 
                     string imageUrl = catboxParser.CreateCatBoxUrl(id, url, blog.CatBoxType);
-                    if (blog.SkipGif && imageUrl.EndsWith(".gif"))
-                    {
+                    if (CheckIfSkipGif(imageUrl))
                         continue;
-                    }
 
                     AddToDownloadList(new ExternalVideoPost(imageUrl, id,
                         post.unix_timestamp.ToString()));

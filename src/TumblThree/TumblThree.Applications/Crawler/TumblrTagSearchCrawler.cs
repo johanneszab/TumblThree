@@ -22,10 +22,6 @@ namespace TumblThree.Applications.Crawler
     public class TumblrTagSearchCrawler : AbstractTumblrCrawler, ICrawler
     {
         private readonly IDownloader downloader;
-        private readonly PauseToken pt;
-
-        private bool completeGrab = true;
-        private bool incompleteCrawl = false;
 
         private SemaphoreSlim semaphoreSlim;
         private List<Task> trackedTasks;
@@ -33,10 +29,9 @@ namespace TumblThree.Applications.Crawler
         public TumblrTagSearchCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
             IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory,
             ISharedCookieService cookieService, IDownloader downloader, IPostQueue<TumblrPost> postQueue, IBlog blog)
-            : base(shellService, crawlerService, ct, progress, webRequestFactory, cookieService, postQueue, blog)
+            : base(shellService, crawlerService, ct, pt, progress, webRequestFactory, cookieService, postQueue, blog)
         {
             this.downloader = downloader;
-            this.pt = pt;
         }
 
         public async Task CrawlAsync()
@@ -169,29 +164,20 @@ namespace TumblThree.Applications.Crawler
 
         private async Task<string> GetTaggedSearchPageAsync(long pagination)
         {
-            if (!shellService.Settings.LimitConnections)
-                return await GetRequestAsync("https://www.tumblr.com/tagged/" + blog.Name + "?before=" + pagination);
+            if (shellService.Settings.LimitConnections)
+                crawlerService.Timeconstraint.Acquire();
 
-            crawlerService.Timeconstraint.Acquire();
             return await GetRequestAsync("https://www.tumblr.com/tagged/" + blog.Name + "?before=" + pagination);
-
-            //string url = "https://www.tumblr.com/tagged/" + blog.Name + "?before=" + pagination;
-            //return await ThrottleConnectionAsync(url, GetRequestAsync);
         }
 
         private async Task AddUrlsToDownloadList(long pagination, long nextCrawlersPagination)
         {
             while (true)
             {
-                if (ct.IsCancellationRequested)
-                {
+                if (CheckifShouldStop())
                     return;
-                }
 
-                if (pt.IsPaused)
-                {
-                    pt.WaitWhilePausedWithResponseAsyc().Wait();
-                }
+                CheckIfShouldPause();
 
                 string document = await GetTaggedSearchPageAsync(pagination);
                 if (document.Contains("<div class=\"no_posts_found\""))
@@ -211,12 +197,11 @@ namespace TumblThree.Applications.Crawler
                 Interlocked.Increment(ref numberOfPagesCrawled);
                 UpdateProgressQueueInformation(Resources.ProgressGetUrlShort, numberOfPagesCrawled);
                 pagination = ExtractNextPageLink(document);
+
                 if (pagination < nextCrawlersPagination)
                     return;
                 if (!CheckIfWithinTimespan(pagination))
                     return;
-                //if (!string.IsNullOrEmpty(blog.DownloadPages))
-                //    return;
             }
         }
 
@@ -224,6 +209,7 @@ namespace TumblThree.Applications.Crawler
         {
             if (string.IsNullOrEmpty(blog.DownloadFrom))
                 return true;
+
             DateTime downloadFrom = DateTime.ParseExact(blog.DownloadFrom, "yyyyMMdd", CultureInfo.InvariantCulture,
                 DateTimeStyles.None);
             var dateTimeOffset = new DateTimeOffset(downloadFrom);
@@ -234,16 +220,15 @@ namespace TumblThree.Applications.Crawler
         {
             if (!blog.DownloadPhoto)
                 return;
+
             var regex = new Regex("src=\"(http[A-Za-z0-9_/:.]*media.tumblr.com[A-Za-z0-9_/:.]*(jpg|png|gif))\"");
             foreach (Match match in regex.Matches(document))
             {
                 string imageUrl = match.Groups[1].Value;
                 if (imageUrl.Contains("avatar") || imageUrl.Contains("previews"))
                     continue;
-                if (blog.SkipGif && imageUrl.EndsWith(".gif"))
-                {
+                if (CheckIfSkipGif(imageUrl))
                     continue;
-                }
 
                 imageUrl = ResizeTumblrImageUrl(imageUrl);
                 // TODO: postID
@@ -255,24 +240,16 @@ namespace TumblThree.Applications.Crawler
         {
             if (!blog.DownloadVideo)
                 return;
+
             var regex = new Regex("src=\"(http[A-Za-z0-9_/:.]*video_file[\\S]*/(tumblr_[\\w]*))[0-9/]*\"");
             foreach (Match match in regex.Matches(document))
             {
                 string videoUrl = match.Groups[2].Value;
+                if (shellService.Settings.VideoSize == 480)
+                    videoUrl += "_480";
+
                 // TODO: postId
-                if (shellService.Settings.VideoSize == 1080)
-                {
-                    // TODO: postID
-                    AddToDownloadList(new VideoPost("https://vtt.tumblr.com/" + videoUrl + ".mp4",
-                        Guid.NewGuid().ToString("N")));
-                }
-                else if (shellService.Settings.VideoSize == 480)
-                {
-                    // TODO: postID
-                    AddToDownloadList(new VideoPost(
-                        "https://vtt.tumblr.com/" + videoUrl + "_480.mp4",
-                        Guid.NewGuid().ToString("N")));
-                }
+                AddToDownloadList(new VideoPost("https://vtt.tumblr.com/" + videoUrl + ".mp4", Guid.NewGuid().ToString("N")));
             }
         }
     }
