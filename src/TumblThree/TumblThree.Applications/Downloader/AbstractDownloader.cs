@@ -166,7 +166,7 @@ namespace TumblThree.Applications.Downloader
 
                 CheckIfShouldPause();
 
-                trackedTasks.Add(new Func<Task>(async () => { await DownloadPost(downloadItem); })());
+                trackedTasks.Add(DownloadPost(downloadItem));
             }
 
             try

@@ -189,7 +189,7 @@ namespace TumblThree.Applications.Crawler
             foreach (int pageNumber in GetPageNumbers())
             {
                 await semaphoreSlim.WaitAsync();
-                trackedTasks.Add(new Func<Task>(async () => { await CrawlPage(pageNumber); })());
+                trackedTasks.Add(CrawlPage(pageNumber));
             }
 
             await Task.WhenAll(trackedTasks);
