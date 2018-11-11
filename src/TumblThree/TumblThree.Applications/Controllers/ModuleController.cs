@@ -77,24 +77,14 @@ namespace TumblThree.Applications.Controllers
 
         public void Initialize()
         {
+            string savePath = environmentService.AppSettingsPath;
             if (CheckIfPortableMode(appSettingsFileName))
-            {
-                appSettings = LoadSettings<AppSettings>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, appSettingsFileName));
-                queueSettings =
-                    LoadSettings<QueueSettings>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, queueSettingsFileName));
-                managerSettings =
-                    LoadSettings<ManagerSettings>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, managerSettingsFileName));
-                cookieList = LoadSettings<List<Cookie>>(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, cookiesFileName));
-            }
-            else
-            {
-                appSettings = LoadSettings<AppSettings>(Path.Combine(environmentService.AppSettingsPath, appSettingsFileName));
-                queueSettings =
-                    LoadSettings<QueueSettings>(Path.Combine(environmentService.AppSettingsPath, queueSettingsFileName));
-                managerSettings =
-                    LoadSettings<ManagerSettings>(Path.Combine(environmentService.AppSettingsPath, managerSettingsFileName));
-                cookieList = LoadSettings<List<Cookie>>(Path.Combine(environmentService.AppSettingsPath, cookiesFileName));
-            }
+                savePath = AppDomain.CurrentDomain.BaseDirectory;
+
+            appSettings = LoadSettings<AppSettings>(Path.Combine(savePath, appSettingsFileName));
+            queueSettings = LoadSettings<QueueSettings>(Path.Combine(savePath, queueSettingsFileName));
+            managerSettings = LoadSettings<ManagerSettings>(Path.Combine(savePath, managerSettingsFileName));
+            cookieList = LoadSettings<List<Cookie>>(Path.Combine(savePath, cookiesFileName));
 
             ShellService.Settings = appSettings;
             ShellService.ShowErrorAction = ShellViewModel.ShowError;
@@ -136,22 +126,14 @@ namespace TumblThree.Applications.Controllers
             ManagerController.Shutdown();
             CrawlerController.Shutdown();
 
+            string savePath = environmentService.AppSettingsPath;
             if (appSettings.PortableMode)
-            {
-                SaveSettings(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, appSettingsFileName), appSettings);
-                SaveSettings(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, queueSettingsFileName), queueSettings);
-                SaveSettings(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, managerSettingsFileName), managerSettings);
-                SaveSettings(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, cookiesFileName),
-                    new List<Cookie>(cookieService.GetAllCookies()));
-            }
-            else
-            {
-                SaveSettings(Path.Combine(environmentService.AppSettingsPath, appSettingsFileName), appSettings);
-                SaveSettings(Path.Combine(environmentService.AppSettingsPath, queueSettingsFileName), queueSettings);
-                SaveSettings(Path.Combine(environmentService.AppSettingsPath, managerSettingsFileName), managerSettings);
-                SaveSettings(Path.Combine(environmentService.AppSettingsPath, cookiesFileName),
-                    new List<Cookie>(cookieService.GetAllCookies()));
-            }
+                savePath = AppDomain.CurrentDomain.BaseDirectory;
+
+            SaveSettings(Path.Combine(savePath, appSettingsFileName), appSettings);
+            SaveSettings(Path.Combine(savePath, queueSettingsFileName), queueSettings);
+            SaveSettings(Path.Combine(savePath, managerSettingsFileName), managerSettings);
+            SaveSettings(Path.Combine(savePath, cookiesFileName), new List<Cookie>(cookieService.GetAllCookies()));          
         }
 
         private void OnBlogManagerFinishedLoadingLibrary(object sender, EventArgs e)
