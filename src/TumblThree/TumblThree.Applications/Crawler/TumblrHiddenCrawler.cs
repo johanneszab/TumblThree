@@ -440,7 +440,7 @@ namespace TumblThree.Applications.Crawler
                                        .FirstOrDefault() ??
                                   photo.alt_sizes.FirstOrDefault().url;
 
-                if (blog.SkipGif && imageUrl.EndsWith(".gif"))
+                if (CheckIfSkipGif(imageUrl))
                     continue;
 
                 AddToDownloadList(new PhotoPost(imageUrl, postId, post.timestamp.ToString()));
@@ -458,7 +458,7 @@ namespace TumblThree.Applications.Crawler
 
                 if (imageUrl.Contains("avatar") || imageUrl.Contains("previews"))
                     continue;
-                if (blog.SkipGif && imageUrl.EndsWith(".gif"))
+                if (CheckIfSkipGif(imageUrl))
                     continue;
 
                 AddToDownloadList(new PhotoPost(imageUrl, postId, post.timestamp.ToString()));
