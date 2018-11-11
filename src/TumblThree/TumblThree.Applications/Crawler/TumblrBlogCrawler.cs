@@ -30,11 +30,13 @@ namespace TumblThree.Applications.Crawler
 
         public TumblrBlogCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
             IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory,
-            ISharedCookieService cookieService, IDownloader downloader, IImgurParser imgurParser, IGfycatParser gfycatParser,
-            IWebmshareParser webmshareParser, IMixtapeParser mixtapeParser, IUguuParser uguuParser, ISafeMoeParser safemoeParser,
-            ILoliSafeParser lolisafeParser, ICatBoxParser catboxParser, IPostQueue<TumblrPost> postQueue, IBlog blog)
-            : base(shellService, crawlerService, ct, pt, progress, webRequestFactory, cookieService, imgurParser, gfycatParser,
-                webmshareParser, mixtapeParser, uguuParser, safemoeParser, lolisafeParser, catboxParser, postQueue, blog)
+            ISharedCookieService cookieService, IDownloader downloader, ITumblrParser tumblrParser, IImgurParser imgurParser,
+            IGfycatParser gfycatParser, IWebmshareParser webmshareParser, IMixtapeParser mixtapeParser, IUguuParser uguuParser,
+            ISafeMoeParser safemoeParser, ILoliSafeParser lolisafeParser, ICatBoxParser catboxParser,
+            IPostQueue<TumblrPost> postQueue, IBlog blog)
+            : base(shellService, crawlerService, ct, pt, progress, webRequestFactory, cookieService, tumblrParser, imgurParser,
+                gfycatParser, webmshareParser, mixtapeParser, uguuParser, safemoeParser, lolisafeParser, catboxParser, postQueue,
+                blog)
         {
             this.downloader = downloader;
         }
@@ -167,19 +169,7 @@ namespace TumblThree.Applications.Crawler
             if (!blog.DownloadPhoto)
                 return;
 
-            var regex = new Regex("\"(http[A-Za-z0-9_/:.]*media.tumblr.com[A-Za-z0-9_/:.]*(jpg|png|gif))\"");
-            foreach (Match match in regex.Matches(document))
-            {
-                string imageUrl = match.Groups[1].Value;
-                if (imageUrl.Contains("avatar") || imageUrl.Contains("previews"))
-                    continue;
-                if (CheckIfSkipGif(imageUrl))
-                    continue;
-
-                imageUrl = ResizeTumblrImageUrl(imageUrl);
-                // TODO: postID
-                AddToDownloadList(new PhotoPost(imageUrl, Guid.NewGuid().ToString("N")));
-            }
+            AddTumblrPhotoUrl(document);
         }
 
         private void AddVideoUrlToDownloadList(string document)
@@ -187,26 +177,7 @@ namespace TumblThree.Applications.Crawler
             if (!blog.DownloadVideo)
                 return;
 
-            var regex = new Regex("\"(http[A-Za-z0-9_/:.]*.com/video_file/[A-Za-z0-9_/:.]*)\"");
-            foreach (Match match in regex.Matches(document))
-            {
-                string videoUrl = match.Groups[0].Value;
-
-                if (shellService.Settings.VideoSize == 1080)
-                {
-                    // TODO: postID
-                    AddToDownloadList(new VideoPost(
-                        "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + ".mp4",
-                        Guid.NewGuid().ToString("N")));
-                }
-                else if (shellService.Settings.VideoSize == 480)
-                {
-                    // TODO: postID
-                    AddToDownloadList(new VideoPost(
-                        "https://vt.tumblr.com/" + videoUrl.Replace("/480", "").Split('/').Last() + "_480.mp4",
-                        Guid.NewGuid().ToString("N")));
-                }
-            }
+            AddTumblrVideoUrl(document);
         }
     }
 }

@@ -29,11 +29,13 @@ namespace TumblThree.Applications.Crawler
 
         public TumblrTagSearchCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
             IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory,
-            ISharedCookieService cookieService, IDownloader downloader, IImgurParser imgurParser, IGfycatParser gfycatParser,
-            IWebmshareParser webmshareParser, IMixtapeParser mixtapeParser, IUguuParser uguuParser, ISafeMoeParser safemoeParser,
-            ILoliSafeParser lolisafeParser, ICatBoxParser catboxParser, IPostQueue<TumblrPost> postQueue, IBlog blog)
-            : base(shellService, crawlerService, ct, pt, progress, webRequestFactory, cookieService, imgurParser, gfycatParser,
-                webmshareParser, mixtapeParser, uguuParser, safemoeParser, lolisafeParser, catboxParser, postQueue, blog)
+            ISharedCookieService cookieService, IDownloader downloader, ITumblrParser tumblrParser, IImgurParser imgurParser,
+            IGfycatParser gfycatParser, IWebmshareParser webmshareParser, IMixtapeParser mixtapeParser, IUguuParser uguuParser,
+            ISafeMoeParser safemoeParser, ILoliSafeParser lolisafeParser, ICatBoxParser catboxParser,
+            IPostQueue<TumblrPost> postQueue, IBlog blog)
+            : base(shellService, crawlerService, ct, pt, progress, webRequestFactory, cookieService, tumblrParser, imgurParser,
+                gfycatParser, webmshareParser, mixtapeParser, uguuParser, safemoeParser, lolisafeParser, catboxParser, postQueue,
+                blog)
         {
             this.downloader = downloader;
         }
@@ -224,37 +226,14 @@ namespace TumblThree.Applications.Crawler
         {
             if (!blog.DownloadPhoto)
                 return;
-
-            var regex = new Regex("src=\"(http[A-Za-z0-9_/:.]*media.tumblr.com[A-Za-z0-9_/:.]*(jpg|png|gif))\"");
-            foreach (Match match in regex.Matches(document))
-            {
-                string imageUrl = match.Groups[1].Value;
-                if (imageUrl.Contains("avatar") || imageUrl.Contains("previews"))
-                    continue;
-                if (CheckIfSkipGif(imageUrl))
-                    continue;
-
-                imageUrl = ResizeTumblrImageUrl(imageUrl);
-                // TODO: postID
-                AddToDownloadList(new PhotoPost(imageUrl, Guid.NewGuid().ToString("N")));
-            }
+            AddTumblrPhotoUrl(document);
         }
 
         private void AddVideoUrlToDownloadList(string document)
         {
             if (!blog.DownloadVideo)
                 return;
-
-            var regex = new Regex("src=\"(http[A-Za-z0-9_/:.]*video_file[\\S]*/(tumblr_[\\w]*))[0-9/]*\"");
-            foreach (Match match in regex.Matches(document))
-            {
-                string videoUrl = match.Groups[2].Value;
-                if (shellService.Settings.VideoSize == 480)
-                    videoUrl += "_480";
-
-                // TODO: postId
-                AddToDownloadList(new VideoPost("https://vtt.tumblr.com/" + videoUrl + ".mp4", Guid.NewGuid().ToString("N")));
-            }
+            AddTumblrVideoUrl(document);
         }
     }
 }
