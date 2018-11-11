@@ -151,7 +151,7 @@ namespace TumblThree.Applications.Downloader
             concurrentVideoConnectionsSemaphore =
                 new SemaphoreSlim(shellService.Settings.ConcurrentVideoConnections / crawlerService.ActiveItems.Count);
             var trackedTasks = new List<Task>();
-            var completeDownload = false;
+            var completeDownload = true;
 
             blog.CreateDataFolder();
 
@@ -176,7 +176,7 @@ namespace TumblThree.Applications.Downloader
             }
             catch
             {
-                completeDownload = true;
+                completeDownload = false;
             }
 
             blog.LastDownloadedPhoto = null;
