@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace TumblThree.Applications.Parser
 {
@@ -6,6 +7,22 @@ namespace TumblThree.Applications.Parser
     {
         Regex GetTumblrPhotoUrlRegex();
 
-        Regex GetTumblrVideoUrlRegex();
+        Regex GetGenericPhotoUrlRegex();
+
+        Regex GetTumblrVeVideoUrlRegex();
+
+        Regex GetTumblrVttVideoUrlRegex();
+
+        Regex GetTumblrInlineVideoUrlRegex();
+
+        Regex GetGenericVideoUrlRegex();
+
+        IEnumerable<string> SearchForTumblrPhotoUrl(string searchableText);
+
+        IEnumerable<string> SearchForTumblrVideoUrl(string searchableText);
+
+        IEnumerable<string> SearchForGenericPhotoUrl(string searchableText);
+
+        IEnumerable<string> SearchForGenericVideoUrl(string searchableText);
     }
 }

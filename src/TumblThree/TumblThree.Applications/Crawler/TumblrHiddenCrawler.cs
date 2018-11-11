@@ -43,12 +43,13 @@ namespace TumblThree.Applications.Crawler
         public TumblrHiddenCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
             IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory,
             ISharedCookieService cookieService, IDownloader downloader, ICrawlerDataDownloader crawlerDataDownloader,
-            ITumblrToTextParser<Post> tumblrJsonParser, IImgurParser imgurParser, IGfycatParser gfycatParser,
-            IWebmshareParser webmshareParser, IMixtapeParser mixtapeParser, IUguuParser uguuParser, ISafeMoeParser safemoeParser,
-            ILoliSafeParser lolisafeParser, ICatBoxParser catboxParser, IPostQueue<TumblrPost> postQueue,
-            IPostQueue<TumblrCrawlerData<Post>> jsonQueue, IBlog blog)
-            : base(shellService, crawlerService, ct, pt, progress, webRequestFactory, cookieService, imgurParser, gfycatParser,
-                webmshareParser, mixtapeParser, uguuParser, safemoeParser, lolisafeParser, catboxParser, postQueue, blog)
+            ITumblrToTextParser<Post> tumblrJsonParser, ITumblrParser tumblrParser, IImgurParser imgurParser,
+            IGfycatParser gfycatParser, IWebmshareParser webmshareParser, IMixtapeParser mixtapeParser, IUguuParser uguuParser,
+            ISafeMoeParser safemoeParser, ILoliSafeParser lolisafeParser, ICatBoxParser catboxParser,
+            IPostQueue<TumblrPost> postQueue, IPostQueue<TumblrCrawlerData<Post>> jsonQueue, IBlog blog)
+            : base(shellService, crawlerService, ct, pt, progress, webRequestFactory, cookieService, tumblrParser, imgurParser,
+                gfycatParser, webmshareParser, mixtapeParser, uguuParser, safemoeParser, lolisafeParser, catboxParser, postQueue,
+                blog)
         {
             this.downloader = downloader;
             this.tumblrJsonParser = tumblrJsonParser;
@@ -437,19 +438,7 @@ namespace TumblThree.Applications.Crawler
 
         private void AddInlinePhotoUrl(Post post)
         {
-            var regex = new Regex("\"(http[A-Za-z0-9_/:.]*media.tumblr.com[A-Za-z0-9_/:.]*(jpg|png|gif))\"");
-            foreach (Match match in regex.Matches(InlineSearch(post)))
-            {
-                string postId = post.id;
-                string imageUrl = match.Groups[1].Value;
-
-                if (imageUrl.Contains("avatar") || imageUrl.Contains("previews"))
-                    continue;
-                if (CheckIfSkipGif(imageUrl))
-                    continue;
-
-                AddToDownloadList(new PhotoPost(imageUrl, postId, post.timestamp.ToString()));
-            }
+            AddTumblrPhotoUrl(InlineSearch(post));
         }
 
         private void AddVideoUrlToDownloadList(Post post)
@@ -466,14 +455,14 @@ namespace TumblThree.Applications.Crawler
                 postCopy.video_url = string.Empty;
             }
 
-            var videoUrls = new HashSet<string>();
+            //var videoUrls = new HashSet<string>();
 
-            AddInlineVideoUrl(videoUrls, postCopy);
+            AddInlineVideoUrl(postCopy);
             //AddInlineTumblrVideoUrl(videoUrls, post, new Regex("\"(https?://ve.media.tumblr.com/(tumblr_[\\w]*))"));
             //AddInlineTumblrVideoUrl(videoUrls, post, new Regex("\"(https?://vtt.tumblr.com/(tumblr_[\\w]*))"));
-            AddGenericInlineVideoUrl(videoUrls, postCopy);
+            AddGenericInlineVideoUrl(postCopy);
 
-            AddInlineVideoUrlsToDownloader(videoUrls, postCopy);
+            //AddInlineVideoUrlsToDownloader(videoUrls, postCopy);
         }
 
         private void AddVideoUrl(Post post)
@@ -496,18 +485,9 @@ namespace TumblThree.Applications.Crawler
             AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(videoUrl.Split('/').Last(), ".json"), post));
         }
 
-        private void AddInlineVideoUrl(HashSet<string> videoUrls, Post post)
+        private void AddInlineVideoUrl(Post post)
         {
-            var regex = new Regex("src=\"(http[A-Za-z0-9_/:.]*video_file[\\S]*/(tumblr_[\\w]*))[0-9/]*\"");
-            foreach (Match match in regex.Matches(InlineSearch(post)))
-            {
-                string videoUrl = match.Groups[2].Value;
-
-                if (shellService.Settings.VideoSize == 480)
-                    videoUrl += "_480";
-
-                videoUrls.Add("https://vtt.tumblr.com/" + videoUrl + ".mp4");
-            }
+            AddTumblrVideoUrl(InlineSearch(post));
         }
 
         private void AddInlineTumblrVideoUrl(HashSet<string> videoUrls, Post post, Regex regex)
@@ -523,23 +503,9 @@ namespace TumblThree.Applications.Crawler
             }
         }
 
-        private void AddGenericInlineVideoUrl(HashSet<string> videoUrls, Post post)
+        private void AddGenericInlineVideoUrl(Post post)
         {
-            var regex = new Regex("\"(https?://(?:[a-z0-9\\-]+\\.)+[a-z]{2,6}(?:/[^/#?]+)+\\.(?:mp4|mkv))\"");
-
-            foreach (Match match in regex.Matches(InlineSearch(post)))
-            {
-                string videoUrl = match.Groups[1].Value;
-
-                if (videoUrl.Contains("tumblr") && shellService.Settings.VideoSize == 480)
-                {
-                    int indexOfSuffix = videoUrl.LastIndexOf('.');
-                    if (indexOfSuffix >= 0)
-                        videoUrl = videoUrl.Insert(indexOfSuffix, "_480");
-                }
-
-                videoUrls.Add(videoUrl);
-            }
+            AddGenericVideoUrl(InlineSearch(post));
         }
 
         private void AddInlineVideoUrlsToDownloader(HashSet<string> videoUrls, Post post)
