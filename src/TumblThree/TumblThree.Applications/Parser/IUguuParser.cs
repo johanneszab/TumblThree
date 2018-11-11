@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 using TumblThree.Domain.Models;
 
@@ -8,6 +9,10 @@ namespace TumblThree.Applications.Parser
     {
         Regex GetUguuUrlRegex();
 
+        string GetUguuId(string url);
+
         string CreateUguuUrl(string uguuId, string detectedUrl, UguuTypes uguuType);
+
+        IEnumerable<string> SearchForUguuUrl(string searchableText, UguuTypes uguuType);
     }
 }

@@ -20,6 +20,7 @@ namespace TumblThree.Applications.Crawler
 {
     [Export(typeof(ICrawler))]
     [ExportMetadata("BlogType", typeof(TumblrLikedByBlog))]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public class TumblrLikedByCrawler : AbstractTumblrCrawler, ICrawler
     {
         private readonly IDownloader downloader;
