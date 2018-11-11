@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 using TumblThree.Domain.Models;
@@ -10,6 +12,11 @@ namespace TumblThree.Applications.Parser
         public Regex GetMixtapeUrlRegex()
         {
             return new Regex("(http[A-Za-z0-9_/:.]*mixtape.moe/(.*))");
+        }
+
+        public string GetMixtapeId(string url)
+        {
+            return GetMixtapeUrlRegex().Match(url).Groups[2].Value;
         }
 
         public string CreateMixtapeUrl(string mixtapeId, string detectedUrl, MixtapeTypes mixtapeType)
@@ -31,6 +38,19 @@ namespace TumblThree.Applications.Parser
             }
 
             return url;
+        }
+
+        public IEnumerable<string> SearchForMixtapeUrl(string searchableText, MixtapeTypes mixtapeType)
+        {
+            Regex regex = GetMixtapeUrlRegex();
+            foreach (Match match in regex.Matches(searchableText))
+            {
+                string temp = match.Groups[0].ToString();
+                string id = match.Groups[2].Value;
+                string url = temp.Split('\"').First();
+
+                yield return CreateMixtapeUrl(id, url, mixtapeType);
+            }
         }
     }
 }
