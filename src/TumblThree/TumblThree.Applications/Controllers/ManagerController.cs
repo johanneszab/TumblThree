@@ -194,6 +194,7 @@ namespace TumblThree.Applications.Controllers
                     managerService.BlogFiles.Add(file);
                 }
             }
+
             BlogManagerFinishedLoadingLibrary?.Invoke(this, EventArgs.Empty);
             Logger.Verbose("ManagerController.LoadLibrary:End");
         }
@@ -263,6 +264,7 @@ namespace TumblThree.Applications.Controllers
                     managerService.AddDatabase(database);
                 }
             }
+
             BlogManagerFinishedLoadingDatabases?.Invoke(this, EventArgs.Empty);
             Logger.Verbose("ManagerController.LoadAllDatabasesAsync:End");
         }
@@ -342,20 +344,36 @@ namespace TumblThree.Applications.Controllers
         {
             if (shellService.Settings.CheckOnlineStatusOnStartup)
             {
-                await Task.Run(async () =>
-                {
-                    var semaphoreSlim = new SemaphoreSlim(25);
-                    IEnumerable<IBlog> blogs = managerService.BlogFiles;
-                    IEnumerable<Task> tasks = blogs.Select(async blog =>
-                    {
-                        await semaphoreSlim.WaitAsync();
-                        ICrawler crawler = crawlerFactory.GetCrawler(blog, new CancellationToken(), new PauseToken(),
-                            new Progress<DownloadProgress>());
-                        await crawler.IsBlogOnlineAsync();
-                        semaphoreSlim.Release();
-                    });
-                    await Task.WhenAll(tasks);
-                });
+                IEnumerable<IBlog> blogs = managerService.BlogFiles;
+                await Task.Run(() => ThrottledCheckStatusOfBlogsAsync(blogs));
+            }
+        }
+
+        private async Task CheckStatusAsync()
+        {
+            IEnumerable<IBlog> blogs = selectionService.SelectedBlogFiles.ToArray();
+            await Task.Run(() => ThrottledCheckStatusOfBlogsAsync(blogs));
+        }
+
+        private async Task ThrottledCheckStatusOfBlogsAsync(IEnumerable<IBlog> blogs)
+        {
+            var semaphoreSlim = new SemaphoreSlim(25);
+            IEnumerable<Task> tasks = blogs.Select(async blog => await CheckStatusOfBlogsAsync(semaphoreSlim, blog));
+            await Task.WhenAll(tasks);
+        }
+
+        private async Task CheckStatusOfBlogsAsync(SemaphoreSlim semaphoreSlim, IBlog blog)
+        {
+            await semaphoreSlim.WaitAsync();
+            try
+            {
+                ICrawler crawler = crawlerFactory.GetCrawler(blog, new CancellationToken(), new PauseToken(),
+                    new Progress<DownloadProgress>());
+                await crawler.IsBlogOnlineAsync();
+            }
+            finally
+            {
+                semaphoreSlim.Release();
             }
         }
 
@@ -371,7 +389,8 @@ namespace TumblThree.Applications.Controllers
 
         private bool CanCheckIfDatabasesComplete()
         {
-            return crawlerService.DatabasesLoaded.Task.GetAwaiter().IsCompleted && crawlerService.LibraryLoaded.Task.GetAwaiter().IsCompleted;
+            return crawlerService.DatabasesLoaded.Task.GetAwaiter().IsCompleted &&
+                   crawlerService.LibraryLoaded.Task.GetAwaiter().IsCompleted;
         }
 
         private bool CanEnqueueSelected()
@@ -465,6 +484,7 @@ namespace TumblThree.Applications.Controllers
                 message = string.Format(
                     shellService.Settings.DeleteOnlyIndex ? Resources.DeleteBlogsDialog : Resources.DeleteBlogsAndFilesDialog,
                     blogNames);
+
                 if (!messageService.ShowYesNoQuestion(this, message))
                     return;
             }
@@ -560,24 +580,6 @@ namespace TumblThree.Applications.Controllers
             return ManagerViewModel.SelectedBlogFile != null;
         }
 
-        private async Task CheckStatusAsync()
-        {
-            await Task.Run(async () =>
-            {
-                var semaphoreSlim = new SemaphoreSlim(25);
-                IEnumerable<IBlog> blogs = selectionService.SelectedBlogFiles.ToArray();
-                IEnumerable<Task> tasks = blogs.Select(async blog =>
-                {
-                    await semaphoreSlim.WaitAsync();
-                    ICrawler crawler = crawlerFactory.GetCrawler(blog, new CancellationToken(), new PauseToken(),
-                        new Progress<DownloadProgress>());
-                    await crawler.IsBlogOnlineAsync();
-                    semaphoreSlim.Release();
-                });
-                await Task.WhenAll(tasks);
-            });
-        }
-
         private bool CanCheckStatus()
         {
             return ManagerViewModel.SelectedBlogFile != null;
@@ -642,64 +644,56 @@ namespace TumblThree.Applications.Controllers
 
         private void OnClipboardContentChanged(object sender, EventArgs e)
         {
-            if (Clipboard.ContainsText())
-            {
-                // Count each whitespace as new url
-                string[] urls = Clipboard.GetText().Split();
+            if (!Clipboard.ContainsText())
+                return;
 
-                Task.Run(() =>
-                {
-                    Task addBlogBatchedTask = AddBlogBatchedAsync(urls);
-                });
-            }
+            // Count each whitespace as new url
+            string[] urls = Clipboard.GetText().Split();
+
+            Task.Run(() => AddBlogBatchedAsync(urls));
         }
 
         private async Task AddBlogBatchedAsync(IEnumerable<string> urls)
         {
             var semaphoreSlim = new SemaphoreSlim(25);
-            IEnumerable<Task> tasks = urls.Select(async url =>
-            {
-                try
-                {
-                    await semaphoreSlim.WaitAsync();
-                    await AddBlogAsync(url);
-                }
-                catch
-                {
-                }
-                finally
-                {
-                    semaphoreSlim.Release();
-                }
-            });
+            IEnumerable<Task> tasks = urls.Select(async url => await AddBlogsAsync(semaphoreSlim, url));
             await Task.WhenAll(tasks);
+        }
+
+        private async Task AddBlogsAsync(SemaphoreSlim semaphoreSlim, string url)
+        {
+            try
+            {
+                await semaphoreSlim.WaitAsync();
+                await AddBlogAsync(url);
+            }
+            catch
+            {
+            }
+            finally
+            {
+                semaphoreSlim.Release();
+            }
         }
 
         private void ListenClipboard()
         {
             if (shellService.Settings.CheckClipboard)
-            {
                 shellService.ClipboardMonitor.OnClipboardContentChanged += OnClipboardContentChanged;
-                return;
-            }
-
-            shellService.ClipboardMonitor.OnClipboardContentChanged -= OnClipboardContentChanged;
+            else
+                shellService.ClipboardMonitor.OnClipboardContentChanged -= OnClipboardContentChanged;
         }
 
         private void CrawlerServicePropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(crawlerService.NewBlogUrl))
-            {
                 addBlogCommand.RaiseCanExecuteChanged();
-            }
         }
 
         private void ManagerViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(ManagerViewModel.SelectedBlogFile))
-            {
                 UpdateCommands();
-            }
         }
 
         private void UpdateCommands()
