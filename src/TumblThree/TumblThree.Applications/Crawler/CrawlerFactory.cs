@@ -65,8 +65,12 @@ namespace TumblThree.Applications.Crawler
             switch (blog.BlogType)
             {
                 case BlogTypes.tumblr:
-                    IPostQueue<TumblrCrawlerData<DataModels.TumblrApiJson.Post>> jsonApiQueue = GetJsonQueue<DataModels.TumblrApiJson.Post>();
-                    return new TumblrBlogCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService, GetTumblrDownloader(ct, pt, progress, blog, files, postQueue), postQueue, blog);
+                    IPostQueue<TumblrCrawlerData<DataModels.TumblrApiJson.Post>> jsonApiQueue =
+                        GetJsonQueue<DataModels.TumblrApiJson.Post>();
+                    return new TumblrBlogCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory, cookieService,
+                        GetTumblrDownloader(ct, pt, progress, blog, files, postQueue), imgurParser,
+                        gfycatParser, GetWebmshareParser(), GetMixtapeParser(), GetUguuParser(), GetSafeMoeParser(),
+                        GetLoliSafeParser(), GetCatBoxParser(), postQueue, blog);
                 case BlogTypes.tmblrpriv:
                     IPostQueue<TumblrCrawlerData<DataModels.TumblrSvcJson.Post>> jsonSvcQueue =
                         GetJsonQueue<DataModels.TumblrSvcJson.Post>();
@@ -77,13 +81,19 @@ namespace TumblThree.Applications.Crawler
                         GetLoliSafeParser(), GetCatBoxParser(), postQueue, jsonSvcQueue, blog);
                 case BlogTypes.tlb:
                     return new TumblrLikedByCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory,
-                        cookieService, GetTumblrDownloader(ct, pt, progress, blog, files, postQueue), postQueue, blog);
+                        cookieService, GetTumblrDownloader(ct, pt, progress, blog, files, postQueue), imgurParser,
+                        gfycatParser, GetWebmshareParser(), GetMixtapeParser(), GetUguuParser(), GetSafeMoeParser(),
+                        GetLoliSafeParser(), GetCatBoxParser(), postQueue, blog);
                 case BlogTypes.tumblrsearch:
                     return new TumblrSearchCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory,
-                        cookieService, GetTumblrDownloader(ct, pt, progress, blog, files, postQueue), postQueue, blog);
+                        cookieService, GetTumblrDownloader(ct, pt, progress, blog, files, postQueue), imgurParser,
+                        gfycatParser, GetWebmshareParser(), GetMixtapeParser(), GetUguuParser(), GetSafeMoeParser(),
+                        GetLoliSafeParser(), GetCatBoxParser(), postQueue, blog);
                 case BlogTypes.tumblrtagsearch:
                     return new TumblrTagSearchCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory,
-                        cookieService, GetTumblrDownloader(ct, pt, progress, blog, files, postQueue), postQueue, blog);
+                        cookieService, GetTumblrDownloader(ct, pt, progress, blog, files, postQueue), imgurParser,
+                        gfycatParser, GetWebmshareParser(), GetMixtapeParser(), GetUguuParser(), GetSafeMoeParser(),
+                        GetLoliSafeParser(), GetCatBoxParser(), postQueue, blog);
                 default:
                     throw new ArgumentException("Website is not supported!", "blogType");
             }

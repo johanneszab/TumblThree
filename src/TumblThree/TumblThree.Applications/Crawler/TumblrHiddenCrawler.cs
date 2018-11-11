@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,14 +30,6 @@ namespace TumblThree.Applications.Crawler
     {
         private readonly IDownloader downloader;
         private readonly ITumblrToTextParser<Post> tumblrJsonParser;
-        private readonly IImgurParser imgurParser;
-        private readonly IGfycatParser gfycatParser;
-        private readonly IWebmshareParser webmshareParser;
-        private readonly IMixtapeParser mixtapeParser;
-        private readonly IUguuParser uguuParser;
-        private readonly ISafeMoeParser safemoeParser;
-        private readonly ILoliSafeParser lolisafeParser;
-        private readonly ICatBoxParser catboxParser;
         private readonly IPostQueue<TumblrCrawlerData<Post>> jsonQueue;
         private readonly ICrawlerDataDownloader crawlerDataDownloader;
 
@@ -54,18 +47,11 @@ namespace TumblThree.Applications.Crawler
             IWebmshareParser webmshareParser, IMixtapeParser mixtapeParser, IUguuParser uguuParser, ISafeMoeParser safemoeParser,
             ILoliSafeParser lolisafeParser, ICatBoxParser catboxParser, IPostQueue<TumblrPost> postQueue,
             IPostQueue<TumblrCrawlerData<Post>> jsonQueue, IBlog blog)
-            : base(shellService, crawlerService, ct, pt, progress, webRequestFactory, cookieService, postQueue, blog)
+            : base(shellService, crawlerService, ct, pt, progress, webRequestFactory, cookieService, imgurParser, gfycatParser,
+                webmshareParser, mixtapeParser, uguuParser, safemoeParser, lolisafeParser, catboxParser, postQueue, blog)
         {
             this.downloader = downloader;
             this.tumblrJsonParser = tumblrJsonParser;
-            this.imgurParser = imgurParser;
-            this.gfycatParser = gfycatParser;
-            this.webmshareParser = webmshareParser;
-            this.mixtapeParser = mixtapeParser;
-            this.uguuParser = uguuParser;
-            this.safemoeParser = safemoeParser;
-            this.lolisafeParser = lolisafeParser;
-            this.catboxParser = catboxParser;
             this.jsonQueue = jsonQueue;
             this.crawlerDataDownloader = crawlerDataDownloader;
         }
@@ -692,21 +678,24 @@ namespace TumblThree.Applications.Crawler
 
         private async Task AddExternalPhotoUrlToDownloadList(Post post)
         {
+            string searchableText = InlineSearch(post);
+            string timestamp = post.timestamp.ToString();
+
             if (blog.DownloadImgur) await AddImgurUrl(post);
 
             if (blog.DownloadGfycat) await AddGfycatUrl(post);
 
-            if (blog.DownloadWebmshare) AddWebmshareUrl(post);
+            if (blog.DownloadWebmshare) AddWebmshareUrl(searchableText, timestamp);
 
-            if (blog.DownloadMixtape) AddMixtapeUrl(post);
+            if (blog.DownloadMixtape) AddMixtapeUrl(searchableText, timestamp);
 
-            if (blog.DownloadUguu) AddUguuUrl(post);
+            if (blog.DownloadUguu) AddUguuUrl(searchableText, timestamp);
 
-            if (blog.DownloadSafeMoe) AddSafeMoeUrl(post);
+            if (blog.DownloadSafeMoe) AddSafeMoeUrl(searchableText, timestamp);
 
-            if (blog.DownloadLoliSafe) AddLoliSafeUrl(post);
+            if (blog.DownloadLoliSafe) AddLoliSafeUrl(searchableText, timestamp);
 
-            if (blog.DownloadCatBox) AddCatBoxUrl(post);
+            if (blog.DownloadCatBox) AddCatBoxUrl(searchableText, timestamp);
         }
 
         private async Task AddImgurUrl(Post post)
@@ -772,93 +761,6 @@ namespace TumblThree.Applications.Crawler
                     post.timestamp.ToString()));
                 AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(videoUrl.Split('/').Last(), ".json"),
                     post));
-            }
-        }
-
-        private void AddWebmshareUrl(Post post)
-        {
-            foreach (string imageUrl in webmshareParser.SearchForWebmshareUrl(InlineSearch(post), blog.WebmshareType))
-            {
-                if (CheckIfSkipGif(imageUrl))
-                    continue;
-
-                AddToDownloadList(new VideoPost(imageUrl, webmshareParser.GetWebmshareId(imageUrl),
-                    post.timestamp.ToString()));
-                AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"),
-                    post));
-            }
-        }
-
-        private void AddMixtapeUrl(Post post)
-        {
-            foreach (string imageUrl in mixtapeParser.SearchForMixtapeUrl(InlineSearch(post), blog.MixtapeType))
-            {
-                if (CheckIfSkipGif(imageUrl))
-                    continue;
-
-                    AddToDownloadList(new ExternalVideoPost(imageUrl, mixtapeParser.GetMixtapeId(imageUrl),
-                        post.timestamp.ToString()));
-                    AddToJsonQueue(
-                        new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
-                
-            }
-        }
-
-        private void AddUguuUrl(Post post)
-        {
-            foreach (string imageUrl in uguuParser.SearchForUguuUrl(InlineSearch(post), blog.UguuType))
-            {
-                if (CheckIfSkipGif(imageUrl))
-                    continue;
-
-                    AddToDownloadList(new ExternalVideoPost(imageUrl, uguuParser.GetUguuId(imageUrl),
-                        post.timestamp.ToString()));
-                    AddToJsonQueue(
-                        new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
-                
-            }
-        }
-
-        private void AddSafeMoeUrl(Post post)
-        {
-            foreach (string imageUrl in safemoeParser.SearchForSafeMoeUrl(InlineSearch(post), blog.SafeMoeType))
-            {
-                if (CheckIfSkipGif(imageUrl))
-                    continue;
-
-                    AddToDownloadList(new ExternalVideoPost(imageUrl, safemoeParser.GetSafeMoeId(imageUrl),
-                        post.timestamp.ToString()));
-                    AddToJsonQueue(
-                        new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
-                
-            }
-        }
-
-        private void AddLoliSafeUrl(Post post)
-        {
-            foreach (string imageUrl in lolisafeParser.SearchForLoliSafeUrl(InlineSearch(post), blog.LoliSafeType))
-            {
-                if (CheckIfSkipGif(imageUrl))
-                    continue;
-
-                AddToDownloadList(new ExternalVideoPost(imageUrl, lolisafeParser.GetLoliSafeId(imageUrl),
-                    post.timestamp.ToString()));
-                AddToJsonQueue(
-                    new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));              
-            }
-        }
-
-        private void AddCatBoxUrl(Post post)
-        {
-            foreach (string imageUrl in catboxParser.SearchForCatBoxUrl(InlineSearch(post), blog.CatBoxType))
-            {
-                if (CheckIfSkipGif(imageUrl))
-                    continue;
-
-                AddToDownloadList(new ExternalVideoPost(imageUrl, catboxParser.GetCatBoxId(imageUrl),
-                    post.timestamp.ToString()));
-                AddToJsonQueue(
-                    new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));              
             }
         }
     }
