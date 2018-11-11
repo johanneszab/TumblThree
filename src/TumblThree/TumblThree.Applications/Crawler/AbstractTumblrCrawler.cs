@@ -17,6 +17,7 @@ namespace TumblThree.Applications.Crawler
 {
     public abstract class AbstractTumblrCrawler : AbstractCrawler
     {
+        protected readonly ITumblrParser tumblrParser;
         protected readonly IImgurParser imgurParser;
         protected readonly IGfycatParser gfycatParser;
         protected readonly IWebmshareParser webmshareParser;
@@ -28,12 +29,12 @@ namespace TumblThree.Applications.Crawler
 
         protected AbstractTumblrCrawler(IShellService shellService, ICrawlerService crawlerService, CancellationToken ct,
             PauseToken pt, IProgress<DownloadProgress> progress, IWebRequestFactory webRequestFactory,
-            ISharedCookieService cookieService, IImgurParser imgurParser, IGfycatParser gfycatParser,
+            ISharedCookieService cookieService, ITumblrParser tumblrParser, IImgurParser imgurParser, IGfycatParser gfycatParser,
             IWebmshareParser webmshareParser, IMixtapeParser mixtapeParser, IUguuParser uguuParser, ISafeMoeParser safemoeParser,
-            ILoliSafeParser lolisafeParser, ICatBoxParser catboxParser,
-            IPostQueue<TumblrPost> postQueue, IBlog blog)
+            ILoliSafeParser lolisafeParser, ICatBoxParser catboxParser, IPostQueue<TumblrPost> postQueue, IBlog blog)
             : base(shellService, crawlerService, ct, pt, progress, webRequestFactory, cookieService, postQueue, blog)
         {
+            this.tumblrParser = tumblrParser;
             this.imgurParser = imgurParser;
             this.gfycatParser = gfycatParser;
             this.webmshareParser = webmshareParser;
@@ -218,6 +219,59 @@ namespace TumblThree.Applications.Crawler
                 if (CheckIfSkipGif(imageUrl))
                     continue;
                 AddToDownloadList(new ExternalPhotoPost(imageUrl, imgurParser.GetImgurId(imageUrl), timestamp));
+            }
+        }
+
+        protected void AddTumblrPhotoUrl(string post)
+        {
+            foreach (string imageUrl in tumblrParser.SearchForTumblrPhotoUrl(post))
+            {
+                string url = imageUrl;
+                if (CheckIfSkipGif(url))
+                    continue;
+
+                url = ResizeTumblrImageUrl(url);
+                // TODO: postID
+                AddToDownloadList(new PhotoPost(url, Guid.NewGuid().ToString("N")));
+            }
+        }
+
+        protected void AddTumblrVideoUrl(string post)
+        {
+            foreach (string videoUrl in tumblrParser.SearchForTumblrVideoUrl(post))
+            {
+                string url = videoUrl;
+                if (shellService.Settings.VideoSize == 480)
+                    url += "_480";
+
+                AddToDownloadList(new VideoPost("https://vtt.tumblr.com/" + url + ".mp4", Guid.NewGuid().ToString("N")));
+            }
+        }
+
+        protected void AddGernicPhotoUrl(string post)
+        {
+            foreach (string imageUrl in tumblrParser.SearchForGenericPhotoUrl(post))
+            {
+                if (CheckIfSkipGif(imageUrl))
+                    continue;
+
+                AddToDownloadList(new PhotoPost(imageUrl, Guid.NewGuid().ToString("N")));
+            }
+        }
+
+        protected void AddGenericVideoUrl(string post)
+        {
+            foreach (string videoUrl in tumblrParser.SearchForGenericVideoUrl(post))
+            {
+                string url = videoUrl;
+                if (url.Contains("tumblr") && shellService.Settings.VideoSize == 480)
+                {
+                    int indexOfSuffix = url.LastIndexOf('.');
+                    if (indexOfSuffix >= 0)
+                        url = url.Insert(indexOfSuffix, "_480");
+                }
+
+                AddToDownloadList(new VideoPost(url, Guid.NewGuid().ToString("N")));
             }
         }
     }
