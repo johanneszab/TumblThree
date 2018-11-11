@@ -28,7 +28,6 @@ namespace TumblThree.Applications.Crawler
     public class TumblrBlogCrawler : AbstractTumblrCrawler, ICrawler
     {
         private readonly IDownloader downloader;
-        private readonly PauseToken pt;
         private readonly ITumblrToTextParser<Post> tumblrJsonParser;
         private readonly IImgurParser imgurParser;
         private readonly IGfycatParser gfycatParser;
@@ -54,10 +53,9 @@ namespace TumblThree.Applications.Crawler
             IWebmshareParser webmshareParser, IMixtapeParser mixtapeParser, IUguuParser uguuParser, ISafeMoeParser safemoeParser,
             ILoliSafeParser lolisafeParser, ICatBoxParser catboxParser, IPostQueue<TumblrPost> postQueue,
             IPostQueue<TumblrCrawlerData<Post>> jsonQueue, IBlog blog)
-            : base(shellService, crawlerService, ct, progress, webRequestFactory, cookieService, postQueue, blog)
+            : base(shellService, crawlerService, ct, pt, progress, webRequestFactory, cookieService, postQueue, blog)
         {
             this.downloader = downloader;
-            this.pt = pt;
             this.tumblrJsonParser = tumblrJsonParser;
             this.imgurParser = imgurParser;
             this.gfycatParser = gfycatParser;
@@ -182,9 +180,7 @@ namespace TumblThree.Applications.Crawler
         private static string GetApiUrl(string url, int count, int start = 0)
         {
             if (url.Last() != '/')
-            {
                 url += "/";
-            }
 
             url += "api/read/json?debug=1&";
 
@@ -314,15 +310,10 @@ namespace TumblThree.Applications.Crawler
                     break;
                 }
 
-                if (ct.IsCancellationRequested)
-                {
+                if (CheckifShouldStop())
                     break;
-                }
 
-                if (pt.IsPaused)
-                {
-                    pt.WaitWhilePausedWithResponseAsyc().Wait();
-                }
+                CheckIfShouldPause();
 
                 trackedTasks.Add(new Func<Task>(async () => { await CrawlPage(pageNumber); })());
             }
@@ -494,11 +485,9 @@ namespace TumblThree.Applications.Crawler
 
         private void AddAudioUrlToDownloadList(Post post)
         {
-            if (!blog.DownloadAudio)
-                return;
-            if (post.type != "audio")
-                return;
-            AddAudioUrl(post);
+            if (blog.DownloadAudio)
+                if (post.type == "audio")
+                    AddAudioUrl(post);
         }
 
         private void AddTextUrlToDownloadList(Post post)

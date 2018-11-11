@@ -23,10 +23,6 @@ namespace TumblThree.Applications.Crawler
     public class TumblrLikedByCrawler : AbstractTumblrCrawler, ICrawler
     {
         private readonly IDownloader downloader;
-        private readonly PauseToken pt;
-
-        private bool completeGrab = true;
-        private bool incompleteCrawl = false;
 
         private SemaphoreSlim semaphoreSlim;
         private List<Task> trackedTasks;
@@ -34,10 +30,9 @@ namespace TumblThree.Applications.Crawler
         public TumblrLikedByCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
             IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory,
             ISharedCookieService cookieService, IDownloader downloader, IPostQueue<TumblrPost> postQueue, IBlog blog)
-            : base(shellService, crawlerService, ct, progress, webRequestFactory, cookieService, postQueue, blog)
+            : base(shellService, crawlerService, ct, pt, progress, webRequestFactory, cookieService, postQueue, blog)
         {
             this.downloader = downloader;
-            this.pt = pt;
         }
 
         public async Task CrawlAsync()
@@ -173,15 +168,10 @@ namespace TumblThree.Applications.Crawler
         {
             while (true)
             {
-                if (ct.IsCancellationRequested)
-                {
+                if (CheckifShouldStop())
                     return;
-                }
 
-                if (pt.IsPaused)
-                {
-                    pt.WaitWhilePausedWithResponseAsyc().Wait();
-                }
+                CheckIfShouldPause();
 
                 string document = await GetRequestAsync(blog.Url + "/page/" + crawlerNumber + "/" + pagination);
                 if (document.Contains("<div class=\"no_posts_found\""))
@@ -242,7 +232,7 @@ namespace TumblThree.Applications.Crawler
                 if (imageUrl.Contains("avatar") || imageUrl.Contains("previews"))
                     continue;
                 if (CheckIfSkipGif(imageUrl))
-                    continue;               
+                    continue;
 
                 imageUrl = ResizeTumblrImageUrl(imageUrl);
                 // TODO: add valid postID
@@ -259,9 +249,9 @@ namespace TumblThree.Applications.Crawler
             {
                 string videoUrl = match.Groups[2].Value;
                 // TODO: add valid postID
-                if (shellService.Settings.VideoSize == 480)               
+                if (shellService.Settings.VideoSize == 480)
                     videoUrl += "_480";
-                
+
                 // TODO: add valid postID
                 AddToDownloadList(new VideoPost("https://vtt.tumblr.com/" + videoUrl + ".mp4",
                     Guid.NewGuid().ToString("N")));

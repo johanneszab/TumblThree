@@ -23,11 +23,7 @@ namespace TumblThree.Applications.Crawler
     public class TumblrSearchCrawler : AbstractTumblrCrawler, ICrawler
     {
         private readonly IDownloader downloader;
-        private readonly PauseToken pt;
         private string tumblrKey = string.Empty;
-
-        private bool completeGrab = true;
-        private bool incompleteCrawl = false;
 
         private SemaphoreSlim semaphoreSlim;
         private List<Task> trackedTasks;
@@ -35,10 +31,9 @@ namespace TumblThree.Applications.Crawler
         public TumblrSearchCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
             IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory,
             ISharedCookieService cookieService, IDownloader downloader, IPostQueue<TumblrPost> postQueue, IBlog blog)
-            : base(shellService, crawlerService, ct, progress, webRequestFactory, cookieService, postQueue, blog)
+            : base(shellService, crawlerService, ct, pt, progress, webRequestFactory, cookieService, postQueue, blog)
         {
             this.downloader = downloader;
-            this.pt = pt;
         }
 
         public async Task CrawlAsync()
@@ -152,15 +147,10 @@ namespace TumblThree.Applications.Crawler
         {
             while (true)
             {
-                if (ct.IsCancellationRequested)
-                {
+                if (CheckifShouldStop())
                     return;
-                }
 
-                if (pt.IsPaused)
-                {
-                    pt.WaitWhilePausedWithResponseAsyc().Wait();
-                }
+                CheckIfShouldPause();
 
                 var result = ConvertJsonToClass<TumblrSearchJson>(response);
                 if (string.IsNullOrEmpty(result.response.posts_html))

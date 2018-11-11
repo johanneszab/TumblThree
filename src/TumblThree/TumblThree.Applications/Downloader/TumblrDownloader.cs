@@ -59,12 +59,11 @@ namespace TumblThree.Applications.Downloader
         {
             if (!(downloadItem is PhotoPost))
                 return await base.DownloadBinaryPost(downloadItem);
+
             string url = Url(downloadItem);
 
             if (blog.ForceSize)
-            {
                 url = ResizeTumblrImageUrl(url);
-            }
 
             foreach (string host in shellService.Settings.TumblrHosts)
             {
@@ -86,11 +85,11 @@ namespace TumblThree.Applications.Downloader
         {
             if (shellService.Settings.ImageSize != "raw")
                 return url;
+
             string path = new Uri(url).LocalPath.TrimStart('/');
             var imageDimension = new Regex("_\\d+");
             path = imageDimension.Replace(path, "_raw");
             return "https://" + host + "/" + path;
-
         }
     }
 }

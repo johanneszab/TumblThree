@@ -27,7 +27,6 @@ namespace TumblThree.Applications.Crawler
     public class TumblrHiddenCrawler : AbstractTumblrCrawler, ICrawler
     {
         private readonly IDownloader downloader;
-        private readonly PauseToken pt;
         private readonly ITumblrToTextParser<Post> tumblrJsonParser;
         private readonly IImgurParser imgurParser;
         private readonly IGfycatParser gfycatParser;
@@ -42,7 +41,6 @@ namespace TumblThree.Applications.Crawler
 
         private string tumblrKey = string.Empty;
 
-        private bool completeGrab = true;
         private bool incompleteCrawl = false;
 
         private SemaphoreSlim semaphoreSlim;
@@ -55,10 +53,9 @@ namespace TumblThree.Applications.Crawler
             IWebmshareParser webmshareParser, IMixtapeParser mixtapeParser, IUguuParser uguuParser, ISafeMoeParser safemoeParser,
             ILoliSafeParser lolisafeParser, ICatBoxParser catboxParser, IPostQueue<TumblrPost> postQueue,
             IPostQueue<TumblrCrawlerData<Post>> jsonQueue, IBlog blog)
-            : base(shellService, crawlerService, ct, progress, webRequestFactory, cookieService, postQueue, blog)
+            : base(shellService, crawlerService, ct, pt, progress, webRequestFactory, cookieService, postQueue, blog)
         {
             this.downloader = downloader;
-            this.pt = pt;
             this.tumblrJsonParser = tumblrJsonParser;
             this.imgurParser = imgurParser;
             this.gfycatParser = gfycatParser;
@@ -104,7 +101,7 @@ namespace TumblThree.Applications.Crawler
                 return;
 
             try
-            {               
+            {
                 tumblrKey = await UpdateTumblrKey("https://www.tumblr.com/dashboard/blog/" + blog.Name);
                 string document = await GetSvcPageAsync("1", "0");
                 var response = ConvertJsonToClass<TumblrJson>(document);
@@ -308,9 +305,9 @@ namespace TumblThree.Applications.Crawler
 
         private async Task<string> GetSvcPageAsync(string limit, string offset)
         {
-            if (shellService.Settings.LimitConnections)            
+            if (shellService.Settings.LimitConnections)
                 crawlerService.Timeconstraint.Acquire();
-            
+
             return await RequestDataAsync(limit, offset);
         }
 
@@ -340,15 +337,10 @@ namespace TumblThree.Applications.Crawler
         {
             while (true)
             {
-                if (ct.IsCancellationRequested)
-                {
+                if (CheckifShouldStop())
                     return;
-                }
 
-                if (pt.IsPaused)
-                {
-                    pt.WaitWhilePausedWithResponseAsyc().Wait();
-                }
+                CheckIfShouldPause();
 
                 if (!CheckPostAge(response))
                 {
@@ -409,10 +401,7 @@ namespace TumblThree.Applications.Crawler
 
         private bool CheckIfDownloadRebloggedPosts(Post post)
         {
-            if (!blog.DownloadRebloggedPosts)            
-                return post.reblogged_from_tumblr_url == null;
-            
-            return true;
+            return blog.DownloadRebloggedPosts || post.reblogged_from_tumblr_url == null;
         }
 
         private void AddToJsonQueue(TumblrCrawlerData<Post> addToList)
@@ -451,9 +440,9 @@ namespace TumblThree.Applications.Crawler
                                        .FirstOrDefault() ??
                                   photo.alt_sizes.FirstOrDefault().url;
 
-                if (blog.SkipGif && imageUrl.EndsWith(".gif"))                
+                if (blog.SkipGif && imageUrl.EndsWith(".gif"))
                     continue;
-                
+
                 AddToDownloadList(new PhotoPost(imageUrl, postId, post.timestamp.ToString()));
                 AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
             }
@@ -469,9 +458,9 @@ namespace TumblThree.Applications.Crawler
 
                 if (imageUrl.Contains("avatar") || imageUrl.Contains("previews"))
                     continue;
-                if (blog.SkipGif && imageUrl.EndsWith(".gif"))                
+                if (blog.SkipGif && imageUrl.EndsWith(".gif"))
                     continue;
-                
+
                 AddToDownloadList(new PhotoPost(imageUrl, postId, post.timestamp.ToString()));
             }
         }
@@ -527,9 +516,9 @@ namespace TumblThree.Applications.Crawler
             {
                 string videoUrl = match.Groups[2].Value;
 
-                if (shellService.Settings.VideoSize == 480)                
+                if (shellService.Settings.VideoSize == 480)
                     videoUrl += "_480";
-                
+
                 videoUrls.Add("https://vtt.tumblr.com/" + videoUrl + ".mp4");
             }
         }
@@ -600,6 +589,7 @@ namespace TumblThree.Applications.Crawler
             string audioUrl = post.audio_url;
             if (!audioUrl.EndsWith(".mp3"))
                 audioUrl = audioUrl + ".mp3";
+
             AddToDownloadList(new AudioPost(audioUrl, postId, post.timestamp.ToString()));
             AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(audioUrl.Split('/').Last(), ".json"),
                 post));
@@ -742,7 +732,7 @@ namespace TumblThree.Applications.Crawler
                 string imageUrl = match.Groups[1].Value;
                 string imgurId = match.Groups[2].Value;
                 if (CheckIfSkipGif(imageUrl))
-                    continue;               
+                    continue;
 
                 AddToDownloadList(new ExternalPhotoPost(imageUrl, imgurId,
                     post.timestamp.ToString()));
@@ -808,7 +798,7 @@ namespace TumblThree.Applications.Crawler
                 string webmshareId = match.Groups[2].Value;
                 string imageUrl = webmshareParser.CreateWebmshareUrl(webmshareId, url, blog.WebmshareType);
                 if (CheckIfSkipGif(imageUrl))
-                    continue;   
+                    continue;
 
                 // TODO: postID
                 AddToDownloadList(new VideoPost(imageUrl, webmshareId,
