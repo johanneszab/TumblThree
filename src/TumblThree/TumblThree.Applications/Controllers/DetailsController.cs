@@ -195,6 +195,7 @@ namespace TumblThree.Applications.Controllers
             var value = (T)property.GetValue(blogs.FirstOrDefault());
             if (value == null)
                 return default(T);
+
             bool equal = blogs.All(blog => property.GetValue(blog)?.Equals(value) ?? false);
             return equal ? value : default(T);
         }
@@ -204,29 +205,20 @@ namespace TumblThree.Applications.Controllers
             PropertyInfo property = typeof(IBlog).GetProperty(propertyName);
             int numberOfBlogs = blogs.Count;
             int checkedBlogs = blogs.Select(blog => (bool)property.GetValue(blog)).Count(state => state);
-            if (checkedBlogs == numberOfBlogs)
-                return true;
-            if (checkedBlogs == 0)
-                return false;
-            //return null; // three-state checkbox for the details view?
-            return false;
+            return checkedBlogs == numberOfBlogs;
         }
 
         private void ClearBlogSelection()
         {
             if (blogsToSave.Any())
-            {
                 blogsToSave.Clear();
-            }
         }
 
         private void SelectedBlogFilesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (DetailsViewModel.BlogFile != null)
-            {
+            if (DetailsViewModel.BlogFile != null)            
                 DetailsViewModel.BlogFile.PropertyChanged -= ChangeBlogSettings;
-            }
-
+            
             SelectBlogFiles(selectionService.SelectedBlogFiles.ToArray());
         }
     }
