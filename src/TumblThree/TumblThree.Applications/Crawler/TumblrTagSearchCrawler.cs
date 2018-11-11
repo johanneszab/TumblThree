@@ -84,7 +84,7 @@ namespace TumblThree.Applications.Crawler
             {
                 await semaphoreSlim.WaitAsync();
 
-                trackedTasks.Add(new Func<Task>(async () => { await CrawlPage(pageNumber, crawlerTimeOffset); })());
+                trackedTasks.Add(CrawlPage(pageNumber, crawlerTimeOffset));
             }
 
             await Task.WhenAll(trackedTasks);
