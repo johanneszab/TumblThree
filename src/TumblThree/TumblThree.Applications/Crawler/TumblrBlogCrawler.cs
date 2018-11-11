@@ -25,6 +25,7 @@ namespace TumblThree.Applications.Crawler
 {
     [Export(typeof(ICrawler))]
     [ExportMetadata("BlogType", typeof(TumblrBlog))]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public class TumblrBlogCrawler : AbstractTumblrCrawler, ICrawler
     {
         private readonly IDownloader downloader;
@@ -476,8 +477,8 @@ namespace TumblThree.Applications.Crawler
 
             //var postCopy = (Post)post.Clone();
             AddInlineVideoUrl(videoUrls, post);
-            //AddInlineVttTumblrVideoUrl(videoUrls, post);
-            //AddInlineVeTumblrVideoUrl(videoUrls, post);
+            //AddInlineTumblrVideoUrl(videoUrls, post, new Regex("\"(https?://ve.media.tumblr.com/(tumblr_[\\w]*))"));
+            //AddInlineTumblrVideoUrl(videoUrls, post, new Regex("\"(https?://vtt.tumblr.com/(tumblr_[\\w]*))"));
             AddGenericInlineVideoUrl(videoUrls, post);
 
             AddInlineVideoUrlsToDownloader(videoUrls, post);
@@ -633,22 +634,8 @@ namespace TumblThree.Applications.Crawler
             }
         }
 
-        private void AddInlineVttTumblrVideoUrl(HashSet<string> videoUrls, Post post)
+        private void AddInlineTumblrVideoUrl(HashSet<string> videoUrls, Post post, Regex regex)
         {
-            var regex = new Regex("\"(https?://vtt.tumblr.com/(tumblr_[\\w]*))");
-            foreach (Match match in regex.Matches(InlineSearch(post)))
-            {
-                string videoUrl = match.Groups[1].Value;
-                if (shellService.Settings.VideoSize == 480)
-                    videoUrl += "_480";
-
-                videoUrls.Add(videoUrl + ".mp4");
-            }
-        }
-
-        private void AddInlineVeTumblrVideoUrl(HashSet<string> videoUrls, Post post)
-        {
-            var regex = new Regex("\"(https?://ve.media.tumblr.com/(tumblr_[\\w]*))");
             foreach (Match match in regex.Matches(InlineSearch(post)))
             {
                 string videoUrl = match.Groups[1].Value;
@@ -819,16 +806,12 @@ namespace TumblThree.Applications.Crawler
 
         private void AddWebmshareUrl(Post post)
         {
-            Regex regex = webmshareParser.GetWebmshareUrlRegex();
-            foreach (Match match in regex.Matches(InlineSearch(post)))
+            foreach (string imageUrl in webmshareParser.SearchForWebmshareUrl(InlineSearch(post), blog.WebmshareType))
             {
-                string webmshareId = match.Groups[2].Value;
-                string url = match.Groups[0].Value.Split('\"').First();
-                string imageUrl = webmshareParser.CreateWebmshareUrl(webmshareId, url, blog.WebmshareType);
                 if (CheckIfSkipGif(imageUrl))
                     continue;
 
-                AddToDownloadList(new ExternalVideoPost(imageUrl, webmshareId,
+                AddToDownloadList(new ExternalVideoPost(imageUrl, webmshareParser.GetWebmshareId(imageUrl),
                     post.unix_timestamp.ToString()));
                 AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"),
                     post));
@@ -837,121 +820,73 @@ namespace TumblThree.Applications.Crawler
 
         private void AddMixtapeUrl(Post post)
         {
-            Regex regex = mixtapeParser.GetMixtapeUrlRegex();
-            string[] parts = InlineSearch(post).Split(new string[] { "href=" }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (string part in parts)
+            foreach (string imageUrl in mixtapeParser.SearchForMixtapeUrl(InlineSearch(post), blog.MixtapeType))
             {
-                foreach (Match match in regex.Matches(part))
-                {
-                    string temp = match.Groups[0].ToString();
-                    string id = match.Groups[2].Value;
-                    string url = temp.Split('\"').First();
+                if (CheckIfSkipGif(imageUrl))
+                    continue;
 
-                    string imageUrl = mixtapeParser.CreateMixtapeUrl(id, url, blog.MixtapeType);
-                    if (CheckIfSkipGif(imageUrl))
-                        continue;
-
-                    AddToDownloadList(new ExternalVideoPost(imageUrl, id,
-                        post.unix_timestamp.ToString()));
-                    AddToJsonQueue(
-                        new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
-                }
+                AddToDownloadList(new ExternalVideoPost(imageUrl, mixtapeParser.GetMixtapeId(imageUrl),
+                    post.unix_timestamp.ToString()));
+                AddToJsonQueue(
+                    new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
             }
         }
 
         private void AddUguuUrl(Post post)
         {
-            Regex regex = uguuParser.GetUguuUrlRegex();
-            string[] parts = InlineSearch(post).Split(new[] { "href=" }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (string part in parts)
+            foreach (string imageUrl in uguuParser.SearchForUguuUrl(InlineSearch(post), blog.UguuType))
             {
-                foreach (Match match in regex.Matches(part))
-                {
-                    string temp = match.Groups[0].ToString();
-                    string id = match.Groups[2].Value;
-                    string url = temp.Split('\"').First();
+                if (CheckIfSkipGif(imageUrl))
+                    continue;
 
-                    string imageUrl = uguuParser.CreateUguuUrl(id, url, blog.UguuType);
-                    if (CheckIfSkipGif(imageUrl))
-                        continue;
-
-                    AddToDownloadList(new ExternalVideoPost(imageUrl, id,
-                        post.unix_timestamp.ToString()));
-                    AddToJsonQueue(
-                        new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
-                }
+                AddToDownloadList(new ExternalVideoPost(imageUrl, uguuParser.GetUguuId(imageUrl),
+                    post.unix_timestamp.ToString()));
+                AddToJsonQueue(
+                    new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
+                
             }
         }
 
         private void AddSafeMoeUrl(Post post)
         {
-            Regex regex = safemoeParser.GetSafeMoeUrlRegex();
-            string[] parts = InlineSearch(post).Split(new[] { "href=" }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (string part in parts)
+            foreach (string imageUrl in safemoeParser.SearchForSafeMoeUrl(InlineSearch(post), blog.SafeMoeType))
             {
-                foreach (Match match in regex.Matches(part))
-                {
-                    string temp = match.Groups[0].ToString();
-                    string id = match.Groups[2].Value;
-                    string url = temp.Split('\"').First();
+                if (CheckIfSkipGif(imageUrl))
+                    continue;
 
-                    string imageUrl = safemoeParser.CreateSafeMoeUrl(id, url, blog.SafeMoeType);
-                    if (CheckIfSkipGif(imageUrl))
-                        continue;
-
-                    AddToDownloadList(new ExternalVideoPost(imageUrl, id,
-                        post.unix_timestamp.ToString()));
-                    AddToJsonQueue(
-                        new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
-                }
+                AddToDownloadList(new ExternalVideoPost(imageUrl, safemoeParser.GetSafeMoeId(imageUrl),
+                    post.unix_timestamp.ToString()));
+                AddToJsonQueue(
+                    new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
+                
             }
         }
 
         private void AddLoliSafeUrl(Post post)
         {
-            Regex regex = lolisafeParser.GetLoliSafeUrlRegex();
-            string[] parts = InlineSearch(post).Split(new[] { "href=" }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (string part in parts)
+            foreach (string imageUrl in lolisafeParser.SearchForLoliSafeUrl(InlineSearch(post), blog.LoliSafeType))
             {
-                foreach (Match match in regex.Matches(part))
-                {
-                    string temp = match.Groups[0].ToString();
-                    string id = match.Groups[2].Value;
-                    string url = temp.Split('\"').First();
+                if (CheckIfSkipGif(imageUrl))
+                    continue;
 
-                    string imageUrl = lolisafeParser.CreateLoliSafeUrl(id, url, blog.LoliSafeType);
-                    if (CheckIfSkipGif(imageUrl))
-                        continue;
-
-                    AddToDownloadList(new ExternalVideoPost(imageUrl, id,
-                        post.unix_timestamp.ToString()));
-                    AddToJsonQueue(
-                        new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
-                }
+                AddToDownloadList(new ExternalVideoPost(imageUrl, lolisafeParser.GetLoliSafeId(imageUrl),
+                    post.unix_timestamp.ToString()));
+                AddToJsonQueue(
+                    new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));               
             }
         }
 
         private void AddCatBoxUrl(Post post)
         {
-            Regex regex = catboxParser.GetCatBoxUrlRegex();
-            string[] parts = InlineSearch(post).Split(new string[] { "href=" }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (string part in parts)
+            foreach (string imageUrl in catboxParser.SearchForCatBoxUrl(InlineSearch(post), blog.CatBoxType))
             {
-                foreach (Match match in regex.Matches(part))
-                {
-                    string temp = match.Groups[0].ToString();
-                    string id = match.Groups[2].Value;
-                    string url = temp.Split('\"').First();
-
-                    string imageUrl = catboxParser.CreateCatBoxUrl(id, url, blog.CatBoxType);
-                    if (CheckIfSkipGif(imageUrl))
+                if (CheckIfSkipGif(imageUrl))
                         continue;
 
-                    AddToDownloadList(new ExternalVideoPost(imageUrl, id,
-                        post.unix_timestamp.ToString()));
-                    AddToJsonQueue(
-                        new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
-                }
+                AddToDownloadList(new ExternalVideoPost(imageUrl, catboxParser.GetCatBoxId(imageUrl),
+                    post.unix_timestamp.ToString()));
+                AddToJsonQueue(
+                    new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));                       
             }
         }
     }
