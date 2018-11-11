@@ -188,5 +188,37 @@ namespace TumblThree.Applications.Crawler
                     timestamp));
             }
         }
+
+        protected async Task AddGfycatUrl(string post, string timestamp)
+        {
+            foreach (string videoUrl in await gfycatParser.SearchForGfycatUrlAsync(post, blog.GfycatType))
+            {
+                if (CheckIfSkipGif(videoUrl))
+                    continue;
+
+                AddToDownloadList(new ExternalVideoPost(videoUrl, gfycatParser.GetGfycatId(videoUrl), timestamp));
+            }
+        }
+
+        protected void AddImgurUrl(string post, string timestamp)
+        {
+            foreach (string imageUrl in imgurParser.SearchForImgurUrl(post))
+            {
+                if (CheckIfSkipGif(imageUrl))
+                    continue;
+
+                AddToDownloadList(new ExternalPhotoPost(imageUrl, imgurParser.GetImgurId(imageUrl), timestamp));
+            }
+        }
+
+        protected async Task AddImgurAlbumUrl(string post, string timestamp)
+        {
+            foreach (string imageUrl in await imgurParser.SearchForImgurUrlFromAlbumAsync(post))
+            {
+                if (CheckIfSkipGif(imageUrl))
+                    continue;
+                AddToDownloadList(new ExternalPhotoPost(imageUrl, imgurParser.GetImgurId(imageUrl), timestamp));
+            }
+        }
     }
 }

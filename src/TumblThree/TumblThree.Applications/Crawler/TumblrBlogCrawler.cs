@@ -681,9 +681,11 @@ namespace TumblThree.Applications.Crawler
             string searchableText = InlineSearch(post);
             string timestamp = post.timestamp.ToString();
 
-            if (blog.DownloadImgur) await AddImgurUrl(post);
+            if (blog.DownloadImgur) AddImgurUrl(searchableText, timestamp);
 
-            if (blog.DownloadGfycat) await AddGfycatUrl(post);
+            if (blog.DownloadImgur) await AddImgurAlbumUrl(searchableText, timestamp);
+
+            if (blog.DownloadGfycat) await AddGfycatUrl(searchableText, timestamp);
 
             if (blog.DownloadWebmshare) AddWebmshareUrl(searchableText, timestamp);
 
@@ -696,72 +698,6 @@ namespace TumblThree.Applications.Crawler
             if (blog.DownloadLoliSafe) AddLoliSafeUrl(searchableText, timestamp);
 
             if (blog.DownloadCatBox) AddCatBoxUrl(searchableText, timestamp);
-        }
-
-        private async Task AddImgurUrl(Post post)
-        {
-            // single linked images
-            Regex regex = imgurParser.GetImgurImageRegex();
-            foreach (Match match in regex.Matches(post.caption))
-            {
-                string imageUrl = match.Groups[1].Value;
-                string imgurId = match.Groups[2].Value;
-                if (CheckIfSkipGif(imageUrl))
-                    continue;
-
-                AddToDownloadList(new ExternalPhotoPost(imageUrl, imgurId,
-                    post.timestamp.ToString()));
-                AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"),
-                    post));
-            }
-
-            // album urls
-            regex = imgurParser.GetImgurAlbumRegex();
-            foreach (Match match in regex.Matches(post.caption))
-            {
-                string albumUrl = match.Groups[1].Value;
-                string imgurId = match.Groups[2].Value;
-                string album = await imgurParser.RequestImgurAlbumSite(albumUrl);
-
-                Regex hashRegex = imgurParser.GetImgurAlbumHashRegex();
-                MatchCollection hashMatches = hashRegex.Matches(album);
-                List<string> hashes = hashMatches.Cast<Match>().Select(hashMatch => hashMatch.Groups[1].Value).ToList();
-
-                Regex extRegex = imgurParser.GetImgurAlbumExtRegex();
-                MatchCollection extMatches = extRegex.Matches(album);
-                List<string> exts = extMatches.Cast<Match>().Select(extMatch => extMatch.Groups[1].Value).ToList();
-
-                IEnumerable<string> imageUrls = hashes.Zip(exts, (hash, ext) => "https://i.imgur.com/" + hash + ext);
-
-                foreach (string imageUrl in imageUrls)
-                {
-                    if (CheckIfSkipGif(imageUrl))
-                        continue;
-                    AddToDownloadList(new ExternalPhotoPost(imageUrl, imgurId,
-                        post.timestamp.ToString()));
-                    AddToJsonQueue(
-                        new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
-                }
-            }
-        }
-
-        private async Task AddGfycatUrl(Post post)
-        {
-            Regex regex = gfycatParser.GetGfycatUrlRegex();
-            foreach (Match match in regex.Matches(post.caption))
-            {
-                string gfyId = match.Groups[2].Value;
-                string videoUrl = gfycatParser.ParseGfycatCajaxResponse(await gfycatParser.RequestGfycatCajax(gfyId),
-                    blog.GfycatType);
-                if (CheckIfSkipGif(videoUrl))
-                    continue;
-
-                // TODO: postID
-                AddToDownloadList(new VideoPost(videoUrl, gfyId,
-                    post.timestamp.ToString()));
-                AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(videoUrl.Split('/').Last(), ".json"),
-                    post));
-            }
         }
     }
 }
