@@ -22,7 +22,6 @@ namespace TumblThree.Applications.Crawler
     public class TumblrBlogCrawler : AbstractTumblrCrawler, ICrawler
     {
         private readonly IDownloader downloader;
-        private readonly PauseToken pt;
 
         private SemaphoreSlim semaphoreSlim;
         private List<Task> trackedTasks;
@@ -30,10 +29,9 @@ namespace TumblThree.Applications.Crawler
         public TumblrBlogCrawler(IShellService shellService, CancellationToken ct, PauseToken pt,
             IProgress<DownloadProgress> progress, ICrawlerService crawlerService, IWebRequestFactory webRequestFactory,
             ISharedCookieService cookieService, IDownloader downloader, IPostQueue<TumblrPost> postQueue, IBlog blog)
-            : base(shellService, crawlerService, ct, progress, webRequestFactory, cookieService, postQueue, blog)
+            : base(shellService, crawlerService, ct, pt, progress, webRequestFactory, cookieService, postQueue, blog)
         {
             this.downloader = downloader;
-            this.pt = pt;
         }
 
         public override async Task IsBlogOnlineAsync()
@@ -139,15 +137,10 @@ namespace TumblThree.Applications.Crawler
         {
             while (true)
             {
-                if (ct.IsCancellationRequested)
-                {
+                if (CheckifShouldStop())
                     return;
-                }
 
-                if (pt.IsPaused)
-                {
-                    pt.WaitWhilePausedWithResponseAsyc().Wait();
-                }
+                CheckIfShouldPause();
 
                 AddPhotoUrlToDownloadList(document);
                 AddVideoUrlToDownloadList(document);
@@ -175,10 +168,8 @@ namespace TumblThree.Applications.Crawler
                 string imageUrl = match.Groups[1].Value;
                 if (imageUrl.Contains("avatar") || imageUrl.Contains("previews"))
                     continue;
-                if (blog.SkipGif && imageUrl.EndsWith(".gif"))
-                {
+                if (CheckIfSkipGif(imageUrl))
                     continue;
-                }
 
                 imageUrl = ResizeTumblrImageUrl(imageUrl);
                 // TODO: postID
@@ -195,6 +186,7 @@ namespace TumblThree.Applications.Crawler
             foreach (Match match in regex.Matches(document))
             {
                 string videoUrl = match.Groups[0].Value;
+
                 if (shellService.Settings.VideoSize == 1080)
                 {
                     // TODO: postID
