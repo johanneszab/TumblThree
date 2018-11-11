@@ -53,21 +53,17 @@ namespace TumblThree.Applications.Downloader
                     pt.WaitWhilePausedWithResponseAsyc().Wait();
                 }
 
-                trackedTasks.Add(new Func<Task>(async () =>
-                {
-                    try
-                    {
-                        await DownloadTextPost(downloadItem);
-                    }
-                    catch
-                    {
-                    }
-                })());
+                trackedTasks.Add(DownloadPost(downloadItem));
             }
 
+            await Task.WhenAll(trackedTasks);
+        }
+
+        private async Task DownloadPost(TumblrCrawlerData<T> downloadItem)
+        {
             try
             {
-                await Task.WhenAll(trackedTasks);
+                await DownloadTextPost(downloadItem);
             }
             catch
             {

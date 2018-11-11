@@ -166,9 +166,10 @@ namespace TumblThree.Applications.Downloader
 
                 CheckIfShouldPause();
 
-                trackedTasks.Add(new Func<Task>(async () => { await DownloadPost(downloadItem); })());
+                trackedTasks.Add(DownloadPost(downloadItem));
             }
 
+            // TODO: Is this even right? 
             try
             {
                 await Task.WhenAll(trackedTasks);
