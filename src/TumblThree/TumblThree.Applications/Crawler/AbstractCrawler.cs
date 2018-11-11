@@ -90,10 +90,9 @@ namespace TumblThree.Applications.Crawler
 
         protected async Task<T> ThrottleConnectionAsync<T>(string url, Func<string, Task<T>> method)
         {
-            if (!shellService.Settings.LimitConnections)
-                return await method(url);
+            if (shellService.Settings.LimitConnections)           
+                crawlerService.Timeconstraint.Acquire();
 
-            crawlerService.Timeconstraint.Acquire();
             return await method(url);
         }
 
@@ -237,7 +236,7 @@ namespace TumblThree.Applications.Crawler
             shellService.ShowError(timeoutException, Resources.TimeoutReached, duringAction, blog.Name);
         }
 
-        protected bool HandleWebExceptionServiceUnavailable(WebException webException)
+        protected bool HandleServiceUnavailableWebException(WebException webException)
         {
             var resp = (HttpWebResponse)webException.Response;
             if (resp.StatusCode != HttpStatusCode.ServiceUnavailable)
@@ -248,7 +247,7 @@ namespace TumblThree.Applications.Crawler
             return true;
         }
 
-        protected bool HandleWebExceptionNotFound(WebException webException)
+        protected bool HandleNotFoundWebException(WebException webException)
         {
             var resp = (HttpWebResponse)webException.Response;
             if (resp.StatusCode != HttpStatusCode.NotFound)
@@ -259,7 +258,7 @@ namespace TumblThree.Applications.Crawler
             return true;
         }
 
-        protected bool HandleWebExceptionLimitExceeded(WebException webException)
+        protected bool HandleLimitExceededWebException(WebException webException)
         {
             var resp = (HttpWebResponse)webException.Response;
             if ((int)resp.StatusCode != 429)
@@ -270,7 +269,7 @@ namespace TumblThree.Applications.Crawler
             return true;
         }
 
-        protected bool HandleWebExceptionUnauthorized(WebException webException)
+        protected bool HandleUnauthorizedWebException(WebException webException)
         {
             var resp = (HttpWebResponse)webException.Response;
             if (resp.StatusCode != HttpStatusCode.Unauthorized)

@@ -114,10 +114,9 @@ namespace TumblThree.Applications.Crawler
 
         private async Task<string> GetSearchPageAsync(int pageNumber)
         {
-            if (!shellService.Settings.LimitConnections)
-                return await RequestPostAsync(pageNumber);
+            if (shellService.Settings.LimitConnections)
+                crawlerService.Timeconstraint.Acquire();
 
-            crawlerService.Timeconstraint.Acquire();
             return await RequestPostAsync(pageNumber);
         }
 
@@ -200,10 +199,8 @@ namespace TumblThree.Applications.Crawler
                 string imageUrl = match.Groups[1].Value;
                 if (imageUrl.Contains("avatar") || imageUrl.Contains("previews"))
                     continue;
-                if (blog.SkipGif && imageUrl.EndsWith(".gif"))
-                {
+                if (CheckIfSkipGif(imageUrl))
                     continue;
-                }
 
                 imageUrl = ResizeTumblrImageUrl(imageUrl);
                 // TODO: postID
@@ -219,20 +216,12 @@ namespace TumblThree.Applications.Crawler
             foreach (Match match in regex.Matches(document))
             {
                 string videoUrl = match.Groups[2].Value;
-                // TODO: postId
-                if (shellService.Settings.VideoSize == 1080)
-                {
-                    // TODO: postID
-                    AddToDownloadList(new VideoPost("https://vtt.tumblr.com/" + videoUrl + ".mp4",
-                        Guid.NewGuid().ToString("N")));
-                }
-                else if (shellService.Settings.VideoSize == 480)
-                {
-                    // TODO: postID
-                    AddToDownloadList(new VideoPost(
-                        "https://vtt.tumblr.com/" + videoUrl + "_480.mp4",
-                        Guid.NewGuid().ToString("N")));
-                }
+
+                if (shellService.Settings.VideoSize == 480)
+                    videoUrl += "_480";
+
+                // TODO: postID
+                AddToDownloadList(new VideoPost("https://vtt.tumblr.com/" + videoUrl + ".mp4", Guid.NewGuid().ToString("N")));
             }
         }
     }

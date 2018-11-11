@@ -140,15 +140,13 @@ namespace TumblThree.Applications.Crawler
 
         private long CreateStartPagination()
         {
-            long pagination = DateTimeOffset.Now.ToUnixTimeSeconds();
             if (string.IsNullOrEmpty(blog.DownloadTo))
-                return pagination;
+                return DateTimeOffset.Now.ToUnixTimeSeconds();
+
             DateTime downloadTo = DateTime.ParseExact(blog.DownloadTo, "yyyyMMdd", CultureInfo.InvariantCulture,
                 DateTimeStyles.None);
             var dateTimeOffset = new DateTimeOffset(downloadTo);
-            pagination = dateTimeOffset.ToUnixTimeSeconds();
-
-            return pagination;
+            return dateTimeOffset.ToUnixTimeSeconds();
         }
 
         private bool CheckIfPagecountReached(int pageCount)
@@ -226,6 +224,7 @@ namespace TumblThree.Applications.Crawler
         {
             if (string.IsNullOrEmpty(blog.DownloadFrom))
                 return true;
+
             DateTime downloadFrom = DateTime.ParseExact(blog.DownloadFrom, "yyyyMMdd", CultureInfo.InvariantCulture,
                 DateTimeStyles.None);
             var dateTimeOffset = new DateTimeOffset(downloadFrom);
@@ -242,10 +241,8 @@ namespace TumblThree.Applications.Crawler
                 string imageUrl = match.Groups[1].Value;
                 if (imageUrl.Contains("avatar") || imageUrl.Contains("previews"))
                     continue;
-                if (blog.SkipGif && imageUrl.EndsWith(".gif"))
-                {
-                    continue;
-                }
+                if (CheckIfSkipGif(imageUrl))
+                    continue;               
 
                 imageUrl = ResizeTumblrImageUrl(imageUrl);
                 // TODO: add valid postID
@@ -262,11 +259,9 @@ namespace TumblThree.Applications.Crawler
             {
                 string videoUrl = match.Groups[2].Value;
                 // TODO: add valid postID
-                if (shellService.Settings.VideoSize == 480)
-                {
+                if (shellService.Settings.VideoSize == 480)               
                     videoUrl += "_480";
-                }
-
+                
                 // TODO: add valid postID
                 AddToDownloadList(new VideoPost("https://vtt.tumblr.com/" + videoUrl + ".mp4",
                     Guid.NewGuid().ToString("N")));

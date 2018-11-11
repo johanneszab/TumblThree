@@ -90,5 +90,10 @@ namespace TumblThree.Applications.Crawler
                 tags = blog.Tags.Split(',').Select(x => x.Trim()).ToList();
             }
         }
+
+        protected bool CheckIfSkipGif(string imageUrl)
+        {
+            return blog.SkipGif && imageUrl.EndsWith(".gif") || imageUrl.EndsWith(".gifv");
+        }
     }
 }
