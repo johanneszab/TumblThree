@@ -33,13 +33,14 @@ namespace TumblThree.Applications.Crawler
         protected readonly object lockObjectProgress = new object();
         protected readonly ICrawlerService crawlerService;
         protected readonly IShellService shellService;
+        protected readonly PauseToken pt;
         protected readonly CancellationToken ct;
         protected readonly IPostQueue<TumblrPost> postQueue;
         protected ConcurrentBag<TumblrPost> statisticsBag = new ConcurrentBag<TumblrPost>();
         protected List<string> tags = new List<string>();
         protected int numberOfPagesCrawled = 0;
 
-        protected AbstractCrawler(IShellService shellService, ICrawlerService crawlerService, CancellationToken ct,
+        protected AbstractCrawler(IShellService shellService, ICrawlerService crawlerService, CancellationToken ct, PauseToken pt,
             IProgress<DownloadProgress> progress, IWebRequestFactory webRequestFactory, ISharedCookieService cookieService,
             IPostQueue<TumblrPost> postQueue, IBlog blog)
         {
@@ -49,6 +50,7 @@ namespace TumblThree.Applications.Crawler
             this.cookieService = cookieService;
             this.postQueue = postQueue;
             this.blog = blog;
+            this.pt = pt;
             this.ct = ct;
             this.progress = progress;
         }
@@ -90,10 +92,9 @@ namespace TumblThree.Applications.Crawler
 
         protected async Task<T> ThrottleConnectionAsync<T>(string url, Func<string, Task<T>> method)
         {
-            if (!shellService.Settings.LimitConnections)
-                return await method(url);
+            if (shellService.Settings.LimitConnections)
+                crawlerService.Timeconstraint.Acquire();
 
-            crawlerService.Timeconstraint.Acquire();
             return await method(url);
         }
 
@@ -230,6 +231,17 @@ namespace TumblThree.Applications.Crawler
             statisticsBag = null;
         }
 
+        protected bool CheckifShouldStop()
+        {
+            return ct.IsCancellationRequested;
+        }
+
+        protected void CheckIfShouldPause()
+        {
+            if (pt.IsPaused)
+                pt.WaitWhilePausedWithResponseAsyc().Wait();
+        }
+
         protected void HandleTimeoutException(TimeoutException timeoutException, string duringAction)
         {
             Logger.Error("{0}, {1}", string.Format(CultureInfo.CurrentCulture, Resources.TimeoutReached, blog.Name),
@@ -237,7 +249,7 @@ namespace TumblThree.Applications.Crawler
             shellService.ShowError(timeoutException, Resources.TimeoutReached, duringAction, blog.Name);
         }
 
-        protected bool HandleWebExceptionServiceUnavailable(WebException webException)
+        protected bool HandleServiceUnavailableWebException(WebException webException)
         {
             var resp = (HttpWebResponse)webException.Response;
             if (resp.StatusCode != HttpStatusCode.ServiceUnavailable)
@@ -248,7 +260,7 @@ namespace TumblThree.Applications.Crawler
             return true;
         }
 
-        protected bool HandleWebExceptionNotFound(WebException webException)
+        protected bool HandleNotFoundWebException(WebException webException)
         {
             var resp = (HttpWebResponse)webException.Response;
             if (resp.StatusCode != HttpStatusCode.NotFound)
@@ -259,7 +271,7 @@ namespace TumblThree.Applications.Crawler
             return true;
         }
 
-        protected bool HandleWebExceptionLimitExceeded(WebException webException)
+        protected bool HandleLimitExceededWebException(WebException webException)
         {
             var resp = (HttpWebResponse)webException.Response;
             if ((int)resp.StatusCode != 429)
@@ -270,7 +282,7 @@ namespace TumblThree.Applications.Crawler
             return true;
         }
 
-        protected bool HandleWebExceptionUnauthorized(WebException webException)
+        protected bool HandleUnauthorizedWebException(WebException webException)
         {
             var resp = (HttpWebResponse)webException.Response;
             if (resp.StatusCode != HttpStatusCode.Unauthorized)
