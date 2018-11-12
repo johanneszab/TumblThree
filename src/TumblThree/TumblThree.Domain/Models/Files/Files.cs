@@ -73,19 +73,24 @@ namespace TumblThree.Domain.Models.Files
         {
             try
             {
-                using (var stream = new FileStream(fileLocation,
-                    FileMode.Open, FileAccess.Read, FileShare.Read))
-                {
-                    var serializer = new DataContractJsonSerializer(GetType());
-                    var file = (Files)serializer.ReadObject(stream);
-                    file.Location = Path.Combine((Directory.GetParent(fileLocation).FullName));
-                    return file;
-                }
+                return LoadCore(fileLocation);
             }
             catch (Exception ex) when (ex is SerializationException || ex is FileNotFoundException)
             {
                 ex.Data.Add("Filename", fileLocation);
                 throw;
+            }
+        }
+
+        private IFiles LoadCore(string fileLocation)
+        {
+            using (var stream = new FileStream(fileLocation,
+                FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                var serializer = new DataContractJsonSerializer(GetType());
+                var file = (Files)serializer.ReadObject(stream);
+                file.Location = Path.Combine((Directory.GetParent(fileLocation).FullName));
+                return file;
             }
         }
 
@@ -99,32 +104,14 @@ namespace TumblThree.Domain.Models.Files
             {
                 if (File.Exists(currentIndex))
                 {
-                    using (var stream = new FileStream(newIndex, FileMode.Create, FileAccess.Write))
-                    {
-                        using (XmlDictionaryWriter writer = JsonReaderWriterFactory.CreateJsonWriter(
-                            stream, Encoding.UTF8, true, true, "  "))
-                        {
-                            var serializer = new DataContractJsonSerializer(GetType());
-                            serializer.WriteObject(writer, this);
-                            writer.Flush();
-                        }
-                    }
+                    SaveBlog(newIndex);
 
                     File.Replace(newIndex, currentIndex, backupIndex, true);
                     File.Delete(backupIndex);
                 }
                 else
                 {
-                    using (var stream = new FileStream(currentIndex, FileMode.Create, FileAccess.Write))
-                    {
-                        using (XmlDictionaryWriter writer = JsonReaderWriterFactory.CreateJsonWriter(
-                            stream, Encoding.UTF8, true, true, "  "))
-                        {
-                            var serializer = new DataContractJsonSerializer(GetType());
-                            serializer.WriteObject(writer, this);
-                            writer.Flush();
-                        }
-                    }
+                    SaveBlog(currentIndex);
                 }
 
                 return true;
@@ -133,6 +120,20 @@ namespace TumblThree.Domain.Models.Files
             {
                 Logger.Error("Files:Save: {0}", ex);
                 throw;
+            }
+        }
+
+        private void SaveBlog(string path)
+        {
+            using (var stream = new FileStream(path, FileMode.Create, FileAccess.Write))
+            {
+                using (XmlDictionaryWriter writer = JsonReaderWriterFactory.CreateJsonWriter(
+                    stream, Encoding.UTF8, true, true, "  "))
+                {
+                    var serializer = new DataContractJsonSerializer(GetType());
+                    serializer.WriteObject(writer, this);
+                    writer.Flush();
+                }
             }
         }
 

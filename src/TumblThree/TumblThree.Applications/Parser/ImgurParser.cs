@@ -23,30 +23,15 @@ namespace TumblThree.Applications.Parser
             this.ct = ct;
         }
 
-        public string GetImgurId(string url)
-        {
-            return GetImgurImageRegex().Match(url).Groups[2].Value;
-        }
+        public string GetImgurId(string url) => GetImgurImageRegex().Match(url).Groups[2].Value;
 
-        public Regex GetImgurImageRegex()
-        {
-            return new Regex("(http[A-Za-z0-9_/:.]*i.imgur.com/([A-Za-z0-9_]*)(.jpg|.png|.gif|.gifv))");
-        }
+        public Regex GetImgurImageRegex() => new Regex("(http[A-Za-z0-9_/:.]*i.imgur.com/([A-Za-z0-9_]*)(.jpg|.png|.gif|.gifv))");
 
-        public Regex GetImgurAlbumRegex()
-        {
-            return new Regex("(http[A-Za-z0-9_/:.]*imgur.com/[aA]/([A-Za-z0-9_]*))");
-        }
+        public Regex GetImgurAlbumRegex() => new Regex("(http[A-Za-z0-9_/:.]*imgur.com/[aA]/([A-Za-z0-9_]*))");
 
-        public Regex GetImgurAlbumHashRegex()
-        {
-            return new Regex("\"hash\":\"([a-zA-Z0-9]*)\"");
-        }
+        public Regex GetImgurAlbumHashRegex() => new Regex("\"hash\":\"([a-zA-Z0-9]*)\"");
 
-        public Regex GetImgurAlbumExtRegex()
-        {
-            return new Regex("\"ext\":\"([.a-zA-Z0-9]*)\"");
-        }
+        public Regex GetImgurAlbumExtRegex() => new Regex("\"ext\":\"([.a-zA-Z0-9]*)\"");
 
         public virtual async Task<string> RequestImgurAlbumSite(string imgurAlbumUrl)
         {

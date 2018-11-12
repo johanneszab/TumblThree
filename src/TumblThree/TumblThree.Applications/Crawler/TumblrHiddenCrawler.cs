@@ -110,15 +110,15 @@ namespace TumblThree.Applications.Crawler
         {
             Logger.Verbose("TumblrHiddenCrawler.Crawl:Start");
 
-            Task<Tuple<ulong, bool>> grabber = GetUrlsAsync();
+            ulong highestId = await GetHighestPostIdAsync();
+            Task<bool> grabber = GetUrlsAsync();
             Task<bool> download = downloader.DownloadBlogAsync();
 
             Task crawlerDownloader = Task.CompletedTask;
             if (blog.DumpCrawlerData)
                 crawlerDownloader = crawlerDataDownloader.DownloadCrawlerDataAsync();
 
-            Tuple<ulong, bool> grabberResult = await grabber;
-            bool apiLimitHit = grabberResult.Item2;
+            bool apiLimitHit = await grabber;
 
             UpdateProgressQueueInformation(Resources.ProgressUniqueDownloads);
             blog.DuplicatePhotos = DetermineDuplicates<PhotoPost>();
@@ -136,7 +136,7 @@ namespace TumblThree.Applications.Crawler
                 blog.LastCompleteCrawl = DateTime.Now;
                 if (finishedDownloading && !apiLimitHit)
                 {
-                    blog.LastId = grabberResult.Item1;
+                    blog.LastId = highestId;
                 }
             }
 
@@ -155,7 +155,7 @@ namespace TumblThree.Applications.Crawler
                 : RangeToSequence(blog.DownloadPages);
         }
 
-        private async Task<Tuple<ulong, bool>> GetUrlsAsync()
+        private async Task<bool> GetUrlsAsync()
         {
             semaphoreSlim = new SemaphoreSlim(shellService.Settings.ConcurrentScans);
             trackedTasks = new List<Task>();
@@ -169,10 +169,8 @@ namespace TumblThree.Applications.Crawler
                 shellService.ShowError(new Exception("User not logged in"), Resources.NotLoggedIn, blog.Name);
                 postQueue.CompleteAdding();
                 incompleteCrawl = true;
-                return new Tuple<ulong, bool>(highestId, incompleteCrawl);
+                return incompleteCrawl;
             }
-
-            highestId = await GetHighestPostIdAsync();
 
             foreach (int pageNumber in GetPageNumbers())
             {
@@ -187,7 +185,7 @@ namespace TumblThree.Applications.Crawler
 
             UpdateBlogStats();
 
-            return new Tuple<ulong, bool>(highestId, incompleteCrawl);
+            return incompleteCrawl;
         }
 
         private async Task CrawlPage(int pageNumber)

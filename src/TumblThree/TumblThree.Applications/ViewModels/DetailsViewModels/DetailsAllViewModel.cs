@@ -49,18 +49,14 @@ namespace TumblThree.Applications.ViewModels.DetailsViewModels
         private void CopyUrlToClipboard()
         {
             if (BlogFile != null)
-            {
                 clipboardService.SetText(BlogFile.Url);
-            }
         }
 
         private void BrowseFileDownloadLocation()
         {
             var dialog = new FolderBrowserDialog { SelectedPath = BlogFile.FileDownloadLocation };
             if (dialog.ShowDialog() == DialogResult.OK)
-            {
                 BlogFile.FileDownloadLocation = dialog.SelectedPath;
-            }
         }
     }
 }

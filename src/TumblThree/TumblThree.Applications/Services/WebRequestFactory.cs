@@ -53,10 +53,8 @@ namespace TumblThree.Applications.Services
             request.Referer = referer;
             headers = headers ?? new Dictionary<string, string>();
             foreach (KeyValuePair<string, string> header in headers)
-            {
                 request.Headers[header.Key] = header.Value;
-            }
-
+            
             return request;
         }
 
@@ -142,19 +140,17 @@ namespace TumblThree.Applications.Services
 
         public Stream GetStreamForApiRequest(Stream stream)
         {
-            if (!settings.LimitScanBandwidth || settings.Bandwidth == 0)
-                return stream;
-            return new ThrottledStream(stream, (settings.Bandwidth / settings.ConcurrentConnections) * 1024);
+            return !settings.LimitScanBandwidth || settings.Bandwidth == 0
+                ? stream
+                : new ThrottledStream(stream, (settings.Bandwidth / settings.ConcurrentConnections) * 1024);
         }
 
         public string UrlEncode(IDictionary<string, string> parameters)
         {
             var sb = new StringBuilder();
             foreach (KeyValuePair<string, string> val in parameters)
-            {
                 sb.AppendFormat("{0}={1}&", val.Key, HttpUtility.UrlEncode(val.Value));
-            }
-
+            
             sb.Remove(sb.Length - 1, 1); // remove last '&'
             return sb.ToString();
         }
@@ -162,15 +158,12 @@ namespace TumblThree.Applications.Services
         private static HttpWebRequest SetWebRequestProxy(HttpWebRequest request, AppSettings settings)
         {
             if (!string.IsNullOrEmpty(settings.ProxyHost) && !string.IsNullOrEmpty(settings.ProxyPort))
-            {
                 request.Proxy = new WebProxy(settings.ProxyHost, int.Parse(settings.ProxyPort));
-            }
+            
 
             if (!string.IsNullOrEmpty(settings.ProxyUsername) && !string.IsNullOrEmpty(settings.ProxyPassword))
-            {
                 request.Proxy.Credentials = new NetworkCredential(settings.ProxyUsername, settings.ProxyPassword);
-            }
-
+            
             return request;
         }
     }

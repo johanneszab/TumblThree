@@ -32,10 +32,8 @@ namespace TumblThree.Applications
             lock (m_lockObject)
             {
                 if (m_paused)
-                {
                     return;
-                }
-
+                
                 m_paused = true;
                 m_pauseResponse = s_completedTcs;
                 m_resumeRequest = new TaskCompletionSource<bool>();
@@ -49,10 +47,8 @@ namespace TumblThree.Applications
             lock (m_lockObject)
             {
                 if (!m_paused)
-                {
                     return;
-                }
-
+                
                 m_paused = false;
                 resumeRequest = m_resumeRequest;
                 m_resumeRequest = null;
@@ -71,10 +67,8 @@ namespace TumblThree.Applications
             lock (m_lockObject)
             {
                 if (m_paused)
-                {
                     return m_pauseResponse.Task;
-                }
-
+                
                 m_paused = true;
                 m_pauseResponse = new TaskCompletionSource<bool>();
                 m_resumeRequest = new TaskCompletionSource<bool>();
@@ -92,10 +86,8 @@ namespace TumblThree.Applications
             lock (m_lockObject)
             {
                 if (!m_paused)
-                {
                     return s_completedTcs.Task;
-                }
-
+                
                 response = m_pauseResponse;
                 resumeTask = m_resumeRequest.Task;
             }
@@ -109,18 +101,12 @@ namespace TumblThree.Applications
     {
         private readonly PauseTokenSource m_source;
 
-        public PauseToken(PauseTokenSource source)
-        {
-            m_source = source;
-        }
+        public PauseToken(PauseTokenSource source) => m_source = source;
 
         public bool IsPaused => m_source != null && m_source.IsPaused;
 
-        public Task WaitWhilePausedWithResponseAsyc()
-        {
-            return IsPaused
+        public Task WaitWhilePausedWithResponseAsyc() => IsPaused
                 ? m_source.WaitWhilePausedWithResponseAsyc()
                 : PauseTokenSource.s_completedTcs.Task;
-        }
     }
 }
