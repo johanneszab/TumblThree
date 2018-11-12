@@ -12,10 +12,7 @@ namespace TumblThree.Applications.Services
         private readonly IShellService shellService;
 
         [ImportingConstructor]
-        public SettingsService(IShellService shellService)
-        {
-            this.shellService = shellService;
-        }
+        public SettingsService(IShellService shellService) => this.shellService = shellService;
 
         public IBlog TransferGlobalSettingsToBlog(IBlog blog)
         {

@@ -9,15 +9,9 @@ namespace TumblThree.Applications.Parser
 {
     public class MixtapeParser : IMixtapeParser
     {
-        public Regex GetMixtapeUrlRegex()
-        {
-            return new Regex("(http[A-Za-z0-9_/:.]*mixtape.moe/(.*))");
-        }
+        public Regex GetMixtapeUrlRegex() => new Regex("(http[A-Za-z0-9_/:.]*mixtape.moe/(.*))");
 
-        public string GetMixtapeId(string url)
-        {
-            return GetMixtapeUrlRegex().Match(url).Groups[2].Value;
-        }
+        public string GetMixtapeId(string url) => GetMixtapeUrlRegex().Match(url).Groups[2].Value;
 
         public string CreateMixtapeUrl(string mixtapeId, string detectedUrl, MixtapeTypes mixtapeType)
         {

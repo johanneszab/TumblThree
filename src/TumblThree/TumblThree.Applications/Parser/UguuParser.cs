@@ -9,15 +9,9 @@ namespace TumblThree.Applications.Parser
 {
     public class UguuParser : IUguuParser
     {
-        public Regex GetUguuUrlRegex()
-        {
-            return new Regex("(http[A-Za-z0-9_/:.]*a.uguu.se/(.*))");
-        }
+        public Regex GetUguuUrlRegex() => new Regex("(http[A-Za-z0-9_/:.]*a.uguu.se/(.*))");
 
-        public string GetUguuId(string url)
-        {
-            return GetUguuUrlRegex().Match(url).Groups[2].Value;
-        }
+        public string GetUguuId(string url) => GetUguuUrlRegex().Match(url).Groups[2].Value;
 
         public string CreateUguuUrl(string uguuId, string detectedUrl, UguuTypes uguuType)
         {

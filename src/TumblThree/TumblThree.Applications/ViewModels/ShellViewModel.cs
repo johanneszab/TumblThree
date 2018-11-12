@@ -116,15 +116,9 @@ namespace TumblThree.Applications.ViewModels
             }
         }
 
-        public void Show()
-        {
-            ViewCore.Show();
-        }
+        public void Show() => ViewCore.Show();
 
-        private void Close()
-        {
-            ViewCore.Close();
-        }
+        private void Close() => ViewCore.Close();
 
         public void ShowSettingsView()
         {
@@ -164,15 +158,10 @@ namespace TumblThree.Applications.ViewModels
         private void CloseError()
         {
             if (errors.Any())
-            {
                 errors.RemoveAt(errors.Count - 1);
-            }
         }
 
-        private void ErrorsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            RaisePropertyChanged(nameof(LastError));
-        }
+        private void ErrorsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e) => RaisePropertyChanged(nameof(LastError));
 
         private void ViewClosed(object sender, EventArgs e)
         {

@@ -75,8 +75,7 @@ namespace TumblThree.Applications.Crawler
             }
             catch (TimeoutException timeoutException)
             {
-                Logger.Error("AbstractCrawler:IsBlogOnlineAsync:WebException {0}", timeoutException);
-                shellService.ShowError(timeoutException, Resources.TimeoutReached, Resources.OnlineChecking, blog.Name);
+                HandleTimeoutException(timeoutException, Resources.OnlineChecking);
                 blog.Online = false;
             }
         }
@@ -195,10 +194,8 @@ namespace TumblThree.Applications.Crawler
         {
             ulong lastId = blog.LastId;
             if (blog.ForceRescan)
-            {
                 return 0;
-            }
-
+            
             return !string.IsNullOrEmpty(blog.DownloadPages) ? 0 : lastId;
         }
 
@@ -218,23 +215,14 @@ namespace TumblThree.Applications.Crawler
             blog.AudioMetas = statisticsBag.Count(url => url.GetType() == typeof(AudioMetaPost));
         }
 
-        protected int DetermineDuplicates<T>()
-        {
-            return statisticsBag.Where(url => url.GetType() == typeof(T))
+        protected int DetermineDuplicates<T>() => statisticsBag.Where(url => url.GetType() == typeof(T))
                                 .GroupBy(url => url.Url)
                                 .Where(g => g.Count() > 1)
                                 .Sum(g => g.Count() - 1);
-        }
 
-        protected void CleanCollectedBlogStatistics()
-        {
-            statisticsBag = null;
-        }
+        protected void CleanCollectedBlogStatistics() => statisticsBag = null;
 
-        protected bool CheckifShouldStop()
-        {
-            return ct.IsCancellationRequested;
-        }
+        protected bool CheckifShouldStop() => ct.IsCancellationRequested;
 
         protected void CheckIfShouldPause()
         {

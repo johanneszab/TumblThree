@@ -69,10 +69,7 @@ namespace TumblThree.Applications.ViewModels
             set => SetProperty(ref updateText, value);
         }
 
-        public void ShowDialog(object owner)
-        {
-            ViewCore.ShowDialog(owner);
-        }
+        public void ShowDialog(object owner) => ViewCore.ShowDialog(owner);
 
         private void ShowWebsite(object parameter)
         {
@@ -87,18 +84,13 @@ namespace TumblThree.Applications.ViewModels
             }
         }
 
-        private void DownloadNewVersion()
-        {
-            Process.Start(new ProcessStartInfo(applicationUpdateService.GetDownloadUri().AbsoluteUri));
-        }
+        private void DownloadNewVersion() => Process.Start(new ProcessStartInfo(applicationUpdateService.GetDownloadUri().AbsoluteUri));
 
         private async Task CheckForUpdates()
         {
             if (IsCheckInProgress || IsLatestVersionAvailable)
-            {
                 return;
-            }
-
+            
             IsCheckInProgress = true;
             IsLatestVersionAvailable = false;
             UpdateText = string.Empty;

@@ -14,10 +14,7 @@ namespace TumblThree.Applications.Parser
             return new Regex("(http[A-Za-z0-9_/:.]*files.catbox.moe/(.*))");
         }
 
-        public string GetCatBoxId(string url)
-        {
-            return GetCatBoxUrlRegex().Match(url).Groups[2].Value;
-        }
+        public string GetCatBoxId(string url) => GetCatBoxUrlRegex().Match(url).Groups[2].Value;
 
         public string CreateCatBoxUrl(string id, string detectedUrl, CatBoxTypes type)
         {

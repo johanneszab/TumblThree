@@ -54,10 +54,8 @@ namespace TumblThree.Applications.Services
         public bool CreateDataFolder()
         {
             if (string.IsNullOrEmpty(blog.Name))
-            {
                 return false;
-            }
-
+            
             string blogPath = blog.DownloadLocation();
 
             if (!Directory.Exists(blogPath))
@@ -85,12 +83,7 @@ namespace TumblThree.Applications.Services
 
         public virtual bool CheckIfBlogShouldCheckDirectory(string url)
         {
-            if (blog.CheckDirectoryForFiles)
-            {
-                return CheckIfFileExistsInDirectory(url);
-            }
-
-            return false;
+            return blog.CheckDirectoryForFiles && CheckIfFileExistsInDirectory(url);
         }
 
         public virtual bool CheckIfFileExistsInDirectory(string url)

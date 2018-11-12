@@ -49,10 +49,7 @@ namespace TumblThree.Applications.Services
             tumblrKey = ExtractTumblrKey(document);
         }
 
-        private static string ExtractTumblrKey(string document)
-        {
-            return Regex.Match(document, "id=\"tumblr_form_key\" content=\"([\\S]*)\">").Groups[1].Value;
-        }
+        private static string ExtractTumblrKey(string document) => Regex.Match(document, "id=\"tumblr_form_key\" content=\"([\\S]*)\">").Groups[1].Value;
 
         private async Task<string> GetRequestAsync()
         {
@@ -65,12 +62,7 @@ namespace TumblThree.Applications.Services
         {
             HttpWebRequest request = webRequestFactory.CreateGetReqeust("https://www.tumblr.com/");
             cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
-            if (request.CookieContainer.GetCookieHeader(new Uri("https://www.tumblr.com/")).Contains("pfs"))
-            {
-                return true;
-            }
-
-            return false;
+            return request.CookieContainer.GetCookieHeader(new Uri("https://www.tumblr.com/")).Contains("pfs");
         }
     }
 }
