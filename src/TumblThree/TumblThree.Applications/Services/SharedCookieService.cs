@@ -15,26 +15,21 @@ namespace TumblThree.Applications.Services
         public void GetUriCookie(CookieContainer request, Uri uri)
         {
             foreach (Cookie cookie in cookieContainer.GetCookies(uri))
-            {
                 request.Add(cookie);
-            }
         }
 
         public void SetUriCookie(IEnumerable cookies)
         {
             foreach (Cookie cookie in cookies)
-            {
                 cookieContainer.Add(cookie);
-            }
         }
 
         public void RemoveUriCookie(Uri uri)
         {
             CookieCollection cookies = cookieContainer.GetCookies(uri);
             foreach (Cookie cookie in cookies)
-            {
                 cookie.Expired = true;
-            }
+            
         }
 
         public IEnumerable<Cookie> GetAllCookies()

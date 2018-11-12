@@ -58,10 +58,9 @@ namespace TumblThree.Applications.Services
             try
             {
                 var newVersion = new Version(version.Substring(1));
+
                 if (newVersion > new Version(ApplicationInfo.Version))
-                {
-                    return true;
-                }
+                    return true;             
             }
             catch (Exception exception)
             {
@@ -79,10 +78,8 @@ namespace TumblThree.Applications.Services
         public Uri GetDownloadUri()
         {
             if (downloadLink == null)
-            {
                 return null;
-            }
-
+            
             return new Uri(downloadLink);
         }
     }

@@ -20,14 +20,8 @@ namespace TumblThree.Applications.Services
 
         public IList<IBlog> SelectedBlogFiles => selectedBlogFiles;
 
-        public void AddRange(IEnumerable<IBlog> collection)
-        {
-            selectedBlogFiles.AddRange(collection);
-        }
+        public void AddRange(IEnumerable<IBlog> collection) => selectedBlogFiles.AddRange(collection);
 
-        public void RemoveRange(IEnumerable<IBlog> collection)
-        {
-            selectedBlogFiles.RemoveRange(collection);
-        }
+        public void RemoveRange(IEnumerable<IBlog> collection) => selectedBlogFiles.RemoveRange(collection);
     }
 }

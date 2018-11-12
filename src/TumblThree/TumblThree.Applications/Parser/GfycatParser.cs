@@ -29,15 +29,9 @@ namespace TumblThree.Applications.Parser
             this.ct = ct;
         }
 
-        public Regex GetGfycatUrlRegex()
-        {
-            return new Regex("(http[A-Za-z0-9_/:.]*gfycat.com/([A-Za-z0-9_]*))");
-        }
+        public Regex GetGfycatUrlRegex() => new Regex("(http[A-Za-z0-9_/:.]*gfycat.com/([A-Za-z0-9_]*))");
 
-        public string GetGfycatId(string url)
-        {
-            return GetGfycatUrlRegex().Match(url).Groups[2].Value;
-        }
+        public string GetGfycatId(string url) => GetGfycatUrlRegex().Match(url).Groups[2].Value;
 
         public virtual async Task<string> RequestGfycatCajax(string gfyId)
         {

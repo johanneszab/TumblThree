@@ -178,6 +178,8 @@ namespace TumblThree.Applications.ViewModels
 
         public ICommand BrowseExportLocationCommand => browseExportLocationCommand;
 
+        public void ShowDialog(object owner) => ViewCore.ShowDialog(owner);
+
         public string OAuthToken
         {
             get => oauthToken;
@@ -640,11 +642,6 @@ namespace TumblThree.Applications.ViewModels
             set => SetProperty(ref userAgent, value);
         }
 
-        public void ShowDialog(object owner)
-        {
-            ViewCore.ShowDialog(owner);
-        }
-
         public string TumblrUser
         {
             get => tumblrUser;
@@ -684,9 +681,7 @@ namespace TumblThree.Applications.ViewModels
         private void ViewClosed(object sender, EventArgs e)
         {
             if (enableAutoDownloadCommand.CanExecute(null))
-            {
                 enableAutoDownloadCommand.Execute(null);
-            }
         }
 
         private void EnableAutoDownload()
@@ -730,10 +725,8 @@ namespace TumblThree.Applications.ViewModels
         private void OnTimedEvent()
         {
             if (CrawlerService.AutoDownloadCommand.CanExecute(null))
-            {
                 QueueOnDispatcher.CheckBeginInvokeOnUI(() => CrawlerService.AutoDownloadCommand.Execute(null));
-            }
-
+            
             CrawlerService.Timer.Change(new TimeSpan(24, 00, 00), Timeout.InfiniteTimeSpan);
         }
 

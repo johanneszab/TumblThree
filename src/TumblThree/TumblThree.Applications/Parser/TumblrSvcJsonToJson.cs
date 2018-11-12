@@ -9,45 +9,21 @@ namespace TumblThree.Applications.Parser
 {
     public class TumblrSvcJsonToJsonParser<T> : ITumblrToTextParser<T> where T : Post
     {
-        public string ParseText(T post)
-        {
-            return GetPostAsString(post);
-        }
+        public string ParseText(T post) => GetPostAsString(post);
 
-        public string ParseQuote(T post)
-        {
-            return GetPostAsString(post);
-        }
+        public string ParseQuote(T post) => GetPostAsString(post);
 
-        public string ParseLink(T post)
-        {
-            return GetPostAsString(post);
-        }
+        public string ParseLink(T post) => GetPostAsString(post);
 
-        public string ParseConversation(T post)
-        {
-            return GetPostAsString(post);
-        }
+        public string ParseConversation(T post) => GetPostAsString(post);
 
-        public string ParseAnswer(T post)
-        {
-            return GetPostAsString(post);
-        }
+        public string ParseAnswer(T post) => GetPostAsString(post);
 
-        public string ParsePhotoMeta(T post)
-        {
-            return GetPostAsString(post);
-        }
+        public string ParsePhotoMeta(T post) => GetPostAsString(post);
 
-        public string ParseVideoMeta(T post)
-        {
-            return GetPostAsString(post);
-        }
+        public string ParseVideoMeta(T post) => GetPostAsString(post);
 
-        public string ParseAudioMeta(T post)
-        {
-            return GetPostAsString(post);
-        }
+        public string ParseAudioMeta(T post) => GetPostAsString(post);
 
         private string GetPostAsString(T post)
         {

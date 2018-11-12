@@ -42,12 +42,9 @@ namespace TumblThree.Applications.Controllers
             Lazy<IDetailsViewModel, ICrawlerData> viewModel =
                 ViewModelFactoryLazy.FirstOrDefault(list => list.Metadata.BlogType == blog.GetType());
 
-            if (viewModel != null)
-            {
-                return viewModel;
-            }
-
-            throw new ArgumentException("Website is not supported!", "blogType");
+            if (viewModel == null)
+                throw new ArgumentException("Website is not supported!", "blogType");
+            return viewModel;
         }
 
         private IDetailsViewModel DetailsViewModel => detailsViewModel.Value;
@@ -75,6 +72,7 @@ namespace TumblThree.Applications.Controllers
         {
             if (blogFiles.Count == 0)
                 return;
+
             detailsViewModel = GetViewModel(blogFiles.Select(blog => blog.GetType()).Distinct().Count() < 2
                 ? blogFiles.FirstOrDefault()
                 : new Blog());
@@ -203,8 +201,10 @@ namespace TumblThree.Applications.Controllers
         private static bool SetCheckBox(IReadOnlyCollection<IBlog> blogs, string propertyName)
         {
             PropertyInfo property = typeof(IBlog).GetProperty(propertyName);
+
             int numberOfBlogs = blogs.Count;
             int checkedBlogs = blogs.Select(blog => (bool)property.GetValue(blog)).Count(state => state);
+
             return checkedBlogs == numberOfBlogs;
         }
 
@@ -216,9 +216,9 @@ namespace TumblThree.Applications.Controllers
 
         private void SelectedBlogFilesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (DetailsViewModel.BlogFile != null)            
+            if (DetailsViewModel.BlogFile != null)
                 DetailsViewModel.BlogFile.PropertyChanged -= ChangeBlogSettings;
-            
+
             SelectBlogFiles(selectionService.SelectedBlogFiles.ToArray());
         }
     }

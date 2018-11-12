@@ -86,19 +86,15 @@ namespace TumblThree.Applications.ViewModels
 
         public IReadOnlyObservableList<QueueListItem> QueueItems { get; set; }
 
-        public void ViewClosed(object sender, EventArgs e)
-        {
-            ShellService.Settings.ColumnSettings = ViewCore.DataGridColumnRestore;
-        }
+        public void ViewClosed(object sender, EventArgs e) => ShellService.Settings.ColumnSettings = ViewCore.DataGridColumnRestore;
 
         public void DataGridColumnRestore()
         {
             try
             {
                 if (ShellService.Settings.ColumnSettings.Count != 0)
-                {
                     ViewCore.DataGridColumnRestore = ShellService.Settings.ColumnSettings;
-                }
+                
             }
             catch (Exception ex)
             {
@@ -110,14 +106,8 @@ namespace TumblThree.Applications.ViewModels
 
         public void QueueItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (e.Action == NotifyCollectionChangedAction.Add)
-            {
+            if (e.Action == NotifyCollectionChangedAction.Add | e.Action == NotifyCollectionChangedAction.Remove)            
                 RaisePropertyChanged("QueueItems");
-            }
-            else if (e.Action == NotifyCollectionChangedAction.Remove)
-            {
-                RaisePropertyChanged("QueueItems");
-            }
         }
     }
 }

@@ -133,7 +133,7 @@ namespace TumblThree.Applications.Controllers
             SaveSettings(Path.Combine(savePath, appSettingsFileName), appSettings);
             SaveSettings(Path.Combine(savePath, queueSettingsFileName), queueSettings);
             SaveSettings(Path.Combine(savePath, managerSettingsFileName), managerSettings);
-            SaveSettings(Path.Combine(savePath, cookiesFileName), new List<Cookie>(cookieService.GetAllCookies()));          
+            SaveSettings(Path.Combine(savePath, cookiesFileName), new List<Cookie>(cookieService.GetAllCookies()));
         }
 
         private void OnBlogManagerFinishedLoadingLibrary(object sender, EventArgs e)

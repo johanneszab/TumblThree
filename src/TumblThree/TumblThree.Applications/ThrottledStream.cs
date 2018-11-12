@@ -101,10 +101,7 @@ namespace TumblThree.Applications
             base.Dispose(disposing);
         }
 
-        public override void Flush()
-        {
-            parent.Flush();
-        }
+        public override void Flush() => parent.Flush();
 
         public override int Read(byte[] buffer, int offset, int count)
         {
@@ -112,15 +109,9 @@ namespace TumblThree.Applications
             return parent.Read(buffer, offset, count);
         }
 
-        public override long Seek(long offset, SeekOrigin origin)
-        {
-            return parent.Seek(offset, origin);
-        }
+        public override long Seek(long offset, SeekOrigin origin) => parent.Seek(offset, origin);
 
-        public override void SetLength(long value)
-        {
-            parent.SetLength(value);
-        }
+        public override void SetLength(long value) => parent.SetLength(value);
 
         public override void Write(byte[] buffer, int offset, int count)
         {

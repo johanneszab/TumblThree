@@ -36,10 +36,7 @@ namespace TumblThree.Domain.Models.Blogs
             return blog;
         }
 
-        protected new static string ExtractName(string url)
-        {
-            return url.Split('/')[4].Replace("-", "+");
-        }
+        protected new static string ExtractName(string url) => url.Split('/')[4].Replace("-", "+");
 
         protected new static string ExtractUrl(string url)
         {

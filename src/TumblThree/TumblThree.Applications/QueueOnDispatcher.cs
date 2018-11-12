@@ -49,19 +49,13 @@ namespace TumblThree.Applications
         public static void CheckBeginInvokeOnUI(Action action)
         {
             if (action == null)
-            {
                 return;
-            }
-
+            
             CheckDispatcher();
             if (UIDispatcher.CheckAccess())
-            {
                 action();
-            }
             else
-            {
                 UIDispatcher.BeginInvoke(action);
-            }
         }
 
         /// <summary>
@@ -85,11 +79,8 @@ namespace TumblThree.Applications
         /// </summary>
         public static void Initialize()
         {
-            if (UIDispatcher != null
-                && UIDispatcher.Thread.IsAlive)
-            {
+            if (UIDispatcher != null && UIDispatcher.Thread.IsAlive)
                 return;
-            }
 
             UIDispatcher = Dispatcher.CurrentDispatcher;
         }
@@ -97,9 +88,6 @@ namespace TumblThree.Applications
         /// <summary>
         ///     Resets the class by deleting the <see cref="UIDispatcher" />
         /// </summary>
-        public static void Reset()
-        {
-            UIDispatcher = null;
-        }
+        public static void Reset() => UIDispatcher = null;
     }
 }

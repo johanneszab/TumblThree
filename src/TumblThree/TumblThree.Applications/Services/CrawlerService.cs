@@ -188,31 +188,16 @@ namespace TumblThree.Applications.Services
             set => SetProperty(ref timeconstraint, value);
         }
 
-        public void AddActiveItems(QueueListItem itemToAdd)
-        {
-            activeItems.Add(itemToAdd);
-        }
+        public void AddActiveItems(QueueListItem itemToAdd) => activeItems.Add(itemToAdd);
 
-        public void RemoveActiveItem(QueueListItem itemToRemove)
-        {
-            activeItems.Remove(itemToRemove);
-        }
+        public void RemoveActiveItem(QueueListItem itemToRemove) => activeItems.Remove(itemToRemove);
 
-        public void ClearItems()
-        {
-            activeItems.Clear();
-        }
+        public void ClearItems() => activeItems.Clear();
 
         private void ActiveItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (e.Action == NotifyCollectionChangedAction.Add)
-            {
+            if (e.Action == NotifyCollectionChangedAction.Add | e.Action == NotifyCollectionChangedAction.Remove)
                 RaisePropertyChanged("ActiveItems");
-            }
-            else if (e.Action == NotifyCollectionChangedAction.Remove)
-            {
-                RaisePropertyChanged("ActiveItems");
-            }
         }
     }
 }
