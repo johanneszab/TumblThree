@@ -77,18 +77,12 @@ namespace TumblThree.Applications.Services
 
     internal static class WindowExtensions
     {
-        public static IWin32Window AsWin32Window(this Window window)
-        {
-            return new Wpf32Window(window);
-        }
+        public static IWin32Window AsWin32Window(this Window window) => new Wpf32Window(window);
     }
 
     internal class Wpf32Window : IWin32Window
     {
-        public Wpf32Window(Window window)
-        {
-            Handle = new WindowInteropHelper(window).Handle;
-        }
+        public Wpf32Window(Window window) => Handle = new WindowInteropHelper(window).Handle;
 
         #region IWin32Window Members
 

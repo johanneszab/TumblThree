@@ -42,36 +42,23 @@ namespace TumblThree.Domain.Queue
             AddItems(itemsToAdd);
         }
 
-        public void AddItems(IEnumerable<QueueListItem> itemsToAdd)
-        {
-            InsertItems(items.Count, itemsToAdd);
-        }
+        public void AddItems(IEnumerable<QueueListItem> itemsToAdd) => InsertItems(items.Count, itemsToAdd);
 
         public void InsertItems(int index, IEnumerable<QueueListItem> itemsToInsert)
         {
             foreach (QueueListItem item in itemsToInsert)
-            {
                 items.Insert(index++, item);
-            }
         }
 
         public void RemoveItems(IEnumerable<QueueListItem> itemsToRemove)
         {
             foreach (QueueListItem item in itemsToRemove.ToArray())
-            {
                 items.Remove(item);
-            }
         }
 
-        public void RemoveItem(QueueListItem itemToRemove)
-        {
-            items.Remove(itemToRemove);
-        }
+        public void RemoveItem(QueueListItem itemToRemove) => items.Remove(itemToRemove);
 
-        public void ClearItems()
-        {
-            items.Clear();
-        }
+        public void ClearItems() => items.Clear();
 
         public void MoveItems(int newIndex, IEnumerable<QueueListItem> itemsToMove)
         {
@@ -98,14 +85,8 @@ namespace TumblThree.Domain.Queue
 
         private void ItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (e.Action == NotifyCollectionChangedAction.Add)
-            {
+            if (e.Action == NotifyCollectionChangedAction.Add | e.Action == NotifyCollectionChangedAction.Remove)
                 UpdateTotalImageCount();
-            }
-            else if (e.Action == NotifyCollectionChangedAction.Remove)
-            {
-                UpdateTotalImageCount();
-            }
         }
 
         private void UpdateDownloadedImageCount()

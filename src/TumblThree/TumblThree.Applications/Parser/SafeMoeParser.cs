@@ -9,15 +9,9 @@ namespace TumblThree.Applications.Parser
 {
     public class SafeMoeParser : ISafeMoeParser
     {
-        public Regex GetSafeMoeUrlRegex()
-        {
-            return new Regex("(http[A-Za-z0-9_/:.]*a.safe.moe/(.*))");
-        }
+        public Regex GetSafeMoeUrlRegex() => new Regex("(http[A-Za-z0-9_/:.]*a.safe.moe/(.*))");
 
-        public string GetSafeMoeId(string url)
-        {
-            return GetSafeMoeUrlRegex().Match(url).Groups[2].Value;
-        }
+        public string GetSafeMoeId(string url) => GetSafeMoeUrlRegex().Match(url).Groups[2].Value;
 
         public string CreateSafeMoeUrl(string id, string detectedUrl, SafeMoeTypes type)
         {

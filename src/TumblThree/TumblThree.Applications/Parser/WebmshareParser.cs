@@ -9,15 +9,9 @@ namespace TumblThree.Applications.Parser
 {
     public class WebmshareParser : IWebmshareParser
     {
-        public Regex GetWebmshareUrlRegex()
-        {
-            return new Regex("(http[A-Za-z0-9_/:.]*webmshare.com/([A-Za-z0-9_]*))");
-        }
+        public Regex GetWebmshareUrlRegex() => new Regex("(http[A-Za-z0-9_/:.]*webmshare.com/([A-Za-z0-9_]*))");
 
-        public string GetWebmshareId(string url)
-        {
-            return GetWebmshareUrlRegex().Match(url).Groups[2].Value;
-        }
+        public string GetWebmshareId(string url) => GetWebmshareUrlRegex().Match(url).Groups[2].Value;
 
         public string CreateWebmshareUrl(string webshareId, string detectedUrl, WebmshareTypes webmshareType)
         {

@@ -6,9 +6,6 @@ namespace TumblThree.Applications.Services
     {
         public Action<ApplicationBusyContext> DisposeCallback { get; set; }
 
-        public void Dispose()
-        {
-            DisposeCallback(this);
-        }
+        public void Dispose() => DisposeCallback(this);
     }
 }

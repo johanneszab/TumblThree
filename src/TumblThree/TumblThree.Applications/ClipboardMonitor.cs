@@ -52,10 +52,8 @@ namespace TumblThree.Applications
         protected virtual void Dispose(bool disposing)
         {
             if (disposed)
-            {
                 return;
-            }
-
+            
             if (disposing)
             {
                 NativeMethods.RemoveClipboardFormatListener(hwndSource.Handle);
@@ -71,17 +69,12 @@ namespace TumblThree.Applications
         private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             if (msg == NativeMethods.WM_CLIPBOARDUPDATE)
-            {
                 OnClipboardContentChanged?.Invoke(this, EventArgs.Empty);
-            }
-
+            
             return IntPtr.Zero;
         }
 
-        ~ClipboardMonitor()
-        {
-            Dispose(false);
-        }
+        ~ClipboardMonitor() => Dispose(false);
 
         /// <summary>
         ///     Occurs when the clipboard content changes.

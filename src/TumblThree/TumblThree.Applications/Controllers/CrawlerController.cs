@@ -69,9 +69,7 @@ namespace TumblThree.Applications.Controllers
             try
             {
                 if (stopCommand.CanExecute(null))
-                {
                     stopCommand.Execute(null);
-                }
 
                 Task.WaitAll(runningTasks.ToArray());
             }
@@ -82,23 +80,16 @@ namespace TumblThree.Applications.Controllers
             foreach (IBlog blog in managerService.BlogFiles)
             {
                 if (blog.Dirty)
-                {
                     blog.Save();
-                }
             }
         }
 
-        private bool CanStop()
-        {
-            return crawlerService.IsCrawl;
-        }
+        private bool CanStop() => crawlerService.IsCrawl;
 
         private void Stop()
         {
             if (resumeCommand.CanExecute(null))
-            {
                 resumeCommand.Execute(null);
-            }
 
             crawlerCancellationToken.Cancel();
             crawlerService.IsCrawl = false;
@@ -108,10 +99,7 @@ namespace TumblThree.Applications.Controllers
             stopCommand.RaiseCanExecuteChanged();
         }
 
-        private bool CanPause()
-        {
-            return crawlerService.IsCrawl && !crawlerService.IsPaused;
-        }
+        private bool CanPause() => crawlerService.IsCrawl && !crawlerService.IsPaused;
 
         private void Pause()
         {
@@ -121,10 +109,7 @@ namespace TumblThree.Applications.Controllers
             resumeCommand.RaiseCanExecuteChanged();
         }
 
-        private bool CanResume()
-        {
-            return crawlerService.IsCrawl && crawlerService.IsPaused;
-        }
+        private bool CanResume() => crawlerService.IsCrawl && crawlerService.IsPaused;
 
         private void Resume()
         {
@@ -134,10 +119,7 @@ namespace TumblThree.Applications.Controllers
             resumeCommand.RaiseCanExecuteChanged();
         }
 
-        private bool CanCrawl()
-        {
-            return !crawlerService.IsCrawl;
-        }
+        private bool CanCrawl() => !crawlerService.IsCrawl;
 
         private async Task Crawl()
         {
@@ -178,14 +160,10 @@ namespace TumblThree.Applications.Controllers
             while (true)
             {
                 if (ct.IsCancellationRequested)
-                {
                     break;
-                }
 
                 if (pt.IsPaused)
-                {
                     pt.WaitWhilePausedWithResponseAsyc().Wait();
-                }
 
                 Monitor.Enter(lockObject);
                 if (crawlerService.ActiveItems.Count < QueueManager.Items.Count)

@@ -9,15 +9,9 @@ namespace TumblThree.Applications.Parser
 {
     public class LoliSafeParser : ILoliSafeParser
     {
-        public Regex GetLoliSafeUrlRegex()
-        {
-            return new Regex("(http[A-Za-z0-9_/:.]*(loli.temel.me|3dx.pw)/(.*))");
-        }
+        public Regex GetLoliSafeUrlRegex() => new Regex("(http[A-Za-z0-9_/:.]*(loli.temel.me|3dx.pw)/(.*))");
 
-        public string GetLoliSafeId(string url)
-        {
-            return GetLoliSafeUrlRegex().Match(url).Groups[2].Value;
-        }
+        public string GetLoliSafeId(string url) => GetLoliSafeUrlRegex().Match(url).Groups[2].Value;
 
         public string CreateLoliSafeUrl(string id, string detectedUrl, LoliSafeTypes type)
         {

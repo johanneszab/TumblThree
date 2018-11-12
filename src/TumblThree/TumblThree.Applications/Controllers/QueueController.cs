@@ -97,15 +97,10 @@ namespace TumblThree.Applications.Controllers
             InsertFilesCore(0, blogNamesToLoad, blogTypesToLoad);
         }
 
-        public void Shutdown()
-        {
-            QueueSettings.ReplaceAll(QueueManager.Items.Select(x => x.Blog.Name), QueueManager.Items.Select(x => x.Blog.BlogType));
-        }
+        public void Shutdown() => QueueSettings.ReplaceAll(QueueManager.Items.Select(x => x.Blog.Name),
+            QueueManager.Items.Select(x => x.Blog.BlogType));
 
-        private bool CanRemoveSelected()
-        {
-            return QueueViewModel.SelectedQueueItem != null;
-        }
+        private bool CanRemoveSelected() => QueueViewModel.SelectedQueueItem != null;
 
         private void RemoveSelected()
         {
@@ -125,10 +120,8 @@ namespace TumblThree.Applications.Controllers
             shellService.ShowDetailsView();
         }
 
-        private void InsertBlogFiles(int index, IEnumerable<IBlog> blogFiles)
-        {
+        private void InsertBlogFiles(int index, IEnumerable<IBlog> blogFiles) =>
             QueueManager.InsertItems(index, blogFiles.Select(x => new QueueListItem(x)));
-        }
 
         private void OpenList()
         {
@@ -216,10 +209,7 @@ namespace TumblThree.Applications.Controllers
             }
         }
 
-        private void ClearList()
-        {
-            QueueManager.ClearItems();
-        }
+        private void ClearList() => QueueManager.ClearItems();
 
         private void QueueViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -229,9 +219,6 @@ namespace TumblThree.Applications.Controllers
             }
         }
 
-        private void UpdateCommands()
-        {
-            removeSelectedCommand.RaiseCanExecuteChanged();
-        }
+        private void UpdateCommands() => removeSelectedCommand.RaiseCanExecuteChanged();
     }
 }

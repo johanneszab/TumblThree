@@ -856,12 +856,7 @@ namespace TumblThree.Domain.Models.Blogs
 
         public virtual bool CheckIfBlogShouldCheckDirectory(string url)
         {
-            if (CheckDirectoryForFiles)
-            {
-                return CheckIfFileExistsInDirectory(url);
-            }
-
-            return false;
+            return CheckDirectoryForFiles && CheckIfFileExistsInDirectory(url);
         }
 
         public virtual bool CheckIfFileExistsInDirectory(string url)
@@ -890,20 +885,25 @@ namespace TumblThree.Domain.Models.Blogs
         {
             try
             {
-                using (var stream = new FileStream(fileLocation,
-                    FileMode.Open, FileAccess.Read, FileShare.Read))
-                {
-                    var serializer = new DataContractJsonSerializer(GetType());
-                    var blog = (IBlog)serializer.ReadObject(stream);
-                    blog.Location = Path.Combine((Directory.GetParent(fileLocation).FullName));
-                    blog.ChildId = Path.Combine(blog.Location, blog.Name + "_files." + blog.BlogType);
-                    return blog;
-                }
+                return LoadCore(fileLocation);
             }
             catch (Exception ex) when (ex is SerializationException || ex is FileNotFoundException)
             {
                 ex.Data.Add("Filename", fileLocation);
                 throw;
+            }
+        }
+
+        private IBlog LoadCore(string fileLocation)
+        {
+            using (var stream = new FileStream(fileLocation,
+                FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                var serializer = new DataContractJsonSerializer(GetType());
+                var blog = (IBlog)serializer.ReadObject(stream);
+                blog.Location = Path.Combine((Directory.GetParent(fileLocation).FullName));
+                blog.ChildId = Path.Combine(blog.Location, blog.Name + "_files." + blog.BlogType);
+                return blog;
             }
         }
 
@@ -930,31 +930,27 @@ namespace TumblThree.Domain.Models.Blogs
 
             if (File.Exists(currentIndex))
             {
-                using (var stream = new FileStream(newIndex, FileMode.Create, FileAccess.Write))
-                {
-                    using (XmlDictionaryWriter writer = JsonReaderWriterFactory.CreateJsonWriter(
-                        stream, Encoding.UTF8, true, true, "  "))
-                    {
-                        var serializer = new DataContractJsonSerializer(GetType());
-                        serializer.WriteObject(writer, this);
-                        writer.Flush();
-                    }
-                }
+                SaveCore(newIndex);
 
                 File.Replace(newIndex, currentIndex, backupIndex, true);
                 File.Delete(backupIndex);
             }
             else
             {
-                using (var stream = new FileStream(currentIndex, FileMode.Create, FileAccess.Write))
+                SaveCore(currentIndex);
+            }
+        }
+
+        private void SaveCore(string path)
+        {
+            using (var stream = new FileStream(path, FileMode.Create, FileAccess.Write))
+            {
+                using (XmlDictionaryWriter writer = JsonReaderWriterFactory.CreateJsonWriter(
+                    stream, Encoding.UTF8, true, true, "  "))
                 {
-                    using (XmlDictionaryWriter writer = JsonReaderWriterFactory.CreateJsonWriter(
-                        stream, Encoding.UTF8, true, true, "  "))
-                    {
-                        var serializer = new DataContractJsonSerializer(GetType());
-                        serializer.WriteObject(writer, this);
-                        writer.Flush();
-                    }
+                    var serializer = new DataContractJsonSerializer(GetType());
+                    serializer.WriteObject(writer, this);
+                    writer.Flush();
                 }
             }
         }

@@ -19,16 +19,12 @@ namespace TumblThree.Applications
 
         public void Report(T value)
         {
-            if (reportProgressAfterThrottling)
-            {
-                _progress.Report(value);
-                reportProgressAfterThrottling = false;
-            }
+            if (!reportProgressAfterThrottling)
+                return;
+            _progress.Report(value);
+            reportProgressAfterThrottling = false;
         }
 
-        private void resetTimer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            reportProgressAfterThrottling = true;
-        }
+        private void resetTimer_Elapsed(object sender, ElapsedEventArgs e) => reportProgressAfterThrottling = true;
     }
 }

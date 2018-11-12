@@ -114,7 +114,8 @@ namespace TumblThree.Applications.Crawler
         {
             Logger.Verbose("TumblrBlogCrawler.Crawl:Start");
 
-            Task<Tuple<ulong, bool>> grabber = GetUrlsAsync();
+            ulong highestId = await GetHighestPostIdAsync();
+            Task<bool> grabber = GetUrlsAsync();
 
             // FIXME: refactor downloader out of class
             Task<bool> download = downloader.DownloadBlogAsync();
@@ -123,8 +124,7 @@ namespace TumblThree.Applications.Crawler
             if (blog.DumpCrawlerData)
                 crawlerDownloader = crawlerDataDownloader.DownloadCrawlerDataAsync();
 
-            Tuple<ulong, bool> grabberResult = await grabber;
-            bool apiLimitHit = grabberResult.Item2;
+            bool apiLimitHit = await grabber;
 
             UpdateProgressQueueInformation(Resources.ProgressUniqueDownloads);
 
@@ -143,7 +143,7 @@ namespace TumblThree.Applications.Crawler
                 blog.LastCompleteCrawl = DateTime.Now;
                 if (finishedDownloading && !apiLimitHit)
                 {
-                    blog.LastId = grabberResult.Item1;
+                    blog.LastId = highestId;
                 }
             }
 
@@ -277,7 +277,7 @@ namespace TumblThree.Applications.Crawler
             return RangeToSequence(blog.DownloadPages);
         }
 
-        private async Task<Tuple<ulong, bool>> GetUrlsAsync()
+        private async Task<bool> GetUrlsAsync()
         {
             trackedTasks = new List<Task>();
             semaphoreSlim = new SemaphoreSlim(shellService.Settings.ConcurrentScans);
@@ -285,8 +285,6 @@ namespace TumblThree.Applications.Crawler
             GenerateTags();
 
             await UpdateTotalPostCountAsync();
-
-            ulong highestId = await GetHighestPostIdAsync();
 
             foreach (int pageNumber in GetPageNumbers())
             {
@@ -312,7 +310,7 @@ namespace TumblThree.Applications.Crawler
 
             UpdateBlogStats();
 
-            return new Tuple<ulong, bool>(highestId, incompleteCrawl);
+            return incompleteCrawl;
         }
 
         private async Task CrawlPage(int pageNumber)

@@ -37,9 +37,7 @@ namespace TumblThree.Applications.Services
                 await Register(login, password);
                 document = await Authenticate(login, password);
                 if (tfaNeeded)
-                {
                     tumblrTFAKey = ExtractTumblrTFAKey(document);
-                }
             }
             catch (TimeoutException)
             {
@@ -61,10 +59,7 @@ namespace TumblThree.Applications.Services
             cookieService.SetUriCookie(tosCookieCollection);
         }
 
-        public bool CheckIfTumblrTFANeeded()
-        {
-            return tfaNeeded;
-        }
+        public bool CheckIfTumblrTFANeeded() => tfaNeeded;
 
         public async Task PerformTumblrTFALogin(string login, string tumblrTFAAuthCode)
         {
@@ -77,10 +72,7 @@ namespace TumblThree.Applications.Services
             }
         }
 
-        private static string ExtractTumblrKey(string document)
-        {
-            return Regex.Match(document, "id=\"tumblr_form_key\" content=\"([\\S]*)\">").Groups[1].Value;
-        }
+        private static string ExtractTumblrKey(string document) => Regex.Match(document, "id=\"tumblr_form_key\" content=\"([\\S]*)\">").Groups[1].Value;
 
         private async Task<string> RequestTumblrKey()
         {
@@ -192,10 +184,7 @@ namespace TumblThree.Applications.Services
             }
         }
 
-        private static string ExtractTumblrTFAKey(string document)
-        {
-            return Regex.Match(document, "name=\"tfa_form_key\" value=\"([\\S]*)\"/>").Groups[1].Value;
-        }
+        private static string ExtractTumblrTFAKey(string document) => Regex.Match(document, "name=\"tfa_form_key\" value=\"([\\S]*)\"/>").Groups[1].Value;
 
         private async Task SubmitTFAAuthCode(string login, string tumblrTFAAuthCode)
         {
@@ -238,13 +227,7 @@ namespace TumblThree.Applications.Services
         {
             HttpWebRequest request = webRequestFactory.CreateGetReqeust("https://www.tumblr.com/");
             cookieService.GetUriCookie(request.CookieContainer, new Uri("https://www.tumblr.com/"));
-            if (request.CookieContainer.GetCookieHeader(new Uri("https://www.tumblr.com/")).Contains("pfs")
-            ) // pfs cookie created after successful login
-            {
-                return true;
-            }
-
-            return false;
+            return request.CookieContainer.GetCookieHeader(new Uri("https://www.tumblr.com/")).Contains("pfs");
         }
 
         public async Task<string> GetTumblrUsername()
@@ -256,9 +239,6 @@ namespace TumblThree.Applications.Services
             return ExtractTumblrUsername(document);
         }
 
-        private static string ExtractTumblrUsername(string document)
-        {
-            return Regex.Match(document, "<p class=\"accordion_label accordion_trigger\">([\\S]*)</p>").Groups[1].Value;
-        }
+        private static string ExtractTumblrUsername(string document) => Regex.Match(document, "<p class=\"accordion_label accordion_trigger\">([\\S]*)</p>").Groups[1].Value;
     }
 }

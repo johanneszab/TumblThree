@@ -676,17 +676,12 @@ namespace TumblThree.Applications.ViewModels
             set => SetProperty(ref tumblrEmail, value);
         }
 
-        public void ShowDialog(object owner)
-        {
-            ViewCore.ShowDialog(owner);
-        }
+        public void ShowDialog(object owner) => ViewCore.ShowDialog(owner);
 
         private void ViewClosed(object sender, EventArgs e)
         {
             if (enableAutoDownloadCommand.CanExecute(null))
-            {
                 enableAutoDownloadCommand.Execute(null);
-            }
         }
 
         private void EnableAutoDownload()
@@ -730,10 +725,8 @@ namespace TumblThree.Applications.ViewModels
         private void OnTimedEvent()
         {
             if (CrawlerService.AutoDownloadCommand.CanExecute(null))
-            {
                 QueueOnDispatcher.CheckBeginInvokeOnUI(() => CrawlerService.AutoDownloadCommand.Execute(null));
-            }
-
+            
             CrawlerService.Timer.Change(new TimeSpan(24, 00, 00), Timeout.InfiniteTimeSpan);
         }
 

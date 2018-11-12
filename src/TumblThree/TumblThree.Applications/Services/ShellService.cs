@@ -110,25 +110,13 @@ namespace TumblThree.Applications.Services
             ShowErrorAction(exception, displayMessage);
         }
 
-        public void ShowDetailsView()
-        {
-            ShowDetailsViewAction();
-        }
+        public void ShowDetailsView() => ShowDetailsViewAction();
 
-        public void UpdateDetailsView()
-        {
-            UpdateDetailsViewAction();
-        }
+        public void UpdateDetailsView() => UpdateDetailsViewAction();
 
-        public void ShowQueueView()
-        {
-            ShowQueueViewAction();
-        }
+        public void ShowQueueView() => ShowQueueViewAction();
 
-        public void AddTaskToCompleteBeforeShutdown(Task task)
-        {
-            tasksToCompleteBeforeShutdown.Add(task);
-        }
+        public void AddTaskToCompleteBeforeShutdown(Task task) => tasksToCompleteBeforeShutdown.Add(task);
 
         public IDisposable SetApplicationBusy()
         {
@@ -155,10 +143,7 @@ namespace TumblThree.Applications.Services
 
         private event CancelEventHandler closing;
 
-        protected virtual void OnClosing(CancelEventArgs e)
-        {
-            closing?.Invoke(this, e);
-        }
+        protected virtual void OnClosing(CancelEventArgs e) => closing?.Invoke(this, e);
 
         private void ApplicationBusyContextDisposeCallback(ApplicationBusyContext context)
         {
@@ -169,18 +154,13 @@ namespace TumblThree.Applications.Services
         private void InitializeClosingEvent()
         {
             if (isClosingEventInitialized)
-            {
                 return;
-            }
-
+            
             isClosingEventInitialized = true;
             shellView.Value.Closing += ShellViewClosing;
         }
 
-        private void ShellViewClosing(object sender, CancelEventArgs e)
-        {
-            OnClosing(e);
-        }
+        private void ShellViewClosing(object sender, CancelEventArgs e) => OnClosing(e);
 
         public void InitializeOAuthManager()
         {
