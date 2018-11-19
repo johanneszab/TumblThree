@@ -11,16 +11,13 @@ namespace TumblThree.Presentation.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool boolValue = value is bool && (bool)value;
+            bool boolValue = value is bool b && b;
 
             return boolValue
                 ? string.Format(CultureInfo.CurrentCulture, Resources.Online)
                 : string.Format(CultureInfo.CurrentCulture, Resources.Offline);
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
     }
 }

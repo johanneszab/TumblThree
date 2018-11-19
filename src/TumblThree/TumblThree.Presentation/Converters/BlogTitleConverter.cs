@@ -17,9 +17,7 @@ namespace TumblThree.Presentation.Converters
             return string.Join(" - ", crawlingQueuelistItem.Select(x => x.Blog.Name).ToArray());
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
-        {
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) =>
             throw new NotSupportedException();
-        }
     }
 }

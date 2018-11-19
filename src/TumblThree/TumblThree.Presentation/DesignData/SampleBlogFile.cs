@@ -1,5 +1,4 @@
-﻿using TumblThree.Domain.Models;
-using TumblThree.Domain.Models.Blogs;
+﻿using TumblThree.Domain.Models.Blogs;
 
 namespace TumblThree.Presentation.DesignData
 {
