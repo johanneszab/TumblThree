@@ -6,21 +6,9 @@ namespace TumblThree.Presentation.Converters
 {
     public class BlogQueueProgressConverter : IMultiValueConverter
     {
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
-        {
-            //if (values.First() == DependencyProperty.UnsetValue) { return DependencyProperty.UnsetValue; }
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture) => values[0];
 
-            //var downloadedImages = values[0];
-            //var totalImages = values[1];
-
-            //return string.Format(CultureInfo.CurrentCulture, Resources.DownloadedImagesOf, downloadedImages, totalImages);
-
-            return values[0];
-        }
-
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
-        {
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) =>
             throw new NotSupportedException();
-        }
     }
 }

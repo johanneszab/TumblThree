@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 
 using TumblThree.Applications.Services;
-using TumblThree.Domain.Models;
 using TumblThree.Domain.Models.Blogs;
 using TumblThree.Domain.Models.Files;
 
@@ -31,24 +30,12 @@ namespace TumblThree.Presentation.DesignData
             blogFilesToAdd.ToList().ForEach(x => innerBlogFiles.Add(x));
         }
 
-        public bool CheckIfFileExistsInDB(string url)
-        {
-            return false;
-        }
+        public bool CheckIfFileExistsInDB(string url) => false;
 
-        public void AddDatabase(IFiles database)
-        {
-            throw new NotImplementedException();
-        }
+        public void AddDatabase(IFiles database) => throw new NotImplementedException();
 
-        public void RemoveDatabase(IFiles database)
-        {
-            throw new NotImplementedException();
-        }
+        public void RemoveDatabase(IFiles database) => throw new NotImplementedException();
 
-        public void ClearDatabases()
-        {
-            throw new NotImplementedException();
-        }
+        public void ClearDatabases() => throw new NotImplementedException();
     }
 }

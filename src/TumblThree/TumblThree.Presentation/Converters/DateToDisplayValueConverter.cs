@@ -12,9 +12,7 @@ namespace TumblThree.Presentation.Converters
             return date != DateTime.MinValue ? (object)date : "";
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
             throw new NotImplementedException();
-        }
     }
 }

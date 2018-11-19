@@ -14,17 +14,10 @@ namespace TumblThree.Presentation.Converters
             var crawlingQueuelistItem = (ReadOnlyObservableList<QueueListItem>)values[0];
             var currentQueuelistItem = (QueueListItem)values[1];
 
-            if (crawlingQueuelistItem.Contains(currentQueuelistItem))
-            {
-                return true;
-            }
-
-            return false;
+            return crawlingQueuelistItem.Contains(currentQueuelistItem);
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
-        {
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) =>
             throw new NotSupportedException();
-        }
     }
 }

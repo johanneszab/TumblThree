@@ -11,7 +11,7 @@ namespace TumblThree.Presentation.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var list = ((IEnumerable<string>)value);
+            var list = (IEnumerable<string>) value;
             return StringListConverter.ToString(list, GetSeparator(parameter));
         }
 
@@ -24,9 +24,7 @@ namespace TumblThree.Presentation.Converters
         private static string GetSeparator(object commandParameter)
         {
             if (ConverterHelper.IsParameterSet("ListSeparator", commandParameter))
-            {
                 return null;
-            }
             return Environment.NewLine;
         }
     }

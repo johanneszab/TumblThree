@@ -12,11 +12,8 @@ namespace TumblThree.Presentation.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            //var stringList = values.OfType<string>().Where(x => !string.IsNullOrEmpty(x)).ToArray();
-            //return string.Join(" - ", stringList);
-
             var crawlingQueuelistItem = (ReadOnlyObservableList<QueueListItem>)values[0];
-            if (crawlingQueuelistItem.Count() == 0)
+            if (!crawlingQueuelistItem.Any())
             {
                 return values[1];
             }
@@ -25,9 +22,7 @@ namespace TumblThree.Presentation.Converters
             return values[1] + " - " + blogStringArray;
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
-        {
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) =>
             throw new NotSupportedException();
-        }
     }
 }
