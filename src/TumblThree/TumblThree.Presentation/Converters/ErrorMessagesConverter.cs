@@ -13,18 +13,16 @@ namespace TumblThree.Presentation.Converters
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            var errorMessages = values?.FirstOrDefault() as IEnumerable<Tuple<Exception, string>>;
-            if (errorMessages != null)
+            if (values?.FirstOrDefault() is IEnumerable<Tuple<Exception, string>> errorMessages)
             {
                 string message = errorMessages.Any() ? errorMessages.Last().Item2 : "";
                 return string.Format(CultureInfo.CurrentCulture, Resources.ErrorMessage, errorMessages.Count(), message);
             }
+
             return DependencyProperty.UnsetValue;
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
-        {
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) =>
             throw new NotSupportedException();
-        }
     }
 }

@@ -11,19 +11,10 @@ namespace TumblThree.Presentation.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var itemsCount = (int)value;
-            if (itemsCount == 1)
-            {
-                return Resources.OneItem;
-            }
-            else
-            {
-                return string.Format(CultureInfo.CurrentCulture, Resources.NumberOfItems, itemsCount);
-            }
+            return itemsCount == 1 ? Resources.OneItem : string.Format(CultureInfo.CurrentCulture, Resources.NumberOfItems, itemsCount);
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
             throw new NotSupportedException();
-        }
     }
 }

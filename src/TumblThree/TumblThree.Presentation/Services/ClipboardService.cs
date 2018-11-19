@@ -8,9 +8,6 @@ namespace TumblThree.Presentation.Services
     [Export(typeof(IClipboardService))]
     internal class ClipboardService : IClipboardService
     {
-        public void SetText(string text)
-        {
-            Clipboard.SetText(text);
-        }
+        public void SetText(string text) => Clipboard.SetText(text);
     }
 }

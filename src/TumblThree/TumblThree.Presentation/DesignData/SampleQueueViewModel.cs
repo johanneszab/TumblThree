@@ -3,7 +3,6 @@ using System.Linq;
 
 using TumblThree.Applications.ViewModels;
 using TumblThree.Applications.Views;
-using TumblThree.Domain.Models;
 using TumblThree.Domain.Models.Blogs;
 using TumblThree.Domain.Queue;
 

@@ -10,15 +10,9 @@ namespace TumblThree.Presentation.ValidationRules
     {
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
-            if (((string)value).Length > 7)
-            {
-                TimeSpan temp;
-                if (TimeSpan.TryParse((string)value, out temp))
-                {
-                    return new ValidationResult(true, null);
-                }
-            }
-            return new ValidationResult(false, string.Format(CultureInfo.CurrentCulture, Resources.TimeSpanTypeError));
+            return (value as string).Length > 7 && TimeSpan.TryParse((string)value, out TimeSpan _)
+                ? new ValidationResult(true, null)
+                : new ValidationResult(false, string.Format(CultureInfo.CurrentCulture, Resources.TimeSpanTypeError));
         }
     }
 }

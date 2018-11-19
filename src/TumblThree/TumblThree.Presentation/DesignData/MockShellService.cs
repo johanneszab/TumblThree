@@ -13,10 +13,7 @@ namespace TumblThree.Presentation.DesignData
 {
     public class MockShellService : Model, IShellService
     {
-        public MockShellService()
-        {
-            Settings = new AppSettings();
-        }
+        public MockShellService() => Settings = new AppSettings();
 
         public AppSettings Settings { get; set; }
 
@@ -60,10 +57,7 @@ namespace TumblThree.Presentation.DesignData
 
         public OAuthManager OAuthManager { get; set; }
 
-        public IDisposable SetApplicationBusy()
-        {
-            return null;
-        }
+        public IDisposable SetApplicationBusy() => null;
 
         public void ShowSettingsView()
         {
@@ -73,9 +67,6 @@ namespace TumblThree.Presentation.DesignData
         {
         }
 
-        protected virtual void OnClosing(CancelEventArgs e)
-        {
-            Closing?.Invoke(this, e);
-        }
+        protected virtual void OnClosing(CancelEventArgs e) => Closing?.Invoke(this, e);
     }
 }

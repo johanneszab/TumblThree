@@ -13,19 +13,19 @@ namespace TumblThree.Presentation.Converters
             {
                 return 5;
             }
-            else if (rating >= 75)
+            if (rating >= 75)
             {
                 return 4;
             }
-            else if (rating >= 50)
+            if (rating >= 50)
             {
                 return 3;
             }
-            else if (rating >= 25)
+            if (rating >= 25)
             {
                 return 2;
             }
-            else if (rating >= 1)
+            if (rating >= 1)
             {
                 return 1;
             }
@@ -39,19 +39,19 @@ namespace TumblThree.Presentation.Converters
             {
                 return 99;
             }
-            else if (stars == 4)
+            if (stars == 4)
             {
                 return 75;
             }
-            else if (stars == 3)
+            if (stars == 3)
             {
                 return 50;
             }
-            else if (stars == 2)
+            if (stars == 2)
             {
                 return 25;
             }
-            else if (stars == 1)
+            if (stars == 1)
             {
                 return 1;
             }
