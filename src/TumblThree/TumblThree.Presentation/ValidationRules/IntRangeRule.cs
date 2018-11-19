@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Windows.Controls;
 
 using TumblThree.Presentation.Properties;
@@ -11,8 +12,7 @@ namespace TumblThree.Presentation.ValidationRules
         {
             try
             {
-                var temp = 0;
-                if (int.TryParse((string)value, out temp))
+                if (int.TryParse((string)value, out int _))
                 {
                     return new ValidationResult(true, null);
                 }

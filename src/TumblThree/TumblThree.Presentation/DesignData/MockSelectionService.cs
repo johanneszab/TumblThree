@@ -3,7 +3,6 @@ using System.Linq;
 
 using TumblThree.Applications.ObjectModel;
 using TumblThree.Applications.Services;
-using TumblThree.Domain.Models;
 using TumblThree.Domain.Models.Blogs;
 
 namespace TumblThree.Presentation.DesignData
@@ -12,10 +11,7 @@ namespace TumblThree.Presentation.DesignData
     {
         private readonly ObservableRangeCollection<IBlog> selectedBlogFiles;
 
-        public MockSelectionService()
-        {
-            selectedBlogFiles = new ObservableRangeCollection<IBlog>();
-        }
+        public MockSelectionService() => selectedBlogFiles = new ObservableRangeCollection<IBlog>();
 
         public IList<IBlog> SelectedBlogFiles => selectedBlogFiles;
 
@@ -25,14 +21,8 @@ namespace TumblThree.Presentation.DesignData
             blogFilesToAdd.ToList().ForEach(x => selectedBlogFiles.Add(x));
         }
 
-        public void AddRange(IEnumerable<IBlog> collection)
-        {
-            selectedBlogFiles.AddRange(collection);
-        }
+        public void AddRange(IEnumerable<IBlog> collection) => selectedBlogFiles.AddRange(collection);
 
-        public void RemoveRange(IEnumerable<IBlog> collection)
-        {
-            selectedBlogFiles.RemoveRange(collection);
-        }
+        public void RemoveRange(IEnumerable<IBlog> collection) => selectedBlogFiles.RemoveRange(collection);
     }
 }

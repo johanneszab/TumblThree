@@ -27,16 +27,10 @@ namespace TumblThree.Presentation.Converters
             var downloaded = (int)values[0];
             var total = (int)values[1];
             int duplicates = System.Convert.ToInt32(values[2]);
-
-            //if (downloaded == 0)
-            //    return "";
-
+            
             return string.Format(CultureInfo.CurrentCulture, Resources.DetailsProgress, downloaded, total, duplicates);
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
-        {
-            throw new NotSupportedException();
-        }
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => throw new NotSupportedException();
     }
 }

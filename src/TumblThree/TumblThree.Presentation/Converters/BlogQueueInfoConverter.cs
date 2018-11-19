@@ -23,9 +23,7 @@ namespace TumblThree.Presentation.Converters
             return string.Format(CultureInfo.CurrentCulture, Resources.DownloadedFilesOf, downloadedImages, totalImages);
         }
 
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
-        {
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) =>
             throw new NotSupportedException();
-        }
     }
 }
