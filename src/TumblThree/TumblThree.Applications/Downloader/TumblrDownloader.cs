@@ -55,10 +55,10 @@ namespace TumblThree.Applications.Downloader
             return url;
         }
 
-        protected override async Task<bool> DownloadBinaryPost(TumblrPost downloadItem)
+        protected override async Task<bool> DownloadBinaryPostAsync(TumblrPost downloadItem)
         {
             if (!(downloadItem is PhotoPost))
-                return await base.DownloadBinaryPost(downloadItem);
+                return await base.DownloadBinaryPostAsync(downloadItem);
 
             string url = Url(downloadItem);
 
@@ -68,11 +68,11 @@ namespace TumblThree.Applications.Downloader
             foreach (string host in shellService.Settings.TumblrHosts)
             {
                 url = BuildRawImageUrl(url, host);
-                if (await base.DownloadBinaryPost(new PhotoPost(url, downloadItem.Id, downloadItem.Date)))
+                if (await base.DownloadBinaryPostAsync(new PhotoPost(url, downloadItem.Id, downloadItem.Date)))
                     return true;
             }
 
-            return await base.DownloadBinaryPost(downloadItem);
+            return await base.DownloadBinaryPostAsync(downloadItem);
         }
 
         /// <summary>

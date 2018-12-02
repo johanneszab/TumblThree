@@ -4,16 +4,16 @@ namespace TumblThree.Applications.Services
 {
     public interface ILoginService
     {
-        Task PerformTumblrLogin(string login, string password);
+        Task PerformTumblrLoginAsync(string login, string password);
 
         void PerformTumblrLogout();
 
-        Task PerformTumblrTFALogin(string login, string tumblrTFAAuthCode);
+        Task PerformTumblrTFALoginAsync(string login, string tumblrTFAAuthCode);
 
         bool CheckIfTumblrTFANeeded();
 
         bool CheckIfLoggedInAsync();
 
-        Task<string> GetTumblrUsername();
+        Task<string> GetTumblrUsernameAsync();
     }
 }

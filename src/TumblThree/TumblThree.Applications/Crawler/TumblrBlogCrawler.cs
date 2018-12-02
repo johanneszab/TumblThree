@@ -87,7 +87,7 @@ namespace TumblThree.Applications.Crawler
         {
             try
             {
-                await UpdateMetaInformation();
+                await UpdateMetaInformationCoreAsync();
             }
             catch (WebException webException) when ((webException.Response != null))
             {
@@ -95,7 +95,7 @@ namespace TumblThree.Applications.Crawler
             }
         }
 
-        private async Task UpdateMetaInformation()
+        private async Task UpdateMetaInformationCoreAsync()
         {
             if (!blog.Online)
             {
@@ -212,7 +212,7 @@ namespace TumblThree.Applications.Crawler
         {
             try
             {
-                await UpdateTotalPostCount();
+                await UpdateTotalPostCountCoreAsync();
             }
             catch (WebException webException) when ((webException.Response != null))
             {
@@ -226,7 +226,7 @@ namespace TumblThree.Applications.Crawler
             }
         }
 
-        private async Task UpdateTotalPostCount()
+        private async Task UpdateTotalPostCountCoreAsync()
         {
             string document = await GetApiPageWithRetryAsync(0);
             var response = ConvertJsonToClass<TumblrApiJson>(document);
@@ -238,7 +238,7 @@ namespace TumblThree.Applications.Crawler
         {
             try
             {
-                return await GetHighestPostId();
+                return await GetHighestPostIdCoreAsync();
             }
             catch (WebException webException) when ((webException.Response != null))
             {
@@ -252,7 +252,7 @@ namespace TumblThree.Applications.Crawler
             }
         }
 
-        private async Task<ulong> GetHighestPostId()
+        private async Task<ulong> GetHighestPostIdCoreAsync()
         {
             string document = await GetApiPageWithRetryAsync(0);
             var response = ConvertJsonToClass<TumblrApiJson>(document);
@@ -300,7 +300,7 @@ namespace TumblThree.Applications.Crawler
 
                 CheckIfShouldPause();
 
-                trackedTasks.Add(CrawlPage(pageNumber));
+                trackedTasks.Add(CrawlPageAsync(pageNumber));
             }
 
             await Task.WhenAll(trackedTasks);
@@ -313,7 +313,7 @@ namespace TumblThree.Applications.Crawler
             return incompleteCrawl;
         }
 
-        private async Task CrawlPage(int pageNumber)
+        private async Task CrawlPageAsync(int pageNumber)
         {
             try
             {
@@ -322,7 +322,7 @@ namespace TumblThree.Applications.Crawler
 
                 completeGrab = CheckPostAge(response);
 
-                await AddUrlsToDownloadList(response);
+                await AddUrlsToDownloadListAsync(response);
 
                 numberOfPagesCrawled += blog.PageSize;
                 UpdateProgressQueueInformation(Resources.ProgressGetUrlLong, numberOfPagesCrawled, blog.Posts);
@@ -387,7 +387,7 @@ namespace TumblThree.Applications.Crawler
                 jsonQueue.Add(addToList);
         }
 
-        private async Task AddUrlsToDownloadList(TumblrApiJson document)
+        private async Task AddUrlsToDownloadListAsync(TumblrApiJson document)
         {
             foreach (Post post in document.posts)
             {
@@ -411,7 +411,7 @@ namespace TumblThree.Applications.Crawler
                     AddPhotoMetaUrlToDownloadList(post);
                     AddVideoMetaUrlToDownloadList(post);
                     AddAudioMetaUrlToDownloadList(post);
-                    await AddExternalPhotoUrlToDownloadList(post);
+                    await AddExternalPhotoUrlToDownloadListAsync(post);
                 }
                 catch (NullReferenceException)
                 {
@@ -669,16 +669,16 @@ namespace TumblThree.Applications.Crawler
             AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(audioUrl.Split('/').Last(), ".json"), post));
         }
 
-        private async Task AddExternalPhotoUrlToDownloadList(Post post)
+        private async Task AddExternalPhotoUrlToDownloadListAsync(Post post)
         {
             string searchableText = InlineSearch(post);
             string timestamp = post.unix_timestamp.ToString();
 
             if (blog.DownloadImgur) AddImgurUrl(searchableText, timestamp);
 
-            if (blog.DownloadImgur) await AddImgurAlbumUrl(searchableText, timestamp);
+            if (blog.DownloadImgur) await AddImgurAlbumUrlAsync(searchableText, timestamp);
 
-            if (blog.DownloadGfycat) await AddGfycatUrl(searchableText, timestamp);
+            if (blog.DownloadGfycat) await AddGfycatUrlAsync(searchableText, timestamp);
 
             if (blog.DownloadWebmshare) AddWebmshareUrl(searchableText, timestamp);
 
