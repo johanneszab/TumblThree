@@ -41,7 +41,7 @@ namespace TumblThree.Applications.Parser
                 string url = @"https://gfycat.com/cajax/get/" + gfyId;
                 HttpWebRequest request = webRequestFactory.CreateGetXhrReqeust(url);
                 requestRegistration = ct.Register(() => request.Abort());
-                return await webRequestFactory.ReadReqestToEnd(request);
+                return await webRequestFactory.ReadReqestToEndAsync(request);
             }
             finally
             {

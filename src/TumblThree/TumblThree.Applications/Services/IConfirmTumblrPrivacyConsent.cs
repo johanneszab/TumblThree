@@ -4,6 +4,6 @@ namespace TumblThree.Applications.Services
 {
     public interface IConfirmTumblrPrivacyConsent
     {
-        Task ConfirmPrivacyConsent();
+        Task ConfirmPrivacyConsentAsync();
     }
 }

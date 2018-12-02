@@ -107,7 +107,7 @@ namespace TumblThree.Applications.Controllers
 
         public event BlogManagerFinishedLoadingDatabasesHandler BlogManagerFinishedLoadingDatabases;
 
-        public async Task Initialize()
+        public async Task InitializeAsync()
         {
             crawlerService.AddBlogCommand = addBlogCommand;
             crawlerService.RemoveBlogCommand = removeBlogCommand;
@@ -541,7 +541,7 @@ namespace TumblThree.Applications.Controllers
             }
 
             blog = settingsService.TransferGlobalSettingsToBlog(blog);
-            await UpdateMetaInformation(blog);
+            await UpdateMetaInformationAsync(blog);
         }
 
         private void SaveBlog(IBlog blog)
@@ -561,7 +561,7 @@ namespace TumblThree.Applications.Controllers
             return false;
         }
 
-        private async Task UpdateMetaInformation(IBlog blog)
+        private async Task UpdateMetaInformationAsync(IBlog blog)
         {
             ICrawler crawler = crawlerFactory.GetCrawler(blog, new CancellationToken(), new PauseToken(),
                 new Progress<DownloadProgress>());

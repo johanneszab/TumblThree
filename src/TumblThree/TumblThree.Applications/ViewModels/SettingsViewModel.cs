@@ -773,7 +773,7 @@ namespace TumblThree.Applications.ViewModels
         {
             try
             {
-                await LoginService.PerformTumblrLogin(TumblrUser, TumblrPassword);
+                await LoginService.PerformTumblrLoginAsync(TumblrUser, TumblrPassword);
             }
             catch
             {
@@ -796,7 +796,7 @@ namespace TumblThree.Applications.ViewModels
         {
             try
             {
-                await LoginService.PerformTumblrTFALogin(TumblrUser, TumblrTFAAuthCode);
+                await LoginService.PerformTumblrTFALoginAsync(TumblrUser, TumblrTFAAuthCode);
                 await UpdateTumblrLogin();
             }
             catch
@@ -806,7 +806,7 @@ namespace TumblThree.Applications.ViewModels
 
         private async Task UpdateTumblrLogin()
         {
-            TumblrEmail = await LoginService.GetTumblrUsername();
+            TumblrEmail = await LoginService.GetTumblrUsernameAsync();
             TumblrLoggedIn = !string.IsNullOrEmpty(TumblrEmail);
         }
 

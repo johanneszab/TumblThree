@@ -4,8 +4,8 @@ namespace TumblThree.Applications.Crawler
 {
     interface ITumblrBlogDetector
     {
-        Task<bool> IsPasswordProtectedTumblrBlog(string url);
+        Task<bool> IsPasswordProtectedTumblrBlogAsync(string url);
 
-        Task<bool> IsTumblrBlog(string url);
+        Task<bool> IsTumblrBlogAsync(string url);
     }
 }

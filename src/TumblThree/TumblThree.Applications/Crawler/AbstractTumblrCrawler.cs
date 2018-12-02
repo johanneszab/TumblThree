@@ -56,7 +56,7 @@ namespace TumblThree.Applications.Crawler
             return await RequestDataAsync(url, headers, cookieHosts);
         }
 
-        protected async Task<string> UpdateTumblrKey(string url)
+        protected async Task<string> UpdateTumblrKeyAsync(string url)
         {
             try
             {
@@ -190,7 +190,7 @@ namespace TumblThree.Applications.Crawler
             }
         }
 
-        protected async Task AddGfycatUrl(string post, string timestamp)
+        protected async Task AddGfycatUrlAsync(string post, string timestamp)
         {
             foreach (string videoUrl in await gfycatParser.SearchForGfycatUrlAsync(post, blog.GfycatType))
             {
@@ -212,7 +212,7 @@ namespace TumblThree.Applications.Crawler
             }
         }
 
-        protected async Task AddImgurAlbumUrl(string post, string timestamp)
+        protected async Task AddImgurAlbumUrlAsync(string post, string timestamp)
         {
             foreach (string imageUrl in await imgurParser.SearchForImgurUrlFromAlbumAsync(post))
             {

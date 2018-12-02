@@ -90,7 +90,7 @@ namespace TumblThree.Applications.Services
             return request;
         }
 
-        public async Task PerformPostReqeust(HttpWebRequest request, Dictionary<string, string> parameters)
+        public async Task PerformPostReqeustAsync(HttpWebRequest request, Dictionary<string, string> parameters)
         {
             string requestBody = UrlEncode(parameters);
             using (Stream postStream = await request.GetRequestStreamAsync().TimeoutAfter(shellService.Settings.TimeOut))
@@ -101,7 +101,7 @@ namespace TumblThree.Applications.Services
             }
         }
 
-        public async Task PerformPostXHRReqeust(HttpWebRequest request, string requestBody)
+        public async Task PerformPostXHRReqeustAsync(HttpWebRequest request, string requestBody)
         {
             using (Stream postStream = await request.GetRequestStreamAsync())
             {
@@ -111,7 +111,7 @@ namespace TumblThree.Applications.Services
             }
         }
 
-        public async Task<bool> RemotePageIsValid(string url)
+        public async Task<bool> RemotePageIsValidAsync(string url)
         {
             HttpWebRequest request = CreateStubReqeust(url);
             request.Method = "HEAD";
@@ -121,7 +121,7 @@ namespace TumblThree.Applications.Services
             return (response.StatusCode == HttpStatusCode.OK);
         }
 
-        public async Task<string> ReadReqestToEnd(HttpWebRequest request)
+        public async Task<string> ReadReqestToEndAsync(HttpWebRequest request)
         {
             using (var response = await request.GetResponseAsync().TimeoutAfter(shellService.Settings.TimeOut) as HttpWebResponse)
             {
