@@ -40,7 +40,7 @@ namespace TumblThree.Applications.Parser
             {
                 HttpWebRequest request = webRequestFactory.CreateGetReqeust(imgurAlbumUrl);
                 requestRegistration = ct.Register(() => request.Abort());
-                return await webRequestFactory.ReadReqestToEnd(request);
+                return await webRequestFactory.ReadReqestToEndAsync(request);
             }
             finally
             {

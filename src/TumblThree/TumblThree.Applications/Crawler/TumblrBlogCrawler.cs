@@ -110,7 +110,7 @@ namespace TumblThree.Applications.Crawler
             {
                 await semaphoreSlim.WaitAsync();
 
-                trackedTasks.Add(CrawlPage(crawlerNumber));
+                trackedTasks.Add(CrawlPageAsync(crawlerNumber));
             }
 
             await Task.WhenAll(trackedTasks);
@@ -120,12 +120,12 @@ namespace TumblThree.Applications.Crawler
             UpdateBlogStats();
         }
 
-        private async Task CrawlPage(int crawlerNumber)
+        private async Task CrawlPageAsync(int crawlerNumber)
         {
             try
             {
                 string document = await RequestDataAsync(blog.Url + "page/" + crawlerNumber);
-                await AddUrlsToDownloadList(document, crawlerNumber);
+                await AddUrlsToDownloadListAsync(document, crawlerNumber);
             }
             catch (TimeoutException timeoutException)
             {
@@ -140,7 +140,7 @@ namespace TumblThree.Applications.Crawler
             }
         }
 
-        private async Task AddUrlsToDownloadList(string document, int crawlerNumber)
+        private async Task AddUrlsToDownloadListAsync(string document, int crawlerNumber)
         {
             while (true)
             {

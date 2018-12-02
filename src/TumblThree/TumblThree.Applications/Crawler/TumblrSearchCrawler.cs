@@ -75,7 +75,7 @@ namespace TumblThree.Applications.Crawler
         {
             semaphoreSlim = new SemaphoreSlim(shellService.Settings.ConcurrentScans);
             trackedTasks = new List<Task>();
-            tumblrKey = await UpdateTumblrKey("https://www.tumblr.com/search/" + blog.Name);
+            tumblrKey = await UpdateTumblrKeyAsync("https://www.tumblr.com/search/" + blog.Name);
 
             GenerateTags();
 
@@ -83,7 +83,7 @@ namespace TumblThree.Applications.Crawler
             {
                 await semaphoreSlim.WaitAsync();
 
-                trackedTasks.Add(CrawlPage(pageNumber));
+                trackedTasks.Add(CrawlPageAsync(pageNumber));
             }
 
             await Task.WhenAll(trackedTasks);
@@ -93,12 +93,12 @@ namespace TumblThree.Applications.Crawler
             UpdateBlogStats();
         }
 
-        private async Task CrawlPage(int pageNumber)
+        private async Task CrawlPageAsync(int pageNumber)
         {
             try
             {
                 string document = await GetSearchPageAsync(pageNumber);
-                await AddUrlsToDownloadList(document, pageNumber);
+                await AddUrlsToDownloadListAsync(document, pageNumber);
             }
             catch (TimeoutException timeoutException)
             {
@@ -139,9 +139,9 @@ namespace TumblThree.Applications.Crawler
                                      ((pageNumber - 1) * blog.PageSize) + "&before=" + ((pageNumber - 1) * blog.PageSize) +
                                      "&safe_mode=false&post_page=" + pageNumber +
                                      "&filter_nsfw=false&filter_post_type=&next_ad_offset=0&ad_placement_id=0&more_posts=true";
-                await webRequestFactory.PerformPostXHRReqeust(request, requestBody);
+                await webRequestFactory.PerformPostXHRReqeustAsync(request, requestBody);
                 requestRegistration = ct.Register(() => request.Abort());
-                return await webRequestFactory.ReadReqestToEnd(request);
+                return await webRequestFactory.ReadReqestToEndAsync(request);
             }
             finally
             {
@@ -149,7 +149,7 @@ namespace TumblThree.Applications.Crawler
             }
         }
 
-        private async Task AddUrlsToDownloadList(string response, int crawlerNumber)
+        private async Task AddUrlsToDownloadListAsync(string response, int crawlerNumber)
         {
             while (true)
             {

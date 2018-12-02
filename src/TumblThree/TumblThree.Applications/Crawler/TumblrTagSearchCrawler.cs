@@ -90,7 +90,7 @@ namespace TumblThree.Applications.Crawler
             {
                 await semaphoreSlim.WaitAsync();
 
-                trackedTasks.Add(CrawlPage(pageNumber, crawlerTimeOffset));
+                trackedTasks.Add(CrawlPageAsync(pageNumber, crawlerTimeOffset));
             }
 
             await Task.WhenAll(trackedTasks);
@@ -100,14 +100,14 @@ namespace TumblThree.Applications.Crawler
             UpdateBlogStats();
         }
 
-        private async Task CrawlPage(int pageNumber, long crawlerTimeOffset)
+        private async Task CrawlPageAsync(int pageNumber, long crawlerTimeOffset)
         {
             try
             {
                 long pagination = DateTimeOffset.Now.ToUnixTimeSeconds() - (pageNumber * crawlerTimeOffset);
                 long nextCrawlersPagination =
                     DateTimeOffset.Now.ToUnixTimeSeconds() - ((pageNumber + 1) * crawlerTimeOffset);
-                await AddUrlsToDownloadList(pagination, nextCrawlersPagination);
+                await AddUrlsToDownloadListAsync(pagination, nextCrawlersPagination);
             }
             catch (TimeoutException timeoutException)
             {
@@ -176,7 +176,7 @@ namespace TumblThree.Applications.Crawler
             return await GetRequestAsync("https://www.tumblr.com/tagged/" + blog.Name + "?before=" + pagination);
         }
 
-        private async Task AddUrlsToDownloadList(long pagination, long nextCrawlersPagination)
+        private async Task AddUrlsToDownloadListAsync(long pagination, long nextCrawlersPagination)
         {
             while (true)
             {

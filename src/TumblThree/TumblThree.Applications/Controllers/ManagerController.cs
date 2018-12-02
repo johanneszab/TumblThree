@@ -107,7 +107,7 @@ namespace TumblThree.Applications.Controllers
 
         public event BlogManagerFinishedLoadingDatabasesHandler BlogManagerFinishedLoadingDatabases;
 
-        public async Task Initialize()
+        public async Task InitializeAsync()
         {
             crawlerService.AddBlogCommand = addBlogCommand;
             crawlerService.RemoveBlogCommand = removeBlogCommand;
@@ -532,7 +532,7 @@ namespace TumblThree.Applications.Controllers
 
             IBlog blog = CheckIfCrawlableBlog(blogUrl);
 
-            blog = await CheckIfBlogIsHiddenTumblrBlog(blog);
+            blog = await CheckIfBlogIsHiddenTumblrBlogAsync(blog);
 
             lock (lockObject)
             {
@@ -543,7 +543,7 @@ namespace TumblThree.Applications.Controllers
             }
 
             blog = settingsService.TransferGlobalSettingsToBlog(blog);
-            await UpdateMetaInformation(blog);
+            await UpdateMetaInformationAsync(blog);
         }
 
         private void SaveBlog(IBlog blog)
@@ -563,7 +563,7 @@ namespace TumblThree.Applications.Controllers
             return false;
         }
 
-        private async Task UpdateMetaInformation(IBlog blog)
+        private async Task UpdateMetaInformationAsync(IBlog blog)
         {
             ICrawler crawler = crawlerFactory.GetCrawler(blog, new CancellationToken(), new PauseToken(),
                 new Progress<DownloadProgress>());
@@ -583,9 +583,9 @@ namespace TumblThree.Applications.Controllers
                 managerService.AddDatabase(new Files().Load(blog.ChildId));
         }
 
-        private async Task<IBlog> CheckIfBlogIsHiddenTumblrBlog(IBlog blog)
+        private async Task<IBlog> CheckIfBlogIsHiddenTumblrBlogAsync(IBlog blog)
         {
-            if (blog.GetType() == typeof(TumblrBlog) && await tumblrBlogDetector.IsHiddenTumblrBlog(blog.Url))
+            if (blog.GetType() == typeof(TumblrBlog) && await tumblrBlogDetector.IsHiddenTumblrBlogAsync(blog.Url))
             {
                 RemoveBlog(new[] { blog });
                 blog = TumblrHiddenBlog.Create("https://www.tumblr.com/dashboard/blog/" + blog.Name,

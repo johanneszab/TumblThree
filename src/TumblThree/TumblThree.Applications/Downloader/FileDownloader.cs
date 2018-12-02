@@ -154,7 +154,7 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        public async Task<Stream> ReadFromUrlIntoStream(string url)
+        public async Task<Stream> ReadFromUrlIntoStreamAsync(string url)
         {
             HttpWebRequest request = webRequestFactory.CreateGetReqeust(url);
 
@@ -177,7 +177,7 @@ namespace TumblThree.Applications.Downloader
             return settings.Bandwidth == 0 ? stream : new ThrottledStream(stream, (settings.Bandwidth / settings.ConcurrentConnections) * 1024);
         }
 
-        public static async Task<bool> SaveStreamToDisk(Stream input, string destinationFileName, CancellationToken ct)
+        public static async Task<bool> SaveStreamToDiskAsync(Stream input, string destinationFileName, CancellationToken ct)
         {
             using (var stream = new FileStream(destinationFileName, FileMode.Create, FileAccess.Write, FileShare.Read, BufferSize,
                 true))

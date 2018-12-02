@@ -101,7 +101,7 @@ namespace TumblThree.Applications.Controllers
             DetailsController.QueueManager = queueManager;
             CrawlerController.QueueManager = queueManager;
 
-            Task managerControllerInit = ManagerController.Initialize();
+            Task managerControllerInit = ManagerController.InitializeAsync();
             QueueController.Initialize();
             DetailsController.Initialize();
             CrawlerController.Initialize();
@@ -116,7 +116,7 @@ namespace TumblThree.Applications.Controllers
             // Let the UI to initialize first before loading the queuelist.
             await Dispatcher.CurrentDispatcher.InvokeAsync(ManagerController.RestoreColumn, DispatcherPriority.ApplicationIdle);
             await Dispatcher.CurrentDispatcher.InvokeAsync(QueueController.Run, DispatcherPriority.ApplicationIdle);
-            await confirmTumblrPrivacyConsent.ConfirmPrivacyConsent();
+            await confirmTumblrPrivacyConsent.ConfirmPrivacyConsentAsync();
         }
 
         public void Shutdown()
