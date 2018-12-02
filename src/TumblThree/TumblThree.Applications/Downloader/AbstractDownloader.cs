@@ -65,7 +65,7 @@ namespace TumblThree.Applications.Downloader
             return url;
         }
 
-        protected virtual async Task<bool> DownloadBinaryFile(string fileLocation, string url)
+        protected virtual async Task<bool> DownloadBinaryFileAsync(string fileLocation, string url)
         {
             try
             {
@@ -109,10 +109,10 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        protected virtual async Task<bool> DownloadBinaryFile(string fileLocation, string fileLocationUrlList, string url)
+        protected virtual async Task<bool> DownloadBinaryFileAsync(string fileLocation, string fileLocationUrlList, string url)
         {
             if (!blog.DownloadUrlList)
-                return await DownloadBinaryFile(fileLocation, url);
+                return await DownloadBinaryFileAsync(fileLocation, url);
 
             return AppendToTextFile(fileLocationUrlList, url);
         }
@@ -166,7 +166,7 @@ namespace TumblThree.Applications.Downloader
 
                 CheckIfShouldPause();
 
-                trackedTasks.Add(DownloadPost(downloadItem));
+                trackedTasks.Add(DownloadPostAsync(downloadItem));
             }
 
             // TODO: Is this even right?
@@ -187,11 +187,11 @@ namespace TumblThree.Applications.Downloader
             return completeDownload;
         }
 
-        private async Task DownloadPost(TumblrPost downloadItem)
+        private async Task DownloadPostAsync(TumblrPost downloadItem)
         {
             try
             {
-                await DownloadPostAsync(downloadItem);
+                await DownloadPostCoreAsync(downloadItem);
             }
             catch
             {
@@ -204,16 +204,16 @@ namespace TumblThree.Applications.Downloader
             }
         }
 
-        private async Task DownloadPostAsync(TumblrPost downloadItem)
+        private async Task DownloadPostCoreAsync(TumblrPost downloadItem)
         {
             // TODO: Refactor, should be polymorphism
             if (downloadItem.PostType == PostType.Binary)
-                await DownloadBinaryPost(downloadItem);
+                await DownloadBinaryPostAsync(downloadItem);
             else
                 DownloadTextPost(downloadItem);
         }
 
-        protected virtual async Task<bool> DownloadBinaryPost(TumblrPost downloadItem)
+        protected virtual async Task<bool> DownloadBinaryPostAsync(TumblrPost downloadItem)
         {
             string url = Url(downloadItem);
             if (CheckIfFileExistsInDB(url))
@@ -229,7 +229,7 @@ namespace TumblThree.Applications.Downloader
                 string fileLocationUrlList = FileLocationLocalized(blogDownloadLocation, downloadItem.TextFileLocation);
                 DateTime postDate = PostDate(downloadItem);
                 UpdateProgressQueueInformation(Resources.ProgressDownloadImage, fileName);
-                if (!await DownloadBinaryFile(fileLocation, fileLocationUrlList, url))
+                if (!await DownloadBinaryFileAsync(fileLocation, fileLocationUrlList, url))
                     return false;
                 SetFileDate(fileLocation, postDate);
                 UpdateBlogDB(downloadItem.DbType, fileName);

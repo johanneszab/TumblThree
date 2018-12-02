@@ -37,7 +37,7 @@ namespace TumblThree.Applications.Services
             {
                 HttpWebRequest request = webRequestFactory.CreateGetReqeust(
                     @"https://api.github.com/repos/johanneszab/tumblthree/releases/latest");
-                string result = await webRequestFactory.ReadReqestToEnd(request);
+                string result = await webRequestFactory.ReadReqestToEndAsync(request);
                 XmlDictionaryReader jsonReader = JsonReaderWriterFactory.CreateJsonReader(Encoding.UTF8.GetBytes(result),
                     new XmlDictionaryReaderQuotas());
                 XElement root = XElement.Load(jsonReader);

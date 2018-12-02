@@ -24,7 +24,7 @@ namespace TumblThree.Applications.Services
             this.shellService = shellService;
         }
 
-        public async Task ConfirmPrivacyConsent()
+        public async Task ConfirmPrivacyConsentAsync()
         {
             if (CheckIfLoggedInAsync())
                 return;
@@ -36,7 +36,7 @@ namespace TumblThree.Applications.Services
             var requestBody =
                 "{\"eu_resident\":true,\"gdpr_is_acceptable_age\":true,\"gdpr_consent_core\":true,\"gdpr_consent_first_party_ads\":true,\"gdpr_consent_third_party_ads\":true,\"gdpr_consent_search_history\":true,\"redirect_to\":\"\"}";
             request.ContentType = "application/json";
-            await webRequestFactory.PerformPostXHRReqeust(request, requestBody);
+            await webRequestFactory.PerformPostXHRReqeustAsync(request, requestBody);
             using (var response = await request.GetResponseAsync() as HttpWebResponse)
             {
                 cookieService.SetUriCookie(response.Cookies);
@@ -55,7 +55,7 @@ namespace TumblThree.Applications.Services
         {
             var requestUrl = "https://www.tumblr.com/";
             HttpWebRequest request = webRequestFactory.CreateGetReqeust(requestUrl);
-            return await webRequestFactory.ReadReqestToEnd(request);
+            return await webRequestFactory.ReadReqestToEndAsync(request);
         }
 
         public bool CheckIfLoggedInAsync()

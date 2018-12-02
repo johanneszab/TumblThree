@@ -49,31 +49,31 @@ namespace TumblThree.Applications.Downloader
                 if (pt.IsPaused)
                     pt.WaitWhilePausedWithResponseAsyc().Wait();
                 
-                trackedTasks.Add(DownloadPost(downloadItem));
+                trackedTasks.Add(DownloadPostAsync(downloadItem));
             }
 
             await Task.WhenAll(trackedTasks);
         }
 
-        private async Task DownloadPost(TumblrCrawlerData<T> downloadItem)
+        private async Task DownloadPostAsync(TumblrCrawlerData<T> downloadItem)
         {
             try
             {
-                await DownloadTextPost(downloadItem);
+                await DownloadTextPostAsync(downloadItem);
             }
             catch
             {
             }
         }
 
-        private async Task DownloadTextPost(TumblrCrawlerData<T> crawlerData)
+        private async Task DownloadTextPostAsync(TumblrCrawlerData<T> crawlerData)
         {
             string blogDownloadLocation = blog.DownloadLocation();
             string fileLocation = FileLocation(blogDownloadLocation, crawlerData.Filename);
-            await AppendToTextFile(fileLocation, crawlerData.Data);
+            await AppendToTextFileAsync(fileLocation, crawlerData.Data);
         }
 
-        private async Task AppendToTextFile(string fileLocation, T data)
+        private async Task AppendToTextFileAsync(string fileLocation, T data)
         {
             try
             {
