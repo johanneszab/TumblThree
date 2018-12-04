@@ -304,13 +304,13 @@
     <value>Sie müssen sich bei tumblr.com anmelden zum Laden von {0}. Dazu in den Einstellungen-&gt;Authentifizieren klicken.</value>
   </data>
   <data name="PasswordProtected" xml:space="preserve">
-    <value>Password protected blog: {0}. You need to enter the password in the Details.</value>
+    <value>Passwortgeschützer Blog: {0}. Bitte hinterlege das Passwort in den Details.</value>
   </data>
   <data name="PasswordProtectedOrOffline" xml:space="preserve">
-    <value>Hidden password protected or offline blog detected: {0}. You need to enter the password in the Details.</value>
+    <value>Passwortgeschützer oder unerreichbarer Blog: {0}. Bitte hinterlege das Passwort in den Details.</value>
   </data>
   <data name="MaxBytePerSecond" xml:space="preserve">
-    <value>MaxBytesPerSecond muss nicht negativ sein.</value>
+    <value>MaxBytesPerSecond darf nicht negativ sein.</value>
   </data>
   <data name="Summary" xml:space="preserve">
     <value>Zusammenfassung: {0}</value>
