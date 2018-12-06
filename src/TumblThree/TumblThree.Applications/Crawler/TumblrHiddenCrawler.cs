@@ -413,6 +413,9 @@ namespace TumblThree.Applications.Crawler
             }
 
             AddInlinePhotoUrl(postCopy);
+
+            if (blog.RegExPhotos)
+                AddGenericInlinePhotoUrl(post);
         }
 
         private void AddPhotoUrl(Post post)
@@ -437,6 +440,11 @@ namespace TumblThree.Applications.Crawler
             AddTumblrPhotoUrl(InlineSearch(post));
         }
 
+        private void AddGenericInlinePhotoUrl(Post post)
+        {
+            AddTumblrPhotoUrl(InlineSearch(post));
+        }
+
         private void AddVideoUrlToDownloadList(Post post)
         {
             if (!blog.DownloadVideo)
@@ -456,8 +464,8 @@ namespace TumblThree.Applications.Crawler
             AddInlineVideoUrl(postCopy);
             AddInlineTumblrVideoUrl(postCopy, new Regex("\"(https?://ve.media.tumblr.com/(tumblr_[\\w]*))"));
             AddInlineTumblrVideoUrl(postCopy, new Regex("\"(https?://vtt.tumblr.com/(tumblr_[\\w]*))"));
-            // TODO: Make generic inline video detection optional
-            AddGenericInlineVideoUrl(postCopy);
+            if (blog.RegExVideos)
+                AddGenericInlineVideoUrl(postCopy);
 
             //AddInlineVideoUrlsToDownloader(videoUrls, postCopy);
         }

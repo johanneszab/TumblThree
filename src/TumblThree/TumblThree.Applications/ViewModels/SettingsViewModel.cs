@@ -51,6 +51,8 @@ namespace TumblThree.Applications.ViewModels
         private bool createImageMeta;
         private bool createVideoMeta;
         private bool dumpCrawlerData;
+        private bool regExPhotos;
+        private bool regExVideos;
         private string downloadPages;
         private int pageSize;
         private string downloadFrom;
@@ -496,6 +498,18 @@ namespace TumblThree.Applications.ViewModels
             set => SetProperty(ref dumpCrawlerData, value);
         }
 
+        public bool RegExPhotos
+        {
+            get => regExPhotos;
+            set => SetProperty(ref regExPhotos, value);
+        }
+
+        public bool RegExVideos
+        {
+            get => regExVideos;
+            set => SetProperty(ref regExVideos, value);
+        }
+
         public string DownloadPages
         {
             get => downloadPages;
@@ -867,6 +881,8 @@ namespace TumblThree.Applications.ViewModels
                 CreateAudioMeta = settings.CreateAudioMeta;
                 MetadataFormat = settings.MetadataFormat;
                 DumpCrawlerData = settings.DumpCrawlerData;
+                RegExPhotos = settings.RegExPhotos;
+                RegExVideos = settings.RegExVideos;
                 DownloadPages = settings.DownloadPages;
                 PageSize = settings.PageSize;
                 DownloadFrom = settings.DownloadFrom;
@@ -947,6 +963,8 @@ namespace TumblThree.Applications.ViewModels
                 CreateAudioMeta = false;
                 MetadataFormat = MetadataType.Text;
                 DumpCrawlerData = false;
+                RegExPhotos = false;
+                RegExVideos = false;
                 DownloadPages = string.Empty;
                 PageSize = 50;
                 DownloadFrom = string.Empty;
@@ -1078,6 +1096,8 @@ namespace TumblThree.Applications.ViewModels
             settings.CreateAudioMeta = CreateAudioMeta;
             settings.MetadataFormat = MetadataFormat;
             settings.DumpCrawlerData = DumpCrawlerData;
+            settings.RegExPhotos = RegExPhotos;
+            settings.RegExVideos = RegExVideos;
             settings.DownloadPages = DownloadPages;
             settings.PageSize = PageSize;
             settings.DownloadFrom = DownloadFrom;

@@ -170,6 +170,9 @@ namespace TumblThree.Applications.Crawler
                 return;
 
             AddTumblrPhotoUrl(document);
+
+            if (blog.RegExPhotos)
+                AddGenericPhotoUrl(document);
         }
 
         private void AddVideoUrlToDownloadList(string document)
@@ -178,6 +181,9 @@ namespace TumblThree.Applications.Crawler
                 return;
 
             AddTumblrVideoUrl(document);
+
+            if (blog.RegExVideos)
+                AddGenericVideoUrl(document);
         }
     }
 }
