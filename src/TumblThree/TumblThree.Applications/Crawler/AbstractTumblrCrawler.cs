@@ -248,7 +248,7 @@ namespace TumblThree.Applications.Crawler
             }
         }
 
-        protected void AddGernicPhotoUrl(string post)
+        protected void AddGenericPhotoUrl(string post)
         {
             foreach (string imageUrl in tumblrParser.SearchForGenericPhotoUrl(post))
             {

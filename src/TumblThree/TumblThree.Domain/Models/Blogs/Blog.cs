@@ -29,6 +29,8 @@ namespace TumblThree.Domain.Models.Blogs
         private bool downloadUrlList;
         private bool downloadVideo;
         private bool dumpCrawlerData;
+        private bool regExPhotos;
+        private bool regExVideos;
         private string fileDownloadLocation;
         private bool forceRescan;
         private bool forceSize;
@@ -218,6 +220,28 @@ namespace TumblThree.Domain.Models.Blogs
             set
             {
                 SetProperty(ref dumpCrawlerData, value);
+                Dirty = true;
+            }
+        }
+
+        [DataMember]
+        public bool RegExPhotos
+        {
+            get => regExPhotos;
+            set
+            {
+                SetProperty(ref regExPhotos, value);
+                Dirty = true;
+            }
+        }
+
+        [DataMember]
+        public bool RegExVideos
+        {
+            get => regExVideos;
+            set
+            {
+                SetProperty(ref regExVideos, value);
                 Dirty = true;
             }
         }

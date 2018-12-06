@@ -441,6 +441,9 @@ namespace TumblThree.Applications.Crawler
             }
 
             AddInlinePhotoUrl(post);
+
+            if (blog.RegExPhotos)
+                AddGenericInlinePhotoUrl(post);
         }
 
         private void AddVideoUrlToDownloadList(Post post)
@@ -463,8 +466,8 @@ namespace TumblThree.Applications.Crawler
             AddInlineVideoUrl(post);
             AddInlineTumblrVideoUrl(post, new Regex("\"(https?://ve.media.tumblr.com/(tumblr_[\\w]*))"));
             AddInlineTumblrVideoUrl(post, new Regex("\"(https?://vtt.tumblr.com/(tumblr_[\\w]*))"));
-            // TODO: Make generic inline video detection optional
-            AddGenericInlineVideoUrl(post);
+            if (blog.RegExVideos)
+                AddGenericInlineVideoUrl(post);
 
             //AddInlineVideoUrlsToDownloader(videoUrls, post);
         }
@@ -644,6 +647,11 @@ namespace TumblThree.Applications.Crawler
                 AddToDownloadList(new PhotoPost(imageUrl, post.id, post.unix_timestamp.ToString()));
                 AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(imageUrl.Split('/').Last(), ".json"), post));
             }
+        }
+
+        private void AddGenericInlinePhotoUrl(Post post)
+        {
+            AddGenericPhotoUrl(InlineSearch(post));
         }
 
         private void AddVideoUrl(Post post)
