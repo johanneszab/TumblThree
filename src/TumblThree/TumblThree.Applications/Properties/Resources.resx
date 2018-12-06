@@ -147,6 +147,9 @@
   <data name="Body" xml:space="preserve">
     <value>Body: {0]</value>
   </data>
+  <data name="ConfirmingTumblrPrivacyConsentFailed" xml:space="preserve">
+    <value>Confirming the Tumblr privacy consent failed. There might a connection issue.</value>
+  </data>
   <data name="Conversation" xml:space="preserve">
     <value>Conversation: {0}</value>
   </data>
@@ -342,7 +345,7 @@
     <value>Text file</value>
   </data>
   <data name="TimeoutReached" xml:space="preserve">
-    <value>A connection timout occured during {0} of {1}.</value>
+    <value>A connection timeout occured during {0} of {1}.</value>
   </data>
   <data name="Title" xml:space="preserve">
     <value>Title: {0}</value>
