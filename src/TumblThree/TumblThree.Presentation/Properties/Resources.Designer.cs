@@ -1213,6 +1213,24 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search for image patterns.
+        /// </summary>
+        public static string RegExPhotos {
+            get {
+                return ResourceManager.GetString("RegExPhotos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search for video patterns.
+        /// </summary>
+        public static string RegExVideos {
+            get {
+                return ResourceManager.GetString("RegExVideos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove Blog.
         /// </summary>
         public static string RemoveBlog {
@@ -2170,6 +2188,44 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipProxyPasswordDescription {
             get {
                 return ResourceManager.GetString("ToolTipProxyPasswordDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search for images in the crawl data.
+        /// </summary>
+        public static string ToolTipRegExPhotos {
+            get {
+                return ResourceManager.GetString("ToolTipRegExPhotos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uses regular expressions to search for images in everything TumblThree scans.
+        ///This will add plenty of duplicate image urls to the queue, but might gather images from websites that are currently not supported by a specifically written parser..
+        /// </summary>
+        public static string ToolTipRegExPhotosDescription {
+            get {
+                return ResourceManager.GetString("ToolTipRegExPhotosDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search for videos in the crawl data.
+        /// </summary>
+        public static string ToolTipRegExVideos {
+            get {
+                return ResourceManager.GetString("ToolTipRegExVideos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uses regular expressions to search for videos in everything TumblThree scans.
+        ///This will add plenty of duplicate video urls to the queue, but might gather videos from websites that are currently not supported by a specifically written parser..
+        /// </summary>
+        public static string ToolTipRegExVideosDescription {
+            get {
+                return ResourceManager.GetString("ToolTipRegExVideosDescription", resourceCulture);
             }
         }
         

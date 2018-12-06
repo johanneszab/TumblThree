@@ -159,6 +159,10 @@ namespace TumblThree.Applications.Properties
 
         [DataMember] public bool DumpCrawlerData { get; set; }
 
+        [DataMember] public bool RegExPhotos { get; set; }
+
+        [DataMember] public bool RegExVideos { get; set; }
+
         [DataMember] public bool DownloadRebloggedPosts { get; set; }
 
         [DataMember] public bool DownloadGfycat { get; set; }

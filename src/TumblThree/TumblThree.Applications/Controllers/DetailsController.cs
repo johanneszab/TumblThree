@@ -182,6 +182,8 @@ namespace TumblThree.Applications.Controllers
                 CatBoxType = SetProperty<CatBoxTypes>(sharedBlogFiles, "CatBoxType"),
                 MetadataFormat = SetProperty<MetadataType>(sharedBlogFiles, "MetadataFormat"),
                 DumpCrawlerData = SetCheckBox(sharedBlogFiles, "DumpCrawlerData"),
+                RegExPhotos = SetCheckBox(sharedBlogFiles, "RegExPhotos"),
+                RegExVideos = SetCheckBox(sharedBlogFiles, "RegExVideos"),
                 FileDownloadLocation = SetProperty<string>(sharedBlogFiles, "FileDownloadLocation"),
                 Dirty = false
             };

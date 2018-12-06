@@ -102,6 +102,10 @@ namespace TumblThree.Domain.Models.Blogs
 
         bool DumpCrawlerData { get; set; }
 
+        bool RegExPhotos { get; set; }
+
+        bool RegExVideos { get; set; }
+
         string FileDownloadLocation { get; set; }
 
         string DownloadPages { get; set; }

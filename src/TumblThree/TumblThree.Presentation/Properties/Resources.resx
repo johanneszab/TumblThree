@@ -916,4 +916,24 @@ The cookie with your credentials of your account is saved and the authentication
     <value>Refresh rate of the progress information in the queue panel.
 This value determines the information refresh rate for each individual queued blog.</value>
   </data>
+  <data name="RegExPhotos" xml:space="preserve">
+    <value>Search for image patterns</value>
+  </data>
+  <data name="RegExVideos" xml:space="preserve">
+    <value>Search for video patterns</value>
+  </data>
+  <data name="ToolTipRegExPhotos" xml:space="preserve">
+    <value>Search for images in the crawl data</value>
+  </data>
+  <data name="ToolTipRegExPhotosDescription" xml:space="preserve">
+    <value>Uses regular expressions to search for images in everything TumblThree scans.
+This will add plenty of duplicate image urls to the queue, but might gather images from websites that are currently not supported by a specifically written parser.</value>
+  </data>
+  <data name="ToolTipRegExVideos" xml:space="preserve">
+    <value>Search for videos in the crawl data</value>
+  </data>
+  <data name="ToolTipRegExVideosDescription" xml:space="preserve">
+    <value>Uses regular expressions to search for videos in everything TumblThree scans.
+This will add plenty of duplicate video urls to the queue, but might gather videos from websites that are currently not supported by a specifically written parser.</value>
+  </data>
 </root>

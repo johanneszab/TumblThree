@@ -5,7 +5,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,7 +23,7 @@ using TumblThree.Domain.Models.Blogs;
 namespace TumblThree.Applications.Crawler
 {
     [Export(typeof(ICrawler))]
-    [ExportMetadata("BlogType", typeof(TumblrHiddenBlog))]
+    [ExportMetadata("BlogType", typeof(TumblrBlogCrawler))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public class TumblrBlogCrawler : AbstractTumblrCrawler, ICrawler
     {
@@ -414,6 +413,9 @@ namespace TumblThree.Applications.Crawler
             }
 
             AddInlinePhotoUrl(postCopy);
+
+            if (blog.RegExPhotos)
+                AddGenericInlinePhotoUrl(post);
         }
 
         private void AddPhotoUrl(Post post)
@@ -438,6 +440,11 @@ namespace TumblThree.Applications.Crawler
             AddTumblrPhotoUrl(InlineSearch(post));
         }
 
+        private void AddGenericInlinePhotoUrl(Post post)
+        {
+            AddTumblrPhotoUrl(InlineSearch(post));
+        }
+
         private void AddVideoUrlToDownloadList(Post post)
         {
             if (!blog.DownloadVideo)
@@ -457,8 +464,8 @@ namespace TumblThree.Applications.Crawler
             AddInlineVideoUrl(postCopy);
             AddInlineTumblrVideoUrl(postCopy, new Regex("\"(https?://ve.media.tumblr.com/(tumblr_[\\w]*))"));
             AddInlineTumblrVideoUrl(postCopy, new Regex("\"(https?://vtt.tumblr.com/(tumblr_[\\w]*))"));
-            // TODO: Make generic inline video detection optional
-            AddGenericInlineVideoUrl(postCopy);
+            if (blog.RegExVideos)
+                AddGenericInlineVideoUrl(postCopy);
 
             //AddInlineVideoUrlsToDownloader(videoUrls, postCopy);
         }

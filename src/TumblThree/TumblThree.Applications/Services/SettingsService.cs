@@ -55,6 +55,8 @@ namespace TumblThree.Applications.Services
             blog.LoliSafeType = shellService.Settings.LoliSafeType;
             blog.CatBoxType = shellService.Settings.CatBoxType;
             blog.DumpCrawlerData = shellService.Settings.DumpCrawlerData;
+            blog.RegExPhotos = shellService.Settings.RegExPhotos;
+            blog.RegExVideos = shellService.Settings.RegExVideos;
             return blog;
         }
     }
