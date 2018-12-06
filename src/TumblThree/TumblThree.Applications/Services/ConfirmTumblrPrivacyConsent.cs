@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Globalization;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+
+using TumblThree.Applications.Properties;
+using TumblThree.Domain;
 
 namespace TumblThree.Applications.Services
 {
@@ -25,6 +29,27 @@ namespace TumblThree.Applications.Services
         }
 
         public async Task ConfirmPrivacyConsentAsync()
+        {
+            try
+            {
+                await PerformPrivacyConsentRequestAsync();
+            }
+            catch (TimeoutException timeoutException)
+            {
+                const string message = "confirming the Tumblr privacy consent";
+                Logger.Error("{0}, {1}", string.Format(CultureInfo.CurrentCulture, Resources.TimeoutReached, message),
+                    timeoutException);
+                shellService.ShowError(timeoutException, Resources.TimeoutReached, message);
+            }
+            catch (Exception exception)
+            {
+                Logger.Error("{0}, {1}", string.Format(CultureInfo.CurrentCulture, Resources.ConfirmingTumblrPrivacyConsentFailed),
+                    exception);
+                shellService.ShowError(exception, Resources.ConfirmingTumblrPrivacyConsentFailed);
+            }
+        }
+
+        private async Task PerformPrivacyConsentRequestAsync()
         {
             if (CheckIfLoggedInAsync())
                 return;
