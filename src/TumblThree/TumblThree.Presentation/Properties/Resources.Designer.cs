@@ -2202,7 +2202,8 @@ namespace TumblThree.Presentation.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to Uses regular expressions to search for images in everything TumblThree scans.
-        ///This will add plenty of duplicate image urls to the queue, but might gather images from websites that are currently not supported by a specifically written parser..
+        ///This might add plenty of duplicate or random image urls to the queue, but could potentially
+        ///gather images from websites that are currently not supported by a specifically written parser..
         /// </summary>
         public static string ToolTipRegExPhotosDescription {
             get {
@@ -2221,7 +2222,8 @@ namespace TumblThree.Presentation.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to Uses regular expressions to search for videos in everything TumblThree scans.
-        ///This will add plenty of duplicate video urls to the queue, but might gather videos from websites that are currently not supported by a specifically written parser..
+        ///This might add plenty of duplicate or random video urls to the queue, but could potentially
+        ///gather videos from websites that are currently not supported by a specifically written parser..
         /// </summary>
         public static string ToolTipRegExVideosDescription {
             get {
@@ -2257,7 +2259,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sets the number connections used for scanning.
+        ///   Looks up a localized string similar to Sets the number of connections used for scanning.
         ///Since the data is usually small, you should leave this high.
         ///Note: This setting has no impact if the Limit Tumblr Api Connections setting is turned on..
         /// </summary>
@@ -2368,7 +2370,7 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The vt.tumblr.com host regularly closes connections if the number is too high..
+        ///   Looks up a localized string similar to The v*.tumblr.com hosts regularly close connections if the number is too high..
         /// </summary>
         public static string ToolTipVideoConnectionsDescription {
             get {

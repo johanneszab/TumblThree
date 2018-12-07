@@ -24,5 +24,7 @@ namespace TumblThree.Applications.Parser
         IEnumerable<string> SearchForGenericPhotoUrl(string searchableText);
 
         IEnumerable<string> SearchForGenericVideoUrl(string searchableText);
+
+        bool IsTumblrUrl(string url);
     }
 }
