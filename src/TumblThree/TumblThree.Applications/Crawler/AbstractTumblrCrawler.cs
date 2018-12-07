@@ -252,6 +252,9 @@ namespace TumblThree.Applications.Crawler
         {
             foreach (string imageUrl in tumblrParser.SearchForGenericPhotoUrl(post))
             {
+                if (tumblrParser.IsTumblrUrl(imageUrl))
+                    continue;
+
                 if (CheckIfSkipGif(imageUrl))
                     continue;
 
@@ -263,15 +266,10 @@ namespace TumblThree.Applications.Crawler
         {
             foreach (string videoUrl in tumblrParser.SearchForGenericVideoUrl(post))
             {
-                string url = videoUrl;
-                if (url.Contains("tumblr") && shellService.Settings.VideoSize == 480)
-                {
-                    int indexOfSuffix = url.LastIndexOf('.');
-                    if (indexOfSuffix >= 0)
-                        url = url.Insert(indexOfSuffix, "_480");
-                }
+                if (tumblrParser.IsTumblrUrl(videoUrl))
+                    continue;
 
-                AddToDownloadList(new VideoPost(url, Guid.NewGuid().ToString("N")));
+                AddToDownloadList(new VideoPost(videoUrl, Guid.NewGuid().ToString("N")));
             }
         }
     }
