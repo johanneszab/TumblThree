@@ -64,5 +64,11 @@ namespace TumblThree.Applications.Parser
                 yield return videoUrl;
             }
         }
+
+        public bool IsTumblrUrl(string url)
+        {
+            var regex = new Regex("tumblr_[\\w]*");
+            return regex.IsMatch(url);
+        }
     }
 }
