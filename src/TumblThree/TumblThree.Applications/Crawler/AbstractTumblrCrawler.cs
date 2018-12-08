@@ -248,6 +248,19 @@ namespace TumblThree.Applications.Crawler
             }
         }
 
+        protected void AddInlineTumblrVideoUrl(string post, Regex regex)
+        {
+            foreach (Match match in regex.Matches(post))
+            {
+                string videoUrl = match.Groups[1].Value;
+
+                if (shellService.Settings.VideoSize == 480)
+                    videoUrl += "_480";
+
+                AddToDownloadList(new VideoPost(videoUrl + ".mp4", Guid.NewGuid().ToString("N")));
+            }
+        }
+
         protected void AddGenericPhotoUrl(string post)
         {
             foreach (string imageUrl in tumblrParser.SearchForGenericPhotoUrl(post))

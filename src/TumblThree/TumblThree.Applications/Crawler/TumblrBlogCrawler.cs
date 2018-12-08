@@ -181,6 +181,8 @@ namespace TumblThree.Applications.Crawler
                 return;
 
             AddTumblrVideoUrl(document);
+            AddInlineTumblrVideoUrl(document, tumblrParser.GetTumblrVeVideoUrlRegex());
+            AddInlineTumblrVideoUrl(document, tumblrParser.GetTumblrVttVideoUrlRegex());
 
             if (blog.RegExVideos)
                 AddGenericVideoUrl(document);
