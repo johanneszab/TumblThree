@@ -464,8 +464,8 @@ namespace TumblThree.Applications.Crawler
 
             //var postCopy = (Post)post.Clone();
             AddInlineVideoUrl(post);
-            AddInlineTumblrVideoUrl(post, new Regex("\"(https?://ve.media.tumblr.com/(tumblr_[\\w]*))"));
-            AddInlineTumblrVideoUrl(post, new Regex("\"(https?://vtt.tumblr.com/(tumblr_[\\w]*))"));
+            AddInlineTumblrVideoUrl(InlineSearch(post), tumblrParser.GetTumblrVeVideoUrlRegex());
+            AddInlineTumblrVideoUrl(InlineSearch(post), tumblrParser.GetTumblrVttVideoUrlRegex());
             if (blog.RegExVideos)
                 AddGenericInlineVideoUrl(post);
 
@@ -600,18 +600,6 @@ namespace TumblThree.Applications.Crawler
         private void AddInlineVideoUrl(Post post)
         {
             AddTumblrVideoUrl(InlineSearch(post));
-        }
-
-        private void AddInlineTumblrVideoUrl(Post post, Regex regex)
-        {
-            foreach (Match match in regex.Matches(InlineSearch(post)))
-            {
-                string videoUrl = match.Groups[1].Value;
-                if (shellService.Settings.VideoSize == 480)
-                    videoUrl += "_480";
-
-                AddToDownloadList(new VideoPost(videoUrl + ".mp4", Guid.NewGuid().ToString("N")));
-            }
         }
 
         private void AddGenericInlineVideoUrl(Post post)
