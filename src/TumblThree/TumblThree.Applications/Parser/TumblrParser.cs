@@ -13,7 +13,7 @@ namespace TumblThree.Applications.Parser
 
         public Regex GetTumblrVttVideoUrlRegex() => new Regex("\"(https?://vtt.tumblr.com/(tumblr_[\\w]*))");
 
-        public Regex GetTumblrInlineVideoUrlRegex() => new Regex("\"(http[A-Za-z0-9_/:.]*.com/video_file/[A-Za-z0-9_/:.]*)\"");
+        public Regex GetTumblrInlineVideoUrlRegex() => new Regex("\"(http[A-Za-z0-9_/:.]*video_file[\\S]*/(tumblr_[\\w]*))[0-9/]*\"");
 
         public Regex GetGenericVideoUrlRegex() => new Regex("\"(https?://(?:[a-z0-9\\-]+\\.)+[a-z]{2,6}(?:/[^/#?]+)+\\.(?:mp4|mkv|gifv))\"");
 
