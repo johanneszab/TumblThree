@@ -36,10 +36,9 @@ namespace TumblThree.Applications.Services
             }
             catch (TimeoutException timeoutException)
             {
-                const string message = "confirming the Tumblr privacy consent";
-                Logger.Error("{0}, {1}", string.Format(CultureInfo.CurrentCulture, Resources.TimeoutReached, message),
+                Logger.Error("{0}, {1}", string.Format(CultureInfo.CurrentCulture, Resources.TimeoutReachedShort, Resources.ConfirmingTumblrPrivacyConsent),
                     timeoutException);
-                shellService.ShowError(timeoutException, Resources.TimeoutReached, message);
+                shellService.ShowError(timeoutException, Resources.ConfirmingTumblrPrivacyConsentFailed);
             }
             catch (Exception exception)
             {
