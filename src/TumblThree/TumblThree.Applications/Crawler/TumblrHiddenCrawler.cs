@@ -461,9 +461,9 @@ namespace TumblThree.Applications.Crawler
 
             //var videoUrls = new HashSet<string>();
 
-            AddInlineVideoUrl(postCopy);
-            AddInlineTumblrVideoUrl(postCopy, new Regex("\"(https?://ve.media.tumblr.com/(tumblr_[\\w]*))"));
-            AddInlineTumblrVideoUrl(postCopy, new Regex("\"(https?://vtt.tumblr.com/(tumblr_[\\w]*))"));
+            AddTumblrVideoUrl(InlineSearch(postCopy));
+            AddInlineTumblrVideoUrl(InlineSearch(postCopy), tumblrParser.GetTumblrVeVideoUrlRegex());
+            AddInlineTumblrVideoUrl(InlineSearch(postCopy), tumblrParser.GetTumblrVttVideoUrlRegex());
             if (blog.RegExVideos)
                 AddGenericInlineVideoUrl(postCopy);
 
@@ -488,24 +488,6 @@ namespace TumblThree.Applications.Crawler
 
             AddToDownloadList(new VideoPost(videoUrl, postId, post.timestamp.ToString()));
             AddToJsonQueue(new TumblrCrawlerData<Post>(Path.ChangeExtension(videoUrl.Split('/').Last(), ".json"), post));
-        }
-
-        private void AddInlineVideoUrl(Post post)
-        {
-            AddTumblrVideoUrl(InlineSearch(post));
-        }
-
-        private void AddInlineTumblrVideoUrl(Post post, Regex regex)
-        {
-            foreach (Match match in regex.Matches(InlineSearch(post)))
-            {
-                string videoUrl = match.Groups[1].Value;
-
-                if (shellService.Settings.VideoSize == 480)
-                    videoUrl += "_480";
-
-                AddToDownloadList(new VideoPost(videoUrl + ".mp4", Guid.NewGuid().ToString("N")));
-            }
         }
 
         private void AddGenericInlineVideoUrl(Post post)
