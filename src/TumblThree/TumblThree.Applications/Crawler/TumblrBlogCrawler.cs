@@ -464,8 +464,7 @@ namespace TumblThree.Applications.Crawler
 
             //var postCopy = (Post)post.Clone();
             AddInlineVideoUrl(post);
-            AddInlineTumblrVideoUrl(InlineSearch(post), tumblrParser.GetTumblrVeVideoUrlRegex());
-            AddInlineTumblrVideoUrl(InlineSearch(post), tumblrParser.GetTumblrVttVideoUrlRegex());
+            AddInlineTumblrVideoUrl(InlineSearch(post), tumblrParser.GetTumblrVVideoUrlRegex());
             if (blog.RegExVideos)
                 AddGenericInlineVideoUrl(post);
 
