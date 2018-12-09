@@ -9,9 +9,7 @@ namespace TumblThree.Applications.Parser
 
         Regex GetGenericPhotoUrlRegex();
 
-        Regex GetTumblrVeVideoUrlRegex();
-
-        Regex GetTumblrVttVideoUrlRegex();
+        Regex GetTumblrVVideoUrlRegex();
 
         Regex GetTumblrInlineVideoUrlRegex();
 
