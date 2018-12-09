@@ -462,8 +462,7 @@ namespace TumblThree.Applications.Crawler
             //var videoUrls = new HashSet<string>();
 
             AddTumblrVideoUrl(InlineSearch(postCopy));
-            AddInlineTumblrVideoUrl(InlineSearch(postCopy), tumblrParser.GetTumblrVeVideoUrlRegex());
-            AddInlineTumblrVideoUrl(InlineSearch(postCopy), tumblrParser.GetTumblrVttVideoUrlRegex());
+            AddInlineTumblrVideoUrl(InlineSearch(postCopy), tumblrParser.GetTumblrVVideoUrlRegex());
             if (blog.RegExVideos)
                 AddGenericInlineVideoUrl(postCopy);
 

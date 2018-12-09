@@ -9,9 +9,7 @@ namespace TumblThree.Applications.Parser
 
         public Regex GetGenericPhotoUrlRegex() => new Regex("\"(https?://(?:[a-z0-9\\-]+\\.)+[a-z]{2,6}(?:/[^/#?]+)+\\.(?:jpg|png|gif))\"");
 
-        public Regex GetTumblrVeVideoUrlRegex() => new Regex("\"(https?://ve.media.tumblr.com/(tumblr_[\\w]*))");
-
-        public Regex GetTumblrVttVideoUrlRegex() => new Regex("\"(https?://vtt.tumblr.com/(tumblr_[\\w]*))");
+        public Regex GetTumblrVVideoUrlRegex() => new Regex("\"(https?://v.*.tumblr.com/(tumblr_[\\w]*))");
 
         public Regex GetTumblrInlineVideoUrlRegex() => new Regex("\"(http[A-Za-z0-9_/:.]*video_file[\\S]*/(tumblr_[\\w]*))[0-9/]*\"");
 
