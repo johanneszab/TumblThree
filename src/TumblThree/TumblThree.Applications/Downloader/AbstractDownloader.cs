@@ -161,7 +161,7 @@ namespace TumblThree.Applications.Downloader
                     await concurrentVideoConnectionsSemaphore.WaitAsync();
                 await concurrentConnectionsSemaphore.WaitAsync();
 
-                if (CheckifShouldStop())
+                if (CheckIfShouldStop())
                     break;
 
                 CheckIfShouldPause();
@@ -324,7 +324,7 @@ namespace TumblThree.Applications.Downloader
             return postDate;
         }
 
-        protected bool CheckifShouldStop()
+        protected bool CheckIfShouldStop()
         {
             return ct.IsCancellationRequested;
         }
