@@ -64,7 +64,7 @@ namespace TumblThree.Applications.Crawler
                 string document = await GetRequestAsync(url);
                 return ExtractTumblrKey(document);
             }
-            catch (WebException webException) when (webException.Response == null && webException.Status == WebExceptionStatus.RequestCanceled)
+            catch (WebException webException) when (webException.Status == WebExceptionStatus.RequestCanceled)
             {
                 return string.Empty;
             }
