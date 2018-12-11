@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Net;
+using System.Runtime.Remoting.Messaging;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -48,8 +49,11 @@ namespace TumblThree.Applications.Crawler
                 blog.Online = true;
                 string document = await RequestDataAsync(blog.Url);
             }
-            catch (WebException)
+            catch (WebException webException)
             {
+                if (webException.Response == null && webException.Status == WebExceptionStatus.RequestCanceled)
+                    return;
+
                 blog.Online = false;
             }
             catch (TimeoutException timeoutException)

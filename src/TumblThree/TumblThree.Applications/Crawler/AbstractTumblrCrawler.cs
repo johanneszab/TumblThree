@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -62,6 +63,10 @@ namespace TumblThree.Applications.Crawler
             {
                 string document = await GetRequestAsync(url);
                 return ExtractTumblrKey(document);
+            }
+            catch (WebException webException) when (webException.Response == null && webException.Status == WebExceptionStatus.RequestCanceled)
+            {
+                return string.Empty;
             }
             catch (TimeoutException timeoutException)
             {

@@ -216,17 +216,14 @@ namespace TumblThree.Applications.Controllers
             ICrawler crawler = crawlerFactory.GetCrawler(blog, ct, pt, progress);
             await crawler.CrawlAsync();
 
-            if (ct.IsCancellationRequested)
-            {
-                Monitor.Enter(lockObject);
-                QueueOnDispatcher.CheckBeginInvokeOnUI(() => crawlerService.RemoveActiveItem(queueListItem));
-                Monitor.Exit(lockObject);
-            }
-            else
+            Monitor.Enter(lockObject);
+            QueueOnDispatcher.CheckBeginInvokeOnUI(() => crawlerService.RemoveActiveItem(queueListItem));
+            Monitor.Exit(lockObject);
+
+            if (!ct.IsCancellationRequested)
             {
                 Monitor.Enter(lockObject);
                 QueueOnDispatcher.CheckBeginInvokeOnUI(() => QueueManager.RemoveItem(queueListItem));
-                QueueOnDispatcher.CheckBeginInvokeOnUI(() => crawlerService.RemoveActiveItem(queueListItem));
                 Monitor.Exit(lockObject);
             }
         }

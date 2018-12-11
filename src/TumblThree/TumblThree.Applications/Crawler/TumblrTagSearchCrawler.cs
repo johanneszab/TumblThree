@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Globalization;
+using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -152,6 +153,10 @@ namespace TumblThree.Applications.Crawler
             {
                 string document = await GetTaggedSearchPageAsync(DateTimeOffset.Now.ToUnixTimeSeconds());
                 return !document.Contains("SearchResultsModel");
+            }
+            catch (WebException webException) when (webException.Response == null && webException.Status == WebExceptionStatus.RequestCanceled)
+            {
+                return true;
             }
             catch (TimeoutException timeoutException)
             {
