@@ -243,6 +243,7 @@ namespace TumblThree.Applications.Crawler
             if (!blog.DownloadVideo)
                 return;
             AddTumblrVideoUrl(document);
+            AddInlineTumblrVideoUrl(document, tumblrParser.GetTumblrVVideoUrlRegex());
 
             if (blog.RegExVideos)
                 AddGenericVideoUrl(document);
