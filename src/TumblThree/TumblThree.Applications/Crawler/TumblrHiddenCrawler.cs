@@ -64,8 +64,11 @@ namespace TumblThree.Applications.Crawler
                 string document = await GetSvcPageAsync("1", "0");
                 blog.Online = true;
             }
-            catch (WebException webException) when ((webException.Response != null))
+            catch (WebException webException)
             {
+                if (webException.Response == null && webException.Status == WebExceptionStatus.RequestCanceled)              
+                    return;
+                
                 if (HandleServiceUnavailableWebException(webException))
                     blog.Online = true;
 
@@ -99,8 +102,11 @@ namespace TumblThree.Applications.Crawler
                     blog.Description = response.response.posts.FirstOrDefault().blog.description;
                 }
             }
-            catch (WebException webException) when ((webException.Response != null))
+            catch (WebException webException)
             {
+                if (webException.Response == null && webException.Status == WebExceptionStatus.RequestCanceled)
+                    return;
+
                 HandleServiceUnavailableWebException(webException);
             }
         }
@@ -221,6 +227,9 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException)
             {
+                if (webException.Response == null && webException.Status == WebExceptionStatus.RequestCanceled)
+                    return 0;
+
                 HandleLimitExceededWebException(webException);
                 return 0;
             }
@@ -273,8 +282,11 @@ namespace TumblThree.Applications.Crawler
             {
                 string document = await GetSvcPageAsync(blog.PageSize.ToString(), (blog.PageSize * 1).ToString());
             }
-            catch (WebException webException) when ((webException.Response != null))
+            catch (WebException webException)
             {
+                if (webException.Response == null && webException.Status == WebExceptionStatus.RequestCanceled)              
+                    return true;
+                
                 if (HandleServiceUnavailableWebException(webException))
                     return false;
             }
