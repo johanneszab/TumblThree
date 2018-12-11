@@ -26,7 +26,7 @@ namespace TumblThree.Applications.Services
             this.settings = settings;
         }
 
-        private HttpWebRequest CreateStubReqeust(string url, string referer = "", Dictionary<string, string> headers = null)
+        private HttpWebRequest CreateStubRequest(string url, string referer = "", Dictionary<string, string> headers = null)
         {
             var request = (HttpWebRequest)WebRequest.Create(HttpUtility.UrlDecode(url));
             request.ProtocolVersion = HttpVersion.Version11;
@@ -60,14 +60,14 @@ namespace TumblThree.Applications.Services
 
         public HttpWebRequest CreateGetReqeust(string url, string referer = "", Dictionary<string, string> headers = null)
         {
-            HttpWebRequest request = CreateStubReqeust(url, referer, headers);
+            HttpWebRequest request = CreateStubRequest(url, referer, headers);
             request.Method = "GET";
             return request;
         }
 
         public HttpWebRequest CreateGetXhrReqeust(string url, string referer = "", Dictionary<string, string> headers = null)
         {
-            HttpWebRequest request = CreateStubReqeust(url, referer, headers);
+            HttpWebRequest request = CreateStubRequest(url, referer, headers);
             request.Method = "GET";
             request.ContentType = "application/json";
             request.Headers["X-Requested-With"] = "XMLHttpRequest";
@@ -76,7 +76,7 @@ namespace TumblThree.Applications.Services
 
         public HttpWebRequest CreatePostReqeust(string url, string referer = "", Dictionary<string, string> headers = null)
         {
-            HttpWebRequest request = CreateStubReqeust(url, referer, headers);
+            HttpWebRequest request = CreateStubRequest(url, referer, headers);
             request.Method = "POST";
             request.ContentType = "application/x-www-form-urlencoded";
             return request;
@@ -113,7 +113,7 @@ namespace TumblThree.Applications.Services
 
         public async Task<bool> RemotePageIsValidAsync(string url)
         {
-            HttpWebRequest request = CreateStubReqeust(url);
+            HttpWebRequest request = CreateStubRequest(url);
             request.Method = "HEAD";
             request.AllowAutoRedirect = false;
             var response = await request.GetResponseAsync() as HttpWebResponse;
