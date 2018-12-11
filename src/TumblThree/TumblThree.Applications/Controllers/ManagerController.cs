@@ -55,6 +55,7 @@ namespace TumblThree.Applications.Controllers
         private readonly DelegateCommand showFilesCommand;
         private readonly DelegateCommand visitBlogCommand;
 
+        private SemaphoreSlim addBlogSemaphoreSlim = new SemaphoreSlim(1);
         private readonly object lockObject = new object();
 
         #region Delegates
@@ -609,8 +610,17 @@ namespace TumblThree.Applications.Controllers
         private async Task AddBlogBatchedAsync(IEnumerable<string> urls)
         {
             var semaphoreSlim = new SemaphoreSlim(25);
-            IEnumerable<Task> tasks = urls.Select(async url => await AddBlogsAsync(semaphoreSlim, url));
-            await Task.WhenAll(tasks);
+
+            await addBlogSemaphoreSlim.WaitAsync();
+            try
+            {
+                IEnumerable<Task> tasks = urls.Select(async url => await AddBlogsAsync(semaphoreSlim, url));
+                await Task.WhenAll(tasks);
+            }
+            finally
+            {
+                addBlogSemaphoreSlim.Release();
+            }
         }
 
         private async Task AddBlogsAsync(SemaphoreSlim semaphoreSlim, string url)
