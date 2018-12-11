@@ -5,7 +5,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Runtime.Remoting.Messaging;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -66,7 +65,7 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException)
             {
-                if (webException.Response == null && webException.Status == WebExceptionStatus.RequestCanceled)
+                if (webException.Status == WebExceptionStatus.RequestCanceled)
                     return;
 
                 if (HandleUnauthorizedWebException(webException))
@@ -93,8 +92,11 @@ namespace TumblThree.Applications.Crawler
             {
                 await UpdateMetaInformationCoreAsync();
             }
-            catch (WebException webException) when ((webException.Response != null))
+            catch (WebException webException)
             {
+                if (webException.Status == WebExceptionStatus.RequestCanceled)
+                    return;
+
                 HandleLimitExceededWebException(webException);
             }
         }
@@ -220,7 +222,7 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException)
             {
-                if (webException.Response == null && webException.Status == WebExceptionStatus.RequestCanceled)             
+                if (webException.Status == WebExceptionStatus.RequestCanceled)             
                     return;
                 
                 HandleLimitExceededWebException(webException);
@@ -249,7 +251,7 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException)
             {
-                if (webException.Response == null && webException.Status == WebExceptionStatus.RequestCanceled)
+                if (webException.Status == WebExceptionStatus.RequestCanceled)
                     return 0;
 
                 HandleLimitExceededWebException(webException);
@@ -305,7 +307,7 @@ namespace TumblThree.Applications.Crawler
                     break;
                 }
 
-                if (CheckifShouldStop())
+                if (CheckIfShouldStop())
                     break;
 
                 CheckIfShouldPause();
@@ -337,7 +339,7 @@ namespace TumblThree.Applications.Crawler
                 numberOfPagesCrawled += blog.PageSize;
                 UpdateProgressQueueInformation(Resources.ProgressGetUrlLong, numberOfPagesCrawled, blog.Posts);
             }
-            catch (WebException webException) when ((webException.Response != null))
+            catch (WebException webException) when (webException.Response != null)
             {
                 if (HandleLimitExceededWebException(webException))
                     incompleteCrawl = true;

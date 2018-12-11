@@ -69,6 +69,9 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException)
             {
+                if (webException.Status == WebExceptionStatus.RequestCanceled)
+                    return;
+
                 Logger.Error("AbstractCrawler:IsBlogOnlineAsync:WebException {0}", webException);
                 shellService.ShowError(webException, Resources.BlogIsOffline, blog.Name);
                 blog.Online = false;
@@ -222,7 +225,7 @@ namespace TumblThree.Applications.Crawler
 
         protected void CleanCollectedBlogStatistics() => statisticsBag = null;
 
-        protected bool CheckifShouldStop() => ct.IsCancellationRequested;
+        protected bool CheckIfShouldStop() => ct.IsCancellationRequested;
 
         protected void CheckIfShouldPause()
         {

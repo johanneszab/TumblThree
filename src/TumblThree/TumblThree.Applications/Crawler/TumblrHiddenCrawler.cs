@@ -66,7 +66,7 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException)
             {
-                if (webException.Response == null && webException.Status == WebExceptionStatus.RequestCanceled)              
+                if (webException.Status == WebExceptionStatus.RequestCanceled)              
                     return;
                 
                 if (HandleServiceUnavailableWebException(webException))
@@ -104,7 +104,7 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException)
             {
-                if (webException.Response == null && webException.Status == WebExceptionStatus.RequestCanceled)
+                if (webException.Status == WebExceptionStatus.RequestCanceled)
                     return;
 
                 HandleServiceUnavailableWebException(webException);
@@ -200,7 +200,7 @@ namespace TumblThree.Applications.Crawler
                 var response = ConvertJsonToClass<TumblrJson>(document);
                 await AddUrlsToDownloadListAsync(response, pageNumber);
             }
-            catch (WebException webException) when ((webException.Response != null))
+            catch (WebException webException) when (webException.Response != null)
             {
                 if (HandleLimitExceededWebException(webException))
                     incompleteCrawl = true;
@@ -227,7 +227,7 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException)
             {
-                if (webException.Response == null && webException.Status == WebExceptionStatus.RequestCanceled)
+                if (webException.Status == WebExceptionStatus.RequestCanceled)
                     return 0;
 
                 HandleLimitExceededWebException(webException);
@@ -284,7 +284,7 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException)
             {
-                if (webException.Response == null && webException.Status == WebExceptionStatus.RequestCanceled)              
+                if (webException.Status == WebExceptionStatus.RequestCanceled)              
                     return true;
                 
                 if (HandleServiceUnavailableWebException(webException))
@@ -333,7 +333,7 @@ namespace TumblThree.Applications.Crawler
         {
             while (true)
             {
-                if (CheckifShouldStop())
+                if (CheckIfShouldStop())
                     return;
 
                 CheckIfShouldPause();
