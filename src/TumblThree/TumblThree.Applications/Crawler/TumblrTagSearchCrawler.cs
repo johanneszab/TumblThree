@@ -154,7 +154,7 @@ namespace TumblThree.Applications.Crawler
                 string document = await GetTaggedSearchPageAsync(DateTimeOffset.Now.ToUnixTimeSeconds());
                 return !document.Contains("SearchResultsModel");
             }
-            catch (WebException webException) when (webException.Response == null && webException.Status == WebExceptionStatus.RequestCanceled)
+            catch (WebException webException) when (webException.Status == WebExceptionStatus.RequestCanceled)
             {
                 return true;
             }
@@ -185,7 +185,7 @@ namespace TumblThree.Applications.Crawler
         {
             while (true)
             {
-                if (CheckifShouldStop())
+                if (CheckIfShouldStop())
                     return;
 
                 CheckIfShouldPause();

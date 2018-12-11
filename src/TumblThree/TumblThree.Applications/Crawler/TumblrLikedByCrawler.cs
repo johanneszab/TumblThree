@@ -129,6 +129,9 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException)
             {
+                if (webException.Status == WebExceptionStatus.RequestCanceled)
+                    return;
+
                 Logger.Error("TumblrLikedByCrawler:IsBlogOnlineAsync:WebException {0}", webException);
                 shellService.ShowError(webException, Resources.BlogIsOffline, blog.Name);
                 blog.Online = false;
@@ -151,7 +154,7 @@ namespace TumblThree.Applications.Crawler
             return dateTimeOffset.ToUnixTimeSeconds();
         }
 
-        private bool CheckIfPagecountReached(int pageCount)
+        private bool CheckIfPageCountReached(int pageCount)
         {
             int numberOfPages = RangeToSequence(blog.DownloadPages).Count();
             return pageCount >= numberOfPages;
@@ -164,7 +167,7 @@ namespace TumblThree.Applications.Crawler
                 string document = await GetRequestAsync(blog.Url + "/page/1");
                 return !document.Contains("<div class=\"signup_view account login\"");
             }
-            catch (WebException webException) when (webException.Response == null && webException.Status == WebExceptionStatus.RequestCanceled)
+            catch (WebException webException) when (webException.Status == WebExceptionStatus.RequestCanceled)
             {
                 return true;
             }
@@ -179,7 +182,7 @@ namespace TumblThree.Applications.Crawler
         {
             while (true)
             {
-                if (CheckifShouldStop())
+                if (CheckIfShouldStop())
                     return;
 
                 CheckIfShouldPause();
