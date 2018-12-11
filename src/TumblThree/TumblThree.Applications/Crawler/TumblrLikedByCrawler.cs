@@ -164,6 +164,10 @@ namespace TumblThree.Applications.Crawler
                 string document = await GetRequestAsync(blog.Url + "/page/1");
                 return !document.Contains("<div class=\"signup_view account login\"");
             }
+            catch (WebException webException) when (webException.Response == null && webException.Status == WebExceptionStatus.RequestCanceled)
+            {
+                return true;
+            }
             catch (TimeoutException timeoutException)
             {
                 HandleTimeoutException(timeoutException, Resources.Crawling);

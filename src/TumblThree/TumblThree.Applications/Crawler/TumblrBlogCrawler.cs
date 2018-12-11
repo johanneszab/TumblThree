@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.Remoting.Messaging;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -63,8 +64,11 @@ namespace TumblThree.Applications.Crawler
                 await GetApiPageWithRetryAsync(0);
                 blog.Online = true;
             }
-            catch (WebException webException) when ((webException.Response != null))
+            catch (WebException webException)
             {
+                if (webException.Response == null && webException.Status == WebExceptionStatus.RequestCanceled)
+                    return;
+
                 if (HandleUnauthorizedWebException(webException))
                     blog.Online = true;
                 else if (HandleLimitExceededWebException(webException))
@@ -214,8 +218,11 @@ namespace TumblThree.Applications.Crawler
             {
                 await UpdateTotalPostCountCoreAsync();
             }
-            catch (WebException webException) when ((webException.Response != null))
+            catch (WebException webException)
             {
+                if (webException.Response == null && webException.Status == WebExceptionStatus.RequestCanceled)             
+                    return;
+                
                 HandleLimitExceededWebException(webException);
                 blog.Posts = 0;
             }
@@ -240,8 +247,11 @@ namespace TumblThree.Applications.Crawler
             {
                 return await GetHighestPostIdCoreAsync();
             }
-            catch (WebException webException) when ((webException.Response != null))
+            catch (WebException webException)
             {
+                if (webException.Response == null && webException.Status == WebExceptionStatus.RequestCanceled)
+                    return 0;
+
                 HandleLimitExceededWebException(webException);
                 return 0;
             }
