@@ -153,7 +153,7 @@ namespace TumblThree.Applications.Crawler
         {
             while (true)
             {
-                if (CheckifShouldStop())
+                if (CheckIfShouldStop())
                     return;
 
                 CheckIfShouldPause();

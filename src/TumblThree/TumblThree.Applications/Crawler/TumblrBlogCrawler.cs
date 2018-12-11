@@ -51,7 +51,7 @@ namespace TumblThree.Applications.Crawler
             }
             catch (WebException webException)
             {
-                if (webException.Response == null && webException.Status == WebExceptionStatus.RequestCanceled)
+                if (webException.Status == WebExceptionStatus.RequestCanceled)
                     return;
 
                 blog.Online = false;
@@ -63,7 +63,7 @@ namespace TumblThree.Applications.Crawler
             }
         }
 
-        private bool CheckIfPasswordProtecedBlog(string document)
+        private bool CheckIfPasswordProtectedBlog(string document)
         {
             if (!Regex.IsMatch(document, "<form id=\"auth_password\" method=\"post\">"))
                 return false;
@@ -148,7 +148,7 @@ namespace TumblThree.Applications.Crawler
         {
             while (true)
             {
-                if (CheckifShouldStop())
+                if (CheckIfShouldStop())
                     return;
 
                 CheckIfShouldPause();

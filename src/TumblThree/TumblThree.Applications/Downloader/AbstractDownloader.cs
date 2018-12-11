@@ -84,7 +84,7 @@ namespace TumblThree.Applications.Downloader
                 // The process cannot access the file because it is being used by another process.", HRESULT: -2147024864 == 0xFFFFFFFF80070020
                 return true;
             }
-            catch (WebException webException) when ((webException.Response != null))
+            catch (WebException webException) when (webException.Response != null)
             {
                 var webRespStatusCode = (int)((HttpWebResponse)webException.Response).StatusCode;
                 if (webRespStatusCode >= 400 && webRespStatusCode < 600
