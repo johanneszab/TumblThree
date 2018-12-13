@@ -40,6 +40,7 @@
                 <ColumnDefinition Width="*" MinWidth="60" />
                 <ColumnDefinition Width="*" MinWidth="60" />
                 <ColumnDefinition Width="*" MinWidth="60" />
+                <ColumnDefinition Width="*" MinWidth="60" />
             </Grid.ColumnDefinitions>
 
             <Label x:Name="urlLabel" Content="{x:Static p:Resources.BlogUrl}" HorizontalAlignment="Stretch"
@@ -62,49 +63,56 @@
                 </StackPanel>
             </Button>
             <Button HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2"
-                    Grid.Column="6" Command="{Binding CrawlerService.ShowFilesCommand}">
+                    Grid.Column="6" Command="{Binding CrawlerService.ImportBlogsCommand}">
+                <StackPanel>
+                    <Image Source="{DynamicResource ImportBlogsFromFileIcon}" Height="30" />
+                    <TextBlock Text="{x:Static p:Resources.ImportFromBlogListFile}" />
+                </StackPanel>
+            </Button>
+            <Button HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2"
+                    Grid.Column="7" Command="{Binding CrawlerService.ShowFilesCommand}">
                 <StackPanel>
                     <Image Source="{DynamicResource ExplorerIcon}" Height="30" />
                     <TextBlock Text="{x:Static p:Resources.ShowFiles}" />
                 </StackPanel>
             </Button>
             <Button HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2"
-                    Grid.Column="7" Command="{Binding CrawlerService.EnqueueSelectedCommand}">
+                    Grid.Column="8" Command="{Binding CrawlerService.EnqueueSelectedCommand}">
                 <StackPanel>
                     <Image Source="{DynamicResource AddQueueIcon}" Height="30" />
                     <TextBlock Text="{x:Static p:Resources.AddToQueue}" />
                 </StackPanel>
             </Button>
             <Button HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2"
-                    Grid.Column="8" Command="{Binding CrawlerService.RemoveBlogFromQueueCommand}">
+                    Grid.Column="9" Command="{Binding CrawlerService.RemoveBlogFromQueueCommand}">
                 <StackPanel>
                     <Image Source="{DynamicResource RemoveQueueIcon}" Height="30" />
                     <TextBlock Text="{x:Static p:Resources.RemoveFromQueue}" />
                 </StackPanel>
             </Button>
             <Button HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2"
-                    Grid.Column="9" Command="{Binding CrawlerService.CrawlCommand}">
+                    Grid.Column="10" Command="{Binding CrawlerService.CrawlCommand}">
                 <StackPanel>
                     <Image Source="{DynamicResource ScanIcon}" Height="30" />
                     <TextBlock Text="{x:Static p:Resources.Crawl}" />
                 </StackPanel>
             </Button>
             <Button HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2"
-                    Grid.Column="10" Command="{Binding CrawlerService.PauseCommand}">
+                    Grid.Column="11" Command="{Binding CrawlerService.PauseCommand}">
                 <StackPanel>
                     <Image Source="{DynamicResource PauseIcon}" Height="30" />
                     <TextBlock Text="{x:Static p:Resources.Pause}" />
                 </StackPanel>
             </Button>
             <Button HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2"
-                    Grid.Column="11" Command="{Binding CrawlerService.ResumeCommand}">
+                    Grid.Column="12" Command="{Binding CrawlerService.ResumeCommand}">
                 <StackPanel>
                     <Image Source="{DynamicResource ResumeIcon}" Height="30" />
                     <TextBlock Text="{x:Static p:Resources.Resume}" />
                 </StackPanel>
             </Button>
             <Button HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2"
-                    Grid.Column="12" Command="{Binding CrawlerService.StopCommand}">
+                    Grid.Column="13" Command="{Binding CrawlerService.StopCommand}">
                 <StackPanel>
                     <Image Source="{DynamicResource StopIcon}" Height="30" />
                     <TextBlock Text="{x:Static p:Resources.Stop}" />
@@ -112,14 +120,14 @@
             </Button>
             <ToggleButton HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top"
                           IsChecked="{Binding ShellService.Settings.CheckClipboard, Mode=TwoWay}" Grid.RowSpan="2"
-                          Grid.Column="13" Command="{Binding CrawlerService.ListenClipboardCommand}">
+                          Grid.Column="14" Command="{Binding CrawlerService.ListenClipboardCommand}">
                 <StackPanel>
                     <Image Source="{DynamicResource ClipboardIcon}" Height="30" />
                     <TextBlock Text="{x:Static p:Resources.ClipboardMonitor}" />
                 </StackPanel>
             </ToggleButton>
             <Button HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2"
-                    Grid.Column="14"
+                    Grid.Column="15"
                     Command="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.ShowSettingsCommand}">
                 <StackPanel>
                     <Image Source="{DynamicResource SettingsIcon}" Height="30" />
@@ -127,7 +135,7 @@
                 </StackPanel>
             </Button>
             <Button HorizontalAlignment="Stretch" Height="50" VerticalAlignment="Top" IsDefault="True" Grid.RowSpan="2"
-                    Grid.Column="15"
+                    Grid.Column="16"
                     Command="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.ShowAboutCommand}">
                 <StackPanel>
                     <Image Source="{DynamicResource AboutIcon}" Height="30" />

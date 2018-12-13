@@ -5,6 +5,7 @@
     <BitmapSource x:Key="TumblThreeIcon">Images/Tumblr.png</BitmapSource>
     <BitmapSource x:Key="AboutIcon">Images/About.png</BitmapSource>
     <BitmapSource x:Key="AddBlogIcon">Images/AddBlog.png</BitmapSource>
+    <BitmapSource x:Key="ImportBlogsFromFileIcon">Images/ImportBlogFile.png</BitmapSource>
     <BitmapSource x:Key="AddQueueIcon">Images/AddQueue.png</BitmapSource>
     <BitmapSource x:Key="RemoveQueueIcon">Images/RemoveQueue.png</BitmapSource>
     <BitmapSource x:Key="ClipboardIcon">Images/Clipboard.png</BitmapSource>

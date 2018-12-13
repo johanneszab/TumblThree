@@ -835,6 +835,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Import Blog List.
+        /// </summary>
+        public static string ImportFromBlogListFile {
+            get {
+                return ResourceManager.GetString("ImportFromBlogListFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 32 Bit.
         /// </summary>
         public static string Info32Bit {
