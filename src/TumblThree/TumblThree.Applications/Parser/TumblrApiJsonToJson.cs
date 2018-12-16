@@ -28,26 +28,26 @@ namespace TumblThree.Applications.Parser
         private string GetPostAsString(T post)
         {
             var postCopy = (Post)post.Clone();
-            postCopy.tumblelog = new Tumblelog2();
-            postCopy.reblogged_from_avatar_url_128 = null;
-            postCopy.reblogged_from_avatar_url_16 = null;
-            postCopy.reblogged_from_avatar_url_24 = null;
-            postCopy.reblogged_from_avatar_url_30 = null;
-            postCopy.reblogged_from_avatar_url_40 = null;
-            postCopy.reblogged_from_avatar_url_48 = null;
-            postCopy.reblogged_from_avatar_url_512 = null;
-            postCopy.reblogged_from_avatar_url_64 = null;
-            postCopy.reblogged_from_avatar_url_96 = null;
+            postCopy.Tumblelog = new TumbleLog2();
+            postCopy.RebloggedFromAvatarUrl128 = null;
+            postCopy.RebloggedFromAvatarUrl16 = null;
+            postCopy.RebloggedFromAvatarUrl24 = null;
+            postCopy.RebloggedFromAvatarUrl30 = null;
+            postCopy.RebloggedFromAvatarUrl40 = null;
+            postCopy.RebloggedFromAvatarUrl48 = null;
+            postCopy.RebloggedFromAvatarUrl512 = null;
+            postCopy.RebloggedFromAvatarUrl64 = null;
+            postCopy.RebloggedFromAvatarUrl96 = null;
 
-            postCopy.reblogged_root_avatar_url_128 = null;
-            postCopy.reblogged_root_avatar_url_16 = null;
-            postCopy.reblogged_root_avatar_url_24 = null;
-            postCopy.reblogged_root_avatar_url_30 = null;
-            postCopy.reblogged_root_avatar_url_40 = null;
-            postCopy.reblogged_root_avatar_url_48 = null;
-            postCopy.reblogged_root_avatar_url_512 = null;
-            postCopy.reblogged_root_avatar_url_64 = null;
-            postCopy.reblogged_root_avatar_url_96 = null;
+            postCopy.RebloggedRootAvatarUrl128 = null;
+            postCopy.RebloggedRootAvatarUrl16 = null;
+            postCopy.RebloggedRootAvatarUrl24 = null;
+            postCopy.RebloggedRootAvatarUrl30 = null;
+            postCopy.RebloggedRootAvatarUrl40 = null;
+            postCopy.RebloggedRootAvatarUrl48 = null;
+            postCopy.RebloggedRootAvatarUrl512 = null;
+            postCopy.RebloggedRootAvatarUrl64 = null;
+            postCopy.RebloggedRootAvatarUrl96 = null;
 
             var serializer = new DataContractJsonSerializer(postCopy.GetType());
 

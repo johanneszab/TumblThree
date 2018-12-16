@@ -11,213 +11,213 @@ namespace TumblThree.Applications.Parser
     {
         public string ParseText(T post)
         {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) +
+            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Id) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Date) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.PostUrl, post.url_with_slug) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.PostUrl, post.UrlWithSlug) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Slug, post.slug) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Slug, post.Slug) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.reblog_key) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.ReblogKey) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.reblogged_from_url) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.RebloggedFromUrl) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.RebloggedFromName) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Title, post.regular_title) +
-                   Environment.NewLine + post.regular_body +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Title, post.RegularTitle) +
+                   Environment.NewLine + post.RegularBody +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Tags,
-                       string.Join(", ", post.tags.ToArray())) +
+                       string.Join(", ", post.Tags.ToArray())) +
                    Environment.NewLine;
         }
 
         public string ParseQuote(T post)
         {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) +
+            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Id) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Date) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.PostUrl, post.url_with_slug) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.PostUrl, post.UrlWithSlug) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Slug, post.slug) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Slug, post.Slug) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.reblog_key) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.ReblogKey) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.reblogged_from_url) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.RebloggedFromUrl) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.RebloggedFromName) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Quote, post.quote_text) +
-                   Environment.NewLine + post.quote_source +
-                   Environment.NewLine + post.regular_body +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Quote, post.QuoteText) +
+                   Environment.NewLine + post.QuoteSource +
+                   Environment.NewLine + post.RegularBody +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Tags,
-                       string.Join(", ", post.tags.ToArray())) +
+                       string.Join(", ", post.Tags.ToArray())) +
                    Environment.NewLine;
         }
 
         public string ParseLink(T post)
         {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) +
+            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Id) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Date) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.PostUrl, post.url_with_slug) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.PostUrl, post.UrlWithSlug) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Slug, post.slug) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Slug, post.Slug) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.reblog_key) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.ReblogKey) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.reblogged_from_url) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.RebloggedFromUrl) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.RebloggedFromName) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Link, post.link_description) +
-                   Environment.NewLine + post.link_text +
-                   Environment.NewLine + post.link_url +
-                   Environment.NewLine + post.regular_body +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Link, post.LinkDescription) +
+                   Environment.NewLine + post.LinkText +
+                   Environment.NewLine + post.LinkUrl +
+                   Environment.NewLine + post.RegularBody +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Tags,
-                       string.Join(", ", post.tags.ToArray())) +
+                       string.Join(", ", post.Tags.ToArray())) +
                    Environment.NewLine;
         }
 
         public string ParseConversation(T post)
         {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) +
+            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Id) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Date) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.PostUrl, post.url_with_slug) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.PostUrl, post.UrlWithSlug) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Slug, post.slug) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Slug, post.Slug) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.reblog_key) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.ReblogKey) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.reblogged_from_url) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.RebloggedFromUrl) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.RebloggedFromName) +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Quote,
-                       post.conversation.Select(dialogue => new { dialogue.name, dialogue.phrase })) +
-                   Environment.NewLine + post.regular_body +
+                       post.Conversation.Select(dialogue => new { name = dialogue.Name, phrase = dialogue.Phrase })) +
+                   Environment.NewLine + post.RegularBody +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Tags,
-                       string.Join(", ", post.tags.ToArray())) +
+                       string.Join(", ", post.Tags.ToArray())) +
                    Environment.NewLine;
         }
 
         public string ParseAnswer(T post)
         {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) +
+            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Id) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Date) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.PostUrl, post.url_with_slug) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.PostUrl, post.UrlWithSlug) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Slug, post.slug) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Slug, post.Slug) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.reblog_key) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.ReblogKey) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.reblogged_from_url) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.RebloggedFromUrl) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.RebloggedFromName) +
                    Environment.NewLine +
-                   post.question +
+                   post.Question +
                    Environment.NewLine +
-                   post.answer +
+                   post.Answer +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Tags,
-                       string.Join(", ", post.tags.ToArray())) +
+                       string.Join(", ", post.Tags.ToArray())) +
                    Environment.NewLine;
         }
 
         public string ParsePhotoMeta(T post)
         {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) +
+            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Id) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Date) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.PostUrl, post.url_with_slug) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.PostUrl, post.UrlWithSlug) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Slug, post.slug) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Slug, post.Slug) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.reblog_key) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.ReblogKey) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.reblogged_from_url) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.RebloggedFromUrl) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.RebloggedFromName) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.PhotoUrl, post.photo_url_1280) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.PhotoUrl, post.PhotoUrl1280) +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.PhotoSetUrl,
-                       string.Join(" ", post.photos.Select(photo => photo.photo_url_1280))) +
+                       string.Join(" ", post.Photos.Select(photo => photo.PhotoUrl1280))) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.PhotoCaption, post.photo_caption) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.PhotoCaption, post.PhotoCaption) +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Tags,
-                       string.Join(", ", post.tags.ToArray())) +
+                       string.Join(", ", post.Tags.ToArray())) +
                    Environment.NewLine;
         }
 
         public string ParseVideoMeta(T post)
         {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) +
+            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Id) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Date) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.PostUrl, post.url_with_slug) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.PostUrl, post.UrlWithSlug) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Slug, post.slug) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Slug, post.Slug) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.reblog_key) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.ReblogKey) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.reblogged_from_url) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.RebloggedFromUrl) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.RebloggedFromName) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.VideoCaption, post.video_caption) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.VideoCaption, post.VideoCaption) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.VideoSource, post.video_source) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.VideoSource, post.VideoSource) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.VideoPlayer, post.video_player) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.VideoPlayer, post.VideoPlayer) +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Tags,
-                       string.Join(", ", post.tags.ToArray())) +
+                       string.Join(", ", post.Tags.ToArray())) +
                    Environment.NewLine;
         }
 
         public string ParseAudioMeta(T post)
         {
-            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.id) +
+            return string.Format(CultureInfo.CurrentCulture, Resources.PostId, post.Id) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.date) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Date, post.Date) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.PostUrl, post.url_with_slug) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.PostUrl, post.UrlWithSlug) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Slug, post.slug) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Slug, post.Slug) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.reblog_key) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogKey, post.ReblogKey) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.reblogged_from_url) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogUrl, post.RebloggedFromUrl) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.reblogged_from_name) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.ReblogName, post.RebloggedFromName) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.AudioCaption, post.audio_caption) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.AudioCaption, post.AudioCaption) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Id3Artist, post.id3_artist) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Id3Artist, post.Id3Artist) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Id3Title, post.id3_title) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Id3Title, post.Id3Title) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Id3Track, post.id3_track) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Id3Track, post.Id3Track) +
                    Environment.NewLine +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Id3Album, post.id3_album) +
-                   string.Format(CultureInfo.CurrentCulture, Resources.Id3Track, post.id3_year) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Id3Album, post.Id3Album) +
+                   string.Format(CultureInfo.CurrentCulture, Resources.Id3Track, post.Id3Year) +
                    Environment.NewLine +
                    string.Format(CultureInfo.CurrentCulture, Resources.Tags,
-                       string.Join(", ", post.tags.ToArray())) +
+                       string.Join(", ", post.Tags.ToArray())) +
                    Environment.NewLine;
         }
     }

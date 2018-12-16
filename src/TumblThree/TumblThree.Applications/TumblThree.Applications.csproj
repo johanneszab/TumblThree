@@ -69,6 +69,11 @@
     <Compile Include="Controllers\ModuleController.cs" />
     <Compile Include="Controllers\QueueController.cs" />
     <Compile Include="Crawler\AbstractTumblrCrawler.cs" />
+    <Compile Include="DataModels\TumblrApiJson\Conversation.cs" />
+    <Compile Include="DataModels\TumblrApiJson\Photo.cs" />
+    <Compile Include="DataModels\TumblrApiJson\Post.cs" />
+    <Compile Include="DataModels\TumblrApiJson\TumbleLog.cs" />
+    <Compile Include="DataModels\TumblrApiJson\TumbleLog2.cs" />
     <Compile Include="DataModels\TumblrApiJson\TumblrApiJson.cs" />
     <Compile Include="DataModels\TumblrCrawlerData\TumblrCrawlerData.cs" />
     <Compile Include="Downloader\TumblrJsonDownloader.cs" />
