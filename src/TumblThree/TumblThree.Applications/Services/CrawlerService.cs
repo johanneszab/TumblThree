@@ -18,6 +18,7 @@ namespace TumblThree.Applications.Services
         private readonly ObservableCollection<QueueListItem> activeItems;
         private readonly ReadOnlyObservableList<QueueListItem> readonlyActiveItems;
         private ICommand addBlogCommand;
+        private ICommand importBlogsCommand;
         private ICommand autoDownloadCommand;
         private ICommand crawlCommand;
         private ICommand enqueueSelectedCommand;
@@ -79,6 +80,12 @@ namespace TumblThree.Applications.Services
         }
 
         public IReadOnlyObservableList<QueueListItem> ActiveItems => readonlyActiveItems;
+
+        public ICommand ImportBlogsCommand
+        {
+            get => importBlogsCommand;
+            set => SetProperty(ref importBlogsCommand, value);
+        }
 
         public ICommand AddBlogCommand
         {

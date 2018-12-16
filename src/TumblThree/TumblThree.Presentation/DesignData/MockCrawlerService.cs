@@ -39,6 +39,8 @@ namespace TumblThree.Presentation.DesignData
 
         public ICommand AddBlogCommand { get; set; }
 
+        public ICommand ImportBlogsCommand { get; set; }
+
         public ICommand RemoveBlogFromQueueCommand { get; set; }
 
         public ICommand ShowFilesCommand { get; set; }

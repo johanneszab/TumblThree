@@ -938,4 +938,7 @@ gather images from websites that are currently not supported by a specifically w
 This might add plenty of duplicate or random video urls to the queue, but could potentially
 gather videos from websites that are currently not supported by a specifically written parser.</value>
   </data>
+  <data name="ImportFromBlogListFile" xml:space="preserve">
+    <value>Import Blog List</value>
+  </data>
 </root>

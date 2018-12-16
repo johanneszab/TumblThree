@@ -12,6 +12,8 @@ namespace TumblThree.Applications.Services
 {
     public interface ICrawlerService : INotifyPropertyChanged
     {
+        ICommand ImportBlogsCommand { get; set; }
+
         ICommand AddBlogCommand { get; set; }
 
         ICommand RemoveBlogCommand { get; set; }

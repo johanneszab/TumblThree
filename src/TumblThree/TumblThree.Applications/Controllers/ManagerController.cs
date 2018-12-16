@@ -11,8 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Waf.Applications;
 using System.Waf.Applications.Services;
-using System.Windows;
-
+using System.Windows.Forms;
 using TumblThree.Applications.Crawler;
 using TumblThree.Applications.DataModels;
 using TumblThree.Applications.Properties;
@@ -23,6 +22,8 @@ using TumblThree.Domain.Models;
 using TumblThree.Domain.Models.Blogs;
 using TumblThree.Domain.Models.Files;
 using TumblThree.Domain.Queue;
+
+using Clipboard = System.Windows.Clipboard;
 
 namespace TumblThree.Applications.Controllers
 {
@@ -44,6 +45,7 @@ namespace TumblThree.Applications.Controllers
         private readonly AsyncDelegateCommand checkStatusCommand;
         private readonly DelegateCommand copyUrlCommand;
         private readonly DelegateCommand checkIfDatabasesCompleteCommand;
+        private readonly AsyncDelegateCommand importBlogsCommand;
         private readonly AsyncDelegateCommand addBlogCommand;
         private readonly DelegateCommand autoDownloadCommand;
         private readonly DelegateCommand enqueueSelectedCommand;
@@ -83,6 +85,7 @@ namespace TumblThree.Applications.Controllers
             this.crawlerFactory = crawlerFactory;
             this.blogFactory = blogFactory;
             this.tumblrBlogDetector = tumblrBlogDetector;
+            importBlogsCommand = new AsyncDelegateCommand(ImportBlogs);
             addBlogCommand = new AsyncDelegateCommand(AddBlog, CanAddBlog);
             removeBlogCommand = new DelegateCommand(RemoveBlog, CanRemoveBlog);
             showFilesCommand = new DelegateCommand(ShowFiles, CanShowFiles);
@@ -110,6 +113,7 @@ namespace TumblThree.Applications.Controllers
 
         public async Task InitializeAsync()
         {
+            crawlerService.ImportBlogsCommand = importBlogsCommand;
             crawlerService.AddBlogCommand = addBlogCommand;
             crawlerService.RemoveBlogCommand = removeBlogCommand;
             crawlerService.ShowFilesCommand = showFilesCommand;
@@ -424,6 +428,43 @@ namespace TumblThree.Applications.Controllers
             }
             catch
             {
+            }
+        }
+
+        private async Task ImportBlogs()
+        {
+            try
+            {
+                var fileBrowser = new OpenFileDialog()
+                {
+                    Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*"
+                };
+
+                if (fileBrowser.ShowDialog() != DialogResult.OK)
+                    return;
+
+                var path = fileBrowser.FileName;
+
+                if (!File.Exists(path))
+                {
+                    Logger.Warning("ManagerController:ImportBlogs: An attempt was made to import blogs from a file which doesn't exist.");
+                    return;
+                }
+
+                string fileContent;
+
+                using (var streamReader = new StreamReader(path))
+                {
+                    fileContent = await streamReader.ReadToEndAsync();
+                }
+
+                var blogUris = fileContent.Split().Select(x => x.Trim()).Where(x => !string.IsNullOrWhiteSpace(x));
+
+                await Task.Run(() => AddBlogBatchedAsync(blogUris));
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"ManagerController:ImportBlogs: {ex}");
             }
         }
 
