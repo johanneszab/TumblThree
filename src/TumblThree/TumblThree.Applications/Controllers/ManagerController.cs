@@ -141,6 +141,19 @@ namespace TumblThree.Applications.Controllers
 
             shellService.ContentView = ManagerViewModel.View;
 
+            // Refresh command availability on selection change.
+            ManagerViewModel.PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName != nameof(ManagerViewModel.SelectedBlogFile))
+                    return;
+
+                showFilesCommand.RaiseCanExecuteChanged();
+                visitBlogCommand.RaiseCanExecuteChanged();
+                showDetailsCommand.RaiseCanExecuteChanged();
+                copyUrlCommand.RaiseCanExecuteChanged();
+                checkStatusCommand.RaiseCanExecuteChanged();
+            };
+
             if (shellService.Settings.CheckClipboard)
             {
                 shellService.ClipboardMonitor.OnClipboardContentChanged += OnClipboardContentChanged;
