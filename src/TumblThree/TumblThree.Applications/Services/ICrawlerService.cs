@@ -52,7 +52,9 @@ namespace TumblThree.Applications.Services
 
         IReadOnlyObservableList<QueueListItem> ActiveItems { get; }
 
-        RateLimiter Timeconstraint { get; set; }
+        RateLimiter TimeconstraintApi { get; set; }
+
+        RateLimiter TimeconstraintSvc { get; set; }
 
         Timer Timer { get; set; }
 

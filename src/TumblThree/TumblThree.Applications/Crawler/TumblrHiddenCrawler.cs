@@ -58,6 +58,13 @@ namespace TumblThree.Applications.Crawler
 
         public override async Task IsBlogOnlineAsync()
         {
+            if (!await CheckIfLoggedInAsync())
+            {
+                Logger.Error("TumblrHiddenCrawler:GetUrlsAsync: {0}", "User not logged in");
+                shellService.ShowError(new Exception("User not logged in"), Resources.NotLoggedIn, blog.Name);
+                postQueue.CompleteAdding();
+            }
+
             try
             {
                 tumblrKey = await UpdateTumblrKeyAsync("https://www.tumblr.com/dashboard/blog/" + blog.Name);
@@ -166,15 +173,6 @@ namespace TumblThree.Applications.Crawler
             trackedTasks = new List<Task>();
 
             GenerateTags();
-
-            if (!await CheckIfLoggedInAsync())
-            {
-                Logger.Error("TumblrHiddenCrawler:GetUrlsAsync: {0}", "User not logged in");
-                shellService.ShowError(new Exception("User not logged in"), Resources.NotLoggedIn, blog.Name);
-                postQueue.CompleteAdding();
-                incompleteCrawl = true;
-                return incompleteCrawl;
-            }
 
             foreach (int pageNumber in GetPageNumbers())
             {
@@ -301,8 +299,8 @@ namespace TumblThree.Applications.Crawler
 
         private async Task<string> GetSvcPageAsync(string limit, string offset)
         {
-            if (shellService.Settings.LimitConnections)
-                crawlerService.Timeconstraint.Acquire();
+            if (shellService.Settings.LimitConnectionsSvc)
+                crawlerService.TimeconstraintSvc.Acquire();
 
             return await RequestDataAsync(limit, offset);
         }

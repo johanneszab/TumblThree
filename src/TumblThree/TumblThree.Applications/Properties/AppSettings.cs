@@ -85,11 +85,17 @@ namespace TumblThree.Applications.Properties
 
         [DataMember] public double ProgressUpdateInterval { get; set; }
 
-        [DataMember] public bool LimitConnections { get; set; }
+        [DataMember] public bool LimitConnectionsApi { get; set; }
 
-        [DataMember] public int MaxConnections { get; set; }
+        [DataMember] public int MaxConnectionsApi { get; set; }
 
-        [DataMember] public int ConnectionTimeInterval { get; set; }
+        [DataMember] public int ConnectionTimeIntervalApi { get; set; }
+
+        [DataMember] public bool LimitConnectionsSvc { get; set; }
+
+        [DataMember] public int MaxConnectionsSvc { get; set; }
+
+        [DataMember] public int ConnectionTimeIntervalSvc { get; set; }
 
         [DataMember] public int MaxNumberOfRetries { get; set; }
 
@@ -259,9 +265,12 @@ namespace TumblThree.Applications.Properties
             ConcurrentScans = 4;
             LimitScanBandwidth = false;
             TimeOut = 60;
-            LimitConnections = true;
-            MaxConnections = 90;
-            ConnectionTimeInterval = 60;
+            LimitConnectionsApi = true;
+            MaxConnectionsApi = 90;
+            ConnectionTimeIntervalApi = 60;
+            LimitConnectionsSvc = true;
+            MaxConnectionsSvc = 90;
+            ConnectionTimeIntervalSvc = 60;
             MaxNumberOfRetries = 3;
             ProgressUpdateInterval = 100;
             Bandwidth = 0;

@@ -11,8 +11,8 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d" Title="Settings" Height="740" Width="760"
         d:DataContext="{d:DesignInstance vm:SettingsViewModel}" SizeToContent="Width" ResizeMode="CanResize"
-        ContentRendered="Window_ContentRendered"> 
-    
+        ContentRendered="Window_ContentRendered">
+
     <Window.Resources>
         <ObjectDataProvider MethodName="GetValues"
         ObjectType="{x:Type sys:Enum}"
@@ -264,6 +264,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid MinHeight="46" Height="Auto" Grid.Row="0">
                             <Grid.ColumnDefinitions>
@@ -468,58 +469,58 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
-                            <CheckBox x:Name="checkBoxLimitConnections" Content="{x:Static p:Resources.LimitConnections}"
-                          IsChecked="{Binding LimitConnections, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2"
+                            <CheckBox x:Name="checkBoxLimitConnectionsApi" Content="{x:Static p:Resources.LimitConnectionsApi}"
+                          IsChecked="{Binding LimitConnectionsApi, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2"
                           VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10">
                                 <CheckBox.ToolTip>
                                     <ToolTip>
                                         <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipLimitConnections}" />
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipLimitConnectionsApi}" />
                                             <TextBlock xml:space="preserve"
-                                           Text="{x:Static p:Resources.ToolTipLimitConnectionsDescription}" />
+                                           Text="{x:Static p:Resources.ToolTipLimitConnectionsApiDescription}" />
                                         </StackPanel>
                                     </ToolTip>
                                 </CheckBox.ToolTip>
                             </CheckBox>
-                            <Label x:Name="maxConnectionsLabel" Grid.Column="2" Content="{x:Static p:Resources.MaxConnections}"
+                            <Label x:Name="maxConnectionsApiLabel" Grid.Column="2" Content="{x:Static p:Resources.MaxConnections}"
                        VerticalAlignment="Center" HorizontalAlignment="Left">
                                 <Label.ToolTip>
                                     <ToolTip>
                                         <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipLimitConnections}" />
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipLimitConnectionsApi}" />
                                             <TextBlock xml:space="preserve"
-                                           Text="{x:Static p:Resources.ToolTipLimitConnectionsDescription}" />
+                                           Text="{x:Static p:Resources.ToolTipLimitConnectionsApiDescription}" />
                                         </StackPanel>
                                     </ToolTip>
                                 </Label.ToolTip>
                             </Label>
-                            <TextBox x:Name="maxConnectionsComboBox" Grid.Column="3" HorizontalAlignment="Left"
+                            <TextBox x:Name="maxConnectionsApiComboBox" Grid.Column="3" HorizontalAlignment="Left"
                          VerticalAlignment="Center" MinWidth="40">
                                 <TextBox.Text>
-                                    <Binding Path="MaxConnections" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding Path="MaxConnectionsApi" UpdateSourceTrigger="PropertyChanged">
                                         <Binding.ValidationRules>
                                             <vr:IntRangeRule />
                                         </Binding.ValidationRules>
                                     </Binding>
                                 </TextBox.Text>
                             </TextBox>
-                            <Label x:Name="ConnectionTimeIntervalLabel" Grid.Column="4"
+                            <Label x:Name="ConnectionTimeIntervalApiLabel" Grid.Column="4"
                        Content="{x:Static p:Resources.ConnectionTimeInterval}" VerticalAlignment="Center"
                        HorizontalAlignment="Left">
                                 <Label.ToolTip>
                                     <ToolTip>
                                         <StackPanel>
-                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipLimitConnections}" />
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipLimitConnectionsApi}" />
                                             <TextBlock xml:space="preserve"
-                                           Text="{x:Static p:Resources.ToolTipLimitConnectionsDescription}" />
+                                           Text="{x:Static p:Resources.ToolTipLimitConnectionsApiDescription}" />
                                         </StackPanel>
                                     </ToolTip>
                                 </Label.ToolTip>
                             </Label>
-                            <TextBox x:Name="ConnectionTimeIntervalComboBox" Grid.Column="5" HorizontalAlignment="Left"
+                            <TextBox x:Name="ConnectionTimeIntervalApiComboBox" Grid.Column="5" HorizontalAlignment="Left"
                          VerticalAlignment="Center" MinWidth="40">
                                 <TextBox.Text>
-                                    <Binding Path="ConnectionTimeInterval" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding Path="ConnectionTimeIntervalApi" UpdateSourceTrigger="PropertyChanged">
                                         <Binding.ValidationRules>
                                             <vr:IntRangeRule />
                                         </Binding.ValidationRules>
@@ -528,6 +529,74 @@
                             </TextBox>
                         </Grid>
                         <Grid MinHeight="46" Height="Auto" Grid.Row="7" HorizontalAlignment="Left">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox x:Name="checkBoxLimitConnectionsSvc" Content="{x:Static p:Resources.LimitConnectionsSvc}"
+                          IsChecked="{Binding LimitConnectionsSvc, Mode=TwoWay}" Grid.Column="0" Grid.ColumnSpan="2"
+                          VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10">
+                                <CheckBox.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipLimitConnectionsSvc}" />
+                                            <TextBlock xml:space="preserve"
+                                           Text="{x:Static p:Resources.ToolTipLimitConnectionsSvcDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </CheckBox.ToolTip>
+                            </CheckBox>
+                            <Label x:Name="maxConnectionsSvcLabel" Grid.Column="2" Content="{x:Static p:Resources.MaxConnections}"
+                       VerticalAlignment="Center" HorizontalAlignment="Left">
+                                <Label.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipLimitConnectionsSvc}" />
+                                            <TextBlock xml:space="preserve"
+                                           Text="{x:Static p:Resources.ToolTipLimitConnectionsSvcDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </Label.ToolTip>
+                            </Label>
+                            <TextBox x:Name="maxConnectionsSvcComboBox" Grid.Column="3" HorizontalAlignment="Left"
+                         VerticalAlignment="Center" MinWidth="40">
+                                <TextBox.Text>
+                                    <Binding Path="MaxConnectionsSvc" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <vr:IntRangeRule />
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
+                            <Label x:Name="ConnectionTimeIntervalSvcLabel" Grid.Column="4"
+                       Content="{x:Static p:Resources.ConnectionTimeInterval}" VerticalAlignment="Center"
+                       HorizontalAlignment="Left">
+                                <Label.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipLimitConnectionsSvc}" />
+                                            <TextBlock xml:space="preserve"
+                                           Text="{x:Static p:Resources.ToolTipLimitConnectionsSvcDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </Label.ToolTip>
+                            </Label>
+                            <TextBox x:Name="ConnectionTimeIntervalSvcComboBox" Grid.Column="5" HorizontalAlignment="Left"
+                         VerticalAlignment="Center" MinWidth="40">
+                                <TextBox.Text>
+                                    <Binding Path="ConnectionTimeIntervalSvc" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <vr:IntRangeRule />
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
+                        </Grid>
+                        <Grid MinHeight="46" Height="Auto" Grid.Row="8" HorizontalAlignment="Left">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
@@ -544,7 +613,7 @@
                                 </TextBox.Text>
                             </TextBox>
                         </Grid>
-                        <Grid MinHeight="46" Height="Auto" Grid.Row="8" HorizontalAlignment="Left">
+                        <Grid MinHeight="46" Height="Auto" Grid.Row="9" HorizontalAlignment="Left">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
@@ -649,7 +718,7 @@
                                 </Label.Style>
                             </Label>
                         </Grid>
-                        <Grid MinHeight="46" Height="Auto" Grid.Row="9" HorizontalAlignment="Left" Visibility="{Binding TumblrTFADetected, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Grid MinHeight="46" Height="Auto" Grid.Row="10" HorizontalAlignment="Left" Visibility="{Binding TumblrTFADetected, Converter={StaticResource BoolToVisibilityConverter}}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
@@ -665,7 +734,7 @@
                          VerticalAlignment="Center" MinWidth="120">
                                 <TextBox.Text>
                                     <Binding Path="TumblrTFAAuthCode" UpdateSourceTrigger="PropertyChanged">
-                                </Binding>
+                                    </Binding>
                                 </TextBox.Text>
                                 <TextBox.InputBindings>
                                     <KeyBinding Command="{Binding TumblrSubmitTFACommand}" Key="Return" />

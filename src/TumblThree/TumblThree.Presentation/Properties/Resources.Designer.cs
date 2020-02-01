@@ -918,9 +918,18 @@ namespace TumblThree.Presentation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Limit Tumblr API connections:.
         /// </summary>
-        public static string LimitConnections {
+        public static string LimitConnectionsApi {
             get {
-                return ResourceManager.GetString("LimitConnections", resourceCulture);
+                return ResourceManager.GetString("LimitConnectionsApi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Limit Tumblr SVC connections:.
+        /// </summary>
+        public static string LimitConnectionsSvc {
+            get {
+                return ResourceManager.GetString("LimitConnectionsSvc", resourceCulture);
             }
         }
         
@@ -2009,9 +2018,9 @@ namespace TumblThree.Presentation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Limit connections to the tumblr api..
         /// </summary>
-        public static string ToolTipLimitConnections {
+        public static string ToolTipLimitConnectionsApi {
             get {
-                return ResourceManager.GetString("ToolTipLimitConnections", resourceCulture);
+                return ResourceManager.GetString("ToolTipLimitConnectionsApi", resourceCulture);
             }
         }
         
@@ -2021,9 +2030,30 @@ namespace TumblThree.Presentation.Properties {
         ///Set a number/time pair.
         ///Note: The tumblr api is only used for regular tumblr blog downloads..
         /// </summary>
-        public static string ToolTipLimitConnectionsDescription {
+        public static string ToolTipLimitConnectionsApiDescription {
             get {
-                return ResourceManager.GetString("ToolTipLimitConnectionsDescription", resourceCulture);
+                return ResourceManager.GetString("ToolTipLimitConnectionsApiDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Limit connections to the tumblr SVC service..
+        /// </summary>
+        public static string ToolTipLimitConnectionsSvc {
+            get {
+                return ResourceManager.GetString("ToolTipLimitConnectionsSvc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr SVC service.
+        ///A too small value will decrease the scanning speed.
+        ///Set a number/time pair.
+        ///Note: The tumblr api is only used for regular tumblr blog downloads..
+        /// </summary>
+        public static string ToolTipLimitConnectionsSvcDescription {
+            get {
+                return ResourceManager.GetString("ToolTipLimitConnectionsSvcDescription", resourceCulture);
             }
         }
         

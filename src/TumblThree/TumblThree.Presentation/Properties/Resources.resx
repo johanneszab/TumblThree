@@ -495,16 +495,16 @@ Note: This setting has no impact if the Limit Tumblr Api Connections setting is 
   <data name="ConnectionTimeInterval" xml:space="preserve">
     <value>per time interval (s):</value>
   </data>
-  <data name="LimitConnections" xml:space="preserve">
+  <data name="LimitConnectionsApi" xml:space="preserve">
     <value>Limit Tumblr API connections:</value>
   </data>
   <data name="MaxConnections" xml:space="preserve">
     <value>Number of connections:</value>
   </data>
-  <data name="ToolTipLimitConnections" xml:space="preserve">
+  <data name="ToolTipLimitConnectionsApi" xml:space="preserve">
     <value>Limit connections to the tumblr api.</value>
   </data>
-  <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
+  <data name="ToolTipLimitConnectionsApiDescription" xml:space="preserve">
     <value>A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr api.
 A too small value will decrease the scanning speed.
 Set a number/time pair.
@@ -952,5 +952,17 @@ gather videos from websites that are currently not supported by a specifically w
 
 * tumblr: uses Tumblr API v1, or 
 * tmblrpriv: 'SVC' - a service internally used by tumblr for web site rendering.</value>
+  </data>
+  <data name="LimitConnectionsSvc" xml:space="preserve">
+    <value>Limit Tumblr SVC connections:</value>
+  </data>
+  <data name="ToolTipLimitConnectionsSvc" xml:space="preserve">
+    <value>Limit connections to the tumblr SVC service.</value>
+  </data>
+  <data name="ToolTipLimitConnectionsSvcDescription" xml:space="preserve">
+    <value>A too high value will forcefully close connections (429 -- Limit Exceeded) made to the tumblr SVC service.
+A too small value will decrease the scanning speed.
+Set a number/time pair.
+Note: The tumblr api is only used for regular tumblr blog downloads.</value>
   </data>
 </root>

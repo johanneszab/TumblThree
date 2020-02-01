@@ -116,8 +116,8 @@ namespace TumblThree.Applications.Crawler
 
         private async Task<string> GetSearchPageAsync(int pageNumber)
         {
-            if (shellService.Settings.LimitConnections)
-                crawlerService.Timeconstraint.Acquire();
+            if (shellService.Settings.LimitConnectionsApi)
+                crawlerService.TimeconstraintApi.Acquire();
 
             return await RequestPostAsync(pageNumber);
         }

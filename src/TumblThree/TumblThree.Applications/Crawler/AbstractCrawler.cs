@@ -94,8 +94,8 @@ namespace TumblThree.Applications.Crawler
 
         protected async Task<T> ThrottleConnectionAsync<T>(string url, Func<string, Task<T>> method)
         {
-            if (shellService.Settings.LimitConnections)
-                crawlerService.Timeconstraint.Acquire();
+            if (shellService.Settings.LimitConnectionsApi)
+                crawlerService.TimeconstraintApi.Acquire();
 
             return await method(url);
         }
@@ -243,7 +243,7 @@ namespace TumblThree.Applications.Crawler
         protected bool HandleServiceUnavailableWebException(WebException webException)
         {
             var resp = (HttpWebResponse)webException.Response;
-            if (resp.StatusCode != HttpStatusCode.ServiceUnavailable)
+            if (!(resp.StatusCode == HttpStatusCode.ServiceUnavailable || resp.StatusCode == HttpStatusCode.Unauthorized))
                 return false;
 
             Logger.Error("{0}, {1}", string.Format(CultureInfo.CurrentCulture, Resources.NotLoggedIn, blog.Name), webException);

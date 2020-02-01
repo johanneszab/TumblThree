@@ -38,15 +38,20 @@ namespace TumblThree.Applications.Services
         private ICommand resumeCommand;
         private ICommand showFilesCommand;
         private ICommand stopCommand;
-        private RateLimiter timeconstraint;
+        private RateLimiter timeconstraintApi;
+        private RateLimiter timeconstraintSvc;
         private Timer timer;
 
         [ImportingConstructor]
         public CrawlerService(IShellService shellService)
         {
-            timeconstraint =
-                RateLimiter.Create(shellService.Settings.MaxConnections /
-                                   (double)shellService.Settings.ConnectionTimeInterval);
+            timeconstraintApi =
+                RateLimiter.Create(shellService.Settings.MaxConnectionsApi /
+                                   (double)shellService.Settings.ConnectionTimeIntervalApi);
+
+            timeconstraintSvc =
+                RateLimiter.Create(shellService.Settings.MaxConnectionsSvc /
+                                   (double)shellService.Settings.ConnectionTimeIntervalSvc);
 
             activeItems = new ObservableCollection<QueueListItem>();
             readonlyActiveItems = new ReadOnlyObservableList<QueueListItem>(activeItems);
@@ -189,10 +194,16 @@ namespace TumblThree.Applications.Services
             set => SetProperty(ref newBlogUrl, value);
         }
 
-        public RateLimiter Timeconstraint
+        public RateLimiter TimeconstraintApi
         {
-            get => timeconstraint;
-            set => SetProperty(ref timeconstraint, value);
+            get => timeconstraintApi;
+            set => SetProperty(ref timeconstraintApi, value);
+        }
+
+        public RateLimiter TimeconstraintSvc
+        {
+            get => timeconstraintSvc;
+            set => SetProperty(ref timeconstraintSvc, value);
         }
 
         public void AddActiveItems(QueueListItem itemToAdd) => activeItems.Add(itemToAdd);

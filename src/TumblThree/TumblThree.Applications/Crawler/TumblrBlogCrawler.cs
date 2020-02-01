@@ -193,8 +193,8 @@ namespace TumblThree.Applications.Crawler
         {
             string url = GetApiUrl(blog.Url, blog.PageSize, pageId * blog.PageSize);
 
-            if (shellService.Settings.LimitConnections)
-                crawlerService.Timeconstraint.Acquire();
+            if (shellService.Settings.LimitConnectionsApi)
+                crawlerService.TimeconstraintApi.Acquire();
 
             return await GetRequestAsync(url);
         }

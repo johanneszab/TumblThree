@@ -175,8 +175,8 @@ namespace TumblThree.Applications.Crawler
 
         private async Task<string> GetTaggedSearchPageAsync(long pagination)
         {
-            if (shellService.Settings.LimitConnections)
-                crawlerService.Timeconstraint.Acquire();
+            if (shellService.Settings.LimitConnectionsApi)
+                crawlerService.TimeconstraintApi.Acquire();
 
             return await GetRequestAsync("https://www.tumblr.com/tagged/" + blog.Name + "?before=" + pagination);
         }
