@@ -1,6 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Composition;
-
+using System.Text.RegularExpressions;
 using TumblThree.Domain.Models.Blogs;
 
 namespace TumblThree.Domain.Models
@@ -9,6 +9,7 @@ namespace TumblThree.Domain.Models
     public class BlogFactory : IBlogFactory
     {
         private readonly IUrlValidator urlValidator;
+        private readonly Regex tumbexRegex = new Regex("(http[A-Za-z0-9_/:.]*www.tumbex.com/([A-Za-z0-9_/:.-]*)\\.tumblr/)");
 
         [ImportingConstructor]
         internal BlogFactory(IUrlValidator urlValidator)
@@ -23,7 +24,9 @@ namespace TumblThree.Domain.Models
                    || urlValidator.IsValidTumblrHiddenUrl(blogUrl)
                    || urlValidator.IsValidTumblrLikedByUrl(blogUrl)
                    || urlValidator.IsValidTumblrSearchUrl(blogUrl)
-                   || urlValidator.IsValidTumblrTagSearchUrl(blogUrl);
+                   || urlValidator.IsValidTumblrTagSearchUrl(blogUrl)
+                   || urlValidator.IsTumbexUrl(blogUrl);
+
         }
 
         public IBlog GetBlog(string blogUrl, string path)
@@ -31,6 +34,8 @@ namespace TumblThree.Domain.Models
             blogUrl = urlValidator.AddHttpsProtocol(blogUrl);
             if (urlValidator.IsValidTumblrUrl(blogUrl))
                 return TumblrBlog.Create(blogUrl, path);
+            if (urlValidator.IsTumbexUrl(blogUrl))
+                return TumblrBlog.Create(CreateTumblrUrlFromTumbex(blogUrl), path);
             if (urlValidator.IsValidTumblrHiddenUrl(blogUrl))
                 return TumblrHiddenBlog.Create(blogUrl, path);
             if (urlValidator.IsValidTumblrLikedByUrl(blogUrl))
@@ -40,6 +45,15 @@ namespace TumblThree.Domain.Models
             if (urlValidator.IsValidTumblrTagSearchUrl(blogUrl))
                 return TumblrTagSearchBlog.Create(blogUrl, path);
             throw new ArgumentException("Website is not supported!", nameof(blogUrl));
+        }
+
+        //TODO: Refactor out.
+        private string CreateTumblrUrlFromTumbex(string blogUrl)
+        {
+            Match match = tumbexRegex.Match(blogUrl);
+            String tumblrBlogName = match.Groups[2].Value;
+
+            return $"https://{tumblrBlogName}.tumblr.com/";
         }
     }
 }

@@ -2538,6 +2538,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open the site in the web browser (on tumbex.com).
+        /// </summary>
+        public static string VisitBlogOnTumbex {
+            get {
+                return ResourceManager.GetString("VisitBlogOnTumbex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Website.
         /// </summary>
         public static string Website {

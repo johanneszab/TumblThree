@@ -965,4 +965,7 @@ A too small value will decrease the scanning speed.
 Set a number/time pair.
 Note: The tumblr api is only used for regular tumblr blog downloads.</value>
   </data>
+  <data name="VisitBlogOnTumbex" xml:space="preserve">
+    <value>Open the site in the web browser (on tumbex.com)</value>
+  </data>
 </root>

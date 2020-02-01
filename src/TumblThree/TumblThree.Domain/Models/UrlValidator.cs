@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.Composition;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace TumblThree.Domain.Models
 {
@@ -7,12 +8,22 @@ namespace TumblThree.Domain.Models
     [PartCreationPolicy(CreationPolicy.Shared)]
     public class UrlValidator : IUrlValidator
     {
+        private readonly Regex tumbexRegex = new Regex("(http[A-Za-z0-9_/:.]*www.tumbex.com[A-Za-z0-9_/:.-]*tumblr/)");
+
         public bool IsValidTumblrUrl(string url)
         {
-            return url != null && url.Length > 18 && url.Contains(".tumblr.com") && !url.Contains("//www.tumblr.com") &&
-                   !url.Any(char.IsWhiteSpace) &&
-                   !url.Contains(".media.tumblr.com") &&
-                   (url.StartsWith("http://", true, null) || url.StartsWith("https://", true, null));
+            return url != null &&
+                url.Length > 18 &&
+                url.Contains(".tumblr.com") &&
+                !url.Contains("//www.tumblr.com") &&
+                !url.Any(char.IsWhiteSpace) &&
+                !url.Contains(".media.tumblr.com") &&
+                (url.StartsWith("http://", true, null) || url.StartsWith("https://", true, null));
+        }
+
+        public bool IsTumbexUrl(string url)
+        {
+            return tumbexRegex.IsMatch(url);
         }
 
         public bool IsValidTumblrHiddenUrl(string url)

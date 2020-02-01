@@ -61,6 +61,8 @@
                                           Header="{x:Static p:Resources.CopyUrl}" />
                                 <MenuItem Command="{Binding VisitBlogCommand}"
                                           Header="{x:Static p:Resources.VisitBlog}" />
+                                <MenuItem Command="{Binding VisitBlogOnTumbexCommand}"
+                                          Header="{x:Static p:Resources.VisitBlogOnTumbex}" />
                                 <MenuItem Command="{Binding ShowDetailsCommand}"
                                           Header="{x:Static p:Resources.ShowDetails}" />
                                 <MenuItem Command="{Binding ShowFilesCommand}"

@@ -56,6 +56,7 @@ namespace TumblThree.Applications.Controllers
         private readonly DelegateCommand showDetailsCommand;
         private readonly DelegateCommand showFilesCommand;
         private readonly DelegateCommand visitBlogCommand;
+        private readonly DelegateCommand visitBlogOnTumbexCommand;
 
         private SemaphoreSlim addBlogSemaphoreSlim = new SemaphoreSlim(1);
         private readonly object lockObject = new object();
@@ -90,6 +91,7 @@ namespace TumblThree.Applications.Controllers
             removeBlogCommand = new DelegateCommand(RemoveBlog, CanRemoveBlog);
             showFilesCommand = new DelegateCommand(ShowFiles, CanShowFiles);
             visitBlogCommand = new DelegateCommand(VisitBlog, CanVisitBlog);
+            visitBlogOnTumbexCommand = new DelegateCommand(VisitBlogOnTumbex, CanVisitBlog);
             enqueueSelectedCommand = new DelegateCommand(EnqueueSelected, CanEnqueueSelected);
             loadLibraryCommand = new AsyncDelegateCommand(LoadLibraryAsync, CanLoadLibrary);
             loadAllDatabasesCommand = new AsyncDelegateCommand(LoadAllDatabasesAsync, CanLoadAllDatbases);
@@ -127,6 +129,7 @@ namespace TumblThree.Applications.Controllers
 
             ManagerViewModel.ShowFilesCommand = showFilesCommand;
             ManagerViewModel.VisitBlogCommand = visitBlogCommand;
+            ManagerViewModel.VisitBlogOnTumbexCommand = visitBlogOnTumbexCommand;
             ManagerViewModel.ShowDetailsCommand = showDetailsCommand;
             ManagerViewModel.CopyUrlCommand = copyUrlCommand;
             ManagerViewModel.CheckStatusCommand = checkStatusCommand;
@@ -149,6 +152,7 @@ namespace TumblThree.Applications.Controllers
 
                 showFilesCommand.RaiseCanExecuteChanged();
                 visitBlogCommand.RaiseCanExecuteChanged();
+                visitBlogOnTumbexCommand.RaiseCanExecuteChanged();
                 showDetailsCommand.RaiseCanExecuteChanged();
                 copyUrlCommand.RaiseCanExecuteChanged();
                 checkStatusCommand.RaiseCanExecuteChanged();
@@ -564,6 +568,15 @@ namespace TumblThree.Applications.Controllers
             foreach (IBlog blog in selectionService.SelectedBlogFiles.ToArray())
             {
                 Process.Start(blog.Url);
+            }
+        }
+
+        private void VisitBlogOnTumbex()
+        {
+            foreach (IBlog blog in selectionService.SelectedBlogFiles.ToArray())
+            {
+                string tumbexUrl = $"https://www.tumbex.com/{blog.Name}.tumblr/";
+                Process.Start(tumbexUrl);
             }
         }
 
