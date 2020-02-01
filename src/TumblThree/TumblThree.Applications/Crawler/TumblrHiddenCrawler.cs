@@ -437,6 +437,11 @@ namespace TumblThree.Applications.Crawler
                                        .FirstOrDefault() ??
                                   photo.alt_sizes.FirstOrDefault().url;
 
+                if (shellService.Settings.ImageSize == "best")
+                {
+                    imageUrl = photo.alt_sizes.FirstOrDefault().url;
+                }
+
                 if (CheckIfSkipGif(imageUrl))
                     continue;
 

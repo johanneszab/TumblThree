@@ -1997,6 +1997,27 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Photo size to download.
+        /// </summary>
+        public static string ToolTipImageSize {
+            get {
+                return ResourceManager.GetString("ToolTipImageSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Photo size to download in pixels.
+        ///
+        ///raw - download &quot;_raw&quot; photos if available, or 1280px else (broken!).
+        ///best - download largest size possible (SVC only), or 1280px else..
+        /// </summary>
+        public static string ToolTipImageSizeDescription {
+            get {
+                return ResourceManager.GetString("ToolTipImageSizeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Throttles the bandwidth of the downloader.
         /// </summary>
         public static string ToolTipLimitBandwidth {

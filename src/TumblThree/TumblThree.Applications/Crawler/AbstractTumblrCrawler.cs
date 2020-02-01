@@ -92,7 +92,9 @@ namespace TumblThree.Applications.Crawler
 
         protected string ImageSize()
         {
-            return shellService.Settings.ImageSize == "raw" ? "1280" : shellService.Settings.ImageSize;
+            if (shellService.Settings.ImageSize == "raw" || shellService.Settings.ImageSize == "best")
+                return "1280";
+            return shellService.Settings.ImageSize;
         }
 
         protected string ResizeTumblrImageUrl(string imageUrl)
@@ -100,6 +102,7 @@ namespace TumblThree.Applications.Crawler
             var sb = new StringBuilder(imageUrl);
             return sb
                    .Replace("_raw", "_" + ImageSize())
+                   .Replace("_best", "_" + ImageSize())
                    .Replace("_1280", "_" + ImageSize())
                    .Replace("_540", "_" + ImageSize())
                    .Replace("_500", "_" + ImageSize())

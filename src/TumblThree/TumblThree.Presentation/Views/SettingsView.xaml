@@ -345,12 +345,30 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Label x:Name="imageSizeLabel" Grid.Column="0" Content="{x:Static p:Resources.ImageSize}"
-                       VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10" />
+                       VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10">
+                                <Label.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipImageSize}" />
+                                            <TextBlock Text="{x:Static p:Resources.ToolTipImageSizeDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </Label.ToolTip>
+                            </Label>
                             <ComboBox x:Name="imageSizeComboBox" Grid.Column="1"
                           ItemsSource="{Binding ShellService.Settings.ImageSizes}" SelectedValuePath="."
                           SelectedValue="{Binding ImageSize}"
                           SelectedItem="{Binding ImageSize, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                          HorizontalAlignment="Left" VerticalAlignment="Center" MinWidth="40" />
+                          HorizontalAlignment="Left" VerticalAlignment="Center" MinWidth="40">
+                                <ComboBox.ToolTip>
+                                    <ToolTip>
+                                        <StackPanel>
+                                            <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipImageSize}" />
+                                            <TextBlock Text="{x:Static p:Resources.ToolTipImageSizeDescription}" />
+                                        </StackPanel>
+                                    </ToolTip>
+                                </ComboBox.ToolTip>
+                            </ComboBox>
                             <Label x:Name="timeOutLabel" Grid.Column="2" Content="{x:Static p:Resources.TimeOut}"
                        VerticalAlignment="Center" HorizontalAlignment="Left">
                                 <Label.ToolTip>

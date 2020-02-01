@@ -19,7 +19,7 @@ namespace TumblThree.Applications.Properties
 
         private static readonly string[] imageSizes =
             {
-                "raw", "1280", "500", "400", "250", "100", "75"
+                "raw", "best", "1280", "500", "400", "250", "100", "75"
             };
 
         private static readonly string[] videoSizes =
