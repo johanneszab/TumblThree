@@ -5,15 +5,15 @@ namespace TumblThree.Applications.Parser
 {
     public class TumblrParser : ITumblrParser
     {
-        public Regex GetTumblrPhotoUrlRegex() => new Regex("\"(http[A-Za-z0-9_/:.]*media.tumblr.com[A-Za-z0-9_/:.-]*(jpg|png|gif))\"");
+        public Regex GetTumblrPhotoUrlRegex() => new Regex("\"(http[A-Za-z0-9_/:.]*media.tumblr.com[A-Za-z0-9_/:.-]*(jpg|jpeg|tiff|tif|heif|heic|png|gif|webp))\"");
 
-        public Regex GetGenericPhotoUrlRegex() => new Regex("\"(https?://(?:[a-z0-9\\-]+\\.)+[a-z]{2,6}(?:/[^/#?]+)+\\.(?:jpg|png|gif))\"");
+        public Regex GetGenericPhotoUrlRegex() => new Regex("\"(https?://(?:[a-z0-9\\-]+\\.)+[a-z]{2,6}(?:/[^/#?]+)+\\.(?:jpg|jpeg|tiff|tif|heif|heic|png|gif|webp))\"");
 
         public Regex GetTumblrVVideoUrlRegex() => new Regex("\"(https?://v[A-Za-z0-9_.]*.tumblr.com/(tumblr_[\\w]*))");
 
         public Regex GetTumblrInlineVideoUrlRegex() => new Regex("\"(http[A-Za-z0-9_/:.]*video_file[\\S]*/(tumblr_[\\w]*))[0-9/]*\"");
 
-        public Regex GetGenericVideoUrlRegex() => new Regex("\"(https?://(?:[a-z0-9\\-]+\\.)+[a-z]{2,6}(?:/[^/#?]+)+\\.(?:mp4|mkv|gifv))\"");
+        public Regex GetGenericVideoUrlRegex() => new Regex("\"(https?://(?:[a-z0-9\\-]+\\.)+[a-z]{2,6}(?:/[^/#?]+)+\\.(?:mp4|mkv|wmv|mpeg|mpg|avi|gifv|webm))\"");
 
         public IEnumerable<string> SearchForTumblrPhotoUrl(string searchableText)
         {
