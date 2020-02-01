@@ -121,7 +121,7 @@
     <value>您的应用程序已是最新。</value>
   </data>
   <data name="AudioCaption" xml:space="preserve">
-    <value>Audio Caption: {0}</value>
+    <value>Audio caption: {0}</value>
   </data>
   <data name="AuthenticationFailure" xml:space="preserve">
     <value>授权失败：{0}</value>
@@ -146,6 +146,12 @@
   </data>
   <data name="Body" xml:space="preserve">
     <value>Body: {0]</value>
+  </data>
+  <data name="ConfirmingTumblrPrivacyConsent" xml:space="preserve">
+    <value>确认Tumblr隐私许可</value>
+  </data>
+  <data name="ConfirmingTumblrPrivacyConsentFailed" xml:space="preserve">
+    <value>确认Tumblr隐私许可失败，可能存在连接问题。</value>
   </data>
   <data name="Conversation" xml:space="preserve">
     <value>Conversation: {0}</value>
@@ -189,9 +195,6 @@
   <data name="Downloading" xml:space="preserve">
     <value>下载中</value>
   </data>
-  <data name="TimeoutReached" xml:space="preserve">
-    <value>{0} 的 {1} 出现连接超时。</value>
-  </data>
   <data name="Date" xml:space="preserve">
     <value>Date: {0}</value>
   </data>
@@ -216,7 +219,7 @@
     <value>回复.txt</value>
   </data>
   <data name="FileNameAudios" xml:space="preserve">
-    <value>音频网址.txt</value>
+    <value>音频_网址.txt</value>
   </data>
   <data name="FileNameConversations" xml:space="preserve">
     <value>对话.txt</value>
@@ -273,7 +276,10 @@
     <value>新版本可供下载：{0}</value>
   </data>
   <data name="NotLoggedIn" xml:space="preserve">
-    <value>您需要登录tumblr才能下载{0}。转到设置-授权。</value>
+    <value>您需要登录tumblr才能下载{0}。转到"设置-连接"进行登录。</value>
+  </data>
+  <data name="OnlineChecking" xml:space="preserve">
+    <value>正在检查在线状态</value>
   </data>
   <data name="PasswordProtected" xml:space="preserve">
     <value>该博客受密码保护：{0}。你需要在"详细"标签页输入密码。</value>
@@ -282,13 +288,22 @@
     <value>该博客受隐藏密码保护或已离线：{0}。你需要在"详细"标签页输入密码。</value>
   </data>
   <data name="PhotoCaption" xml:space="preserve">
-    <value>Photo Caption: {0}</value>
+    <value>Photo caption: {0}</value>
+  </data>
+  <data name="PhotoSetUrl" xml:space="preserve">
+    <value>Photo set urls: {0}</value>
   </data>
   <data name="PhotoUrl" xml:space="preserve">
-    <value>Photo Url: {0}</value>
+    <value>Photo url: {0}</value>
   </data>
   <data name="PostId" xml:space="preserve">
-    <value>Post ID: {0}</value>
+    <value>Post id: {0}</value>
+  </data>
+  <data name="PostNotParsable" xml:space="preserve">
+    <value>{0} 的一帖无法解析，在"详细"标签页将"每页帖数"设为1可能会增加可下载的内容。</value>
+  </data>
+  <data name="PostUrl" xml:space="preserve">
+    <value>Post url: {0}</value>
   </data>
   <data name="ProgressDownloadImage" xml:space="preserve">
     <value>正在下载 {0}。</value>
@@ -315,10 +330,13 @@
     <value>Reblog key: {0}</value>
   </data>
   <data name="ReblogName" xml:space="preserve">
-    <value>Reblog Name: {0}</value>
+    <value>Reblog name: {0}</value>
   </data>
   <data name="ReblogUrl" xml:space="preserve">
-    <value>Reblog Url: {0}</value>
+    <value>Reblog url: {0}</value>
+  </data>
+  <data name="Slug" xml:space="preserve">
+    <value>Slug: {0}</value>
   </data>
   <data name="Summary" xml:space="preserve">
     <value>Summary: {0}</value>
@@ -329,6 +347,12 @@
   <data name="Textfile" xml:space="preserve">
     <value>Text file</value>
   </data>
+  <data name="TimeoutReached" xml:space="preserve">
+    <value>{0} 的 {1} 出现连接超时。</value>
+  </data>
+  <data name="TimeoutReachedShort" xml:space="preserve">
+    <value>{0} 出现连接超时。</value>
+  </data>
   <data name="Title" xml:space="preserve">
     <value>Title: {0}</value>
   </data>
@@ -336,12 +360,12 @@
     <value>Url with slug: {0}</value>
   </data>
   <data name="VideoCaption" xml:space="preserve">
-    <value>Video Caption: {0}</value>
+    <value>Video caption: {0}</value>
   </data>
   <data name="VideoPlayer" xml:space="preserve">
-    <value>Video Player: {0}</value>
+    <value>Video player: {0}</value>
   </data>
   <data name="VideoSource" xml:space="preserve">
-    <value>Video Source: {0}</value>
+    <value>Video source: {0}</value>
   </data>
 </root>

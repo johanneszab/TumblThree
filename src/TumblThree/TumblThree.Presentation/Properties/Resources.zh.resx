@@ -234,6 +234,9 @@
   <data name="ImageSize" xml:space="preserve">
     <value>图片分辨率 (px)</value>
   </data>
+  <data name="ConcurrentBlogs" xml:space="preserve">
+    <value>并发博客数</value>
+  </data>
   <data name="ConcurrentConnections" xml:space="preserve">
     <value>并发连接数</value>
   </data>
@@ -241,13 +244,10 @@
     <value>并发视频数</value>
   </data>
   <data name="ToolTipVideoConnections" xml:space="preserve">
-    <value>同时处理的与tumblr视频服务器(vt.tumblr.com)连接的数量</value>
+    <value>同时处理的与tumblr视频服务器(v*.tumblr.com)连接的数量</value>
   </data>
   <data name="ToolTipVideoConnectionsDescription" xml:space="preserve">
-    <value>连接数过大将导致tumblr视频服务器(vt.tumblr.com)关闭连接。</value>
-  </data>
-  <data name="ConcurrentBlogs" xml:space="preserve">
-    <value>并发博客数</value>
+    <value>连接数过大将导致tumblr视频服务器(v*.tumblr.com)关闭连接。</value>
   </data>
   <data name="Online" xml:space="preserve">
     <value>在线</value>
@@ -262,6 +262,9 @@
     <value>1个项目</value>
   </data>
   <data name="CheckStatus" xml:space="preserve">
+    <value>检查博客状态</value>
+  </data>
+  <data name="CheckStatusOnStartup" xml:space="preserve">
     <value>启动时检查博客状态</value>
   </data>
   <data name="DeleteIndex" xml:space="preserve">
@@ -328,19 +331,20 @@
     <value>登录tumblr并授权</value>
   </data>
   <data name="ToolTipAuthenticateDescription" xml:space="preserve">
-    <value>打开一个浏览器窗口来登录tumblr并授权，使能够下载私密博客。授权信息将被保存故该操作仅需一次。</value>
+    <value>登录tumblr并授权，使能够下载私密博客。</value>
   </data>
   <data name="ToolTipBlogs" xml:space="preserve">
     <value>同时处理的博客数量</value>
   </data>
   <data name="ToolTipBlogsDescription" xml:space="preserve">
-    <value>设置同时处理的博客的数量。例如将此设置为'2'将同时从两个博客中下载数据。</value>
+    <value>设置同时处理的博客的数量。
+例如将此设置为'2'将同时从两个博客中下载数据。</value>
   </data>
   <data name="ToolTipConnections" xml:space="preserve">
     <value>同时处理的连接数量</value>
   </data>
   <data name="ToolTipConnectionsDescription" xml:space="preserve">
-    <value>设置同时处理的连接的数量，将被均分给同时处理的博客。例如设置为'25'而并行博客数为'2'则每个博客将打开12条连接。</value>
+    <value>设置同时处理的连接的数量，将被均分给同时处理的博客。</value>
   </data>
   <data name="Notes" xml:space="preserve">
     <value>备注</value>
@@ -436,7 +440,7 @@
     <value>为新添加的博客设置默认设置</value>
   </data>
   <data name="ToolTipDefaultSettingsForBlogsDescription" xml:space="preserve">
-    <value>每个博客的设置都各自独立，若想修改已存在的博客设置，在主界面选中该博客后在右侧"详细"标签页修改。</value>
+    <value>每个博客的设置都各自独立。若想修改已存在的博客设置，在主界面选中该博客后在右侧"详细"标签页修改。</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>保存</value>
@@ -472,11 +476,11 @@
   <data name="ToolTipLimitBandwidthDescription" xml:space="preserve">
     <value>以kbytes/s设置下载器可用的最大速度。设置为'0'即不限速。</value>
   </data>
-  <data name="ScanConnections" xml:space="preserve">
-    <value>扫描连接数</value>
-  </data>
   <data name="LimitScan" xml:space="preserve">
     <value>限制扫描速度</value>
+  </data>
+  <data name="ScanConnections" xml:space="preserve">
+    <value>扫描连接数</value>
   </data>
   <data name="ToolTipLimitScan" xml:space="preserve">
     <value>将扫描也限制在上面的限速中。</value>
@@ -488,7 +492,8 @@
     <value>每个扫描使用的连接数</value>
   </data>
   <data name="ToolTipScanDescription" xml:space="preserve">
-    <value>设置每个扫描使用的连接数，鉴于数据量通常较小，建议留高一点。</value>
+    <value>设置每个扫描使用的连接数，鉴于数据量通常较小，建议留高一点。
+注意："tumblr-api连接数"设置启用时此设置将无效。</value>
   </data>
   <data name="BandwidthRangeError" xml:space="preserve">
     <value>价值必须介于0至9,000,000,000,000,000之间。</value>
@@ -505,17 +510,18 @@
   <data name="ConnectionTimeInterval" xml:space="preserve">
     <value>时间间隔 (s):</value>
   </data>
-  <data name="MaxConnections" xml:space="preserve">
-    <value>连接数：</value>
-  </data>
   <data name="LimitConnections" xml:space="preserve">
     <value>限制tumblr-api连接数</value>
+  </data>
+  <data name="MaxConnections" xml:space="preserve">
+    <value>连接数：</value>
   </data>
   <data name="ToolTipLimitConnections" xml:space="preserve">
     <value>限制tumblr-api连接数</value>
   </data>
   <data name="ToolTipLimitConnectionsDescription" xml:space="preserve">
-    <value>一个较高的值将会强制关闭(429-限制)与tumblr-api的连接，一个较小的值将降低下载速度。</value>
+    <value>一个较高的值将会强制关闭(429-限制)与tumblr-api的连接，一个较小的值将降低下载速度。
+注意：tumblr-api仅用于下载普通博客。</value>
   </data>
   <data name="ForceRescan" xml:space="preserve">
     <value>强制重新扫描</value>
@@ -602,7 +608,8 @@
     <value>每页帖数</value>
   </data>
   <data name="ToolTipPageSizeDescription" xml:space="preserve">
-    <value>设置每页帖数(应该在1-50之间，默认50)。例如'50'表示每页50条帖子。</value>
+    <value>设置每页帖数(应该在1-50之间，默认50)。
+例如'50'表示每页50条帖子。</value>
   </data>
   <data name="FullScreenMedia" xml:space="preserve">
     <value>全屏视图</value>
@@ -644,7 +651,8 @@
     <value>每页帖数</value>
   </data>
   <data name="ToolTipPageSizeTumblrSearchDescription" xml:space="preserve">
-    <value>设置每页帖数。例如'50'表示每页50条帖子。</value>
+    <value>设置每页帖数。
+例如'50'表示每页50条帖子。</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>密码：</value>
@@ -662,7 +670,8 @@
     <value>仅下载有标签的帖子</value>
   </data>
   <data name="ToolTipTagsDescription" xml:space="preserve">
-    <value>必须为以','分隔同时去掉'#'。例如'great big car, bears'搜索'great big cars'和'bears'。</value>
+    <value>必须为以','分隔同时去掉'#'。
+例如'great big car, bears'搜索'great big cars'和'bears'。</value>
   </data>
   <data name="BlogtypeAll" xml:space="preserve">
     <value>全部</value>
@@ -695,28 +704,28 @@
     <value>下载 Gfycat</value>
   </data>
   <data name="ToolTipDownloadGfycat" xml:space="preserve">
-    <value>下载外链 Gfycat.com 的文件</value>
+    <value>下载外链 Gfycat 的文件</value>
   </data>
   <data name="ToolTipDownloadGfycatDescription" xml:space="preserve">
-    <value>下载由 Gfycat.com 外部托管的的文件</value>
+    <value>下载由 Gfycat 外部托管的文件</value>
   </data>
   <data name="DownloadWebmshare" xml:space="preserve">
     <value>下载 webmshare</value>
   </data>
   <data name="ToolTipDownloadWebmshare" xml:space="preserve">
-    <value>下载外链 webmshare.com 的文件</value>
+    <value>下载外链 webmshare 的文件</value>
   </data>
   <data name="ToolTipDownloadWebmshareDescription" xml:space="preserve">
-    <value>下载由 webmshare.com 外部托管的的文件</value>
+    <value>下载由 webmshare.com 外部托管的文件</value>
   </data>
   <data name="DownloadImgur" xml:space="preserve">
-    <value>下载 imgur</value>
+    <value>下载 Imgur</value>
   </data>
   <data name="ToolTipDownloadImgur" xml:space="preserve">
-    <value>下载外链 imgur.com 的文件</value>
+    <value>下载外链 Imgur 的文件</value>
   </data>
   <data name="ToolTipDownloadImgurDescription" xml:space="preserve">
-    <value>下载由 imgur.com 外部托管的的文件</value>
+    <value>下载由 Imgur 外部托管的的文件</value>
   </data>
   <data name="ToolTipGfycatFiletype" xml:space="preserve">
     <value>要下载的文件类型</value>
@@ -764,5 +773,160 @@
   </data>
   <data name="MetadataFormat" xml:space="preserve">
     <value>元数据格式</value>
+  </data>
+  <data name="DownloadCatBox" xml:space="preserve">
+    <value>下载 CatBox</value>
+  </data>
+  <data name="DownloadLoliSafe" xml:space="preserve">
+    <value>下载 lolisafe</value>
+  </data>
+  <data name="DownloadMixtape" xml:space="preserve">
+    <value>下载 Mixtape</value>
+  </data>
+  <data name="DownloadSafeMoe" xml:space="preserve">
+    <value>下载 SafeMoe</value>
+  </data>
+  <data name="DownloadUguu" xml:space="preserve">
+    <value>下载 Uguu</value>
+  </data>
+  <data name="ToolTipDownloadCatBox" xml:space="preserve">
+    <value>下载外链 CatBox 的文件</value>
+  </data>
+  <data name="ToolTipDownloadCatBoxDescription" xml:space="preserve">
+    <value>下载由 CatBox 外部托管的的文件</value>
+  </data>
+  <data name="ToolTipDownloadLoliSafe" xml:space="preserve">
+    <value>下载外链 loliSafe 的文件</value>
+  </data>
+  <data name="ToolTipDownloadLoliSafeDescription" xml:space="preserve">
+    <value>下载由 loliSafe 外部托管的的文件</value>
+  </data>
+  <data name="ToolTipDownloadMixtape" xml:space="preserve">
+    <value>下载外链 Mixtape.moe 的文件</value>
+  </data>
+  <data name="ToolTipDownloadMixtapeDescription" xml:space="preserve">
+    <value>下载由 Mixtape.moe 外部托管的的文件</value>
+  </data>
+  <data name="ToolTipDownloadSafeMoe" xml:space="preserve">
+    <value>下载外链 SafeMoe 的文件</value>
+  </data>
+  <data name="ToolTipDownloadSafeMoeDescription" xml:space="preserve">
+    <value>下载由 SafeMoe 外部托管的的文件</value>
+  </data>
+  <data name="ToolTipDownloadUguu" xml:space="preserve">
+    <value>下载外链 Uguu 的文件</value>
+  </data>
+  <data name="ToolTipDownloadUguuDescription" xml:space="preserve">
+    <value>下载由 Uguu 外部托管的的文件</value>
+  </data>
+  <data name="ToolTipCatBoxFiletype" xml:space="preserve">
+    <value>要下载的文件类型</value>
+  </data>
+  <data name="ToolTipCatBoxFiletypeDescription" xml:space="preserve">
+    <value>选择你想要下载的文件类型</value>
+  </data>
+  <data name="ToolTipLoliSafeFiletype" xml:space="preserve">
+    <value>要下载的文件类型</value>
+  </data>
+  <data name="ToolTipLoliSafeFiletypeDescription" xml:space="preserve">
+    <value>选择你想要下载的文件类型</value>
+  </data>
+  <data name="ToolTipMixtapeFiletype" xml:space="preserve">
+    <value>要下载的文件类型</value>
+  </data>
+  <data name="ToolTipMixtapeFiletypeDescription" xml:space="preserve">
+    <value>选择你想要下载的文件类型</value>
+  </data>
+  <data name="ToolTipSafeMoeFiletype" xml:space="preserve">
+    <value>要下载的文件类型</value>
+  </data>
+  <data name="ToolTipSafeMoeFiletypeDescription" xml:space="preserve">
+    <value>选择你想要下载的文件类型</value>
+  </data>
+  <data name="ToolTipUguuFiletype" xml:space="preserve">
+    <value>要下载的文件类型</value>
+  </data>
+  <data name="ToolTipUguuFiletypeDescription" xml:space="preserve">
+    <value>选择你想要下载的文件类型</value>
+  </data>
+  <data name="ToolTipTumblrLogin" xml:space="preserve">
+    <value>你的tumblr用户名（邮箱地址）</value>
+  </data>
+  <data name="ToolTipTumblrLoginDescription" xml:space="preserve">
+    <value>本地仅生成cookie而不保存密码。</value>
+  </data>
+  <data name="ToolTipTumblrPassword" xml:space="preserve">
+    <value>你的tumblr密码</value>
+  </data>
+  <data name="ToolTipTumblrPasswordDescription" xml:space="preserve">
+    <value>本地仅生成cookie而不保存密码。</value>
+  </data>
+  <data name="TumblrLogin" xml:space="preserve">
+    <value>tumblr用户名</value>
+  </data>
+  <data name="TumblrPassword" xml:space="preserve">
+    <value>Tumblr密码</value>
+  </data>
+  <data name="ToolTipAuthenticateBrowser" xml:space="preserve">
+    <value>授权至tumblr.com</value>
+  </data>
+  <data name="ToolTipAuthenticateBrowserDescription" xml:space="preserve">
+    <value>打开一个浏览器窗口来授权至tumblr.com，与你账户验证相关的cookie将被保存故该操作仅需一次。</value>
+  </data>
+  <data name="UserAgent" xml:space="preserve">
+    <value>UserAgent</value>
+  </data>
+  <data name="LoggedIn" xml:space="preserve">
+    <value>已登录为</value>
+  </data>
+  <data name="LoggedOut" xml:space="preserve">
+    <value>已登出</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>提交</value>
+  </data>
+  <data name="TFANeeded" xml:space="preserve">
+    <value>检测到TFA，请输入验证码：</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>登出</value>
+  </data>
+  <data name="ToolTipLogout" xml:space="preserve">
+    <value>登出Tumblr.com</value>
+  </data>
+  <data name="ToolTipLogoutDescription" xml:space="preserve">
+    <value>从本地移除账户验证相关的cookie。</value>
+  </data>
+  <data name="ProgressUpdateInterval" xml:space="preserve">
+    <value>进度更新间隔 (ms)</value>
+  </data>
+  <data name="ToolTipProgressUpdate" xml:space="preserve">
+    <value>进度信息刷新频率</value>
+  </data>
+  <data name="ToolTipProgressUpdateDescription" xml:space="preserve">
+    <value>队列中每个独立博客的进度信息的刷新频率。</value>
+  </data>
+  <data name="RegExPhotos" xml:space="preserve">
+    <value>搜索图像(RegEx)</value>
+  </data>
+  <data name="RegExVideos" xml:space="preserve">
+    <value>搜索视频(RegEx)</value>
+  </data>
+  <data name="ToolTipRegExPhotos" xml:space="preserve">
+    <value>在爬取数据中搜索图像</value>
+  </data>
+  <data name="ToolTipRegExPhotosDescription" xml:space="preserve">
+    <value>使用正则表达式在TumblThree的所有扫描结果中搜索图像。
+这可能会增加大量重复或随机的图片url至队列中，但也可能搜集到暂未被特定解析器支持的图像。</value>
+  </data>
+  <data name="ToolTipRegExVideos" xml:space="preserve">
+    <value>在爬取数据中搜索视频</value>
+  </data>
+  <data name="ToolTipRegExVideosDescription" xml:space="preserve">
+    <value>使用正则表达式在TumblThree的所有扫描结果中搜索视频。
+这可能会增加大量重复或随机的图片url至队列中，但也可能搜集到暂未被特定解析器支持的视频。</value>
+  </data>
+  <data name="ImportFromBlogListFile" xml:space="preserve">
+    <value>导入博客列表</value>
   </data>
 </root>
