@@ -172,6 +172,8 @@ namespace TumblThree.Domain.Models.Blogs
 
         BlogTypes BlogType { get; set; }
 
+        BlogTypes OriginalBlogType { get; set; }
+
         DateTime DateAdded { get; set; }
 
         DateTime LastCompleteCrawl { get; set; }
@@ -181,6 +183,8 @@ namespace TumblThree.Domain.Models.Blogs
         bool Online { get; set; }
 
         bool CheckDirectoryForFiles { get; set; }
+
+        String Version { get; set; }
 
         bool Dirty { get; set; }
 

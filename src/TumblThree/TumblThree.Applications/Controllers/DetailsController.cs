@@ -181,6 +181,7 @@ namespace TumblThree.Applications.Controllers
                 LoliSafeType = SetProperty<LoliSafeTypes>(sharedBlogFiles, "LoliSafeType"),
                 CatBoxType = SetProperty<CatBoxTypes>(sharedBlogFiles, "CatBoxType"),
                 MetadataFormat = SetProperty<MetadataType>(sharedBlogFiles, "MetadataFormat"),
+                BlogType = SetProperty<BlogTypes>(sharedBlogFiles, "BlogType"),
                 DumpCrawlerData = SetCheckBox(sharedBlogFiles, "DumpCrawlerData"),
                 RegExPhotos = SetCheckBox(sharedBlogFiles, "RegExPhotos"),
                 RegExVideos = SetCheckBox(sharedBlogFiles, "RegExVideos"),

@@ -941,4 +941,16 @@ gather videos from websites that are currently not supported by a specifically w
   <data name="ImportFromBlogListFile" xml:space="preserve">
     <value>Import Blog List</value>
   </data>
+  <data name="BlogtypeCrawler" xml:space="preserve">
+    <value>Crawler</value>
+  </data>
+  <data name="ToolTipBlogtypeCrawler" xml:space="preserve">
+    <value>Crawler implementation used for scraping.</value>
+  </data>
+  <data name="ToolTipBlogtypeCrawlerDescription" xml:space="preserve">
+    <value>For tumblr blogs, you can choose between:
+
+* tumblr: uses Tumblr API v1, or 
+* tmblrpriv: 'SVC' - a service internally used by tumblr for web site rendering.</value>
+  </data>
 </root>

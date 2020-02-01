@@ -15,10 +15,11 @@ namespace TumblThree.Domain.Models.Blogs
             {
                 Url = ExtractUrl(url),
                 Name = ExtractName(url),
-                BlogType = BlogTypes.tmblrpriv,
+                BlogType = Models.BlogTypes.tmblrpriv,
+                OriginalBlogType = Models.BlogTypes.tmblrpriv,
                 Location = location,
                 Online = true,
-                Version = "3",
+                Version = "4",
                 DateAdded = DateTime.Now,
             };
 
@@ -36,8 +37,8 @@ namespace TumblThree.Domain.Models.Blogs
             return blog;
         }
 
-        protected new static string ExtractName(string url) => url.Split('/')[5];
+        protected static new string ExtractName(string url) => url.Split('/')[5];
 
-        protected new static string ExtractUrl(string url) => "https://" + ExtractName(url) + ".tumblr.com/";
+        protected static new string ExtractUrl(string url) => "https://" + ExtractName(url) + ".tumblr.com/";
     }
 }

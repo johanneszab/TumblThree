@@ -15,10 +15,11 @@ namespace TumblThree.Domain.Models.Blogs
             {
                 Url = ExtractUrl(url),
                 Name = ExtractName(url),
-                BlogType = BlogTypes.tumblr,
+                BlogType = Models.BlogTypes.tumblr,
+                OriginalBlogType = Models.BlogTypes.tumblr,
                 Location = location,
                 Online = true,
-                Version = "3",
+                Version = "4",
                 DateAdded = DateTime.Now,
             };
 

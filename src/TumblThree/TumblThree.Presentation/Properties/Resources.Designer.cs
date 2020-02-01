@@ -169,6 +169,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Crawler.
+        /// </summary>
+        public static string BlogtypeCrawler {
+            get {
+                return ResourceManager.GetString("BlogtypeCrawler", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Instagram.
         /// </summary>
         public static string BlogtypeInstagram {
@@ -1517,6 +1526,27 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipBlogsDescription {
             get {
                 return ResourceManager.GetString("ToolTipBlogsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Crawler implementation used for scraping..
+        /// </summary>
+        public static string ToolTipBlogtypeCrawler {
+            get {
+                return ResourceManager.GetString("ToolTipBlogtypeCrawler", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to For tumblr blogs, you can choose between:
+        ///
+        ///* tumblr: uses Tumblr API v1, or 
+        ///* tmblrpriv: &apos;SVC&apos; - a service internally used by tumblr for web site rendering..
+        /// </summary>
+        public static string ToolTipBlogtypeCrawlerDescription {
+            get {
+                return ResourceManager.GetString("ToolTipBlogtypeCrawlerDescription", resourceCulture);
             }
         }
         
