@@ -5,7 +5,7 @@ namespace TumblThree.Applications.Parser
 {
     public class TumblrParser : ITumblrParser
     {
-        public Regex GetTumblrPhotoUrlRegex() => new Regex("\"(http[A-Za-z0-9_/:.]*media.tumblr.com[A-Za-z0-9_/:.]*(jpg|png|gif))\"");
+        public Regex GetTumblrPhotoUrlRegex() => new Regex("\"(http[A-Za-z0-9_/:.]*media.tumblr.com[A-Za-z0-9_/:.-]*(jpg|png|gif))\"");
 
         public Regex GetGenericPhotoUrlRegex() => new Regex("\"(https?://(?:[a-z0-9\\-]+\\.)+[a-z]{2,6}(?:/[^/#?]+)+\\.(?:jpg|png|gif))\"");
 
