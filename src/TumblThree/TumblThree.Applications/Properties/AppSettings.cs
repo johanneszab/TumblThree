@@ -159,6 +159,10 @@ namespace TumblThree.Applications.Properties
 
         [DataMember] public MetadataType MetadataFormat { get; set; }
 
+        [DataMember] public bool OverrideTumblrBlogCrawler { get; set; }
+
+        [DataMember] public TumblrBlogCrawlerTypes TumblrBlogCrawlerType { get; set; }
+
         [DataMember] public bool DumpCrawlerData { get; set; }
 
         [DataMember] public bool RegExPhotos { get; set; }
@@ -275,7 +279,7 @@ namespace TumblThree.Applications.Properties
             ProgressUpdateInterval = 100;
             Bandwidth = 0;
             BufferSize = 512;
-            ImageSize = "1280";
+            ImageSize = "best";
             VideoSize = 1080;
             BlogType = "None";
             CheckClipboard = true;
@@ -298,6 +302,8 @@ namespace TumblThree.Applications.Properties
             CreateVideoMeta = false;
             CreateAudioMeta = false;
             MetadataFormat = MetadataType.Text;
+            OverrideTumblrBlogCrawler = false;
+            TumblrBlogCrawlerType = TumblrBlogCrawlerTypes.TumblrSVC;
             PageSize = 50;
             DownloadRebloggedPosts = true;
             AutoDownload = false;

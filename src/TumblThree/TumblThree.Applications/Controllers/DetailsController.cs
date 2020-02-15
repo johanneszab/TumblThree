@@ -85,6 +85,8 @@ namespace TumblThree.Applications.Controllers
             foreach (IBlog blog in blogsToSave)
             {
                 PropertyInfo property = typeof(IBlog).GetProperty(e.PropertyName);
+                if (CheckIfCanUpdateTumblrBlogCrawler(blog, property))
+                    continue;
                 property.SetValue(blog, property.GetValue(DetailsViewModel.BlogFile));
             }
         }
@@ -215,6 +217,11 @@ namespace TumblThree.Applications.Controllers
         {
             if (blogsToSave.Any())
                 blogsToSave.Clear();
+        }
+
+        private static bool CheckIfCanUpdateTumblrBlogCrawler(IBlog blog, PropertyInfo property)
+        {
+            return property.PropertyType == typeof(BlogTypes) && !(blog is TumblrBlog || blog is TumblrHiddenBlog);
         }
 
         private void SelectedBlogFilesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

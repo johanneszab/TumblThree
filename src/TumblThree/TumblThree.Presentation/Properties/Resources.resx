@@ -950,8 +950,8 @@ gather videos from websites that are currently not supported by a specifically w
   <data name="ToolTipBlogtypeCrawlerDescription" xml:space="preserve">
     <value>For tumblr blogs, you can choose between:
 
-* tumblr: uses Tumblr API v1, or 
-* tmblrpriv: 'SVC' - a service internally used by tumblr for web site rendering.</value>
+* TumblAPI: Uses Tumblr API v1 (no login required), or 
+* TumblrSVC: A service internally used by tumblr for web site rendering. Can download larger images than 1280px. Requires login.</value>
   </data>
   <data name="LimitConnectionsSvc" xml:space="preserve">
     <value>Limit Tumblr SVC connections:</value>
@@ -976,5 +976,15 @@ Note: The tumblr api is only used for regular tumblr blog downloads.</value>
 
 raw - download "_raw" photos if available, or 1280px else (broken!).
 best - download largest size possible (SVC only), or 1280px else.</value>
+  </data>
+  <data name="OverrideTumblrBlogCrawler" xml:space="preserve">
+    <value>Override Tumblr blog crawler detection:</value>
+  </data>
+  <data name="ToolTipOverrideTumblrBlogCrawler" xml:space="preserve">
+    <value>Override Tumblr Blog Detection</value>
+  </data>
+  <data name="ToolTipOverrideTumblrBlogCrawlerDescription" xml:space="preserve">
+    <value>Defines the default Tumblr Blog Crawler implementation 
+used for scraping when adding a new Tumblr blog.</value>
   </data>
 </root>

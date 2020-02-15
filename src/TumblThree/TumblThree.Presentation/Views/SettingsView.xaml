@@ -16,6 +16,14 @@
     <Window.Resources>
         <ObjectDataProvider MethodName="GetValues"
         ObjectType="{x:Type sys:Enum}"
+        x:Key="TumblrBlogCrawlerTypes">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="Models:TumblrBlogCrawlerTypes" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        
+        <ObjectDataProvider MethodName="GetValues"
+        ObjectType="{x:Type sys:Enum}"
         x:Key="GfycatTypes">
             <ObjectDataProvider.MethodParameters>
                 <x:Type TypeName="Models:GfycatTypes" />
@@ -907,6 +915,33 @@
                           SelectedValue="{Binding MetadataFormat}"
                           SelectedItem="{Binding MetadataFormat, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                           HorizontalAlignment="Stretch" VerticalAlignment="Center" MinWidth="40" />
+                        <CheckBox x:Name="checkBoxOverrideTumblrBlogCrawler" Content="{x:Static p:Resources.OverrideTumblrBlogCrawler}"
+                          IsChecked="{Binding OverrideTumblrBlogCrawler, Mode=TwoWay}" Grid.Column="2" Grid.Row="10"  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10" >
+                            <CheckBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipOverrideTumblrBlogCrawler}" />
+                                        <TextBlock xml:space="preserve"
+                                           Text="{x:Static p:Resources.ToolTipOverrideTumblrBlogCrawlerDescription}" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </CheckBox.ToolTip>
+                        </CheckBox>
+                        <ComboBox x:Name="defaultTumblrBlogFormatComboBox" Grid.Column="3" Grid.Row="10" Margin="5" 
+                          ItemsSource="{Binding Source={StaticResource TumblrBlogCrawlerTypes}}" SelectedValuePath="."
+                          SelectedValue="{Binding TumblrBlogCrawlerType}"
+                          SelectedItem="{Binding TumblrBlogCrawlerType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                          HorizontalAlignment="Stretch" VerticalAlignment="Center" MinWidth="40" >
+                            <ComboBox.ToolTip>
+                                <ToolTip>
+                                    <StackPanel>
+                                        <TextBlock FontWeight="Bold" Text="{x:Static p:Resources.ToolTipBlogtypeCrawler}" />
+                                        <TextBlock xml:space="preserve"
+                                           Text="{x:Static p:Resources.ToolTipBlogtypeCrawlerDescription}" />
+                                    </StackPanel>
+                                </ToolTip>
+                            </ComboBox.ToolTip>
+                        </ComboBox>
                         <Label Grid.Column="0" Grid.Row="11" Content="{x:Static p:Resources.DownloadPages}"
                        HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10" >
                             <Label.ToolTip>

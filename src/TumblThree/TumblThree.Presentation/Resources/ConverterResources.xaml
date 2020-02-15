@@ -49,4 +49,6 @@
 
     <c:NullImageConverter x:Key="NullImageConverter" />
 
+    <c:TumblrBlogCrawlerTypesConverter x:Key="TumblrBlogCrawlerTypesConverter" />
+
 </ResourceDictionary>

@@ -1105,6 +1105,15 @@ namespace TumblThree.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Override Tumblr blog crawler detection:.
+        /// </summary>
+        public static string OverrideTumblrBlogCrawler {
+            get {
+                return ResourceManager.GetString("OverrideTumblrBlogCrawler", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Posts per page:.
         /// </summary>
         public static string PageSize {
@@ -1550,8 +1559,8 @@ namespace TumblThree.Presentation.Properties {
         /// <summary>
         ///   Looks up a localized string similar to For tumblr blogs, you can choose between:
         ///
-        ///* tumblr: uses Tumblr API v1, or 
-        ///* tmblrpriv: &apos;SVC&apos; - a service internally used by tumblr for web site rendering..
+        ///* TumblAPI: Uses Tumblr API v1 (no login required), or 
+        ///* TumblrSVC: A service internally used by tumblr for web site rendering. Can download larger images than 1280px. Requires login..
         /// </summary>
         public static string ToolTipBlogtypeCrawlerDescription {
             get {
@@ -2168,6 +2177,25 @@ namespace TumblThree.Presentation.Properties {
         public static string ToolTipMixtapeFiletypeDescription {
             get {
                 return ResourceManager.GetString("ToolTipMixtapeFiletypeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Override Tumblr Blog Detection.
+        /// </summary>
+        public static string ToolTipOverrideTumblrBlogCrawler {
+            get {
+                return ResourceManager.GetString("ToolTipOverrideTumblrBlogCrawler", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Defines the default Tumblr Blog Crawler implementation 
+        ///used for scraping when adding a new Tumblr blog..
+        /// </summary>
+        public static string ToolTipOverrideTumblrBlogCrawlerDescription {
+            get {
+                return ResourceManager.GetString("ToolTipOverrideTumblrBlogCrawlerDescription", resourceCulture);
             }
         }
         

@@ -73,6 +73,7 @@
     <Compile Include="Models\Files\TumblrBlogFiles.cs" />
     <Compile Include="Models\Files\Files.cs" />
     <Compile Include="Models\LoliSafeTypes.cs" />
+    <Compile Include="Models\TumblrBlogCrawlerTypes.cs" />
     <Compile Include="Models\MetadataType.cs" />
     <Compile Include="Models\GfycatType.cs" />
     <Compile Include="Models\Blogs\IBlog.cs" />
@@ -109,6 +110,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="App.config" />
     <None Include="Properties\Settings.settings">

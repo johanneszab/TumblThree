@@ -102,6 +102,8 @@ namespace TumblThree.Applications.ViewModels
         private bool downloadSafeMoe;
         private bool downloadLoliSafe;
         private bool downloadCatBox;
+        private bool overrideTumblrBlogCrawler;
+        private TumblrBlogCrawlerTypes tumblrBlogCrawlerType;
         private MetadataType metadataFormat;
         private GfycatTypes gfycatType;
         private WebmshareTypes webmshareType;
@@ -507,6 +509,18 @@ namespace TumblThree.Applications.ViewModels
             set => SetProperty(ref createAudioMeta, value);
         }
 
+        public bool OverrideTumblrBlogCrawler
+        {
+            get => overrideTumblrBlogCrawler;
+            set => SetProperty(ref overrideTumblrBlogCrawler, value);
+        }
+
+        public TumblrBlogCrawlerTypes TumblrBlogCrawlerType
+        {
+            get => tumblrBlogCrawlerType;
+            set => SetProperty(ref tumblrBlogCrawlerType, value);
+        }
+
         public MetadataType MetadataFormat
         {
             get => metadataFormat;
@@ -903,6 +917,8 @@ namespace TumblThree.Applications.ViewModels
                 CreateImageMeta = settings.CreateImageMeta;
                 CreateVideoMeta = settings.CreateVideoMeta;
                 CreateAudioMeta = settings.CreateAudioMeta;
+                OverrideTumblrBlogCrawler = settings.OverrideTumblrBlogCrawler;
+                TumblrBlogCrawlerType = settings.TumblrBlogCrawlerType;
                 MetadataFormat = settings.MetadataFormat;
                 DumpCrawlerData = settings.DumpCrawlerData;
                 RegExPhotos = settings.RegExPhotos;
@@ -966,7 +982,7 @@ namespace TumblThree.Applications.ViewModels
                 ConnectionTimeIntervalSvc = 60;
                 ProgressUpdateInterval = 100;
                 Bandwidth = 0;
-                ImageSize = "raw";
+                ImageSize = "best";
                 VideoSize = 1080;
                 BlogType = "None";
                 CheckClipboard = true;
@@ -988,6 +1004,8 @@ namespace TumblThree.Applications.ViewModels
                 CreateImageMeta = false;
                 CreateVideoMeta = false;
                 CreateAudioMeta = false;
+                OverrideTumblrBlogCrawler = false;
+                TumblrBlogCrawlerType = TumblrBlogCrawlerTypes.TumblrSVC;
                 MetadataFormat = MetadataType.Text;
                 DumpCrawlerData = false;
                 RegExPhotos = false;
@@ -1125,6 +1143,8 @@ namespace TumblThree.Applications.ViewModels
             settings.CreateImageMeta = CreateImageMeta;
             settings.CreateVideoMeta = CreateVideoMeta;
             settings.CreateAudioMeta = CreateAudioMeta;
+            settings.OverrideTumblrBlogCrawler = OverrideTumblrBlogCrawler;
+            settings.TumblrBlogCrawlerType = TumblrBlogCrawlerType;
             settings.MetadataFormat = MetadataFormat;
             settings.DumpCrawlerData = DumpCrawlerData;
             settings.RegExPhotos = RegExPhotos;

@@ -142,6 +142,24 @@ namespace TumblThree.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tumblr API.
+        /// </summary>
+        public static string TumblrAPI {
+            get {
+                return ResourceManager.GetString("TumblrAPI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tumblr SVC.
+        /// </summary>
+        public static string TumblrSVC {
+            get {
+                return ResourceManager.GetString("TumblrSVC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to webm.
         /// </summary>
         public static string webm {

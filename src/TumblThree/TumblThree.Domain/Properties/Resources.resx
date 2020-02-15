@@ -144,6 +144,12 @@
   <data name="text" xml:space="preserve">
     <value>text</value>
   </data>
+  <data name="TumblrAPI" xml:space="preserve">
+    <value>Tumblr API</value>
+  </data>
+  <data name="TumblrSVC" xml:space="preserve">
+    <value>Tumblr SVC</value>
+  </data>
   <data name="webm" xml:space="preserve">
     <value>webm</value>
   </data>
