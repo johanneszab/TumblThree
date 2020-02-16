@@ -198,7 +198,7 @@
                     </StackPanel>
                 </Button>
 
-                <ToggleButton Command="{Binding CrawlerService.ListenClipboardCommand}">
+                <ToggleButton Command="{Binding CrawlerService.ListenClipboardCommand}" IsChecked="{Binding ShellService.Settings.CheckClipboard, Mode=TwoWay}">
                     <StackPanel>
                         <Grid>
                             <fa:ImageAwesome Icon="Clipboard" />
