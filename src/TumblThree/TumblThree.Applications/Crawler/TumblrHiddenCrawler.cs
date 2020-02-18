@@ -244,7 +244,7 @@ namespace TumblThree.Applications.Crawler
             var response = ConvertJsonToClass<TumblrJson>(document);
 
             ulong highestId;
-            ulong.TryParse(blog.Title = response.response.posts.FirstOrDefault().id, out highestId);
+            ulong.TryParse(blog.Title = response.response.posts.FirstOrDefault()?.id, out highestId);
             return highestId;
         }
 
