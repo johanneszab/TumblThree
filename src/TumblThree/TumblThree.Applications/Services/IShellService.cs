@@ -43,5 +43,9 @@ namespace TumblThree.Applications.Services
         void AddTaskToCompleteBeforeShutdown(Task task);
 
         IDisposable SetApplicationBusy();
+
+        event EventHandler SettingsUpdatedHandler;
+
+        void SettingsUpdated();
     }
 }

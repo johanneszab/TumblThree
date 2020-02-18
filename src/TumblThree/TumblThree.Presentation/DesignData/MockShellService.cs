@@ -33,6 +33,8 @@ namespace TumblThree.Presentation.DesignData
 
         public event CancelEventHandler Closing;
 
+        public event EventHandler SettingsUpdatedHandler;
+
         public void ShowError(Exception exception, string displayMessage)
         {
         }
@@ -46,6 +48,10 @@ namespace TumblThree.Presentation.DesignData
         }
 
         public void UpdateDetailsView()
+        {
+        }
+
+        public void SettingsUpdated()
         {
         }
 
