@@ -1,8 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace TumblThree.Applications.Downloader
 {
-    public interface IDownloader
+    public interface IDownloader : IDisposable
     {
         Task<bool> DownloadBlogAsync();
 

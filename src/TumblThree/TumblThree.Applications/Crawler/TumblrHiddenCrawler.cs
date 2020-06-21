@@ -666,5 +666,20 @@ namespace TumblThree.Applications.Crawler
 
             if (blog.DownloadCatBox) AddCatBoxUrl(searchableText, timestamp);
         }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                semaphoreSlim?.Dispose();
+                downloader.Dispose();
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
     }
 }

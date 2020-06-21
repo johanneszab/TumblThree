@@ -34,6 +34,7 @@ namespace TumblThree.Applications.Downloader
 
         private SemaphoreSlim concurrentConnectionsSemaphore;
         private SemaphoreSlim concurrentVideoConnectionsSemaphore;
+        private readonly Dictionary<string, StreamWriter> streamWriters = new Dictionary<string, StreamWriter>();
 
         protected AbstractDownloader(IShellService shellService, IManagerService managerService, CancellationToken ct,
             PauseToken pt, IProgress<DownloadProgress> progress, IPostQueue<TumblrPost> postQueue, FileDownloader fileDownloader,
@@ -123,10 +124,8 @@ namespace TumblThree.Applications.Downloader
             {
                 lock (lockObjectDownload)
                 {
-                    using (var sw = new StreamWriter(fileLocation, true))
-                    {
-                        sw.WriteLine(text);
-                    }
+                    StreamWriter sw = GetTextAppenderStreamWriter(fileLocation);
+                    sw.WriteLine(text);
                 }
 
                 return true;
@@ -142,6 +141,18 @@ namespace TumblThree.Applications.Downloader
             {
                 return false;
             }
+        }
+
+        private StreamWriter GetTextAppenderStreamWriter(string key)
+        {
+            if (streamWriters.ContainsKey(key))
+            {
+                return streamWriters[key];
+            }
+            StreamWriter sw = new StreamWriter(key, true);
+            streamWriters.Add(key, sw);
+
+            return sw;
         }
 
         public virtual async Task<bool> DownloadBlogAsync()
@@ -334,6 +345,26 @@ namespace TumblThree.Applications.Downloader
         {
             if (pt.IsPaused)
                 pt.WaitWhilePausedWithResponseAsyc().Wait();
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                concurrentConnectionsSemaphore?.Dispose();
+                concurrentVideoConnectionsSemaphore?.Dispose();
+
+                foreach (var sw in streamWriters.Values)
+                {
+                    sw.Dispose();
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

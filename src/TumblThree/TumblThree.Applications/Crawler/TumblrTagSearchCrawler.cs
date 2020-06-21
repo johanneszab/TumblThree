@@ -247,5 +247,20 @@ namespace TumblThree.Applications.Crawler
             if (blog.RegExVideos)
                 AddGenericVideoUrl(document);
         }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                semaphoreSlim?.Dispose();
+                downloader.Dispose();
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
     }
 }

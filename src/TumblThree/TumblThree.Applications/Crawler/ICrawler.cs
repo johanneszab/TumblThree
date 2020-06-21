@@ -1,8 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace TumblThree.Applications.Crawler
 {
-    public interface ICrawler
+    public interface ICrawler : IDisposable
     {
         Task CrawlAsync();
 

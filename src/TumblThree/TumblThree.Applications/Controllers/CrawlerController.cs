@@ -16,7 +16,7 @@ using TumblThree.Domain.Queue;
 namespace TumblThree.Applications.Controllers
 {
     [Export]
-    internal class CrawlerController
+    internal class CrawlerController : IDisposable
     {
         private readonly ICrawlerFactory crawlerFactory;
         private readonly ICrawlerService crawlerService;
@@ -178,6 +178,7 @@ namespace TumblThree.Applications.Controllers
 
                     ICrawler crawler = crawlerFactory.GetCrawler(blog, ct, pt, new Progress<DownloadProgress>());
                     crawler.IsBlogOnlineAsync().Wait(4000);
+                    crawler.Dispose();
 
                     if (crawlerService.ActiveItems.Any(item =>
                         item.Blog.Name.Equals(nextQueueItem.Blog.Name) &&
@@ -215,6 +216,7 @@ namespace TumblThree.Applications.Controllers
 
             ICrawler crawler = crawlerFactory.GetCrawler(blog, ct, pt, progress);
             await crawler.CrawlAsync();
+            crawler.Dispose();
 
             Monitor.Enter(lockObject);
             QueueOnDispatcher.CheckBeginInvokeOnUI(() => crawlerService.RemoveActiveItem(queueListItem));
@@ -232,6 +234,20 @@ namespace TumblThree.Applications.Controllers
         {
             var progressHandler = new Progress<DownloadProgress>(value => { queueListItem.Progress = value.Progress; });
             return new ProgressThrottler<DownloadProgress>(progressHandler, shellService.Settings.ProgressUpdateInterval);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                crawlerCancellationTokenSource?.Dispose();
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }
