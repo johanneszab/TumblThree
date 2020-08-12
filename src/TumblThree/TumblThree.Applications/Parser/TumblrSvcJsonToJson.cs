@@ -28,9 +28,9 @@ namespace TumblThree.Applications.Parser
         private string GetPostAsString(T post)
         {
             var postCopy = (Post)post.Clone();
-            postCopy.blog = null;
-            postCopy.trail = null;
-            postCopy.share_popover_data = null;
+            postCopy.Blog = null;
+            postCopy.Trail = null;
+            postCopy.SharePopoverData = null;
 
             var serializer = new DataContractJsonSerializer(postCopy.GetType());
 

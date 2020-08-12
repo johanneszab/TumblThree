@@ -54,6 +54,8 @@ namespace TumblThree.Applications.Services
 
         RateLimiter TimeconstraintApi { get; set; }
 
+        RateLimiter TimeconstraintSearchApi { get; set; }
+
         RateLimiter TimeconstraintSvc { get; set; }
 
         Timer Timer { get; set; }

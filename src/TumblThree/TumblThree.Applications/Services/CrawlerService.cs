@@ -39,6 +39,7 @@ namespace TumblThree.Applications.Services
         private ICommand showFilesCommand;
         private ICommand stopCommand;
         private RateLimiter timeconstraintApi;
+        private RateLimiter timeconstraintSearchApi;
         private RateLimiter timeconstraintSvc;
         private Timer timer;
 
@@ -48,6 +49,10 @@ namespace TumblThree.Applications.Services
             timeconstraintApi =
                 RateLimiter.Create(shellService.Settings.MaxConnectionsApi /
                                    (double)shellService.Settings.ConnectionTimeIntervalApi);
+
+            timeconstraintSearchApi =
+                RateLimiter.Create(shellService.Settings.MaxConnectionsSearchApi /
+                                   (double)shellService.Settings.ConnectionTimeIntervalSearchApi);
 
             timeconstraintSvc =
                 RateLimiter.Create(shellService.Settings.MaxConnectionsSvc /
@@ -198,6 +203,12 @@ namespace TumblThree.Applications.Services
         {
             get => timeconstraintApi;
             set => SetProperty(ref timeconstraintApi, value);
+        }
+
+        public RateLimiter TimeconstraintSearchApi
+        {
+            get => timeconstraintSearchApi;
+            set => SetProperty(ref timeconstraintSearchApi, value);
         }
 
         public RateLimiter TimeconstraintSvc

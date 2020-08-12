@@ -76,6 +76,8 @@ namespace TumblThree.Presentation.DesignData
 
         public Guava.RateLimiter.RateLimiter TimeconstraintApi { get; set; }
 
+        public Guava.RateLimiter.RateLimiter TimeconstraintSearchApi { get; set; }
+
         public Guava.RateLimiter.RateLimiter TimeconstraintSvc { get; set; }
 
         public Timer Timer { get; set; }

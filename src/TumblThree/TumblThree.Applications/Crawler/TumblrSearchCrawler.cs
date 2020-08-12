@@ -160,14 +160,14 @@ namespace TumblThree.Applications.Crawler
                 CheckIfShouldPause();
 
                 var result = ConvertJsonToClass<TumblrSearchJson>(response);
-                if (string.IsNullOrEmpty(result.response.posts_html))
+                if (string.IsNullOrEmpty(result.Response.PostsHtml))
                 {
                     return;
                 }
 
                 try
                 {
-                    string html = result.response.posts_html;
+                    string html = result.Response.PostsHtml;
                     html = Regex.Unescape(html);
                     AddPhotoUrlToDownloadList(html);
                     AddVideoUrlToDownloadList(html);
@@ -181,7 +181,7 @@ namespace TumblThree.Applications.Crawler
 
                 Interlocked.Increment(ref numberOfPagesCrawled);
                 UpdateProgressQueueInformation(Resources.ProgressGetUrlShort, numberOfPagesCrawled);
-                response = await GetSearchPageAsync((crawlerNumber + shellService.Settings.ConcurrentScans));
+                response = await GetSearchPageAsync(crawlerNumber + shellService.Settings.ConcurrentScans);
                 crawlerNumber += shellService.Settings.ConcurrentScans;
             }
         }

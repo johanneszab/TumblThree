@@ -90,10 +90,12 @@ namespace TumblThree.Applications.Crawler
                         imgurParser, gfycatParser, GetWebmshareParser(), GetMixtapeParser(), GetUguuParser(),
                         GetSafeMoeParser(), GetLoliSafeParser(), GetCatBoxParser(), postQueue, blog);
                 case BlogTypes.tumblrtagsearch:
+                    IPostQueue<TumblrCrawlerData<DataModels.TumblrTaggedSearch.Datum>> jsonTagSearchQueue =
+                        GetJsonQueue<DataModels.TumblrTaggedSearch.Datum>();
                     return new TumblrTagSearchCrawler(shellService, ct, pt, progress, crawlerService, webRequestFactory,
-                        cookieService, GetTumblrDownloader(ct, pt, progress, blog, files, postQueue), GetTumblrParser(),
-                        imgurParser, gfycatParser, GetWebmshareParser(), GetMixtapeParser(), GetUguuParser(),
-                        GetSafeMoeParser(), GetLoliSafeParser(), GetCatBoxParser(), postQueue, blog);
+                        cookieService, GetTumblrDownloader(ct, pt, progress, blog, files, postQueue), GetTumblrJsonDownloader(ct, pt, jsonTagSearchQueue, blog),
+                        GetTumblrParser(), imgurParser, gfycatParser, GetWebmshareParser(), GetMixtapeParser(), GetUguuParser(),
+                        GetSafeMoeParser(), GetLoliSafeParser(), GetCatBoxParser(), postQueue, jsonTagSearchQueue, blog);
                 default:
                     throw new ArgumentException("Website is not supported!", "blogType");
             }
