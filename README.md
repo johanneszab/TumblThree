@@ -1,3 +1,6 @@
+### This repository is no longer maintained. 
+### For the latest TumblThree updates, please visit our new home at [TumblThreeApp](https://github.com/TumblThreeApp/TumblThree).
+
 # TumblThree - A Tumblr Blog Backup Application
 
 [![Join the chat at https://gitter.im/TumblThree/community](https://badges.gitter.im/TumblThree/community.svg)](https://gitter.im/TumblThree/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) ![Github Releases](https://img.shields.io/github/downloads/johanneszab/TumblThree/total.svg?style=plastic) ![Github Stars](https://img.shields.io/github/stars/johanneszab/TumblThree.svg?style=plastic) ![Latest Github release date](https://img.shields.io/github/release-date/johanneszab/TumblThree.svg)
